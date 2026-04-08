@@ -1,0 +1,18 @@
+version: 1
+
+structs:
+  # Organization: a structured collection of entities
+  # and/or subordinate organizations
+  Organization:
+    parent: Object
+    variants:
+      GROUP: Group
+      UNIT: Unit
+
+  # Group: contains subordinate organizations
+  Group:
+    parent: Organization
+
+  # Unit: contains no subordinate organizations, only entities
+  Unit:
+    parent: Organization

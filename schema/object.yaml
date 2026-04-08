@@ -1,0 +1,28 @@
+version: 1
+
+structs:
+  # Object: any distinct part of the overall framework
+  # that can be identified, described, or referenced
+  Object:
+    variants:
+      ENTITY: Entity
+      ORGANIZATION: Organization
+      COLLECTION: Collection
+      SYSTEM: System
+      SITE: Site
+      ITEM: Item
+
+
+  # Collection: identifiable group united by circumstance, relation, or selection
+  Collection:
+    parent: Object
+
+
+  # System: organized assembly functioning together as a whole
+  System:
+    parent: Object
+
+
+  # Site: clearly delimited location with a specific purpose
+  Site:
+    parent: Object

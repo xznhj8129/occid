@@ -1,0 +1,65 @@
+version: 1
+
+structs:
+  # Control: directives and processes
+  Control:
+    variants:
+      DIRECTIVE: Directive
+      PROCESS: Process
+
+
+  # --- Directive ---
+  # Intentions, directives, desired objective,
+  # requested outcome, or prescribed behavior
+
+  Directive:
+    parent: Control
+    variants:
+      INTENT: Intent
+      INSTRUCTION: Instruction
+      OBJECTIVE: Objective
+      TASK: Task
+
+  # A self-held commitment or plan to act, "X must be done"
+  Intent:
+    parent: Directive
+
+  # A directive instructing specific action
+  Instruction:
+    parent: Directive
+
+  # A desired future condition, effect, or end-state
+  Objective:
+    parent: Directive
+
+  # An intent-based instruction with intent through actions to an objective
+  Task:
+    parent: Directive
+
+
+  # --- Process ---
+  # Cause-side, intentional or directed activity over time
+
+  Process:
+    parent: Control
+    variants:
+      PLAN: Plan
+      METHOD: Method
+      ACTION: Action
+      INTERFACE: Interface
+
+  # What actions a task requires to accomplish an objective
+  Plan:
+    parent: Process
+
+  # How an action is decomposed into steps
+  Method:
+    parent: Process
+
+  # An intentional act, "the act of doing X"
+  Action:
+    parent: Process
+
+  # How an action is translated at lowest layer
+  Interface:
+    parent: Process

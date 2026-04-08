@@ -1,0 +1,10 @@
+version: 1
+# --- Command ---
+# Communication whose purpose is to direct or control.
+
+structs:
+  Command:
+    fields:
+      id: int
+    variants:
+      

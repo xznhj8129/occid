@@ -1,0 +1,55 @@
+version: 1
+
+enums:
+  AutonomyClass:
+    - REMOTE = 0          # Directly piloted, no onboard autonomy
+    - ASSISTED            # Human controls, machine assists (stabilization, failsafes)
+    - SEMI_AUTONOMOUS     # Machine executes discrete tasks, human approves each
+    - SUPERVISED          # Machine acts continuously, human monitors and intervenes
+    - AUTONOMOUS          # Machine acts independently within parameters
+
+structs:
+  # Entity: one discrete "atom" capable of actions
+  Entity:
+    parent: Object
+    variants:
+      ACTOR: Actor
+      MACHINE: Machine
+
+
+  # Actor: entity capable of thought, observation, reflexion,
+  # logic, reasoning, introspection, and making judgments and decisions
+  Actor:
+    parent: Entity
+    variants:
+      PERSON: Person
+      AGENT: Agent
+
+  Person:
+    parent: Actor
+
+  Agent:
+    parent: Actor
+
+
+  # Machine: discrete non-inert man-made object capable of actions
+  Machine:
+    parent: Entity
+    fields:
+      domain: MachineDomain
+    variants:
+      VEHICLE: Vehicle
+      ROBOT: Robot
+      PLATFORM: Platform
+
+  Vehicle:
+    parent: Machine
+
+  # Machine capable of movement without human presence
+  Robot:
+    parent: Machine
+    fields:
+      autonomy: AutonomyClass
+
+  Platform:
+    parent: Machine

@@ -1,0 +1,133 @@
+version: 1
+
+enums:
+  LocalConvention:
+    - FRD = 0   # Forward-Right-Down
+    - FLU       # Forward-Left-Up
+    - NED       # North-East-Down
+    - ENU       # East-North-Up
+
+  GlobalDatum:
+    - WGS84 = 0
+
+  MachineDomain:
+    - LAND = 0
+    - AIR
+    - SEA
+    - SUBSEA
+    - SPACE
+
+  LandPropulsion:
+    - WHEELED = 0
+    - TRACKED
+    - BIPEDAL
+    - LEGGED
+
+  Faction:
+    - UNKNOWN = 0
+    - PENDING
+    - FRIENDLY
+    - SUSPECT
+    - HOSTILE
+    - NEUTRAL
+    - ASSUMED
+    - FAKER
+    - JOKER
+
+  OrgClass:
+    - CIVILIAN = 0
+    - MILITARY
+    - NGO
+    - UNKNOWN
+
+structs:
+  # Reference: abstract meaning used to describe the form and nature
+  # of values, space, geometry, time, or classifications that have
+  # to be interpreted in a very specific way
+  Reference:
+    fields:
+      name: optional string
+    variants:
+      FRAME: Frame
+      GEOMETRY: Geometry
+      TIME: Time
+      TYPE: Type
+
+
+  # --- Frame ---
+
+  Frame:
+    parent: Reference
+    variants:
+      LOCAL: LocalFrame
+      GLOBAL: GlobalFrame
+
+  LocalFrame:
+    parent: Frame
+    fields:
+      convention: LocalConvention
+
+  GlobalFrame:
+    parent: Frame
+    fields:
+      datum: GlobalDatum
+
+
+  # --- Geometry ---
+
+  Geometry:
+    parent: Reference
+    variants:
+      LATLON: LatLon
+      XYZ: XYZ
+      QUATERNION: Quaternion
+      EULER: EulerAngles
+
+  LatLon:
+    parent: Geometry
+    fields:
+      lat: float   # Degrees
+      lon: float   # Degrees
+      alt: optional float  # Meters
+
+  XYZ:
+    parent: Geometry
+    fields:
+      x: float  # Meters
+      y: float  # Meters
+      z: float  # Meters
+
+  Quaternion:
+    parent: Geometry
+    fields:
+      w: float
+      x: float
+      y: float
+      z: float
+
+  EulerAngles:
+    parent: Geometry
+    fields:
+      roll: float   # Radians
+      pitch: float  # Radians
+      yaw: float    # Radians
+
+
+  # --- Time ---
+
+  Time:
+    parent: Reference
+    variants:
+      EPOCH: Epoch
+
+  Epoch:
+    parent: Time
+    fields:
+      offset_s: int64  # Seconds from Unix epoch to this epoch's zero
+
+
+  # --- Type ---
+  # Categories, classifications, factions, domains
+
+  Type:
+    parent: Reference
