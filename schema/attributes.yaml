@@ -1,5 +1,16 @@
 version: 1
 
+enums:
+  AirRole:
+    - GROUND_ATTACK = 0
+    - ANTI_AIR
+    - FIGHTER
+    - RECONNAISSANCE
+    - IMINT
+    - SIGINT
+    - MINELAYING
+    - CARGO
+
 structs:
   # Attributes: fundamental characteristics, type, form
   Attributes:
@@ -20,6 +31,7 @@ structs:
       capability_set: optional list[string]
       context_capacity: optional int
       tool_manifest: optional list[string]
+      response_latency_ms: optional float
 
   MachineAttributes:
     parent: Attributes
@@ -32,7 +44,17 @@ structs:
       max_altitude_m: optional float
       max_flight_time_s: optional float
       weather_limits: optional string
-      roles: optional list[string]
+      roles: optional list[AirRole]
+      sensor_ids: optional list[string]
+      link_ids: optional list[string]
+      weapon_ids: optional list[string]
+      length_m: optional float
+      simulated: optional bool
+      exercise: optional bool
+      emergency: optional bool
+      c2: optional bool
+      egressable: optional bool
+      starred: optional bool
     variants:
       VEHICLE: VehicleAttributes
       ROBOT: RobotAttributes
@@ -78,6 +100,10 @@ structs:
       unit_size: optional UnitSize
       unit_category: optional UnitCategory
       taskforce: optional bool
+      personnel_count: optional uint32
+      equipment_count: optional uint32
+      vehicle_count: optional uint32
+      air_unit_count: optional uint32
 
   PersonAttributes:
     parent: Attributes

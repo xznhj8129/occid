@@ -25,20 +25,3 @@ structs:
       ATTRIBUTES: Attributes
       PARAMETERS: Parameters
       RELATIONSHIP: Relationship
-
-  Relationship:
-    parent: Properties
-
-  # Stub roots kept in place so the information tree stays connected
-  State:
-    parent: Information
-
-  Event:
-    parent: Information
-
-  Intel:
-    parent: Information
-
-  # --- Sensory ---
-  Sensory:
-    parent: Data

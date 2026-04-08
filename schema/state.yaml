@@ -1,0 +1,296 @@
+version: 1
+
+enums:
+  GPSFixType:
+    - NO_FIX = 0
+    - FIX_2D
+    - FIX_3D
+    - DGPS
+    - RTK_FLOAT
+    - RTK_FIXED
+    - STATIC
+    - PPS
+
+  NavSource:
+    - GPS = 0
+    - GLONASS
+    - GALILEO
+    - BEIDOU
+    - INS
+    - VIO
+    - OPTICAL_FLOW
+    - SLAM
+    - BAROMETER
+    - RADAR
+    - ALTIMETER
+    - FUSED
+
+  NavMode:
+    - MANUAL = 0
+    - WAYPOINT
+    - RTL
+    - LOITER
+    - GUIDED
+    - LAND
+    - TAKEOFF
+    - CIRCLE
+    - DRIFT
+    - POSITION_HOLD
+    - BRAKE
+    - THROW
+    - ADSB
+    - SMART_RTL
+    - FLOW_HOLD
+    - FOLLOW
+    - ZIGZAG
+    - SYSTEM_ID
+    - AUTO_ROTATE
+
+  PowerStatus:
+    - UNKNOWN = 0
+    - NOT_PRESENT
+    - OPERATING
+    - DISABLED
+    - ERROR
+
+  PowerType:
+    - UNKNOWN = 0
+    - GAS
+    - BATTERY
+
+  HealthStatus:
+    - HEALTHY = 0
+    - WARN
+    - FAIL
+    - OFFLINE
+    - NOT_READY
+
+  ConnectionStatus:
+    - ONLINE = 0
+    - OFFLINE
+
+  OperationalState:
+    - OFF = 0
+    - NON_OPERATIONAL
+    - DEGRADED
+    - OPERATIONAL
+    - DENIED
+
+  AlertLevel:
+    - ADVISORY = 0
+    - CAUTION
+    - WARNING
+
+  RequestStatus:
+    - SUBMITTED = 0
+    - ACKNOWLEDGED
+    - APPROVED
+    - DENIED
+    - IN_TRANSIT
+    - DELIVERED
+    - CANCELLED
+
+  OverrideStatus:
+    - APPLIED = 0
+    - PENDING
+    - TIMEOUT
+    - REJECTED
+    - DELETION_PENDING
+
+  OperationalMode:
+    - OFF = 0
+    - STARTUP
+    - NOMINAL
+    - DEGRADED
+    - EMERGENCY
+    - MAINTENANCE
+    - CALIBRATING
+    - STANDBY
+    - SLEEP
+
+structs:
+  # State: telemetric, changing data about an object at a given time
+  State:
+    parent: Information
+    variants:
+      KINEMATIC: Kinematic
+      LOCATION: Location
+      NAVIGATION: Navigation
+      SENSOR: Sensor
+      INPUT: Input
+      RESOURCES: ResourceState
+      CONDITION: ConditionState
+      LIFECYCLE: LifecycleState
+      INTERNAL: Internal
+      MISSION: MissionProgress
+
+  Kinematic:
+    parent: State
+    fields:
+      attitude: optional Quaternion
+      ground_speed_ms: optional float
+      airspeed_ms: optional float
+      velocity_enu: optional ENU
+      acceleration_enu: optional ENU
+      angular_rate: optional Vector3D
+      heading_deg: optional float
+      course_deg: optional float
+      climb_rate_ms: optional float
+      throttle_pct: optional float
+
+  Location:
+    parent: State
+    fields:
+      position: optional LLA
+      satellite_count: optional uint32
+      velocity_enu: optional ENU
+      speed_ms: optional float
+      acceleration_enu: optional ENU
+      attitude: optional Quaternion
+      uncertainty: optional LocationUncertainty
+
+  LocationUncertainty:
+    fields:
+      position_covariance: optional CovarianceMatrix3x3
+      velocity_covariance: optional CovarianceMatrix3x3
+      error_ellipse: optional ErrorEllipse
+      ce: optional Measurement
+      le: optional Measurement
+
+  Navigation:
+    parent: State
+    fields:
+      nav_mode: optional NavMode
+      fix_type: optional GPSFixType
+      global_position_valid: optional bool
+      home_position_valid: optional bool
+      position_source: optional NavSource
+      heading_source: optional NavSource
+      altitude_source: optional NavSource
+      gnss_statistics: optional string
+
+  Sensor:
+    parent: State
+    variants:
+      IMU: IMUState
+      READINESS: SensorReadiness
+
+  IMUState:
+    parent: Sensor
+    fields:
+      acceleration: optional Vector3D
+      angular_rate: optional Vector3D
+      magnetic_field: optional Vector3D
+      temperature_c: optional float
+      timestamp: optional Timestamp
+      frame: optional Local3D
+
+  SensorReadiness:
+    parent: Sensor
+    fields:
+      gyro_ready: optional bool
+      accel_ready: optional bool
+      mag_ready: optional bool
+      local_position_ready: optional bool
+      global_position_ready: optional bool
+      home_position_ready: optional bool
+      armable: optional bool
+
+  Input:
+    parent: State
+    fields:
+      rc_channels: optional list[uint16]
+      receiver_min: optional list[uint16]
+      receiver_max: optional list[uint16]
+      receiver_center: optional list[uint16]
+      channel_mapping: optional list[string]
+      mode_ranges: optional list[string]
+
+  ResourceState:
+    parent: State
+    variants:
+      BATTERY: Battery
+      FUEL: Fuel
+      CONSUMABLE: Consumable
+      POWER_SOURCE: PowerSource
+
+  Battery:
+    parent: ResourceState
+    fields:
+      voltage_v: optional float
+      current_a: optional float
+      remaining_pct: optional float
+      remaining_capacity_mah: optional float
+      temperature_c: optional float
+      cell_voltages_v: optional list[float]
+      cell_count: optional uint32
+      power_w: optional float
+      consumed_mah: optional float
+      source_identifier: optional string
+      rssi: optional float
+
+  Fuel:
+    parent: ResourceState
+    fields:
+      volume_l: optional float
+      remaining_pct: optional float
+      max_capacity_l: optional float
+      operational_requirement_l: optional float
+      consumption_rate_lph: optional float
+
+  Consumable:
+    parent: ResourceState
+    fields:
+      total_count: optional uint32
+      remaining_count: optional uint32
+
+  PowerSource:
+    parent: ResourceState
+    fields:
+      status: optional PowerStatus
+      power_type: optional PowerType
+      capacity: optional float
+      remaining: optional float
+      remaining_pct: optional float
+      voltage_v: optional float
+      current_a: optional float
+      runtime_s: optional Duration
+      consumption_rate: optional float
+      offloadable: optional bool
+
+  ConditionState:
+    parent: State
+    fields:
+      health_status: optional HealthStatus
+      connection_status: optional ConnectionStatus
+      operational_state: optional OperationalState
+      alert_level: optional AlertLevel
+      fault_list: optional list[string]
+      damage_assessment: optional string
+
+  LifecycleState:
+    parent: State
+    fields:
+      lifecycle_phase: optional LifecyclePhase
+      request_status: optional RequestStatus
+      override_status: optional OverrideStatus
+
+  Internal:
+    parent: State
+    fields:
+      operational_mode: optional OperationalMode
+      error_codes: optional list[string]
+      cpu_load_pct: optional float
+      memory_used_pct: optional float
+      disk_used_pct: optional float
+      uptime: optional Duration
+      temperature_c: optional float
+      software_version: optional string
+      build_hash: optional string
+
+  MissionProgress:
+    parent: State
+    fields:
+      current_waypoint_index: optional uint32
+      total_waypoints: optional uint32
+      mission_valid: optional bool

@@ -1,0 +1,93 @@
+version: 1
+
+enums:
+  EntityLifecycleEvent:
+    - FIRST_SEEN = 0
+    - UPDATED
+    - LOCATION_CHANGED
+    - STATUS_CHANGED
+    - HEALTH_CHANGED
+    - CORRELATED
+    - DECORRELATED
+    - OVERRIDDEN
+    - OVERRIDE_REMOVED
+    - EXPIRED
+    - POST_EXPIRY_OVERRIDE
+    - DELETED
+    - LOST
+    - RECOVERED
+    - HANDED_OFF
+    - TASK_ASSIGNED
+    - TASK_COMPLETED
+
+  GeofenceViolationType:
+    - ENTERED = 0
+    - EXITED
+    - ALTITUDE_EXCEEDED
+
+structs:
+  # Event: discrete occurrence at a point in time
+  Event:
+    parent: Information
+    variants:
+      FLIGHT: FlightEvent
+      MISSION: MissionEvent
+      ENTITY_LIFECYCLE: EntityEvent
+      GEOFENCE_VIOLATION: GeofenceViolationEvent
+
+  FlightEvent:
+    parent: Event
+    variants:
+      ARMED: ArmedEvent
+      DISARMED: DisarmedEvent
+      TAKEOFF_DETECTED: TakeoffDetectedEvent
+      LANDED: LandedEvent
+      FAILSAFE_CHANGED: FailsafeChangedEvent
+
+  ArmedEvent:
+    parent: FlightEvent
+
+  DisarmedEvent:
+    parent: FlightEvent
+
+  TakeoffDetectedEvent:
+    parent: FlightEvent
+    fields:
+      altitude_m: optional float
+
+  LandedEvent:
+    parent: FlightEvent
+
+  FailsafeChangedEvent:
+    parent: FlightEvent
+    fields:
+      failsafe_state: optional bool
+
+  MissionEvent:
+    parent: Event
+    variants:
+      ABORTED: MissionAbortedEvent
+      COMPLETED: MissionCompletedEvent
+
+  MissionAbortedEvent:
+    parent: MissionEvent
+    fields:
+      reason: optional string
+
+  MissionCompletedEvent:
+    parent: MissionEvent
+
+  EntityEvent:
+    parent: Event
+    fields:
+      lifecycle_event: optional EntityLifecycleEvent
+      entity_id: optional string
+
+  GeofenceViolationEvent:
+    parent: Event
+    fields:
+      entity_id: optional string
+      geofence_id: optional string
+      violation_type: optional GeofenceViolationType
+      position: optional LLA
+      action_taken: optional string

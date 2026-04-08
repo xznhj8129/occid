@@ -1,0 +1,220 @@
+version: 1
+
+enums:
+  PIDMethod:
+    - VISUAL = 0
+    - ELECTRONIC
+    - BEHAVIORAL
+    - INTELLIGENCE
+
+  TrackState:
+    - TENTATIVE = 0
+    - CONFIRMED
+    - COASTING
+    - DROPPED
+
+  BDAMethod:
+    - VISUAL = 0
+    - ELECTRO_OPTICAL
+    - INFRARED
+    - RADAR
+    - SIGNAL_INTEL
+    - HUMAN_INTEL
+
+  BDAPhase:
+    - PHASE1_INITIAL = 0
+    - PHASE2_SUPPLEMENTAL
+    - PHASE3_RESTRIKE
+
+  DamageLevel:
+    - UNDAMAGED = 0
+    - LIGHT
+    - MODERATE
+    - HEAVY
+    - DESTROYED
+
+  FunctionalImpact:
+    - FULLY_OPERATIONAL = 0
+    - DEGRADED
+    - SIGNIFICANTLY_DEGRADED
+    - NON_OPERATIONAL
+    - DESTROYED
+
+  BDAStatusColor:
+    - GREY = 0
+    - YELLOW
+    - GREEN
+    - RED
+
+  SourceReliability:
+    - A_COMPLETELY_RELIABLE = 0
+    - B_USUALLY_RELIABLE
+    - C_FAIRLY_RELIABLE
+    - D_NOT_USUALLY_RELIABLE
+    - E_UNRELIABLE
+    - F_CANNOT_BE_JUDGED
+
+  InfoCredibility:
+    - CONFIRMED = 0
+    - PROBABLY_TRUE
+    - POSSIBLY_TRUE
+    - DOUBTFUL
+    - IMPROBABLE
+    - CANNOT_BE_JUDGED
+
+  FusionMethod:
+    - NEAREST_NEIGHBOR = 0
+    - BAYESIAN
+    - DEMPSTER_SHAFER
+    - KALMAN_FILTER
+    - COVARIANCE_INTERSECTION
+    - VOTING
+    - WEIGHTED_AVERAGE
+
+  FusionLevel:
+    - L0_SOURCE_PREPROCESSING = 0
+    - L1_OBJECT_ASSESSMENT
+    - L2_SITUATION_ASSESSMENT
+    - L3_IMPACT_ASSESSMENT
+    - L4_PROCESS_REFINEMENT
+
+  GateType:
+    - RECTANGULAR = 0
+    - ELLIPSOIDAL
+    - MAHALANOBIS
+
+structs:
+  # Intel: observations assessed into usable knowledge
+  Intel:
+    parent: Information
+    variants:
+      DETECTION: Detection
+      CLASSIFICATION: Classification
+      TRACK: Track
+      ASSESSMENT: Assessment
+      FUSION: Fusion
+
+  Detection:
+    parent: Intel
+    fields:
+      position: optional LLA
+      timestamp: optional Timestamp
+      confidence: optional float
+    variants:
+      ACOUSTIC: AcousticDetection
+      MOTION: MotionDetection
+      SEISMIC: SeismicDetection
+      CBRNE: CBRNEDetection
+      LAUNCH: LaunchDetection
+      IMPACT: ImpactDetection
+      VIDEO: VideoDetection
+      RADAR: RadarDetection
+      RF: RFDetection
+
+  AcousticDetection:
+    parent: Detection
+
+  MotionDetection:
+    parent: Detection
+
+  SeismicDetection:
+    parent: Detection
+
+  CBRNEDetection:
+    parent: Detection
+
+  LaunchDetection:
+    parent: Detection
+
+  ImpactDetection:
+    parent: Detection
+
+  VideoDetection:
+    parent: Detection
+    fields:
+      bounding_box: optional BoundingBox2D
+      class_id: optional string
+      class_name: optional string
+      track_id: optional string
+
+  RadarDetection:
+    parent: Detection
+
+  RFDetection:
+    parent: Detection
+
+  Classification:
+    parent: Intel
+    fields:
+      detection_id: optional string
+      assessed_type: optional string
+      confidence: optional float
+      method: optional PIDMethod
+
+  Track:
+    parent: Intel
+    fields:
+      detection_id: optional string
+      track_id: optional string
+      current_position: optional LLA
+      position_history: optional list[LLA]
+      confidence: optional float
+      track_quality_score: optional uint32
+      sensor_hits_count: optional uint32
+      last_measurement_time: optional Timestamp
+      line_of_bearing: optional Bearing
+      radar_cross_section_dbsm: optional float
+      number_of_objects: optional UIntRange
+      track_state: optional TrackState
+
+  Assessment:
+    parent: Intel
+    variants:
+      BDA: BDAResult
+      HIGH_VALUE_TARGET: HighValueTarget
+      TARGET_PRIORITY: TargetPriority
+      SOURCE_EVALUATION: SourceEvaluation
+
+  BDAResult:
+    parent: Assessment
+    fields:
+      target_id: optional string
+      assessment_time: optional Timestamp
+      assessor_id: optional string
+      method: optional BDAMethod
+      phase: optional BDAPhase
+      damage_level: optional DamageLevel
+      functional_impact: optional FunctionalImpact
+      confidence: optional float
+      restrike_recommendation: optional bool
+      imagery_id: optional string
+      status_color: optional BDAStatusColor
+
+  HighValueTarget:
+    parent: Assessment
+    fields:
+      is_high_value: optional bool
+      priority: optional int
+      is_high_payoff: optional bool
+      target_matches: optional list[string]
+
+  TargetPriority:
+    parent: Assessment
+    fields:
+      high_value_target_id: optional string
+      is_threat: optional bool
+
+  SourceEvaluation:
+    parent: Assessment
+    fields:
+      source_reliability: optional SourceReliability
+      info_credibility: optional InfoCredibility
+
+  Fusion:
+    parent: Intel
+    fields:
+      fusion_method: optional FusionMethod
+      fusion_level: optional FusionLevel
+      gate_type: optional GateType
+      source_ids: optional list[string]
+      output_id: optional string

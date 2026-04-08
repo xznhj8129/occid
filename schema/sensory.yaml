@@ -1,0 +1,54 @@
+version: 1
+
+structs:
+  # Sensory: raw or lightly processed sensory media and samples
+  Sensory:
+    parent: Data
+    variants:
+      AV: AVSensory
+      SPATIAL: SpatialSensory
+      SAMPLES: SampleSensory
+
+  AVSensory:
+    parent: Sensory
+    variants:
+      VIDEO: Video
+      IMAGE: Image
+      AUDIO: Audio
+
+  Video:
+    parent: AVSensory
+
+  Image:
+    parent: AVSensory
+
+  Audio:
+    parent: AVSensory
+
+  SpatialSensory:
+    parent: Sensory
+    variants:
+      POINTCLOUD: PointCloud
+      MESH: Mesh
+      SCAN: Scan
+
+  PointCloud:
+    parent: SpatialSensory
+
+  Mesh:
+    parent: SpatialSensory
+
+  Scan:
+    parent: SpatialSensory
+
+  SampleSensory:
+    parent: Sensory
+    variants:
+      IQ: IQSamples
+      ANALOG: AnalogSamples
+
+  IQSamples:
+    parent: SampleSensory
+
+  AnalogSamples:
+    parent: SampleSensory
