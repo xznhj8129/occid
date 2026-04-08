@@ -1,0 +1,15 @@
+version: 1
+
+structs:
+  # Identity: fundamental identity, name, ID
+  Identity:
+    parent: Properties
+    fields:
+      uid: string
+      name: optional string
+      model: optional string
+      callsign: optional string
+      description: optional string
+      aliases: optional list[string]
+      tags: optional list[string]
+      subject: optional string

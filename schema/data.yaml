@@ -1,44 +1,23 @@
 version: 1
 
-enums:
-  AuthorityLevel:
-    - FULL = 0              # Full control authority
-    - SHARED                # Shared control, may contend
-    - DELEGATED             # Acting on behalf of another authority
-    - MONITOR               # Observe only, no control
-
-  LifecyclePhase:
-    - PLANNED = 0
-    - ACTIVE
-    - PAUSED
-    - COMPLETE
-    - ABORTED
-    - FAILED
-
 structs:
-  # Data: concrete typed structures describing objects, their
-  # characteristics, condition, intentions, actions, or effects
+  # Data: concrete typed structures describing objects,
+  # their characteristics, condition, intentions, actions, or effects
   Data:
     variants:
       INFORMATION: Information
       SENSORY: Sensory
 
-
   # --- Information ---
-  # Symbolic, usually structured data that can be directly read
-
   Information:
     parent: Data
     variants:
       PROPERTIES: Properties
       STATE: State
+      EVENT: Event
       INTEL: Intel
 
-
   # --- Properties ---
-  # A generally fixed characteristic, classification, disposition,
-  # or capability that defines an object
-
   Properties:
     parent: Information
     variants:
@@ -47,192 +26,19 @@ structs:
       PARAMETERS: Parameters
       RELATIONSHIP: Relationship
 
-  # Fundamental identity, name, ID
-  Identity:
-    parent: Properties
-    fields:
-      uid: string
-      name: optional string
-      callsign: optional string
-
-  # Fundamental characteristics, type, form
-  Attributes:
-    parent: Properties
-    fields:
-      faction: Faction
-    variants:
-      MACHINE_ATTR: MachineAttributes
-      ORGANIZATION_ATTR: OrganizationAttributes
-      PERSON_ATTR: PersonAttributes
-
-  MachineAttributes:
-    parent: Attributes
-    fields:
-      propulsion: optional LandPropulsion   # Only where domain=LAND
-
-  OrganizationAttributes:
-    parent: Attributes
-    fields:
-      org_class: OrgClass
-
-  PersonAttributes:
-    parent: Attributes
-
-  # Current operating configuration or control regime
-  Parameters:
-    parent: Properties
-
-  # Nature of relations, ownership, provenance, link
   Relationship:
     parent: Properties
-    variants:
-      CONTROL_AUTHORITY: ControlAuthority
-      TASK_ASSIGNMENT: TaskAssignment
-      OWNERSHIP: Ownership
-      COMPOSITION: Composition
 
-  # Who has control authority over an entity
-  ControlAuthority:
-    parent: Relationship
-    fields:
-      controller_id: string
-      authority: AuthorityLevel
-
-  # Entity assigned to execute a task
-  TaskAssignment:
-    parent: Relationship
-    fields:
-      task_id: string
-
-  # Organizational ownership
-  Ownership:
-    parent: Relationship
-    fields:
-      owner_id: string
-
-  # Physical part-of
-  Composition:
-    parent: Relationship
-    fields:
-      part_id: string
-
-
-  # --- State ---
-  # Telemetric, changing data describing the own state
-  # or condition of an object at a given time
-
+  # Stub roots kept in place so the information tree stays connected
   State:
     parent: Information
-    variants:
-      KINEMATIC: Kinematic
-      LOCATION: Location
-      RESOURCES: Resources
-      CONDITION: Condition
-      LIFECYCLE: Lifecycle
-      MISSION: Mission
-      EVENT: Event
 
-  # Location, address or placement
-  Location:
-    parent: State
-    fields:
-      position: Geometry
-      frame: Frame
-
-  # Physical orientation, velocity, acceleration, angular rates
-  Kinematic:
-    parent: State
-    fields:
-      velocity: XYZ
-      attitude: Quaternion
-      acceleration: optional XYZ
-      angular_rate: optional XYZ
-
-  # How much of something something has; power, fuel, food, etc
-  Resources:
-    parent: State
-    variants:
-      POWER: Power
-      FUEL: Fuel
-
-  Power:
-    parent: Resources
-    fields:
-      voltage: optional float     # Volts
-      current: optional float     # Amps
-      capacity_mah: optional float     # mAH
-      cell_voltage: optional float     # Volts
-      cell_series: optional int
-      remaining_pct: optional float
-
-  Fuel:
-    parent: Resources
-    fields:
-      volume_l: optional float    # Liters
-      remaining_pct: optional float
-
-  # Integrity, damage, faults, readiness
-  Condition:
-    parent: State
-
-  # Current stage in existence or execution
-  Lifecycle:
-    parent: State
-    fields:
-      phase: LifecyclePhase
-
-  # Assignments, tasks, plans, missions, stages
-  Mission:
-    parent: State
-
-  # Assessment that something has occurred, whether planned or not
   Event:
-    parent: State
-
-
-  # --- Intel ---
-  # Effect-side data that something happened or changed
-  # external to the sender object
+    parent: Information
 
   Intel:
     parent: Information
-    variants:
-      DETECTION: Detection
-      CLASSIFICATION: Classification
-      TRACK: Track
-
-  # Assessment that something exists or occurred
-  Detection:
-    parent: Intel
-
-  # Assessment assigning type/identity to a detected object
-  Classification:
-    parent: Intel
-
-  # Assessment of the state of an external object over time
-  Track:
-    parent: Intel
-
 
   # --- Sensory ---
-  # Unstructured, non-symbolic sensory signal data
-  # that has to be interpreted
-
   Sensory:
     parent: Data
-    variants:
-      AV: AV
-      SPATIAL: Spatial
-      SAMPLES: Samples
-
-  # Seen or heard; video, images, audio recordings
-  AV:
-    parent: Sensory
-
-  # Point clouds, 3D models, scans, etc
-  Spatial:
-    parent: Sensory
-
-  # IQ samples or other analog data
-  Samples:
-    parent: Sensory

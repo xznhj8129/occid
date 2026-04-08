@@ -1,5 +1,169 @@
 version: 1
 
+enums:
+  # --- Collection ---
+  FormationType:
+    - LINE = 0
+    - COLUMN
+    - WEDGE
+    - VEE
+    - ECHELON_LEFT
+    - ECHELON_RIGHT
+    - DIAMOND
+    - STAGGERED_COLUMN
+    - BOX
+    - FILE
+    - HERRINGBONE
+    - COIL
+
+  # --- Site ---
+  GeofenceAction:
+    - KEEP_IN = 0
+    - KEEP_OUT
+    - WARN
+    - RTL
+    - LAND
+    - LOITER
+    - REPORT
+    - DENY
+    - BRAKE
+    - FENCE
+
+  ControlAreaType:
+    - KEEP_IN_ZONE = 0
+    - KEEP_OUT_ZONE
+    - DITCH_ZONE
+    - LOITER_ZONE
+
+  GeoType:
+    - GENERAL = 0
+    - HAZARD
+    - EMERGENCY
+    - ENGAGEMENT_ZONE
+    - CONTROL_AREA
+    - BULLSEYE
+    - ACM
+
+  AirspaceClass:
+    - A = 0
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+
+  AirspaceType:
+    - CONTROLLED = 0
+    - RESTRICTED
+    - PROHIBITED
+    - DANGER
+    - ALERT
+    - MOA
+    - WARNING
+    - TFR
+    - CTR
+    - TMA
+    - FIR
+    - UIR
+    - ATZ
+    - ADIZ
+
+  AirspaceStatus:
+    - ACTIVE = 0
+    - INACTIVE
+    - SCHEDULED
+    - HOT
+    - COLD
+
+  RallyPointType:
+    - OBJECTIVE_RALLY_POINT = 0
+    - INITIAL_RALLY_POINT
+    - ACTION_POINT
+    - LINKUP_POINT
+    - ALTERNATE_RALLY_POINT
+
+  SupplyPointType:
+    - DEPOT = 0
+    - ASP
+    - FARP
+    - CACHE
+    - AID_STATION
+    - MAINTENANCE_POINT
+    - DISTRIBUTION_POINT
+
+  CommandPostType:
+    - MAIN = 0
+    - TACTICAL
+    - ALTERNATE
+    - REAR
+
+  FSCMType:
+    - FSCL = 0
+    - CFL
+    - NFL
+    - RFL
+    - FFA
+    - NFA
+    - RFA
+    - ACA
+
+  # --- Item ---
+  WeaponCategory:
+    - RIFLE = 0
+    - CARBINE
+    - PISTOL
+    - MACHINE_GUN
+    - GRENADE_LAUNCHER
+    - ANTI_TANK
+    - MANPAD
+    - MORTAR
+    - SNIPER
+    - SHOTGUN
+
+  MunitionStatus:
+    - NOT_PRESENT = 0
+    - PRESENT
+    - READY
+    - FAULT
+
+  ComponentCategory:
+    - MOTOR = 0
+    - ESC
+    - BATTERY
+    - FLIGHT_CONTROLLER
+    - ANTENNA
+    - GIMBAL
+    - SERVO
+    - PROPELLER
+    - AIRFRAME
+    - LANDING_GEAR
+    - PARACHUTE
+    - TRANSPONDER
+    - ADS_B
+    - IFF
+
+  PayloadOperationalState:
+    - OFF = 0
+    - NON_OPERATIONAL
+    - DEGRADED
+    - OPERATIONAL
+    - OUT_OF_SERVICE
+    - UNKNOWN
+
+  GuidanceType:
+    - UNGUIDED = 0
+    - GPS
+    - INS
+    - LASER_GUIDED
+    - IR_HOMING
+    - RADAR_HOMING
+    - COMMAND_GUIDED
+    - WIRE
+    - FIBER_OPTIC
+    - TERMINAL_TV
+    - VISION
+
 structs:
   # Object: any distinct part of the overall framework
   # that can be identified, described, or referenced
@@ -12,17 +176,343 @@ structs:
       SITE: Site
       ITEM: Item
 
-
-  # Collection: identifiable group united by circumstance, relation, or selection
+  # --- Collection ---
   Collection:
     parent: Object
+    variants:
+      CONVOY: Convoy
+      FORMATION: Formation
+      TASK_GROUP: TaskGroup
+      SENSOR_NETWORK: SensorNetwork
+      TARGET_DECK: TargetDeck
+      MINEFIELD: Minefield
 
+  Convoy:
+    parent: Collection
+    fields:
+      member_ids: optional list[string]
+      route: optional LLAPath
+      spacing_m: optional float
+      speed_ms: optional float
 
-  # System: organized assembly functioning together as a whole
+  Formation:
+    parent: Collection
+    fields:
+      formation_type: FormationType
+      member_ids: optional list[string]
+      spacing_m: optional float
+      reference_entity_id: optional string
+
+  TaskGroup:
+    parent: Collection
+
+  SensorNetwork:
+    parent: Collection
+
+  TargetDeck:
+    parent: Collection
+
+  Minefield:
+    parent: Collection
+
+  # --- System ---
   System:
     parent: Object
+    variants:
+      WEAPON_SYSTEM: WeaponSystem
+      COMMUNICATION_SYSTEM: CommunicationSystem
+      SENSOR_SUITE: SensorSuite
+      FIRE_CONTROL: FireControlSystem
+      EW_SUITE: EWSuite
+      NAVIGATION_SYSTEM: NavigationSystem
+      C2_SYSTEM: C2System
+      IADS: IntegratedAirDefenseSystem
+      POWER_SYSTEM: PowerSystem
 
+  WeaponSystem:
+    parent: System
+    fields:
+      platform_id: optional string
+      weapon_id: optional string
+      fire_control_id: optional string
 
-  # Site: clearly delimited location with a specific purpose
+  CommunicationSystem:
+    parent: System
+
+  SensorSuite:
+    parent: System
+
+  FireControlSystem:
+    parent: System
+
+  EWSuite:
+    parent: System
+
+  NavigationSystem:
+    parent: System
+
+  C2System:
+    parent: System
+
+  IntegratedAirDefenseSystem:
+    parent: System
+
+  PowerSystem:
+    parent: System
+
+  # --- Site ---
   Site:
     parent: Object
+    variants:
+      WAYPOINT: Waypoint
+      CONTROL_POINT: ControlPoint
+      GEOFENCE: Geofence
+      CONTROL_AREA: ControlArea
+      LANDING_ZONE: LandingZone
+      DROP_ZONE: DropZone
+      ASSEMBLY_POINT: AssemblyPoint
+      FOB: ForwardOperatingBase
+      OBSERVATION_POST: ObservationPost
+      RALLY_POINT: RallyPoint
+      ATTACK_POSITION: AttackPosition
+      SBF_POSITION: SupportByFirePosition
+      LOD: LineOfDeparture
+      SUPPLY_POINT: SupplyPoint
+      NAI: NamedAreaOfInterest
+      TAI: TargetAreaOfInterest
+      ACM: AirspaceCoordinatingMeasure
+      BULLSEYE: Bullseye
+      ENGAGEMENT_ZONE: EngagementZone
+      HAZARD_AREA: HazardArea
+      NO_FLY_ZONE: NoFlyZone
+      AIRSPACE_VOLUME: AirspaceVolume
+      TARGET_SET: TargetSet
+      TARGET_BOX: TargetBox
+      SPATIAL_FEATURE: SpatialFeature
+      COMMAND_POST: CommandPost
+      CHECKPOINT: SiteCheckpoint
+      TRIGGER_POINT: TriggerPoint
+      HIDE_POSITION: HidePosition
+      PATROL_BASE: PatrolBase
+      CORRIDOR: Corridor
+
+  Waypoint:
+    parent: Site
+
+  ControlPoint:
+    parent: Site
+
+  Geofence:
+    parent: Site
+    fields:
+      geometry: Polygon
+      floor_altitude_m: optional float
+      ceiling_altitude_m: optional float
+      action: GeofenceAction
+      enabled: optional bool
+      priority: optional int
+
+  ControlArea:
+    parent: Site
+
+  LandingZone:
+    parent: Site
+
+  DropZone:
+    parent: Site
+
+  AssemblyPoint:
+    parent: Site
+
+  ForwardOperatingBase:
+    parent: Site
+
+  ObservationPost:
+    parent: Site
+
+  RallyPoint:
+    parent: Site
+
+  AttackPosition:
+    parent: Site
+
+  SupportByFirePosition:
+    parent: Site
+
+  LineOfDeparture:
+    parent: Site
+
+  SupplyPoint:
+    parent: Site
+    fields:
+      position: LLA
+      supply_point_type: SupplyPointType
+      capacity_by_supply_class: optional map[string, float]
+      current_inventory: optional map[string, float]
+
+  NamedAreaOfInterest:
+    parent: Site
+    fields:
+      geometry: Geometry
+      purpose: optional string
+      indicators_to_watch: optional list[string]
+
+  TargetAreaOfInterest:
+    parent: Site
+
+  AirspaceCoordinatingMeasure:
+    parent: Site
+
+  Bullseye:
+    parent: Site
+
+  EngagementZone:
+    parent: Site
+
+  HazardArea:
+    parent: Site
+
+  NoFlyZone:
+    parent: Site
+
+  AirspaceVolume:
+    parent: Site
+    fields:
+      geometry: Polygon
+      floor_altitude_m: optional float
+      ceiling_altitude_m: optional float
+      airspace_class: AirspaceClass
+      airspace_type: AirspaceType
+      airspace_status: AirspaceStatus
+      schedule: optional list[TimeWindow]
+
+  TargetSet:
+    parent: Site
+
+  TargetBox:
+    parent: Site
+
+  SpatialFeature:
+    parent: Site
+
+  CommandPost:
+    parent: Site
+
+  SiteCheckpoint:
+    parent: Site
+
+  TriggerPoint:
+    parent: Site
+
+  HidePosition:
+    parent: Site
+
+  PatrolBase:
+    parent: Site
+
+  Corridor:
+    parent: Site
+
+  # --- Item ---
+  Item:
+    parent: Object
+    variants:
+      RECORD: Record
+      EQUIPMENT: Equipment
+      COMPONENT: Component
+      PAYLOAD: Payload
+
+  Record:
+    parent: Item
+
+  Equipment:
+    parent: Item
+    variants:
+      PERSONAL_WEAPON: PersonalWeapon
+      OPTIC: Optic
+      COMMS_GEAR: CommunicationsGear
+      PROTECTIVE: ProtectiveGear
+      NAV_EQUIPMENT: NavigationEquipment
+      MUNITION: Munition
+      LINK_HARDWARE: LinkHardware
+
+  PersonalWeapon:
+    parent: Equipment
+
+  Optic:
+    parent: Equipment
+
+  CommunicationsGear:
+    parent: Equipment
+
+  ProtectiveGear:
+    parent: Equipment
+
+  NavigationEquipment:
+    parent: Equipment
+
+  Munition:
+    parent: Equipment
+    fields:
+      status: optional MunitionStatus
+      quantity: optional uint32
+
+  LinkHardware:
+    parent: Equipment
+
+  Component:
+    parent: Item
+
+  Payload:
+    parent: Item
+    fields:
+      operational_state: optional PayloadOperationalState
+    variants:
+      EO_CAMERA: EOCamera
+      IR_CAMERA: IRCamera
+      MULTISPECTRAL: MultispectralCamera
+      LIDAR: LIDARPayload
+      SAR: SARPayload
+      SIGINT_RECEIVER: SIGINTReceiver
+      COMM_RELAY: CommRelayPayload
+      CARGO: CargoPayload
+      WEAPON: WeaponPayload
+      JAMMER: JammerPayload
+      ILLUMINATOR: Illuminator
+      RWS: RemoteWeaponStation
+
+  EOCamera:
+    parent: Payload
+
+  IRCamera:
+    parent: Payload
+
+  MultispectralCamera:
+    parent: Payload
+
+  LIDARPayload:
+    parent: Payload
+
+  SARPayload:
+    parent: Payload
+
+  SIGINTReceiver:
+    parent: Payload
+
+  CommRelayPayload:
+    parent: Payload
+
+  CargoPayload:
+    parent: Payload
+
+  WeaponPayload:
+    parent: Payload
+
+  JammerPayload:
+    parent: Payload
+
+  Illuminator:
+    parent: Payload
+
+  RemoteWeaponStation:
+    parent: Payload

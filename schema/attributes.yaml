@@ -1,0 +1,128 @@
+version: 1
+
+structs:
+  # Attributes: fundamental characteristics, type, form
+  Attributes:
+    parent: Properties
+    fields:
+      faction: optional Faction
+    variants:
+      AGENT: AgentAttributes
+      MACHINE: MachineAttributes
+      ORGANIZATION: OrganizationAttributes
+      PERSON: PersonAttributes
+      SYSTEM: SystemAttributes
+      ITEM: ItemAttributes
+
+  AgentAttributes:
+    parent: Attributes
+    fields:
+      capability_set: optional list[string]
+      context_capacity: optional int
+      tool_manifest: optional list[string]
+
+  MachineAttributes:
+    parent: Attributes
+    fields:
+      domain: optional PhysicalDomain
+      autonomy_ceiling: optional AutonomyClass
+      max_range_m: optional float
+      max_speed_ms: optional float
+      cruise_speed_ms: optional float
+      max_altitude_m: optional float
+      max_flight_time_s: optional float
+      weather_limits: optional string
+      roles: optional list[string]
+    variants:
+      VEHICLE: VehicleAttributes
+      ROBOT: RobotAttributes
+      PLATFORM: PlatformAttributes
+
+  VehicleAttributes:
+    parent: MachineAttributes
+    fields:
+      land_vehicle_class: optional LandVehicleClass
+      air_vehicle_class: optional AirVehicleClass
+      sea_vehicle_class: optional SeaVehicleClass
+      land_propulsion: optional LandPropulsion
+      propulsion_type: optional PropulsionType
+
+  RobotAttributes:
+    parent: MachineAttributes
+    fields:
+      land_propulsion: optional LandPropulsion
+      propulsion_type: optional PropulsionType
+      multirotor_config: optional MultirotorConfig
+      fixed_wing_config: optional FixedWingConfig
+      vtol_config: optional VTOLConfig
+      launch_method: optional LaunchMethod
+      recovery_method: optional RecoveryMethod
+
+  PlatformAttributes:
+    parent: MachineAttributes
+    variants:
+      GCS: GroundControlStationAttributes
+
+  GroundControlStationAttributes:
+    parent: PlatformAttributes
+    fields:
+      operator_station_count: optional uint32
+      supported_protocols: optional list[string]
+      mobile: optional bool
+
+  OrganizationAttributes:
+    parent: Attributes
+    fields:
+      org_class: optional OrgClass
+      army_echelon: optional ArmyEchelon
+      unit_size: optional UnitSize
+      unit_category: optional UnitCategory
+      taskforce: optional bool
+
+  PersonAttributes:
+    parent: Attributes
+    fields:
+      nationality: optional Nationality
+      role: optional string
+      specialty: optional string
+      rank: optional string
+
+  SystemAttributes:
+    parent: Attributes
+    variants:
+      WEAPON_SYSTEM: WeaponSystemAttributes
+
+  WeaponSystemAttributes:
+    parent: SystemAttributes
+    fields:
+      ammunition_types: optional list[string]
+      max_engagement_range_m: optional float
+      min_engagement_range_m: optional float
+      rate_of_fire_rpm: optional float
+
+  ItemAttributes:
+    parent: Attributes
+    variants:
+      AMMUNITION: AmmunitionAttributes
+      PAYLOAD: PayloadAttributes
+
+  AmmunitionAttributes:
+    parent: ItemAttributes
+    fields:
+      munition_type: optional string
+
+  PayloadAttributes:
+    parent: ItemAttributes
+    fields:
+      weight_kg: optional float
+      power_draw_w: optional float
+    variants:
+      WEAPON: WeaponPayloadAttributes
+
+  WeaponPayloadAttributes:
+    parent: PayloadAttributes
+    fields:
+      weapon_type: optional string
+      guidance: optional GuidanceType
+      warhead_type: optional string
+      max_range_m: optional float

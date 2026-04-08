@@ -38,19 +38,26 @@
     - **Type**: Categories, classifications, factions, domains
     - **Structs**: Reusable data shapes built on Reference primitives (vectors, positions, quaternions, paths, bounding boxes). Ontologically part of Reference, not a separate root.
 
-- **Control**:
-    - **Directive**: Intentions, directives, desired objective, requested outcome, or prescribed behavior
-        - **Intent**: A self-held commitment or plan to act, "X must be done"
-        - **Instruction**: A directive instructing specific action
+- **Control**: Scale-invariant; the binding of agents to objectives through structured decomposition
+    - **Directive**: What must be achieved, why, and within what bounds
+        - **Intent**: The commitment to act and the reason for acting
         - **Objective**: A desired future condition, effect, or end-state
-        - **Task**: An intent-based instruction with intent through actions to an objective
-        - **Constraint**: A boundary, limitation, or rule that restricts permissible action
 
-    - **Process**: Cause-side, intentional or directed activity over time
-        - **Plan**: What actions a task requires to accomplish an objective
-        - **Method**: How an action is decomposed into steps
-        - **Action**: An intentional act, "the act of doing X"
-        - **Interface**: How an action is translated at lowest layer (ie: )
+        - **Task**: A directive binding an action to an objective; "do X to achieve Y"
+        - **Instruction**: A directive prescribing specific action and method
+        - **Command**: An immediate imperative requiring execution without interpretation
+
+    - **Execution**: How directed activity is structured and carried out
+        - **Plan**: The ordered structure of actions toward an objective
+        - **Sequence**: The ordered steps within a method or procedure
+        - **Action**: A discrete intentional act that changes state
+
+    - **Constraint**: A boundary, limitation, or rule restricting permissible action
+        - **Restriction**: "must not do X"
+        - **Limitation**: "only within Y"
+        - **Condition**: "only when Z is true"
+
+    - **Interface**: The translation of an action into the terms of the executing layer
 
 - **Communication**: Definition, implementation, metadata and formats of information transfer
     - **Node**: Endpoint that transmits or receives messages
@@ -83,12 +90,17 @@
             - **Kinematic**: Physical orientation, velocity, acceleration, angular rates
             - **Internal**: Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)
             - **Location**: Location, address or placement
+            - **Navigation**: Status and quality of the navigation solution, mode, source, and validity
+            - **Sensor**: Onboard sensor readings, readiness, calibration, and availability
+            - **Input**: Current operator / receiver input state and control mapping
             - **Resources**: How much of something something has; power, fuel, food, etc
             - **Condition**: Integrity, damage, faults, readiness
             - **Lifecycle**: Current stage in existence or execution
             - **Mission**: Assignments, tasks, plans, missions, stages
 
         - **Event**: A discrete occurrence — something that happened at a point in time, whether planned or not
+            - **FlightEvent**: Discrete transition in flight state or safety state
+            - **MissionEvent**: Discrete transition in mission execution state
 
         - **Intel**: Effect-side data that something happened or changed external to the sender object
             - **Detection**: Assessment that something exists or occurred
@@ -100,5 +112,3 @@
         - **AV**: Seen or heard; video, images, audio recordings
         - **Spatial**: point clouds, 3D models, scans, etc
         - **Samples**: IQ samples or other analog data
-
-

@@ -1,27 +1,101 @@
 version: 1
 
 enums:
-  LocalConvention:
-    - FRD = 0   # Forward-Right-Down
-    - FLU       # Forward-Left-Up
-    - NED       # North-East-Down
-    - ENU       # East-North-Up
+  # --- Frame ---
+  Local2D:
+    - LU = 0
+    - LD
+    - RU
+    - RD
 
-  GlobalDatum:
+  Local3D:
+    - FRD = 0
+    - FLU
+    - NED
+    - ENU
+
+  GlobalFrame:
     - WGS84 = 0
+    - ETRS89
+    - ECEF
+    - ECI
+    - TEME
+    - LVLH
 
-  MachineDomain:
+  AltitudeReference:
+    - AMSL = 0
+    - HAE
+    - AGL
+    - BAROMETRIC
+    - START_RELATIVE
+    - HAAT
+    - ABOVE_SEA_FLOOR
+    - BELOW_SEA_SURFACE
+    - EGM96
+
+  BearingReference:
+    - TRUE_NORTH = 0
+    - MAGNETIC_NORTH
+    - GRID_NORTH
+    - RELATIVE_TO_HEADING
+
+  # --- Coordinate ---
+  CoordinateEncoding:
+    - CARTESIAN_2D = 0
+    - CARTESIAN_3D
+    - LAT_LON
+    - UTM
+    - MGRS
+    - PLUS_CODE
+    - ECI
+    - ENU
+    - SPHERICAL
+
+  # --- Geometry ---
+  GeometryType:
+    - POINT = 0
+    - LINE
+    - PATH
+    - POLYGON
+    - VOLUME
+    - ORIENTATION
+    - ARC
+    - ELLIPSE
+    - ELLIPSOID
+    - FRUSTUM
+    - CORRIDOR
+    - ANNULUS
+
+  # --- Time ---
+  TimeSyncSource:
+    - GPS = 0
+    - NTP
+    - PTP
+    - MANUAL
+    - RADIO_TIME_SIGNAL
+
+  # --- Type ---
+  PhysicalDomain:
     - LAND = 0
     - AIR
     - SEA
-    - SUBSEA
+    - UNDERSEA
     - SPACE
 
-  LandPropulsion:
-    - WHEELED = 0
-    - TRACKED
-    - BIPEDAL
-    - LEGGED
+  CombatDomain:
+    - COMBAT = 0
+    - COMBAT_SUPPORT
+    - COMBAT_SUPPORT_SERVICE
+
+  OpDomain:
+    - LAND = 0
+    - AIR
+    - SEA
+    - UNDERSEA
+    - SPACE
+    - RADIO
+    - PSYCHOLOGICAL
+    - CYBER
 
   Faction:
     - UNKNOWN = 0
@@ -34,100 +108,432 @@ enums:
     - FAKER
     - JOKER
 
-  OrgClass:
-    - CIVILIAN = 0
-    - MILITARY
-    - NGO
+  Disposition:
+    - UNKNOWN = 0
+    - FRIENDLY
+    - HOSTILE
+    - SUSPICIOUS
+    - ASSUMED_FRIENDLY
+    - NEUTRAL
+    - PENDING
+
+  ClassificationLevel:
+    - UNCLASSIFIED = 0
+    - CONTROLLED_UNCLASSIFIED
+    - CONFIDENTIAL
+    - SECRET
+    - TOP_SECRET
+
+  ClassificationCaveat:
+    - NOFORN = 0
+    - REL_TO
+    - FVEY
+    - NATO
+    - EU
+    - COSMIC
+    - ATOMAL
+
+  MilitaryBranch:
+    - ARMY = 0
+    - NAVY
+    - AIR_FORCE
+    - MARINES
+    - COAST_GUARD
+    - SPACE_FORCE
+    - SPECIAL_OPERATIONS
+    - JOINT
+
+  EntityStatus:
+    - ACTIVE = 0
+    - INACTIVE
     - UNKNOWN
+    - OFFLINE
+    - ONLINE
+    - PRESENT
+    - DAMAGED
+    - DESTROYED
+    - LOST
+    - DECOY
+
+  Priority:
+    - ROUTINE = 0
+    - PRIORITY
+    - IMMEDIATE
+    - FLASH
+    - FLASH_OVERRIDE
+    - CRITIC
+
+  PACE:
+    - PRIMARY = 0
+    - ALTERNATE
+    - CONTINGENCY
+    - EMERGENCY
+
+  ThreatLevel:
+    - GREEN = 0
+    - AMBER
+    - RED
+    - BLACK
+
+  DDILCondition:
+    - NORMAL = 0
+    - LIMITED
+    - INTERMITTENT
+    - DISRUPTED
+    - DENIED
+
+  InteropLevel:
+    - LEVEL1_INDIRECT_RELAY = 0
+    - LEVEL2_DIRECT_RECEIPT
+    - LEVEL3_PAYLOAD_CONTROL
+    - LEVEL4_FLIGHT_CONTROL
+    - LEVEL5_LAUNCH_RECOVERY
+
+  # --- Units ---
+  DistanceUnit:
+    - METERS = 0
+    - KILOMETERS
+    - FEET
+    - YARDS
+    - NAUTICAL_MILES
+    - STATUTE_MILES
+
+  SpeedUnit:
+    - METERS_PER_SECOND = 0
+    - KNOTS
+    - KILOMETERS_PER_HOUR
+    - MILES_PER_HOUR
+
+  TemperatureUnit:
+    - CELSIUS = 0
+    - FAHRENHEIT
+    - KELVIN
+
+  PressureUnit:
+    - HECTOPASCAL = 0
+    - MILLIBAR
+    - INCHES_OF_MERCURY
+
+  AngleUnit:
+    - DEGREES = 0
+    - RADIANS
+    - MILS_NATO
+    - MILS_WARSAW
+    - GRADIANS
+
+  MassUnit:
+    - KILOGRAMS = 0
+    - POUNDS
+    - TONS_METRIC
+    - TONS_SHORT
+
+  UnitOfMeasure:
+    - EACH = 0
+    - KILOGRAM
+    - LITER
+    - ROUND
+    - BOX
+    - CASE
+    - PALLET
+    - METER
+    - SQUARE_METER
+    - CUBIC_METER
+    - HOUR
 
 structs:
-  # Reference: abstract meaning used to describe the form and nature
-  # of values, space, geometry, time, or classifications that have
-  # to be interpreted in a very specific way
+  # Reference: abstract structure used to define how values,
+  # space, geometry, time, or relations are interpreted
   Reference:
-    fields:
-      name: optional string
     variants:
       FRAME: Frame
+      COORDINATE: Coordinate
       GEOMETRY: Geometry
       TIME: Time
       TYPE: Type
-
-
-  # --- Frame ---
+      STRUCTS: Structs
 
   Frame:
     parent: Reference
-    variants:
-      LOCAL: LocalFrame
-      GLOBAL: GlobalFrame
 
-  LocalFrame:
-    parent: Frame
-    fields:
-      convention: LocalConvention
-
-  GlobalFrame:
-    parent: Frame
-    fields:
-      datum: GlobalDatum
-
-
-  # --- Geometry ---
+  Coordinate:
+    parent: Reference
 
   Geometry:
     parent: Reference
-    variants:
-      LATLON: LatLon
-      XYZ: XYZ
-      QUATERNION: Quaternion
-      EULER: EulerAngles
 
-  LatLon:
-    parent: Geometry
-    fields:
-      lat: float   # Degrees
-      lon: float   # Degrees
-      alt: optional float  # Meters
+  Time:
+    parent: Reference
 
-  XYZ:
-    parent: Geometry
-    fields:
-      x: float  # Meters
-      y: float  # Meters
-      z: float  # Meters
+  Type:
+    parent: Reference
 
-  Quaternion:
-    parent: Geometry
+  Structs:
+    parent: Reference
+
+  # --- Time ---
+  Timestamp:
+    parent: Time
     fields:
-      w: float
+      value: int64
+
+  TimeWindow:
+    parent: Time
+    fields:
+      start: Timestamp
+      end: Timestamp
+
+  Duration:
+    parent: Time
+    fields:
+      value: int64
+
+  PhaseTime:
+    parent: Time
+    fields:
+      h_hour_reference: Timestamp
+      offset: int64
+
+  # --- Primitives ---
+  Vector2D:
+    parent: Structs
+    fields:
+      x: float
+      y: float
+
+  Vector3D:
+    parent: Structs
+    fields:
       x: float
       y: float
       z: float
 
+  Quaternion:
+    parent: Structs
+    fields:
+      x: float
+      y: float
+      z: float
+      w: float
+
   EulerAngles:
+    parent: Structs
+    fields:
+      yaw: float
+      pitch: float
+      roll: float
+
+  # --- Measurement ---
+  Measurement:
+    parent: Structs
+    fields:
+      value: float
+      sigma: optional float
+
+  # --- Bearing ---
+  Bearing:
+    parent: Structs
+    fields:
+      value: float
+      reference: BearingReference
+
+  # --- Geographic Positions ---
+  LatLon:
+    parent: Coordinate
+    fields:
+      coordinate_encoding: const CoordinateEncoding = LAT_LON
+      reference_frame: GlobalFrame
+      geometry_type: const GeometryType = POINT
+      latitude: float
+      longitude: float
+
+  LLA:
+    parent: Coordinate
+    fields:
+      latitude: float
+      longitude: float
+      altitude: float
+      altitude_reference: AltitudeReference
+      altitude_hae: optional float
+      altitude_agl: optional float
+      altitude_asf: optional float
+      pressure_depth: optional float
+
+  MGRS:
+    parent: Coordinate
+    fields:
+      coordinate_encoding: const CoordinateEncoding = MGRS
+      reference_frame: GlobalFrame
+      geometry_type: const GeometryType = POINT
+      grid_zone: string
+      band: string
+      easting: float
+      northing: float
+
+  UTM:
+    parent: Coordinate
+    fields:
+      coordinate_encoding: const CoordinateEncoding = UTM
+      reference_frame: GlobalFrame
+      geometry_type: const GeometryType = POINT
+      zone: int
+      band: string
+      easting: float
+      northing: float
+
+  PlusCode:
+    parent: Coordinate
+    fields:
+      code: string
+
+  ECI:
+    parent: Coordinate
+    fields:
+      x: float
+      y: float
+      z: float
+
+  ENU:
+    parent: Coordinate
+    fields:
+      e: float
+      n: float
+      u: float
+
+  Spherical:
+    parent: Coordinate
+    fields:
+      azimuth: float
+      elevation: float
+      range: float
+
+  # --- Local Positions ---
+  LocalPosition:
+    parent: Vector2D
+
+  # --- Lines ---
+  Line2D:
     parent: Geometry
     fields:
-      roll: float   # Radians
-      pitch: float  # Radians
-      yaw: float    # Radians
+      start: Vector2D
+      stop: Vector2D
 
-
-  # --- Time ---
-
-  Time:
-    parent: Reference
-    variants:
-      EPOCH: Epoch
-
-  Epoch:
-    parent: Time
+  Line3D:
+    parent: Geometry
     fields:
-      offset_s: int64  # Seconds from Unix epoch to this epoch's zero
+      start: Vector3D
+      stop: Vector3D
 
+  # --- Paths ---
+  Path2D:
+    parent: Geometry
+    fields:
+      points: list[Vector2D]
 
-  # --- Type ---
-  # Categories, classifications, factions, domains
+  Path3D:
+    parent: Geometry
+    fields:
+      points: list[Vector3D]
 
-  Type:
-    parent: Reference
+  LLAPath:
+    parent: Geometry
+    fields:
+      points: list[LLA]
+      loop: bool
+
+  # --- Polygons and Shapes ---
+  Polygon:
+    parent: Geometry
+    fields:
+      points: list[LLA]
+
+  GeoEllipse:
+    parent: Geometry
+    fields:
+      semi_major_axis: float
+      semi_minor_axis: float
+      orientation: float
+      height: float
+
+  GeoEllipsoid:
+    parent: Geometry
+    fields:
+      forward_axis: float
+      side_axis: float
+      up_axis: float
+
+  # --- Bounding Boxes ---
+  Box2D:
+    parent: Geometry
+    fields:
+      corners: list[Vector2D]
+
+  Box3D:
+    parent: Geometry
+    fields:
+      corners: list[Vector3D]
+
+  # --- Error / Uncertainty ---
+  ErrorEllipse:
+    parent: Geometry
+    fields:
+      probability: float
+      semi_major_axis: float
+      semi_minor_axis: float
+      orientation: float
+
+  CovarianceMatrix3x3:
+    parent: Structs
+    fields:
+      mxx: float
+      mxy: float
+      mxz: float
+      myy: float
+      myz: float
+      mzz: float
+
+  # --- Pose ---
+  Pose:
+    parent: Structs
+    fields:
+      position: LLA
+      attitude: Quaternion
+
+  # --- Range ---
+  FloatRange:
+    parent: Structs
+    fields:
+      lower: float
+      upper: float
+
+  UInt32Range:
+    parent: Structs
+    fields:
+      lower: uint32
+      upper: uint32
+
+  DoubleRange:
+    parent: Structs
+    fields:
+      min: float
+      max: float
+
+  DurationRange:
+    parent: Structs
+    fields:
+      min: Duration
+      max: Duration
+
+  # --- Transforms ---
+  RigidTransform:
+    parent: Structs
+    fields:
+      rotation: Quaternion
+      translation: Vector3D
+
+  # --- Compact Encodings ---
+  CompactPosition:
+    parent: Coordinate
+    fields:
+      lat: int32
+      lon: int32
+      alt: int32

@@ -1,65 +1,758 @@
 version: 1
 
+enums:
+  # --- Directive ---
+  TaskLevel:
+    - TECHNICAL = 0
+    - TACTICAL
+    - OPERATIONAL
+    - STRATEGIC
+
+  TaskSubject:
+    - MANEUVER = 0
+    - ISR
+    - EFFECTS
+    - SUPPORT
+    - EW
+
+  TaskStatus:
+    - CREATED = 0
+    - SCHEDULED_IN_MANAGER
+    - SENT
+    - MACHINE_RECEIPT
+    - ACK
+    - WILCO
+    - EXECUTING
+    - WAITING_FOR_UPDATE
+    - DONE_OK
+    - DONE_NOT_OK
+    - REPLACED
+    - CANCEL_REQUESTED
+    - COMPLETE_REQUESTED
+    - VERSION_REJECTED
+
+  TaskErrorCode:
+    - CANCELLED = 0
+    - REJECTED
+    - TIMEOUT
+    - FAILED
+
+  GimbalMode:
+    - STOW = 0
+    - MANUAL
+    - TRACK_ENTITY
+    - POINT_AT_POSITION
+    - POINT_AT_AZ_EL
+    - SCAN_PATTERN
+    - STABILIZED_HOLD
+    - RETURN_TO_CENTER
+
+  OODACycle:
+    - OBSERVE = 0
+    - ORIENT
+    - DECIDE
+    - ACT
+
+  CameraAction:
+    - TAKE_PHOTO = 0
+    - START_RECORDING
+    - STOP_RECORDING
+    - SET_ZOOM
+    - SET_FOCUS
+    - SET_EXPOSURE
+    - SET_WHITE_BALANCE
+    - SET_PALETTE
+    - TOGGLE_NIGHT_VISION
+
+  WaypointActionType:
+    - TRANSIT = 0
+    - TAKEOFF
+    - LAND
+    - LOITER
+    - HOLD
+    - RETURN_TO_LAUNCH
+    - PAYLOAD_ACTION
+    - SENSOR_ACTION
+    - CUSTOM
+
+  # --- Execution ---
+  OrbitPattern:
+    - CIRCLE = 0
+    - RACETRACK
+    - FIGURE_EIGHT
+
+  OrbitDirection:
+    - RIGHT = 0
+    - LEFT
+
+  SearchPattern:
+    - RANDOM = 0
+    - GRID
+    - SPIRAL
+    - SECTOR
+    - EXPANDING
+
+  MovementTechnique:
+    - TRAVELING = 0
+    - TRAVELING_OVERWATCH
+    - BOUNDING_OVERWATCH
+    - SUCCESSIVE_BOUNDS
+    - ALTERNATING_BOUNDS
+
+  MovementFormation:
+    - COLUMN = 0
+    - STAGGERED_COLUMN
+    - WEDGE
+    - LINE
+    - ECHELON
+    - VEE
+    - DIAMOND
+    - FILE
+    - BOX
+    - HERRINGBONE
+    - COIL
+
+  AttackType:
+    - DELIBERATE = 0
+    - HASTY
+    - SPOILING
+    - COUNTERATTACK
+    - RAID
+    - AMBUSH
+    - FEINT
+    - DEMONSTRATION
+
+  ApproachMethod:
+    - FRONTAL = 0
+    - FLANKING
+    - ENVELOPMENT
+    - TURNING_MOVEMENT
+    - INFILTRATION
+    - PENETRATION
+
+  # --- Constraint ---
+  WeaponsPosture:
+    - WEAPONS_FREE = 0
+    - WEAPONS_TIGHT
+    - WEAPONS_HOLD
+
+  EMCONLevel:
+    - FULL = 0
+    - LIMITED
+    - RESTRICTED
+    - SILENT
+
+  EscalationLevel:
+    - SHOW_OF_FORCE = 0
+    - WARNING_SHOT
+    - ENGAGE
+    - DESTROY
+
+  DeconflictionType:
+    - ALTITUDE = 0
+    - TEMPORAL
+    - LATERAL
+    - SPEED
+    - ROUTE
+    - FREQUENCY
+
+  AbortType:
+    - BATTERY_BINGO = 0
+    - FUEL_BINGO
+    - COMMS_LOST
+    - DAMAGE_SUSTAINED
+    - WEATHER_BELOW
+    - MISSION_TIMEOUT
+    - HOSTILE_CONTACT
+    - GEOFENCE_BREACH
+    - MANUAL_ABORT
+    - EQUIPMENT_FAILURE
+
+  FailsafeAction:
+    - NONE = 0
+    - RTL
+    - LAND
+    - LOITER
+    - DESCEND
+    - TERMINATE
+    - CONTINUE
+    - SMART_RTL
+    - BRAKE
+    - PARACHUTE
+    - HOLD_POSITION
+
+  TriggerType:
+    - TIME_REACHED = 0
+    - POSITION_REACHED
+    - EVENT_OCCURRED
+    - THRESHOLD_EXCEEDED
+    - CONDITION_MET
+    - ORDER_RECEIVED
+    - ENEMY_ACTION
+    - FRIENDLY_ACTION
+
+  # --- Interface ---
+  InterfaceType:
+    - PWM = 0
+    - GPIO
+    - CAN
+    - SERIAL
+    - RC
+
 structs:
-  # Control: directives and processes
+  # Control: scale-invariant binding of agents
+  # to objectives through structured decomposition
   Control:
     variants:
       DIRECTIVE: Directive
-      PROCESS: Process
-
+      EXECUTION: Execution
+      CONSTRAINT: Constraint
+      INTERFACE: Interface
 
   # --- Directive ---
-  # Intentions, directives, desired objective,
-  # requested outcome, or prescribed behavior
-
   Directive:
     parent: Control
     variants:
       INTENT: Intent
-      INSTRUCTION: Instruction
       OBJECTIVE: Objective
       TASK: Task
+      INSTRUCTION: Instruction
+      COMMAND: Command
 
-  # A self-held commitment or plan to act, "X must be done"
   Intent:
     parent: Directive
+    fields:
+      purpose: optional string
+      key_tasks: optional list[string]
+      end_state: optional string
 
-  # A directive instructing specific action
-  Instruction:
-    parent: Directive
-
-  # A desired future condition, effect, or end-state
   Objective:
     parent: Directive
+    fields:
+      conditions: optional list[string]
+      target_entity_id: optional string
+      target_position: optional LLA
 
-  # An intent-based instruction with intent through actions to an objective
   Task:
     parent: Directive
+    fields:
+      physical_domain: optional PhysicalDomain
+      combat_domain: optional CombatDomain
+      operational_sphere: optional OpDomain
+      level: optional TaskLevel
+      subject: optional TaskSubject
+      priority: optional Priority
+      specification: optional any
+      assignee_id: optional string
+      parent_task_id: optional string
+      description: optional string
+      scheduled_at: optional Timestamp
+      initial_entity_ids: optional list[string]
+      status: optional TaskStatus
+      error_code: optional TaskErrorCode
+    variants:
+      MANEUVER: ManeuverTask
+      ISR: ISRTask
+      EFFECTS: EffectsTask
+      SUPPORT: SupportTask
+      EW: EWTask
 
+  ManeuverTask:
+    parent: Task
+    variants:
+      MOVE: MoveTask
+      PATROL: PatrolTask
+      HOLD: HoldTask
+      TRANSIT: TransitTask
+      MARSHAL: MarshalTask
+      ESCORT: EscortTask
+      SET_LAUNCH_ROUTE: SetLaunchRouteTask
 
-  # --- Process ---
-  # Cause-side, intentional or directed activity over time
+  MoveTask:
+    parent: ManeuverTask
 
-  Process:
+  PatrolTask:
+    parent: ManeuverTask
+
+  HoldTask:
+    parent: ManeuverTask
+
+  TransitTask:
+    parent: ManeuverTask
+
+  MarshalTask:
+    parent: ManeuverTask
+
+  EscortTask:
+    parent: ManeuverTask
+
+  SetLaunchRouteTask:
+    parent: ManeuverTask
+
+  ISRTask:
+    parent: Task
+    variants:
+      SEARCH: SearchTask
+      OBSERVE: ObserveTask
+      SURVEY: SurveyTask
+      INVESTIGATE: InvestigateTask
+      VISUAL_ID: VisualIdTask
+      SHADOW: ShadowTask
+      MONITOR: MonitorTask
+      SCAN: ScanTask
+      AREA_SEARCH: AreaSearchTask
+      VOLUME_SEARCH: VolumeSearchTask
+      IMPROVE_TRACK: ImproveTrackQualityTask
+      MAP: MapTask
+      BDA: BDATask
+
+  SearchTask:
+    parent: ISRTask
+
+  ObserveTask:
+    parent: ISRTask
+
+  SurveyTask:
+    parent: ISRTask
+
+  InvestigateTask:
+    parent: ISRTask
+
+  VisualIdTask:
+    parent: ISRTask
+
+  ShadowTask:
+    parent: ISRTask
+
+  MonitorTask:
+    parent: ISRTask
+
+  ScanTask:
+    parent: ISRTask
+
+  AreaSearchTask:
+    parent: ISRTask
+
+  VolumeSearchTask:
+    parent: ISRTask
+
+  ImproveTrackQualityTask:
+    parent: ISRTask
+
+  MapTask:
+    parent: ISRTask
+
+  BDATask:
+    parent: ISRTask
+
+  EffectsTask:
+    parent: Task
+    variants:
+      STRIKE: StrikeTask
+      SMACK: SmackTask
+      FIRE_MISSION: FireMissionTask
+      RELEASE_PAYLOAD: ReleasePayloadTask
+      CAS: CloseAirSupportTask
+
+  StrikeTask:
+    parent: EffectsTask
+
+  SmackTask:
+    parent: EffectsTask
+
+  FireMissionTask:
+    parent: EffectsTask
+
+  ReleasePayloadTask:
+    parent: EffectsTask
+
+  CloseAirSupportTask:
+    parent: EffectsTask
+
+  SupportTask:
+    parent: Task
+    variants:
+      RELAY: RelayTask
+      RESUPPLY: ResupplyMission
+      MEDEVAC: MEDEVACMission
+
+  RelayTask:
+    parent: SupportTask
+
+  ResupplyMission:
+    parent: SupportTask
+
+  MEDEVACMission:
+    parent: SupportTask
+
+  EWTask:
+    parent: Task
+    variants:
+      EW_ACTION: EWActionTask
+
+  EWActionTask:
+    parent: EWTask
+
+  Instruction:
+    parent: Directive
+    fields:
+      task_id: optional string
+      procedure: optional string
+      execution_parameters: optional any
+      control_measures: optional list[string]
+      start_condition_id: optional string
+      termination_condition_id: optional string
+    variants:
+      MOVEMENT: MovementInstruction
+      COLLECTION: CollectionInstruction
+      EFFECTS: EffectsInstruction
+      SUPPORT: SupportInstruction
+      EW: EWInstruction
+
+  MovementInstruction:
+    parent: Instruction
+
+  CollectionInstruction:
+    parent: Instruction
+
+  EffectsInstruction:
+    parent: Instruction
+
+  SupportInstruction:
+    parent: Instruction
+
+  EWInstruction:
+    parent: Instruction
+
+  Command:
+    parent: Directive
+    variants:
+      FLIGHT: FlightCommand
+      NAVIGATION: NavigationCommand
+      MODE: ModeCommand
+      PARAMETER: ParameterCommand
+      ACTUATOR: ActuatorCommand
+      FIRE_SUPPORT: FireSupportCommand
+      EW_COMMAND: EWCommand
+      COMMS_COMMAND: CommunicationCommand
+      EMERGENCY: EmergencyCommand
+      GIMBAL: GimbalCommand
+      CAMERA: CameraCommand
+
+  FlightCommand:
+    parent: Command
+    variants:
+      ARM: ArmCommand
+      DISARM: DisarmCommand
+      TAKEOFF: TakeoffCommand
+      LAND: LandCommand
+      RTL: ReturnToLaunchCommand
+      SET_TAKEOFF_ALTITUDE: SetTakeoffAltitudeCommand
+
+  ArmCommand:
+    parent: FlightCommand
+
+  DisarmCommand:
+    parent: FlightCommand
+
+  TakeoffCommand:
+    parent: FlightCommand
+
+  LandCommand:
+    parent: FlightCommand
+
+  ReturnToLaunchCommand:
+    parent: FlightCommand
+
+  SetTakeoffAltitudeCommand:
+    parent: FlightCommand
+    fields:
+      target_altitude_m: float
+
+  NavigationCommand:
+    parent: Command
+    variants:
+      GO_TO: GoToCommand
+      SET_WAYPOINT: SetWaypointCommand
+      SELECT_MISSION: SelectMissionCommand
+
+  GoToCommand:
+    parent: NavigationCommand
+    fields:
+      destination: LLA
+      target_yaw_deg: optional float
+
+  SetWaypointCommand:
+    parent: NavigationCommand
+    fields:
+      sequence_index: uint32
+      waypoint_action: WaypointActionType
+      destination: LLA
+      param_1: optional int
+      param_2: optional int
+      param_3: optional int
+      flags: optional int
+
+  SelectMissionCommand:
+    parent: NavigationCommand
+    fields:
+      mission_sequence_index: uint32
+
+  ModeCommand:
+    parent: Command
+    variants:
+      SET_MODE: SetModeCommand
+
+  SetModeCommand:
+    parent: ModeCommand
+    fields:
+      mode_identifier: string
+      enabled: bool
+
+  ParameterCommand:
+    parent: Command
+
+  ActuatorCommand:
+    parent: Command
+
+  FireSupportCommand:
+    parent: Command
+
+  EWCommand:
+    parent: Command
+
+  CommunicationCommand:
+    parent: Command
+
+  EmergencyCommand:
+    parent: Command
+
+  GimbalCommand:
+    parent: Command
+    fields:
+      mode: optional GimbalMode
+
+  CameraCommand:
+    parent: Command
+    fields:
+      action: optional CameraAction
+
+  # --- Execution ---
+  Execution:
     parent: Control
     variants:
       PLAN: Plan
-      METHOD: Method
+      SEQUENCE: Sequence
       ACTION: Action
-      INTERFACE: Interface
 
-  # What actions a task requires to accomplish an objective
   Plan:
-    parent: Process
+    parent: Execution
+    fields:
+      task_id: optional string
+      phases: optional list[string]
+      instruction_ids: optional list[string]
+      assignment_ids: optional list[string]
+      timing: optional list[TimeWindow]
+      branch_plan_ids: optional list[string]
+      sequel_plan_ids: optional list[string]
+      coordination_measure_ids: optional list[string]
+    variants:
+      MISSION_PLAN: MissionPlan
+      ROUTE_PLAN: RoutePlan
+      FIRE_SUPPORT_PLAN: FireSupportPlan
+      COMMUNICATION_PLAN: CommunicationPlan
+      LOGISTICS_PLAN: LogisticsPlan
+      BRANCH_PLAN: BranchPlan
+      SEQUEL_PLAN: SequelPlan
 
-  # How an action is decomposed into steps
-  Method:
-    parent: Process
+  MissionPlan:
+    parent: Plan
 
-  # An intentional act, "the act of doing X"
+  RoutePlan:
+    parent: Plan
+    fields:
+      route: optional LLAPath
+
+  FireSupportPlan:
+    parent: Plan
+
+  CommunicationPlan:
+    parent: Plan
+
+  LogisticsPlan:
+    parent: Plan
+
+  BranchPlan:
+    parent: Plan
+
+  SequelPlan:
+    parent: Plan
+
+  Sequence:
+    parent: Execution
+    fields:
+      instruction_id: optional string
+      command_ids: optional list[string]
+      trigger_condition_ids: optional list[string]
+      transition_condition_ids: optional list[string]
+      timing: optional list[TimeWindow]
+      path: optional LLAPath
+    variants:
+      ROUTE: RouteSequence
+      SEARCH: SearchSequence
+      ORBIT: OrbitSequence
+      ATTACK: AttackSequence
+      BREACH: BreachSequence
+
+  RouteSequence:
+    parent: Sequence
+
+  SearchSequence:
+    parent: Sequence
+    fields:
+      pattern: optional SearchPattern
+
+  OrbitSequence:
+    parent: Sequence
+    fields:
+      pattern: optional OrbitPattern
+      direction: optional OrbitDirection
+
+  AttackSequence:
+    parent: Sequence
+    fields:
+      attack_type: optional AttackType
+      approach_method: optional ApproachMethod
+
+  BreachSequence:
+    parent: Sequence
+
   Action:
-    parent: Process
+    parent: Execution
+    fields:
+      command_id: optional string
+      description: optional string
+      executor_id: optional string
+      result: optional string
 
-  # How an action is translated at lowest layer
+  # --- Constraint ---
+  Constraint:
+    parent: Control
+    variants:
+      RESTRICTION: Restriction
+      LIMITATION: Limitation
+      CONDITION: Condition
+
+  Restriction:
+    parent: Constraint
+    variants:
+      ROE: RulesOfEngagement
+      EMCON: EMCONPolicy
+
+  RulesOfEngagement:
+    parent: Restriction
+    fields:
+      weapons_posture: optional WeaponsPosture
+      escalation_level: optional EscalationLevel
+
+  EMCONPolicy:
+    parent: Restriction
+    fields:
+      emcon_level: optional EMCONLevel
+
+  Limitation:
+    parent: Constraint
+    variants:
+      DECONFLICTION: DeconflictionRule
+      AIRSPACE: AirspaceControlOrder
+      WEATHER_LIMIT: WeatherLimits
+      FLIGHT_RESTRICTION: FlightRestriction
+
+  DeconflictionRule:
+    parent: Limitation
+    fields:
+      deconfliction_type: optional DeconflictionType
+
+  AirspaceControlOrder:
+    parent: Limitation
+
+  WeatherLimits:
+    parent: Limitation
+
+  FlightRestriction:
+    parent: Limitation
+
+  Condition:
+    parent: Constraint
+    variants:
+      ABORT: AbortCriteria
+      TRIGGER: TriggerCondition
+      CONDITIONAL_EXECUTION: ConditionalExecution
+
+  AbortCriteria:
+    parent: Condition
+    fields:
+      abort_type: optional AbortType
+      automatic: optional bool
+      failsafe_action: optional FailsafeAction
+
+  TriggerCondition:
+    parent: Condition
+    fields:
+      trigger_type: optional TriggerType
+      parameters: optional any
+      evaluation_method: optional string
+
+  ConditionalExecution:
+    parent: Condition
+    fields:
+      condition_id: optional string
+      if_true_id: optional string
+      if_false_id: optional string
+
+  # --- Interface ---
   Interface:
-    parent: Process
+    parent: Control
+    variants:
+      PWM: PWMInterface
+      GPIO: GPIOInterface
+      CAN: CANInterface
+      SERIAL: SerialInterface
+      RC: RCInterface
+
+  PWMInterface:
+    parent: Interface
+    fields:
+      channel: optional uint16
+      min_us: optional uint16
+      center_us: optional uint16
+      max_us: optional uint16
+      function: optional string
+
+  GPIOInterface:
+    parent: Interface
+    fields:
+      pin: optional string
+      mode: optional string
+
+  CANInterface:
+    parent: Interface
+    fields:
+      arbitration_id: optional uint32
+      data_length: optional uint8
+      bus_address: optional string
+
+  SerialInterface:
+    parent: Interface
+    fields:
+      baud: optional uint32
+      parity: optional string
+      stop_bits: optional uint8
+      data_bits: optional uint8
+      command_bytes: optional bytes
+
+  RCInterface:
+    parent: Interface
+    fields:
+      channels: optional list[uint16]
+      mapping: optional list[string]

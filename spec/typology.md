@@ -1000,13 +1000,6 @@ RigidTransform [facets]:
 - rotation (Quaternion)
 - translation (Vector3D)
 
-### Content Address
-
-ContentAddress [facets]:
-- hash (SHA-256 bytes)
-- size bytes
-- MIME type
-
 ### Compact Encodings
 
 CompactPosition [facets]:
@@ -1070,22 +1063,19 @@ CompactPosition [facets]:
 
 ## Directive
 
+[variants] by kind:
+- INTENT: Intent
+- OBJECTIVE: Objective
+- TASK: Task
+- INSTRUCTION: Instruction
+- COMMAND: Command
+
 ### Intent
 
 [facets]:
 - purpose (why)
 - key tasks (what must happen)
 - end state (what success looks like)
-
-### Instruction
-
-[variants] by form:
-- OPORD: OPORD
-- WARNO: WarningOrder
-- FRAGO: FragmentaryOrder
-- GENERAL_ORDER: GeneralOrder
-- SOP: StandingOperatingProcedure
-- STANDING_ORDER: StandingOrder
 
 ### Objective
 
@@ -1096,44 +1086,75 @@ CompactPosition [facets]:
 ### Task
 
 A Task has intent, actions, and an objective. It is not
-a mode switch or a single command. "Fly to area X and loiter
-for 30 minutes" is a task. "Take off" is a Command.
+a mode switch or a single command. "Move to area X, hold
+presence for 30 minutes, and observe" is a task. "Take off"
+is a Command.
 
-[variants] by purpose:
+[enum] TaskLevel:
+- Technical
+- Tactical
+- Operational
+- Strategic
+
+[enum] TaskSubject:
+- Maneuver
+- ISR
+- Effects
+- Support
+- EW
+
+[variants] by subject:
+- MANEUVER: ManeuverTask
+- ISR: ISRTask
+- EFFECTS: EffectsTask
+- SUPPORT: SupportTask
+- EW: EWTask
+
+ManeuverTask [variants] by purpose:
 - MOVE: MoveTask
 - PATROL: PatrolTask
+- HOLD: HoldTask
+- TRANSIT: TransitTask
+- MARSHAL: MarshalTask
+- ESCORT: EscortTask
+- SET_LAUNCH_ROUTE: SetLaunchRouteTask
+
+ISRTask [variants] by purpose:
 - SEARCH: SearchTask
 - OBSERVE: ObserveTask
 - SURVEY: SurveyTask
-- HOLD: HoldTask
-- RELAY: RelayTask
 - INVESTIGATE: InvestigateTask
 - VISUAL_ID: VisualIdTask
 - SHADOW: ShadowTask
 - MONITOR: MonitorTask
 - SCAN: ScanTask
-- BDA: BDATask
-- GIMBAL_POINT: GimbalPointTask
-- GIMBAL_ZOOM: GimbalZoomTask
-- TRANSIT: TransitTask
-- MARSHAL: MarshalTask
-- STRIKE: StrikeTask
-- SMACK: SmackTask
-- RELEASE_PAYLOAD: ReleasePayloadTask
 - AREA_SEARCH: AreaSearchTask
 - VOLUME_SEARCH: VolumeSearchTask
 - IMPROVE_TRACK: ImproveTrackQualityTask
 - MAP: MapTask
-- LOITER: LoiterTask
-- SET_LAUNCH_ROUTE: SetLaunchRouteTask
+- BDA: BDATask
+
+EffectsTask [variants] by purpose:
+- STRIKE: StrikeTask
+- SMACK: SmackTask
 - FIRE_MISSION: FireMissionTask
-- RESUPPLY: ResupplyMission
-- MEDEVAC: MEDEVACMission
-- EW_ACTION: EWActionTask
-- ESCORT: EscortTask
+- RELEASE_PAYLOAD: ReleasePayloadTask
 - CAS: CloseAirSupportTask
 
+SupportTask [variants] by purpose:
+- RELAY: RelayTask
+- RESUPPLY: ResupplyMission
+- MEDEVAC: MEDEVACMission
+
+EWTask [variants] by purpose:
+- EW_ACTION: EWActionTask
+
 [facets] all Tasks:
+- physical domain (PhysicalDomain)
+- combat domain (CombatDomain, optional; absent for non-combat tasks)
+- operational sphere (OpDomain)
+- level (TaskLevel)
+- subject (TaskSubject)
 - priority
 - specification (polymorphic payload — task-type specific data)
 - relations (assignee, parent task)
@@ -1164,78 +1185,139 @@ for 30 minutes" is a task. "Take off" is a Command.
 - Failed
 
 Not tasks:
-- Takeoff, Land, RTL → Commands
-- Orbit, loiter patterns → Methods
+- Takeoff, Land, RTL, Arm, Disarm, SetMode → Commands
+- Gimbal point / zoom / stow / track / recenter → GimbalCommand or CameraCommand
+- Orbit, loiter patterns → Sequences
 - Track → method of observation, or sub-type of Observe
 
-### Constraint
+### Instruction
 
-[variants] by domain:
-- ROE: RulesOfEngagement
-- EMCON: EMCONPolicy
-- DECONFLICTION: DeconflictionRule
-- AIRSPACE: AirspaceControlOrder
-- WEATHER_LIMIT: WeatherLimits
-- FLIGHT_RESTRICTION: FlightRestriction
-- ABORT: AbortCriteria
+[variants] by subject:
+- MOVEMENT: MovementInstruction
+- COLLECTION: CollectionInstruction
+- EFFECTS: EffectsInstruction
+- SUPPORT: SupportInstruction
+- EW: EWInstruction
 
-[enum] WeaponsPosture:
-- WeaponsFree
-- WeaponsTight
-- WeaponsHold
+[facets] all Instructions:
+- task reference (optional)
+- prescribed method / procedure
+- execution parameters
+- control measures
+- trigger or start condition
+- termination condition
 
-[enum] EMCONLevel:
-- Full
-- Limited
-- Restricted
-- Silent
+### Command
+Directs or controls immediately.
 
-[enum] EscalationLevel:
-- ShowOfForce
-- WarningShot
-- Engage
-- Destroy
+[variants] by target:
+- FLIGHT: FlightCommand
+- NAVIGATION: NavigationCommand
+- MODE: ModeCommand
+- PARAMETER: ParameterCommand
+- ACTUATOR: ActuatorCommand
+- FIRE_SUPPORT: FireSupportCommand — immediate fire control only (adjust, cease, check); call-for-fire initiates FireMissionTask
+- EW_COMMAND: EWCommand — immediate start/stop only (cease jam, start emission); sustained operations are EWActionTask
+- COMMS_COMMAND: CommunicationCommand
+- EMERGENCY: EmergencyCommand
+- GIMBAL: GimbalCommand
+- CAMERA: CameraCommand
 
-[enum] DeconflictionType:
-- Altitude
-- Temporal
-- Lateral
-- Speed
-- Route
-- Frequency
+[enum] GimbalMode:
+- Stow
+- Manual
+- TrackEntity
+- PointAtPosition
+- PointAtAzEl
+- ScanPattern
+- StabilizedHold
+- ReturnToCenter
 
-[enum] AbortType:
-- BatteryBingo
-- FuelBingo
-- CommsLost
-- DamageSustained
-- WeatherBelow
-- MissionTimeout
-- HostileContact
-- GeofenceBreach
-- ManualAbort
-- EquipmentFailure
+[enum] OODACycle:
+- Observe
+- Orient
+- Decide
+- Act
 
-[enum] FailsafeAction:
-- None
-- RTL
+[enum] CameraAction:
+- TakePhoto
+- StartRecording
+- StopRecording
+- SetZoom
+- SetFocus
+- SetExposure
+- SetWhiteBalance
+- SetPalette
+- ToggleNightVision
+
+FlightCommand [variants] by action:
+- ARM: ArmCommand
+- DISARM: DisarmCommand
+- TAKEOFF: TakeoffCommand
+- LAND: LandCommand
+- RTL: ReturnToLaunchCommand
+- SET_TAKEOFF_ALTITUDE: SetTakeoffAltitudeCommand
+
+SetTakeoffAltitudeCommand [facets]:
+- target altitude
+
+NavigationCommand [variants] by action:
+- GO_TO: GoToCommand
+- SET_WAYPOINT: SetWaypointCommand
+- SELECT_MISSION: SelectMissionCommand
+
+[enum] WaypointActionType:
+- Transit
+- Takeoff
 - Land
 - Loiter
-- Descend
-- Terminate
-- Continue
-- SmartRTL
-- Brake
-- Parachute
-- HoldPosition
+- Hold
+- ReturnToLaunch
+- PayloadAction
+- SensorAction
+- Custom
 
-## Process
+GoToCommand [facets]:
+- destination position
+- target altitude
+- target yaw
+
+SetWaypointCommand [facets]:
+- sequence index
+- waypoint action (WaypointActionType)
+- destination position
+- target altitude
+- action parameters
+- flags
+
+SelectMissionCommand [facets]:
+- mission sequence index
+
+ModeCommand [variants] by action:
+- SET_MODE: SetModeCommand
+
+SetModeCommand [facets]:
+- mode identifier
+- enabled state
+
+## Execution
+
+[variants] by kind:
+- PLAN: Plan
+- SEQUENCE: Sequence
+- ACTION: Action
 
 ### Plan
 
-[facets]:
-- ordered actions
-- task reference (what directive this fulfills)
+Plan [facets]:
+- fulfills task reference
+- phases
+- ordered instructions
+- assignments
+- timing / trigger structure
+- branches and sequels
+- coordination / deconfliction measures
+- go / no-go or abort criteria
 
 [variants] by scope:
 - MISSION_PLAN: MissionPlan
@@ -1255,14 +1337,23 @@ MissionPlan [facets]:
 RoutePlan [facets]:
 - route (ordered path segments)
 
-### Method
+### Sequence
 
-[variants] by type:
-- ORBIT: OrbitMethod
-- SEARCH_PATTERN: SearchPattern
-- MOVEMENT_TECHNIQUE: MovementTechnique
-- ATTACK_METHOD: AttackMethod
-- BREACH_METHOD: BreachMethod
+Sequence [facets]:
+- implements instruction reference
+- ordered commands
+- trigger conditions
+- transition conditions
+- timing / dwell / duration
+- path / waypoint chain
+- sensor, payload, and mode changes bound to steps
+
+[variants] by procedure:
+- ROUTE: RouteSequence
+- SEARCH: SearchSequence
+- ORBIT: OrbitSequence
+- ATTACK: AttackSequence
+- BREACH: BreachSequence
 
 [enum] OrbitPattern:
 - Circle
@@ -1320,12 +1411,120 @@ RoutePlan [facets]:
 
 ### Action
 
-[facets]:
+Action [facets]:
+- resolves command reference
 - description
+- executor
+- resulting state change or effect
 - status (LifecyclePhase)
 
-### Interface
-Physical actuation output, lowest layer.
+## Constraint
+
+[variants] by kind:
+- RESTRICTION: Restriction
+- LIMITATION: Limitation
+- CONDITION: Condition
+
+### Restriction
+
+[variants] by domain:
+- ROE: RulesOfEngagement
+- EMCON: EMCONPolicy
+
+[enum] WeaponsPosture:
+- WeaponsFree
+- WeaponsTight
+- WeaponsHold
+
+[enum] EMCONLevel:
+- Full
+- Limited
+- Restricted
+- Silent
+
+[enum] EscalationLevel:
+- ShowOfForce
+- WarningShot
+- Engage
+- Destroy
+
+### Limitation
+
+[variants] by domain:
+- DECONFLICTION: DeconflictionRule
+- AIRSPACE: AirspaceControlOrder
+- WEATHER_LIMIT: WeatherLimits
+- FLIGHT_RESTRICTION: FlightRestriction
+
+[enum] DeconflictionType:
+- Altitude
+- Temporal
+- Lateral
+- Speed
+- Route
+- Frequency
+
+### Condition
+
+[variants] by purpose:
+- ABORT: AbortCriteria
+- TRIGGER: TriggerCondition
+- CONDITIONAL_EXECUTION: ConditionalExecution
+
+[enum] AbortType:
+- BatteryBingo
+- FuelBingo
+- CommsLost
+- DamageSustained
+- WeatherBelow
+- MissionTimeout
+- HostileContact
+- GeofenceBreach
+- ManualAbort
+- EquipmentFailure
+
+[enum] FailsafeAction:
+- None
+- RTL
+- Land
+- Loiter
+- Descend
+- Terminate
+- Continue
+- SmartRTL
+- Brake
+- Parachute
+- HoldPosition
+
+[enum] TriggerType:
+- TimeReached
+- PositionReached
+- EventOccurred
+- ThresholdExceeded
+- ConditionMet
+- OrderReceived
+- EnemyAction
+- FriendlyAction
+
+TriggerCondition [facets]:
+- trigger type
+- parameters
+- evaluation method
+
+ConditionalExecution [facets]:
+- condition
+- if true
+- if false (optional)
+
+## Interface
+The translation of an action into the terms of the executing layer.
+
+[variants] by type:
+- PWM: PWMInterface
+- GPIO: GPIOInterface
+- CAN: CANInterface
+- SERIAL: SerialInterface
+- RC: RCInterface
 
 [enum] InterfaceType:
 - PWM — servo/ESC
@@ -1334,9 +1533,28 @@ Physical actuation output, lowest layer.
 - Serial — serial actuator command
 - RC — RC channel override
 
-[facets]:
-- channel/address
-- output type
+PWMInterface [facets]:
+- channel
+- min, center, max range
+- function
+
+GPIOInterface [facets]:
+- pin
+- polarity / mode
+
+CANInterface [facets]:
+- arbitration id
+- data length
+- bus address
+
+SerialInterface [facets]:
+- baud, parity, stop bits, data bits
+- command bytes
+
+RCInterface [facets]:
+- channels
+- mapping
+- range / calibration
 
 ---
 
@@ -1545,6 +1763,7 @@ VideoStream [facets]:
 Directs or controls.
 
 [variants] by target:
+- FLIGHT: FlightCommand
 - NAVIGATION: NavigationCommand
 - MODE: ModeCommand
 - PARAMETER: ParameterCommand
@@ -1566,6 +1785,12 @@ Directs or controls.
 - StabilizedHold
 - ReturnToCenter
 
+[enum] OODACycle:
+- Observe
+- Orient
+- Decide
+- Act
+
 [enum] CameraAction:
 - TakePhoto
 - StartRecording
@@ -1577,31 +1802,74 @@ Directs or controls.
 - SetPalette
 - ToggleNightVision
 
+FlightCommand [variants] by action:
+- ARM: ArmCommand
+- DISARM: DisarmCommand
+- TAKEOFF: TakeoffCommand
+- LAND: LandCommand
+- RTL: ReturnToLaunchCommand
+- SET_TAKEOFF_ALTITUDE: SetTakeoffAltitudeCommand
+
+SetTakeoffAltitudeCommand [facets]:
+- target altitude
+
+NavigationCommand [variants] by action:
+- GO_TO: GoToCommand
+- SET_WAYPOINT: SetWaypointCommand
+- SELECT_MISSION: SelectMissionCommand
+
+[enum] WaypointActionType:
+- Transit
+- Takeoff
+- Land
+- Loiter
+- Hold
+- ReturnToLaunch
+- PayloadAction
+- SensorAction
+- Custom
+
+GoToCommand [facets]:
+- destination position
+- target altitude
+- target yaw
+
+SetWaypointCommand [facets]:
+- sequence index
+- waypoint action (WaypointActionType)
+- destination position
+- target altitude
+- action parameters
+- flags
+
+SelectMissionCommand [facets]:
+- mission sequence index
+
+ModeCommand [variants] by action:
+- SET_MODE: SetModeCommand
+
+SetModeCommand [facets]:
+- mode identifier
+- enabled state
+
 ### Telemetry
 Reports the sender's own internal state.
 Composes State data by reference — does not flatten fields.
 
 [variants] by scope:
 - VEHICLE: VehicleTelemetry
-- HIGH_LATENCY: HighLatencyTelemetry — meta-telemetry for DDIL conditions
 
 VehicleTelemetry [facets]:
-- location (Location)
-- kinematic state (Kinematic)
-- battery (Battery)
-- mission progress (MissionProgress)
-
-HighLatencyTelemetry [facets]:
-- position (compact)
-- heading, target heading
-- speed (air and ground)
-- altitude, target altitude, climb rate
-- battery remaining percent
-- temperature
-- current waypoint
-- failure flags (bitmask)
-- wind heading
-- position uncertainty (ePH, ePV)
+- location (Location) — position, altitude, fix quality, satellite count, uncertainty, home/global validity
+- navigation state (Navigation) — nav mode, source selection, fix source, validity, GNSS diagnostic statistics
+- kinematic state (Kinematic) — attitude, angular rates, ground speed, ground course, airspeed, climb rate, heading, throttle
+- sensor state (Sensor) — IMU sample, sensor readiness, calibration / availability state
+- input state (Input) — RC channels, receiver config, channel map, mode ranges
+- resource state (Battery, Fuel, Consumable as applicable) — battery / analog power telemetry, remaining, consumed, temperature
+- parameters (Robot Parameters) — flight mode, armed, in-air, active modes, override active, failsafe state
+- internal state (Internal) — FC connectivity, CPU load, cycle time, software / board / build identity
+- condition (Condition) — sensor readiness, armable status, fault / warning indicators
+- mission progress (MissionProgress) — current waypoint, total waypoints, mission validity
 
 ### Observation
 Reports external objects, events, or environment.
@@ -1893,6 +2161,70 @@ LocationUncertainty [facets]:
 - Altimeter
 - Fused
 
+#### Navigation
+
+Navigation [facets]:
+- navigation mode
+- fix type
+- global position valid
+- home position valid
+- position source
+- heading source
+- altitude source
+- GNSS diagnostic statistics
+
+[enum] NavMode:
+- Manual
+- Waypoint
+- RTL
+- Loiter
+- Guided
+- Land
+- Takeoff
+- Circle
+- Drift
+- PositionHold
+- Brake
+- Throw
+- ADSB
+- SmartRTL
+- FlowHold
+- Follow
+- Zigzag
+- SystemID
+- AutoRotate
+
+#### Sensor
+
+[variants] by kind:
+- IMU: IMUState
+- READINESS: SensorReadiness
+
+IMUState [facets]:
+- acceleration vector
+- angular rate vector
+- magnetic field vector
+- temperature (optional)
+- timestamp (optional)
+- frame (optional)
+
+SensorReadiness [facets]:
+- gyro ready
+- accel ready
+- mag ready
+- local position ready
+- global position ready
+- home position ready
+- armable
+
+#### Input
+
+Input [facets]:
+- RC channel values
+- receiver calibration / min / max / center
+- channel mapping
+- mode ranges
+
 #### Resources
 
 [variants] by resource type:
@@ -1907,8 +2239,11 @@ Battery [facets]:
 - remaining capacity
 - temperature (optional)
 - cell voltages (optional list)
+- cell count (optional)
 - power watts
-- consumed (mAh, mWh)
+- consumed charge / energy
+- source identifier (optional)
+- link quality proxy / RSSI (optional)
 
 Fuel [facets]:
 - volume (or gallons)
@@ -2021,10 +2356,35 @@ Internal [facets]:
 MissionProgress [facets]:
 - current waypoint index
 - total waypoints
+- mission valid
 
 ### Event
 A discrete occurrence — something that happened at a point in time, whether planned or not.
 Peer of State and Intel under Information. Not a sub-class of State.
+
+[variants] by subject:
+- FLIGHT: FlightEvent
+- MISSION: MissionEvent
+
+FlightEvent [variants] by transition:
+- ARMED: ArmedEvent
+- DISARMED: DisarmedEvent
+- TAKEOFF_DETECTED: TakeoffDetectedEvent
+- LANDED: LandedEvent
+- FAILSAFE_CHANGED: FailsafeChangedEvent
+
+TakeoffDetectedEvent [facets]:
+- altitude
+
+FailsafeChangedEvent [facets]:
+- failsafe state
+
+MissionEvent [variants] by outcome:
+- ABORTED: MissionAbortedEvent
+- COMPLETED: MissionCompletedEvent
+
+MissionAbortedEvent [facets]:
+- reason
 
 [enum] EntityLifecycleEvent:
 - FirstSeen
