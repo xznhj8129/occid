@@ -1,0 +1,350 @@
+version: 1
+
+enums:
+  # --- Site ---
+  GeofenceAction:
+    - KEEP_IN = 0
+    - KEEP_OUT
+    - WARN
+    - RTL
+    - LAND
+    - LOITER
+    - REPORT
+    - DENY
+    - BRAKE
+    - FENCE
+
+  ControlAreaType:
+    - KEEP_IN_ZONE = 0
+    - KEEP_OUT_ZONE
+    - DITCH_ZONE
+    - LOITER_ZONE
+
+  GeoType:
+    - GENERAL = 0
+    - HAZARD
+    - EMERGENCY
+    - ENGAGEMENT_ZONE
+    - CONTROL_AREA
+    - BULLSEYE
+    - ACM
+
+  AirspaceClass:
+    - A = 0
+    - B
+    - C
+    - D
+    - E
+    - F
+    - G
+
+  AirspaceType:
+    - CONTROLLED = 0
+    - RESTRICTED
+    - PROHIBITED
+    - DANGER
+    - ALERT
+    - MOA
+    - WARNING
+    - TFR
+    - CTR
+    - TMA
+    - FIR
+    - UIR
+    - ATZ
+    - ADIZ
+
+  AirspaceStatus:
+    - ACTIVE = 0
+    - INACTIVE
+    - SCHEDULED
+    - HOT
+    - COLD
+
+  RallyPointType:
+    - OBJECTIVE_RALLY_POINT = 0
+    - INITIAL_RALLY_POINT
+    - ACTION_POINT
+    - LINKUP_POINT
+    - ALTERNATE_RALLY_POINT
+
+  SupplyPointType:
+    - DEPOT = 0
+    - ASP
+    - FARP
+    - CACHE
+    - AID_STATION
+    - MAINTENANCE_POINT
+    - DISTRIBUTION_POINT
+
+  CommandPostType:
+    - MAIN = 0
+    - TACTICAL
+    - ALTERNATE
+    - REAR
+
+  FSCMType:
+    - FSCL = 0
+    - CFL
+    - NFL
+    - RFL
+    - FFA
+    - NFA
+    - RFA
+    - ACA
+
+  CorridorDirection:
+    - ONE_WAY = 0
+    - TWO_WAY
+
+structs:
+  # Site: meaningful location, area, or control geometry
+  Site:
+    parent: Object
+    variants:
+      WAYPOINT: Waypoint
+      CONTROL_POINT: ControlPoint
+      GEOFENCE: Geofence
+      CONTROL_AREA: ControlArea
+      LANDING_ZONE: LandingZone
+      DROP_ZONE: DropZone
+      ASSEMBLY_POINT: AssemblyPoint
+      FOB: ForwardOperatingBase
+      OBSERVATION_POST: ObservationPost
+      RALLY_POINT: RallyPoint
+      ATTACK_POSITION: AttackPosition
+      SBF_POSITION: SupportByFirePosition
+      LOD: LineOfDeparture
+      SUPPLY_POINT: SupplyPoint
+      NAI: NamedAreaOfInterest
+      TAI: TargetAreaOfInterest
+      ACM: AirspaceCoordinatingMeasure
+      BULLSEYE: Bullseye
+      ENGAGEMENT_ZONE: EngagementZone
+      HAZARD_AREA: HazardArea
+      NO_FLY_ZONE: NoFlyZone
+      AIRSPACE_VOLUME: AirspaceVolume
+      TARGET_SET: TargetSet
+      TARGET_BOX: TargetBox
+      SPATIAL_FEATURE: SpatialFeature
+      COMMAND_POST: CommandPost
+      CHECKPOINT: SiteCheckpoint
+      TRIGGER_POINT: TriggerPoint
+      HIDE_POSITION: HidePosition
+      PATROL_BASE: PatrolBase
+      CORRIDOR: Corridor
+
+  Waypoint:
+    parent: Site
+    fields:
+      position: optional LLA
+
+  ControlPoint:
+    parent: Site
+    fields:
+      position: optional LLA
+
+  Geofence:
+    parent: Site
+    fields:
+      geometry: Polygon
+      floor_altitude_m: optional float
+      ceiling_altitude_m: optional float
+      action: GeofenceAction
+      enabled: optional bool
+      priority: optional int
+
+  ControlArea:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      control_area_type: optional ControlAreaType
+
+  LandingZone:
+    parent: Site
+    fields:
+      position: optional LLA
+      geometry: optional Geometry
+      surface: optional string
+      approach_headings_deg: optional list[float]
+
+  DropZone:
+    parent: Site
+    fields:
+      geometry: optional Polygon
+      surface: optional string
+      approach_heading_deg: optional float
+      wind_limits: optional string
+      marking: optional string
+
+  AssemblyPoint:
+    parent: Site
+    fields:
+      position: optional LLA
+
+  ForwardOperatingBase:
+    parent: Site
+    fields:
+      perimeter: optional Polygon
+      facilities: optional list[string]
+      garrison_org_id: optional string
+
+  ObservationPost:
+    parent: Site
+    fields:
+      position: optional LLA
+      sector_of_observation: optional Geometry
+      manned_by_entity_id: optional string
+
+  RallyPoint:
+    parent: Site
+    fields:
+      rally_point_type: optional RallyPointType
+      position: optional LLA
+      purpose: optional string
+
+  AttackPosition:
+    parent: Site
+    fields:
+      position: optional LLA
+      concealment_rating: optional float
+      sector_of_fire: optional Geometry
+
+  SupportByFirePosition:
+    parent: Site
+    fields:
+      position: optional LLA
+      sector_of_fire: optional Geometry
+      weapons_emplaced: optional list[string]
+
+  LineOfDeparture:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      h_hour: optional Timestamp
+      unit_crossing_order: optional list[string]
+
+  SupplyPoint:
+    parent: Site
+    fields:
+      position: LLA
+      supply_point_type: SupplyPointType
+      capacity_by_supply_class: optional map[string, float]
+      current_inventory: optional map[string, float]
+
+  NamedAreaOfInterest:
+    parent: Site
+    fields:
+      geometry: Geometry
+      purpose: optional string
+      observed_by_entity_ids: optional list[string]
+      indicators_to_watch: optional list[string]
+
+  TargetAreaOfInterest:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      target_types_expected: optional list[string]
+      fire_support_plan_id: optional string
+
+  AirspaceCoordinatingMeasure:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      fscm_type: optional FSCMType
+      geo_type: const GeoType = ACM
+
+  Bullseye:
+    parent: Site
+    fields:
+      position: optional LLA
+      geo_type: const GeoType = BULLSEYE
+
+  EngagementZone:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      geo_type: const GeoType = ENGAGEMENT_ZONE
+
+  HazardArea:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      geo_type: const GeoType = HAZARD
+
+  NoFlyZone:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      geo_type: const GeoType = CONTROL_AREA
+
+  AirspaceVolume:
+    parent: Site
+    fields:
+      geometry: Polygon
+      floor_altitude_m: optional float
+      ceiling_altitude_m: optional float
+      airspace_class: AirspaceClass
+      airspace_type: AirspaceType
+      airspace_status: AirspaceStatus
+      schedule: optional list[TimeWindow]
+
+  TargetSet:
+    parent: Site
+    fields:
+      target_ids: optional list[string]
+
+  TargetBox:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+
+  SpatialFeature:
+    parent: Site
+    fields:
+      geometry: optional Geometry
+      geo_type: optional GeoType
+
+  CommandPost:
+    parent: Site
+    fields:
+      command_post_type: optional CommandPostType
+      position: optional LLA
+      supported_org_id: optional string
+
+  SiteCheckpoint:
+    parent: Site
+    fields:
+      position: optional LLA
+      manned_by_entity_id: optional string
+      purpose: optional string
+
+  TriggerPoint:
+    parent: Site
+    fields:
+      position: optional LLA
+      event_on_reach: optional string
+
+  HidePosition:
+    parent: Site
+    fields:
+      position: optional LLA
+      concealment_rating: optional float
+      for_entity_id: optional string
+
+  PatrolBase:
+    parent: Site
+    fields:
+      position: optional LLA
+      perimeter: optional Polygon
+      security_plan: optional string
+      duration: optional Duration
+
+  Corridor:
+    parent: Site
+    fields:
+      centerline: optional LLAPath
+      width_m: optional float
+      floor_altitude_m: optional float
+      ceiling_altitude_m: optional float
+      direction: optional CorridorDirection

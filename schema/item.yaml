@@ -1,0 +1,167 @@
+version: 1
+
+enums:
+  # --- Equipment ---
+  WeaponCategory:
+    - RIFLE = 0
+    - CARBINE
+    - PISTOL
+    - MACHINE_GUN
+    - GRENADE_LAUNCHER
+    - ANTI_TANK
+    - MANPAD
+    - MORTAR
+    - SNIPER
+    - SHOTGUN
+
+  MunitionStatus:
+    - NOT_PRESENT = 0
+    - PRESENT
+    - READY
+    - FAULT
+
+  # --- Component ---
+  ComponentCategory:
+    - MOTOR = 0
+    - ESC
+    - BATTERY
+    - FLIGHT_CONTROLLER
+    - ANTENNA
+    - GIMBAL
+    - SERVO
+    - PROPELLER
+    - AIRFRAME
+    - LANDING_GEAR
+    - PARACHUTE
+    - TRANSPONDER
+    - ADS_B
+    - IFF
+
+  # --- Payload ---
+  PayloadOperationalState:
+    - OFF = 0
+    - NON_OPERATIONAL
+    - DEGRADED
+    - OPERATIONAL
+    - OUT_OF_SERVICE
+    - UNKNOWN
+
+  GuidanceType:
+    - UNGUIDED = 0
+    - GPS
+    - INS
+    - LASER_GUIDED
+    - IR_HOMING
+    - RADAR_HOMING
+    - COMMAND_GUIDED
+    - WIRE
+    - FIBER_OPTIC
+    - TERMINAL_TV
+    - VISION
+
+structs:
+  # Item: physical or informational artifact carried, mounted, or used
+  Item:
+    parent: Object
+    variants:
+      RECORD: Record
+      EQUIPMENT: Equipment
+      COMPONENT: Component
+      PAYLOAD: Payload
+
+  Record:
+    parent: Item
+
+  Equipment:
+    parent: Item
+    variants:
+      PERSONAL_WEAPON: PersonalWeapon
+      OPTIC: Optic
+      COMMS_GEAR: CommunicationsGear
+      PROTECTIVE: ProtectiveGear
+      NAV_EQUIPMENT: NavigationEquipment
+      MUNITION: Munition
+      LINK_HARDWARE: LinkHardware
+
+  PersonalWeapon:
+    parent: Equipment
+
+  Optic:
+    parent: Equipment
+
+  CommunicationsGear:
+    parent: Equipment
+
+  ProtectiveGear:
+    parent: Equipment
+
+  NavigationEquipment:
+    parent: Equipment
+
+  Munition:
+    parent: Equipment
+    fields:
+      status: optional MunitionStatus
+      quantity: optional uint32
+
+  LinkHardware:
+    parent: Equipment
+
+  Component:
+    parent: Item
+    fields:
+      component_category: optional ComponentCategory
+
+  Payload:
+    parent: Item
+    fields:
+      operational_state: optional PayloadOperationalState
+    variants:
+      EO_CAMERA: EOCamera
+      IR_CAMERA: IRCamera
+      MULTISPECTRAL: MultispectralCamera
+      LIDAR: LIDARPayload
+      SAR: SARPayload
+      SIGINT_RECEIVER: SIGINTReceiver
+      COMM_RELAY: CommRelayPayload
+      CARGO: CargoPayload
+      WEAPON: WeaponPayload
+      JAMMER: JammerPayload
+      ILLUMINATOR: Illuminator
+      RWS: RemoteWeaponStation
+
+  EOCamera:
+    parent: Payload
+
+  IRCamera:
+    parent: Payload
+
+  MultispectralCamera:
+    parent: Payload
+
+  LIDARPayload:
+    parent: Payload
+
+  SARPayload:
+    parent: Payload
+
+  SIGINTReceiver:
+    parent: Payload
+
+  CommRelayPayload:
+    parent: Payload
+
+  CargoPayload:
+    parent: Payload
+
+  WeaponPayload:
+    parent: Payload
+
+  JammerPayload:
+    parent: Payload
+
+  Illuminator:
+    parent: Payload
+
+  RemoteWeaponStation:
+    parent: Payload
