@@ -1,0 +1,126 @@
+version: 1
+
+enums:
+  EngagementMethod:
+    - POINT_TARGET = 0
+    - AREA_TARGET
+    - SUPPRESSION
+    - DESTRUCTION
+    - NEUTRALIZATION
+    - ILLUMINATION
+    - SMOKE
+    - MARKING
+
+  FireType:
+    - IMMEDIATE = 0
+    - PLANNED
+    - ON_CALL
+
+  WeaponType:
+    - MORTAR = 0
+    - HOWITZER
+    - ROCKET
+    - MLRS
+    - MISSILE
+    - DIRECT_FIRE
+    - AIR_DELIVERED
+    - NAVAL
+
+  AmmunitionType:
+    - HE = 0
+    - WP
+    - ILLUMINATION
+    - SMOKE
+    - DPICM
+    - THERMOBARIC
+    - HEAT
+    - FRAG
+    - AP
+    - INCENDIARY
+    - GUIDED
+
+  ShellTrajectory:
+    - LOW = 0
+    - HIGH
+    - VERTICAL
+
+  FireMissionStatus:
+    - REQUESTED = 0
+    - APPROVED
+    - DENIED
+    - SHOT_OUT
+    - SPLASH_OVER
+    - ROUNDS_COMPLETE
+    - END_OF_MISSION
+    - CANCELLED
+    - CHECK_FIRING
+
+  EffectAchieved:
+    - DESTROYED = 0
+    - NEUTRALIZED
+    - SUPPRESSED
+    - NO_EFFECT
+    - UNKNOWN
+
+structs:
+  CallForFire:
+    parent: Message
+    fields:
+      observer_id: optional string
+      target_location: optional LLA
+      target_description: optional string
+      method_of_engagement: optional EngagementMethod
+      fire_type: optional FireType
+      danger_close: optional bool
+      target_number: optional string
+
+  SpotCorrection:
+    fields:
+      direction_deg: optional float
+      add_drop_m: optional float
+      left_right_m: optional float
+      repeat: optional bool
+      fire_for_effect: optional bool
+
+  AdjustFireCommand:
+    parent: FireSupportCommand
+    fields:
+      correction: optional SpotCorrection
+
+  CeaseFireCommand:
+    parent: FireSupportCommand
+
+  CheckFireCommand:
+    parent: FireSupportCommand
+
+  FireMissionTask:
+    parent: Task
+    fields:
+      mission_id: optional string
+      call_for_fire_id: optional string
+      assigned_unit_id: optional string
+      weapon_type: optional WeaponType
+      ammunition_type: optional AmmunitionType
+      rounds_requested: optional uint32
+      trajectory: optional ShellTrajectory
+      fire_mission_status: optional FireMissionStatus
+
+  TargetEntry:
+    fields:
+      target_id: optional string
+      grid_reference: optional LLA
+      description: optional string
+      category: optional string
+      engagement_history_ids: optional list[string]
+      current_status: optional BDAStatusColor
+
+  TargetList:
+    fields:
+      targets: optional list[TargetEntry]
+
+  EffectsAssessment:
+    parent: Assessment
+    fields:
+      fire_mission_id: optional string
+      effect_achieved: optional EffectAchieved
+      bda_result_id: optional string

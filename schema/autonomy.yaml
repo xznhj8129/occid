@@ -1,0 +1,40 @@
+version: 1
+
+enums:
+  BehaviorNodeType:
+    - SEQUENCE = 0
+    - SELECTOR
+    - PARALLEL
+    - CONDITION
+    - ACTION
+    - DECORATOR
+    - SUB_TREE
+
+  BehaviorNodeStatus:
+    - SUCCESS = 0
+    - FAILURE
+    - RUNNING
+
+structs:
+  BehaviorNode:
+    fields:
+      node_id: string
+      node_type: BehaviorNodeType
+      node_status: optional BehaviorNodeStatus
+      label: optional string
+      condition: optional string
+      action: optional string
+      child_node_ids: optional list[string]
+      subtree_name: optional string
+
+  BehaviorTree:
+    parent: Plan
+    fields:
+      root_node_id: string
+      tick_rate_hz: optional float
+      nodes: optional list[BehaviorNode]
+
+  BehaviorTreeLibrary:
+    fields:
+      named_trees: optional map[string, BehaviorTree]
+      named_nodes: optional map[string, BehaviorNode]

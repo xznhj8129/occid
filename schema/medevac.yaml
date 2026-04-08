@@ -1,0 +1,68 @@
+version: 1
+
+enums:
+  PrecedenceCategory:
+    - URGENT = 0
+    - URGENT_SURGICAL
+    - PRIORITY
+    - ROUTINE
+    - CONVENIENCE
+
+  SpecialEquipment:
+    - NONE = 0
+    - HOIST
+    - EXTRACTION_EQUIPMENT
+    - VENTILATOR
+
+  PatientType:
+    - LITTER = 0
+    - AMBULATORY
+
+  SecurityAtPickup:
+    - NO_ENEMY = 0
+    - POSSIBLE_ENEMY
+    - ENEMY_IN_AREA
+    - ENEMY_CONTACT
+
+  MarkingMethod:
+    - PANELS = 0
+    - PYRO_SIGNAL
+    - SMOKE
+    - NONE
+    - OTHER
+    - IR_STROBE
+    - VS_PANEL
+
+  CBRNEContamination:
+    - NONE = 0
+    - CHEMICAL
+    - BIOLOGICAL
+    - RADIOLOGICAL
+    - NUCLEAR
+
+structs:
+  PatientInfo:
+    fields:
+      precedence: optional PrecedenceCategory
+      patient_type: optional PatientType
+      nationality: optional Nationality
+      cbrne: optional CBRNEContamination
+      injuries: optional string
+
+  MedevacRequest:
+    parent: Task
+    fields:
+      request_id: optional string
+      location: optional LLA
+      callsign: optional string
+      frequency_mhz: optional float
+      patients_by_precedence: optional map[string, uint32]
+      special_equipment: optional list[SpecialEquipment]
+      patients_by_type: optional map[string, uint32]
+      security_at_pickup: optional SecurityAtPickup
+      marking_method: optional MarkingMethod
+      nationality: optional Nationality
+      nationality_string: optional string
+      cbrne: optional CBRNEContamination
+      request_status: optional RequestStatus
+      patient_details: optional list[PatientInfo]
