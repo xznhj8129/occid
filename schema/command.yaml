@@ -1,0 +1,73 @@
+version: 1
+
+structs:
+  # Command messages: communication wrappers around Control commands
+  CommandMessage:
+    parent: Message
+    variants:
+      FLIGHT: FlightCommandMessage
+      NAVIGATION: NavigationCommandMessage
+      MODE: ModeCommandMessage
+      PARAMETER: ParameterCommandMessage
+      ACTUATOR: ActuatorCommandMessage
+      FIRE_SUPPORT: FireSupportCommandMessage
+      EW_COMMAND: EWCommandMessage
+      COMMS_COMMAND: CommunicationCommandMessage
+      EMERGENCY: EmergencyCommandMessage
+      GIMBAL: GimbalCommandMessage
+      CAMERA: CameraCommandMessage
+
+  FlightCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: FlightCommand
+
+  NavigationCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: NavigationCommand
+
+  ModeCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: ModeCommand
+
+  ParameterCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: ParameterCommand
+
+  ActuatorCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: ActuatorCommand
+
+  FireSupportCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: FireSupportCommand
+
+  EWCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: EWCommand
+
+  CommunicationCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: CommunicationCommand
+
+  EmergencyCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: EmergencyCommand
+
+  GimbalCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: GimbalCommand
+
+  CameraCommandMessage:
+    parent: CommandMessage
+    fields:
+      command: CameraCommand

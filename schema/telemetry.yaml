@@ -1,0 +1,56 @@
+version: 1
+
+structs:
+  # Telemetry / observation / response messages
+  TelemetryMessage:
+    parent: Message
+    fields:
+      production_method: optional ProductionMethod
+      operational_context: optional OperationalContext
+    variants:
+      VEHICLE: VehicleTelemetryMessage
+
+  VehicleTelemetryMessage:
+    parent: TelemetryMessage
+    fields:
+      telemetry: VehicleTelemetry
+
+  ObservationMessage:
+    parent: Message
+    fields:
+      detection: optional Detection
+      classification: optional Classification
+      track: optional Track
+      source_host: optional string
+      source_port: optional uint32
+      cot_detail_xml: optional string
+
+  ResponseMessage:
+    parent: Message
+    variants:
+      ACK: AckMessage
+      NACK: NackMessage
+      RESULT: ResultMessage
+
+  AckMessage:
+    parent: ResponseMessage
+    fields:
+      reply_code: optional ReplyCode
+      acknowledged_message_id: optional string
+      receipt: optional DeliveryReceipt
+
+  NackMessage:
+    parent: ResponseMessage
+    fields:
+      reply_code: optional ReplyCode
+      rejected_message_id: optional string
+      reason: optional string
+      receipt: optional DeliveryReceipt
+
+  ResultMessage:
+    parent: ResponseMessage
+    fields:
+      reply_code: optional ReplyCode
+      success: optional bool
+      result_data: optional any
+      error: optional string

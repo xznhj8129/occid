@@ -1,0 +1,402 @@
+version: 1
+
+enums:
+  # --- Node ---
+  NodeType:
+    - SENSOR = 0
+    - EFFECTOR
+    - C2
+    - RELAY
+    - GATEWAY
+    - OBSERVER
+    - ALL
+
+  # --- Transport / Network ---
+  NetworkTopology:
+    - MESH = 0
+    - POINT_TO_POINT
+    - BROADCAST
+    - STORE_AND_FORWARD
+
+  MeshNodeRole:
+    - ROUTER = 0
+    - ENDPOINT
+    - REPEATER
+    - GATEWAY
+    - BORDER_ROUTER
+
+  EMBand:
+    - ELF = 0
+    - SLF
+    - ULF
+    - VLF
+    - LF
+    - MF
+    - HF
+    - VHF
+    - UHF
+    - SHF
+    - EHF
+    - THF
+    - INFRARED
+    - VISIBLE
+
+  SATCOMBand:
+    - UHF = 0
+    - SHF
+    - EHF
+    - KA
+    - KU
+    - X
+    - C
+    - L
+    - S
+
+  SatelliteOrbitType:
+    - LEO = 0
+    - MEO
+    - GEO
+
+  # --- Protocol ---
+  ProtocolType:
+    - MAVLINK = 0
+    - MAVLINK_M
+    - MSPV2
+    - ROS
+    - STANAG4586
+    - COT
+    - CUSTOM_SERIAL
+    - MESHTASTIC
+    - RTP_RTSP
+    - SRT
+    - HLS
+    - WEBRTC
+    - LINK16
+    - VMF
+    - ADS_B
+    - XMPP
+    - DDS
+
+  SerializationFormat:
+    - PROTOBUF = 0
+    - JSON
+    - XML
+    - CBOR
+    - MESSAGE_PACK
+    - FLATBUFFERS
+    - BINARY_CUSTOM
+    - ASCII_TEXT
+
+  CompressionType:
+    - NONE = 0
+    - GZIP
+    - LZ4
+    - ZSTD
+    - SNAPPY
+
+  # --- Feed ---
+  StreamEncoding:
+    - H264 = 0
+    - H265
+    - VP8
+    - VP9
+    - AV1
+    - MJPEG
+    - RAW
+    - PCM
+    - AAC
+    - OPUS
+
+  StreamTransport:
+    - RTP = 0
+    - RTSP
+    - SRT
+    - HLS
+    - WEBRTC
+    - MPEG_TS
+    - NDI
+    - RTMP
+
+  # --- Message ---
+  MessageShape:
+    - SNAPSHOT = 0
+    - DELTA
+    - HISTORY
+    - LOG
+
+  DataFlowType:
+    - COMMAND_DOWN = 0
+    - STATUS_UP
+    - TELEMETRY_UP
+
+  MessagePriority:
+    - ROUTINE = 0
+    - PRIORITY
+    - IMMEDIATE
+    - FLASH
+    - FLASH_OVERRIDE
+
+  AcknowledgmentPolicy:
+    - NONE = 0
+    - ON_RECEIPT
+    - ON_PROCESSING
+    - ON_EXECUTION
+
+  ReceiptStatus:
+    - RECEIVED = 0
+    - PROCESSED
+    - FAILED
+    - REJECTED
+
+  ReplyCode:
+    - RECEIVED = 0
+    - WILCO
+    - COMPLETE_SUCCESS
+    - COMPLETE_FAIL
+    - FAIL_NO_ASSETS
+    - FAIL_BAD_REQUEST
+    - FAIL_DENIED
+    - FAIL_INSUFFICIENT_INFO
+    - FAIL_REJECTED
+    - FAIL_REJECTED_BY_C2
+    - FAIL_REJECTED_BY_PLATFORM
+    - FAIL_STALE
+    - STATUS_CANCELING
+    - STATUS_EXECUTING
+    - STATUS_REVIEW
+
+  ProductionMethod:
+    - MACHINE_GPS = 0
+    - MACHINE_INS
+    - MACHINE_INS_GPS
+    - MACHINE_DGPS
+    - MACHINE_MENSURATED
+    - MACHINE_MAGNETIC
+    - MACHINE_SIMULATED
+    - MACHINE_CONFIGURED
+    - MACHINE_PASSED
+    - MACHINE_FUSED
+    - MACHINE_TRACKER
+    - MACHINE_RADIO
+    - MACHINE_RADIO_EPLRS
+    - MACHINE_RADIO_PLRS
+    - MACHINE_RADIO_DOPPLER
+    - MACHINE_RADIO_VHF
+    - MACHINE_RADIO_TADIL_A
+    - MACHINE_RADIO_TADIL_B
+    - MACHINE_RADIO_TADIL_J
+    - HUMAN_TRANSCRIBED
+    - HUMAN_ESTIMATED
+    - HUMAN_CALCULATED
+    - HUMAN_PASTED
+    - HUMAN_GIGO
+
+  RelationType:
+    - PARENT = 0
+    - PRODUCER
+    - OWNER
+    - MANAGER
+    - LEADER
+    - CHILD
+    - CORRELATED
+    - FUSED
+    - COMPOSITE
+    - ALTERNATE
+    - REFINEMENT
+    - AMPLIFICATION
+    - REFINEMENT_URL
+    - TASKING_BY
+    - TASK_OBJECT
+    - TASK_INDIRECT_OBJECT
+    - TASK_SUBJECT
+    - TASK_AT
+    - TASK_BY
+    - TASK_WITH
+    - TASK_FROM
+    - TASK_REGARDING
+
+  OperationalContext:
+    - EXERCISE = 0
+    - OPERATIONAL
+    - SIMULATED
+
+structs:
+  # Communication: nodes, transports, feeds, and messages
+  Communication:
+    variants:
+      NODE: Node
+      TRANSPORT: Transport
+      FEED: Feed
+      MESSAGE: Message
+
+  # --- Node ---
+  Node:
+    parent: Communication
+    fields:
+      entity_id: optional string
+      node_type: optional NodeType
+      can_transmit: optional bool
+      can_receive: optional bool
+      can_relay: optional bool
+      can_process: optional bool
+      transport_ids: optional list[string]
+
+  # --- Transport ---
+  Transport:
+    parent: Communication
+    variants:
+      NETWORK: Network
+      CARRIER: Carrier
+      PROTOCOL: Protocol
+
+  Network:
+    parent: Transport
+    fields:
+      topology: optional NetworkTopology
+      mesh_node_role: optional MeshNodeRole
+      reachable_node_ids: optional list[string]
+      latency_ms: optional float
+      bandwidth_bps: optional float
+      reliability_pct: optional float
+
+  Carrier:
+    parent: Transport
+    variants:
+      RADIO: RadioCarrier
+      WIRE: WireCarrier
+      IP: IPCarrier
+      SATELLITE: SatelliteCarrier
+      CELLULAR: CellularCarrier
+      VOICE: VoiceCarrier
+
+  RadioCarrier:
+    parent: Carrier
+    fields:
+      band: optional EMBand
+      frequency_hz: optional float
+      channel: optional string
+      bandwidth_hz: optional float
+      waveform: optional string
+      crypto_type: optional string
+      crypto_keys: optional list[string]
+
+  WireCarrier:
+    parent: Carrier
+    fields:
+      baud_rate: optional uint32
+
+  IPCarrier:
+    parent: Carrier
+    fields:
+      address: optional string
+      port: optional uint32
+
+  SatelliteCarrier:
+    parent: Carrier
+    fields:
+      band: optional SATCOMBand
+      orbit_type: optional SatelliteOrbitType
+      terminal_type: optional string
+
+  CellularCarrier:
+    parent: Carrier
+    fields:
+      provider: optional string
+      technology: optional string
+
+  VoiceCarrier:
+    parent: Carrier
+    fields:
+      channel_name: optional string
+
+  Protocol:
+    parent: Transport
+    fields:
+      protocol_type: optional ProtocolType
+      version: optional string
+      serialization_format: optional SerializationFormat
+      compression_type: optional CompressionType
+
+  # --- Feed ---
+  Feed:
+    parent: Communication
+    variants:
+      LINK: Link
+      STREAM: Stream
+
+  Link:
+    parent: Feed
+    fields:
+      protocol_id: optional string
+      packet_rate_hz: optional float
+      rx_count: optional uint64
+      tx_count: optional uint64
+      parse_error_count: optional uint64
+
+  Stream:
+    parent: Feed
+    fields:
+      source_node_id: optional string
+      stream_id: optional string
+    variants:
+      VIDEO: VideoStream
+      AUDIO: AudioStream
+      SENSOR: SensorStream
+
+  VideoStream:
+    parent: Stream
+    fields:
+      encoding: optional StreamEncoding
+      transport: optional StreamTransport
+      resolution_width: optional uint32
+      resolution_height: optional uint32
+      frame_rate_hz: optional float
+      bitrate_bps: optional uint64
+      latency_ms: optional float
+
+  AudioStream:
+    parent: Stream
+    fields:
+      encoding: optional StreamEncoding
+      transport: optional StreamTransport
+      sample_rate_hz: optional uint32
+      bitrate_bps: optional uint64
+      latency_ms: optional float
+
+  SensorStream:
+    parent: Stream
+    fields:
+      transport: optional StreamTransport
+      sample_rate_hz: optional float
+      data_type: optional string
+
+  # --- Message ---
+  Message:
+    parent: Communication
+    fields:
+      id: optional string
+      timestamp: optional Timestamp
+      source_node_id: optional string
+      destination_node_ids: optional list[string]
+      shape: optional MessageShape
+      data_flow_type: optional DataFlowType
+      priority: optional MessagePriority
+      acknowledgment_policy: optional AcknowledgmentPolicy
+      classification: optional string
+      ttl_seconds: optional uint32
+      sequence_number: optional uint64
+      correlation_id: optional string
+      retry_count: optional uint32
+    variants:
+      COMMAND: CommandMessage
+      TELEMETRY: TelemetryMessage
+      OBSERVATION: ObservationMessage
+      RESPONSE: ResponseMessage
+
+  DeliveryReceipt:
+    parent: Communication
+    fields:
+      message_id: optional string
+      received_by_node_id: optional string
+      time_received: optional Timestamp
+      status: optional ReceiptStatus
