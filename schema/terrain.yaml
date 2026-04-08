@@ -1,0 +1,102 @@
+version: 1
+
+enums:
+  TerrainType:
+    - URBAN = 0
+    - SUBURBAN
+    - RURAL
+    - FOREST
+    - JUNGLE
+    - DESERT
+    - MOUNTAIN
+    - TUNDRA
+    - MARSH
+    - FARMLAND
+    - WATER
+    - COASTAL
+    - ARCTIC
+    - STEPPE
+    - SAVANNA
+
+  TerrainSurface:
+    - PAVED = 0
+    - UNPAVED
+    - GRASS
+    - SAND
+    - MUD
+    - ROCK
+    - SNOW
+    - ICE
+    - WATER
+    - GRAVEL
+
+  TerrainFeatureType:
+    - RIDGE = 0
+    - VALLEY
+    - SADDLE
+    - HILL
+    - DEPRESSION
+    - CLIFF
+    - RIVER
+    - LAKE
+    - ROAD
+    - BRIDGE
+    - BUILDING
+    - TREELINE
+    - CLEARING
+    - URBAN_AREA
+    - PASS
+    - FORD
+    - DAM
+
+  ObstacleType:
+    - WIRE = 0
+    - TOWER
+    - BUILDING
+    - TERRAIN
+    - VEGETATION
+    - WATER
+    - MINEFIELD
+    - BARRIER
+    - DITCH
+
+  Traversability:
+    - PASSABLE = 0
+    - RESTRICTED
+    - IMPASSABLE
+
+  MobilityClass:
+    - UNRESTRICTED = 0
+    - SLOW_GO
+    - NO_GO
+
+  DTEDLevel:
+    - DTED0 = 0
+    - DTED1
+    - DTED2
+    - DTED3
+
+structs:
+  Terrain:
+    parent: Properties
+    fields:
+      terrain_type: optional TerrainType
+      surface: optional TerrainSurface
+      traversability: optional Traversability
+      mobility_class: optional MobilityClass
+
+  TerrainFeature:
+    parent: Properties
+    fields:
+      feature_type: optional TerrainFeatureType
+      geometry: optional Geometry
+      elevation_m: optional float
+      obstacle_type: optional ObstacleType
+
+  TerrainGrid:
+    parent: Properties
+    fields:
+      dted_level: optional DTEDLevel
+      source: optional string
+      resolution_m: optional float
+      coverage_area: optional Geometry

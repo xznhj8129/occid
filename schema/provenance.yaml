@@ -1,0 +1,31 @@
+version: 1
+
+enums:
+  ProvenanceAction:
+    - ORIGINATED = 0
+    - RELAYED
+    - FUSED
+    - TRANSFORMED
+    - ENRICHED
+    - FILTERED
+
+structs:
+  Provenance:
+    parent: Properties
+    fields:
+      integration_name: optional string
+      data_type: optional string
+      source_id: optional string
+      source_update_time: optional Timestamp
+      source_description: optional string
+
+  ProvenanceEntry:
+    fields:
+      system_name: string
+      processing_time: optional Timestamp
+      action: optional ProvenanceAction
+
+  ProvenanceChain:
+    parent: Properties
+    fields:
+      entries: optional list[ProvenanceEntry]

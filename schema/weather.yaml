@@ -1,0 +1,104 @@
+version: 1
+
+enums:
+  PrecipitationType:
+    - NONE = 0
+    - RAIN
+    - SNOW
+    - SLEET
+    - HAIL
+    - FREEZING_RAIN
+    - DRIZZLE
+
+  CloudCover:
+    - CLEAR = 0
+    - FEW
+    - SCATTERED
+    - BROKEN
+    - OVERCAST
+
+  IcingIntensity:
+    - NONE = 0
+    - LIGHT
+    - MODERATE
+    - SEVERE
+
+  TurbulenceIntensity:
+    - NONE = 0
+    - LIGHT
+    - MODERATE
+    - SEVERE
+    - EXTREME
+
+  FlightCategory:
+    - VFR = 0
+    - MVFR
+    - IFR
+    - LIFR
+
+  WeatherSource:
+    - METAR = 0
+    - TAF
+    - PIREP
+    - SIGMET
+    - AIRMET
+    - RADAR
+    - SATELLITE
+    - MODEL_FORECAST
+
+  WeatherHazardType:
+    - THUNDERSTORM = 0
+    - ICING
+    - TURBULENCE
+    - FOG
+    - DUST
+    - VOLCANIC_ASH
+    - WINDSHEAR
+    - SANDSTORM
+
+structs:
+  CloudLayer:
+    fields:
+      cover: CloudCover
+      ceiling_m: optional float
+
+  ForecastCondition:
+    fields:
+      time: Timestamp
+      condition: WeatherCondition
+
+  WeatherCondition:
+    parent: State
+    fields:
+      temperature_c: optional float
+      wind_speed_ms: optional float
+      wind_gust_ms: optional float
+      wind_direction_deg: optional float
+      pressure_hpa: optional float
+      humidity_pct: optional float
+      visibility_m: optional float
+      precipitation_type: optional PrecipitationType
+      precipitation_rate_mmph: optional float
+      cloud_cover: optional CloudCover
+      cloud_ceiling_m: optional float
+      cloud_layers: optional list[CloudLayer]
+      dew_point_c: optional float
+      icing_intensity: optional IcingIntensity
+      icing_altitude_range_m: optional FloatRange
+      turbulence_intensity: optional TurbulenceIntensity
+      flight_category: optional FlightCategory
+      source: optional WeatherSource
+
+  WeatherForecast:
+    parent: State
+    fields:
+      conditions: optional list[ForecastCondition]
+      source: optional WeatherSource
+
+  WeatherHazard:
+    parent: State
+    fields:
+      hazard_type: optional WeatherHazardType
+      affected_area: optional Geometry
+      altitude_range_m: optional FloatRange
+      valid_window: optional TimeWindow

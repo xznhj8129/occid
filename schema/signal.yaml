@@ -1,0 +1,40 @@
+version: 1
+
+enums:
+  ScanType:
+    - CIRCULAR = 0
+    - BIDIRECTIONAL_HORIZONTAL_SECTOR
+    - BIDIRECTIONAL_VERTICAL_SECTOR
+    - NON_SCANNING
+    - IRREGULAR
+    - CONICAL
+    - LOBE_SWITCHING
+    - RASTER
+    - CIRCULAR_VERTICAL_SECTOR
+    - CIRCULAR_CONICAL
+    - SECTOR_CONICAL
+    - AGILE_BEAM
+    - UNIDIRECTIONAL_VERTICAL_SECTOR
+    - UNIDIRECTIONAL_HORIZONTAL_SECTOR
+    - UNIDIRECTIONAL_SECTOR
+    - BIDIRECTIONAL_SECTOR
+
+structs:
+  EmitterNotation:
+    fields:
+      notation: string
+      confidence: optional float
+
+  Signal:
+    parent: Sensory
+    fields:
+      center_frequency_hz: optional float
+      frequency_range_hz: optional FloatRange
+      bandwidth_hz: optional float
+      snr_db: optional float
+      line_of_bearing: optional Bearing
+      emitter_notations: optional list[EmitterNotation]
+      pulse_width_us: optional float
+      pulse_repetition_interval_us: optional float
+      scan_type: optional ScanType
+      scan_period_s: optional float

@@ -1,0 +1,30 @@
+version: 1
+
+enums:
+  MaintenanceType:
+    - PREVENTIVE = 0
+    - CORRECTIVE
+    - INSPECTION
+    - CALIBRATION
+    - SOFTWARE_UPDATE
+    - BATTERY_REPLACEMENT
+    - PART_REPLACEMENT
+
+structs:
+  MaintenanceAction:
+    parent: State
+    fields:
+      maintenance_type: optional MaintenanceType
+      entity_id: optional string
+      component_id: optional string
+      scheduled_time: optional Timestamp
+      completed_time: optional Timestamp
+      performed_by: optional string
+      notes: optional string
+
+  MaintenanceSchedule:
+    parent: State
+    fields:
+      entity_id: optional string
+      action_ids: optional list[string]
+      next_due: optional Timestamp

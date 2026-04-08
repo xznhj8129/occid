@@ -1,0 +1,12 @@
+version: 1
+
+structs:
+  MilStd2525C:
+    fields:
+      sidc: string
+
+  Symbology:
+    parent: Properties
+    fields:
+      mil_std_2525_c: optional MilStd2525C
+      cot_type: optional string
