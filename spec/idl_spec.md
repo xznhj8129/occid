@@ -12,18 +12,71 @@ YAML is only the carrier syntax. The schema language is defined here.
 - string literals must be quoted with `"` in schema examples and authored schema
 
 **3. Top-Level Document**
-Allowed top-level keys:
-- `version`
+
+A schema document is either a **class expansion file** (`type: schema`) or a **module manifest** (`type: module`). They share the same IDL syntax for enums, maps, and structs, but differ in header fields and resolution rules.
+
+Common top-level keys (both types):
+- `version` — required
+- `type` — required, either `schema` or `module`
+- `name` — required, the document's identifier (filename for schema files, unique module name for modules)
+- `tags` — required, list of profile tags for subset selection (see section 17.3)
 - `enums`
 - `maps`
 - `structs`
 
-Example:
+**3.1. Class expansion file** (`type: schema`) — additional keys:
+- `root` — required for files that extend an existing class; the filename of the parent class file this file expands
+- `includes` — optional, list of filenames this file depends on (child class files it composes)
+
+**3.2. Module manifest** (`type: module`) — additional keys:
+- `description` — required, human-readable purpose
+- `requires` — optional, list of tags or module names this module depends on
+- `extend_variants` — optional, grafts new variants onto existing parents (see section 18.4)
+
+Example class expansion file:
 ```yaml
 version: 1
+type: schema
+name: state.yaml
+tags:
+  - core
+root: information.yaml
+includes:
+  - kinematic.yaml
+  - navigation.yaml
+  - resources.yaml
+  - condition.yaml
+
 enums: 
 maps: 
 structs: 
+```
+
+Minimal root file (no parent):
+```yaml
+version: 1
+type: schema
+name: object.yaml
+tags:
+  - core
+
+structs:
+  Object:
+    variants:
+      ENTITY: Entity
+      ...
+```
+
+Example module manifest:
+```yaml
+version: 1
+type: module
+name: ew
+description: Electronic warfare actions, effects, protection, and spectrum management
+tags:
+  - military
+requires:
+  - core
 ```
 
 **4. Names**
@@ -276,6 +329,16 @@ These are always errors:
 - `required: true/false`
 - `variants` contains a value that is not a declared struct
 - `variants` contains a struct whose `parent` is not the declaring struct
+- a struct's parent chain does not lead to the class declared by the file's `root`
+- `includes` graph contains a cycle
+- `name` does not match the actual filename
+- missing `version`, `type`, `name`, or `tags`
+- `type` is not `schema` or `module`
+- a module's `extend_variants` references a parent that has no `variants` block
+- a module's `extend_variants` introduces a variant key that collides with an existing one
+- a module's `requires` list is not satisfied at load time
+- a module redefines or alters an existing struct, enum, or field from core or another module
+- a module's struct declares a `parent` that does not exist in core schema or required modules
 
 **16. Not Supported**
 - anchors / aliases
@@ -283,9 +346,215 @@ These are always errors:
 - anonymous inline structs
 - JSON-Schema keys like `$defs`, `oneOf`, `additionalProperties`
 
-**17. Canonical Examples**
+**17. File Organization**
+
+Each schema file is a **class expansion**, not a subject-domain bucket. A file expands exactly one branch of the ontology tree. If a domain concept (e.g. electronic warfare) touches multiple ontological branches (Task, Intel, Plan, Instruction), those structs belong in their respective class files, not in a single "ew.yaml."
+
+**17.1. One file, one class branch**
+- Every file declares a `root` (the parent class file it extends) or is itself a root of the ontology tree
+- All structs in a file must be descendants of the class that file expands
+- A file that declares `root: control.yaml` may only contain structs whose parent chain leads to Control
+- Enums used exclusively by structs in the file are co-located. Enums shared across files belong in the root or a common ancestor file
+
+**17.2. File header**
+The header declares the file's position in the schema graph:
+
 ```yaml
 version: 1
+type: schema
+name: information.yaml
+tags:
+  - core
+root: data.yaml
+includes:
+  - properties.yaml
+  - state.yaml
+  - event.yaml
+  - intel.yaml
+```
+
+- `type` — always `schema` for class expansion files
+- `name` — the file's own filename, for self-identification
+- `tags` — profile tags that classify this file for subset selection (see 17.3)
+- `root` — the parent class file. Omitted only for ontology root files (Object, Reference, Control, Communication, Data)
+- `includes` — child class files that further expand this branch. Declares the dependency graph so tools can resolve a complete subtree without parsing struct references
+
+**17.3. Tags and profiles**
+Tags classify files by domain applicability. A **profile** is a named set of tag inclusion/exclusion rules that selects a subset of the schema.
+
+Reserved tags:
+- `core` — foundational, always included in every profile. The universal grammar
+- `military` — military-specific concepts (ROE, fire support, EW, etc.)
+- `aviation` — aviation and airspace concepts
+- `maritime` — maritime-specific concepts
+
+Tags are additive: a file tagged `[core, military]` is both foundational and military-relevant. A profile that excludes `military` drops any file whose tags include `military` (unless the file is also tagged `core`, in which case `core` takes precedence as the always-included foundation).
+
+Profile resolution rules:
+1. All files tagged `core` are always included
+2. A profile declares which non-core tags to include or exclude
+3. Include is the default — a profile only needs to declare exclusions
+4. If a file carries no matching include tag and no matching exclude tag, it is included by default
+5. A file excluded by a profile is entirely absent — its structs, enums, and maps do not exist in that profile's schema
+
+Example profiles:
+```yaml
+# Civil drone operations — no military concepts
+profile: civil
+exclude:
+  - military
+
+# Full military C2
+profile: military_c2
+include_all: true
+
+# Maritime ISR — maritime + core only
+profile: maritime_isr
+include:
+  - core
+  - maritime
+exclude_untagged: true
+```
+
+**17.4. Includes and dependency resolution**
+The `includes` list declares which files expand sub-branches of this file's class. A schema tool can resolve the full tree from any root by following `includes` recursively. This also means:
+- Removing a file from `includes` prunes that entire sub-branch
+- The `includes` graph must be a tree (no cycles, no diamond includes)
+- A file not included by any parent is orphaned and will not appear in any resolved schema unless explicitly added
+
+**18. Modules**
+
+A module is a self-contained extension that grafts domain-specific structs, enums, and maps onto the existing class tree without modifying core schema files. Modules are the mechanism for domain-specific, third-party, and classified extensions.
+
+**18.1. What a module is**
+- A separate YAML manifest file, not a class expansion file
+- It declares new structs, enums, and maps that attach to existing parents in the class tree
+- It does not modify, override, or redefine anything in core schema files
+- It is the extension boundary: adding capability means dropping in a module, not forking the tree
+
+**18.2. Module manifest format**
+Module manifests live in `modules/` as YAML files following the IDL syntax for enums, maps, and structs, plus module-specific header fields.
+
+```yaml
+version: 1
+type: module
+name: ew
+description: Electronic warfare actions, effects, protection, and spectrum management
+tags:
+  - military
+requires:
+  - core
+
+enums:
+  EWActionType:
+    - JAM = 0
+    - SPOOF
+    - DECEIVE
+    - INTERCEPT
+    - DIRECTION_FIND
+    - MONITOR
+    - DENY
+
+  JamType:
+    - NOISE = 0
+    - BARRAGE
+    - SPOT
+    - SWEEP
+    - RESPONSIVE
+    - FOLLOWER
+
+structs:
+  EWActionTask:
+    parent: Task
+    fields:
+      ew_action_type: optional EWActionType
+      target_signal_id: optional string
+      platform_id: optional string
+      duration_s: optional float
+
+  JamTask:
+    parent: EWActionTask
+    fields:
+      jam_type: optional JamType
+      frequency_range_hz: optional FloatRange
+
+  DirectionFindingResult:
+    parent: Intel
+    fields:
+      bearing_from_sensor_deg: optional float
+      sensor_position: optional LLA
+      estimated_emitter_position: optional LLA
+
+  SpectrumAllocation:
+    parent: Plan
+    fields:
+      frequency_range_hz: optional FloatRange
+      assigned_to_id: optional string
+      priority: optional int
+```
+
+Header fields (in addition to the common fields in section 3):
+- `description` — human-readable purpose
+- `requires` — list of tags or module names this module depends on. The resolver must include those dependencies before this module can be applied
+
+**18.3. Rules**
+- A module's structs must declare `parent` referencing a struct from the core schema or from a required module
+- A module may define structs that extend any branch of the class tree — this is the key difference from class expansion files, which are locked to one branch
+- All names (structs, enums, maps) must be globally unique across core schema and all loaded modules
+- A module may add new variants to an existing parent's `variants` block via `extend_variants` (see 18.4)
+- A module cannot redefine, remove, or alter existing structs, enums, or fields
+- Modules are optional — the core schema is complete and valid without any modules loaded
+- A module's `requires` list must be satisfied before the module is loaded; unsatisfied dependencies are an error
+
+**18.4. Extending variants**
+When a module adds a new child to an existing parent that has a `variants` block, it uses `extend_variants` to graft new members onto the parent's discriminator:
+
+```yaml
+extend_variants:
+  Task:
+    EW: EWTask
+  Intel:
+    DIRECTION_FINDING: DirectionFindingResult
+    THREAT_EMITTER: ThreatEmitter
+  Plan:
+    SPECTRUM_ALLOCATION: SpectrumAllocation
+```
+
+Rules:
+- `extend_variants` keys must reference structs from core schema or required modules
+- The referenced parent must already have a `variants` block
+- New variant keys must not collide with existing variant keys on that parent
+- The new variant enum values auto-increment from the last existing value on the parent
+- Each struct listed must declare `parent` matching the extended parent
+
+**18.5. Module resolution**
+When building a schema with modules:
+1. Resolve the core schema tree (files + includes + tag filtering)
+2. For each selected module, verify `requires` are satisfied
+3. Apply `extend_variants` to graft new variant members onto existing parents
+4. Merge the module's structs, enums, and maps into the global namespace
+5. Validate: no name collisions, no orphan parents, no cycles
+
+Module selection is independent of tag filtering but compatible with it:
+- A module tagged `military` is excluded when the profile excludes `military`
+- A module with no conflicting tags is included by default when explicitly selected
+- Modules are never auto-included — they must be explicitly selected by name or by matching tag inclusion rules
+
+**18.6. Use cases**
+- **Domain extension**: EW, fire support, logistics, CBRN as military modules
+- **Classification boundary**: classified munitions, sensor capabilities, or TTPs as restricted modules distributed separately
+- **Third-party extension**: a vendor adds their proprietary sensor types, task types, or telemetry formats without forking the schema
+- **Application-specific**: a maritime survey company adds bathymetry, seabed classification, and tidal data as a module
+- **Composable stacks**: select `core` + `aviation` + `isr` modules for a civil ISR drone system; select `core` + `military` + `ew` + `fires` + `logistics` for a full C2 stack
+
+**19. Canonical Examples**
+```yaml
+version: 1
+type: schema
+name: directive.yaml
+tags:
+  - core
+root: control.yaml
 
 maps:
   JsonGeometryTypes:

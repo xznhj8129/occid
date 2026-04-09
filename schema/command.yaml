@@ -10,7 +10,7 @@ structs:
       MODE: ModeCommandMessage
       PARAMETER: ParameterCommandMessage
       ACTUATOR: ActuatorCommandMessage
-      FIRE_SUPPORT: FireSupportCommandMessage
+      FIRE_SUPPORT: EffectsCommand
       EW_COMMAND: EWCommandMessage
       COMMS_COMMAND: CommunicationCommandMessage
       EMERGENCY: EmergencyCommandMessage
@@ -42,10 +42,10 @@ structs:
     fields:
       command: ActuatorCommand
 
-  FireSupportCommandMessage:
+  EffectsCommand:
     parent: CommandMessage
     fields:
-      command: FireSupportCommand
+      command: EffectsCommand
 
   EWCommandMessage:
     parent: CommandMessage

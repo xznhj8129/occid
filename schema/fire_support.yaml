@@ -83,15 +83,15 @@ structs:
       fire_for_effect: optional bool
 
   AdjustFireCommand:
-    parent: FireSupportCommand
+    parent: EffectsCommand
     fields:
       correction: optional SpotCorrection
 
   CeaseFireCommand:
-    parent: FireSupportCommand
+    parent: EffectsCommand
 
   CheckFireCommand:
-    parent: FireSupportCommand
+    parent: EffectsCommand
 
   FireMissionTask:
     parent: Task
