@@ -167,7 +167,20 @@ structs:
       position_source: optional NavSource
       heading_source: optional NavSource
       altitude_source: optional NavSource
-      gnss_statistics: optional string
+      nav_state_code: optional uint32
+      gnss_statistics: optional GNSSStatistics
+
+  GNSSStatistics:
+    fields:
+      fix_type: optional GPSFixType
+      satellite_count: optional uint32
+      last_message_dt_s: optional float
+      error_count: optional float
+      timeout_count: optional float
+      hdop: optional float
+      vdop: optional float
+      eph: optional float
+      epv: optional float
 
   Sensor:
     parent: State
@@ -200,11 +213,27 @@ structs:
     parent: State
     fields:
       rc_channels: optional list[uint16]
-      receiver_min: optional list[uint16]
-      receiver_max: optional list[uint16]
-      receiver_center: optional list[uint16]
-      channel_mapping: optional list[string]
-      mode_ranges: optional list[string]
+      receiver_config: optional ReceiverConfig
+      channel_map: optional ChannelMap
+      mode_ranges: optional list[ModeRange]
+
+  ReceiverConfig:
+    fields:
+      min_usec: optional uint16
+      max_usec: optional uint16
+      center_usec: optional uint16
+
+  ChannelMap:
+    fields:
+      channels: optional list[string]
+
+  ModeRange:
+    fields:
+      mode_id: optional uint32
+      mode_name: optional string
+      channel_index: optional uint16
+      lower_usec: optional uint16
+      upper_usec: optional uint16
 
   ResourceState:
     parent: State
@@ -226,6 +255,9 @@ structs:
       cell_count: optional uint32
       power_w: optional float
       consumed_mah: optional float
+      consumed_mwh: optional float
+      consumed_ah: optional float
+      battery_id: optional uint32
       source_identifier: optional string
       rssi: optional float
 
@@ -280,12 +312,42 @@ structs:
     fields:
       operational_mode: optional OperationalMode
       error_codes: optional list[string]
+      fc_connected: optional bool
       cpu_load_pct: optional float
+      cycle_time_us: optional uint32
       memory_used_pct: optional float
       disk_used_pct: optional float
       uptime: optional Duration
       temperature_c: optional float
-      software_version: optional string
+      flight_controller_info: optional FlightControllerInfo
+
+  FlightControllerInfo:
+    fields:
+      api_version: optional string
+      fc_variant: optional string
+      board_info: optional string
+      hardware_uid: optional string
+      legacy_uid: optional string
+      vendor: optional VendorInfo
+      product: optional ProductInfo
+      flight_software: optional SoftwareVersion
+      os_software: optional SoftwareVersion
+
+  VendorInfo:
+    fields:
+      vendor_id: optional uint32
+      vendor_name: optional string
+
+  ProductInfo:
+    fields:
+      product_id: optional uint32
+      product_name: optional string
+
+  SoftwareVersion:
+    fields:
+      major: optional uint32
+      minor: optional uint32
+      patch: optional uint32
       build_hash: optional string
 
   MissionProgress:

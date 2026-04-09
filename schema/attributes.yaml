@@ -60,26 +60,6 @@ structs:
       ROBOT: RobotAttributes
       PLATFORM: PlatformAttributes
 
-  VehicleAttributes:
-    parent: MachineAttributes
-    fields:
-      land_vehicle_class: optional LandVehicleClass
-      air_vehicle_class: optional AirVehicleClass
-      sea_vehicle_class: optional SeaVehicleClass
-      land_propulsion: optional LandPropulsion
-      propulsion_type: optional PropulsionType
-
-  RobotAttributes:
-    parent: MachineAttributes
-    fields:
-      land_propulsion: optional LandPropulsion
-      propulsion_type: optional PropulsionType
-      multirotor_config: optional MultirotorConfig
-      fixed_wing_config: optional FixedWingConfig
-      vtol_config: optional VTOLConfig
-      launch_method: optional LaunchMethod
-      recovery_method: optional RecoveryMethod
-
   PlatformAttributes:
     parent: MachineAttributes
     variants:

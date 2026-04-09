@@ -22,12 +22,22 @@ structs:
     fields:
       autonomy_mode: optional string
       control_authority_holder_id: optional string
-      flight_mode: optional string
+      flight_mode: optional FlightModeState
       armed: optional bool
       in_air: optional bool
-      active_modes: optional list[string]
+      active_mode_set: optional ActiveModeSet
       override_active: optional bool
       failsafe_active: optional bool
+
+  FlightModeState:
+    fields:
+      mode_name: optional string
+      mode_id: optional uint32
+
+  ActiveModeSet:
+    fields:
+      mode_names: optional list[string]
+      mode_ids: optional list[uint32]
 
   TaskParameters:
     parent: Parameters

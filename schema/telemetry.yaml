@@ -8,12 +8,27 @@ structs:
       production_method: optional ProductionMethod
       operational_context: optional OperationalContext
     variants:
-      VEHICLE: VehicleTelemetryMessage
+      UAV: UAVTelemetryMessage
 
-  VehicleTelemetryMessage:
+  UAVTelemetryMessage:
     parent: TelemetryMessage
     fields:
-      telemetry: VehicleTelemetry
+      telemetry: UAVTelemetry
+
+  UAVTelemetry:
+    fields:
+      location: optional Location
+      navigation: optional Navigation
+      kinematic: optional Kinematic
+      sensor: optional Sensor
+      input: optional Input
+      battery: optional Battery
+      fuel: optional Fuel
+      consumable: optional Consumable
+      parameters: optional RobotParameters
+      internal: optional Internal
+      condition: optional ConditionState
+      mission_progress: optional MissionProgress
 
   ObservationMessage:
     parent: Message

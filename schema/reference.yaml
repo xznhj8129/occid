@@ -75,6 +75,15 @@ enums:
     - RADIO_TIME_SIGNAL
 
   # --- Type ---
+  LegalStatus:
+    - CIVILIAN = 0
+    - MILITARY
+
+  CivilianType:
+    - PRIVATE = 0
+    - COMMERCIAL
+    - NGO
+
   PhysicalDomain:
     - LAND = 0
     - AIR

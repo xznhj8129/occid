@@ -1,0 +1,144 @@
+version: 1
+
+enums:
+  AutonomyClass:
+    - REMOTE = 0
+    - ASSISTED
+    - SEMI_AUTONOMOUS
+    - SUPERVISED
+    - AUTONOMOUS
+
+  MultirotorConfig:
+    - QUAD = 0
+    - HEX
+    - OCTO
+    - COAXIAL
+    - Y6
+    - X8
+
+  FixedWingConfig:
+    - CONVENTIONAL = 0
+    - FLYING_WING
+    - CANARD
+    - TANDEM_WING
+    - BLENDED_WING_BODY
+    - DELTA
+
+  VTOLConfig:
+    - TILTROTOR = 0
+    - TAILSITTER
+    - LIFT_AND_CRUISE
+    - QUAD_PLANE
+    - COPTER_PLANE
+
+  LaunchMethod:
+    - HTOL = 0
+    - VTOL
+    - CATAPULT
+    - HAND_LAUNCH
+    - RAIL_LAUNCH
+    - TUBE_LAUNCH
+    - DROP_LAUNCH
+    - BALLOON_LAUNCH
+
+  RecoveryMethod:
+    - HTOL = 0
+    - VTOL
+    - PARACHUTE
+    - DEEP_STALL
+    - NET_RECOVERY
+    - SKY_HOOK
+    - BELLY_LAND
+    - DITCHING
+
+structs:
+  # Robot: unmanned machine specialized for autonomous or supervised action
+  Robot:
+    parent: Machine
+    variants:
+      AIR: AirRobot
+      LAND: LandRobot
+      SEA: SeaRobot
+      SUBSEA: SubseaRobot
+      SPACE: SpaceRobot
+
+  AirRobot:
+    parent: Robot
+    fields:
+      launch_method: optional LaunchMethod
+      recovery_method: optional RecoveryMethod
+      max_altitude_m: optional float
+      max_flight_time_s: optional float
+      max_range_m: optional float
+      cruise_speed_ms: optional float
+      max_speed_ms: optional float
+
+  LandRobot:
+    parent: Robot
+    fields:
+      max_range_m: optional float
+      max_speed_ms: optional float
+
+  SeaRobot:
+    parent: Robot
+    fields:
+      max_range_m: optional float
+      max_speed_ms: optional float
+      endurance_s: optional float
+
+  SubseaRobot:
+    parent: Robot
+    fields:
+      max_depth_m: optional float
+      max_range_m: optional float
+      endurance_s: optional float
+
+  SpaceRobot:
+    parent: Robot
+    fields:
+      max_orbit_altitude_m: optional float
+      delta_v_ms: optional float
+      mission_duration_s: optional float
+
+  # Robot attribute specialization under Data -> Properties -> Attributes
+  RobotAttributes:
+    parent: MachineAttributes
+    variants:
+      AIR: AirRobotAttributes
+      LAND: LandRobotAttributes
+      SEA: SeaRobotAttributes
+      SUBSEA: SubseaRobotAttributes
+      SPACE: SpaceRobotAttributes
+
+  AirRobotAttributes:
+    parent: RobotAttributes
+    fields:
+      propulsion_type: optional PropulsionType
+      multirotor_config: optional MultirotorConfig
+      fixed_wing_config: optional FixedWingConfig
+      vtol_config: optional VTOLConfig
+      launch_method: optional LaunchMethod
+      recovery_method: optional RecoveryMethod
+
+  LandRobotAttributes:
+    parent: RobotAttributes
+    fields:
+      land_propulsion: optional LandPropulsion
+
+  SeaRobotAttributes:
+    parent: RobotAttributes
+    fields:
+      propulsion_type: optional PropulsionType
+      hull_type: optional string
+
+  SubseaRobotAttributes:
+    parent: RobotAttributes
+    fields:
+      propulsion_type: optional PropulsionType
+      pressure_class: optional string
+
+  SpaceRobotAttributes:
+    parent: RobotAttributes
+    fields:
+      propulsion_type: optional PropulsionType
+      mission_class: optional string
