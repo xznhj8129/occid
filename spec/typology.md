@@ -31,6 +31,44 @@ Facets describe *what* must be captured; Schema decides *how* (names, types, opt
 - ACTOR: Actor
 - MACHINE: Machine
 
+Indicators [facets]:
+- simulated flag
+- exercise flag
+- emergency flag
+- c2 flag
+- egressable flag
+- starred flag
+
+Override [facets]:
+- field path being overridden
+- override value
+- status (OverrideStatus)
+- type (OverrideType)
+- expiry time
+
+[enum] OverrideType:
+- Live
+- PostExpiry
+
+[enum] CorrelationType:
+- Manual
+- Automated
+
+[enum] CorrelationReplicationMode:
+- Local
+- Global
+
+Correlation [facets]:
+- primary entity
+- secondary entities
+- correlation type (CorrelationType)
+- replication mode (CorrelationReplicationMode)
+
+Decorrelation [facets]:
+- decorrelated entity references
+- reason
+- timestamp
+
 ### Actor
 
 [variants] by nature:
@@ -384,6 +422,12 @@ RecoverySystem [facets]:
 - national caveats
 - interoperability level
 - shared classification ceiling
+
+Team [facets]:
+- team identifier
+- member entity references
+- team lead entity reference
+- purpose
 
 ## Collection
 
@@ -781,6 +825,21 @@ GraphicControlMeasure [facets]:
 ### Record
 No further speciation yet.
 
+Media [facets]:
+- media items (list)
+- source entity reference
+
+MediaItem [facets]:
+- media type (MediaType)
+- URI / reference
+- timestamp
+- source entity reference
+- metadata (resolution, duration, etc.)
+
+[enum] MediaType:
+- Image
+- Video
+
 ### Equipment
 
 [variants] by category:
@@ -1102,6 +1161,14 @@ Staleness [facets]:
 - Air
 - Sea
 - Undersea
+- Space
+
+[enum] Environment:
+- Unknown
+- Air
+- Surface
+- SubSurface
+- Land
 - Space
 
 [enum] CombatDomain:
@@ -1481,10 +1548,102 @@ RigidTransform [facets]:
 - rotation (Quaternion)
 - translation (Vector3D)
 
+TransformMatrix [facets]:
+- 2x2 matrix (TMat2)
+- 3x3 matrix (TMat3)
+- 4x4 matrix (TMat4f)
+
 ### Compact Encodings
 
 CompactPosition [facets]:
 - lat (int32 degE7), lon (int32 degE7), alt (int32 cm)
+
+### Orbital Mechanics
+
+OrbitMeanElements [facets]:
+- metadata (epoch, theory)
+- mean elements (MeanKeplerianElements)
+- TLE parameters (optional)
+
+OrbitMeanElementsMetadata [facets]:
+- epoch
+- mean element theory (MeanElementTheory)
+
+MeanKeplerianElements [facets]:
+- semi-major axis
+- eccentricity
+- inclination
+- right ascension
+- argument of perigee
+- mean anomaly
+- mean motion
+- eccentric anomaly
+
+TleParameters [facets]:
+- line 1 data
+- line 2 data
+- epoch
+- mean motion derivative
+- drag term
+
+[enum] MeanElementTheory:
+- SGP4
+
+[enum] EciReferenceFrame:
+- TEME
+
+### Additional Coordinate / Geometry Shapes
+
+ThetaPhi [facets]:
+- theta (azimuth angle)
+- phi (elevation angle)
+
+AERPolygon [facets]:
+- ordered list of azimuth-elevation-range points
+
+LLAPolygon [facets]:
+- ordered list of LLA points (closed ring)
+
+LLAPath [facets]:
+- ordered list of LLA
+- loop (bool)
+
+### Vector Variants
+
+Vec2 [facets]:
+- x, y (float)
+
+Vec2f [facets]:
+- x, y (float, explicit)
+
+Vec3 [facets]:
+- x, y, z (float)
+
+Vec3f [facets]:
+- x, y, z (float, explicit)
+
+YawPitch [facets]:
+- yaw, pitch
+
+YPR [facets]:
+- yaw, pitch, roll
+
+### Color
+
+Color [facets]:
+- red, green, blue, alpha
+
+[enum] MilColor:
+- Red
+- Blue
+- Green
+- Yellow
+- Orange
+- Purple
+- White
+- Black
+- Brown
+- Pink
 
 ### Units
 
@@ -1719,6 +1878,52 @@ EWTask [variants] by purpose:
 - Rejected
 - Timeout
 - Failed
+
+StrikeParameters [facets]:
+- target reference
+- weapon payload reference
+- release constraints
+- engagement parameters
+
+StrikeReleaseConstraint [facets]:
+- release authority
+- release conditions
+- abort conditions
+
+PayloadConfiguration [facets]:
+- payload reference
+- operational state
+- configuration parameters
+
+ReleasePayload [facets]:
+- payload configuration
+- release conditions
+
+DeliveryState [facets]:
+- delivery status (DeliveryStatus)
+- delivery error code (DeliveryErrorCode)
+- delivery constraints
+
+DeliveryConstraints [facets]:
+- timeout
+- retry strategy
+- delivery deadline
+
+RetryStrategy [facets]:
+- max retries
+- retry delay
+- backoff multiplier
+
+[enum] DeliveryStatus:
+- Delivered
+- PendingExecute
+- PendingCancel
+- PendingComplete
+
+[enum] DeliveryErrorCode:
+- Unavailable
+- Timeout
+- Rejected
 
 Not tasks:
 - Takeoff, Land, RTL, Arm, Disarm, SetMode → Commands
@@ -2016,6 +2221,81 @@ RouteSegment [facets]:
 - speed constraint
 - turn radius
 - direction
+
+Waypoint [facets]:
+- position (LLA)
+- altitude constraint (optional)
+- speed constraint (optional)
+- action (WaypointActionType)
+- action parameters
+- dwell time (optional)
+
+Route [facets]:
+- ordered waypoints
+- constraints (area, altitude)
+- launch tracking mode
+
+PathSegment [facets]:
+- start waypoint
+- end waypoint
+- constraints
+
+[enum] LaunchTrackingMode:
+- GoToWaypoint
+- TrackToWaypoint
+
+[enum] LoiterType:
+- Orbit
+- Racetrack
+- FigureEight
+- Hold
+
+[enum] OrbitDuration:
+- UntilCommanded
+- FixedTime
+- FuelBased
+
+ISRParameters [facets]:
+- loiter type (LoiterType)
+- loiter duration (OrbitDuration)
+- orbit direction (OrbitDirection)
+- orbit pattern (OrbitPattern)
+- gimbal point
+- zoom settings
+- scan parameters
+
+GimbalPoint [facets]:
+- target entity reference (optional)
+- target position reference (optional)
+- azimuth-elevation point (optional)
+- frame point (optional)
+
+AzimuthElevationPoint [facets]:
+- azimuth
+- elevation
+
+FramePoint [facets]:
+- frame reference
+- x offset
+- y offset
+
+GimbalZoom [facets]:
+- zoom level
+- field of view
+
+AreaConstraints [facets]:
+- minimum altitude
+- maximum altitude
+- boundary geometry
+
+AltitudeConstraint [facets]:
+- minimum altitude
+- maximum altitude
+- reference datum
+
+AnglePair [facets]:
+- minimum angle
+- maximum angle
 
 ### Action
 
@@ -2674,6 +2954,34 @@ ParseErrorMessage [facets]:
 - Status_Executing
 - Status_Review
 
+Heartbeat [facets]:
+- node reference
+- timestamp
+- uptime
+- status summary
+- interval configuration
+
+HeartbeatConfig [facets]:
+- interval
+- timeout
+- jitter
+
+[enum] ScheduleType:
+- ZoneEnabled
+- ZoneTempEnabled
+
+Schedule [facets]:
+- schedule type (ScheduleType)
+- cron windows
+- enabled state
+- validity window
+
+CronWindow [facets]:
+- cron expression
+- timezone
+- active from
+- active until
+
 ### CoT Production Method (how data was produced)
 
 [enum] ProductionMethod:
@@ -2881,6 +3189,31 @@ MobilityProfile [facets]:
 - SIGINT
 - Minelaying
 - Cargo
+
+VisualDetails [facets]:
+- color scheme
+- markings
+- tail number
+- camouflage pattern
+- special identifiers
+
+RangeRings [facets]:
+- center position
+- ring radii (ordered list)
+- ring labels
+
+Dimensions [facets]:
+- length
+- width
+- height
+- wingspan (optional)
+
+[enum] Template:
+- Track
+- SensorPointOfInterest
+- Asset
+- Geo
+- SignalOfInterest
 
 #### Parameters
 Current operating configuration or control regime.
@@ -3132,6 +3465,50 @@ SensorReadiness [facets]:
 - home position ready
 - armable
 
+[enum] SensorMode:
+- Search
+- Track
+- WeaponSupport
+- Auto
+- Mute
+
+[enum] SensorType:
+- Radar
+- Camera
+- Transponder
+- RF
+- GPS
+- PTU_Pos
+- Perimeter
+- Sonar
+
+FieldOfView [facets]:
+- horizontal field of view
+- vertical field of view
+- minimum range
+- maximum range
+
+ProjectedFrustum [facets]:
+- apex position
+- direction (AzimuthElevation)
+- horizontal field of view
+- vertical field of view
+- near range
+- far range
+
+RFConfiguration [facets]:
+- center frequency
+- bandwidth range
+- operational modes
+
+Bandwidth [facets]:
+- center frequency
+- bandwidth
+
+BandwidthRange [facets]:
+- min frequency
+- max frequency
+
 #### Input
 
 Input [facets]:
@@ -3232,6 +3609,37 @@ Condition [facets]:
 - Advisory
 - Caution
 - Warning
+
+Health [facets]:
+- overall health status (HealthStatus)
+- connection status (ConnectionStatus)
+- component health map (ComponentHealth by ID)
+- alerts (list of Alert)
+
+ComponentHealth [facets]:
+- component identifier
+- health status (HealthStatus)
+- last update time
+- error codes (optional list)
+
+ComponentMessage [facets]:
+- component identifier
+- message text
+- severity (AlertLevel)
+- timestamp
+
+Alert [facets]:
+- alert level (AlertLevel)
+- condition (AlertCondition)
+- message
+- timestamp
+
+AlertCondition [facets]:
+- condition identifier
+- description
+- severity (AlertLevel)
+- acknowledged flag
+- timestamp
 
 #### Lifecycle
 
@@ -3563,6 +3971,12 @@ HighValueTarget [facets]:
 - priority (int, lower = higher)
 - is high payoff (bool)
 - target matches
+
+HighValueTargetMatch [facets]:
+- high value target reference
+- match confidence
+- match time
+- matching criteria
 
 TargetPriority [facets]:
 - high value target info

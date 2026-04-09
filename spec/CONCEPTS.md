@@ -3801,17 +3801,6 @@ All systems use some form of severity. Mapping:
 - Military: Routine, Priority, Immediate, Flash, Flash Override
 - Generic: Info, Low, Medium, High, Critical, Emergency
 
-### Data Encoding for Constrained Links
-On links like Meshtastic (max ~200 bytes per message), full JSON/Protobuf is too heavy.
-Compact encodings needed:
-- Position: 3 × int32 (lat/lon as degE7 + alt as cm) = 12 bytes
-- Heading: uint16 (degrees × 100) = 2 bytes
-- Speed: uint16 (cm/s) = 2 bytes
-- Battery: uint8 (percent) = 1 byte
-- Status bitmask: uint16 (armed, flying, mode, failsafe, etc) = 2 bytes
-- Minimal entity update: ~20 bytes
-- CompactTelemetry: entity_id_short (uint16 or uint8), lat_e7, lon_e7, alt_cm, heading_cdeg, speed_cms, battery_pct, status_flags
-
 ### Cross-Domain Fire Integration
 How fire support messages map to the schema:
 - Call For Fire → Communication → Message → Command → NavigationCommand-adjacent but really a FireSupportCommand
@@ -3840,3 +3829,532 @@ NOT Commands — already Tasks:
 - "jam/spoof/direction-find" (sustained) → EWActionTask
 - "supply request" → ResupplyMission
 - "evacuation request" → MEDEVACMission
+
+---
+
+# CONCEPTS ADDED FROM UNIFIED CJADC2 DEEP RESEARCH
+
+## F2T2EA (Find, Fix, Track, Target, Engage, Assess)
+
+The time-sensitive targeting workflow from US joint doctrine (JP 3-60). Maps to occid concepts:
+
+- **Find** → Detection from sensors, ISRTask, initial Entity creation
+- **Fix** → Geopositioning, Detection.confidence, Position component
+- **Track** → TrackComponent fusion, ImproveTrackQualityTask, Correlated lifecycle event
+- **Target** → TargetableTask routing, FireMissionTask, ObserveTask for BDA prep
+- **Engage** → Task execution by weapon platform, TaskStatus transition
+- **Assess** → BDA (battle damage assessment) via Detection/Classification on target post-engagement
+
+## JDL Fusion Levels (Joint Directors of Laboratories model)
+
+Fusion produces tiered information products, not raw streams [LA, SG, CT inference]:
+
+- **Level 0 (Source Pre-processing)** → Raw sensor data, Detection.source_data (pixels, RF samples, point clouds)
+- **Level 1 (Object Assessment)** → TrackComponent, fused position/velocity, uncertainty ellipse, Detection classification
+- **Level 2 (Situation Assessment)** → RelationshipComponent between entities (hostile/friendly proximity, formation, formation patterns)
+- **Level 3 (Impact Assessment)** → Threat assessment, priority escalation, Alert component
+- **Level 4 (Process Refinement)** → Sensor management, adaptive tasking (SensorTask retargeting based on fusion quality)
+
+## Covariance Intersection (Track-to-Track Fusion)
+
+When fusing tracks from independent sources with unknown cross-correlation [LA inference, ISIF proceedings]:
+
+- Never naively average or multiply covariances — leads to overconfident fusion
+- Use covariance intersection: fused mean = ω·P₂·(ω·P₂ + (1-ω)·P₁)⁻¹·μ₁ + (1-ω)·P₁·(ω·P₂ + (1-ω)·P₁)⁻¹·μ₂ where ω minimizes trace
+- Produces conservative (larger) covariance that is safe regardless of unknown correlation
+- Relevant for multi-node fusion where track cross-correlation cannot be computed
+
+## DDS / ROS 2 Quality of Service (QoS) Polices
+
+Data-centric pub-sub with configurable delivery semantics [LA inference, Shield AI EdgeOS inference]:
+
+**Reliability** [enum]:
+- BestEffort — drop messages under congestion (high-rate telemetry, video frames)
+- Reliable — guarantee delivery with retransmit (commands, task updates, entity state)
+
+**Durability** [enum]:
+- Volatile — late joiners get nothing (live sensor feeds)
+- TransientLocal — late joiners get last value (entity state snapshot, config)
+
+**History** [enum]:
+- KeepLast(depth=N) — retain most recent N samples
+- KeepAll — buffer all samples (risk of unbounded growth)
+
+**Liveliness** [enum]:
+- Automatic — publisher must write within lease_duration to be considered alive
+- ManualByTopic — application explicitly asserts liveliness
+
+**Deadline** — maximum acceptable period between samples; violation triggers callback
+
+**Lifespan** — maximum age after which a sample is considered stale (distinct from entity TTL)
+
+**Partition** — logical segmentation of topic namespace within same physical bus
+
+## DDS-XRCE (Extremely Resource Constrained Environments)
+
+Protocol for microcontrollers and constrained devices to participate in DDS domains via a broker agent [ML adjacency]:
+
+- XRCE Agent runs on edge compute node, manages DDS participation
+- XRCE Client runs on MCU/autopilot, sends compact publish/subscribe requests
+- Eliminates need for full DDS stack on resource-constrained endpoints
+- Maps to MAVLink→bridge→DDS pattern: autopilot publishes MAVLink, agent translates to DDS topics
+
+## MANET Routing Patterns
+
+Mesh networking for DDIL environments [HL, LA inference]:
+
+**OLSRv2 (Optimized Link State Routing v2)** [RFC 7181]:
+- Proactive routing — maintains routes before traffic needs them
+- Multipoint relays (MPRs) reduce control overhead vs. flooding
+- Suitable for moderately sized swarms (tens to hundreds of nodes)
+- Convergence time: seconds, acceptable for COP but not tight control loops
+
+**B.A.T.M.A.N. Advanced (batman-adv)** — Linux kernel module:
+- Reactive routing — discovers routes on demand
+- Originator messages at L2, no IP dependency
+- Transparent bridge — applications see single L2 domain
+- Trade-off: L2 broadcast domain scaling challenges; needs segmentation for large swarms
+
+**Routing selection by traffic class**:
+- Commands/tasking → OLSRv2 (proactive, low latency)
+- Bulk artifacts → DTN overlay when MANET partitioned
+- COP/telemetry → Either, with reliability policy from QoS layer
+
+## DTN (Delay/Disruption Tolerant Networking) — BPv7
+
+Store-carry-forward overlay for partitions and extreme delay [RFC 9171]:
+
+- Bundle Protocol v7 operates as overlay above transport
+- Nodes buffer bundles when no route exists, forward when contact available
+- UAVs serve as opportunistic carriers when mobile
+- Not for tight control loops; supports eventual delivery of:
+  - Imagery/artifacts from disconnected nodes
+  - Mission logs and audit trails
+  - Fused track updates after prolonged partition
+  - Entity updates with high TTL tolerance
+
+## CRDTs (Conflict-free Replicated Data Types)
+
+Eventually consistent data structures for decentralized COP [LA inference, ETH Zurich SSZ paper]:
+
+- Allow concurrent updates from multiple nodes without coordination
+- Commutative, associative, idempotent merge — any order produces same result
+- Applicable types:
+  - G-Counter (grow-only): entity sighting counts
+  - PN-Counter: entity status vote tallies
+  - OR-Set (observed-remove): entity component lists, task assignments
+  - LWW-Register (last-writer-wins): single-value fields with timestamp tiebreaking
+- Use when partition tolerance > strong consistency (DDIL environments)
+- Not needed for real-time control loops; for COP state reconciliation after healing
+
+## MIL-STD-2525 Symbology
+
+Standardized warfighting symbology for map-centric COP [CT, LA]:
+
+- SIDC (Symbol Identification Code) — 20-character alphanumeric code encoding:
+  - Context (Reality, Simulation, Exercise, Future)
+  - Standard identity (Friend, Hostile, Neutral, Unknown)
+  - Hierarchy (from echelon down to equipment item)
+  - Status (Active, Planned, Present, Anticipated, etc.)
+  - Modifier fields (HQ staff fill, unique designation, speed, etc.)
+- SIDC maps to Entity.type/identity fields in occid schema
+- Provides common visual encoding across coalition partners
+- APP-6(D) is NATO equivalent with minor differences
+
+## Semantic Layer / Ontology as Bridge
+
+Formal ontology layer between raw feeds and applications [LA, Palantir inference]:
+
+**Object types** — Entity categories (Vehicle, Person, Installation, Sensor)
+
+**Property types** — Typed attributes on objects (position, affiliation, status)
+
+**Link types** — Relationships between objects (ReportsTo, LocatedAt, Commands, Threatens)
+
+**Action types** — Permissible operations on objects (Assign, Revoke, Update, Correlate)
+
+**Ontology mappings**:
+- MIP Information Model (MIM) — semantic reference embodying JC3IEDM concepts
+- Lattice Entity/Task/Object three-model system
+- occid maps to this via Component system (properties) and Relationship structs (links)
+
+**Design principle**: Raw feeds ingest into ontology objects; applications consume ontology objects, not raw feeds.
+
+## Mesh CDN / Edge Object Store Caching
+
+Tiered artifact availability across partitioned meshes [LA]:
+
+**Local cache** — Object already on node (zero network cost)
+
+**Mesh peer** — Artifact cached on reachable neighbor (one hop)
+
+**Origin** — Artifact requires retrieval from source node (may be partitioned)
+
+**Caching policy**:
+- Checksum (SHA256) on every artifact upload — integrity verification on fetch
+- TTL on cached copies — evict stale artifacts to free edge storage
+- Tiered lookup: try local → mesh peer → origin → DTN bundle
+- Thumbnail previews cached more aggressively than full-resolution
+
+## W3 Event Model (What/Where/When)
+
+CoT/TAK-style compact event schema for shared SA [CT]:
+
+- **What** — Event type, platform type, activity classification
+- **Where** — Position (lat/lon/alt), uncertainty ellipse
+- **When** — Timestamp, TTL/stale time
+
+- Core schema is minimal; detail goes in extensible XML/JSON extensions
+- Maps naturally to:
+  - Low-rate COP upkeep (periodic position broadcasts)
+  - Airspace deconfliction overlays for swarms
+  - Human-readable situation awareness on constrained displays
+
+## Behavior Trees (Autonomy Runtime)
+
+Deterministic execution model for onboard agent decision-making [SG, Shield AI inference]:
+
+- Composable tree of behavior nodes: Sequence, Selector, Parallel, Decorator
+- Leaf nodes: Actions (execute), Conditions (guarded), Services (async call)
+- Returns: Success, Failure, Running (for long-running actions)
+- Advantages over state machines:
+  - Explicit priority ordering (selectors try children left-to-right)
+  - Easy to insert/replace subtrees without breaking existing logic
+  - Natural mapping from mission intent to execution sequence
+- Safety runtime assurance wraps behavior trees:
+  - Monitor node checks invariants (altitude floor, geofence, comm timeout)
+  - Override transitions to safe state (RTL, hover, loiter) on violation
+
+## Lattice Task Model (Reference)
+
+Mission-level tasking primitives [LA] — maps to occid Task/Control/Route concepts:
+
+**Deliberate tasks** — Planned, sequential actions executable by asset or team
+- Task has intent (objective), routing (delivery path), lifecycle (state machine)
+- Status propagation: Created → Assigned → InProgress → Completed/Failed/Cancelled
+
+**Distributed and persisted** — Tasks survive across COP nodes mesh network
+- Task state replicates via pub-sub with Reliable QoS
+- Task execution tracked even if originating node goes offline
+
+**Team-level tasks** — Single task routed to multiple assets with coordination
+- Team task decomposes into individual sub-tasks
+- Requires task allocation mechanism (auction, consensus, or centralized assignment)
+
+## Multi-Rate Telemetry
+
+Different data rates for different information classes under bandwidth constraints [LA, ML, CT inference]:
+
+| Rate | Content | Protocol/Pattern |
+|---|---|---|
+| High-rate (10-50 Hz) | Flight control, gimbal, raw detections | DDS Reliable, MAVLink |
+| Medium-rate (1-5 Hz) | Platform position, health, mode | DDS BestEffort + TransientLocal |
+| Low-rate (0.1-1 Hz) | COP entity updates, W3 events | CoT/TAK, MAVLink HIGH_LATENCY2 |
+| Event-driven | Alerts, state transitions, task updates | Reliable pub-sub, COMMAND_ACK |
+| Opportunistic | Full artifacts, logs, high-res imagery | DTN / Mesh CDN when bandwidth available |
+
+## Lattice Entity Component Indicators (additional)
+
+From LA entity indicators model — flags that govern entity handling:
+
+- **simulated** (bool) — entity originates from simulation, marked differently in COP
+- **exercise** (bool) — entity is part of training exercise, not real-world
+- **emergency** (bool) — entity is in emergency state, escalates priority
+- **c2** (bool) — entity is a C2 node (command and control asset)
+- **egressable** (bool) — entity should be shared to external/coalition systems
+- **starred** (bool) — operator-flagged importance, persistent highlight in COP
+
+## Provenance Chain-of-Processing (Flow-Tags)
+
+Trace of how entity data was produced and transformed [LA, CT CoT flow-tags]:
+
+- Each processing system appends its identifier to a provenance chain
+- CoT flow-tags schema (DoD public release) adds system fingerprints to events
+- Enables reconstruction of processing lineage: Sensor A → Detector B → Fusion C → COP D
+- Lattice requires provenance.integration_name on every entity — not optional
+- In occid: Detection.source_ref, TrackComponent.fused_from, Entity.provenance[]
+- For coalition: provenance determines trust level and sharing eligibility
+
+## DDIL Design Principle
+
+Explicit design assumption for Denied, Disrupted, Intermittent, Limited-bandwidth environments:
+
+- **Network is assumed unreliable** — services must degrade gracefully, not crash
+- **Local operation is primary** — every node must function standalone when partitioned
+- **Bandwidth is scarce** — delta updates, compression, multi-rate telemetry mandatory
+- **Reconciliation is eventual** — CRDTs or last-writer-wins for COP state repair
+- **No single point of failure** — mesh topology, distributed pub-sub, DTN fallback
+
+## Time-Sensitive Targeting Metrics
+
+Key performance indicators from F2T2EA workflow [LA, CT inference]:
+
+- **Sensor-to-shooter time** — Time from first detection to weapon release decision
+- **COP freshness** — Maximum age of position data for tracked entities
+- **Decision latency** — Time from alert to operator action/task creation
+- **Link availability** — Percentage of time communication paths are usable
+- **Track quality** — Covariance/uncertainty metric for fused position estimate
+
+## UxAS (Unmanned Systems Autonomy Services) — AFRL Reference Architecture
+
+AFRL's published architecture for distributed autonomous teaming [AFRL paper]:
+
+- **Architecture concept** — Service-oriented middleware where autonomy capabilities are exposed as composable services
+- **Service orchestration** — Services register capabilities, subscribe to relevant data, and produce outputs consumed by other services
+- **Decentralized execution** — Each UAV runs its own autonomy services; no single point of coordination failure
+- **Service types include**:
+  - Route planning and optimization
+  - Task allocation and assignment
+  - Sensor management and tasking
+  - Collision avoidance and deconfliction
+  - Energy management and refueling/recharging decisions
+  - Health monitoring and fault management
+- **Maps to occid**: Task system orchestration, autonomous Task routing, SensorTask management
+
+## Gerkey Task Allocation Taxonomy Formalism
+
+Formal classification of multi-robot task allocation problems [TAMU robotics paper]:
+
+**Single-task robot (ST) vs Multi-task robot (MT)**:
+- ST: Robot can execute only one task at a time (most UAVs)
+- MT: Robot can execute multiple tasks concurrently (UAV with ISR + comms relay)
+
+**Single-robot task (SR) vs Multi-robot task (MR)**:
+- SR: One robot suffices to complete the task (single UAV recon)
+- MR: Multiple robots required (coordinated perimeter, formation search)
+
+**Four problem classes**:
+- **ST-SR**: Simplest — one robot, one task. Assignment = matching problem.
+- **ST-MR**: Complex — tasks need teams. Requires set-partitioning.
+- **MT-SR**: Complex — robots juggle tasks. Requires scheduling.
+- **MT-MR**: Most complex — teams and concurrent execution.
+
+**Instantaneous assignment (IA) vs Time-extended assignment (TA)**:
+- IA: Assign available tasks to available robots now (greedy/auction)
+- TA: Plan assignments over time horizon considering future availability
+
+**Occid relevance**:
+- Most occid UAV operations fall into ST-SR (simple assign-then-execute)
+- Swarm behaviors may be ST-MR (multiple UAVs needed for one task)
+- Multi-payload platforms enable MT-SR (UAV doing ISR and comms relay simultaneously)
+- Task allocation mechanism selection depends on classification
+
+## Shield AI EdgeOS Runtime Primitives
+
+Hivemind EdgeOS public framing of autonomy runtime platform [Shield AI]:
+
+- **Discovery** — Nodes find each other on the network without central registry
+- **Time synchronization** — Shared timebase across distributed nodes (critical for fusion)
+- **Configurable QoS** — Per-topic delivery guarantees, not global best-effort
+- **Network feedback** — Applications receive explicit link quality metrics
+- **Deterministic messaging** — Predictable latency bounds for safety-critical paths
+- **Runtime safety assurance** — Monitors enforce safety envelopes regardless of mission logic state
+- **Operates without comms/GNSS/human input** — Designed for GPS-denied, comms-denied autonomous operation
+- **Maps to occid**: TimeSync module, QoS layer, Discovery service, SafetyRuntimeMonitor
+
+## Entity-Component Partial State Tolerance
+
+Design pattern from Lattice's entity model — "bags of components" [LA]:
+
+- **Every entity is identified by stable ID** — UUID or URN, not by completeness of data
+- **Components are optional and independent** — Position, Classification, Motion, Health, etc.
+- **Partial updates are first-class** — Never require full entity resend for single field change
+- **Missing component is normal state** — Not every sensor provides every component
+- **Expiry time on every component** — Different data ages out at different rates
+  - Position: short TTL (seconds to minutes depending on platform)
+  - Classification: medium TTL (valid until contradicted)
+  - Identity: long TTL (stable identification)
+- **Provenance.integration_name mandatory** — Every component update carries source
+- **Partial-state tolerance enables**:
+  - Incremental entity construction from heterogeneous sources
+  - Efficient delta updates over constrained links
+  - Degraded operation when some components become unavailable
+  - Clean garbage collection when TTLs expire without full-entity deletion
+
+**Occid implementation mapping**:
+- Entity.components dict → component bag
+- Component struct with updated_at, confidence, provenance, ttl → per-component lifecycle
+- Entity update handler merges partial deltas → partial-state-tolerant reconciliation
+
+## CoT/TAK Schema Details
+
+Beyond W3 model, CoT defines extensible event structure:
+
+**Core event fields**:
+- uid — unique event identifier
+- type — CoT event type string (e.g., "a-f-G-E-V-C" for ground vehicle friendly)
+- how — how event was generated (h-g-i-g-o = manual, m-g = manual GPS, a-g = autonomous)
+- time — event creation timestamp
+- start — validity start
+- stale — validity end (TTL)
+
+**Detail extensions** (optional, extensible):
+- contact — callsign, affiliation, role
+- vitals — battery %, status, equipment state
+- track — course, speed, heading, accuracy
+- remarks — free-text annotations
+- link — references to related UIDs (relates, parent, child)
+- sensor — sensor cone geometry
+- color — display tint
+- file — associated file/artifact reference
+- video — video stream URL (RTSP, WebRTC)
+
+**Protocol transports**:
+- Multicast UDP — LAN/broadcast distribution
+- TCP/TLS — secure point-to-point
+- HTTP/REST — API integration
+- **occid already has Communication.Message which maps to CoT events**
+
+## AfRL UCI (Unmanned Control Interface)
+
+Messages for mission-level command and control interoperability [AFRL VDL]:
+
+- **Mission-level abstraction** — Messages are independent of specific airframe/payload
+- **Enables**: Any compliant UAV to receive and execute mission commands from any compliant C2 system
+- **Message categories**:
+  - Mission planning (route, objectives, constraints)
+  - Task allocation (assign task to platform)
+  - Payload control (sensor tasking, imagery requests)
+  - Status reporting (platform health, task completion)
+- **Maps to occid**: Task model, Control.Command variants, Platform.Status reporting
+
+## Coalition Semantics and Interoperability
+
+Mapping between different ontologies in coalition/interoperability scenarios:
+
+**MIP (Multilateral Interoperability Programme) Information Model**:
+- Semantic reference for C2 domain concepts
+- Embodies JC3IEDM (Joint Command, Control, and Consultation Information Exchange Data Model) operational concepts
+- Defines standard object types, relationships, and actions for military operations
+- DELTA tested for interoperability within NATO environment via CWIX (Coalition Warrior Interoperability Exercise)
+
+**Coalition mapping challenges**:
+- Different nations use different entity classification schemes
+- Symbology varies slightly between MIL-STD-2525 (US) and APP-6(D) (NATO)
+- Coalition sharing requires egressable flag filtering (what gets shared vs retained)
+- Trust levels vary — some coalition partners receive less detail (classification downgrading)
+- **In occid**: Entity.indicators.egressable, CoalitionFilter for outbound sharing rules
+
+## DELTA Mission Control Workflow
+
+Ukrainian system's drone operations coordination pattern:
+
+- **Crews must enter into system**: UAV type, planned route, mission objective
+- **Creates unified reporting and visibility**: All drone operations visible in shared COP
+- **Supports**: Planning and coordination of drone operations across units
+- **Integration**: DELTA provides real-time situational awareness on soldiers' smartphones/tablets/laptops
+- **Source integration**: Radars, sensors, GPS trackers, radio intercepts, satellite imagery, drone footage, human reporting
+- **Access patterns**: Layered battlefield map with filters for different intelligence products
+
+## Sensor-to-COP Ingestion Pipeline
+
+Full flow from raw sensor to tracked entity in COP:
+
+```
+Physical Sensor → Detection → Local Track → Fused Track → COP Entity
+     ↓               ↓            ↓              ↓            ↓
+  Raw data    Position +      Local           Multi-      Shared
+              classification  tracking        source      entity graph
+              with            with            fusion      with
+              uncertainty     uncertainty     with CI     full
+              bounds          ellipse         covariance  ontology
+                                                        mapping
+```
+
+**Key transitions**:
+- Detection → Track: temporal association, track initiation logic (M/N detections to declare)
+- Local Track → Fused Track: cross-platform correlation, covariance intersection fusion
+- Fused Track → Entity: ontology mapping, relationship resolution, provenance chaining
+
+## Artifact Types and Classification (expanding from LA Objects model)
+
+From Lattice object model — artifacts that exist as independent objects:
+
+- **Image files** — captured imagery with metadata (GPS, timestamp, sensor params)
+- **Video streams** — live or recorded video with stream URL reference
+- **Thumbnail previews** — compressed previews for constrained bandwidth display
+- **Detection metadata** — AI model output: detections, classifications, confidence scores
+- **3D models** — reconstructed terrain or structure models
+- **Map tiles** — cached geographic tiles for offline operation
+- **Mission logs** — audit trail of task execution, platform decisions
+- **Flight paths** — recorded telemetry tracks for replay and analysis
+
+**Artifact integrity**:
+- SHA256 checksum on upload
+- Checksum verification on fetch/integrity check
+- TTL-based garbage collection for cached copies
+- Access control based on classification level and coalition sharing rules
+
+## Architecture Reference Diagram
+
+Canonical layered architecture for C3ISR/CJADC2 edge systems:
+
+**Edge Connectivity Layer**:
+- Bearers: RF + LTE/5G + SATCOM + wired
+- MANET/Mesh Routing (OLSRv2, L2 mesh)
+- DTN Overlay (store-carry-forward, BPv7)
+
+**Edge Nodes**:
+- Sensor Nodes (radars, EO/IR, SIGINT)
+- UAV Edge Nodes (flight control + mission compute)
+- Edge C2 Nodes (tablet/laptop/tactical server)
+
+**Edge Middleware**:
+- Pub-Sub/Streaming Bus (DDS/ROS2-like QoS)
+- Low-bandwidth Telemetry (MAVLink + microservices)
+- Event Meta-telemetry (CoT/TAK-style W3 events)
+
+**Semantics + Fusion**:
+- Ontology/Data Model (objects, links, actions)
+- Entity/Track Graph (partial-state, TTL, provenance)
+- Sensor + Track Fusion (uncertainty-aware)
+
+**Control + Autonomy**:
+- Mission Tasking Layer (intent, routing, lifecycle)
+- Onboard Autonomy Runtime (behavior trees, planners)
+- Multi-agent Allocation (auctions/consensus)
+
+**Artifacts**:
+- Edge Object Store / Mesh CDN (cache, integrity, TTL)
+- Artifacts: imagery, video clips, thumbnails, models, tiles
+
+## Sensor-to-COP-to-Action Message Sequences
+
+Sequence 1: Detection to Fused Track
+```
+Sensor/Detector → COP Entity Graph: Publish/Update Track Entity (partial components)
+COP Entity Graph → Track Fusion Service: Stream track updates & metadata
+Track Fusion Service → COP Entity Graph: Publish fused track entity + confidence/uncertainty
+```
+
+Sequence 2: Mission Tasking
+```
+Operator UI → Tasking Service: Create mission task (intent + parameters)
+Tasking Service → Taskable Agent: Route task to agent/team
+Taskable Agent → Tasking Service: Update task status (accept/execute/complete/error)
+```
+
+Sequence 3: Artifact Flow
+```
+Sensor → Object Store/Mesh CDN: Upload artifact (image/clip/thumbnail) with checksum + TTL
+Object Store/Mesh CDN → Operator UI: On-demand artifact retrieval via cache/mesh
+Operator UI → COP Entity Graph: Annotate entity (classification, priority) via partial update
+```
+
+## Coalesced Design Backbone
+
+Core problems:
+- Operate under DDIL networking and partitions while keeping a coherent shared picture
+- Fuse heterogeneous sensing into stable tracks and higher-level assessments with uncertainty, avoiding overconfidence
+- Provide a semantic layer (ontology) that aligns humans, services, and edge agents; support coalition semantics and symbology
+- Scale tasking from one operator to many UAVs through mission-level intent, routing, lifecycle, and status
+- Deliver meta-telemetry (multi-rate) plus artifact survivability through caching/CDN and integrity checks
+
+Key architectural primitives:
+- Entity/track graph with composable components, TTL/expiry, and mandatory provenance
+- Ontology layer mapping data to object/link/action types; "digital twin" semantics
+- Task model for mission-level sequential actions; task routing, persistence, and status propagation
+- Object/artifact store with mesh caching, tiered lookup, integrity checks, and TTL
+- Communications substrate with QoS-aware pub-sub + constrained endpoints via agent bridges
+- Low-bandwidth vehicle telemetry with specialized high-latency profile and reliable command microservices
+- Autonomy runtime primitives: deterministic messaging, discovery, time sync, QoS, and safety/runtime assurance
