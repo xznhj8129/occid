@@ -1,9 +1,0 @@
-version: 1
-
-structs:
-  # Entity: one discrete "atom" capable of actions
-  Entity:
-    parent: Object
-    variants:
-      ACTOR: Actor
-      MACHINE: Machine

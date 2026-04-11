@@ -1,0 +1,3885 @@
+# Actor 
+
+AgentInferenceType:
+- Text
+- Vision
+- Multimodal
+- ToolUse
+- Code
+
+AgentSessionState:
+- Active
+- Suspended
+- Terminated
+
+
+# Autonomy 
+
+BehaviorNodeType:
+- Sequence
+- Selector
+- Parallel
+- Condition
+- Action
+- Decorator
+- SubTree
+
+BehaviorNodeStatus:
+- Success
+- Failure
+- Running
+
+
+
+UnitFunction:
+- Maneuver
+- FireSupport
+- AirDefense
+- Aviation
+- Engineer
+- Signal
+- ISR
+- MP
+- CBRN
+- Logistics
+- Medical
+- CivilAffairs
+- PsyOps
+- SOF
+
+WarfareType:
+- Conventional
+- Unconventional
+- Guerrilla
+- Hybrid
+- Asymmetric
+- Information
+- Cyber
+- Electronic
+
+CombatDomain:
+- Combat
+- CombatSupport
+- CombatSupportService
+
+
+MilitaryBranch:
+- Army
+- Navy
+- AirForce
+- Marines
+- CoastGuard
+- SpaceForce
+- SpecialOperations
+- Joint
+
+# Fire Support 
+
+EngagementMethod:
+- PointTarget
+- AreaTarget
+- Suppression
+- Destruction
+- Neutralization
+- Illumination
+- Smoke
+- Marking
+
+FireType:
+- Immediate
+- Planned
+- OnCall
+
+WeaponType:
+- Mortar
+- Howitzer
+- Rocket
+- MLRS
+- Missile
+- DirectFire
+- AirDelivered
+- Naval
+
+AmmunitionType:
+- HE
+- WP
+- Illumination
+- Smoke
+- DPICM
+- Thermobaric
+- HEAT
+- Frag
+- AP
+- Incendiary
+- Guided
+
+ShellTrajectory:
+- Low
+- High
+- Vertical
+
+FireMissionStatus:
+- Requested
+- Approved
+- Denied
+- ShotOut
+- SplashOver
+- RoundsComplete
+- EndOfMission
+- Cancelled
+- CheckFiring
+
+EffectAchieved:
+- Destroyed
+- Neutralized
+- Suppressed
+- NoEffect
+- Unknown
+
+# Ew 
+
+EWActionType:
+- Jam
+- Spoof
+- Deceive
+- Intercept
+- DirectionFind
+- Monitor
+- Deny
+
+JamType:
+- Noise
+- Barrage
+- Spot
+- Sweep
+- Responsive
+- Follower
+
+EWEffectType:
+- SignalDegraded
+- SignalDenied
+- TargetDecoyed
+- CommunicationsDisrupted
+- NoEffect
+
+EPType:
+- FrequencyHopping
+- SpreadSpectrum
+- Encryption
+- PowerControl
+- DirectionalAntenna
+- BurstTransmission
+
+
+# Communication 
+
+## Communication
+
+NodeType:
+- Sensor
+- Effector
+- C2
+- Relay
+- Gateway
+- Observer
+- All
+
+NetworkTopology:
+- Mesh
+- PointToPoint
+- Broadcast
+- StoreAndForward
+
+MeshNodeRole:
+- Router
+- Endpoint
+- Repeater
+- Gateway
+- BorderRouter
+
+MeshRoutingProtocol:
+- AODV
+- OLSR
+- Babel
+- Batman
+- Custom
+
+EMBand:
+- ELF
+- SLF
+- ULF
+- VLF
+- LF
+- MF
+- HF
+- VHF
+- UHF
+- SHF
+- EHF
+- THF
+- Infrared
+- Visible
+
+SATCOMBand:
+- UHF
+- SHF
+- EHF
+- Ka
+- Ku
+- X
+- C
+- L
+- S
+
+DataLinkType:
+- CDL
+- TCDL
+- SADL
+- Link16
+- Link22
+- JREAP
+- BACN
+- BLOS
+- DAMA
+- HaveQuick
+- SINCGARS
+- ARC_210
+
+ProtocolType:
+- MAVLink
+- MAVLink_M
+- MSPv2
+- ROS
+- STANAG4586
+- CoT 
+- CustomSerial
+- Meshtastic
+- RTP_RTSP 
+- SRT
+- HLS
+- WebRTC
+- Link16
+- VMF
+- ADS_B
+- XMPP
+- DDS
+
+SerializationFormat:
+- Protobuf
+- JSON
+- XML
+- CBOR
+- MessagePack
+- FlatBuffers
+- Avro
+- BSON
+- Binary_Custom
+- ASCII_Text
+
+CompressionType:
+- None
+- GZIP
+- LZ4
+- Zstd
+- Snappy
+- Deflate
+
+Endianness:
+- LittleEndian
+- BigEndian
+- NetworkOrder
+
+QoSReliability:
+- BestEffort
+- AtLeastOnce
+- ExactlyOnce
+- Guaranteed
+
+RoutingMode:
+- Unicast
+- Multicast
+- Broadcast
+- Anycast
+- PubSub
+- RequestReply
+- StoreAndForward
+
+StreamEncoding:
+- H264
+- H265
+- VP8
+- VP9
+- AV1
+- MJPEG
+- RAW
+- PCM
+- AAC
+- Opus
+
+StreamTransport:
+- RTP
+- RTSP
+- SRT
+- HLS
+- WebRTC
+- MPEG_TS
+- NDI
+- RTMP
+
+MessageShape:
+- Snapshot 
+- Delta 
+- History 
+- Log 
+
+DataFlowType:
+- CommandDown 
+- StatusUp 
+- TelemetryUp 
+
+MessagePriority:
+- Routine
+- Priority
+- Immediate
+- Flash
+- FlashOverride
+
+AcknowledgmentPolicy:
+- None
+- OnReceipt
+- OnProcessing
+- OnExecution
+
+InterrogationResponse:
+- Correct
+- Incorrect
+- NoResponse
+
+GimbalMode:
+- Stow
+- Manual
+- TrackEntity
+- PointAtPosition
+- PointAtAzEl
+- ScanPattern
+- StabilizedHold
+- ReturnToCenter
+
+OODACycle:
+- Observe
+- Orient
+- Decide
+- Act
+
+CameraAction:
+- TakePhoto
+- StartRecording
+- StopRecording
+- SetZoom
+- SetFocus
+- SetExposure
+- SetWhiteBalance
+- SetPalette
+- ToggleNightVision
+
+WaypointActionType:
+- Transit
+- Flyover
+- Flyby
+- Takeoff
+- Land
+- Loiter
+- Orbit
+- Hold
+- ReturnToLaunch
+- PayloadAction
+- SensorAction
+- Photo
+- Survey
+- Delivery
+- Relay
+- Rendezvous
+- Custom
+
+ReplyCode:
+- Received
+- Wilco
+- Complete_Success
+- Complete_Fail
+- Fail_NoAssets
+- Fail_BadRequest
+- Fail_Denied
+- Fail_InsufficientInfo
+- Fail_Rejected
+- Fail_RejectedByC2
+- Fail_RejectedByPlatform
+- Fail_Stale
+- Status_Canceling
+- Status_Executing
+- Status_Review
+
+ScheduleType:
+- ZoneEnabled
+- ZoneTempEnabled
+
+ProductionMethod:
+- Machine_GPS
+- Machine_INS
+- Machine_INS_GPS
+- Machine_DGPS
+- Machine_Mensurated
+- Machine_Magnetic
+- Machine_Simulated
+- Machine_Configured
+- Machine_Passed
+- Machine_Fused
+- Machine_Tracker
+- Machine_Radio
+- Machine_Radio_EPLRS
+- Machine_Radio_PLRS
+- Machine_Radio_Doppler
+- Machine_Radio_VHF
+- Machine_Radio_TADIL_A
+- Machine_Radio_TADIL_B
+- Machine_Radio_TADIL_J
+- Human_Transcribed
+- Human_Estimated
+- Human_Calculated
+- Human_Pasted
+- Human_GIGO
+
+RelationType:
+- Parent
+- Producer
+- Owner
+- Manager
+- Leader
+- Child
+- Correlated
+- Fused
+- Composite
+- Alternate
+- Refinement
+- Amplification
+- RefinementURL
+- TaskingBy
+- TaskObject
+- TaskIndirectObject
+- TaskSubject
+- TaskAt
+- TaskBy
+- TaskWith
+- TaskFrom
+- TaskRegarding
+
+OperationalContext:
+- Exercise
+- Operational
+- Simulated
+
+## Signal
+
+ScanType:
+- Circular
+- BidirectionalHorizontalSector
+- BidirectionalVerticalSector
+- NonScanning
+- Irregular
+- Conical
+- LobeSwitching
+- Raster
+- CircularVerticalSector
+- CircularConical
+- SectorConical
+- AgileBeam
+- UnidirectionalVerticalSector
+- UnidirectionalHorizontalSector
+- UnidirectionalSector
+- BidirectionalSector
+
+# Control 
+
+## Autonomy
+
+BehaviorNodeType:
+- Sequence
+- Selector
+- Parallel
+- Condition
+- Action
+- Decorator
+- SubTree
+
+BehaviorNodeStatus:
+- Success
+- Failure
+- Running
+
+## Control
+
+TaskLevel:
+- Technical
+- Tactical
+- Operational
+- Strategic
+
+TaskSubject:
+- Maneuver
+- ISR
+- Effects
+- Support
+- EW
+
+TaskStatus:
+- Created
+- ScheduledInManager
+- Sent
+- MachineReceipt
+- Ack
+- Wilco
+- Executing
+- WaitingForUpdate
+- DoneOk
+- DoneNotOk
+- Replaced
+- CancelRequested
+- CompleteRequested
+- VersionRejected
+
+TaskErrorCode:
+- Cancelled
+- Rejected
+- Timeout
+- Failed
+
+DeliveryStatus:
+- Delivered
+- PendingExecute
+- PendingCancel
+- PendingComplete
+
+DeliveryErrorCode:
+- Unavailable
+- Timeout
+- Rejected
+
+InstructionProductType:
+- StandingOrder
+- SOP
+- WARNO
+- FRAGO
+
+GimbalMode:
+- Stow
+- Manual
+- TrackEntity
+- PointAtPosition
+- PointAtAzEl
+- ScanPattern
+- StabilizedHold
+- ReturnToCenter
+
+OODACycle:
+- Observe
+- Orient
+- Decide
+- Act
+
+CameraAction:
+- TakePhoto
+- StartRecording
+- StopRecording
+- SetZoom
+- SetFocus
+- SetExposure
+- SetWhiteBalance
+- SetPalette
+- ToggleNightVision
+
+WaypointActionType:
+- Transit
+- Flyover
+- Flyby
+- Takeoff
+- Land
+- Loiter
+- Orbit
+- Hold
+- ReturnToLaunch
+- PayloadAction
+- SensorAction
+- Photo
+- Survey
+- Delivery
+- Relay
+- Rendezvous
+- Custom
+
+OrbitPattern:
+- Circle
+- Racetrack
+- FigureEight
+
+OrbitDirection:
+- Right
+- Left
+
+SearchPattern:
+- Random
+- Grid
+- Spiral
+- Sector
+- Expanding
+
+MovementTechnique:
+- Traveling
+- TravelingOverwatch
+- BoundingOverwatch
+- SuccessiveBounds
+- AlternatingBounds
+
+MovementRate:
+- Normal
+- Deliberate
+- Hasty
+- Forced
+- Administrative
+
+MovementFormation:
+- Column
+- StaggeredColumn
+- Wedge
+- Line
+- Echelon
+- Vee
+- Diamond
+- File
+- Box
+- Herringbone
+- Coil
+
+AttackType:
+- Deliberate
+- Hasty
+- Spoiling
+- Counterattack
+- Raid
+- Ambush
+- Feint
+- Demonstration
+
+ApproachMethod:
+- Frontal
+- Flanking
+- Envelopment
+- TurningMovement
+- Infiltration
+- Penetration
+
+DefenseType:
+- AreaDefense
+- MobileDefense
+- Retrograde
+- Delay
+- Withdrawal
+- Retirement
+
+RouteSegmentType:
+- GreatCircle
+- Rhumbline
+- Straight
+- TurnArc
+- Orbit
+- Hold
+- Approach
+- Departure
+- Missed
+- Emergency
+
+LaunchTrackingMode:
+- GoToWaypoint
+- TrackToWaypoint
+
+LoiterType:
+- Orbit
+- Racetrack
+- FigureEight
+- Hold
+
+OrbitDuration:
+- UntilCommanded
+- FixedTime
+- FuelBased
+
+WeaponsPosture:
+- WeaponsFree
+- WeaponsTight
+- WeaponsHold
+
+EMCONLevel:
+- Full
+- Limited
+- Restricted
+- Silent
+
+EscalationLevel:
+- ShowOfForce
+- WarningShot
+- Engage
+- Destroy
+
+DeconflictionType:
+- Altitude
+- Temporal
+- Lateral
+- Speed
+- Route
+- Frequency
+
+AbortType:
+- BatteryBingo
+- FuelBingo
+- CommsLost
+- DamageSustained
+- WeatherBelow
+- MissionTimeout
+- HostileContact
+- GeofenceBreach
+- ManualAbort
+- EquipmentFailure
+
+FailsafeAction:
+- None
+- RTL
+- Land
+- Loiter
+- Descend
+- Terminate
+- Continue
+- SmartRTL
+- Brake
+- Parachute
+- HoldPosition
+
+TriggerType:
+- TimeReached
+- PositionReached
+- EventOccurred
+- ThresholdExceeded
+- ConditionMet
+- OrderReceived
+- EnemyAction
+- FriendlyAction
+
+InterfaceType:
+- PWM 
+- GPIO
+- CAN 
+- Serial 
+- RC 
+
+## Ew
+
+EWActionType:
+- Jam
+- Spoof
+- Deceive
+- Intercept
+- DirectionFind
+- Monitor
+- Deny
+
+JamType:
+- Noise
+- Barrage
+- Spot
+- Sweep
+- Responsive
+- Follower
+
+EWEffectType:
+- SignalDegraded
+- SignalDenied
+- TargetDecoyed
+- CommunicationsDisrupted
+- NoEffect
+
+EPType:
+- FrequencyHopping
+- SpreadSpectrum
+- Encryption
+- PowerControl
+- DirectionalAntenna
+- BurstTransmission
+
+## Fire Support
+
+EngagementMethod:
+- PointTarget
+- AreaTarget
+- Suppression
+- Destruction
+- Neutralization
+- Illumination
+- Smoke
+- Marking
+
+FireType:
+- Immediate
+- Planned
+- OnCall
+
+WeaponType:
+- Mortar
+- Howitzer
+- Rocket
+- MLRS
+- Missile
+- DirectFire
+- AirDelivered
+- Naval
+
+AmmunitionType:
+- HE
+- WP
+- Illumination
+- Smoke
+- DPICM
+- Thermobaric
+- HEAT
+- Frag
+- AP
+- Incendiary
+- Guided
+
+ShellTrajectory:
+- Low
+- High
+- Vertical
+
+FireMissionStatus:
+- Requested
+- Approved
+- Denied
+- ShotOut
+- SplashOver
+- RoundsComplete
+- EndOfMission
+- Cancelled
+- CheckFiring
+
+EffectAchieved:
+- Destroyed
+- Neutralized
+- Suppressed
+- NoEffect
+- Unknown
+
+## Logistics
+
+SupplyClass:
+- I_Subsistence
+- II_ClothingEquipment
+- III_FuelPOL
+- IV_Construction
+- V_Ammunition
+- VI_PersonalItems
+- VII_MajorEndItems
+- VIII_Medical
+- IX_RepairParts
+- X_Miscellaneous
+
+SupplyPriority:
+- Routine
+- Priority
+- Immediate
+- Emergency
+
+# Data 
+
+## Data
+
+AltIdType:
+- TrackId
+- SPI_Id
+- AssetId
+- Link16TrackNumber
+- Link16_JU
+- Callsign
+- MMSI
+- VMF_URN
+- IMO
+- SerialNumber
+- RegistrationId
+- DODAAC
+- UIC
+- NORAD_CAT_ID
+- UNOOSA_Name
+- UNOOSA_Id
+
+CapabilityType:
+- Maneuver
+- FireSupport
+- ISR
+- Strike
+- Relay
+- Logistics
+- Medical
+- AirDefense
+- EW
+- Cyber
+
+WeaponMountType:
+- Fixed
+- Turret
+- Pintle
+- Coaxial
+- Wing
+- Pylon
+- Internal
+
+ArmorType:
+- None
+- Ballistic
+- Composite
+- Reactive
+- Slat
+- Active
+- Cage
+
+ArmorLevel:
+- None
+- SmallArms
+- HeavyMachineGun
+- Autocannon
+- ShapedCharge
+- KineticEnergy
+
+AirRole:
+- GroundAttack
+- AntiAir
+- Fighter
+- Reconnaissance
+- IMINT
+- SIGINT
+- Minelaying
+- Cargo
+
+Template:
+- Track
+- SensorPointOfInterest
+- Asset
+- Geo
+- SignalOfInterest
+
+AuthorityLevel:
+- Full
+- Shared
+- Delegated
+- Monitor
+
+CorrelationType:
+- Manual
+- Automated
+
+CorrelationReplicationMode:
+- Local
+- Global
+
+HandoffType:
+- ControlAuthority
+- TrackCustody
+- TaskAssignment
+- SensorCue
+- CommunicationRelay
+- LogisticResponsibility
+
+IndoorPosMethod:
+- WiFi
+- BLE_Beacon
+- UWB
+- RFID
+- Optical
+- DeadReckoning
+- Manual
+
+GPSFixType:
+- NoFix
+- Fix2D
+- Fix3D
+- DGPS
+- RTK_Float
+- RTK_Fixed
+- Static
+- PPS
+
+NavSource:
+- GPS
+- GLONASS
+- Galileo
+- BeiDou
+- INS
+- VIO
+- OpticalFlow
+- SLAM
+- Barometer
+- Radar
+- Altimeter
+- Fused
+
+NavMode:
+- Manual
+- Waypoint
+- RTL
+- Loiter
+- Guided
+- Land
+- Takeoff
+- Circle
+- Drift
+- PositionHold
+- Brake
+- Throw
+- ADSB
+- SmartRTL
+- FlowHold
+- Follow
+- Zigzag
+- SystemID
+- AutoRotate
+
+SensorMode:
+- Search
+- Track
+- WeaponSupport
+- Auto
+- Mute
+
+SensorType:
+- Radar
+- Camera
+- Transponder
+- RF
+- GPS
+- PTU_Pos
+- Perimeter
+- Sonar
+
+PowerStatus:
+- Unknown
+- NotPresent
+- Operating
+- Disabled
+- Error
+
+PowerType:
+- Unknown
+- Gas
+- Battery
+
+HealthStatus:
+- Healthy
+- Warn
+- Fail
+- Offline
+- NotReady
+
+ConnectionStatus:
+- Online
+- Offline
+
+OperationalState:
+- Off
+- NonOperational
+- Degraded
+- Operational
+- Denied
+
+AlertLevel:
+- Advisory
+- Caution
+- Warning
+
+LifecyclePhase:
+- Planned
+- Active
+- Paused
+- Complete
+- Aborted
+- Failed
+
+RequestStatus:
+- Submitted
+- Acknowledged
+- Approved
+- Denied
+- InTransit
+- Delivered
+- Cancelled
+
+OverrideStatus:
+- Applied
+- Pending
+- Timeout
+- Rejected
+- DeletionPending
+
+OperationalMode:
+- Off
+- Startup
+- Nominal
+- Degraded
+- Emergency
+- Maintenance
+- Calibrating
+- Standby
+- Sleep
+
+EntityLifecycleEvent:
+- FirstSeen
+- Updated
+- LocationChanged
+- StatusChanged
+- HealthChanged
+- Correlated
+- Decorrelated
+- Overridden
+- OverrideRemoved
+- Expired
+- PostExpiryOverride
+- Deleted
+- Lost
+- Recovered
+- HandedOff
+- TaskAssigned
+- TaskCompleted
+
+GeofenceViolationType:
+- Entered
+- Exited
+- AltitudeExceeded
+
+PIDMethod:
+- Visual
+- Electronic
+- Behavioral
+- Intelligence
+
+TrackState:
+- Tentative
+- Confirmed
+- Coasting
+- Dropped
+
+BDAMethod:
+- Visual
+- ElectroOptical
+- Infrared
+- Radar
+- SignalIntel
+- HumanIntel
+
+BDAPhase:
+- Phase1_Initial
+- Phase2_Supplemental
+- Phase3_Restrike
+
+DamageLevel:
+- Undamaged
+- Light
+- Moderate
+- Heavy
+- Destroyed
+
+FunctionalImpact:
+- FullyOperational
+- Degraded
+- SignificantlyDegraded
+- NonOperational
+- Destroyed
+
+BDAStatusColor:
+- Grey
+- Yellow
+- Green
+- Red
+
+IntelDiscipline:
+- HUMINT
+- SIGINT
+- OSINT
+- GEOINT
+- MASINT
+
+SIGINTType:
+- COMINT
+- ELINT
+- FISINT
+
+IPBType:
+- TerrainAnalysis
+- WeatherAnalysis
+- ThreatEvaluation
+- ThreatIntegration
+- CourseOfActionDevelopment
+
+SourceReliability:
+- A_CompletelyReliable
+- B_UsuallyReliable
+- C_FairlyReliable
+- D_NotUsuallyReliable
+- E_Unreliable
+- F_CannotBeJudged
+
+InfoCredibility:
+- 1_Confirmed
+- 2_ProbablyTrue
+- 3_PossiblyTrue
+- 4_Doubtful
+- 5_Improbable
+- 6_CannotBeJudged
+
+FusionMethod:
+- NearestNeighbor
+- Bayesian
+- DempsterShafer
+- KalmanFilter
+- CovarianceIntersection
+- Voting
+- WeightedAverage
+
+FusionLevel:
+- L0_SourcePreprocessing
+- L1_ObjectAssessment
+- L2_SituationAssessment
+- L3_ImpactAssessment
+- L4_ProcessRefinement
+
+GateType:
+- Rectangular
+- Ellipsoidal
+- Mahalanobis
+
+SARMode:
+- Spotlight
+- Stripmap
+- ScanSAR
+- ISAR
+- GMTI
+
+## Event
+
+EntityLifecycleEvent:
+- FirstSeen
+- Updated
+- LocationChanged
+- StatusChanged
+- HealthChanged
+- Correlated
+- Decorrelated
+- Overridden
+- OverrideRemoved
+- Expired
+- PostExpiryOverride
+- Deleted
+- Lost
+- Recovered
+- HandedOff
+- TaskAssigned
+- TaskCompleted
+
+GeofenceViolationType:
+- Entered
+- Exited
+- AltitudeExceeded
+
+## Intel
+
+PIDMethod:
+- Visual
+- Electronic
+- Behavioral
+- Intelligence
+
+TrackState:
+- Tentative
+- Confirmed
+- Coasting
+- Dropped
+
+BDAMethod:
+- Visual
+- ElectroOptical
+- Infrared
+- Radar
+- SignalIntel
+- HumanIntel
+
+BDAPhase:
+- Phase1_Initial
+- Phase2_Supplemental
+- Phase3_Restrike
+
+DamageLevel:
+- Undamaged
+- Light
+- Moderate
+- Heavy
+- Destroyed
+
+FunctionalImpact:
+- FullyOperational
+- Degraded
+- SignificantlyDegraded
+- NonOperational
+- Destroyed
+
+BDAStatusColor:
+- Grey
+- Yellow
+- Green
+- Red
+
+IntelDiscipline:
+- HUMINT
+- SIGINT
+- OSINT
+- GEOINT
+- MASINT
+
+SIGINTType:
+- COMINT
+- ELINT
+- FISINT
+
+IPBType:
+- TerrainAnalysis
+- WeatherAnalysis
+- ThreatEvaluation
+- ThreatIntegration
+- CourseOfActionDevelopment
+
+SourceReliability:
+- A_CompletelyReliable
+- B_UsuallyReliable
+- C_FairlyReliable
+- D_NotUsuallyReliable
+- E_Unreliable
+- F_CannotBeJudged
+
+InfoCredibility:
+- 1_Confirmed
+- 2_ProbablyTrue
+- 3_PossiblyTrue
+- 4_Doubtful
+- 5_Improbable
+- 6_CannotBeJudged
+
+FusionMethod:
+- NearestNeighbor
+- Bayesian
+- DempsterShafer
+- KalmanFilter
+- CovarianceIntersection
+- Voting
+- WeightedAverage
+
+FusionLevel:
+- L0_SourcePreprocessing
+- L1_ObjectAssessment
+- L2_SituationAssessment
+- L3_ImpactAssessment
+- L4_ProcessRefinement
+
+GateType:
+- Rectangular
+- Ellipsoidal
+- Mahalanobis
+
+## Maintenance
+
+MaintenanceType:
+- Preventive
+- Corrective
+- Inspection
+- Calibration
+- SoftwareUpdate
+- BatteryReplacement
+- PartReplacement
+
+## Personnel
+
+PersonnelStatusType:
+- Present
+- Absent
+- WIA
+- KIA
+- MIA
+- Captured
+- Evacuated
+- OnLeave
+- Detached
+- Hospitalized
+- RTD
+
+CasualtyCause:
+- Combat
+- NonCombat
+- Accident
+- Disease
+- FriendlyFire
+
+InjurySeverity:
+- Minor
+- Serious
+- VSI
+- Critical
+- Fatal
+
+TreatmentStatus:
+- Untreated
+- FirstAid
+- Stabilized
+- Evacuated
+- Hospitalized
+- RTD
+- Deceased
+
+PrecedenceCategory:
+- Urgent
+- UrgentSurgical
+- Priority
+- Routine
+- Convenience
+
+SpecialEquipment:
+- None
+- Hoist
+- ExtractionEquipment
+- Ventilator
+
+PatientType:
+- Litter
+- Ambulatory
+
+SecurityAtPickup:
+- NoEnemy
+- PossibleEnemy
+- EnemyInArea
+- EnemyContact
+
+MarkingMethod:
+- Panels
+- PyroSignal
+- Smoke
+- None
+- Other
+- IRStrobe
+- VSPanel
+
+CBRNEContamination:
+- None
+- Chemical
+- Biological
+- Radiological
+- Nuclear
+
+## Properties
+
+AltIdType:
+- TrackId
+- SPI_Id
+- AssetId
+- Link16TrackNumber
+- Link16_JU
+- Callsign
+- MMSI
+- VMF_URN
+- IMO
+- SerialNumber
+- RegistrationId
+- DODAAC
+- UIC
+- NORAD_CAT_ID
+- UNOOSA_Name
+- UNOOSA_Id
+
+CapabilityType:
+- Maneuver
+- FireSupport
+- ISR
+- Strike
+- Relay
+- Logistics
+- Medical
+- AirDefense
+- EW
+- Cyber
+
+WeaponMountType:
+- Fixed
+- Turret
+- Pintle
+- Coaxial
+- Wing
+- Pylon
+- Internal
+
+ArmorType:
+- None
+- Ballistic
+- Composite
+- Reactive
+- Slat
+- Active
+- Cage
+
+ArmorLevel:
+- None
+- SmallArms
+- HeavyMachineGun
+- Autocannon
+- ShapedCharge
+- KineticEnergy
+
+AirRole:
+- GroundAttack
+- AntiAir
+- Fighter
+- Reconnaissance
+- IMINT
+- SIGINT
+- Minelaying
+- Cargo
+
+Template:
+- Track
+- SensorPointOfInterest
+- Asset
+- Geo
+- SignalOfInterest
+
+AuthorityLevel:
+- Full
+- Shared
+- Delegated
+- Monitor
+
+CorrelationType:
+- Manual
+- Automated
+
+CorrelationReplicationMode:
+- Local
+- Global
+
+HandoffType:
+- ControlAuthority
+- TrackCustody
+- TaskAssignment
+- SensorCue
+- CommunicationRelay
+- LogisticResponsibility
+
+## Provenance
+
+PermissionLevel:
+- None
+- Read
+- Write
+- Execute
+- Admin
+- Owner
+
+AuditAction:
+- Created
+- Updated
+- Deleted
+- Accessed
+- Shared
+- Classified
+- Declassified
+- Approved
+- Denied
+- Exported
+- Imported
+
+NotificationType:
+- Alert
+- StatusChange
+- TaskUpdate
+- Threshold
+- Geofence
+- CommLoss
+- BatteryLow
+- MissionComplete
+- Hostile
+- Emergency
+
+ProvenanceAction:
+- Originated
+- Relayed
+- Fused
+- Transformed
+- Enriched
+- Filtered
+
+## Sensory
+
+SARMode:
+- Spotlight
+- Stripmap
+- ScanSAR
+- ISAR
+- GMTI
+
+## State
+
+IndoorPosMethod:
+- WiFi
+- BLE_Beacon
+- UWB
+- RFID
+- Optical
+- DeadReckoning
+- Manual
+
+GPSFixType:
+- NoFix
+- Fix2D
+- Fix3D
+- DGPS
+- RTK_Float
+- RTK_Fixed
+- Static
+- PPS
+
+NavSource:
+- GPS
+- GLONASS
+- Galileo
+- BeiDou
+- INS
+- VIO
+- OpticalFlow
+- SLAM
+- Barometer
+- Radar
+- Altimeter
+- Fused
+
+NavMode:
+- Manual
+- Waypoint
+- RTL
+- Loiter
+- Guided
+- Land
+- Takeoff
+- Circle
+- Drift
+- PositionHold
+- Brake
+- Throw
+- ADSB
+- SmartRTL
+- FlowHold
+- Follow
+- Zigzag
+- SystemID
+- AutoRotate
+
+SensorMode:
+- Search
+- Track
+- WeaponSupport
+- Auto
+- Mute
+
+SensorType:
+- Radar
+- Camera
+- Transponder
+- RF
+- GPS
+- PTU_Pos
+- Perimeter
+- Sonar
+
+PowerStatus:
+- Unknown
+- NotPresent
+- Operating
+- Disabled
+- Error
+
+PowerType:
+- Unknown
+- Gas
+- Battery
+
+HealthStatus:
+- Healthy
+- Warn
+- Fail
+- Offline
+- NotReady
+
+ConnectionStatus:
+- Online
+- Offline
+
+OperationalState:
+- Off
+- NonOperational
+- Degraded
+- Operational
+- Denied
+
+AlertLevel:
+- Advisory
+- Caution
+- Warning
+
+LifecyclePhase:
+- Planned
+- Active
+- Paused
+- Complete
+- Aborted
+- Failed
+
+RequestStatus:
+- Submitted
+- Acknowledged
+- Approved
+- Denied
+- InTransit
+- Delivered
+- Cancelled
+
+OverrideStatus:
+- Applied
+- Pending
+- Timeout
+- Rejected
+- DeletionPending
+
+OperationalMode:
+- Off
+- Startup
+- Nominal
+- Degraded
+- Emergency
+- Maintenance
+- Calibrating
+- Standby
+- Sleep
+
+## Symbology
+
+Severity:
+- Info
+- Low
+- Medium
+- High
+- Critical
+- Emergency
+
+GeofenceResponse:
+- None
+- Report
+- Warn
+- Loiter
+- RTL
+- Land
+- Brake
+- MissionPause
+- Fence
+
+FailsafeType:
+- RCLost
+- DataLinkLost
+- BatteryLow
+- BatteryCritical
+- GPSLost
+- GeofenceBreach
+- MotorFailure
+- IMUFailure
+- BarometerFailure
+- TerrainFollowLost
+- MissionInvalid
+- CommunicationLost
+- HighWind
+- Crash
+
+## Terrain
+
+TerrainType:
+- Urban
+- Suburban
+- Rural
+- Forest
+- Jungle
+- Desert
+- Mountain
+- Tundra
+- Marsh
+- Farmland
+- Water
+- Coastal
+- Arctic
+- Steppe
+- Savanna
+
+TerrainSurface:
+- Paved
+- Unpaved
+- Grass
+- Sand
+- Mud
+- Rock
+- Snow
+- Ice
+- Water
+- Gravel
+
+TerrainFeatureType:
+- Ridge
+- Valley
+- Saddle
+- Hill
+- Depression
+- Cliff
+- River
+- Lake
+- Road
+- Bridge
+- Building
+- Treeline
+- Clearing
+- UrbanArea
+- Pass
+- Ford
+- Dam
+
+ObstacleType:
+- Wire
+- Tower
+- Building
+- Terrain
+- Vegetation
+- Water
+- Minefield
+- Barrier
+- Ditch
+
+Traversability:
+- Passable
+- Restricted
+- Impassable
+
+MobilityClass:
+- Unrestricted
+- SlowGo
+- NoGo
+
+DTEDLevel:
+- DTED0
+- DTED1
+- DTED2
+- DTED3
+
+## Weather
+
+PrecipitationType:
+- None
+- Rain
+- Snow
+- Sleet
+- Hail
+- FreezingRain
+- Drizzle
+
+CloudCover:
+- Clear
+- Few
+- Scattered
+- Broken
+- Overcast
+
+IcingIntensity:
+- None
+- Light
+- Moderate
+- Severe
+
+TurbulenceIntensity:
+- None
+- Light
+- Moderate
+- Severe
+- Extreme
+
+FlightCategory:
+- VFR
+- MVFR
+- IFR
+- LIFR
+
+WeatherSource:
+- METAR
+- TAF
+- PIREP
+- SIGMET
+- AIRMET
+- Radar
+- Satellite
+- ModelForecast
+
+WeatherHazardType:
+- Thunderstorm
+- Icing
+- Turbulence
+- Fog
+- Dust
+- VolcanicAsh
+- Windshear
+- Sandstorm
+
+# Entity 
+
+OverrideType:
+- Live
+- PostExpiry
+
+CorrelationType:
+- Manual
+- Automated
+
+CorrelationReplicationMode:
+- Local
+- Global
+
+
+# Event 
+
+EntityLifecycleEvent:
+- FirstSeen
+- Updated
+- LocationChanged
+- StatusChanged
+- HealthChanged
+- Correlated
+- Decorrelated
+- Overridden
+- OverrideRemoved
+- Expired
+- PostExpiryOverride
+- Deleted
+- Lost
+- Recovered
+- HandedOff
+- TaskAssigned
+- TaskCompleted
+
+GeofenceViolationType:
+- Entered
+- Exited
+- AltitudeExceeded
+
+
+# Ew 
+
+EWActionType:
+- Jam
+- Spoof
+- Deceive
+- Intercept
+- DirectionFind
+- Monitor
+- Deny
+
+JamType:
+- Noise
+- Barrage
+- Spot
+- Sweep
+- Responsive
+- Follower
+
+EWEffectType:
+- SignalDegraded
+- SignalDenied
+- TargetDecoyed
+- CommunicationsDisrupted
+- NoEffect
+
+EPType:
+- FrequencyHopping
+- SpreadSpectrum
+- Encryption
+- PowerControl
+- DirectionalAntenna
+- BurstTransmission
+
+
+# Fire Support 
+
+EngagementMethod:
+- PointTarget
+- AreaTarget
+- Suppression
+- Destruction
+- Neutralization
+- Illumination
+- Smoke
+- Marking
+
+FireType:
+- Immediate
+- Planned
+- OnCall
+
+WeaponType:
+- Mortar
+- Howitzer
+- Rocket
+- MLRS
+- Missile
+- DirectFire
+- AirDelivered
+- Naval
+
+AmmunitionType:
+- HE
+- WP
+- Illumination
+- Smoke
+- DPICM
+- Thermobaric
+- HEAT
+- Frag
+- AP
+- Incendiary
+- Guided
+
+ShellTrajectory:
+- Low
+- High
+- Vertical
+
+FireMissionStatus:
+- Requested
+- Approved
+- Denied
+- ShotOut
+- SplashOver
+- RoundsComplete
+- EndOfMission
+- Cancelled
+- CheckFiring
+
+EffectAchieved:
+- Destroyed
+- Neutralized
+- Suppressed
+- NoEffect
+- Unknown
+
+
+# Intel 
+
+PIDMethod:
+- Visual
+- Electronic
+- Behavioral
+- Intelligence
+
+TrackState:
+- Tentative
+- Confirmed
+- Coasting
+- Dropped
+
+BDAMethod:
+- Visual
+- ElectroOptical
+- Infrared
+- Radar
+- SignalIntel
+- HumanIntel
+
+BDAPhase:
+- Phase1_Initial
+- Phase2_Supplemental
+- Phase3_Restrike
+
+DamageLevel:
+- Undamaged
+- Light
+- Moderate
+- Heavy
+- Destroyed
+
+FunctionalImpact:
+- FullyOperational
+- Degraded
+- SignificantlyDegraded
+- NonOperational
+- Destroyed
+
+BDAStatusColor:
+- Grey
+- Yellow
+- Green
+- Red
+
+IntelDiscipline:
+- HUMINT
+- SIGINT
+- OSINT
+- GEOINT
+- MASINT
+
+SIGINTType:
+- COMINT
+- ELINT
+- FISINT
+
+IPBType:
+- TerrainAnalysis
+- WeatherAnalysis
+- ThreatEvaluation
+- ThreatIntegration
+- CourseOfActionDevelopment
+
+SourceReliability:
+- A_CompletelyReliable
+- B_UsuallyReliable
+- C_FairlyReliable
+- D_NotUsuallyReliable
+- E_Unreliable
+- F_CannotBeJudged
+
+InfoCredibility:
+- 1_Confirmed
+- 2_ProbablyTrue
+- 3_PossiblyTrue
+- 4_Doubtful
+- 5_Improbable
+- 6_CannotBeJudged
+
+FusionMethod:
+- NearestNeighbor
+- Bayesian
+- DempsterShafer
+- KalmanFilter
+- CovarianceIntersection
+- Voting
+- WeightedAverage
+
+FusionLevel:
+- L0_SourcePreprocessing
+- L1_ObjectAssessment
+- L2_SituationAssessment
+- L3_ImpactAssessment
+- L4_ProcessRefinement
+
+GateType:
+- Rectangular
+- Ellipsoidal
+- Mahalanobis
+
+
+# Logistics 
+
+SupplyClass:
+- I_Subsistence
+- II_ClothingEquipment
+- III_FuelPOL
+- IV_Construction
+- V_Ammunition
+- VI_PersonalItems
+- VII_MajorEndItems
+- VIII_Medical
+- IX_RepairParts
+- X_Miscellaneous
+
+SupplyPriority:
+- Routine
+- Priority
+- Immediate
+- Emergency
+
+
+# Machine 
+
+PropulsionType:
+- Electric
+- Gasoline
+- Diesel
+- Turbine
+- Hybrid
+- Hydrogen
+- Solar
+
+LandPropulsion:
+- Wheeled
+- Tracked
+- Bipedal
+- Legged
+
+
+# Maintenance 
+
+MaintenanceType:
+- Preventive
+- Corrective
+- Inspection
+- Calibration
+- SoftwareUpdate
+- BatteryReplacement
+- PartReplacement
+
+
+# Object 
+
+## Actor
+
+AgentInferenceType:
+- Text
+- Vision
+- Multimodal
+- ToolUse
+- Code
+
+AgentSessionState:
+- Active
+- Suspended
+- Terminated
+
+## Entity
+
+OverrideType:
+- Live
+- PostExpiry
+
+CorrelationType:
+- Manual
+- Automated
+
+CorrelationReplicationMode:
+- Local
+- Global
+
+## Machine
+
+PropulsionType:
+- Electric
+- Gasoline
+- Diesel
+- Turbine
+- Hybrid
+- Hydrogen
+- Solar
+
+LandPropulsion:
+- Wheeled
+- Tracked
+- Bipedal
+- Legged
+
+## Object
+
+FormationType:
+- Line
+- Column
+- Wedge
+- Vee
+- EchelonLeft
+- EchelonRight
+- Diamond
+- StaggeredColumn
+- Box
+- File
+- Herringbone
+- Coil
+
+MinefieldMarkingStatus:
+- Marked
+- Unmarked
+- Mixed
+
+MediaType:
+- Image
+- Video
+
+WeaponCategory:
+- Rifle
+- Carbine
+- Pistol
+- MachineGun
+- GrenadeLauncher
+- AntiTank
+- ManPAD
+- Mortar
+- Sniper
+- Shotgun
+
+MunitionStatus:
+- NotPresent
+- Present
+- Ready
+- Fault
+
+OpticType:
+- RedDot
+- LPVO
+- FixedMagnification
+- Binoculars
+- Rangefinder
+- ThermalSight
+- NightVision
+- LaserDesignator
+
+ProtGearType:
+- BodyArmor
+- Helmet
+- CBRN_Suit
+- EyeProtection
+- HearingProtection
+
+NavEquipType:
+- GPS_Receiver
+- Compass
+- Map
+- Altimeter
+- DAGR
+- PLGR
+- ATAK_Device
+
+ComponentCategory:
+- Motor
+- ESC
+- Battery
+- FlightController
+- Antenna
+- Gimbal
+- Servo
+- Propeller
+- Airframe
+- LandingGear
+- Parachute
+- Transponder
+- ADS_B
+- IFF
+
+PayloadOperationalState:
+- Off
+- NonOperational
+- Degraded
+- Operational
+- OutOfService
+- Unknown
+
+GuidanceType:
+- Unguided
+- GPS
+- INS
+- LaserGuided
+- IRHoming
+- RadarHoming
+- CommandGuided
+- Wire
+- FiberOptic
+- Terminal_TV
+- Vision
+
+## Organization
+
+OrgClass:
+- Civilian
+- Military
+- Commercial
+- NGO
+- Unknown
+
+CommandRelationship:
+- OPCON 
+- TACON 
+- ADCON 
+- SUPCON 
+- DIRLAUTH 
+
+SupportRelationship:
+- DirectSupport
+- GeneralSupport
+- Reinforcing
+- GeneralSupportReinforcing
+
+ArmyEchelon:
+- FireTeam
+- Squad
+- Section
+- Platoon
+- Company
+- Battery
+- Troop
+- Battalion
+- Squadron
+- Regiment
+- Brigade
+- Division
+- Corps
+- Army
+- ArmyGroup
+- Theater
+
+UnitSize:
+- IND
+- TEM
+- SQD
+- SEC
+- PLT
+- COY
+- BTN
+- RGT
+- BDE
+- DIV
+- FLT
+- SQN
+- GRP
+- WNG
+
+UnitCategory:
+- COMB
+- BATT
+- TF
+- MECH
+- INF
+- MOT
+- REC
+- UAV
+- UAVA
+- UAVR
+- UGV
+- SIG
+- ENG
+- ART
+- MORT
+- MRL
+- ARM
+- CAV
+- MED
+- SUP
+- LOG
+- HQ
+- NBC
+- MP
+- AIR
+- SOF
+- NAV
+- AMP
+- ADA
+- EW
+- ISR
+- CBT
+- CSS
+- COM
+- DET
+- RES
+- TRG
+
+## Robot
+
+AutonomyClass:
+- Remote 
+- Assisted 
+- SemiAutonomous 
+- Supervised 
+- Autonomous 
+
+MultirotorConfig:
+- Quad
+- Hex
+- Octo
+- Coaxial
+- Y6
+- X8
+
+FixedWingConfig:
+- Conventional
+- FlyingWing
+- Canard
+- TandemWing
+- BlendedWingBody
+- Delta
+
+VTOLConfig:
+- Tiltrotor
+- Tailsitter
+- LiftAndCruise
+- QuadPlane
+- CopterPlane
+
+LaunchMethod:
+- HTOL
+- VTOL
+- Catapult
+- HandLaunch
+- RailLaunch
+- TubeLaunch
+- DropLaunch
+- BalloonLaunch
+
+RecoveryMethod:
+- HTOL
+- VTOL
+- Parachute
+- DeepStall
+- NetRecovery
+- SkyHook
+- BellyLand
+- Ditching
+
+## Site
+
+GeofenceAction:
+- KeepIn
+- KeepOut
+- Warn
+- RTL
+- Land
+- Loiter
+- Report
+- Deny
+- Brake
+- Fence
+
+ControlAreaType:
+- KeepInZone
+- KeepOutZone
+- DitchZone
+- LoiterZone
+
+GeoType:
+- General
+- Hazard
+- Emergency
+- EngagementZone
+- ControlArea
+- Bullseye
+- ACM
+
+AirspaceClass:
+- A
+- B
+- C
+- D
+- E
+- F
+- G
+
+AirspaceType:
+- Controlled
+- Restricted
+- Prohibited
+- Danger
+- Alert
+- MOA
+- Warning
+- TFR
+- CTR
+- TMA
+- FIR
+- UIR
+- ATZ
+- ADIZ
+
+AirspaceStatus:
+- Active
+- Inactive
+- Scheduled
+- Hot
+- Cold
+
+RallyPointType:
+- ObjectiveRallyPoint
+- InitialRallyPoint
+- ActionPoint
+- LinkupPoint
+- AlternateRallyPoint
+
+SupplyPointType:
+- Depot
+- ASP
+- FARP
+- Cache
+- AidStation
+- MaintenancePoint
+- DistributionPoint
+
+FSCMType:
+- FSCL
+- CFL
+- NFL
+- RFL
+- FFA
+- NFA
+- RFA
+- ACA
+
+BreachMethod:
+- Deliberate
+- Hasty
+- InStride
+- Covert
+
+GCMType:
+- PhaseLine
+- ObjectiveArea
+- AssemblyArea
+- AttackPosition
+- SBFPosition
+- Boundary
+- Checkpoint
+- ContactPoint
+- CoordinationPoint
+- FinalCoordinationLine
+- LimitOfAdvance
+- FLOT
+- FEBA
+- MainSupplyRoute
+- AlternateSupplyRoute
+- Route
+- Axis
+- DirectionOfAttack
+- PassagePoint
+- ReleasePoint
+- StartPoint
+- TriggerLine
+
+## Vehicle
+
+LandVehicleClass:
+- Light
+- Armored
+
+AirVehicleClass:
+- Fighter
+- Bomber
+- Transport
+- Tanker
+- Trainer
+- Reconnaissance
+- Helicopter
+- Tiltrotor
+- LighterThanAir
+
+SeaVehicleClass:
+- Frigate
+- Destroyer
+- Carrier
+- Submarine
+- Patrol
+- Amphibious
+- Auxiliary
+- Merchant
+
+# Organization 
+
+OrgClass:
+- Civilian
+- Military
+- Commercial
+- NGO
+- Unknown
+
+CommandRelationship:
+- OPCON 
+- TACON 
+- ADCON 
+- SUPCON 
+- DIRLAUTH 
+
+SupportRelationship:
+- DirectSupport
+- GeneralSupport
+- Reinforcing
+- GeneralSupportReinforcing
+
+ArmyEchelon:
+- FireTeam
+- Squad
+- Section
+- Platoon
+- Company
+- Battery
+- Troop
+- Battalion
+- Squadron
+- Regiment
+- Brigade
+- Division
+- Corps
+- Army
+- ArmyGroup
+- Theater
+
+UnitSize:
+- IND
+- TEM
+- SQD
+- SEC
+- PLT
+- COY
+- BTN
+- RGT
+- BDE
+- DIV
+- FLT
+- SQN
+- GRP
+- WNG
+
+UnitCategory:
+- COMB
+- BATT
+- TF
+- MECH
+- INF
+- MOT
+- REC
+- UAV
+- UAVA
+- UAVR
+- UGV
+- SIG
+- ENG
+- ART
+- MORT
+- MRL
+- ARM
+- CAV
+- MED
+- SUP
+- LOG
+- HQ
+- NBC
+- MP
+- AIR
+- SOF
+- NAV
+- AMP
+- ADA
+- EW
+- ISR
+- CBT
+- CSS
+- COM
+- DET
+- RES
+- TRG
+
+
+# Personnel 
+
+PersonnelStatusType:
+- Present
+- Absent
+- WIA
+- KIA
+- MIA
+- Captured
+- Evacuated
+- OnLeave
+- Detached
+- Hospitalized
+- RTD
+
+CasualtyCause:
+- Combat
+- NonCombat
+- Accident
+- Disease
+- FriendlyFire
+
+InjurySeverity:
+- Minor
+- Serious
+- VSI
+- Critical
+- Fatal
+
+TreatmentStatus:
+- Untreated
+- FirstAid
+- Stabilized
+- Evacuated
+- Hospitalized
+- RTD
+- Deceased
+
+PrecedenceCategory:
+- Urgent
+- UrgentSurgical
+- Priority
+- Routine
+- Convenience
+
+SpecialEquipment:
+- None
+- Hoist
+- ExtractionEquipment
+- Ventilator
+
+PatientType:
+- Litter
+- Ambulatory
+
+SecurityAtPickup:
+- NoEnemy
+- PossibleEnemy
+- EnemyInArea
+- EnemyContact
+
+MarkingMethod:
+- Panels
+- PyroSignal
+- Smoke
+- None
+- Other
+- IRStrobe
+- VSPanel
+
+CBRNEContamination:
+- None
+- Chemical
+- Biological
+- Radiological
+- Nuclear
+
+
+# Properties 
+
+AltIdType:
+- TrackId
+- SPI_Id
+- AssetId
+- Link16TrackNumber
+- Link16_JU
+- Callsign
+- MMSI
+- VMF_URN
+- IMO
+- SerialNumber
+- RegistrationId
+- DODAAC
+- UIC
+- NORAD_CAT_ID
+- UNOOSA_Name
+- UNOOSA_Id
+
+CapabilityType:
+- Maneuver
+- FireSupport
+- ISR
+- Strike
+- Relay
+- Logistics
+- Medical
+- AirDefense
+- EW
+- Cyber
+
+WeaponMountType:
+- Fixed
+- Turret
+- Pintle
+- Coaxial
+- Wing
+- Pylon
+- Internal
+
+ArmorType:
+- None
+- Ballistic
+- Composite
+- Reactive
+- Slat
+- Active
+- Cage
+
+ArmorLevel:
+- None
+- SmallArms
+- HeavyMachineGun
+- Autocannon
+- ShapedCharge
+- KineticEnergy
+
+AirRole:
+- GroundAttack
+- AntiAir
+- Fighter
+- Reconnaissance
+- IMINT
+- SIGINT
+- Minelaying
+- Cargo
+
+Template:
+- Track
+- SensorPointOfInterest
+- Asset
+- Geo
+- SignalOfInterest
+
+AuthorityLevel:
+- Full
+- Shared
+- Delegated
+- Monitor
+
+CorrelationType:
+- Manual
+- Automated
+
+CorrelationReplicationMode:
+- Local
+- Global
+
+HandoffType:
+- ControlAuthority
+- TrackCustody
+- TaskAssignment
+- SensorCue
+- CommunicationRelay
+- LogisticResponsibility
+
+
+# Provenance 
+
+PermissionLevel:
+- None
+- Read
+- Write
+- Execute
+- Admin
+- Owner
+
+AuditAction:
+- Created
+- Updated
+- Deleted
+- Accessed
+- Shared
+- Classified
+- Declassified
+- Approved
+- Denied
+- Exported
+- Imported
+
+NotificationType:
+- Alert
+- StatusChange
+- TaskUpdate
+- Threshold
+- Geofence
+- CommLoss
+- BatteryLow
+- MissionComplete
+- Hostile
+- Emergency
+
+ProvenanceAction:
+- Originated
+- Relayed
+- Fused
+- Transformed
+- Enriched
+- Filtered
+
+
+# Reference 
+
+## Reference
+
+Local2D:
+- LU
+- LD
+- RU
+- RD
+
+Local3D:
+- FRD
+- FLU
+- NED
+- ENU
+
+GlobalFrame:
+- WGS84
+- ETRS89
+- ECEF
+- ECI
+- TEME
+- LVLH
+
+AltitudeReference:
+- AMSL
+- HAE
+- AGL
+- Barometric
+- StartRelative
+- HAAT
+- AboveSeaFloor
+- BelowSeaSurface
+- EGM96
+
+BearingReference:
+- TrueNorth
+- MagneticNorth
+- GridNorth
+- RelativeToHeading
+
+CoordinateEncoding:
+- Cartesian2D
+- Cartesian3D
+- LatLon
+- UTM
+- MGRS
+- PlusCode
+- ECI
+- ENU
+- Spherical
+
+GeometryType:
+- Point
+- Line
+- Path
+- Polygon
+- Volume
+- Orientation
+- Arc
+- Ellipse
+- Ellipsoid
+- Frustum
+- Corridor
+- Annulus
+
+TimeSyncSource:
+- GPS
+- NTP
+- PTP
+- Manual
+- RadioTimeSignal
+
+PhysicalDomain:
+- Land
+- Air
+- Sea
+- Undersea
+- Space
+
+Environment:
+- Unknown
+- Air
+- Surface
+- SubSurface
+- Land
+- Space
+
+OpDomain:
+- Land
+- Air
+- Sea
+- Undersea
+- Space
+- Radio
+- Psychological
+- Cyber
+
+
+CivilDomain:
+- Civilian
+- Government
+- Military
+
+CivilianType:
+- Private
+- Commercial
+
+Faction:
+- UNKNOWN
+- PENDING
+- FRIENDLY
+- SUSPECT
+- HOSTILE
+- NEUTRAL
+- ASSUMED
+- FAKER
+- JOKER
+
+Disposition:
+- Unknown
+- Friendly
+- Hostile
+- Suspicious
+- AssumedFriendly
+- Neutral
+- Pending
+
+ClassificationLevel:
+- Unclassified
+- ControlledUnclassified
+- Confidential
+- Secret
+- TopSecret
+
+ClassificationCaveat:
+- NOFORN
+- REL_TO
+- FVEY
+- NATO
+- EU
+- COSMIC
+- ATOMAL
+
+EntityStatus:
+- Active
+- Inactive
+- Unknown
+- Offline
+- Online
+- Present
+- Damaged
+- Destroyed
+- Lost
+- Decoy
+
+Priority:
+- Routine
+- Priority
+- Immediate
+- Flash
+- FlashOverride
+- CRITIC
+
+PACE:
+- Primary
+- Alternate
+- Contingency
+- Emergency
+
+ThreatLevel:
+- Green
+- Amber
+- Red
+- Black
+
+DDILCondition:
+- Normal
+- Limited
+- Intermittent
+- Disrupted
+- Denied
+
+InteropLevel:
+- Level1_IndirectRelay
+- Level2_DirectReceipt
+- Level3_PayloadControl
+- Level4_FlightControl
+- Level5_LaunchRecovery
+
+AccuracyMethod:
+- Calculated
+- Estimated
+- Measured
+- Surveyed
+- Unknown
+
+MeanElementTheory:
+- SGP4
+
+EciReferenceFrame:
+- TEME
+
+MilColor:
+- Red
+- Blue
+- Green
+- Yellow
+- Orange
+- Purple
+- White
+- Black
+- Brown
+- Pink
+
+DistanceUnit:
+- Meters
+- Kilometers
+- Feet
+- Yards
+- NauticalMiles
+- StatuteMiles
+
+SpeedUnit:
+- MetersPerSecond
+- Knots
+- KilometersPerHour
+- MilesPerHour
+
+TemperatureUnit:
+- Celsius
+- Fahrenheit
+- Kelvin
+
+PressureUnit:
+- Hectopascal
+- Millibar
+- InchesOfMercury
+
+AngleUnit:
+- Degrees
+- Radians
+- Mils_NATO
+- Mils_Warsaw
+- Gradians
+
+MassUnit:
+- Kilograms
+- Pounds
+- Tons_Metric
+- Tons_Short
+
+UnitOfMeasure:
+- Each
+- Kilogram
+- Liter
+- Round
+- Box
+- Case
+- Pallet
+- Meter
+- SquareMeter
+- CubicMeter
+- Hour
+
+VolumeUnit:
+- Liters
+- Gallons_US
+- Gallons_Imperial
+- CubicMeters
+
+ForceUnit:
+- Newtons
+- PoundsForce
+
+PowerUnit:
+- Watts
+- Kilowatts
+- Horsepower
+
+FrequencyUnit:
+- Hertz
+- Kilohertz
+- Megahertz
+- Gigahertz
+
+DataRateUnit:
+- BitsPerSecond
+- KilobitsPerSecond
+- MegabitsPerSecond
+- GigabitsPerSecond
+
+MilColor:
+- Red
+- Blue
+- Green
+- Yellow
+- Orange
+- Purple
+- White
+- Black
+- Brown
+- Pink
+
+MarkerColor:
+- Red
+- Green
+- Yellow
+- White
+- IR
+- Orange
+- Violet
+- Blue
+
+# Robot 
+
+AutonomyClass:
+- Remote 
+- Assisted 
+- SemiAutonomous 
+- Supervised 
+- Autonomous 
+
+MultirotorConfig:
+- Quad
+- Hex
+- Octo
+- Coaxial
+- Y6
+- X8
+
+FixedWingConfig:
+- Conventional
+- FlyingWing
+- Canard
+- TandemWing
+- BlendedWingBody
+- Delta
+
+VTOLConfig:
+- Tiltrotor
+- Tailsitter
+- LiftAndCruise
+- QuadPlane
+- CopterPlane
+
+LaunchMethod:
+- HTOL
+- VTOL
+- Catapult
+- HandLaunch
+- RailLaunch
+- TubeLaunch
+- DropLaunch
+- BalloonLaunch
+
+RecoveryMethod:
+- HTOL
+- VTOL
+- Parachute
+- DeepStall
+- NetRecovery
+- SkyHook
+- BellyLand
+- Ditching
+
+
+# Sensory 
+
+SARMode:
+- Spotlight
+- Stripmap
+- ScanSAR
+- ISAR
+- GMTI
+
+
+# Signal 
+
+ScanType:
+- Circular
+- BidirectionalHorizontalSector
+- BidirectionalVerticalSector
+- NonScanning
+- Irregular
+- Conical
+- LobeSwitching
+- Raster
+- CircularVerticalSector
+- CircularConical
+- SectorConical
+- AgileBeam
+- UnidirectionalVerticalSector
+- UnidirectionalHorizontalSector
+- UnidirectionalSector
+- BidirectionalSector
+
+
+# Site 
+
+GeofenceAction:
+- KeepIn
+- KeepOut
+- Warn
+- RTL
+- Land
+- Loiter
+- Report
+- Deny
+- Brake
+- Fence
+
+ControlAreaType:
+- KeepInZone
+- KeepOutZone
+- DitchZone
+- LoiterZone
+
+GeoType:
+- General
+- Hazard
+- Emergency
+- EngagementZone
+- ControlArea
+- Bullseye
+- ACM
+
+AirspaceClass:
+- A
+- B
+- C
+- D
+- E
+- F
+- G
+
+AirspaceType:
+- Controlled
+- Restricted
+- Prohibited
+- Danger
+- Alert
+- MOA
+- Warning
+- TFR
+- CTR
+- TMA
+- FIR
+- UIR
+- ATZ
+- ADIZ
+
+AirspaceStatus:
+- Active
+- Inactive
+- Scheduled
+- Hot
+- Cold
+
+RallyPointType:
+- ObjectiveRallyPoint
+- InitialRallyPoint
+- ActionPoint
+- LinkupPoint
+- AlternateRallyPoint
+
+SupplyPointType:
+- Depot
+- ASP
+- FARP
+- Cache
+- AidStation
+- MaintenancePoint
+- DistributionPoint
+
+CommandPostType:
+- Main
+- Tactical
+- Alternate
+- Rear
+
+FSCMType:
+- FSCL
+- CFL
+- NFL
+- RFL
+- FFA
+- NFA
+- RFA
+- ACA
+
+BreachMethod:
+- Deliberate
+- Hasty
+- InStride
+- Covert
+
+GCMType:
+- PhaseLine
+- ObjectiveArea
+- AssemblyArea
+- AttackPosition
+- SBFPosition
+- Boundary
+- Checkpoint
+- ContactPoint
+- CoordinationPoint
+- FinalCoordinationLine
+- LimitOfAdvance
+- FLOT
+- FEBA
+- MainSupplyRoute
+- AlternateSupplyRoute
+- Route
+- Axis
+- DirectionOfAttack
+- PassagePoint
+- ReleasePoint
+- StartPoint
+- TriggerLine
+
+
+# State 
+
+IndoorPosMethod:
+- WiFi
+- BLE_Beacon
+- UWB
+- RFID
+- Optical
+- DeadReckoning
+- Manual
+
+GPSFixType:
+- NoFix
+- Fix2D
+- Fix3D
+- DGPS
+- RTK_Float
+- RTK_Fixed
+- Static
+- PPS
+
+NavSource:
+- GPS
+- GLONASS
+- Galileo
+- BeiDou
+- INS
+- VIO
+- OpticalFlow
+- SLAM
+- Barometer
+- Radar
+- Altimeter
+- Fused
+
+NavMode:
+- Manual
+- Waypoint
+- RTL
+- Loiter
+- Guided
+- Land
+- Takeoff
+- Circle
+- Drift
+- PositionHold
+- Brake
+- Throw
+- ADSB
+- SmartRTL
+- FlowHold
+- Follow
+- Zigzag
+- AutoRotate
+
+SensorMode:
+- Search
+- Track
+- WeaponSupport
+- Auto
+- Mute
+
+SensorType:
+- Radar
+- Camera
+- Transponder
+- RF
+- GPS
+- PTU_Pos
+- Perimeter
+- Sonar
+
+PowerStatus:
+- Unknown
+- NotPresent
+- Operating
+- Disabled
+- Error
+
+PowerType:
+- Unknown
+- Gas
+- Battery
+
+HealthStatus:
+- Healthy
+- Warn
+- Fail
+- Offline
+- NotReady
+
+ConnectionStatus:
+- Online
+- Offline
+
+OperationalState:
+- Off
+- NonOperational
+- Degraded
+- Operational
+- Denied
+
+AlertLevel:
+- Advisory
+- Caution
+- Warning
+
+LifecyclePhase:
+- Planned
+- Active
+- Paused
+- Complete
+- Aborted
+- Failed
+
+RequestStatus:
+- Submitted
+- Acknowledged
+- Approved
+- Denied
+- InTransit
+- Delivered
+- Cancelled
+
+OverrideStatus:
+- Applied
+- Pending
+- Timeout
+- Rejected
+- DeletionPending
+
+OperationalMode:
+- Off
+- Startup
+- Nominal
+- Degraded
+- Emergency
+- Maintenance
+- Calibrating
+- Standby
+- Sleep
+
+
+# Symbology 
+
+Severity:
+- Info
+- Low
+- Medium
+- High
+- Critical
+- Emergency
+
+GeofenceResponse:
+- None
+- Report
+- Warn
+- Loiter
+- RTL
+- Land
+- Brake
+- MissionPause
+- Fence
+
+FailsafeType:
+- RCLost
+- DataLinkLost
+- BatteryLow
+- BatteryCritical
+- GPSLost
+- GeofenceBreach
+- MotorFailure
+- IMUFailure
+- BarometerFailure
+- TerrainFollowLost
+- MissionInvalid
+- CommunicationLost
+- HighWind
+- Crash
+
+
+# Terrain 
+
+TerrainType:
+- Urban
+- Suburban
+- Rural
+- Forest
+- Jungle
+- Desert
+- Mountain
+- Tundra
+- Marsh
+- Farmland
+- Water
+- Coastal
+- Arctic
+- Steppe
+- Savanna
+
+TerrainSurface:
+- Paved
+- Unpaved
+- Grass
+- Sand
+- Mud
+- Rock
+- Snow
+- Ice
+- Water
+- Gravel
+
+TerrainFeatureType:
+- Ridge
+- Valley
+- Saddle
+- Hill
+- Depression
+- Cliff
+- River
+- Lake
+- Road
+- Bridge
+- Building
+- Treeline
+- Clearing
+- UrbanArea
+- Pass
+- Ford
+- Dam
+
+ObstacleType:
+- Wire
+- Tower
+- Building
+- Terrain
+- Vegetation
+- Water
+- Minefield
+- Barrier
+- Ditch
+
+Traversability:
+- Passable
+- Restricted
+- Impassable
+
+MobilityClass:
+- Unrestricted
+- SlowGo
+- NoGo
+
+DTEDLevel:
+- DTED0
+- DTED1
+- DTED2
+- DTED3
+
+
+# Vehicle 
+
+LandVehicleClass:
+- Light
+- Armored
+
+AirVehicleClass:
+- Fighter
+- Bomber
+- Transport
+- Tanker
+- Trainer
+- Reconnaissance
+- Helicopter
+- Tiltrotor
+- LighterThanAir
+
+SeaVehicleClass:
+- Frigate
+- Destroyer
+- Carrier
+- Submarine
+- Patrol
+- Amphibious
+- Auxiliary
+- Merchant
+
+
+# Weather 
+
+PrecipitationType:
+- None
+- Rain
+- Snow
+- Sleet
+- Hail
+- FreezingRain
+- Drizzle
+
+CloudCover:
+- Clear
+- Few
+- Scattered
+- Broken
+- Overcast
+
+IcingIntensity:
+- None
+- Light
+- Moderate
+- Severe
+
+TurbulenceIntensity:
+- None
+- Light
+- Moderate
+- Severe
+- Extreme
+
+FlightCategory:
+- VFR
+- MVFR
+- IFR
+- LIFR
+
+WeatherSource:
+- METAR
+- TAF
+- PIREP
+- SIGMET
+- AIRMET
+- Radar
+- Satellite
+- ModelForecast
+
+WeatherHazardType:
+- Thunderstorm
+- Icing
+- Turbulence
+- Fog
+- Dust
+- VolcanicAsh
+- Windshear
+- Sandstorm
+
+Ws:
+- What
+- Who
+- Where
+- Whose
+- When
+- Why
+- Which
+
+Dimensions:
+- Dim_1D
+- Dim_2D 
+- Dim_3D 
+- Dim_4D

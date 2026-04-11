@@ -9,36 +9,43 @@ This schema is a domain-agnostic ontology of directed activity. It describes the
 
 It is not a drone protocol, a military C2 format, or an application schema. It is the grammar that any of those would use. A UAV patrol mission and a McDonalds drive-through order use the same structural bones: entities with identities, directives with intent, messages with envelopes and content, state separate from identity. The domain-specific part is only which variants exist at the leaves and what fields they carry.
 
-The five roots reflect five irreducible concerns:
+The roots reflect irreducible concerns:
 
+- **Definition** — how to interpret values: frames, geometry, time, types
+- **Struct** — Low level definitions
 - **Object** — what exists: entities, organizations, items, sites, systems
-- **Reference** — how to interpret values: frames, geometry, time, types
 - **Control** — what should happen and how it gets done: directives and processes
 - **Communication** — how information moves: nodes, transports, messages
-- **Data** — what is known: properties, state, events, assessments, sensory signals
+- **Data** — High level definitions, what is known: properties, state, events, assessments, sensory signals
 
-Specificity increases downward. The roots and their immediate children are stable and universal. The leaves are where domain-specific vocabulary appears — MAVLink is a Protocol, a patrol route is a Task, a camera gimbal is a Payload. Nothing above the leaf layer needs to know or care which domain it serves.
+Specificity increases downward. The roots and their immediate children are stable and universal. The leaves are where domain-specific vocabulary appears — MAVLink is a Protocol, a patrol route is Data, a camera gimbal is a Payload. Nothing above the leaf layer needs to know or care which domain it serves.
+
+attempts 1: ontology, expand into typology, cram 10000000 things into typology, fail
+attempt 2: split typology into class files
+attempt 3: all enums moved to lexicon
+attempt 4: axis
+
+ontology -> typology * axis -> specialized unique types -> schema primitives -> fielded schema
+
+attempt 5: classes + axis into typology, expand
+- not every class needs an axis
 
 
 ## Pipeline
 
 Schema is created in four stages. Stages 1–3 are sequential and gated. The lexicon is a parallel resource, not a gate.
 
-1. **Ontology** — define what fundamentally exists as a position in the class tree. Vague clades. Expressed as the parent/child hierarchy in ontology.md. This stage answers: *what is it?*
-2. **Typology** — define how ontological classes differentiate. What variants speciate the tree, what facets each class conceptually needs. Typology is strictly structural: it names the branching decisions and the concepts each class carries, nothing more. It does not define enum members, typed fields, or compositional helper shapes. This stage answers: *how does it speciate, and what does it need?*
+1. **Ontology** — define what fundamentally exists as a position in the class tree. Vague clades. Expressed as the parent/child hierarchy in ontology.yaml. This stage answers: *what is it?* Axis defines, if necessary, their expansion in the next stage.
+
+2. **Typology** — define how ontological classes differentiate. What variants speciate the tree, ~~what facets each class conceptually needs.~~ Typology is strictly structural: it names the branching decisions and the concepts each class carries, nothing more. It does not define enum members, typed fields, or compositional helper shapes. This stage answers: *how does it speciate, and what does it need?*
+
 3. **Lexicon** — collect domain vocabulary and compositional shapes. Enum member lists, value sets, classification systems, and reusable building-block shapes (things like `LocationUncertainty`, `GNSSStatistics`, `SpotCorrection`) that are not themselves ontological classes. The lexicon is a reference library — it captures domain research and external standards without committing to placement in the tree. A concept in the lexicon has no `parent`, no position in the hierarchy. It exists as raw material the schema draws from. This stage answers: *what are the valid values, and what do compositional shapes look like?*
+
 4. **Schema** — commit. Write the actual IDL: typed fields on structs, enums with committed values, variants blocks, and placement of compositional shapes. Facets graduate to typed fields. Lexicon entries graduate to committed enums and helper structs with parents and positions. See idl_spec.md for the IDL format. This stage answers: *what exactly does the struct contain, and where does everything attach?*
 
 A struct may not have typed fields (stage 4) until it has a typology entry (stage 2) whose specializations and required facets are stable.
 
 ### Stage boundaries
-
-These boundaries prevent the pipeline stages from collapsing into each other:
-
-* **Ontology → Typology**: the ontology defines classes; the typology defines how they branch and what they conceptually need. The typology may not introduce new classes that aren't in the ontology. If a new branch is needed, add it to the ontology first.
-* **Typology → Lexicon**: the typology names concepts (`fix quality`, `position source`); the lexicon enumerates their possible values (`NoFix, Fix2D, Fix3D, ...`). The typology must not list enum members or define helper struct shapes. If a facet references an enum, the typology says the facet exists — the lexicon says what the enum contains.
-* **Lexicon → Schema**: the lexicon collects vocabulary and shapes without placement; the schema commits them. A lexicon enum is a candidate — the schema decides which members to include, what integer values to assign, and which struct the enum is used by. A lexicon shape is a sketch — the schema decides whether it's a standalone struct, a child of a parent, or folded into another struct's fields. Not everything in the lexicon graduates to schema.
-* **The lexicon does not gate the schema.** Simple enums and helper structs can go straight from typology facet to schema field without a lexicon entry. The lexicon exists for domain research that needs a staging area — large enums transcribed from standards, value sets collected from multiple sources, compositional shapes whose placement isn't yet decided.
 
 
 ## Schema Rules

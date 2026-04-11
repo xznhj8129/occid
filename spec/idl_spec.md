@@ -3,6 +3,7 @@
 **1. Scope**
 This is a custom schema IDL written in YAML.
 YAML is only the carrier syntax. The schema language is defined here.
+Specific example names are not definitive.
 
 **2. YAML Subset**
 - YAML version: `1.2`

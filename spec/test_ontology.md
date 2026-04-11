@@ -1,28 +1,37 @@
 
 ### Classes
 
-- **Object**: Any distinct part of the overall framework that can be identified, described, or referenced
+- **Definition**: Abstract structure used to define how values, space, geometry, time, or relations are interpreted.
+    - **Frame**: Frames of reference
+    - **Coordinate**: Coordinate systems and encodings
+    - **Geometry**: Spatial and geometric primitives
+    - **Time**: Temporal reference frames
+    - **Type**: Orthogonal typology axes used to speciate objects, control wrappers, and data without changing their structural class
+        - **Category**: What kind of thing something is within its structural class (ie, waypoint, route, zone)
+        - **Purpose**: Why something exists, is designated, or is intended to be used
+        - **Function**: What something does, how it behaves, or what rule semantics it carries (ie, include, exclude, trigger, hold)
+        - **Factions**: Appartnance buckets
+        - **Domains**: Domains of existence, movement, operations and effects
+    - **Relationship**: Nature of relations, ownership, provenance, link
 
+- **Struct**: Reusable data primitives built on combinations of Definition primitives (vectors, positions, quaternions, paths, bounding boxes).
+
+- **Object**: Atoms
     - **Entity**: One discrete "atom" capable of actions
-
         - **Actor**: Entity capable of thought, observation, reflexion, logic, reasoning, introspection, and making judgments and decisions
             - **Person**: Human being
-            - **Agent**: Artificial intelligence, distinct from it's substrate 
+            - **Agent**: Artificial intelligence, distinct from it's substrate
 
         - **Machine**: Discrete non-inert man-made object capable of actions
-            - **Vehicle**: Machine capable of movement only through onboard human control
-            - **Robot**: Machine capable of movement without human presence
-            - **Platform**: Reusable, static machine that carries out actions
 
-    - **Organization**: A structured collection of entities and/or subordinate organizations
-        - **Group**: An organization that contains subordinate organizations
-        - **Unit**: An organization that contains no subordinate organizations and consists only of entities
+    - **Set**: An object that represents many objects
+        - **Organization**: A structured collection of organized entities and/or subordinate organizations with common command and control
 
-    - **Collection**: An identifiable collection of objects united by circumstance, relation, or selection criterion, but not constituting an organization or a functional whole
+        - **Collection**: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
 
-    - **System**: An organized assembly of multiple objects functioning together as a whole, but not by itself a discrete actor, organization, collection, or site
+        - **Cluster**: A set of objects united only by criterion
 
-    - **Site**: A clearly delimited physical location (ie: building, town, bridge; not conceptual, ie: waypoint) of interest with a specific purpose or clear characteristic
+        - **System**: An organized assembly of multiple objects bound together as a functional whole, but not by itself a discrete actor, organization, collection, or site
 
     - **Item**: A discrete bounded non-agent object
         - **Record**: Item whose purpose is holding information
@@ -30,32 +39,31 @@
         - **Component**: An item that is part of a machine and has an internal purpose or effect
         - **Payload**: An item that is part of a machine and has an external effect or mission purpose
 
-- **Definition**: Abstract structure used to define how values, space, geometry, time, or relations are interpreted. 
-    - **Frame**: Frames of reference
-    - **Coordinate**: Coordinate systems and encodings
-    - **Geometry**: Spatial and geometric primitives
-    - **Time**: Temporal reference frames
-    - **Type**: Categories, classifications, factions, domains
-    - **Structs**: Reusable data shapes built on Reference primitives (vectors, positions, quaternions, paths, bounding boxes). Ontologically part of Reference, not a separate root.
+    - **World**: 
+        - **Feature**: Immovable, immutable, clearly recognizable and distinct real-world feature (ie, river, town, hill)
+        - **Location**: Spatially bounded physical location (ie, building, town, bridge; not conceptual, ie, waypoint) of interest
+        - **Site**: Spatially bounded area or building designated, recognized or assigned a specific function
 
 - **Control**: Scale-invariant; the binding of agents to objectives through structured decomposition
-    - **Directive**: What must be achieved, why, and within what bounds
-        - **Intent**: The commitment to act and the reason for acting
-        - **Objective**: A desired future condition, effect, or end-state
+    - **Reasoning**: 
+        - **Purpose**: Reason, justification, imperative for action
+        - **Intent**: Desired effect and operational meaning that guides execution
+        - **Objective**: Specific desired future condition, effect, or end-state
 
-        - **Task**: A directive binding an action to an objective; "do X to achieve Y"
-        - **Instruction**: A directive prescribing specific action and method
-        - **Command**: An immediate imperative requiring execution without interpretation
+    - **Directive**: What must be achieved, why, and within what bounds
 
     - **Execution**: How directed activity is structured and carried out
-        - **Plan**: The ordered structure of actions toward an objective
-        - **Sequence**: The ordered steps within a method or procedure
-        - **Action**: A discrete intentional act that changes state
+
+    - **Reference**: Control-side structural wrapper binding spatial definitions and structs into control-usable referents
+        - **Mark**: A discrete spatial reference wrapper used by control logic or execution
+        - **Path**: An ordered composition wrapper over spatial references
+        - **Region**: A bounded spatial reference wrapper over an area or volume
+        - **Boundary**: A delimiting spatial reference wrapper over an edge, line, or bound
 
     - **Constraint**: A boundary, limitation, or rule restricting permissible action
-        - **Restriction**: "must not do X"
-        - **Limitation**: "only within Y"
-        - **Condition**: "only when Z is true"
+        - **Restriction**: must not do X
+        - **Limitation**: only within Y
+        - **Condition**: only when Z is true
 
     - **Interface**: The translation of an action into the terms of the executing layer
 
@@ -69,16 +77,15 @@
 
     - **Feed**: Information pipe
         - **Link**: Discontinuous data flow of discrete packets
-        - **Stream**: Continuous flow of data of indeterminate total size, usually Sensory
+        - **Stream**: Continuous data flow at a constant rate, usually Sensory
 
     - **Message**: Discrete typed envelope for feed data
-        - **Command**: Communication whose purpose is to direct or control
+        - **C3**: Communication whose purpose is to direct, command or control
+        - **ISR**: Communication about external objects, events, or the environment
         - **Telemetry**: Communication about the sender's own internal state or process
-        - **Observation**: Communication about external objects, events, or the environment
         - **Response**: Communication whose purpose is acknowledgment, acceptance, rejection, result, or completion notice
 
 - **Data**: Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects
-
     - **Information**: Symbolic, usually structured data that can be directly read
         - **Properties**: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
             - **Identity**: Fundamental identity, name, ID
