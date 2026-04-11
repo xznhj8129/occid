@@ -109,41 +109,93 @@ types:
       Struct:
         children:
 
-          PrimitivesStruct: {}
+          Vector:
+            children:
 
-          MeasurementStruct: {}
+              Cartesian2DVector: {}
 
-          BearingStruct: {}
+              Cartesian3DVector: {}
 
-          GeoPosStruct: {}
+          Measurement: {}
 
-          LocalPosStruct: {}
+          Bearing: {}
 
-          LinesStruct: {}
+          GeoPos:
+            children:
 
-          PathsStruct: {}
+              LatLonGeoPos: {}
 
-          ShapesStruct: {}
+              LLAGeoPos: {}
 
-          BoundingBoxesStruct: {}
+              MGRSGeoPos: {}
 
-          UncertaintyStruct: {}
+              UTMGeoPos: {}
 
-          PoseStruct: {}
+              PlusCodeGeoPos: {}
 
-          RangeStruct: {}
+              ECIGeoPos: {}
 
-          TransformsStruct: {}
+              ENUGeoPos: {}
 
-          CompactEncodingsStruct: {}
+              SphericalGeoPos: {}
 
-          OrbitalStruct: {}
+          LocalPos: {}
 
-          VectorStruct: {}
+          Line:
+            children:
 
-          ColorStruct: {}
+              Cartesian2DLine: {}
 
-          UnitsStruct: {}
+              Cartesian3DLine: {}
+
+          Path:
+            children:
+
+              Cartesian2DPath: {}
+
+              Cartesian3DPath: {}
+
+              LLAPath: {}
+
+          Shape:
+            children:
+
+              PolygonShape: {}
+
+              GeoEllipseShape: {}
+
+              GeoEllipsoidShape: {}
+
+          Bounding:
+            children:
+
+              Cartesian2DBounding: {}
+
+              Cartesian3DBounding: {}
+
+          Uncertainty:
+            children:
+
+              ErrorEllipseUncertainty: {}
+
+              CovarianceMatrix3x3Uncertainty: {}
+
+          Pose: {}
+
+          Range:
+            children:
+
+              FloatRange: {}
+
+              UInt32Range: {}
+
+              DoubleRange: {}
+
+              DurationRange: {}
+
+          Transform: {}
+
+          Orbital: {}
 
       Object:
         children:

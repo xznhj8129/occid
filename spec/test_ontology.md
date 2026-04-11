@@ -1,10 +1,10 @@
 
 ### Classes
 
-- **Definition**: Abstract structure used to define how values, space, geometry, time, or relations are interpreted.
+- **Definition**: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
     - **Frame**: Frames of reference
     - **Coordinate**: Coordinate systems and encodings
-    - **Geometry**: Spatial and geometric primitives
+    - **Geometry**: Spatial and geometric types
     - **Time**: Temporal reference frames
     - **Type**: Orthogonal typology axes used to speciate objects, control wrappers, and data without changing their structural class
         - **Category**: What kind of thing something is within its structural class (ie, waypoint, route, zone)
@@ -14,7 +14,21 @@
         - **Domains**: Domains of existence, movement, operations and effects
     - **Relationship**: Nature of relations, ownership, provenance, link
 
-- **Struct**: Reusable data primitives built on combinations of Definition primitives (vectors, positions, quaternions, paths, bounding boxes).
+- **Struct**: Primitive reusable low-level struct families.
+    - **Vector**: Basic numeric vector structs
+    - **Measurement**: Scalar value structs with optional uncertainty or metadata
+    - **Bearing**: Angular value structs with reference semantics
+    - **GeoPos**: Geographic position structs
+    - **LocalPos**: Local coordinate position structs
+    - **Line**: Two-point linear structs
+    - **Path**: Ordered multi-point path structs
+    - **Shape**: Area and volume geometry-carrier structs
+    - **Bounding**: Bounding region structs
+    - **Uncertainty**: Error and covariance structs
+    - **Pose**: Position and attitude combination structs
+    - **Range**: Interval and bound structs
+    - **Transform**: Spatial transform structs
+    - **Orbital**: Orbital state or element structs
 
 - **Object**: Atoms
     - **Entity**: One discrete "atom" capable of actions

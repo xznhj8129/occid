@@ -3,7 +3,7 @@ Class:
   children:
 
     Definition:
-      description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted.
+      description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
       children:
 
         Frame:
@@ -15,7 +15,7 @@ Class:
           axis: CoordinateEncoding
           
         Geometry:
-          description: Spatial and geometric primitives
+          description: Spatial and geometric types
           axis: GeometryType
           
         Time:
@@ -46,8 +46,58 @@ Class:
           description: Nature of relations, ownership, provenance, link
           
     Struct:
-      description: Reusable data primitives built on combinations of Definition primitives (vectors, positions, quaternions, paths, bounding boxes).
-      axis: StructType
+      description: Primitive reusable low-level struct families.
+      children:
+
+        Vector:
+          description: Basic numeric vector structs
+          axis: VectorType
+
+        Measurement:
+          description: Scalar value structs with optional uncertainty or metadata
+
+        Bearing:
+          description: Angular value structs with reference semantics
+
+        GeoPos:
+          description: Geographic position structs
+          axis: GeoPosType
+
+        LocalPos:
+          description: Local coordinate position structs
+
+        Line:
+          description: Two-point linear structs
+          axis: LineType
+
+        Path:
+          description: Ordered multi-point path structs
+          axis: PathType
+
+        Shape:
+          description: Area and volume geometry-carrier structs
+          axis: ShapeType
+
+        Bounding:
+          description: Bounding region structs
+          axis: BoundingType
+
+        Uncertainty:
+          description: Error and covariance structs
+          axis: UncertaintyType
+
+        Pose:
+          description: Position and attitude combination structs
+
+        Range:
+          description: Interval and bound structs
+          axis: RangeType
+
+        Transform:
+          description: Spatial transform structs
+
+        Orbital:
+          description: Orbital state or element structs
 
     Object:
       description: Atoms
