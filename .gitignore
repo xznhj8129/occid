@@ -1,2 +1,3 @@
 .codex
 .qwen/
+__pycache__/

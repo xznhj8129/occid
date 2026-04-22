@@ -1,0 +1,287 @@
+version: 1
+type: "module"
+name: "hivelink"
+description: "Hivelink protocol definitions derived from hivelink/protocol.json"
+tags:
+    - "hivelink"
+requires:
+    - "core"
+
+enums:
+    # Reply to Command
+    CommandResult:
+        - ACCEPTED = 1
+        - TEMPORARILY_REJECTED = 2
+        - DENIED = 3
+        - UNSUPPORTED = 4
+        - FAILED = 5
+        - IN_PROGRESS = 6
+        - CANCELLED = 7
+
+    # Reply to Data
+    DataError:
+        - NOT_FOUND = 1
+        - DEVICE_UNAVAILABLE = 2
+        - HARDWARE_ERROR = 3
+        - SOFTWARE_ERROR = 4
+        - DATABASE_ERROR = 5
+
+    FlightMode:
+        - ACRO = 1
+        - ANGLE = 2
+        - POSHOLD = 3
+        - NAV_WP = 4
+        - LOITER = 5
+        - CRUSE = 6
+        - RTH = 7
+        - LANDING = 8
+        - DISARMED = 9
+
+    FlightPhase:
+        - PREFLIGHT = 1
+        - TAKEOFF = 2
+        - CRUISE = 3
+        - MISSION_OPERATION = 4
+        - RTB = 5
+        - LANDING = 6
+        - POSTFLIGHT = 7
+
+    MissionPhase:
+        - BOOTING = 1
+        - ONLINE = 2
+        - MISSION_RECEIVED = 3
+        - READY_TAKEOFF = 4
+        - TAKEOFF_COMPLETE = 5
+        - ENROUTE = 6
+        - AT_ASSEMBLY = 7
+        - HOLDING = 8
+        - PROCEEDING = 9
+        - BINGO = 10
+        - RTB = 11
+        - LANDING = 12
+        - LANDED = 13
+        - SHUTDOWN = 14
+
+maps: {}
+
+structs:
+    ProtocolInfo:
+        parent: Protocol
+        fields:
+            protocol_name: const string = "hivelink"
+            protocol_version: const int = 1
+
+    HeartbeatMessage:
+        parent: Telemetry
+        variants:
+            SYSTEM: SystemHeartbeatMessage
+
+    SystemHeartbeatMessage:
+        parent: HeartbeatMessage
+        variants:
+            HEARTBEAT: SystemHeartbeat
+
+    SystemHeartbeat:
+        parent: SystemHeartbeatMessage
+
+    TestingMessage:
+        parent: Message
+        variants:
+            SYSTEM: SystemTestingMessage
+
+    SystemTestingMessage:
+        parent: TestingMessage
+        variants:
+            TEXTMSG: SystemTextMessage
+            BINMSG: SystemBinaryMessage
+
+    SystemTextMessage:
+        parent: SystemTestingMessage
+        fields:
+            textdata: string
+
+    SystemBinaryMessage:
+        parent: SystemTestingMessage
+        fields:
+            data: bytes
+
+    NetworkMessage:
+        parent: Message
+        variants:
+            SYSTEM: SystemNetworkMessage
+
+    SystemNetworkMessage:
+        parent: NetworkMessage
+        variants:
+            ONLINE: SystemOnline
+            FIND: SystemFind
+            PING: SystemPing
+
+    SystemOnline:
+        parent: SystemNetworkMessage
+
+    SystemFind:
+        parent: SystemNetworkMessage
+        fields:
+            id: bytes
+
+    SystemPing:
+        parent: SystemNetworkMessage
+
+    ReplyMessage:
+        parent: Response
+        variants:
+            NETWORK: NetworkReplyMessage
+            COMMAND: CommandReplyMessage
+
+    NetworkReplyMessage:
+        parent: ReplyMessage
+        variants:
+            ACK: NetworkAck
+            FIND: NetworkFindReply
+
+    NetworkAck:
+        parent: NetworkReplyMessage
+
+    NetworkFindReply:
+        parent: NetworkReplyMessage
+        fields:
+            found: bool
+            intf:
+                type: bytes
+                description: "Raw interface bitmask bytes from protocol.json; named interface flags are not defined there"
+            loss: int
+            latency: int
+            rssi: int
+            snr: int
+
+    CommandReplyMessage:
+        parent: ReplyMessage
+        fields:
+            result: CommandResult
+
+    StatusMessage:
+        parent: Telemetry
+        variants:
+            SYSTEM: SystemStatusMessage
+            AP: ApStatusMessage
+            INAV: InavStatusMessage
+
+    SystemStatusMessage:
+        parent: StatusMessage
+        variants:
+            FLIGHT: SystemFlightStatus
+            POSITION: SystemPositionStatus
+
+    SystemFlightStatus:
+        parent: SystemStatusMessage
+        fields:
+            FlightMode: FlightMode
+            airspeed: int
+            groundspeed: int
+            heading: int
+            msl_alt: int
+            lat: int
+            lon: int
+
+    SystemPositionStatus:
+        parent: SystemStatusMessage
+        fields:
+            lat: int
+            lon: int
+
+    ApStatusMessage:
+        parent: StatusMessage
+        variants:
+            HL_TELEM: ApHighLatencyTelemetry
+
+    ApHighLatencyTelemetry:
+        parent: ApStatusMessage
+        fields:
+            mode_str: string
+            airspeed: int
+            groundspeed: int
+            heading: int
+            msl_alt: int
+            lat: int
+            lon: int
+
+    InavStatusMessage:
+        parent: StatusMessage
+        variants:
+            TELEM: InavTelemetry
+
+    InavTelemetry:
+        parent: InavStatusMessage
+        fields:
+            inavmodes: int
+            airspeed: int
+            groundspeed: int
+            heading: int
+            msl_alt: int
+            lat: int
+            lon: int
+
+    CommandMessage:
+        parent: C3
+        variants:
+            SYSTEM: SystemCommandMessage
+            AP: ApCommandMessage
+
+    SystemCommandMessage:
+        parent: CommandMessage
+        variants:
+            ACTIVATE: SystemActivateCommand
+            SHUTDOWN: SystemShutdownCommand
+            SET_FLIGHT_MODE: SystemSetFlightModeCommand
+            SWITCH_DATALINK: SystemSwitchDatalinkCommand
+            DATALINK_CONFIG: SystemDatalinkConfigCommand
+
+    SystemActivateCommand:
+        parent: SystemCommandMessage
+
+    SystemShutdownCommand:
+        parent: SystemCommandMessage
+
+    SystemSetFlightModeCommand:
+        parent: SystemCommandMessage
+
+    SystemSwitchDatalinkCommand:
+        parent: SystemCommandMessage
+
+    SystemDatalinkConfigCommand:
+        parent: SystemCommandMessage
+
+    ApCommandMessage:
+        parent: CommandMessage
+        variants:
+            ARM: ApArmCommand
+            DISARM: ApDisarmCommand
+            SET_MODE: ApSetModeCommand
+            TAKEOFF: ApTakeoffCommand
+            LAND: ApLandCommand
+            SELECT_MISSION: ApSelectMissionCommand
+
+    ApArmCommand:
+        parent: ApCommandMessage
+
+    ApDisarmCommand:
+        parent: ApCommandMessage
+
+    ApSetModeCommand:
+        parent: ApCommandMessage
+        fields:
+            mode_str: string
+
+    ApTakeoffCommand:
+        parent: ApCommandMessage
+        fields:
+            alt_m: int
+
+    ApLandCommand:
+        parent: ApCommandMessage
+
+    ApSelectMissionCommand:
+        parent: ApCommandMessage
+        fields:
+            seq: int

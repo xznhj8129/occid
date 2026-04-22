@@ -1,7 +1,7 @@
 """
 Usage:
     python3 occid/spec/test_compile.py
-    python3 occid/spec/test_compile.py --out-typology occid/spec/test_typology.yaml --out-ontology occid/spec/test_ontology.md
+    python3 occid/spec/test_compile.py --out-schemapt2 occid/spec/test_schemapt2.yaml --out-schemabase occid/spec/test_schemabase.md
 """
 
 from argparse import ArgumentParser
@@ -11,10 +11,10 @@ import yaml
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_ONTOLOGY = HERE / "ontology.yaml"
-DEFAULT_AXIS = HERE / "axis.yaml"
-DEFAULT_OUT_TYPOLOGY = HERE / "test_typology.yaml"
-DEFAULT_OUT_ONTOLOGY = HERE / "test_ontology.md"
+DEFAULT_schemabase = HERE / "base.yaml"
+DEFAULT_AXIS = HERE / "lexicon.yaml"
+DEFAULT_OUT_schemapt2 = HERE / "schemapt2.yaml"
+DEFAULT_OUT_schemabase = HERE / "base.md"
 
 
 def load_yaml(path: Path):
@@ -81,7 +81,7 @@ def expand_axis_names(base_name: str, axis_names: tuple[str, ...], axes: dict):
     return names
 
 
-def expand_typology_node(node_name: str, node_data: dict, axes: dict, inherited_axes: tuple[str, ...] = ()):
+def expand_schemapt2_node(node_name: str, node_data: dict, axes: dict, inherited_axes: tuple[str, ...] = ()):
     compiled = {}
     axis_name = node_data.get("axis")
     current_axes = inherited_axes + ((axis_name,) if axis_name else ())
@@ -96,7 +96,7 @@ def expand_typology_node(node_name: str, node_data: dict, axes: dict, inherited_
 
     compiled_children = {}
     for child_name, child_data in children.items():
-        compiled_children[child_name] = expand_typology_node(child_name, child_data, axes, current_axes)
+        compiled_children[child_name] = expand_schemapt2_node(child_name, child_data, axes, current_axes)
 
     if compiled_children:
         compiled["children"] = compiled_children
@@ -132,17 +132,16 @@ def render_markdown_node(name: str, node_data: dict, indent: int):
     return lines
 
 
-def write_typology(path: Path, ontology: dict, axes: dict):
-    class_node = ontology["Class"]
-    rendered = {"Class": expand_typology_node("Class", class_node, axes)}
+def write_schemapt2(path: Path, schemabase: dict, axes: dict):
+    class_node = schemabase["Class"]
+    rendered = {"Class": expand_schemapt2_node("Class", class_node, axes)}
     text = yaml.dump({"types": rendered}, Dumper=Dumper, sort_keys=False, width=1000)
     body = add_spacing(text)
     path.write_text(
         "\n".join(
             [
                 "includes:",
-                "- ontology.yaml",
-                "- axis.yaml",
+                "- schemabase.yaml",
                 "",
                 "# Only one discriminator key? ",
                 "# ie: Vehicle * PhysicalDomain = LandVehicle, AirVehicle, etc",
@@ -156,8 +155,8 @@ def write_typology(path: Path, ontology: dict, axes: dict):
     )
 
 
-def write_ontology(path: Path, ontology: dict):
-    class_node = ontology["Class"]
+def write_schemabase(path: Path, schemabase: dict):
+    class_node = schemabase["Class"]
     children = class_node["children"]
     lines = ["", "### Classes", ""]
     spaced = any(node.get("children") for node in children.values())
@@ -166,17 +165,17 @@ def write_ontology(path: Path, ontology: dict):
 
 
 parser = ArgumentParser()
-parser.add_argument("--ontology", type=Path, default=DEFAULT_ONTOLOGY)
+parser.add_argument("--schemabase", type=Path, default=DEFAULT_schemabase)
 parser.add_argument("--axis", type=Path, default=DEFAULT_AXIS)
-parser.add_argument("--out-typology", type=Path, default=DEFAULT_OUT_TYPOLOGY)
-parser.add_argument("--out-ontology", type=Path, default=DEFAULT_OUT_ONTOLOGY)
+parser.add_argument("--out-schemapt2", type=Path, default=DEFAULT_OUT_schemapt2)
+parser.add_argument("--out-schemabase", type=Path, default=DEFAULT_OUT_schemabase)
 args = parser.parse_args()
 
-ontology = load_yaml(args.ontology)
+schemabase = load_yaml(args.schemabase)
 axes = load_yaml(args.axis)
 
-write_typology(args.out_typology, ontology, axes)
-write_ontology(args.out_ontology, ontology)
+write_schemapt2(args.out_schemapt2, schemabase, axes)
+write_schemabase(args.out_schemabase, schemabase)
 
-print(f"wrote={args.out_typology}")
-print(f"wrote={args.out_ontology}")
+print(f"wrote={args.out_schemapt2}")
+print(f"wrote={args.out_schemabase}")

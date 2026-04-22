@@ -51,7 +51,7 @@ Class:
 
         Vector:
           description: Basic numeric vector structs
-          axis: VectorType
+          axis: Dimension
 
         Measurement:
           description: Scalar value structs with optional uncertainty or metadata
@@ -68,11 +68,11 @@ Class:
 
         Line:
           description: Two-point linear structs
-          axis: LineType
+          axis: Dimension
 
         Path:
           description: Ordered multi-point path structs
-          axis: PathType
+          axis: Dimension
 
         Shape:
           description: Area and volume geometry-carrier structs
@@ -80,7 +80,7 @@ Class:
 
         Bounding:
           description: Bounding region structs
-          axis: BoundingType
+          axis: Dimension
 
         Uncertainty:
           description: Error and covariance structs

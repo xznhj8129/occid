@@ -66,6 +66,12 @@ MilitaryBranch:
 - SpecialOperations
 - Joint
 
+ForceApplication:
+- Deterr
+- Suppress
+- Neutralize
+- Destroy
+
 EngagementMethod:
 - PointTarget
 - AreaTarget
@@ -2113,3 +2119,123 @@ Dimensions:
 - Dim_2D 
 - Dim_3D 
 - Dim_4D
+
+ControlRefAxis:
+- Navigation
+- Planning
+
+FactionAxis:
+- FactionSide
+- Nationality
+- LegalStatus
+
+AgentType:
+- LLM
+- Coding
+- Planning
+- Control
+- MultiModal
+- Fusion
+- Classification
+
+PhysicalDomain:
+- Land
+- Air
+- Sea
+- Subsea
+- Space
+
+CivilDomain:
+- Civilian
+- Government
+- Military
+- NonStateActor
+
+FrameType:
+- Local2D
+- Local3D
+- Global
+- AltitudeReference
+- BearingReference
+
+GeometryType:
+  - Point
+  - Line
+  - Path
+  - Polygon
+  - Circle
+  - Ellipse
+  - Box
+  - Sphere
+  - Ellipsoid
+  - Cylinder
+  - Cone
+  - Frustum
+
+GeometryBase:
+  - Point2D
+  - Point3D
+
+Geometry2D:
+  - Line
+  - Box2D
+  - Polygon
+  - Circle
+  - Ellipse
+
+Geometry3D:
+  - Path
+  - Polygon3D # Extruded polygon
+  - Box3D # W*L*H
+  - Frustrum # Revolved 4-point polygon
+  - Sphere # 3D circle
+  - Cone # Revolved 3-point polygon
+
+CoordinateEncoding:
+- Cartesian2D
+- Cartesian3D
+- LatLon
+- UTM
+- MGRS
+- PlusCode
+- ECI
+- ENU
+- Spherical
+
+TimeType:
+- Timestamp
+- TimeWindow
+- TimeOffset
+
+GeoPosType:
+- LatLon
+- LLA
+- MGRS
+- UTM
+- PlusCode
+- ECI
+- ENU
+- Spherical
+
+Dimension:
+- 2D
+- 3D
+
+ShapeType:
+- Polygon
+- GeoEllipse
+- GeoEllipsoid
+
+UncertaintyType:
+- ErrorEllipse
+- CovarianceMatrix3x3
+
+RangeType:
+- Float
+- UInt32
+- Double
+- Duration
+
+Direction:
+- Horizontal
+- Vertical

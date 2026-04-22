@@ -8,6 +8,7 @@ Specific example names are not definitive.
 **2. YAML Subset**
 - YAML version: `1.2`
 - Allowed: mappings, sequences, plain scalars, quoted scalars, comments
+- Additional 4-space indentation levels are legal for readability even when they do not add structure, as long as the YAML structure is unchanged
 - Forbidden: anchors, aliases, tags, flow-style objects/lists, duplicate keys, tabs
 - Unknown keys are errors
 - string literals must be quoted with `"` in schema examples and authored schema
