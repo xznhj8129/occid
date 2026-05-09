@@ -1,0 +1,116 @@
+
+PhysicalDomain:
+- Land
+- Air
+- Sea
+- Subsea
+- Space
+
+CivilDomain:
+- Civilian
+- Government
+- Military
+- NonStateActor
+
+FrameType:
+- Local2D
+- Local3D
+- Global
+- AltitudeReference
+- BearingReference
+
+GeometryType:
+- Point
+- Line
+- Path
+- Polygon
+- Volume
+- Orientation
+- Arc
+- Ellipse
+- Ellipsoid
+- Frustum
+- Corridor
+- Annulus
+
+CoordinateEncoding:
+- Cartesian2D
+- Cartesian3D
+- LatLon
+- UTM
+- MGRS
+- PlusCode
+- ECI
+- ENU
+- Spherical
+
+TimeType:
+- Timestamp
+- TimeWindow
+- TimeOffset
+
+VectorType:
+- Cartesian2D
+- Cartesian3D
+
+GeoPosType:
+- LatLon
+- LLA
+- MGRS
+- UTM
+- PlusCode
+- ECI
+- ENU
+- Spherical
+
+LineType:
+- Cartesian2D
+- Cartesian3D
+
+PathType:
+- Cartesian2D
+- Cartesian3D
+- LLA
+
+ShapeType:
+- Polygon
+- GeoEllipse
+- GeoEllipsoid
+
+BoundingType:
+- Cartesian2D
+- Cartesian3D
+
+UncertaintyType:
+- ErrorEllipse
+- CovarianceMatrix3x3
+
+RangeType:
+- Float
+- UInt32
+- Double
+- Duration
+
+AgentType:
+- LLM
+- Coding
+- Planning
+- Control
+- MultiModal
+- Fusion
+- Classification
+
+FactionAxis:
+- FactionSide
+- Nationality
+- LegalStatus
+
+ControlRefAxis:
+- Navigation
+- Planning
+
+TaskLevel:
+- Technical
+- Tactical
+- Operational
+- Strategic

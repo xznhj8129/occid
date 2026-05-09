@@ -1,0 +1,31 @@
+Communication:
+  children:
+
+    Node: {}
+
+    Transport:
+      children:
+
+        Network: {}
+
+        Carrier: {}
+
+        Protocol: {}
+
+    Feed:
+      children:
+
+        Link: {}
+
+        Stream: {}
+
+    Message:
+      children:
+
+        C3: {}
+
+        ISR: {}
+
+        Telemetry: {}
+
+        Response: {}

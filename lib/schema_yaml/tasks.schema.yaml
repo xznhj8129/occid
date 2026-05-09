@@ -1,0 +1,197 @@
+version: 1
+enums:
+  Capability:
+    - NONE = 0
+    - DIRECT_FIRES
+    - INDIRECT_FIRES
+    - LOGISTICS_SUPPLY
+    - COMMUNICATIONS
+    - FUEL
+    - RESCUE
+    - SURVEILLANCE
+
+  TaskType:
+    - POSITIONING = 0
+    - COMBAT
+    - ISR
+    - CARGO
+    - HOLD
+    - SUPPORT
+    - MOVE
+    - RESUPPLY
+
+  TaskCombat:
+    - DEFEND = 0
+    - ATTACK
+    - PROTECT
+    - COMBAT_SUPPORT
+    - COMBAT_RESERVE
+
+  TaskPhase:
+    - CREATED = 0
+    - DISPATCHED
+    - ASSIGNED
+    - RUNNING
+    - DONE_OK
+    - DONE_FAIL
+    - CANCELLED
+
+  TaskPriority:
+    - ROUTINE = 0
+    - HIGH
+    - IMMEDIATE
+
+  TaskStatus:
+    - NEW = 0
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+
+  TaskAssignFail:
+    - FAIL = 0
+    - FAIL_NO_ASSETS
+    - FAIL_BAD_REQUEST_CANTPRO
+    - FAIL_DENIED
+    - FAIL_INSUFFICIENT_INFO
+    - FAIL_REJECTED
+    - FAIL_C2_ELEMENT
+    - FAIL_PLATFORM_CANTCO
+    - FAIL_STALE
+    - FAIL_CANCELLED
+
+  CommandResult:
+    - ACCEPTED = 0
+    - TEMPORARILY_REJECTED
+    - DENIED
+    - UNSUPPORTED
+    - FAILED
+    - IN_PROGRESS
+    - CANCELLED
+
+models:
+  MunitionAllocation:
+    fields:
+      munition_type: string
+      qty: int = 0
+
+
+  TaskTimeWindow:
+    fields:
+      earliest_start: optional float
+      latest_finish: optional float
+
+
+  ObjectiveSchema:
+    fields:
+      objective_id: string
+      intent: string
+      success_rule: optional string
+      priority: optional TaskPriority
+      target_ref: optional string
+      geo_goal: optional GlobalPosition
+      end_condition: optional string
+      deadline_ts: optional float
+
+
+  ObjectiveBinding:
+    fields:
+      objective_id: string
+      task_ids: list[string] = []
+      priority: optional TaskPriority
+      deadline_ts: optional float
+      success_rule: optional string
+
+
+  TaskDelta:
+    fields:
+      task_id: string
+      task_rev: int = 0
+      phase: TaskPhase
+      progress: optional float
+      owner: optional string
+      updated_ts: float
+
+
+  TaskStatusEntry:
+    fields:
+      ts: float
+      status: TaskStatus
+      command_result: optional CommandResult
+      reply_ack: optional ReplyAck
+      assign_fail: optional TaskAssignFail
+      phase: optional TaskPhase
+      detail: optional string
+      source: optional string
+
+
+  BaseTask:
+    fields:
+      task_id: string
+      task_type: TaskType
+      unit_code: string
+      capability: optional Capability
+      status: TaskStatus = NEW
+      command_result: optional CommandResult
+      assign_fail: optional TaskAssignFail
+      phase: TaskPhase = CREATED
+      geometry_id: optional string
+      start_time: optional float
+      deadline: optional float
+      priority: TaskPriority = ROUTINE
+      remarks: optional string
+      last_update: optional float
+      issued_by: optional string
+      accepted_by: optional string
+      assigned_assets: list[string] = []
+      attempt_idx: int = 0
+      dispatch_state: DeliveryState = QUEUED
+      dispatch_error: optional string
+      time_window: optional TaskTimeWindow
+      retry_profile: optional RetryProfile
+      status_log: list[TaskStatusEntry] = []
+      qos: QosTier = ROUTINE
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      conflict_policy: ConflictPolicy = VECTOR_CLOCK
+      objective: optional ObjectiveSchema
+
+
+  MoveTask:
+    parent: BaseTask
+    fields:
+      task_type: const TaskType = MOVE
+      movement_domain: OperationalDomain
+      destination: GlobalPosition
+      route: optional GeoPath
+      speed_ms: optional float
+
+
+  CombatTask:
+    parent: BaseTask
+    fields:
+      task_type: const TaskType = COMBAT
+      strike_task: optional TaskCombat
+      target_category: optional TargetCategory
+      target_point: optional GlobalPosition
+      munitions: list[MunitionAllocation] = []
+      effect: optional string
+      desired_bda: bool = false
+
+
+  ResupplyTask:
+    parent: BaseTask
+    fields:
+      task_type: const TaskType = RESUPPLY
+      destination: GlobalPosition
+      payload: list[PayloadAllocation] = []
+      payload_plan: optional PayloadPlanSchema
+
+
+  HoldTask:
+    parent: BaseTask
+    fields:
+      task_type: const TaskType = HOLD
+      location: GlobalPosition
+      radius_m: optional float

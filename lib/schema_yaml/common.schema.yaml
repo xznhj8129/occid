@@ -1,0 +1,339 @@
+version: 1
+enums:
+  ConfidenceLevel:
+    - UNKNOWN = 0
+    - LOW
+    - MEDIUM
+    - HIGH
+    - CONFIRMED
+
+  OperationalDomain:
+    - LAND = 0
+    - AIR
+    - SEA
+    - SUB
+    - SPACE
+    - CYBER
+    - ALL
+
+  EffectDomain:
+    - LAND = 0
+    - AIR
+    - SEA
+    - SUB
+    - SPACE
+    - CYBER
+    - ALL
+
+  SchemaKind:
+    - BASIC_UNIT = 0
+    - GROUND_ORG
+    - AIR_ORG
+    - AIR_UNIT
+    - GROUND_UNIT
+    - INTEL_TRACK
+    - LINK
+    - SENSOR
+    - INSTALLATION
+
+  Faction:
+    - UNKNOWN = 0
+    - PENDING
+    - FRIENDLY
+    - SUSPECT
+    - HOSTILE
+    - NEUTRAL
+    - ASSUMED
+    - FAKER
+    - JOKER
+
+  AlternateIdType:
+    - TRACK_ID = 0
+    - ASSET_ID
+    - CALLSIGN
+    - SERIAL_NUMBER
+    - REGISTRATION
+    - UNIT_CODE
+    - TRACK_NUMBER
+    - JU_NUMBER
+
+  PriorityLevel:
+    - LOW = 0
+    - NORMAL
+    - HIGH
+    - CRITICAL
+
+  PropulsionType:
+    - FOOT = 0
+    - WHEELED
+    - TRACKED
+    - ROTARY_WING
+    - FIXED_WING
+    - JET
+    - MARITIME
+    - STATIC
+
+  NavigationMode:
+    - MANUAL = 0
+    - INS
+    - GNSS
+    - INS_GNSS
+    - VISUAL
+    - TERRAIN_FOLLOW
+
+  FuelType:
+    - GASOLINE = 0
+    - DIESEL
+    - HEAVY_FUEL
+    - JET_FUEL
+    - BATTERY
+    - HYBRID
+
+mappings:
+  SIDC_FACTION:
+    key_type: string
+    value_type: string
+    entries:
+      UNKNOWN: U
+      PENDING: P
+      FRIENDLY: F
+      SUSPECT: S
+      HOSTILE: H
+      NEUTRAL: N
+
+  SIDC_DOMAIN:
+    key_type: string
+    value_type: string
+    entries:
+      ground: G
+      air: A
+      sea: S
+      sub: U
+
+  SIDC_STATUS:
+    key_type: string
+    value_type: string
+    entries:
+      anticipated: A
+      present: P
+      present-capable: C
+      present-damaged: D
+      present-destroyed: X
+
+  SIDC_AIR_A5:
+    key_type: string
+    value_type: string
+    entries:
+      track: "-"
+      military: M
+      civilian: C
+
+  SIDC_AIR_A6:
+    key_type: string
+    value_type: string
+    entries:
+      fixed-wing: F
+      rotary: H
+      weapon: W
+
+  SIDC_AIR_MILITARY:
+    key_type: string
+    value_type: string
+    entries:
+      fighter: F
+      attack: A
+      bomber: B
+      utility: U
+      drone: Q
+      missile: M
+      decoy: D
+      recon: R
+      ecm: J
+
+  SIDC_GROUND_A5:
+    key_type: string
+    value_type: string
+    entries:
+      track: "-"
+      unit: U
+
+  SIDC_GROUND_A6:
+    key_type: string
+    value_type: string
+    entries:
+      combat: C
+      combat-support: U
+      service-support: S
+
+  SIDC_COMBAT_GROUND:
+    key_type: string
+    value_type: string
+    entries:
+      air-defence: D
+      armor: A
+      ssm: M
+      artillery: F
+      infantry: I
+      anti-tank: A
+      recon: R
+      hq: H
+      engineer: E
+
+  SIDC_COMBAT_GROUND_INFANTRY:
+    key_type: string
+    value_type: string
+    entries:
+      light: L
+      motorized: M
+      mechanized: Z
+      ifv: I
+      air-assault: A
+
+  SIDC_AIR_WEAPON_MISSILE:
+    key_type: string
+    value_type: string
+    entries:
+      ssm: S*APWMSS----
+      sam: S*APWMSA----
+      aam: S*APWMAA----
+      asm: S*APWMAS----
+      land-attack: S*APWML----
+
+  SIDC_GROUND_ARTILLERY:
+    key_type: string
+    value_type: string
+    entries:
+      spg: S*GPUCFHE---
+      light_towed: S*GPUCFHL---
+      medium_towed: S*GPUCFHM---
+      heavy_towed: S*GPUCFHH---
+      sp_mrl: S*GPUCFRMS--
+      towed_mortar: S*GPUCFMT---
+      ssm: S*GPUCMMT---
+
+  SIDC_UNIT_SIZE:
+    key_type: string
+    value_type: string
+    entries:
+      single: "-"
+      team: A
+      squad: B
+      section: C
+      platoon: D
+      company: E
+      battalion: F
+      regiment: G
+      brigade: H
+      division: H
+
+  SIDC_CODES:
+    key_type: string
+    value_type: any
+    entries:
+      friendly:
+        land:
+          default: S*GP--------
+          unit: S*GPUC------
+          infantry: S*GPUCI-----
+          armor: S*GPUCA-----
+          recon: S*GPUCR-----
+          artillery: S*GPUCF-----
+          hq: S*GPUH----A-
+          tfhq: S*GPUH----B-
+          tf: S*GPUH----E-
+        air:
+          default: S*APM-------
+      hostile:
+        land:
+          default: SHGPU-------
+        air:
+          default: SHAPM-------
+
+models:
+
+  Time:
+    fields:
+      utime: int
+    
+
+  Duration:
+    fields:
+      ms: optional float
+      seconds: optional float
+      minutes: optional float
+      hours: optional float
+      days: optional float
+      weeks: optional float
+      months: optional float
+      years: optional float
+
+
+  Timestamp:
+    fields:
+      ms: float
+      seconds: float
+      minutes: float
+      hours: float
+      day: float
+      month: float
+      year: float
+      tz: float
+
+
+  AlternateId:
+    fields:
+      id_type: AlternateIdType
+      value: string
+
+
+  ItemCount:
+    fields:
+      item_type: string
+      qty: int = 0
+
+
+  NumericRange:
+    fields:
+      min_value: optional float
+      max_value: optional float
+
+
+  MetadataValue:
+    fields:
+      text_value: optional string
+      int_value: optional int
+      float_value: optional float
+      bool_value: optional bool
+
+
+  MetadataEntry:
+    fields:
+      key: string
+      value: MetadataValue
+
+
+  SymbologySchema:
+    fields:
+      sidc: optional string
+      cot: optional string
+
+
+  FirmwareInfo:
+    fields:
+      name: optional string
+      version: optional string
+      build: optional string
+
+
+  FuelState:
+    fields:
+      fuel_type: FuelType
+      capacity: optional float
+      remaining: optional float
+      burn_rate_per_hour: optional float
+
+
+  SuppliesSchema:
+    fields:
+      fuel: optional FuelState
+      stores: list[ItemCount] = []

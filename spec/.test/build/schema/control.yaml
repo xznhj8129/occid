@@ -1,0 +1,114 @@
+version: 1
+type: schema
+name: control.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Control:
+    children:
+
+      Reasoning:
+        children:
+
+          Purpose: {}
+
+          Intent: {}
+
+          Objective: {}
+
+      Directive:
+        children:
+
+          Mission:
+            children:
+
+              TechnicalMission: {}
+
+              TacticalMission: {}
+
+              OperationalMission: {}
+
+              StrategicMission: {}
+
+          Task:
+            children:
+
+              TechnicalTask: {}
+
+              TacticalTask: {}
+
+              OperationalTask: {}
+
+              StrategicTask: {}
+
+          Command:
+            children:
+
+              TechnicalCommand: {}
+
+              TacticalCommand: {}
+
+              OperationalCommand: {}
+
+              StrategicCommand: {}
+
+      Execution:
+        children:
+
+          Plan:
+            children:
+
+              TechnicalPlan: {}
+
+              TacticalPlan: {}
+
+              OperationalPlan: {}
+
+              StrategicPlan: {}
+
+          Sequence:
+            children:
+
+              TechnicalSequence: {}
+
+              TacticalSequence: {}
+
+              OperationalSequence: {}
+
+              StrategicSequence: {}
+
+          Action:
+            children:
+
+              TechnicalAction: {}
+
+              TacticalAction: {}
+
+              OperationalAction: {}
+
+              StrategicAction: {}
+
+      Reference:
+        children:
+
+          Mark: {}
+
+          Path: {}
+
+          Region: {}
+
+          Boundary: {}
+
+      Constraint:
+        children:
+
+          Restriction: {}
+
+          Limitation: {}
+
+          Condition: {}
+
+      Interface: {}

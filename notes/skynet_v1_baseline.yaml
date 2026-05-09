@@ -1,0 +1,1200 @@
+version: 1
+type: "schema"
+name: "skynet_v1_baseline.yaml"
+tags:
+  - "core"
+  - "skynet"
+  - "demo"
+
+enums:
+  Domain:
+    - LAND = 0
+    - AIR
+    - SEA
+    - SUBSEA
+    - SPACE
+    - CYBER
+
+  Affiliation:
+    - UNKNOWN = 0
+    - FRIENDLY
+    - ASSUMED_FRIENDLY
+    - NEUTRAL
+    - SUSPECT
+    - HOSTILE
+    - EXERCISE_FAKER
+    - EXERCISE_JOKER
+
+  ClassificationLevel:
+    - UNCLASSIFIED = 0
+    - CONTROLLED
+    - CONFIDENTIAL
+    - SECRET
+    - TOP_SECRET
+
+  Priority:
+    - LOW = 0
+    - ROUTINE
+    - HIGH
+    - IMMEDIATE
+    - CRITICAL
+
+  LifecycleStatus:
+    - UNKNOWN = 0
+    - PLANNED
+    - ONLINE
+    - ACTIVE
+    - PAUSED
+    - COMPLETE
+    - FAILED
+    - ABORTED
+    - OFFLINE
+
+  EntityKind:
+    - PERSON = 0
+    - AGENT
+    - MACHINE
+    - SYSTEM
+    - ORGANIZATION
+    - SITE
+    - ITEM
+    - TRACK
+
+  MachineKind:
+    - VEHICLE = 0
+    - ROBOT
+    - PLATFORM
+    - PAYLOAD
+    - COMPONENT
+
+  AutonomyLevel:
+    - REMOTE = 0
+    - ASSISTED
+    - SEMI_AUTONOMOUS
+    - SUPERVISED
+    - AUTONOMOUS
+
+  AutopilotType:
+    - NONE = 0
+    - BETAFLIGHT
+    - INAV
+    - ARDUPILOT
+    - PX4
+    - CUSTOM
+
+  TelemetryProtocol:
+    - NONE = 0
+    - MSP
+    - MAVLINK
+    - HIVEOS_UAV
+    - HIVELINK
+    - COT
+
+  OrgKind:
+    - CIVILIAN = 0
+    - GOVERNMENT
+    - MILITARY
+    - COMMERCIAL
+    - NGO
+    - NON_STATE_ACTOR
+
+  OrgTopology:
+    - NONE = 0
+    - HIERARCHICAL
+    - CELLULAR
+    - FREEFORM
+
+  OrgEchelon:
+    - INDIVIDUAL = 0
+    - TEAM
+    - SQUAD
+    - SECTION
+    - PLATOON
+    - COMPANY
+    - BATTALION
+    - REGIMENT
+    - BRIGADE
+    - DIVISION
+    - FLIGHT
+    - SQUADRON
+    - GROUP
+    - WING
+
+  RelationKind:
+    - OWNS = 0
+    - PART_OF
+    - HAS_COMPONENT
+    - COMMANDS
+    - CONTROLS
+    - ASSIGNED_TO
+    - OBSERVED_BY
+    - RELAYS_FOR
+    - FOLLOWS
+    - ESCORTS
+    - MONITORS
+
+  Confidence:
+    - UNKNOWN = 0
+    - LOW
+    - MEDIUM
+    - HIGH
+    - CONFIRMED
+
+  AltitudeDatum:
+    - WGS84_HAE = 0
+    - MSL
+    - AGL
+    - TERRAIN
+    - BAROMETRIC
+
+  BodyFrame:
+    - FRD = 0
+    - FLU
+
+  LocalFrame:
+    - NED = 0
+    - ENU
+
+  TaskKind:
+    - MOVE = 0
+    - PATROL
+    - ORBIT
+    - OBSERVE
+    - SEARCH
+    - TRACK
+    - RESUPPLY
+    - HOLD
+    - LAND
+    - RTL
+
+  TaskStatus:
+    - NEW = 0
+    - DISPATCHED
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+    - REJECTED
+    - EXPIRED
+
+  CommandResult:
+    - ACCEPTED = 0
+    - TEMPORARILY_REJECTED
+    - DENIED
+    - UNSUPPORTED
+    - FAILED
+    - IN_PROGRESS
+    - CANCELLED
+
+  AckMode:
+    - NONE = 0
+    - RECEIPT
+    - EXECUTION
+    - BOTH
+
+  DeliveryState:
+    - QUEUED = 0
+    - SENT
+    - RECEIVED
+    - ACKED
+    - NACKED
+    - EXECUTED
+    - EXPIRED
+    - DROPPED
+
+  BusTopicKind:
+    - CONTROL = 0
+    - GET
+    - SET
+    - REQUEST
+    - RESPONSE
+    - STATE
+    - EVENT
+    - DIAG
+
+  RouteMode:
+    - DIRECT = 0
+    - RELAY
+    - STORE_FORWARD
+    - FLOOD
+
+  LinkKind:
+    - BROADCAST = 0
+    - POINT_TO_POINT
+    - HUB
+    - MESH
+
+  NetworkKind:
+    - RF = 0
+    - WIFI
+    - WIRED
+    - CELLULAR
+    - SATCOM
+    - SERIAL
+    - LOCAL_BUS
+
+  LinkDataKind:
+    - CONTROL = 0
+    - TELEMETRY
+    - VIDEO
+    - AUDIO
+    - TEXT
+    - PACKET
+    - SENSOR
+
+  LinkDirection:
+    - RX = 0
+    - TX
+    - HALF_DUPLEX
+    - FULL_DUPLEX
+
+  LinkCondition:
+    - UNKNOWN = 0
+    - GOOD
+    - DEGRADED
+    - INTERMITTENT
+    - LOST
+
+  VideoProtocol:
+    - RTSP = 0
+    - RTMP
+    - SRT
+    - HLS
+    - WEBRTC
+    - UDP
+    - TCP
+
+  MediaKind:
+    - IMAGE = 0
+    - VIDEO
+    - AUDIO
+    - DOCUMENT
+    - BINARY
+
+  SensorKind:
+    - EO = 0
+    - IR
+    - EO_IR
+    - EO_MULTISPECTRAL
+    - RADAR
+    - LIDAR
+    - RF
+    - ACOUSTIC
+    - IMU
+    - GNSS
+
+  ObservationKind:
+    - DETECTION = 0
+    - TRACK
+    - IDENTIFICATION
+    - CLASSIFICATION
+    - DAMAGE_ASSESSMENT
+    - SALUTE
+
+  TrackStatus:
+    - NEW = 0
+    - ACTIVE
+    - STALE
+    - LOST
+    - MERGED
+    - DROPPED
+
+  PayloadKind:
+    - SENSOR = 0
+    - CARGO
+    - SUPPLY
+    - EFFECTOR
+    - RELAY
+    - RECORDER
+    - WEAPON
+    - AMMO
+    - ORDNANCE
+
+  AddressKind:
+    - IPV4 = 0
+    - IPV6
+    - MAC
+    - URI
+    - CALLSIGN
+    - SERIAL
+
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
+maps:
+
+structs:
+  Classification:
+    parent: Struct
+    fields:
+      level: ClassificationLevel
+      caveat: optional string
+      releasable_to: optional list[string]
+
+  Provenance:
+    parent: Struct
+    fields:
+      source_system: string
+      source_node_id: optional string
+      source_message_id: optional string
+      created_at: int64
+      updated_at: optional int64
+      confidence: optional Confidence
+
+  AlternateId:
+    parent: Struct
+    fields:
+      id_kind: string
+      value: string
+
+  Symbology:
+    parent: Struct
+    fields:
+      sidc: optional string
+      cot: optional string
+      cot_type: optional string
+      label: optional string
+
+  GlobalPosition:
+    parent: Struct
+    fields:
+      latitude_deg: float
+      longitude_deg: float
+      altitude_m: optional float
+      altitude_datum: optional AltitudeDatum
+      mgrs: optional string
+
+  LocalPosition:
+    parent: Struct
+    fields:
+      frame: LocalFrame
+      x_m: float
+      y_m: float
+      z_m: float
+
+  EulerAttitude:
+    parent: Struct
+    fields:
+      body_frame: BodyFrame
+      roll_rad: float
+      pitch_rad: float
+      yaw_rad: float
+
+  Quaternion:
+    parent: Struct
+    fields:
+      x: float
+      y: float
+      z: float
+      w: float
+
+  Velocity:
+    parent: Struct
+    fields:
+      frame: LocalFrame
+      x_ms: float
+      y_ms: float
+      z_ms: float
+
+  LocationUncertainty:
+    parent: Struct
+    fields:
+      horizontal_error_m: optional float
+      vertical_error_m: optional float
+      ellipse_major_m: optional float
+      ellipse_minor_m: optional float
+      ellipse_bearing_deg: optional float
+
+  GeoArea:
+    parent: Struct
+    fields:
+      vertices: list[GlobalPosition]
+
+  GeoPath:
+    parent: Struct
+    fields:
+      points: list[GlobalPosition]
+
+  BoundingBox:
+    parent: Struct
+    fields:
+      x: float
+      y: float
+      width: float
+      height: float
+
+  VideoConfig:
+    parent: Struct
+    fields:
+      protocol: optional VideoProtocol
+      stream_url: optional string
+      overlay_url: optional string
+      webrtc_url: optional string
+      hls_url: optional string
+      port: optional int
+
+  MediaItem:
+    parent: Sensory
+    fields:
+      media_id: string
+      media_kind: MediaKind
+      uri: string
+      label: optional string
+      content_type: optional string
+      size_bytes: optional int64
+      captured_at: optional int64
+      source_entity_id: optional string
+      classification: optional Classification
+
+  MediaSet:
+    parent: Struct
+    fields:
+      items: optional list[MediaItem]
+
+  SupplyItem:
+    parent: Struct
+    fields:
+      item_kind: string
+      quantity: int
+
+  InventoryItem:
+    parent: Struct
+    fields:
+      item_type: string
+      qty: int
+
+  PayloadLoadedItem:
+    parent: Struct
+    fields:
+      payload_type: string
+      qty: int
+
+  PayloadMount:
+    parent: Struct
+    fields:
+      mount_id: string
+      item_id: string
+      qty: int
+      pylons: optional string
+      launcher: optional string
+      compat_tags: optional list[string]
+      loaded: optional list[PayloadLoadedItem]
+
+  FuelProfile:
+    parent: Struct
+    fields:
+      fuel_type: string
+      capacity: float
+
+  FirmwareProfile:
+    parent: Struct
+    fields:
+      name: string
+      version: string
+
+  ScalarLimit:
+    parent: Struct
+    fields:
+      min_value: optional float
+      max_value: optional float
+
+  WeatherLimits:
+    parent: Struct
+    fields:
+      ifr: optional bool
+      rain: optional ScalarLimit
+      snow: optional ScalarLimit
+      temp: optional ScalarLimit
+      wind: optional ScalarLimit
+      vis: optional ScalarLimit
+      icing: optional bool
+
+  PowerState:
+    parent: Struct
+    fields:
+      voltage_v: optional float
+      current_a: optional float
+      power_w: optional float
+      consumed_mah: optional float
+      remaining_pct: optional float
+      temperature_c: optional float
+
+  HealthSnapshot:
+    parent: Struct
+    fields:
+      lifecycle_status: LifecycleStatus
+      health_status: optional string
+      readiness: optional string
+      fault_count: optional int
+      active_faults: optional list[string]
+
+  SensorProfile:
+    parent: Struct
+    fields:
+      sensor_id: string
+      sensor_kind: SensorKind
+      name: optional string
+      model: optional string
+      type: optional string
+      serial_uid: optional string
+      owner_entity_id: optional string
+      effect_domain: optional Domain
+      max_range_m: optional float
+      max_range: optional float
+      field_of_view_deg: optional float
+      ptz: optional bool
+      spectrum: optional string
+      night_vision: optional bool
+      all_weather: optional bool
+      weather_limits: optional WeatherLimits
+      error_margin: optional float
+      error_type: optional string
+      data_formats: optional list[string]
+      ai: optional list[string]
+      datalink: optional string
+      link_id: optional string
+      run_state: optional string
+      mode: optional string
+      modes: optional list[string]
+
+  PayloadProfile:
+    parent: Struct
+    fields:
+      payload_id: string
+      payload_kind: PayloadKind
+      name: optional string
+      item_type: optional string
+      mounted_on_entity_id: optional string
+      capacity_kg: optional float
+      loaded_items: optional list[SupplyItem]
+      weapons: optional list[InventoryItem]
+      ammo: optional list[InventoryItem]
+      ordnance: optional list[InventoryItem]
+      payload_mounts: optional map[string, PayloadMount]
+
+  EffectsProfile:
+    parent: Struct
+    fields:
+      has_launchers: bool
+      payload_mounts: optional map[string, PayloadMount]
+      effect_domain: optional Domain
+      launch_domain: optional Domain
+      guidance: optional int
+      warhead: optional string
+      pylon_format: optional string
+      reusable: optional bool
+      attack_modes: optional list[string]
+
+  NavigationProfile:
+    parent: Struct
+    fields:
+      propulsion: string
+      navigation: optional int
+      navaids: optional list[string]
+      fuel: optional FuelProfile
+      max_range: optional float
+      max_flight_t: optional float
+      max_spd: optional float
+      cruise_spd: optional float
+      max_alt: optional float
+      start_flight_time: optional float
+
+  FlightProfile:
+    parent: Struct
+    fields:
+      flight_type: string
+      control_modes: optional list[string]
+      weather_limits: optional WeatherLimits
+      ifr: optional bool
+      roles: optional list[string]
+
+  MaintenanceStatus:
+    parent: Struct
+    fields:
+      state: string
+
+  RobotControlProfile:
+    parent: Struct
+    fields:
+      autopilot: bool
+      autopilot_controller_model: optional string
+      autopilot_type: optional AutopilotType
+      autopilot_fw: optional FirmwareProfile
+
+  RemoteControlProfile:
+    parent: Struct
+    fields:
+      links: optional map[string, string]
+      rc_link: optional string
+      vid_link: optional string
+      ctrl_video_sep: optional bool
+
+  ControlLease:
+    parent: Struct
+    fields:
+      entity_id: string
+      holder_id: string
+      control_level: ControlLevel
+      lease_start: int64
+      lease_end: int64
+      lease_revision: int
+
+  CapabilityAdvert:
+    parent: Struct
+    fields:
+      node_id: string
+      entity_id: optional string
+      roles: optional list[string]
+      link_ids: optional list[string]
+      sensor_ids: optional list[string]
+      payload_ids: optional list[string]
+      task_kinds: optional list[TaskKind]
+
+  EntityRecord:
+    parent: Entity
+    fields:
+      object_type: optional string
+      entity_id: string
+      entity_kind: EntityKind
+      entity_type: optional string
+      machine_kind: optional MachineKind
+      machine_type: optional string
+      name: optional string
+      callsign: optional string
+      domain: optional Domain
+      op_domain: optional Domain
+      affiliation: optional Affiliation
+      organization_id: optional string
+      sys_id: optional string
+      status: optional string
+      category: optional string
+      sidc: optional string
+      model: optional string
+      type: optional string
+      serial_uid: optional string
+      is_live: bool = false
+      autonomy_level: optional AutonomyLevel
+      autopilot_type: optional AutopilotType
+      telemetry_protocol: optional TelemetryProtocol
+      alternate_ids: optional list[AlternateId]
+      alt_ids: optional list[string]
+      entity_flags: optional list[string]
+      components: optional list[string]
+      tags: optional list[string]
+      classification: optional Classification
+      symbology: optional Symbology
+      relations: optional list[EntityRelation]
+      provenance: optional Provenance
+      location: optional GlobalPosition
+      health: optional HealthSnapshot
+      power: optional PowerState
+      sensors: optional map[string, SensorProfile]
+      payloads: optional list[PayloadProfile]
+      payload: optional PayloadProfile
+      effects: optional EffectsProfile
+      navigation: optional NavigationProfile
+      flight: optional FlightProfile
+      maint_status: optional MaintenanceStatus
+      robot_control: optional RobotControlProfile
+      remote_control: optional RemoteControlProfile
+      video: optional VideoConfig
+      control_lease: optional ControlLease
+      capabilities: optional CapabilityAdvert
+      metadata: optional map[string, any]
+
+  OrganizationRecord:
+    parent: Organization
+    fields:
+      object_type: optional string
+      organization_id: string
+      org_uid: optional string
+      name: string
+      org_kind: OrgKind
+      Orgtype: optional string
+      topology: OrgTopology
+      echelon: optional OrgEchelon
+      size: optional string
+      parent_organization_id: optional string
+      domain: optional Domain
+      op_domain: optional Domain
+      category: optional string
+      sidc: optional string
+      symbology: optional Symbology
+      headquarters_entity_id: optional string
+      member_entity_ids: optional list[string]
+      child_organization_ids: optional list[string]
+      taskforce: optional bool
+      links: optional map[string, string]
+      link_loadout: optional list[InventoryItem]
+      tac_elements: optional list[string]
+      sup_elements: optional list[string]
+      tac_e_comp: optional list[InventoryItem]
+      sup_e_comp: optional list[InventoryItem]
+      infantry: optional int
+      personnel: optional int
+      vehicles: optional list[InventoryItem]
+      equipment: optional list[InventoryItem]
+      air_units: optional list[InventoryItem]
+      spacing: optional float
+      ammo: optional list[InventoryItem]
+      weapons: optional list[InventoryItem]
+      metadata: optional map[string, any]
+
+  EntityRelation:
+    parent: Relationship
+    fields:
+      relation_id: string
+      relation_kind: RelationKind
+      subject_id: string
+      object_id: string
+      confidence: optional Confidence
+      source: optional string
+      valid_from: optional int64
+      valid_until: optional int64
+
+  ProtocolProfile:
+    parent: Protocol
+    fields:
+      protocol_id: string
+      protocol_name: string
+      protocol_version: optional string
+      telemetry_protocol: optional TelemetryProtocol
+      message_schema: optional string
+
+  NetworkAddress:
+    parent: Struct
+    fields:
+      address_kind: AddressKind
+      value: string
+      port: optional int
+
+  LinkEndpoint:
+    parent: Struct
+    fields:
+      node_id: optional string
+      entity_id: optional string
+      interface_name: optional string
+      address: optional NetworkAddress
+
+  BandwidthProfile:
+    parent: Struct
+    fields:
+      mhz: float
+
+  UserCapacity:
+    parent: Struct
+    fields:
+      max_users: optional int
+
+  FrequencyProfile:
+    parent: Struct
+    fields:
+      low_mhz: optional float
+      high_mhz: optional float
+      center_mhz: optional float
+
+  RadioChannel:
+    parent: Struct
+    fields:
+      channel_id: string
+
+  FpvRadioProfile:
+    parent: Struct
+    fields:
+      video_standard: optional string
+      low_latency: optional bool
+
+  RadioProfile:
+    parent: Struct
+    fields:
+      service: optional string
+      bands: optional list[string]
+      waveform: optional string
+      frequency: optional FrequencyProfile
+      channel_plan: optional list[RadioChannel]
+      active_channel_id: optional string
+      crypto_types: optional list[string]
+      elrs: optional map[string, any]
+      fpv: optional FpvRadioProfile
+
+  LinkProfile:
+    parent: Network
+    fields:
+      schema_id: optional string
+      schema_type: optional string
+      link_id: string
+      name: string
+      link_kind: LinkKind
+      link_type: optional string
+      network_kind: NetworkKind
+      net_type: optional string
+      io: optional int
+      data_kind: LinkDataKind
+      data_type: optional string
+      direction: optional LinkDirection
+      condition: optional LinkCondition
+      addresses: optional list[NetworkAddress]
+      endpoints: optional list[LinkEndpoint]
+      bandwidth: optional BandwidthProfile
+      user_capacity: optional UserCapacity
+      radio: optional RadioProfile
+      frequency_mhz: optional float
+      bandwidth_mhz: optional float
+      nominal_bps: optional float
+      metadata: optional map[string, any]
+
+  AirUnitTemplateSet:
+    parent: Struct
+    fields:
+      version: tuple[int, int, int]
+      items: map[string, EntityRecord]
+
+  GroundOrganizationTemplateSet:
+    parent: Struct
+    fields:
+      version: tuple[int, int, int]
+      items: map[string, OrganizationRecord]
+
+  LinkTemplateSet:
+    parent: Struct
+    fields:
+      version: tuple[int, int, int]
+      items: map[string, LinkProfile]
+
+  MessageEnvelope:
+    parent: Message
+    fields:
+      message_id: string
+      message_kind: string
+      source_node_id: string
+      destination_node_id: optional string
+      source_entity_id: optional string
+      destination_entity_id: optional string
+      issued_at: int64
+      ttl_ms: optional int64
+      priority: Priority = ROUTINE
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      conversation_id: optional string
+      payload_type: string
+      payload: any
+
+  BusEnvelope:
+    parent: Message
+    fields:
+      client_id: string
+      topic: string
+      topic_kind: BusTopicKind
+      issued_at: int64
+      payload: any
+
+  DeliveryReceiptMessage:
+    parent: Response
+    fields:
+      message_id: string
+      node_id: string
+      delivery_state: DeliveryState
+      command_result: optional CommandResult
+      seen_at: optional int64
+      executed_at: optional int64
+      error_code: optional string
+      detail: optional string
+
+  Objective:
+    parent: Objective
+    fields:
+      objective_id: string
+      intent: string
+      success_rule: optional string
+      target_ref: optional string
+      area: optional GeoArea
+      position: optional GlobalPosition
+      deadline: optional int64
+      priority: optional Priority
+
+  TaskTimeWindow:
+    parent: Struct
+    fields:
+      earliest_start: optional int64
+      latest_finish: optional int64
+
+  TaskStatusEntry:
+    parent: Struct
+    fields:
+      timestamp: int64
+      status: TaskStatus
+      command_result: optional CommandResult
+      detail: optional string
+      source: optional string
+
+  PayloadAllocation:
+    parent: Struct
+    fields:
+      payload_kind: PayloadKind
+      item_kind: string
+      quantity: int
+
+  Task:
+    parent: Task
+    fields:
+      task_id: string
+      task_kind: TaskKind
+      status: TaskStatus = NEW
+      priority: Priority = ROUTINE
+      issued_by: optional string
+      assigned_entity_ids: optional list[string]
+      objective: optional Objective
+      time_window: optional TaskTimeWindow
+      qos: optional Priority
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      status_log: optional list[TaskStatusEntry]
+      metadata: optional map[string, any]
+    variants:
+      MOVE:
+        fields:
+          destination: GlobalPosition
+          route: optional GeoPath
+          speed_ms: optional float
+
+      PATROL:
+        fields:
+          route: GeoPath
+          loiter_s: optional int
+
+      ORBIT:
+        fields:
+          center: GlobalPosition
+          radius_m: float
+          speed_ms: optional float
+
+      OBSERVE:
+        fields:
+          area: optional GeoArea
+          point: optional GlobalPosition
+          dwell_s: optional float
+          sensor_kinds: optional list[SensorKind]
+
+      SEARCH:
+        fields:
+          area: GeoArea
+          query: optional string
+          sensor_kinds: optional list[SensorKind]
+
+      TRACK:
+        fields:
+          track_id: string
+          revisit_s: optional float
+          improve_goal: optional string
+
+      RESUPPLY:
+        fields:
+          destination: GlobalPosition
+          payload: list[PayloadAllocation]
+
+      HOLD:
+        fields:
+          location: GlobalPosition
+          radius_m: optional float
+          duration_s: optional int
+
+      LAND:
+        fields:
+          landing_site: optional GlobalPosition
+
+      RTL:
+        fields:
+          home_position: optional GlobalPosition
+
+  RuntimeAction:
+    parent: Command
+    fields:
+      action_id: string
+      entity_id: string
+      issued_by: optional string
+      issued_at: int64
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      priority: Priority = ROUTINE
+      
+    variants:
+      ARM:
+        fields:
+          reason: optional string
+
+      DISARM:
+        fields:
+          reason: optional string
+
+      TAKEOFF:
+        fields:
+          altitude_m: optional float
+
+      LAND:
+        fields:
+          landing_site: optional GlobalPosition
+
+      RTL:
+        fields:
+          home_position: optional GlobalPosition
+
+      SET_MODE:
+        fields:
+          mode: string
+          enabled: optional bool
+
+      GOTO:
+        fields:
+          destination: GlobalPosition
+          yaw_deg: optional float
+
+      SET_WAYPOINT:
+        fields:
+          waypoint_index: int
+          destination: GlobalPosition
+          action: optional int
+          params: optional list[float]
+
+      SELECT_MISSION:
+        fields:
+          sequence: int
+
+      SET_CONTROL_OVERRIDE:
+        fields:
+          roll: optional float
+          pitch: optional float
+          yaw: optional float
+          throttle: optional float
+          aux: optional list[float]
+
+  KinematicState:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      global_position: optional GlobalPosition
+      local_position: optional LocalPosition
+      velocity: optional Velocity
+      attitude: optional EulerAttitude
+      uncertainty: optional LocationUncertainty
+
+  VehicleStatus:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      armed: optional bool
+      in_air: optional bool
+      failsafe: optional bool
+      flight_mode: optional string
+      nav_state: optional string
+      active_mode_names: optional list[string]
+      system_status: optional string
+
+  BatteryState:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      power: PowerState
+
+  GpsStatus:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      fix_type: optional int
+      satellites_visible: optional int
+      hdop: optional float
+      vdop: optional float
+      is_global_position_ok: optional bool
+      is_home_position_ok: optional bool
+
+  ControlIOState:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      roll: optional float
+      pitch: optional float
+      yaw: optional float
+      throttle: optional float
+      aux: optional list[float]
+      source: optional string
+
+  EntityState:
+    parent: State
+    fields:
+      entity_id: string
+      timestamp: int64
+      lifecycle_status: LifecycleStatus
+      priority: Priority = ROUTINE
+      is_live: bool = true
+      kinematic: optional KinematicState
+      vehicle_status: optional VehicleStatus
+      battery: optional BatteryState
+      gps: optional GpsStatus
+      control_io: optional ControlIOState
+      detections: optional list[Detection]
+      video: optional VideoConfig
+      metadata: optional map[string, any]
+
+  VehicleTelemetry:
+    parent: Telemetry
+    fields:
+      envelope: MessageEnvelope
+      state: EntityState
+      raw_protocol: optional TelemetryProtocol
+      raw_payload: optional any
+
+  Detection:
+    parent: Intel
+    fields:
+      detection_id: string
+      track_id: optional string
+      sensor_id: optional string
+      entity_id: optional string
+      timestamp: int64
+      observation_kind: ObservationKind = DETECTION
+      label: optional string
+      confidence: optional Confidence
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      bbox: optional BoundingBox
+
+  Observation:
+    parent: Intel
+    fields:
+      observation_id: string
+      observation_kind: ObservationKind
+      sensor_id: optional string
+      source_entity_id: optional string
+      track_id: optional string
+      timestamp: int64
+      position: optional GlobalPosition
+      area: optional GeoArea
+      media: optional MediaSet
+      confidence: optional Confidence
+      summary: optional string
+      raw_payload: optional any
+
+  IntelTrack:
+    parent: Intel
+    fields:
+      track_id: string
+      track_status: TrackStatus = NEW
+      affiliation: optional Affiliation
+      entity_kind: optional EntityKind
+      first_seen: int64
+      last_seen: int64
+      stale_after: optional int64
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      latest_observation: optional Observation
+      observations: optional list[Observation]
+      confidence: optional Confidence
+      source: optional string

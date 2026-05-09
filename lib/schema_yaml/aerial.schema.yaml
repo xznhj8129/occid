@@ -1,0 +1,335 @@
+version: 1
+enums:
+  TaskAir:
+    - FLY = 0
+    - ISR
+    - CLOSE_AIR_SUPPORT
+    - AIR_DROP
+    - ELECTRONIC_WARFARE
+    - STRIKE
+    - RECOVERY
+    - SEAD
+
+  AirRole:
+    - GROUND = 0
+    - AIR_DEFENSE
+    - FIGHTER
+    - GROUND_ATTACK
+    - ISR
+    - MINE
+    - CARGO
+
+  AirMissionType:
+    - SURVEY = 0
+    - SEARCH
+    - ISR
+    - DELIVERY
+
+  AirMoveTask:
+    - FLY = 0
+    - RELOCATION
+
+  AirCombatTask:
+    - STRIKE = 0
+    - CAS
+    - CAP
+    - INTERCEPT
+    - HK
+
+  AirISRType:
+    - OVERFLY = 0
+    - FLYBY
+    - ORBIT
+
+  AirAttackMode:
+    - ONEWAY = 0
+    - DROPPER
+    - DIVE
+    - STRAFE
+    - STANDOFF_LAUNCH
+
+  AirFailsafeMode:
+    - HOLD = 0
+    - RTB
+    - DROP
+    - LAND
+    - LOITER
+    - CONTINUE_LAST
+
+  FlightMode:
+    - ACRO = 0
+    - ANGLE
+    - POSHOLD
+    - GUIDED
+    - NAV_WP
+    - LOITER
+    - CRUSE
+    - RTH
+    - LANDING
+    - DISARMED
+
+  FlightPhase:
+    - PREFLIGHT = 0
+    - TAKEOFF
+    - CRUISE
+    - LOITER
+    - MISSION_OPERATION
+    - RTB
+    - LANDING
+    - POSTFLIGHT
+    - ABORT
+
+  AirframeType:
+    - FIXED_WING = 0
+    - COPTER
+    - VTOL
+    - TAILSITTER
+    - FLYING_WING
+
+  CopterType:
+    - X = 0
+    - Y
+    - HEXA
+    - OCTO
+    - DECA
+    - HELICOPTER
+
+  VTOLType:
+    - NONE = 0
+    - QUADPLANE
+    - TILT
+    - VECTORING
+    - TAILSITTER
+
+  PlannerPointType:
+    - HOME = 0
+    - TAKEOFF
+    - LANDING
+    - HOLD
+    - WAYPOINT
+    - ASSEMBLY
+    - TARGET
+    - DISPERSAL
+    - POI
+    - ROI
+    - SURVEY
+
+  PlannerPointCategory:
+    - ROUTE_IN = 0
+    - SURVEY
+    - SURVEY_AREA
+    - ROUTE_OUT
+
+  AirMissionPhase:
+    - ONLINE = 0
+    - PREPARING
+    - TAKEOFF
+    - ASSEMBLY
+    - HOLDING
+    - ENROUTE
+    - INITIAL
+    - OBJECTIVE
+    - EGRESS
+    - RETURN
+    - APPROACH
+    - LANDING
+    - SHUTDOWN
+
+  AirMissionEvent:
+    - ONLINE = 0
+    - PREPARED
+    - LOADED
+    - READY_TAKEOFF
+    - TAKEOFF_COMPLETE
+    - ASSEMBLY
+    - ENROUTE
+    - HOLDING
+    - ACTING
+    - PROCEEDING
+    - RESUMING
+    - BINGO
+    - RTB
+    - LANDING
+    - LANDED
+    - SHUTDOWN
+    - ABORTING
+    - FAILING
+
+  AirGroupFormation3DType:
+    - NONE = 0
+    - BOX
+    - SEP_2D_PER_FL
+    - SEP_2D_SPACED
+
+  AirGroupFormation2DType:
+    - NONE = 0
+    - LINE
+    - ECHELON
+    - TRAIL
+    - SQUARE
+    - DIAMOND
+    - VEE
+    - HEAVY_LEFT
+    - HEAVY_RIGHT
+    - ECHELON_LEFT
+    - ECHELON_RIGHT
+    - STAGG_TRAIL_LEFT
+    - STAGG_TRAIL_RIGHT
+
+mappings:
+  AIR_ROLE_LABELS:
+    key_type: AirRole
+    value_type: string
+    entries:
+      GROUND: Ground
+      AIR_DEFENSE: Air Defense
+      FIGHTER: Fighter
+      GROUND_ATTACK: Ground Attack
+      ISR: ISR
+      MINE: Mine
+      CARGO: Cargo
+
+  AIR_ROLE_NAMES:
+    key_type: AirRole
+    value_type: string
+    entries:
+      GROUND: Ground
+      AIR_DEFENSE: Air Defense
+      FIGHTER: Fighter
+      GROUND_ATTACK: Ground Attack
+      ISR: ISR
+      MINE: Mine
+      CARGO: Cargo
+
+models:
+  LoiterOrbit:
+    fields:
+      orbit_direction: int
+      orbit_radius: int
+      loiter_time: int
+
+
+  WeatherLimits:
+    fields:
+      ifr: optional bool
+      night: optional bool
+      rain: optional NumericRange
+      snow: optional NumericRange
+      temp: optional NumericRange
+      wind: optional NumericRange
+      vis: optional NumericRange
+      icing: optional bool
+
+
+  TelemetryState:
+    fields:
+      flight_mode: optional FlightMode
+      flight_phase: optional FlightPhase
+      mission_phase: optional AirMissionPhase
+      attitude: optional EulerAngles
+      velocity: optional VelocityVector
+      battery_pct: optional float
+      link_rssi: optional float
+
+
+  FlightLevelBand:
+    fields:
+      altitude_range_m: NumericRange
+      alt_sep_m: float
+
+
+  FlightPhasePlan:
+    fields:
+      phase: AirMissionPhase
+      flight_level: optional FlightLevelBand
+      alt_frame: optional AltitudeDatum
+      h_sep_m: optional float
+      delay_s: optional float
+      airspeed: optional float
+      path_offset: optional LocalDirection
+      formation_2d: optional AirGroupFormation2DType
+      formation_3d: optional AirGroupFormation3DType
+
+
+  MissionRouteGeometry:
+    fields:
+      route_in: GeoPath = {}
+      survey: GeoPath = {}
+      survey_area: GeoArea = {}
+      route_out: GeoPath = {}
+
+
+  MissionPoi:
+    fields:
+      uid: string
+      name: string
+      pos: GlobalPosition
+      origin: string
+      cot: optional string
+      sidc: optional int
+      added_ts: optional float
+      stale_after_s: optional float
+      url: optional string
+
+
+  PlannerMissionPoint:
+    fields:
+      num: int
+      point_type: PlannerPointType
+      category: PlannerPointCategory
+      pos: GlobalPosition
+
+
+  PlannedRoutePoints:
+    fields:
+      start: PlannerMissionPoint
+      route_in: list[PlannerMissionPoint] = []
+      survey: list[PlannerMissionPoint] = []
+      survey_area: list[PlannerMissionPoint] = []
+      route_out: list[PlannerMissionPoint] = []
+      end: PlannerMissionPoint
+
+
+  FlightAssignment:
+    fields:
+      num: int
+      unit_id: optional string
+      callsign: optional string
+      objective_assign: optional int
+      wave_n: int = 0
+      formation_n: int = 0
+      takeoff_time: float = 0.0
+
+
+  PlannedUnitMission:
+    fields:
+      unit_num: int
+      callsign: string
+      fl: float
+      route_in: GeoPath = {}
+      target: PlannerMissionPoint
+      route_out: GeoPath = {}
+      home: GlobalPosition
+      land_pos: GlobalPosition
+      ip_wait_delay: float = 0.0
+      wp: GeoPath = {}
+
+
+  AirMissionSchema:
+    fields:
+      mission_name: string
+      mission_uid: string
+      mission_time: float
+      mission_type: TaskType
+      takeoff: FlightPhasePlan
+      assembly_point: FlightPhasePlan
+      route: FlightPhasePlan
+      ingress: FlightPhasePlan
+      survey_area: FlightPhasePlan
+      egress: FlightPhasePlan
+      landing: FlightPhasePlan
+      pois: list[MissionPoi] = []
+      assignments: map[string, FlightAssignment] = {}
+      unit_plans: map[string, PlannedUnitMission] = {}
+      routes: MissionRouteGeometry = {}
+      route_points: PlannedRoutePoints = {}

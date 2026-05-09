@@ -1,0 +1,10 @@
+version: 1
+enums:
+  ObjectType:
+    - ENTITY = 0
+    - ORGANIZATION
+
+models:
+  BaseObject:
+    fields:
+      object_type: ObjectType

@@ -1,0 +1,103 @@
+version: 1
+type: schema
+name: definition.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Definition:
+    children:
+
+      Frame:
+        children:
+
+          Local2DFrame: {}
+
+          Local3DFrame: {}
+
+          GlobalFrame: {}
+
+          AltitudeReferenceFrame: {}
+
+          BearingReferenceFrame: {}
+
+      Coordinate:
+        children:
+
+          Cartesian2DCoordinate: {}
+
+          Cartesian3DCoordinate: {}
+
+          LatLonCoordinate: {}
+
+          UTMCoordinate: {}
+
+          MGRSCoordinate: {}
+
+          PlusCodeCoordinate: {}
+
+          ECICoordinate: {}
+
+          ENUCoordinate: {}
+
+          SphericalCoordinate: {}
+
+      Geometry:
+        children:
+
+          PointGeometry: {}
+
+          LineGeometry: {}
+
+          PathGeometry: {}
+
+          PolygonGeometry: {}
+
+          VolumeGeometry: {}
+
+          OrientationGeometry: {}
+
+          ArcGeometry: {}
+
+          EllipseGeometry: {}
+
+          EllipsoidGeometry: {}
+
+          FrustumGeometry: {}
+
+          CorridorGeometry: {}
+
+          AnnulusGeometry: {}
+
+      Time:
+        children:
+
+          TimestampTime: {}
+
+          TimeWindowTime: {}
+
+          TimeOffsetTime: {}
+
+      Type:
+        children:
+
+          Category: {}
+
+          Purpose: {}
+
+          Function: {}
+
+          Factions:
+            children:
+
+              FactionSideFactions: {}
+
+              NationalityFactions: {}
+
+              LegalStatusFactions: {}
+
+          Domains: {}
+
+      Relationship: {}

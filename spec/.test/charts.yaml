@@ -1,0 +1,1143 @@
+version: 1
+type: charts
+name: charts.yaml
+description: Local coordinate charts over the ontology manifold. Each chart defines carriers, active variables, and legality surface slices.
+
+charts:
+  control_reference_geometry:
+    description: Control-side spatial references factored into carrier geometry, purpose, rule intent, and policy coordinates.
+    basis:
+    - reference_family
+    - reference_purpose
+    - area_polarity
+    - response_policy
+    - segment_geometry
+    - hold_pattern
+    - orbit_direction
+    - orbit_duration_mode
+    - trigger_channel
+    - trigger_actor
+    - deconfliction_dimension
+
+    carriers:
+      Mark:
+        path: Class/Control/Reference/Mark
+        variables:
+          reference_family:
+          - ControlMeasure
+          - RallyPoint
+
+          reference_purpose:
+          - Objective
+          - Initial
+          - Action
+          - Linkup
+          - Alternate
+          - Checkpoint
+          - ContactPoint
+          - Release
+          - Start
+
+      Path:
+        path: Class/Control/Reference/Path
+        variables:
+          reference_family:
+          - ControlMeasure
+
+          reference_purpose:
+          - Route
+          - Axis
+          - DirectionOfAttack
+
+          segment_geometry:
+          - GreatCircle
+          - Rhumbline
+          - Straight
+          - TurnArc
+          - Orbit
+          - Hold
+          - Approach
+          - Departure
+          - Missed
+          - Emergency
+
+          hold_pattern:
+          - Orbit
+          - Racetrack
+          - FigureEight
+          - Hold
+
+          orbit_direction:
+          - Left
+          - Right
+
+          orbit_duration_mode:
+          - UntilCommanded
+          - FixedTime
+          - ResourceBased
+
+      Region:
+        path: Class/Control/Reference/Region
+        variables:
+          reference_family:
+          - ControlMeasure
+          - ControlArea
+          - Geofence
+
+          reference_purpose:
+          - Objective
+          - Assembly
+          - AttackPosition
+          - SupportByFire
+          - KeepIn
+          - KeepOut
+          - Ditch
+          - Loiter
+
+          area_polarity:
+          - In
+          - Out
+
+          response_policy:
+          - Warn
+          - Report
+          - Loiter
+          - RTL
+          - Land
+          - Brake
+          - Deny
+          - Fence
+          - MissionPause
+
+      Boundary:
+        path: Class/Control/Reference/Boundary
+        variables:
+          reference_family:
+          - ControlMeasure
+
+          reference_purpose:
+          - Boundary
+          - Phase
+          - FinalCoordination
+          - Trigger
+
+          trigger_channel:
+          - Time
+          - Position
+          - Event
+          - Threshold
+          - Condition
+          - Order
+
+          trigger_actor:
+          - System
+          - Friendly
+          - Enemy
+
+          deconfliction_dimension:
+          - Altitude
+          - Temporal
+          - Lateral
+          - Speed
+          - Route
+          - Frequency
+
+    constraints:
+    - name: rally_points_are_marks
+      carrier: Mark
+      when:
+        reference_family:
+        - RallyPoint
+      allow:
+        reference_purpose:
+        - Objective
+        - Initial
+        - Action
+        - Linkup
+        - Alternate
+
+    - name: control_measures_on_marks_are_control_points
+      carrier: Mark
+      when:
+        reference_family:
+        - ControlMeasure
+      allow:
+        reference_purpose:
+        - Checkpoint
+        - ContactPoint
+        - Release
+        - Start
+
+    - name: path_control_measures_use_path_purposes
+      carrier: Path
+      when:
+        reference_family:
+        - ControlMeasure
+      allow:
+        reference_purpose:
+        - Route
+        - Axis
+        - DirectionOfAttack
+
+    - name: path_holds_activate_hold_coordinates
+      carrier: Path
+      when:
+        segment_geometry:
+        - Orbit
+        - Hold
+      activates:
+      - hold_pattern
+      - orbit_direction
+      - orbit_duration_mode
+
+    - name: regions_as_control_areas_use_control_area_purposes
+      carrier: Region
+      when:
+        reference_family:
+        - ControlArea
+      allow:
+        reference_purpose:
+        - KeepIn
+        - KeepOut
+        - Ditch
+        - Loiter
+
+    - name: regions_as_geofences_use_area_polarity_and_policy
+      carrier: Region
+      when:
+        reference_family:
+        - Geofence
+      activates:
+      - area_polarity
+      - response_policy
+
+    - name: regions_as_control_measures_use_area_purposes
+      carrier: Region
+      when:
+        reference_family:
+        - ControlMeasure
+      allow:
+        reference_purpose:
+        - Objective
+        - Assembly
+        - AttackPosition
+        - SupportByFire
+
+    - name: boundaries_as_control_measures_use_boundary_purposes
+      carrier: Boundary
+      when:
+        reference_family:
+        - ControlMeasure
+      allow:
+        reference_purpose:
+        - Boundary
+        - Phase
+        - FinalCoordination
+        - Trigger
+
+    - name: trigger_boundaries_activate_trigger_coordinates
+      carrier: Boundary
+      when:
+        reference_purpose:
+        - Trigger
+      activates:
+      - trigger_channel
+      - trigger_actor
+
+    - name: boundaries_support_deconfliction
+      carrier: Boundary
+      when:
+        reference_purpose:
+        - Boundary
+        - Phase
+        - FinalCoordination
+      activates:
+      - deconfliction_dimension
+
+  response_status:
+    description: Generalized lifecycle and disposition chart for responses, directives, executions, and reported events.
+    basis:
+    - phase
+    - disposition
+    - reason
+    - actor
+    - severity
+
+    carriers:
+      Response:
+        path: Class/Communication/Message/Response
+        variables:
+          phase:
+          - Received
+          - Acknowledged
+          - Executing
+          - Review
+          - Complete
+          - CancelRequested
+
+          disposition:
+          - Success
+          - Failure
+          - Approved
+          - Denied
+          - Rejected
+          - Stale
+
+          reason:
+          - NoAssets
+          - BadRequest
+          - InsufficientInfo
+          - Timeout
+          - Stale
+
+          actor:
+          - C2
+          - Platform
+          - System
+
+      Directive:
+        path: Class/Control/Directive
+        variables:
+          phase:
+          - Created
+          - Submitted
+          - Scheduled
+          - Sent
+          - Active
+          - CancelRequested
+          - CompleteRequested
+          - Complete
+
+          disposition:
+          - Approved
+          - Denied
+          - Rejected
+          - Success
+          - Failure
+
+          actor:
+          - Human
+          - C2
+          - System
+
+          reason:
+          - Timeout
+          - Unavailable
+          - Geofence
+          - CommunicationLoss
+
+      Execution:
+        path: Class/Control/Execution
+        variables:
+          phase:
+          - Created
+          - Scheduled
+          - Sent
+          - Executing
+          - Waiting
+          - Paused
+          - Complete
+          - CancelRequested
+
+          disposition:
+          - Success
+          - Failure
+          - Approved
+          - Rejected
+          - Pending
+
+          actor:
+          - Human
+          - Machine
+          - System
+
+          reason:
+          - Timeout
+          - Manual
+          - Battery
+          - Fuel
+          - Weather
+          - Damage
+          - EquipmentFailure
+
+      Lifecycle:
+        path: Class/Data/Information/State/Lifecycle
+        variables:
+          phase:
+          - Created
+          - Active
+          - Paused
+          - Complete
+          - CancelRequested
+          - Expired
+          - Deleted
+          - Lost
+          - Recovered
+
+          disposition:
+          - Success
+          - Failure
+          - Pending
+
+          reason:
+          - Timeout
+          - Manual
+          - Battery
+          - Fuel
+          - Weather
+          - Damage
+          - CommunicationLoss
+
+      Event:
+        path: Class/Data/Information/Event
+        variables:
+          phase:
+          - Active
+          - Complete
+          - Lost
+          - Recovered
+          - HandedOff
+
+          actor:
+          - Human
+          - Machine
+          - System
+          - Friendly
+          - Enemy
+
+          reason:
+          - Geofence
+          - CommunicationLoss
+          - HighWind
+          - Crash
+          - HostileContact
+
+          severity:
+          - Info
+          - Low
+          - Medium
+          - High
+          - Critical
+          - Emergency
+
+    constraints:
+    - name: response_completion_requires_disposition
+      carrier: Response
+      when:
+        phase:
+        - Complete
+      activates:
+      - disposition
+
+    - name: failure_dispositions_activate_reason
+      carrier: Response
+      when:
+        disposition:
+        - Failure
+        - Denied
+        - Rejected
+        - Stale
+      activates:
+      - reason
+
+    - name: event_causes_activate_reason
+      carrier: Event
+      when:
+        phase:
+        - Lost
+        - Complete
+      activates:
+      - reason
+
+  communication_profile:
+    description: Communication stack chart spanning endpoints, transports, feeds, and message envelope semantics.
+    basis:
+    - node_role
+    - network_topology
+    - protocol_family
+    - serialization_format
+    - compression
+    - routing_semantics
+    - stream_codec
+    - message_shape
+    - data_flow_direction
+    - message_priority
+    - acknowledgment_phase
+
+    carriers:
+      Node:
+        path: Class/Communication/Node
+        variables:
+          node_role:
+          - Sensor
+          - Effector
+          - C2
+          - Relay
+          - Gateway
+          - Observer
+
+      Network:
+        path: Class/Communication/Transport/Network
+        variables:
+          network_topology:
+          - Mesh
+          - PointToPoint
+          - Broadcast
+          - StoreAndForward
+
+          routing_semantics:
+          - Unicast
+          - Multicast
+          - Broadcast
+          - Anycast
+          - PubSub
+          - RequestReply
+          - StoreAndForward
+
+      Protocol:
+        path: Class/Communication/Transport/Protocol
+        variables:
+          protocol_family:
+          - MAVLink
+          - MAVLink_M
+          - MSPv2
+          - ROS
+          - STANAG4586
+          - CoT
+          - CustomSerial
+          - Meshtastic
+          - RTP_RTSP
+          - SRT
+          - HLS
+          - WebRTC
+          - Link16
+          - VMF
+          - ADS_B
+          - XMPP
+          - DDS
+
+          serialization_format:
+          - Protobuf
+          - JSON
+          - XML
+          - CBOR
+          - MessagePack
+          - FlatBuffers
+          - Avro
+          - BSON
+          - Binary_Custom
+          - ASCII_Text
+
+          compression:
+          - None
+          - GZIP
+          - LZ4
+          - Zstd
+          - Snappy
+          - Deflate
+
+      Link:
+        path: Class/Communication/Feed/Link
+        variables:
+          routing_semantics:
+          - Unicast
+          - Multicast
+          - Broadcast
+          - Anycast
+          - PubSub
+          - RequestReply
+          - StoreAndForward
+
+          data_flow_direction:
+          - CommandDown
+          - StatusUp
+          - TelemetryUp
+
+      Stream:
+        path: Class/Communication/Feed/Stream
+        variables:
+          stream_codec:
+          - H264
+          - H265
+          - VP8
+          - VP9
+          - AV1
+          - MJPEG
+          - RAW
+          - PCM
+          - AAC
+          - Opus
+
+          compression:
+          - None
+          - GZIP
+          - LZ4
+          - Zstd
+          - Snappy
+          - Deflate
+
+          data_flow_direction:
+          - TelemetryUp
+
+      Message:
+        path: Class/Communication/Message
+        variables:
+          message_shape:
+          - Snapshot
+          - Delta
+          - History
+          - Log
+
+          data_flow_direction:
+          - CommandDown
+          - StatusUp
+          - TelemetryUp
+
+          message_priority:
+          - Routine
+          - Priority
+          - Immediate
+          - Flash
+          - FlashOverride
+
+          acknowledgment_phase:
+          - None
+          - Receipt
+          - Processing
+          - Execution
+
+  provenance_guidance:
+    description: Guidance and intel provenance chart spanning source, derivation, fusion, and confidence coordinates.
+    basis:
+    - producer_kind
+    - acquisition_channel
+    - derivation_method
+    - transmission_link
+    - operational_context
+    - correlation_method
+    - fusion_method
+    - fusion_level
+    - reliability_grade
+    - credibility_grade
+    - fix_dimension
+    - correction_regime
+    - fix_specialization
+    - nav_source
+    - navigation_mode
+    - uncertainty_model
+
+    carriers:
+      Guidance:
+        path: Class/Data/Information/State/Guidance
+        variables:
+          producer_kind:
+          - Human
+          - Machine
+          - Fused
+
+          acquisition_channel:
+          - GPS
+          - INS
+          - Radio
+          - Magnetic
+          - Visual
+          - Tracker
+          - Manual
+          - Simulated
+          - Configured
+          - Optical
+
+          derivation_method:
+          - Measured
+          - Mensurated
+          - Transcribed
+          - Estimated
+          - Calculated
+          - Passed
+          - Fused
+          - Pasted
+
+          transmission_link:
+          - EPLRS
+          - PLRS
+          - Doppler
+          - VHF
+          - TADIL_A
+          - TADIL_B
+          - TADIL_J
+
+          operational_context:
+          - Exercise
+          - Operational
+          - Simulated
+
+          fusion_method:
+          - NearestNeighbor
+          - Bayesian
+          - DempsterShafer
+          - KalmanFilter
+          - CovarianceIntersection
+          - Voting
+          - WeightedAverage
+
+          fix_dimension:
+          - NoFix
+          - 2D
+          - 3D
+
+          correction_regime:
+          - Standalone
+          - DGPS
+          - RTKFloat
+          - RTKFixed
+
+          fix_specialization:
+          - None
+          - Static
+          - PPS
+
+          nav_source:
+          - GPS
+          - GLONASS
+          - Galileo
+          - BeiDou
+          - INS
+          - VIO
+          - OpticalFlow
+          - SLAM
+          - Barometer
+          - Radar
+          - Altimeter
+          - Fused
+
+          navigation_mode:
+          - Manual
+          - Waypoint
+          - RTL
+          - Loiter
+          - Guided
+          - Land
+          - Takeoff
+          - Circle
+          - Drift
+          - PositionHold
+          - Brake
+          - Throw
+          - ADSB
+          - SmartRTL
+          - FlowHold
+          - Follow
+          - Zigzag
+          - SystemID
+          - AutoRotate
+
+          uncertainty_model:
+          - Ellipse
+          - CovarianceMatrix
+
+      Track:
+        path: Class/Data/Information/Intel/Track
+        variables:
+          producer_kind:
+          - Human
+          - Machine
+          - Fused
+
+          acquisition_channel:
+          - GPS
+          - INS
+          - Radio
+          - Visual
+          - Tracker
+          - Optical
+
+          derivation_method:
+          - Measured
+          - Mensurated
+          - Estimated
+          - Calculated
+          - Fused
+
+          transmission_link:
+          - EPLRS
+          - PLRS
+          - Doppler
+          - VHF
+          - TADIL_A
+          - TADIL_B
+          - TADIL_J
+
+          operational_context:
+          - Exercise
+          - Operational
+          - Simulated
+
+          correlation_method:
+          - Manual
+          - Automated
+
+          fusion_method:
+          - NearestNeighbor
+          - Bayesian
+          - DempsterShafer
+          - KalmanFilter
+          - CovarianceIntersection
+          - Voting
+          - WeightedAverage
+
+          fusion_level:
+          - L0_SourcePreprocessing
+          - L1_ObjectAssessment
+          - L2_SituationAssessment
+          - L3_ImpactAssessment
+          - L4_ProcessRefinement
+
+          reliability_grade:
+          - A_CompletelyReliable
+          - B_UsuallyReliable
+          - C_FairlyReliable
+          - D_NotUsuallyReliable
+          - E_Unreliable
+          - F_CannotBeJudged
+
+          credibility_grade:
+          - 1_Confirmed
+          - 2_ProbablyTrue
+          - 3_PossiblyTrue
+          - 4_Doubtful
+          - 5_Improbable
+          - 6_CannotBeJudged
+
+          uncertainty_model:
+          - Ellipse
+          - CovarianceMatrix
+
+    constraints:
+    - name: radio_channels_activate_link_identity
+      carrier: Guidance
+      when:
+        acquisition_channel:
+        - Radio
+      activates:
+      - transmission_link
+
+    - name: no_fix_disables_corrections
+      carrier: Guidance
+      when:
+        fix_dimension:
+        - 2D
+        - 3D
+      activates:
+      - correction_regime
+      - fix_specialization
+
+    - name: track_radio_channels_activate_link_identity
+      carrier: Track
+      when:
+        acquisition_channel:
+        - Radio
+      activates:
+      - transmission_link
+
+  platform_phenotype:
+    description: Machine phenotype chart spanning domain, autonomy, propulsion, airframe family, and launch/recovery behavior.
+    basis:
+    - physical_domain
+    - autonomy_class
+    - propulsion_type
+    - land_propulsion
+    - airframe_family
+    - multirotor_layout
+    - fixed_wing_layout
+    - vtol_layout
+    - launch_method
+    - recovery_method
+    - guidance_type
+    - air_role
+
+    carriers:
+      Vehicle:
+        path: Class/Object/Entity/Machine/Vehicle
+        variables:
+          physical_domain:
+          - Land
+          - Air
+          - Sea
+          - Undersea
+          - Space
+
+          propulsion_type:
+          - Electric
+          - Gasoline
+          - Diesel
+          - Turbine
+          - Hybrid
+          - Hydrogen
+          - Solar
+
+          land_propulsion:
+          - Wheeled
+          - Tracked
+          - Bipedal
+          - Legged
+
+          airframe_family:
+          - Multirotor
+          - FixedWing
+          - VTOL
+
+          multirotor_layout:
+          - Quad
+          - Hex
+          - Octo
+          - Coaxial
+          - Y6
+          - X8
+
+          fixed_wing_layout:
+          - Conventional
+          - FlyingWing
+          - Canard
+          - TandemWing
+          - BlendedWingBody
+          - Delta
+
+          vtol_layout:
+          - Tiltrotor
+          - Tailsitter
+          - LiftAndCruise
+          - QuadPlane
+          - CopterPlane
+
+          launch_method:
+          - HTOL
+          - VTOL
+          - Catapult
+          - HandLaunch
+          - RailLaunch
+          - TubeLaunch
+          - DropLaunch
+          - BalloonLaunch
+
+          recovery_method:
+          - HTOL
+          - VTOL
+          - Parachute
+          - DeepStall
+          - NetRecovery
+          - SkyHook
+          - BellyLand
+          - Ditching
+
+          guidance_type:
+          - Unguided
+          - GPS
+          - INS
+          - LaserGuided
+          - IRHoming
+          - RadarHoming
+          - CommandGuided
+          - Wire
+          - FiberOptic
+          - Terminal_TV
+          - Vision
+
+          air_role:
+          - GroundAttack
+          - AntiAir
+          - Fighter
+          - Reconnaissance
+          - IMINT
+          - SIGINT
+          - Minelaying
+          - Cargo
+
+      Robot:
+        path: Class/Object/Entity/Machine/Robot
+        variables:
+          physical_domain:
+          - Land
+          - Air
+          - Sea
+          - Undersea
+          - Space
+
+          autonomy_class:
+          - Remote
+          - Assisted
+          - SemiAutonomous
+          - Supervised
+          - Autonomous
+
+          propulsion_type:
+          - Electric
+          - Gasoline
+          - Diesel
+          - Turbine
+          - Hybrid
+          - Hydrogen
+          - Solar
+
+          land_propulsion:
+          - Wheeled
+          - Tracked
+          - Bipedal
+          - Legged
+
+          airframe_family:
+          - Multirotor
+          - FixedWing
+          - VTOL
+
+          multirotor_layout:
+          - Quad
+          - Hex
+          - Octo
+          - Coaxial
+          - Y6
+          - X8
+
+          fixed_wing_layout:
+          - Conventional
+          - FlyingWing
+          - Canard
+          - TandemWing
+          - BlendedWingBody
+          - Delta
+
+          vtol_layout:
+          - Tiltrotor
+          - Tailsitter
+          - LiftAndCruise
+          - QuadPlane
+          - CopterPlane
+
+          launch_method:
+          - HTOL
+          - VTOL
+          - Catapult
+          - HandLaunch
+          - RailLaunch
+          - TubeLaunch
+          - DropLaunch
+          - BalloonLaunch
+
+          recovery_method:
+          - HTOL
+          - VTOL
+          - Parachute
+          - DeepStall
+          - NetRecovery
+          - SkyHook
+          - BellyLand
+          - Ditching
+
+          guidance_type:
+          - Unguided
+          - GPS
+          - INS
+          - LaserGuided
+          - IRHoming
+          - RadarHoming
+          - CommandGuided
+          - Wire
+          - FiberOptic
+          - Terminal_TV
+          - Vision
+
+          air_role:
+          - GroundAttack
+          - AntiAir
+          - Fighter
+          - Reconnaissance
+          - IMINT
+          - SIGINT
+          - Minelaying
+          - Cargo
+
+    constraints:
+    - name: land_domain_activates_land_propulsion_for_vehicle
+      carrier: Vehicle
+      when:
+        physical_domain:
+        - Land
+      activates:
+      - land_propulsion
+
+    - name: air_domain_activates_aircraft_axes_for_vehicle
+      carrier: Vehicle
+      when:
+        physical_domain:
+        - Air
+      activates:
+      - airframe_family
+      - launch_method
+      - recovery_method
+      - air_role
+
+    - name: multirotor_family_activates_multirotor_layout_for_vehicle
+      carrier: Vehicle
+      when:
+        airframe_family:
+        - Multirotor
+      activates:
+      - multirotor_layout
+
+    - name: fixed_wing_family_activates_fixed_wing_layout_for_vehicle
+      carrier: Vehicle
+      when:
+        airframe_family:
+        - FixedWing
+      activates:
+      - fixed_wing_layout
+
+    - name: vtol_family_activates_vtol_layout_for_vehicle
+      carrier: Vehicle
+      when:
+        airframe_family:
+        - VTOL
+      activates:
+      - vtol_layout
+
+    - name: land_domain_activates_land_propulsion_for_robot
+      carrier: Robot
+      when:
+        physical_domain:
+        - Land
+      activates:
+      - land_propulsion
+
+    - name: air_domain_activates_aircraft_axes_for_robot
+      carrier: Robot
+      when:
+        physical_domain:
+        - Air
+      activates:
+      - airframe_family
+      - launch_method
+      - recovery_method
+      - air_role
+
+    - name: multirotor_family_activates_multirotor_layout_for_robot
+      carrier: Robot
+      when:
+        airframe_family:
+        - Multirotor
+      activates:
+      - multirotor_layout
+
+    - name: fixed_wing_family_activates_fixed_wing_layout_for_robot
+      carrier: Robot
+      when:
+        airframe_family:
+        - FixedWing
+      activates:
+      - fixed_wing_layout
+
+    - name: vtol_family_activates_vtol_layout_for_robot
+      carrier: Robot
+      when:
+        airframe_family:
+        - VTOL
+      activates:
+      - vtol_layout

@@ -1,0 +1,512 @@
+includes:
+- ontology.yaml
+- axis.yaml
+
+# Only one discriminator key? 
+# ie: Vehicle * PhysicalDomain = LandVehicle, AirVehicle, etc
+# Multiple discriminator keys?
+# ie: Polygon * LLA = GeoArea
+
+types:
+  Class:
+    children:
+
+      Definition:
+        children:
+
+          Frame:
+            children:
+
+              Local2DFrame: {}
+
+              Local3DFrame: {}
+
+              GlobalFrame: {}
+
+              AltitudeReferenceFrame: {}
+
+              BearingReferenceFrame: {}
+
+          Coordinate:
+            children:
+
+              Cartesian2DCoordinate: {}
+
+              Cartesian3DCoordinate: {}
+
+              LatLonCoordinate: {}
+
+              UTMCoordinate: {}
+
+              MGRSCoordinate: {}
+
+              PlusCodeCoordinate: {}
+
+              ECICoordinate: {}
+
+              ENUCoordinate: {}
+
+              SphericalCoordinate: {}
+
+          Geometry:
+            children:
+
+              PointGeometry: {}
+
+              LineGeometry: {}
+
+              PathGeometry: {}
+
+              PolygonGeometry: {}
+
+              VolumeGeometry: {}
+
+              OrientationGeometry: {}
+
+              ArcGeometry: {}
+
+              EllipseGeometry: {}
+
+              EllipsoidGeometry: {}
+
+              FrustumGeometry: {}
+
+              CorridorGeometry: {}
+
+              AnnulusGeometry: {}
+
+          Time:
+            children:
+
+              TimestampTime: {}
+
+              TimeWindowTime: {}
+
+              TimeOffsetTime: {}
+
+          Type:
+            children:
+
+              Category: {}
+
+              Purpose: {}
+
+              Function: {}
+
+              Factions:
+                children:
+
+                  FactionSideFactions: {}
+
+                  NationalityFactions: {}
+
+                  LegalStatusFactions: {}
+
+              Domains: {}
+
+          Relationship: {}
+
+      Struct:
+        children:
+
+          Vector:
+            children:
+
+              Cartesian2DVector: {}
+
+              Cartesian3DVector: {}
+
+          Measurement: {}
+
+          Bearing: {}
+
+          GeoPos:
+            children:
+
+              LatLonGeoPos: {}
+
+              LLAGeoPos: {}
+
+              MGRSGeoPos: {}
+
+              UTMGeoPos: {}
+
+              PlusCodeGeoPos: {}
+
+              ECIGeoPos: {}
+
+              ENUGeoPos: {}
+
+              SphericalGeoPos: {}
+
+          LocalPos: {}
+
+          Line:
+            children:
+
+              Cartesian2DLine: {}
+
+              Cartesian3DLine: {}
+
+          Path:
+            children:
+
+              Cartesian2DPath: {}
+
+              Cartesian3DPath: {}
+
+              LLAPath: {}
+
+          Shape:
+            children:
+
+              PolygonShape: {}
+
+              GeoEllipseShape: {}
+
+              GeoEllipsoidShape: {}
+
+          Bounding:
+            children:
+
+              Cartesian2DBounding: {}
+
+              Cartesian3DBounding: {}
+
+          Uncertainty:
+            children:
+
+              ErrorEllipseUncertainty: {}
+
+              CovarianceMatrix3x3Uncertainty: {}
+
+          Pose: {}
+
+          Range:
+            children:
+
+              FloatRange: {}
+
+              UInt32Range: {}
+
+              DoubleRange: {}
+
+              DurationRange: {}
+
+          Transform: {}
+
+          Orbital: {}
+
+      Object:
+        children:
+
+          Entity:
+            children:
+
+              Actor:
+                children:
+
+                  Person: {}
+
+                  Agent: {}
+
+              Machine:
+                children:
+
+                  Vehicle:
+                    children:
+
+                      LandVehicle: {}
+
+                      AirVehicle: {}
+
+                      SeaVehicle: {}
+
+                      SubseaVehicle: {}
+
+                      SpaceVehicle: {}
+
+                  Robot:
+                    children:
+
+                      LandRobot: {}
+
+                      AirRobot: {}
+
+                      SeaRobot: {}
+
+                      SubseaRobot: {}
+
+                      SpaceRobot: {}
+
+                  Platform:
+                    children:
+
+                      LandPlatform: {}
+
+                      AirPlatform: {}
+
+                      SeaPlatform: {}
+
+                      SubseaPlatform: {}
+
+                      SpacePlatform: {}
+
+          Set:
+            children:
+
+              Organization:
+                children:
+
+                  Group:
+                    children:
+
+                      CivilianGroup: {}
+
+                      GovernmentGroup: {}
+
+                      MilitaryGroup: {}
+
+                      NonStateActorGroup: {}
+
+                  Unit:
+                    children:
+
+                      CivilianUnit: {}
+
+                      GovernmentUnit: {}
+
+                      MilitaryUnit: {}
+
+                      NonStateActorUnit: {}
+
+              Collection: {}
+
+              Cluster: {}
+
+              System: {}
+
+          Item:
+            children:
+
+              Record: {}
+
+              Equipment: {}
+
+              Component: {}
+
+              Payload: {}
+
+          World:
+            children:
+
+              Feature: {}
+
+              Location: {}
+
+              Site: {}
+
+      Control:
+        children:
+
+          Reasoning:
+            children:
+
+              Purpose: {}
+
+              Intent: {}
+
+              Objective: {}
+
+          Directive:
+            children:
+
+              Mission:
+                children:
+
+                  TechnicalMission: {}
+
+                  TacticalMission: {}
+
+                  OperationalMission: {}
+
+                  StrategicMission: {}
+
+              Task:
+                children:
+
+                  TechnicalTask: {}
+
+                  TacticalTask: {}
+
+                  OperationalTask: {}
+
+                  StrategicTask: {}
+
+              Command:
+                children:
+
+                  TechnicalCommand: {}
+
+                  TacticalCommand: {}
+
+                  OperationalCommand: {}
+
+                  StrategicCommand: {}
+
+          Execution:
+            children:
+
+              Plan:
+                children:
+
+                  TechnicalPlan: {}
+
+                  TacticalPlan: {}
+
+                  OperationalPlan: {}
+
+                  StrategicPlan: {}
+
+              Sequence:
+                children:
+
+                  TechnicalSequence: {}
+
+                  TacticalSequence: {}
+
+                  OperationalSequence: {}
+
+                  StrategicSequence: {}
+
+              Action:
+                children:
+
+                  TechnicalAction: {}
+
+                  TacticalAction: {}
+
+                  OperationalAction: {}
+
+                  StrategicAction: {}
+
+          Reference:
+            children:
+
+              Mark: {}
+
+              Path: {}
+
+              Region: {}
+
+              Boundary: {}
+
+          Constraint:
+            children:
+
+              Restriction: {}
+
+              Limitation: {}
+
+              Condition: {}
+
+          Interface: {}
+
+      Communication:
+        children:
+
+          Node: {}
+
+          Transport:
+            children:
+
+              Network: {}
+
+              Carrier: {}
+
+              Protocol: {}
+
+          Feed:
+            children:
+
+              Link: {}
+
+              Stream: {}
+
+          Message:
+            children:
+
+              C3: {}
+
+              ISR: {}
+
+              Telemetry: {}
+
+              Response: {}
+
+      Data:
+        children:
+
+          Information:
+            children:
+
+              Properties:
+                children:
+
+                  Identity: {}
+
+                  Attributes: {}
+
+                  Parameters: {}
+
+                  Relationship: {}
+
+              State:
+                children:
+
+                  Kinematic: {}
+
+                  Internal: {}
+
+                  Position: {}
+
+                  Guidance: {}
+
+                  Sensor: {}
+
+                  Input: {}
+
+                  Resources: {}
+
+                  Condition: {}
+
+                  Lifecycle: {}
+
+                  Assignment: {}
+
+              Event:
+                children:
+
+                  FlightEvent: {}
+
+                  MissionEvent: {}
+
+              Intel:
+                children:
+
+                  Detection: {}
+
+                  Classification: {}
+
+                  Track: {}
+
+                  Assessment: {}
+
+          Sensory:
+            children:
+
+              AV: {}
+
+              Spatial: {}
+
+              Samples: {}

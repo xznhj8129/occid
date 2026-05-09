@@ -1,0 +1,111 @@
+version: 1
+enums:
+  AlertLevel:
+    - ADVISORY = 0
+    - CAUTION
+    - WARNING
+
+  HealthStatus:
+    - HEALTHY = 0
+    - WARN
+    - FAIL
+    - OFFLINE
+    - NOT_READY
+
+  HumanHealthStatus:
+    - HEALTHY = 0
+    - TIRED
+    - SICK
+    - WOUNDED_LIGHT
+    - WOUNDED_CRITICAL
+    - DEAD
+    - MISSING
+    - CAPTURED
+
+  ResourceStatus:
+    - UNKNOWN = 0
+    - NOMINAL
+    - DEGRADED
+    - FAILED
+    - OFFLINE
+
+  SystemError:
+    - NO_ERROR = 0
+    - NOT_FOUND
+    - DEVICE_UNAVAILABLE
+    - HARDWARE_ERROR
+    - SOFTWARE_ERROR
+    - DATABASE_ERROR
+    - NETWORK_ERROR
+
+  MaintenanceState:
+    - UNKNOWN = 0
+    - READY
+    - DUE
+    - IN_PROGRESS
+    - GROUNDED
+    - FAILED
+
+  PowerStatus:
+    - UNKNOWN = 0
+    - NOT_PRESENT
+    - OPERATING
+    - DISABLED
+    - ERROR
+
+  PowerType:
+    - UNKNOWN = 0
+    - GAS
+    - BATTERY
+    - SOLAR
+    - NUCLEAR
+
+models:
+  HealthAlert:
+    fields:
+      alert_id: optional string
+      level: AlertLevel
+      condition: string
+      acknowledged: bool = false
+
+
+  SubsystemHealth:
+    fields:
+      subsystem_id: string
+      state: HealthStatus
+      fault_count: int = 0
+      note: optional string
+
+
+  HealthSnapshot:
+    fields:
+      overall_state: HealthStatus
+      link_state: optional LinkCondition
+      power_state: optional ResourceStatus
+      temp_state: optional ResourceStatus
+      fault_count: int = 0
+      updated_ts: optional float
+      subsystems: list[SubsystemHealth] = []
+      alerts: list[HealthAlert] = []
+
+
+  MaintenanceStatus:
+    fields:
+      state: MaintenanceState
+      last_service_ts: optional float
+      next_service_ts: optional float
+      note: optional string
+
+
+  PowerSourceSchema:
+    fields:
+      source_id: string
+      power_type: PowerType
+      status: PowerStatus
+      remaining_pct: optional float
+
+
+  PowerStateSchema:
+    fields:
+      status: PowerStatus
+      sources: list[PowerSourceSchema] = []

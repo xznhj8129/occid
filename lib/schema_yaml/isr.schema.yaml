@@ -1,0 +1,188 @@
+version: 1
+enums:
+  TaskISR:
+    - OBSERVE = 0
+    - SEARCH
+    - FIND
+    - SURVEY
+    - INVESTIGATE
+    - IMPROVE_TRACK
+    - IMAGERY
+
+  IntelCategory:
+    - IMINT = 0
+    - ELINT
+    - SIGINT
+    - MASINT
+
+  ObservationKind:
+    - DETECTION = 0
+    - TRACK
+    - IDENTIFICATION
+    - CLASSIFICATION
+    - DAMAGE_ASSESSMENT
+
+  ObservedObjectType:
+    - PERSONNEL = 0
+    - VEHICLES
+    - AIRCRAFT
+    - INSTALLATION
+    - WATERCRAFT
+    - ROUTE
+    - TRACE_SIGNATURE
+
+  IsrFocusType:
+    - POINT = 0
+    - AREA
+    - TRACK
+    - ROUTE
+    - TARGET
+
+  TrackImproveGoal:
+    - POSITION = 0
+    - IDENTITY
+    - ACTIVITY
+    - COMPOSITION
+    - DAMAGE
+
+  EvidenceLevel:
+    - SUSPECTED = 0
+    - DETECTED
+    - OBSERVED
+    - CONFIRMED
+    - POSITIVE_ID
+
+  TrackState:
+    - NEW = 0
+    - ACTIVE
+    - STALE
+    - LOST
+
+  ActivityType:
+    - STATIC = 0
+    - MOVING
+    - ENGAGING
+    - DIGGING_IN
+    - RESUPPLYING
+    - RETREATING
+
+models:
+  IsrTask:
+    parent: BaseTask
+    fields:
+      task_type: const TaskType = ISR
+      isr_task: optional TaskISR
+      area: GeoArea
+      dwell_seconds: optional float
+      isr_params: optional IsrParameters
+      isr_result: optional IsrResult
+
+
+  IsrObservation:
+    fields:
+      obs_id: string
+      track_id: optional string
+      sensor_id: optional string
+      obs_ts: float
+      observation_kind: optional ObservationKind
+      category: optional IntelCategory
+      spotter_origin: optional SpotterOrigin
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      signal: optional SignalSchema
+      confidence: optional ConfidenceLevel
+
+
+  IsrParameters:
+    fields:
+      focus_type: optional IsrFocusType
+      focus_point: optional GlobalPosition
+      dwell_s: optional float
+      revisit_s: optional float
+      sensor_types: list[SensorType] = []
+      sensor_modes: list[SensorMode] = []
+      effect_domains: list[EffectDomain] = []
+      track_improve_goal: optional TrackImproveGoal
+      bda_required: bool = false
+      evidence_level: optional EvidenceLevel
+
+
+  TrackUpdate:
+    fields:
+      track_id: string
+      track_state: optional TrackState
+      updated_ts: float
+      confidence: optional ConfidenceLevel
+
+
+  IsrResult:
+    fields:
+      detections: list[IsrObservation] = []
+      track_updates: list[TrackUpdate] = []
+      media: optional MediaSchema
+      confidence: optional ConfidenceLevel
+      observations: list[IsrObservation] = []
+
+
+  IntelTrackSchema:
+    fields:
+      schema_id: string
+      schema_type: SchemaKind = INTEL_TRACK
+      created_ts: optional float
+      updated_ts: optional float
+      origin_system: optional string
+      trust_score: optional ConfidenceLevel
+      alt_ids: list[AlternateId] = []
+      entity_flags: list[string] = []
+      faction: Faction
+      spotted_time: float
+      updated_time: float
+      stale_time: float
+      track_state: TrackState = NEW
+      category: optional IntelCategory
+      sensor_id: optional string
+      spotter_last: optional SpotterOrigin
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      error_m: optional float
+      latest_observation: optional IsrObservation
+      observations: list[IsrObservation] = []
+
+
+  BdaStrikeSummary:
+    fields:
+      casualties: int = 0
+      destroyed: list[ItemCount] = []
+      damaged: list[ItemCount] = []
+      unknown: list[ItemCount] = []
+
+
+  BdaReportSchema:
+    fields:
+      time: float
+      uid: string
+      unit_code: string
+      spotter: string
+      track: string
+      sensor: string
+      pos: GlobalPosition
+      spotter_origin: optional SpotterOrigin
+      confidence: optional ConfidenceLevel
+      casualties: int = 0
+      assessment: BdaStrikeSummary = {}
+      summary: optional string
+
+
+  SaluteReportSchema:
+    fields:
+      time: float
+      uid: string
+      unit_code: string
+      spotter: string
+      sensor: string
+      spotter_origin: SpotterOrigin
+      activity: optional ActivityType
+      pos: GlobalPosition
+      equipment: list[ItemCount] = []
+      vehicles: list[ItemCount] = []
+      summary: optional string

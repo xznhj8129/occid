@@ -1,0 +1,66 @@
+Data:
+  children:
+
+    Information:
+      children:
+
+        Properties:
+          children:
+
+            Identity: {}
+
+            Attributes: {}
+
+            Parameters: {}
+
+            Relationship: {}
+
+        State:
+          children:
+
+            Kinematic: {}
+
+            Internal: {}
+
+            Position: {}
+
+            Guidance: {}
+
+            Sensor: {}
+
+            Input: {}
+
+            Resources: {}
+
+            Condition: {}
+
+            Lifecycle: {}
+
+            Assignment: {}
+
+        Event:
+          children:
+
+            FlightEvent: {}
+
+            MissionEvent: {}
+
+        Intel:
+          children:
+
+            Detection: {}
+
+            Classification: {}
+
+            Track: {}
+
+            Assessment: {}
+
+    Sensory:
+      children:
+
+        AV: {}
+
+        Spatial: {}
+
+        Samples: {}

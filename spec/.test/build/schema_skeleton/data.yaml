@@ -1,0 +1,162 @@
+version: 1
+type: schema
+name: data.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Data:
+    variants:
+
+      INFORMATION: Information
+
+      SENSORY: Sensory
+
+  Information:
+    parent: Data
+    variants:
+
+      PROPERTIES: Properties
+
+      STATE: State
+
+      EVENT: Event
+
+      INTEL: Intel
+
+  Properties:
+    parent: Information
+    variants:
+
+      IDENTITY: Identity
+
+      ATTRIBUTES: Attributes
+
+      PARAMETERS: Parameters
+
+      RELATIONSHIP: Relationship
+
+  Identity:
+    parent: Properties
+
+  Attributes:
+    parent: Properties
+
+  Parameters:
+    parent: Properties
+
+  Relationship:
+    parent: Properties
+
+  State:
+    parent: Information
+    variants:
+
+      KINEMATIC: Kinematic
+
+      INTERNAL: Internal
+
+      POSITION: Position
+
+      GUIDANCE: Guidance
+
+      SENSOR: Sensor
+
+      INPUT: Input
+
+      RESOURCES: Resources
+
+      CONDITION: Condition
+
+      LIFECYCLE: Lifecycle
+
+      ASSIGNMENT: Assignment
+
+  Kinematic:
+    parent: State
+
+  Internal:
+    parent: State
+
+  Position:
+    parent: State
+
+  Guidance:
+    parent: State
+
+  Sensor:
+    parent: State
+
+  Input:
+    parent: State
+
+  Resources:
+    parent: State
+
+  Condition:
+    parent: State
+
+  Lifecycle:
+    parent: State
+
+  Assignment:
+    parent: State
+
+  Event:
+    parent: Information
+    variants:
+
+      FLIGHT_EVENT: FlightEvent
+
+      MISSION_EVENT: MissionEvent
+
+  FlightEvent:
+    parent: Event
+
+  MissionEvent:
+    parent: Event
+
+  Intel:
+    parent: Information
+    variants:
+
+      DETECTION: Detection
+
+      CLASSIFICATION: Classification
+
+      TRACK: Track
+
+      ASSESSMENT: Assessment
+
+  Detection:
+    parent: Intel
+
+  Classification:
+    parent: Intel
+
+  Track:
+    parent: Intel
+
+  Assessment:
+    parent: Intel
+
+  Sensory:
+    parent: Data
+    variants:
+
+      AV: AV
+
+      SPATIAL: Spatial
+
+      SAMPLES: Samples
+
+  AV:
+    parent: Sensory
+
+  Spatial:
+    parent: Sensory
+
+  Samples:
+    parent: Sensory

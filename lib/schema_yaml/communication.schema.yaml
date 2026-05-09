@@ -1,0 +1,153 @@
+version: 1
+enums:
+  DeliveryState:
+    - QUEUED = 0
+    - SENT
+    - RECEIVED
+    - ACKED
+    - NACKED
+    - EXECUTED
+    - EXPIRED
+    - DROPPED
+
+  ReplyAck:
+    - ACK = 0
+    - RECEIVED
+    - WILCO
+
+  AckMode:
+    - NONE = 0
+    - RECEIPT
+    - EXECUTION
+    - BOTH
+
+  QosTier:
+    - BULK = 0
+    - ROUTINE
+    - URGENT
+    - CRITICAL
+
+  MessagePriority:
+    - ROUTINE = 0
+    - PRIORITY
+    - IMMEDIATE
+    - FLASH
+
+  RouteMode:
+    - DIRECT = 0
+    - RELAY
+    - STORE_FORWARD
+    - FLOOD
+
+  ConflictPolicy:
+    - LAST_WRITE = 0
+    - AUTHORITY_WINS
+    - VECTOR_CLOCK
+    - MANUAL
+
+  SyncState:
+    - IN_SYNC = 0
+    - PARTIAL
+    - STALE
+    - DIVERGED
+
+  NATOAlphabet:
+    - ALPHA = 0
+    - BRAVO
+    - CHARLIE
+    - DELTA
+    - ECHO
+    - FOXTROT
+    - GOLF
+    - HOTEL
+    - INDIA
+    - JULIETT
+    - KILO
+    - LIMA
+    - MIKE
+    - NOVEMBER
+    - OSCAR
+    - PAPA
+    - QUEBEC
+    - ROMEO
+    - SIERRA
+    - TANGO
+    - UNIFORM
+    - VICTOR
+    - WHISKEY
+    - XRAY
+    - YANKEE
+    - ZULU
+
+  CapabilityRole:
+    - CONTROLLER = 0
+    - RELAY
+    - SENSOR
+    - EFFECTOR
+    - GATEWAY
+    - RECORDER
+
+models:
+  RetryProfile:
+    fields:
+      max_attempts: int = 0
+      base_delay_ms: int = 0
+      backoff_factor: float = 1.0
+      jitter_pct: float = 0.0
+
+
+  NodeRef:
+    fields:
+      node_id: string
+
+
+  RouteHint:
+    fields:
+      next_hop: optional string
+      hop_limit: optional int
+      preferred_relays: list[NodeRef] = []
+      avoid_nodes: list[NodeRef] = []
+
+
+  MessageEnvelope:
+    fields:
+      msg_id: string
+      msg_type: string
+      src: string
+      dst: string
+      ts: float
+      conversation_id: optional string
+      ttl_s: optional float
+      qos: QosTier = ROUTINE
+      priority: MessagePriority = ROUTINE
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      route_hint: optional RouteHint
+      retry: optional RetryProfile
+
+
+  DeliveryReceipt:
+    fields:
+      msg_id: string
+      node_id: string
+      delivery_state: DeliveryState
+      seen_ts: optional float
+      exec_ts: optional float
+      error_code: optional string
+
+
+  CapabilityAdvert:
+    fields:
+      node_id: string
+      roles: list[CapabilityRole] = []
+      link_ids: list[string] = []
+      sensor_ids: list[string] = []
+      payload_ids: list[string] = []
+
+
+  StateDelta:
+    fields:
+      entity_id: string
+      changed_fields: list[string] = []
+      source: optional string
+      confidence: optional ConfidenceLevel

@@ -1,0 +1,106 @@
+version: 1
+enums:
+  LinkCondition:
+    - UNKNOWN = 0
+    - GOOD
+    - DEGRADED
+    - INTERMITTENT
+    - LOST
+
+  ConnectionStatus:
+    - UNKNOWN = 0
+    - ONLINE
+    - OFFLINE
+
+  LinkDirection:
+    - RX = 0
+    - TX
+    - HALF_DUPLEX
+    - FULL_DUPLEX
+
+  LinkDataType:
+    - TEXT = 0
+    - AUDIO
+    - VIDEO
+    - PACKET
+    - SERIAL
+    - CONTROL
+
+  LinkType:
+    - BROADCAST = 0
+    - POINT_TO_POINT
+    - HUB
+    - MESH
+
+  NetType:
+    - RF = 0
+    - CELLULAR
+    - LTE
+    - SATCOM
+    - WIFI
+    - WIRED
+
+  AddressKind:
+    - IPV4 = 0
+    - IPV6
+    - MAC
+    - CALLSIGN
+    - URI
+
+models:
+  BandwidthSpec:
+    fields:
+      mhz: optional float
+      occupied_mhz: optional float
+      usable_mhz: optional float
+
+
+  DataRateSpec:
+    fields:
+      nominal_bps: optional float
+      sustained_bps: optional float
+      burst_bps: optional float
+
+
+  NetworkAddress:
+    fields:
+      kind: AddressKind
+      value: string
+      port: optional int
+
+
+  LinkCapacity:
+    fields:
+      max_nodes: optional int
+      max_users: optional int
+      max_streams: optional int
+
+
+  LinkEndpoint:
+    fields:
+      node_id: optional string
+      interface_name: optional string
+      address: optional NetworkAddress
+
+
+  LinkSchema:
+    fields:
+      schema_id: string
+      schema_type: SchemaKind = LINK
+      uuid: optional string
+      name: string
+      link_type: LinkType
+      net_type: NetType
+      io: int
+      data_type: LinkDataType
+      direction: optional LinkDirection
+      bandwidth: optional BandwidthSpec
+      rate_spec: optional DataRateSpec
+      user_capacity: optional LinkCapacity
+      network_id: optional string
+      primary_address: optional NetworkAddress
+      addresses: list[NetworkAddress] = []
+      endpoints: list[LinkEndpoint] = []
+      radio: optional RadioProfile
+      condition: optional LinkCondition
+      connection_status: optional ConnectionStatus

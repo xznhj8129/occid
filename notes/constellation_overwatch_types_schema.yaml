@@ -1,0 +1,444 @@
+version: 1
+
+enums:
+  SortOrder:
+    - ASC = 0
+    - DESC
+
+  EventType:
+    - CREATED = 0
+    - UPDATED
+    - DELETED
+    - STATUS_CHANGED
+    - ALERT
+
+  EntityType:
+    - AIRCRAFT_FIXED_WING = 0
+    - AIRCRAFT_MULTIROTOR
+    - AIRCRAFT_VTOL
+    - AIRCRAFT_HELICOPTER
+    - AIRCRAFT_AIRSHIP
+    - GROUND_VEHICLE_WHEELED
+    - GROUND_VEHICLE_TRACKED
+    - SURFACE_VESSEL_USV
+    - UNDERWATER_VEHICLE
+    - SENSOR_PLATFORM
+    - PAYLOAD_SYSTEM
+    - OPERATOR_STATION
+    - WAYPOINT
+    - NO_FLY_ZONE
+    - GEOFENCE
+
+  EntityStatus:
+    - ACTIVE = 0
+    - INACTIVE
+    - UNKNOWN
+    - OFFLINE
+    - ONLINE
+
+  PriorityLevel:
+    - LOW = 0
+    - NORMAL
+    - HIGH
+    - CRITICAL
+
+  VideoProtocol:
+    - RTSP = 0
+    - RTMP
+    - SRT
+    - HLS
+
+  OrgType:
+    - MILITARY = 0
+    - CIVILIAN
+    - COMMERCIAL
+    - NGO
+
+structs:
+
+  Response:
+    fields:
+      success: bool
+      data: optional any
+      error: optional Error
+
+
+  Error:
+    fields:
+      code: string
+      message: string
+      details: optional string
+
+
+  PaginationRequest:
+    fields:
+      page:
+        type: int
+        min: 1
+      page_size:
+        type: int
+        min: 1
+        max: 100
+      order_by: string
+      order: optional SortOrder
+
+
+  PaginationResponse:
+    fields:
+      items: any
+      page: int
+      page_size: int
+      total_items: int64
+      total_pages: int
+
+
+  Event:
+    fields:
+      id: string
+      type: EventType
+      subject: string
+      data: map[string, any]
+      metadata: optional map[string, any]
+      timestamp: int64
+      source: string
+
+
+  Fleet:
+    fields:
+      id: string
+      name: string
+      description: optional string
+      org_id: string
+      swarm_ids: list[string]
+      status: string
+      created_at: int64
+      updated_at: int64
+      metadata: optional map[string, string]
+
+
+  Swarm:
+    fields:
+      id: string
+      name: string
+      description: optional string
+      org_id: string
+      fleet_id: optional string
+      entity_ids: list[string]
+      status: string
+      type: string  # Swarm role/category such as formation, patrol, or search
+      created_at: int64
+      updated_at: int64
+      metadata: optional map[string, string]
+
+
+  HealthStatus:
+    fields:
+      status: string
+      service: string
+      version: optional string
+      uptime: optional duration
+      timestamp: int64
+      details: optional map[string, string]
+
+
+  EntityState:
+    fields:
+      entity_id: string
+      org_id: string
+      org_name: optional string
+      name: optional string
+      entity_type: EntityType
+      status: EntityStatus
+      priority: PriorityLevel
+      is_live: bool
+      expiry_time: optional timestamp
+      position: optional PositionState
+      attitude: optional AttitudeState
+      vehicle_status: optional VehicleStatusState
+      power: optional PowerState
+      vfr: optional VFRState
+      mission: optional MissionState
+      actuators: optional ActuatorState
+      environment: optional EnvironmentState
+      analytics: optional AnalyticsState
+      detections: optional DetectionState
+      threat_intel: optional ThreatIntelState
+      system_id: optional uint8
+      component_id: optional uint8
+      device_id: optional string
+      stream_port: optional string
+      video_config: optional VideoConfig
+      subject: optional string
+      first_seen: optional timestamp
+      last_seen: optional timestamp
+      fingerprinted: optional bool
+      components: map[string, any]
+      aliases: map[string, string]
+      tags: list[string]
+      source: string
+      created_by: string
+      classification: optional string
+      metadata: map[string, any]
+      created_at: int64
+      updated_at: int64
+
+
+  PositionState:
+    fields:
+      global: optional GlobalPosition
+      local: optional LocalPosition
+
+
+  GlobalPosition:
+    fields:
+      latitude: float
+      longitude: float
+      altitude_msl: float
+      altitude_relative: float
+      altitude_terrain: optional float
+      accuracy_h: float
+      accuracy_v: float
+      satellites_visible: optional int
+      fix_type: optional int
+      timestamp: int64
+
+
+  LocalPosition:
+    fields:
+      x: float
+      y: float
+      z: float
+      vx: float
+      vy: float
+      vz: float
+      timestamp: int64
+
+
+  AttitudeState:
+    fields:
+      euler: optional EulerAttitude
+      quaternion: optional QuaternionAttitude
+
+
+  EulerAttitude:
+    fields:
+      roll: float
+      pitch: float
+      yaw: float
+      rollspeed: float
+      pitchspeed: float
+      yawspeed: float
+      timestamp: int64
+
+
+  QuaternionAttitude:
+    fields:
+      q1: float
+      q2: float
+      q3: float
+      q4: float
+      rollspeed: optional float
+      pitchspeed: optional float
+      yawspeed: optional float
+      timestamp: int64
+
+
+  VehicleStatusState:
+    fields:
+      armed: bool
+      mode: string
+      custom_mode: uint32
+      autopilot: uint8
+      system_status: uint8
+      vehicle_type: uint8
+      landed_state: uint8
+      vtol_state: optional uint8
+      load: uint16
+      sensors_enabled: uint32
+      sensors_health: uint32
+      timestamp: int64
+
+
+  PowerState:
+    fields:
+      voltage: float
+      current: float
+      battery_remaining: int8
+      consumed: int32
+      energy_consumed: int32
+      cells: optional list[uint16]
+      temperature: int16
+      timestamp: int64
+
+
+  VFRState:
+    fields:
+      airspeed: float
+      groundspeed: float
+      heading: int16
+      climb_rate: float
+      throttle: uint16
+      altitude: float
+      timestamp: int64
+
+
+  MissionState:
+    fields:
+      current_waypoint: uint16
+      total_waypoints: optional uint16
+      timestamp: int64
+
+
+  ActuatorState:
+    fields:
+      servos: list[uint16]
+      timestamp: int64
+
+
+  EnvironmentState:
+    fields:
+      pressure_abs: float
+      pressure_diff: float
+      temperature: int16
+      humidity: optional float
+      timestamp: int64
+
+
+  AnalyticsState:
+    fields:
+      total_unique_objects: int
+      total_frames_processed: int
+      active_objects_count: int
+      tracked_objects_count: int
+      label_distribution: map[string, int]
+      threat_distribution: map[string, int]
+      active_threat_count: int
+      active_track_ids: list[string]
+      threat_alerts: list[any]
+      timestamp: int64
+
+
+  DetectionState:
+    fields:
+      status: optional string
+      is_live: optional bool
+      frame_count: optional int
+      tracked_objects: optional map[string, TrackedObject]
+      timestamp: int64
+
+
+  TrackedObject:
+    fields:
+      track_id: string
+      label: string
+      confidence: float
+      frame_count: int
+      bbox: optional BoundingBox
+      cx: float
+      cy: float
+      dx: float
+      dy: float
+      first_seen: int64
+      last_seen: int64
+      avg_confidence: optional float
+      is_active: optional bool
+      threat_level: optional string
+      suspicious_indicators: optional list[string]
+
+
+  BoundingBox:
+    fields:
+      x1: float
+      y1: float
+      x2: float
+      y2: float
+
+
+  ThreatIntelState:
+    fields:
+      mission: string
+      analytics: optional AnalyticsState
+      threat_summary: optional ThreatSummary
+      threat_alerts: list[any]
+      timestamp: int64
+
+
+  ThreatSummary:
+    fields:
+      total_threats: int
+      threat_distribution: map[string, int]
+      alert_level: string
+
+
+  MAVLinkTelemetry:
+    fields:
+      message_id: uint32
+      message_type: string
+      system_id: uint8
+      component_id: uint8
+      data: map[string, any]
+      timestamp: int64
+
+
+  VideoFrame:
+    fields:
+      entity_id: string
+      frame_id: string
+      timestamp: int64
+      sequence_num: uint64
+      camera_id: optional string
+      stream_id: optional string
+      width: int
+      height: int
+      format: string  # Frame format string such as jpeg, h264, or raw
+      encoding: string  # Payload encoding such as base64 or binary
+      data: bytes
+      detections: optional list[VideoDetectionBBox]
+      priority: optional int
+      quality: optional int
+
+
+  VideoDetectionBBox:
+    fields:
+      class_id: int
+      class_name: string
+      confidence: float
+      x: int
+      y: int
+      width: int
+      height: int
+      track_id: optional string
+
+
+  VideoConfig:
+    fields:
+      protocol: optional VideoProtocol
+      port: optional int
+      stream_url: optional string
+      overlay_url: optional string
+      webrtc_url: optional string
+      overlay_webrtc_url: optional string
+      hls_url: optional string
+
+  Organization:
+    fields:
+      org_id: string
+      name: string
+      org_type: OrgType
+      description: optional string
+      metadata: optional string
+      created_at: int64
+      updated_at: int64
+
+
+  CreateOrganizationRequest:
+    fields:
+      name: # Organization name
+        type: string
+        min_length: 1
+        max_length: 255
+      org_type: OrgType # Organization type
+      description:  # Organization description
+        type: optional string
+        max_length: 500
+      metadata: optional map[string, any]  # Arbitrary metadata

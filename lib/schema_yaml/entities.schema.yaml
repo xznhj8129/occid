@@ -1,0 +1,167 @@
+version: 1
+enums:
+  EntityType:
+    - PERSON = 0
+    - MACHINE
+    - SYSTEM
+
+  MachineType:
+    - VEHICLE = 0
+    - ROBOT
+
+  SystemType:
+    - PLATFORM = 0
+    - EQUIPMENT
+    - MUNITION
+
+  EntityOperationalState:
+    - UNKNOWN = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+    - MAINTENANCE
+    - DAMAGED
+    - DESTROYED
+    - OFFLINE
+
+  EntityLifecycleStatus:
+    - ACTIVE = 0
+    - INACTIVE
+    - UNKNOWN
+
+
+models:
+  BaseEntity:
+    parent: BaseObject
+    fields:
+      object_type: ObjectType = ENTITY
+      entity_id: string
+      short_id: optional string
+      name: optional string
+      entity_type: optional EntityType
+      faction: optional Faction
+      lifecycle_status: optional EntityLifecycleStatus
+      created_ts: optional float
+      updated_ts: optional float
+      origin_system: optional string
+      alt_ids: list[AlternateId] = []
+      tags: list[string] = []
+      metadata: list[MetadataEntry] = []
+      relations: list[RelationSchema] = []
+      location_state: optional LocationState
+      symbology: optional SymbologySchema
+      display_meta: optional DisplayMeta
+
+
+  EntityComponentRef:
+    fields:
+      component_id: string
+      component_type: optional string
+      label: optional string
+
+
+  Person:
+    parent: BaseEntity
+    fields:
+      entity_type: EntityType = PERSON
+      role: string
+      serial_uid: string = ""
+      op_domain: OperationalDomain = LAND
+      propulsion: PropulsionType = FOOT
+      navigation: NavigationMode
+      navaids: list[NavAids] = []
+      health: HumanHealthStatus
+      attack_modes: list[AttackMode] = []
+      sensors: map[string, SensorSchema] = {}
+      weapons: list[ItemCount] = []
+      ammo: list[ItemCount] = []
+      links: map[string, LinkSchema] = {}
+
+
+  BaseMachine:
+    parent: BaseEntity
+    fields:
+      entity_type: EntityType = MACHINE
+      sys_id: string
+      machine_type: optional MachineType
+      category: optional NATOUnitCategory
+      status: EntityOperationalState
+      health_snapshot: optional HealthSnapshot
+      power_state: optional PowerStateSchema
+      supplies: optional SuppliesSchema
+      link_condition: optional LinkCondition
+      control_level: optional ControlLevel
+      components: list[EntityComponentRef] = []
+
+
+  GroundNavigationSchema:
+    fields:
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids] = []
+      max_range: float
+      max_spd: float
+
+
+  AirNavigationSchema:
+    fields:
+      flight_type: AirframeType
+      control_modes: list[FlightMode] = []
+      failsafe_mode: optional AirFailsafeMode
+      weather_limits: WeatherLimits = {}
+      ifr: optional bool
+      roles: list[AirRole] = []
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids] = []
+      fuel: optional FuelState
+      max_range: float
+      max_flight_t: float
+      max_spd: float
+      cruise_spd: float
+      max_alt: float
+      start_flight_time: float
+
+
+  GroundMachine:
+    parent: BaseMachine
+    fields:
+      machine_type: MachineType
+      op_domain: OperationalDomain = LAND
+      model: string
+      role: string
+      serial_uid: string = ""
+      sensors: map[string, SensorSchema] = {}
+      payload: PayloadSchema
+      effects: GroundEffectsSchema
+      navigation: GroundNavigationSchema
+
+
+  GroundRobot:
+    parent: GroundMachine
+    fields:
+      machine_type: MachineType = ROBOT
+      robot_control: optional RobotControlSchema
+      remote_control: RemoteControlSchema
+
+
+  AirMachine:
+    parent: BaseMachine
+    fields:
+      machine_type: optional MachineType
+      op_domain: OperationalDomain = AIR
+      model: string
+      serial_uid: string = ""
+      sensors: map[string, SensorSchema] = {}
+      payload: PayloadSchema
+      effects: AirEffectsSchema
+      navigation: AirNavigationSchema
+      maint_status: optional MaintenanceStatus
+
+
+  AirRobot:
+    parent: AirMachine
+    fields:
+      machine_type: MachineType = ROBOT
+      robot_control: optional RobotControlSchema
+      remote_control: RemoteControlSchema

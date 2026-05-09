@@ -1,0 +1,156 @@
+version: 1
+enums:
+  Waveform:
+    - FM = 0
+    - AM
+    - OFDM
+    - USB
+    - LSB
+    - LORA
+    - LTE
+    - DSSS
+    - FHSS
+
+  CryptoType:
+    - NONE = 0
+    - STATIC_KEY
+    - HOPSET
+    - STREAM
+    - PUBLIC_KEY
+
+  RadioService:
+    - VOICE = 0
+    - APRS
+    - LORA
+    - RC_LINK
+    - TELEMETRY_LINK
+    - FPV_VIDEO
+    - MESHTASTIC
+    - MESHCORE
+
+models:
+  FrequencyRange:
+    fields:
+      low_mhz: optional float
+      high_mhz: optional float
+      center_mhz: optional float
+
+
+  ChannelSpec:
+    fields:
+      channel_id: optional string
+      label: optional string
+      frequency: optional FrequencyRange
+      bandwidth_mhz: optional float
+      spacing_mhz: optional float
+
+
+  CryptoKey:
+    fields:
+      key_id: string
+      label: optional string
+      crypto_type: CryptoType
+      version: optional string
+      fill_ts: optional float
+
+
+  CryptoProfile:
+    fields:
+      active_crypto: optional CryptoType
+      keyset_id: optional string
+      keys: list[CryptoKey] = []
+
+
+  LoRaProfile:
+    fields:
+      spreading_factor: optional int
+      bandwidth_mhz: optional float
+      coding_rate: optional string
+
+
+  AprsProfile:
+    fields:
+      callsign: optional string
+      path: optional string
+
+
+  ElrsProfile:
+    fields:
+      packet_rate_hz: optional int
+      telemetry_ratio: optional string
+
+
+  FpvProfile:
+    fields:
+      video_standard: optional string
+      low_latency: optional bool
+
+
+  RadioProfile:
+    fields:
+      service: optional RadioService
+      bands: list[NATORadioBands] = []
+      waveform: optional Waveform
+      frequency: optional FrequencyRange
+      channel_plan: list[ChannelSpec] = []
+      active_channel_id: optional string
+      crypto_types: list[CryptoType] = []
+      crypto_profile: optional CryptoProfile
+      lora: optional LoRaProfile
+      aprs: optional AprsProfile
+      elrs: optional ElrsProfile
+      fpv: optional FpvProfile
+
+
+  EmitterNotationSchema:
+    fields:
+      emitter_name: optional string
+      emitter_class: optional string
+      platform_class: optional string
+
+
+  SignalMeasurement:
+    fields:
+      value: optional float
+      unit: optional string
+      confidence: optional ConfidenceLevel
+
+
+  LineOfBearingSchema:
+    fields:
+      bearing_deg: optional float
+      bearing_error_deg: optional float
+
+
+  AngleOfArrivalSchema:
+    fields:
+      azimuth_deg: optional float
+      elevation_deg: optional float
+      azimuth_error_deg: optional float
+      elevation_error_deg: optional float
+
+
+  PulseRepetitionIntervalSchema:
+    fields:
+      pri_us: optional float
+      jitter_us: optional float
+
+
+  ScanCharacteristicsSchema:
+    fields:
+      period_s: optional float
+      frame_time_s: optional float
+
+
+  SignalSchema:
+    fields:
+      signal_id: string
+      source_id: optional string
+      emitter: optional EmitterNotationSchema
+      frequency: optional FrequencyRange
+      strength: optional SignalMeasurement
+      line_of_bearing: optional LineOfBearingSchema
+      angle_of_arrival: optional AngleOfArrivalSchema
+      pulse_interval: optional PulseRepetitionIntervalSchema
+      scan: optional ScanCharacteristicsSchema
+      fixed_position_id: optional string

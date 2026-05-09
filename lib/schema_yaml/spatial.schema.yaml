@@ -1,0 +1,195 @@
+version: 1
+enums:
+  InertialReferenceFrame:
+    - NEU = 0
+    - NED
+    - ENU
+
+  BodyReferenceFrame:
+    - FLU = 0
+    - FRD
+
+  AltitudeDatum:
+    - RELATIVE = 0
+    - SEA_LEVEL
+    - TERRAIN
+    - POI_RELATIVE
+    - BAROMETRIC
+    - INVALID
+
+  GeometryTypes:
+    - POINT = 0
+    - MULTI_POINT
+    - LINE_STRING
+    - MULTI_LINE_STRING
+    - POLYGON
+    - MULTI_POLYGON
+    - GEOMETRY_COLLECTION
+
+  GeoJsonGeometryTypes:
+    - POINT = 'Point'
+    - MULTI_POINT = 'MultiPoint'
+    - LINE_STRING = 'LineString'
+    - MULTI_LINE_STRING = 'MultiLineString'
+    - POLYGON = 'Polygon'
+    - MULTI_POLYGON = 'MultiPolygon'
+    - GEOMETRY_COLLECTION = 'GeometryCollection'
+
+  SurfaceFormationShapes:
+    - COLUMN = 0
+    - LINE
+    - SCREEN
+    - WEDGE
+    - LOZENGE
+    - CIRCLE
+    - SQUARE
+
+  FormationForm:
+    - PERIMETER = 0
+    - FILL
+
+  RouteLeg:
+    - UNDEFINED = 0
+    - OUTBOUND
+    - RETURN
+
+  RouteMethod:
+    - WALKING = 0
+    - DRIVING
+    - FLYING
+    - SWIMMING
+    - WATERCRAFT
+
+  RouteType:
+    - PRIMARY = 0
+    - SECONDARY
+
+  WaypointType:
+    - GLOBAL = 0
+    - LOCAL
+    - OBJECT
+
+  NavAids:
+    - NONE = 0
+    - GNSS
+    - INS
+    - TERRAIN_MATCH
+    - CELESTIAL
+    - VISUAL
+
+models:
+  EulerAngles:
+    fields:
+      pitch: optional float
+      heading: optional float
+      roll: optional float
+      frame: optional BodyReferenceFrame
+
+
+  LocalDirection:
+    fields:
+      bearing: optional float
+      azimuth: optional float
+      elevation: optional float
+      slant_range: optional float
+
+
+  LocalVector:
+    fields:
+      x: optional float
+      y: optional float
+      z: optional float
+      frame: optional InertialReferenceFrame
+
+
+  GlobalPosition:
+    fields:
+      lat: optional float
+      lon: optional float
+      alt: optional float
+      mgrs: optional string
+      datum: const string = "WGS84"
+      alt_frame: optional AltitudeDatum
+
+
+  GeoPath:
+    fields:
+      points: list[GlobalPosition] = []
+
+
+  GeoArea:
+    fields:
+      vertices: list[GlobalPosition] = []
+
+
+  BoundingBox:
+    fields:
+      x1: optional float
+      y1: optional float
+      z1: optional float
+      x2: optional float
+      y2: optional float
+      z2: optional float
+
+
+  VelocityVector:
+    fields:
+      x: optional float
+      y: optional float
+      z: optional float
+
+
+  FeaturePropertyValue:
+    fields:
+      text_value: optional string
+      int_value: optional int
+      float_value: optional float
+      bool_value: optional bool
+
+
+  FeatureProperty:
+    fields:
+      key: string
+      value: FeaturePropertyValue
+
+
+  GeoJsonGeometry:
+    fields:
+      type: GeoJsonGeometryTypes
+      coordinates: optional any
+      geometries: optional list[GeoJsonGeometry]
+      bbox: optional BoundingBox
+
+
+  GeoJsonFeature:
+    fields:
+      type: const string = "Feature"
+      geometry: GeoJsonGeometry
+      properties: list[FeatureProperty] = []
+      id: optional (string | int)
+      bbox: optional BoundingBox
+
+
+  GeoJsonFeatureCollection:
+    fields:
+      type: const string = "FeatureCollection"
+      features: list[GeoJsonFeature] = []
+      bbox: optional BoundingBox
+
+
+  LocationUncertainty:
+    fields:
+      horiz_err_m: optional float
+      vert_err_m: optional float
+      ellipse_major_m: optional float
+      ellipse_minor_m: optional float
+      ellipse_bearing_deg: optional float
+
+
+  LocationState:
+    fields:
+      inertial_frame: optional InertialReferenceFrame
+      body_frame: optional BodyReferenceFrame
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      attitude: optional EulerAngles

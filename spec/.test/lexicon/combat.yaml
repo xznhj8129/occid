@@ -1,0 +1,140 @@
+
+UnitFunction:
+- Maneuver
+- FireSupport
+- AirDefense
+- Aviation
+- Engineer
+- Signal
+- ISR
+- MP
+- CBRN
+- Logistics
+- Medical
+- CivilAffairs
+- PsyOps
+- SOF
+
+WarfareType:
+- Conventional
+- Unconventional
+- Guerrilla
+- Hybrid
+- Asymmetric
+- Information
+- Cyber
+- Electronic
+
+CombatDomain:
+- Combat
+- CombatSupport
+- CombatSupportService
+
+
+MilitaryBranch:
+- Army
+- Navy
+- AirForce
+- Marines
+- CoastGuard
+- SpaceForce
+- SpecialOperations
+- Joint
+
+# Fire Support 
+
+EngagementMethod:
+- PointTarget
+- AreaTarget
+- Suppression
+- Destruction
+- Neutralization
+- Illumination
+- Smoke
+- Marking
+
+FireType:
+- Immediate
+- Planned
+- OnCall
+
+WeaponType:
+- Mortar
+- Howitzer
+- Rocket
+- MLRS
+- Missile
+- DirectFire
+- AirDelivered
+- Naval
+
+AmmunitionType:
+- HE
+- WP
+- Illumination
+- Smoke
+- DPICM
+- Thermobaric
+- HEAT
+- Frag
+- AP
+- Incendiary
+- Guided
+
+ShellTrajectory:
+- Low
+- High
+- Vertical
+
+FireMissionStatus:
+- Requested
+- Approved
+- Denied
+- ShotOut
+- SplashOver
+- RoundsComplete
+- EndOfMission
+- Cancelled
+- CheckFiring
+
+EffectAchieved:
+- Destroyed
+- Neutralized
+- Suppressed
+- NoEffect
+- Unknown
+
+# Ew 
+
+EWActionType:
+- Jam
+- Spoof
+- Deceive
+- Intercept
+- DirectionFind
+- Monitor
+- Deny
+
+JamType:
+- Noise
+- Barrage
+- Spot
+- Sweep
+- Responsive
+- Follower
+
+EWEffectType:
+- SignalDegraded
+- SignalDenied
+- TargetDecoyed
+- CommunicationsDisrupted
+- NoEffect
+
+EPType:
+- FrequencyHopping
+- SpreadSpectrum
+- Encryption
+- PowerControl
+- DirectionalAntenna
+- BurstTransmission
+

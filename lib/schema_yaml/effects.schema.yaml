@@ -1,0 +1,291 @@
+version: 1
+enums:
+  GuidanceType:
+    - UNGUIDED = 0
+    - INERTIAL
+    - FPV
+    - MCLOS
+    - SACLOS
+    - OPTICAL
+    - IR
+    - RADAR
+    - LASER
+    - RF
+
+  AttackMode:
+    - DIRECT_FIRE = 0
+    - INDIRECT_FIRE
+    - STANDOFF
+
+  ThreatLevel:
+    - NONE = 0
+    - LOW
+    - MEDIUM
+    - HIGH
+    - CRITICAL
+
+  ArmingStatus:
+    - DISARMED = 0
+    - ARMED
+    - FAULT
+
+  EsadMunitionStatus:
+    - NOT_PRESENT = 0
+    - PRESENT
+    - READY
+    - FAULT
+
+  EsadIgnitionStatus:
+    - OPEN = 0
+    - CLOSED
+    - FIRED
+    - FAULT
+
+  EsadFaultFlag:
+    - NONE = 0
+    - WIRING = 1
+    - POWER_GLITCH = 2
+    - SIGNAL_INTEGRITY = 4
+    - SENSOR_ACC = 8
+    - SENSOR_LIDAR = 16
+
+  EsadArmingRequest:
+    - DISARM = 0
+    - ARM
+
+  RwsArmingState:
+    - SAFE = 0
+    - ARMED
+    - FAULT
+
+  PayloadType:
+    - EO = 0
+    - EO_IR
+    - RADAR
+    - ELINT
+    - RELAY
+    - WEAPON
+    - CARGO
+    - JAMMER
+
+  PayloadState:
+    - OFF = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+    - FAILED
+
+  WarheadType:
+    - INERT = 0
+    - HE
+    - HEAT
+    - FRAG
+    - INC
+    - SMOKE
+    - AP
+    - EFP
+    - CRW
+
+  TargetCategory:
+    - OBJECT = 0
+    - LOCATION
+    - AREA
+
+models:
+  PayloadAllocation:
+    fields:
+      payload_type: PayloadType
+      qty: int = 0
+
+
+  PayloadPlanSchema:
+    fields:
+      requested: list[PayloadAllocation] = []
+      approved: list[PayloadAllocation] = []
+      loaded: list[PayloadAllocation] = []
+      notes: optional string
+
+
+  PayloadMountSchema:
+    fields:
+      mount_id: string
+      item_id: string
+      qty: int = 0
+      pylons: string = ""
+      launcher: string = ""
+      compat_tags: list[PayloadType] = []
+      loaded: list[PayloadAllocation] = []
+
+
+  PayloadSchema:
+    fields:
+      item_type: PayloadType
+      state: optional PayloadState
+      weapons: list[ItemCount] = []
+      ammo: list[ItemCount] = []
+      ordnance: list[ItemCount] = []
+      payload_mounts: map[string, PayloadMountSchema] = {}
+      payload_plan: optional PayloadPlanSchema
+
+
+  EffectsSchema:
+    fields:
+      has_launchers: bool
+      esad: optional EsadMunitionStatus
+      payload_mounts: map[string, PayloadMountSchema] = {}
+      effect_domain: OperationalDomain
+      launch_domain: OperationalDomain
+      guidance: GuidanceType
+      warhead: WarheadType
+      pylon_format: string = ""
+
+
+  GroundEffectsSchema:
+    parent: EffectsSchema
+    fields:
+      attack_modes: list[AttackMode] = []
+
+
+  AirEffectsSchema:
+    parent: EffectsSchema
+    fields:
+      reusable: optional bool
+      attack_modes: list[AirAttackMode] = []
+
+
+  TargetPrioritySchema:
+    fields:
+      threat: optional ThreatLevel
+      is_high_value: bool = false
+      note: optional string
+
+
+  TargetKinematics:
+    fields:
+      location_state: LocationState
+      velocity: optional VelocityVector
+      velocity_covariance: optional VelocityVector
+
+
+  TargetSetCoord:
+    fields:
+      time_usec: int
+      target_set_id: int
+      target_set_name: string
+      center: GlobalPosition
+      radius_m: float
+      time_start_usec: int
+      time_end_usec: int
+
+
+  TargetBoxCoord:
+    fields:
+      time_usec: int
+      target_set_id: int
+      target_set_name: string
+      corners: list[GlobalPosition]
+      time_start_usec: int
+      time_end_usec: int
+
+
+  TargetCoord:
+    fields:
+      time_usec: int
+      target_set_id: int
+      target_name: string
+      kinematics: TargetKinematics
+      cep_desired_m: float
+      cep_max_m: float
+      target_class: ObservedObjectType
+      target_force: Faction
+
+
+  Fires:
+    fields:
+      time_usec: int
+      time_impact_usec: int
+      target_position: GlobalPosition
+      effector_id: int
+      sequence: int
+      cep_expected_m: float
+
+
+  SplashCorrection:
+    fields:
+      time_usec: int
+      splash_position: GlobalPosition
+      sequence: int
+      type_detected: int
+      cep_expected_m: float
+
+
+  TargetHandover:
+    fields:
+      time_usec: int
+      detected_first_usec: int
+      valid_until_usec: int
+      kinematics: TargetKinematics
+      target_set_id: int
+      target_name: string
+      match_media_url: string
+      confidence_score: float
+      authorization: list[int]
+      target_class: ObservedObjectType
+      target_force: Faction
+      match_media_type: SensorDataFormat
+
+
+  BattleDamageAssessment:
+    fields:
+      time_usec: int
+      kinematics: TargetKinematics
+      target_set_id: int
+      target_name: string
+      authorization: list[int]
+      destruction_pct: int
+      confidence_pct: int
+      target_class: ObservedObjectType
+      target_force: Faction
+
+
+  EsadState:
+    fields:
+      time_usec: int
+      arming_challenge_hash: int
+      fault_flags: EsadFaultFlag
+      input_1: float
+      input_2: float
+      sw_version_hash: list[int]
+      arming_status: ArmingStatus
+      munition_status: EsadMunitionStatus
+      ignition_status: EsadIgnitionStatus
+      munition_type: int
+
+
+  EsadArming:
+    fields:
+      time_usec: int
+      arming_challenge_hash: int
+      arming_request: EsadArmingRequest
+
+
+  RwsPose:
+    fields:
+      time_usec: int
+      kinematics: TargetKinematics
+      offset_x_m: float
+      offset_y_m: float
+      offset_z_m: float
+      orientation_quaternion: tuple[float, float, float, float]
+      accuracy_roll_rad: float
+      accuracy_pitch_rad: float
+      accuracy_yaw_rad: float
+      coordinate_frame: int
+
+
+  RwsState:
+    fields:
+      time_usec: int
+      weapon_string: string
+      arming_state: RwsArmingState
+      weapon_type: int

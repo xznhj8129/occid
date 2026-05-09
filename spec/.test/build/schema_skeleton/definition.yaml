@@ -1,0 +1,232 @@
+version: 1
+type: schema
+name: definition.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Definition:
+    variants:
+
+      FRAME: Frame
+
+      COORDINATE: Coordinate
+
+      GEOMETRY: Geometry
+
+      TIME: Time
+
+      TYPE: Type
+
+      RELATIONSHIP: Relationship
+
+  Frame:
+    parent: Definition
+    variants:
+
+      LOCAL_2_D_FRAME: Local2DFrame
+
+      LOCAL_3_D_FRAME: Local3DFrame
+
+      GLOBAL_FRAME: GlobalFrame
+
+      ALTITUDE_REFERENCE_FRAME: AltitudeReferenceFrame
+
+      BEARING_REFERENCE_FRAME: BearingReferenceFrame
+
+  Local2DFrame:
+    parent: Frame
+
+  Local3DFrame:
+    parent: Frame
+
+  GlobalFrame:
+    parent: Frame
+
+  AltitudeReferenceFrame:
+    parent: Frame
+
+  BearingReferenceFrame:
+    parent: Frame
+
+  Coordinate:
+    parent: Definition
+    variants:
+
+      CARTESIAN_2_D_COORDINATE: Cartesian2DCoordinate
+
+      CARTESIAN_3_D_COORDINATE: Cartesian3DCoordinate
+
+      LAT_LON_COORDINATE: LatLonCoordinate
+
+      UTM_COORDINATE: UTMCoordinate
+
+      MGRS_COORDINATE: MGRSCoordinate
+
+      PLUS_CODE_COORDINATE: PlusCodeCoordinate
+
+      ECI_COORDINATE: ECICoordinate
+
+      ENU_COORDINATE: ENUCoordinate
+
+      SPHERICAL_COORDINATE: SphericalCoordinate
+
+  Cartesian2DCoordinate:
+    parent: Coordinate
+
+  Cartesian3DCoordinate:
+    parent: Coordinate
+
+  LatLonCoordinate:
+    parent: Coordinate
+
+  UTMCoordinate:
+    parent: Coordinate
+
+  MGRSCoordinate:
+    parent: Coordinate
+
+  PlusCodeCoordinate:
+    parent: Coordinate
+
+  ECICoordinate:
+    parent: Coordinate
+
+  ENUCoordinate:
+    parent: Coordinate
+
+  SphericalCoordinate:
+    parent: Coordinate
+
+  Geometry:
+    parent: Definition
+    variants:
+
+      POINT_GEOMETRY: PointGeometry
+
+      LINE_GEOMETRY: LineGeometry
+
+      PATH_GEOMETRY: PathGeometry
+
+      POLYGON_GEOMETRY: PolygonGeometry
+
+      VOLUME_GEOMETRY: VolumeGeometry
+
+      ORIENTATION_GEOMETRY: OrientationGeometry
+
+      ARC_GEOMETRY: ArcGeometry
+
+      ELLIPSE_GEOMETRY: EllipseGeometry
+
+      ELLIPSOID_GEOMETRY: EllipsoidGeometry
+
+      FRUSTUM_GEOMETRY: FrustumGeometry
+
+      CORRIDOR_GEOMETRY: CorridorGeometry
+
+      ANNULUS_GEOMETRY: AnnulusGeometry
+
+  PointGeometry:
+    parent: Geometry
+
+  LineGeometry:
+    parent: Geometry
+
+  PathGeometry:
+    parent: Geometry
+
+  PolygonGeometry:
+    parent: Geometry
+
+  VolumeGeometry:
+    parent: Geometry
+
+  OrientationGeometry:
+    parent: Geometry
+
+  ArcGeometry:
+    parent: Geometry
+
+  EllipseGeometry:
+    parent: Geometry
+
+  EllipsoidGeometry:
+    parent: Geometry
+
+  FrustumGeometry:
+    parent: Geometry
+
+  CorridorGeometry:
+    parent: Geometry
+
+  AnnulusGeometry:
+    parent: Geometry
+
+  Time:
+    parent: Definition
+    variants:
+
+      TIMESTAMP_TIME: TimestampTime
+
+      TIME_WINDOW_TIME: TimeWindowTime
+
+      TIME_OFFSET_TIME: TimeOffsetTime
+
+  TimestampTime:
+    parent: Time
+
+  TimeWindowTime:
+    parent: Time
+
+  TimeOffsetTime:
+    parent: Time
+
+  Type:
+    parent: Definition
+    variants:
+
+      CATEGORY: Category
+
+      PURPOSE: Purpose
+
+      FUNCTION: Function
+
+      FACTIONS: Factions
+
+      DOMAINS: Domains
+
+  Category:
+    parent: Type
+
+  Purpose:
+    parent: Type
+
+  Function:
+    parent: Type
+
+  Factions:
+    parent: Type
+    variants:
+
+      FACTION_SIDE_FACTIONS: FactionSideFactions
+
+      NATIONALITY_FACTIONS: NationalityFactions
+
+      LEGAL_STATUS_FACTIONS: LegalStatusFactions
+
+  FactionSideFactions:
+    parent: Factions
+
+  NationalityFactions:
+    parent: Factions
+
+  LegalStatusFactions:
+    parent: Factions
+
+  Domains:
+    parent: Type
+
+  Relationship:
+    parent: Definition

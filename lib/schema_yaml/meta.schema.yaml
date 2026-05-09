@@ -1,0 +1,19 @@
+version: 1
+
+models:
+  DisplayMeta:
+    fields:
+      icon_code: optional string
+      tint: optional string
+      short_label: optional string
+
+
+  RelationSchema:
+    fields:
+      src_id: string
+      dst_id: string
+      rel_kind: string
+      since_ts: optional float
+      until_ts: optional float
+      confidence: optional ConfidenceLevel
+      source: optional string

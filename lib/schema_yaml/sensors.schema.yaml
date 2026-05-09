@@ -1,0 +1,127 @@
+version: 1
+enums:
+  SensorType:
+    - EO = 0
+    - EO_MULTISPECTRAL
+    - RADAR
+    - ELINT
+    - LIDAR
+
+  SensorSpectrum:
+    - VISUAL = 0
+    - SWIR
+    - MWIR
+    - LWIR
+    - RF
+    - UV
+
+  NATORadioBands:
+    - A_BAND_0_250M = 0
+    - B_BAND_250M_500M
+    - C_BAND_500M_1G
+    - D_BAND_1G_2G
+    - E_BAND_2G_3G
+    - F_BAND_3G_4G
+    - G_BAND_4G_6G
+    - H_BAND_6G_8G
+    - I_BAND_8G_10G
+    - J_BAND_10G_20G
+    - K_BAND_20G_40G
+    - L_BAND_40G_60G
+    - M_BAND_60G_100G
+
+  SensorErrorType:
+    - CEP = 0
+    - RMS
+
+  SensorMode:
+    - OFF = 0
+    - LOOK
+    - SCAN
+    - TRACK
+
+  SensorRunState:
+    - OFFLINE = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+
+  SensorDataFormat:
+    - TEXT = 0
+    - STILL_IMAGE
+    - VIDEO
+    - TRACK
+    - RANGE
+    - POINT_CLOUD
+
+  SensorAICapability:
+    - DETECTION = 0
+    - TRACKING
+    - CLASSIFICATION
+    - IDENTIFICATION
+    - OCR
+    - CHANGE_DETECTION
+
+  SensorFrustumShape:
+    - CONICAL = 0
+    - RECTANGULAR
+    - ELLIPTICAL
+    - SECTOR
+
+  GimbalState:
+    - STOWED = 0
+    - STABILIZED
+    - SCANNING
+    - TRACKING
+
+models:
+  SensorFieldOfView:
+    fields:
+      horizontal: optional NumericRange
+      vertical: optional NumericRange
+
+
+  SpotterOrigin:
+    fields:
+      position: GlobalPosition
+      attitude: optional EulerAngles
+      look_vector: optional LocalDirection
+
+
+  MeasurementQuality:
+    fields:
+      lat_err_m: optional float
+      az_err_deg: optional float
+      range_err_m: optional float
+
+
+  SensorSchema:
+    fields:
+      name: string
+      model: string
+      type: SensorType
+      serial_uid: string = ""
+      effect_domain: EffectDomain
+      max_range: float
+      ptz: bool
+      spectrum: SensorSpectrum
+      night_vision: bool
+      all_weather: bool
+      weather_limits: WeatherLimits = {}
+      error_margin: float
+      error_type: SensorErrorType
+      data_formats: list[SensorDataFormat] = []
+      ai: list[SensorAICapability] = []
+      datalink: string
+      field_of_view: optional SensorFieldOfView
+      zoom_range: optional NumericRange
+      run_state: optional SensorRunState
+      mode: optional SensorMode
+      sensor_family: optional string
+      frustum_shape: optional SensorFrustumShape
+      field_of_regard: optional SensorFieldOfView
+      gimbal_state: optional GimbalState
+      freq_span: optional NumericRange
+      chan_bw: optional float
+      emit_profile: optional string
+      quality_hint: optional MeasurementQuality

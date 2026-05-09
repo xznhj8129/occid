@@ -1,0 +1,117 @@
+version: 1
+type: schema
+name: object.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Object:
+    children:
+
+      Entity:
+        children:
+
+          Actor:
+            children:
+
+              Person: {}
+
+              Agent: {}
+
+          Machine:
+            children:
+
+              Vehicle:
+                children:
+
+                  LandVehicle: {}
+
+                  AirVehicle: {}
+
+                  SeaVehicle: {}
+
+                  SubseaVehicle: {}
+
+                  SpaceVehicle: {}
+
+              Robot:
+                children:
+
+                  LandRobot: {}
+
+                  AirRobot: {}
+
+                  SeaRobot: {}
+
+                  SubseaRobot: {}
+
+                  SpaceRobot: {}
+
+              Platform:
+                children:
+
+                  LandPlatform: {}
+
+                  AirPlatform: {}
+
+                  SeaPlatform: {}
+
+                  SubseaPlatform: {}
+
+                  SpacePlatform: {}
+
+      Set:
+        children:
+
+          Organization:
+            children:
+
+              Group:
+                children:
+
+                  CivilianGroup: {}
+
+                  GovernmentGroup: {}
+
+                  MilitaryGroup: {}
+
+                  NonStateActorGroup: {}
+
+              Unit:
+                children:
+
+                  CivilianUnit: {}
+
+                  GovernmentUnit: {}
+
+                  MilitaryUnit: {}
+
+                  NonStateActorUnit: {}
+
+          Collection: {}
+
+          Cluster: {}
+
+          System: {}
+
+      Item:
+        children:
+
+          Record: {}
+
+          Equipment: {}
+
+          Component: {}
+
+          Payload: {}
+
+      World:
+        children:
+
+          Feature: {}
+
+          Location: {}
+
+          Site: {}

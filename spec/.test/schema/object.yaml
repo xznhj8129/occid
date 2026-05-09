@@ -1,0 +1,103 @@
+Object:
+  children:
+
+    Entity:
+      children:
+
+        Actor:
+          children:
+
+            Person: {}
+
+            Agent: {}
+
+        Machine:
+          children:
+
+            Vehicle:
+              children:
+
+                LandVehicle: {}
+
+                AirVehicle: {}
+
+                SeaVehicle: {}
+
+                SubseaVehicle: {}
+
+                SpaceVehicle: {}
+
+            Robot:
+              children:
+
+                LandRobot: {}
+
+                AirRobot: {}
+
+                SeaRobot: {}
+
+                SubseaRobot: {}
+
+                SpaceRobot: {}
+
+            Platform:
+              children:
+
+                LandPlatform: {}
+
+                AirPlatform: {}
+
+                SeaPlatform: {}
+
+                SubseaPlatform: {}
+
+                SpacePlatform: {}
+
+    Organization:
+      children:
+
+        Group:
+          children:
+
+            CivilianGroup: {}
+
+            GovernmentGroup: {}
+
+            MilitaryGroup: {}
+
+            NonStateActorGroup: {}
+
+        Unit:
+          children:
+
+            CivilianUnit: {}
+
+            GovernmentUnit: {}
+
+            MilitaryUnit: {}
+
+            NonStateActorUnit: {}
+
+    Collection: {}
+
+    System: {}
+
+    Item:
+      children:
+
+        Record: {}
+
+        Equipment: {}
+
+        Component: {}
+
+        Payload: {}
+
+    World:
+      children:
+
+        Feature: {}
+
+        Location: {}
+
+        Site: {}

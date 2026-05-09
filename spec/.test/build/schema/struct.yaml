@@ -1,0 +1,99 @@
+version: 1
+type: schema
+name: struct.yaml
+tags:
+- core
+enums: {}
+maps: {}
+structs:
+
+  Struct:
+    children:
+
+      Vector:
+        children:
+
+          Cartesian2DVector: {}
+
+          Cartesian3DVector: {}
+
+      Measurement: {}
+
+      Bearing: {}
+
+      GeoPos:
+        children:
+
+          LatLonGeoPos: {}
+
+          LLAGeoPos: {}
+
+          MGRSGeoPos: {}
+
+          UTMGeoPos: {}
+
+          PlusCodeGeoPos: {}
+
+          ECIGeoPos: {}
+
+          ENUGeoPos: {}
+
+          SphericalGeoPos: {}
+
+      LocalPos: {}
+
+      Line:
+        children:
+
+          Cartesian2DLine: {}
+
+          Cartesian3DLine: {}
+
+      Path:
+        children:
+
+          Cartesian2DPath: {}
+
+          Cartesian3DPath: {}
+
+          LLAPath: {}
+
+      Shape:
+        children:
+
+          PolygonShape: {}
+
+          GeoEllipseShape: {}
+
+          GeoEllipsoidShape: {}
+
+      Bounding:
+        children:
+
+          Cartesian2DBounding: {}
+
+          Cartesian3DBounding: {}
+
+      Uncertainty:
+        children:
+
+          ErrorEllipseUncertainty: {}
+
+          CovarianceMatrix3x3Uncertainty: {}
+
+      Pose: {}
+
+      Range:
+        children:
+
+          FloatRange: {}
+
+          UInt32Range: {}
+
+          DoubleRange: {}
+
+          DurationRange: {}
+
+      Transform: {}
+
+      Orbital: {}

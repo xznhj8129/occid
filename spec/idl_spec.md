@@ -190,6 +190,7 @@ Rules:
 - a child struct inherits all fields from its `parent`
 - if the parent defines `variants`, the child is a typed variant of that parent
 - a struct may be both a child and a parent, allowing nested typed hierarchies
+- branch structs should stay flat and lightweight; inline nested authoring is reserved for final fielded leaves inside `variants`
 
 **10. Field Shorthand**
 Allowed shorthand forms:
@@ -270,49 +271,69 @@ A parent/variants relationship is:
 - a typed variant family, equivalent to a tagged union or protobuf `oneof`
 - an implicit discriminator enum, derived from the variant keys
 
-There is no separate union mechanism or standalone enum declaration needed. `variants` on a struct defines the family: the keys are the enum members, and each value maps to a child struct.
+There is no separate union mechanism or standalone enum declaration needed. `variants` on a struct defines the family. The authored form is intentionally optimized for readability:
+- branch families are declared flat
+- final fielded leaves are declared inline
+- the compiler may lower inline leaves into explicit child structs internally
 
 Syntax:
 ```yaml
 structs:
   Task:
-    fields:
-      task_id: string
-      unit_id: string
-      priority: int
     variants:
-      MOVE: MoveTask
-      PATROL: PatrolTask
+      - MoveTask
+      - PatrolTask
 
   MoveTask:
     parent: Task
-    fields:
-      destination: GlobalPosition
-      speed_ms: optional float
+    variants:
+      GoTo:
+        description: Move to one destination
+        fields:
+          destination: GlobalPosition
+          speed_ms: optional float
 
   PatrolTask:
     parent: Task
-    fields:
-      path: list[GlobalPosition]
-      loiter_s: optional int
+    variants:
+      Route:
+        description: Patrol along an ordered path
+        fields:
+          path: list[GlobalPosition]
+          loiter_s: optional int
 
 ```
 
 Rules:
 - `variants` is a direct key on the struct
-  - each key becomes a member of the implicit discriminator enum
-  - each value must reference a struct
+  - `variants` has exactly two authored forms:
+    - list form for structural branches
+    - mapping form for terminal fielded leaves
   - enum values auto-increment from 0 in declaration order
+- list form syntax:
+  - each item must reference a declared child struct
+  - each referenced child struct must declare `parent: <parent struct>`
+  - list form is for ontology and structure only; branch structs should be authored as top-level structs, not nested inline
+- mapping form syntax:
+  - each key becomes a member of the implicit discriminator enum
+  - each value is an inline terminal leaf definition
+  - an inline terminal leaf definition may contain:
+    - `description`
+    - `fields`
+  - `fields` is required on inline terminal leaf definitions
+  - inline terminal leaves may not define `variants`, `parent`, `maps`, or `enums`
+  - the compiler synthesizes a child struct for each inline terminal leaf, with `parent` equal to the declaring struct
 - the implicit enum is named `{StructName}Type` (e.g., `Task` → `TaskType`) and is a first-class referenceable type
 - the discriminator is reserved metadata on each child instance (accessible as `_type`). It cannot collide with user-defined field names
-- each referenced child struct must declare `parent: <parent struct>`
 - the effective shape of a child struct includes:
   - all inherited parent fields
   - the child struct's own fields
 - the parent struct itself is a type and may be used in fields like any other struct
 - a struct may define at most one `variants` block
-- a child struct may also define `variants` of its own, allowing nested typed hierarchies
-- when naming a child, if necessary, prefix only the parent's name
+- a child struct declared via list form may also define `variants` of its own, allowing nested typed hierarchies
+- nested inline definitions are reserved for final fielded leaves only
+- when naming a child struct, if necessary, prefix only the parent's name
+- source readability takes precedence over normalized expansion; explicit synthetic child structs are an implementation detail, not the preferred authoring form
 
 **14. Comments**
 - YAML `#` comments are allowed anywhere YAML allows them
@@ -329,8 +350,12 @@ These are always errors:
 - `optional const ...`
 - list/map/object inline defaults in shorthand form
 - `required: true/false`
-- `variants` contains a value that is not a declared struct
-- `variants` contains a struct whose `parent` is not the declaring struct
+- `variants` list form contains a value that is not a declared struct
+- `variants` list form contains a struct whose `parent` is not the declaring struct
+- `variants` mapping form contains a value that is not an inline terminal leaf definition
+- an inline terminal leaf definition is missing `fields`
+- an inline terminal leaf definition declares `variants`
+- an inline terminal leaf definition declares `parent`
 - a struct's parent chain does not lead to the class declared by the file's `root`
 - `includes` graph contains a cycle
 - `name` does not match the actual filename
@@ -345,7 +370,7 @@ These are always errors:
 **16. Not Supported**
 - anchors / aliases
 - multiple inheritance
-- anonymous inline structs
+- anonymous inline structs outside terminal variant leaves
 - JSON-Schema keys like `$defs`, `oneOf`, `additionalProperties`
 
 **17. File Organization**
