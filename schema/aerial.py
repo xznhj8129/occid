@@ -206,12 +206,12 @@ AIR_ROLE_NAMES: dict[AirRole, str] = {
 
 ### Models
 
-class LoiterOrbit(SigmaModel):
+class LoiterOrbit(OCCIDModel):
     orbit_direction: int
     orbit_radius: int
     loiter_time: int
 
-class WeatherLimits(SigmaModel):
+class WeatherLimits(OCCIDModel):
     ifr: bool | None = None
     night: bool | None = None
     rain: NumericRange | None = None
@@ -221,7 +221,7 @@ class WeatherLimits(SigmaModel):
     vis: NumericRange | None = None
     icing: bool | None = None
 
-class TelemetryState(SigmaModel):
+class TelemetryState(OCCIDModel):
     flight_mode: FlightMode | None = None
     flight_phase: FlightPhase | None = None
     mission_phase: AirMissionPhase | None = None
@@ -230,11 +230,11 @@ class TelemetryState(SigmaModel):
     battery_pct: float | None = None
     link_rssi: float | None = None
 
-class FlightLevelBand(SigmaModel):
+class FlightLevelBand(OCCIDModel):
     altitude_range_m: NumericRange
     alt_sep_m: float
 
-class FlightPhasePlan(SigmaModel):
+class FlightPhasePlan(OCCIDModel):
     phase: AirMissionPhase
     flight_level: FlightLevelBand | None = None
     alt_frame: AltitudeDatum | None = None
@@ -245,13 +245,13 @@ class FlightPhasePlan(SigmaModel):
     formation_2d: AirGroupFormation2DType | None = None
     formation_3d: AirGroupFormation3DType | None = None
 
-class MissionRouteGeometry(SigmaModel):
+class MissionRouteGeometry(OCCIDModel):
     route_in: GeoPath = Field(default_factory=GeoPath)
     survey: GeoPath = Field(default_factory=GeoPath)
     survey_area: GeoArea = Field(default_factory=GeoArea)
     route_out: GeoPath = Field(default_factory=GeoPath)
 
-class MissionPoi(SigmaModel):
+class MissionPoi(OCCIDModel):
     uid: str
     name: str
     pos: GlobalPosition
@@ -262,13 +262,13 @@ class MissionPoi(SigmaModel):
     stale_after_s: float | None = None
     url: str | None = None
 
-class PlannerMissionPoint(SigmaModel):
+class PlannerMissionPoint(OCCIDModel):
     num: int
     point_type: PlannerPointType
     category: PlannerPointCategory
     pos: GlobalPosition
 
-class PlannedRoutePoints(SigmaModel):
+class PlannedRoutePoints(OCCIDModel):
     start: PlannerMissionPoint
     route_in: list[PlannerMissionPoint] = Field(default_factory=list)
     survey: list[PlannerMissionPoint] = Field(default_factory=list)
@@ -276,7 +276,7 @@ class PlannedRoutePoints(SigmaModel):
     route_out: list[PlannerMissionPoint] = Field(default_factory=list)
     end: PlannerMissionPoint
 
-class FlightAssignment(SigmaModel):
+class FlightAssignment(OCCIDModel):
     num: int
     unit_id: str | None = None
     callsign: str | None = None
@@ -285,7 +285,7 @@ class FlightAssignment(SigmaModel):
     formation_n: int = '0'
     takeoff_time: float = '0.0'
 
-class PlannedUnitMission(SigmaModel):
+class PlannedUnitMission(OCCIDModel):
     unit_num: int
     callsign: str
     fl: float
@@ -297,7 +297,7 @@ class PlannedUnitMission(SigmaModel):
     ip_wait_delay: float = '0.0'
     wp: GeoPath = Field(default_factory=GeoPath)
 
-class AirMissionSchema(SigmaModel):
+class AirMissionSchema(OCCIDModel):
     mission_name: str
     mission_uid: str
     mission_time: float

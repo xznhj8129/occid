@@ -53,32 +53,32 @@ class AddressKind(IntEnum):
 
 ### Models
 
-class BandwidthSpec(SigmaModel):
+class BandwidthSpec(OCCIDModel):
     mhz: float | None = None
     occupied_mhz: float | None = None
     usable_mhz: float | None = None
 
-class DataRateSpec(SigmaModel):
+class DataRateSpec(OCCIDModel):
     nominal_bps: float | None = None
     sustained_bps: float | None = None
     burst_bps: float | None = None
 
-class NetworkAddress(SigmaModel):
+class NetworkAddress(OCCIDModel):
     kind: AddressKind
     value: str
     port: int | None = None
 
-class LinkCapacity(SigmaModel):
+class LinkCapacity(OCCIDModel):
     max_nodes: int | None = None
     max_users: int | None = None
     max_streams: int | None = None
 
-class LinkEndpoint(SigmaModel):
+class LinkEndpoint(OCCIDModel):
     node_id: str | None = None
     interface_name: str | None = None
     address: NetworkAddress | None = None
 
-class LinkSchema(SigmaModel):
+class LinkSchema(OCCIDModel):
     schema_id: str
     schema_type: SchemaKind = SchemaKind.LINK
     uuid: str | None = None

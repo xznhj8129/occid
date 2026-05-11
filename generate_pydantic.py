@@ -1,8 +1,8 @@
-"""Generate a Pydantic schema package from `core/schemav2`.
+"""Generate a Pydantic schema package from `occid/lib/schema_yaml`.
 
 Usage:
-    python sdk/sigmac3-sdk/sigmac3_sdk/core/generate_pydantic.py
-    python sdk/sigmac3-sdk/sigmac3_sdk/core/generate_pydantic.py --output-dir sdk/sigmac3-sdk/sigmac3_sdk/core/generated_pydantic_schema
+    python generate_pydantic.py
+    python generate_pydantic.py --output-dir schema
 """
 
 from __future__ import annotations
@@ -16,9 +16,9 @@ import yaml
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-SCHEMA_DIR = SCRIPT_DIR / "schema_yaml"
-DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "pydantic"
-TEMPLATE_DIR = SCRIPT_DIR / "templates" / "pydantic"
+SCHEMA_DIR = SCRIPT_DIR / "lib" / "schema_yaml"
+DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "schema"
+TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
 
 PRIMITIVE_TYPES = {
     "string": "str",
@@ -256,7 +256,7 @@ def load_modules(schema_dir: Path) -> list[ModuleDef]:
 
 
 def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
-    symbols = {"SigmaModel": "common", "IntEnum": "common"}
+    symbols = {"OCCIDModel": "common", "IntEnum": "common"}
     for module in modules:
         for enum_def in module.enums:
             if enum_def.name in symbols:
@@ -475,7 +475,7 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
 
 
 def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]]) -> str:
-    parent = model_def.parent or "SigmaModel"
+    parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
     for field_def in model_def.fields:
         lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members)}")
@@ -574,7 +574,7 @@ def render_init(module_names: list[str]) -> str:
     lines.extend(
         [
             "",
-            "for _model in [obj for obj in list(globals().values()) if SigmaModel in getattr(obj, \"__mro__\", ()) and obj is not SigmaModel]:",
+            "for _model in [obj for obj in list(globals().values()) if OCCIDModel in getattr(obj, \"__mro__\", ()) and obj is not OCCIDModel]:",
             "    _model.model_rebuild(_types_namespace=globals())",
         ]
     )

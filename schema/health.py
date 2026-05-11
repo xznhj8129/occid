@@ -66,19 +66,19 @@ class PowerType(IntEnum):
 
 ### Models
 
-class HealthAlert(SigmaModel):
+class HealthAlert(OCCIDModel):
     alert_id: str | None = None
     level: AlertLevel
     condition: str
     acknowledged: bool = 'false'
 
-class SubsystemHealth(SigmaModel):
+class SubsystemHealth(OCCIDModel):
     subsystem_id: str
     state: HealthStatus
     fault_count: int = '0'
     note: str | None = None
 
-class HealthSnapshot(SigmaModel):
+class HealthSnapshot(OCCIDModel):
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
@@ -88,18 +88,18 @@ class HealthSnapshot(SigmaModel):
     subsystems: list[SubsystemHealth] = Field(default_factory=list)
     alerts: list[HealthAlert] = Field(default_factory=list)
 
-class MaintenanceStatus(SigmaModel):
+class MaintenanceStatus(OCCIDModel):
     state: MaintenanceState
     last_service_ts: float | None = None
     next_service_ts: float | None = None
     note: str | None = None
 
-class PowerSourceSchema(SigmaModel):
+class PowerSourceSchema(OCCIDModel):
     source_id: str
     power_type: PowerType
     status: PowerStatus
     remaining_pct: float | None = None
 
-class PowerStateSchema(SigmaModel):
+class PowerStateSchema(OCCIDModel):
     status: PowerStatus
     sources: list[PowerSourceSchema] = Field(default_factory=list)

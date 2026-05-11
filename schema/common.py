@@ -244,10 +244,10 @@ class OCCIDModel(BaseModel):
         data = super().model_dump(mode=mode, **kwargs)
         return data
 
-class Time(SigmaModel):
+class Time(OCCIDModel):
     utime: int
 
-class Duration(SigmaModel):
+class Duration(OCCIDModel):
     ms: float | None = None
     seconds: float | None = None
     minutes: float | None = None
@@ -257,7 +257,7 @@ class Duration(SigmaModel):
     months: float | None = None
     years: float | None = None
 
-class Timestamp(SigmaModel):
+class Timestamp(OCCIDModel):
     ms: float
     seconds: float
     minutes: float
@@ -267,43 +267,43 @@ class Timestamp(SigmaModel):
     year: float
     tz: float
 
-class AlternateId(SigmaModel):
+class AlternateId(OCCIDModel):
     id_type: AlternateIdType
     value: str
 
-class ItemCount(SigmaModel):
+class ItemCount(OCCIDModel):
     item_type: str
     qty: int = '0'
 
-class NumericRange(SigmaModel):
+class NumericRange(OCCIDModel):
     min_value: float | None = None
     max_value: float | None = None
 
-class MetadataValue(SigmaModel):
+class MetadataValue(OCCIDModel):
     text_value: str | None = None
     int_value: int | None = None
     float_value: float | None = None
     bool_value: bool | None = None
 
-class MetadataEntry(SigmaModel):
+class MetadataEntry(OCCIDModel):
     key: str
     value: MetadataValue
 
-class SymbologySchema(SigmaModel):
+class SymbologySchema(OCCIDModel):
     sidc: str | None = None
     cot: str | None = None
 
-class FirmwareInfo(SigmaModel):
+class FirmwareInfo(OCCIDModel):
     name: str | None = None
     version: str | None = None
     build: str | None = None
 
-class FuelState(SigmaModel):
+class FuelState(OCCIDModel):
     fuel_type: FuelType
     capacity: float | None = None
     remaining: float | None = None
     burn_rate_per_hour: float | None = None
 
-class SuppliesSchema(SigmaModel):
+class SuppliesSchema(OCCIDModel):
     fuel: FuelState | None = None
     stores: list[ItemCount] = Field(default_factory=list)

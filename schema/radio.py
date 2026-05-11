@@ -34,48 +34,48 @@ class RadioService(IntEnum):
 
 ### Models
 
-class FrequencyRange(SigmaModel):
+class FrequencyRange(OCCIDModel):
     low_mhz: float | None = None
     high_mhz: float | None = None
     center_mhz: float | None = None
 
-class ChannelSpec(SigmaModel):
+class ChannelSpec(OCCIDModel):
     channel_id: str | None = None
     label: str | None = None
     frequency: FrequencyRange | None = None
     bandwidth_mhz: float | None = None
     spacing_mhz: float | None = None
 
-class CryptoKey(SigmaModel):
+class CryptoKey(OCCIDModel):
     key_id: str
     label: str | None = None
     crypto_type: CryptoType
     version: str | None = None
     fill_ts: float | None = None
 
-class CryptoProfile(SigmaModel):
+class CryptoProfile(OCCIDModel):
     active_crypto: CryptoType | None = None
     keyset_id: str | None = None
     keys: list[CryptoKey] = Field(default_factory=list)
 
-class LoRaProfile(SigmaModel):
+class LoRaProfile(OCCIDModel):
     spreading_factor: int | None = None
     bandwidth_mhz: float | None = None
     coding_rate: str | None = None
 
-class AprsProfile(SigmaModel):
+class AprsProfile(OCCIDModel):
     callsign: str | None = None
     path: str | None = None
 
-class ElrsProfile(SigmaModel):
+class ElrsProfile(OCCIDModel):
     packet_rate_hz: int | None = None
     telemetry_ratio: str | None = None
 
-class FpvProfile(SigmaModel):
+class FpvProfile(OCCIDModel):
     video_standard: str | None = None
     low_latency: bool | None = None
 
-class RadioProfile(SigmaModel):
+class RadioProfile(OCCIDModel):
     service: RadioService | None = None
     bands: list[NATORadioBands] = Field(default_factory=list)
     waveform: Waveform | None = None
@@ -89,35 +89,35 @@ class RadioProfile(SigmaModel):
     elrs: ElrsProfile | None = None
     fpv: FpvProfile | None = None
 
-class EmitterNotationSchema(SigmaModel):
+class EmitterNotationSchema(OCCIDModel):
     emitter_name: str | None = None
     emitter_class: str | None = None
     platform_class: str | None = None
 
-class SignalMeasurement(SigmaModel):
+class SignalMeasurement(OCCIDModel):
     value: float | None = None
     unit: str | None = None
     confidence: ConfidenceLevel | None = None
 
-class LineOfBearingSchema(SigmaModel):
+class LineOfBearingSchema(OCCIDModel):
     bearing_deg: float | None = None
     bearing_error_deg: float | None = None
 
-class AngleOfArrivalSchema(SigmaModel):
+class AngleOfArrivalSchema(OCCIDModel):
     azimuth_deg: float | None = None
     elevation_deg: float | None = None
     azimuth_error_deg: float | None = None
     elevation_error_deg: float | None = None
 
-class PulseRepetitionIntervalSchema(SigmaModel):
+class PulseRepetitionIntervalSchema(OCCIDModel):
     pri_us: float | None = None
     jitter_us: float | None = None
 
-class ScanCharacteristicsSchema(SigmaModel):
+class ScanCharacteristicsSchema(OCCIDModel):
     period_s: float | None = None
     frame_time_s: float | None = None
 
-class SignalSchema(SigmaModel):
+class SignalSchema(OCCIDModel):
     signal_id: str
     source_id: str | None = None
     emitter: EmitterNotationSchema | None = None

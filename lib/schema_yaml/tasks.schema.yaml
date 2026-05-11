@@ -158,6 +158,22 @@ models:
       objective: optional ObjectiveSchema
 
 
+  VehicleCommand:
+    fields:
+      command_id: string
+      command_type: FlightCommandType
+      asset_id: string
+      mode: optional string
+      enabled: optional bool
+      altitude_m: optional float
+      yaw_deg: optional float
+      destination: optional GlobalPosition
+      waypoint: optional AutopilotMissionWaypoint
+      sequence: optional int
+      control_override: optional ControlOverride
+      attitude_setpoint: optional ControlAttitudeSetpoint
+
+
   MoveTask:
     parent: BaseTask
     fields:

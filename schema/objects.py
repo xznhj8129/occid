@@ -10,5 +10,5 @@ class ObjectType(IntEnum):
 
 ### Models
 
-class BaseObject(SigmaModel):
+class BaseObject(OCCIDModel):
     object_type: ObjectType

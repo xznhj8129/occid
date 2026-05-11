@@ -82,7 +82,7 @@ class IsrTask(BaseTask):
     isr_params: IsrParameters | None = None
     isr_result: IsrResult | None = None
 
-class IsrObservation(SigmaModel):
+class IsrObservation(OCCIDModel):
     obs_id: str
     track_id: str | None = None
     sensor_id: str | None = None
@@ -95,7 +95,7 @@ class IsrObservation(SigmaModel):
     signal: SignalSchema | None = None
     confidence: ConfidenceLevel | None = None
 
-class IsrParameters(SigmaModel):
+class IsrParameters(OCCIDModel):
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
     dwell_s: float | None = None
@@ -107,20 +107,20 @@ class IsrParameters(SigmaModel):
     bda_required: bool = 'false'
     evidence_level: EvidenceLevel | None = None
 
-class TrackUpdate(SigmaModel):
+class TrackUpdate(OCCIDModel):
     track_id: str
     track_state: TrackState | None = None
     updated_ts: float
     confidence: ConfidenceLevel | None = None
 
-class IsrResult(SigmaModel):
+class IsrResult(OCCIDModel):
     detections: list[IsrObservation] = Field(default_factory=list)
     track_updates: list[TrackUpdate] = Field(default_factory=list)
     media: MediaSchema | None = None
     confidence: ConfidenceLevel | None = None
     observations: list[IsrObservation] = Field(default_factory=list)
 
-class IntelTrackSchema(SigmaModel):
+class IntelTrackSchema(OCCIDModel):
     schema_id: str
     schema_type: SchemaKind = SchemaKind.INTEL_TRACK
     created_ts: float | None = None
@@ -143,13 +143,13 @@ class IntelTrackSchema(SigmaModel):
     latest_observation: IsrObservation | None = None
     observations: list[IsrObservation] = Field(default_factory=list)
 
-class BdaStrikeSummary(SigmaModel):
+class BdaStrikeSummary(OCCIDModel):
     casualties: int = '0'
     destroyed: list[ItemCount] = Field(default_factory=list)
     damaged: list[ItemCount] = Field(default_factory=list)
     unknown: list[ItemCount] = Field(default_factory=list)
 
-class BdaReportSchema(SigmaModel):
+class BdaReportSchema(OCCIDModel):
     time: float
     uid: str
     unit_code: str
@@ -163,7 +163,7 @@ class BdaReportSchema(SigmaModel):
     assessment: BdaStrikeSummary = Field(default_factory=BdaStrikeSummary)
     summary: str | None = None
 
-class SaluteReportSchema(SigmaModel):
+class SaluteReportSchema(OCCIDModel):
     time: float
     uid: str
     unit_code: str

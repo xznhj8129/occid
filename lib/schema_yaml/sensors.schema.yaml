@@ -74,6 +74,12 @@ enums:
     - SCANNING
     - TRACKING
 
+  DetectionBoxSpace:
+    - IMAGE_PIXEL = 0
+    - IMAGE_NORMALIZED
+    - BODY_ANGULAR
+    - WORLD
+
 models:
   SensorFieldOfView:
     fields:
@@ -93,6 +99,61 @@ models:
       lat_err_m: optional float
       az_err_deg: optional float
       range_err_m: optional float
+
+
+  ImuSample:
+    fields:
+      acceleration: optional LocalVector
+      angular_velocity: optional AngularVelocityVector
+      magnetic_field: optional LocalVector
+      temperature_deg_c: optional float
+      timestamp_us: optional int
+      frame: optional BodyReferenceFrame
+
+
+  VisionBox:
+    fields:
+      space: DetectionBoxSpace
+      bounds: BoundingBox
+
+
+  VisionDetection:
+    fields:
+      detection_id: optional string
+      label: optional string
+      class_id: optional int
+      confidence: optional float
+      box: optional VisionBox
+      bearing: optional LocalDirection
+      position: optional GlobalPosition
+      source_frame_id: optional string
+      attributes: list[MetadataEntry] = []
+
+
+  VisionDetectionFrame:
+    fields:
+      frame_id: optional string
+      sensor_id: optional string
+      timestamp_us: optional int
+      detections: list[VisionDetection] = []
+
+
+  TrackerState:
+    fields:
+      locked: optional bool
+      target_id: optional string
+      angular_error: optional LocalDirection
+      search_box_size: optional int
+      detections: optional VisionDetectionFrame
+
+
+  TrackerCommand:
+    fields:
+      lock: optional bool
+      reset: optional bool
+      slew: optional LocalDirection
+      search_box_size: optional int
+      shutdown: optional bool
 
 
   SensorSchema:

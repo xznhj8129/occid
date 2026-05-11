@@ -1,3 +1,4 @@
 .codex
 .qwen/
 __pycache__/
+spec/.test/

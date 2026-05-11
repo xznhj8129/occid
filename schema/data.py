@@ -28,12 +28,12 @@ class MediaType(IntEnum):
 
 ### Models
 
-class ClassificationSchema(SigmaModel):
+class ClassificationSchema(OCCIDModel):
     level: ClassificationLevel
     codewords: list[str] = Field(default_factory=list)
     release_to: list[str] = Field(default_factory=list)
 
-class VideoConfigSchema(SigmaModel):
+class VideoConfigSchema(OCCIDModel):
     protocol: VideoProtocol | None = None
     port: int | None = None
     stream_url: str | None = None
@@ -42,7 +42,7 @@ class VideoConfigSchema(SigmaModel):
     overlay_webrtc_url: str | None = None
     hls_url: str | None = None
 
-class MediaItemSchema(SigmaModel):
+class MediaItemSchema(OCCIDModel):
     media_id: str
     media_type: MediaType
     uri: str
@@ -51,5 +51,5 @@ class MediaItemSchema(SigmaModel):
     size_bytes: int | None = None
     content_type: str | None = None
 
-class MediaSchema(SigmaModel):
+class MediaSchema(OCCIDModel):
     items: list[MediaItemSchema] = Field(default_factory=list)

@@ -57,7 +57,7 @@ class BaseEntity(BaseObject):
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 
-class EntityComponentRef(SigmaModel):
+class EntityComponentRef(OCCIDModel):
     component_id: str
     component_type: str | None = None
     label: str | None = None
@@ -90,14 +90,14 @@ class BaseMachine(BaseEntity):
     control_level: ControlLevel | None = None
     components: list[EntityComponentRef] = Field(default_factory=list)
 
-class GroundNavigationSchema(SigmaModel):
+class GroundNavigationSchema(OCCIDModel):
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids] = Field(default_factory=list)
     max_range: float
     max_spd: float
 
-class AirNavigationSchema(SigmaModel):
+class AirNavigationSchema(OCCIDModel):
     flight_type: AirframeType
     control_modes: list[FlightMode] = Field(default_factory=list)
     failsafe_mode: AirFailsafeMode | None = None

@@ -109,3 +109,44 @@ models:
     fields:
       status: PowerStatus
       sources: list[PowerSourceSchema] = []
+      electrical_sources: list[ElectricalResourceState] = []
+
+
+  ElectricalResourceState:
+    fields:
+      source_id: optional string
+      battery_id: optional int
+      voltage_v: optional float
+      current_a: optional float
+      power_w: optional float
+      consumed_mah: optional float
+      consumed_mwh: optional float
+      consumed_ah: optional float
+      remaining_pct: optional float
+      remaining_capacity: optional float
+      temperature_deg_c: optional float
+      rssi: optional float
+
+
+  RuntimeLoadState:
+    fields:
+      cpu_load: optional int
+      cycle_time_us: optional int
+
+
+  VehicleReadinessState:
+    fields:
+      gyro_ok: optional bool
+      accel_ok: optional bool
+      mag_ok: optional bool
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+      armable: optional bool
+      arm_ready: optional bool
+      takeoff_ready: optional bool
+      ekf_using_gps: optional bool
+      can_arm_or_run: optional bool
+      mode_name: optional string
+      mode_problems: list[string] = []
+      health_problems: list[string] = []

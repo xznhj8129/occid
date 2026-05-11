@@ -17,13 +17,13 @@ class MeshtasticPort(IntEnum):
 
 ### Models
 
-class MeshReceiveMetrics(SigmaModel):
+class MeshReceiveMetrics(OCCIDModel):
     snr: float | None = None
     rssi: float | None = None
     hop_limit: int | None = None
     rx_time: float | None = None
 
-class MeshPositionSample(SigmaModel):
+class MeshPositionSample(OCCIDModel):
     position: GlobalPosition
     position_ts: float | None = None
     pdop: float | None = None
@@ -31,7 +31,7 @@ class MeshPositionSample(SigmaModel):
     ground_track: float | None = None
     sats_in_view: int | None = None
 
-class MeshtasticMessage(SigmaModel):
+class MeshtasticMessage(OCCIDModel):
     sender_id: str
     sender_name: str | None = None
     destination_id: str
@@ -42,7 +42,7 @@ class MeshtasticMessage(SigmaModel):
     position: MeshPositionSample | None = None
     metrics: MeshReceiveMetrics | None = None
 
-class MeshLink(SigmaModel):
+class MeshLink(OCCIDModel):
     src_id: str
     dst_id: str
     condition: LinkCondition
@@ -51,7 +51,7 @@ class MeshLink(SigmaModel):
     packet_loss: float | None = None
     updated_ts: float | None = None
 
-class NodeHeartbeat(SigmaModel):
+class NodeHeartbeat(OCCIDModel):
     node_id: str
     last_seen_ts: float
     node_state: MeshNodeState | None = None
@@ -61,7 +61,7 @@ class NodeHeartbeat(SigmaModel):
     link_condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
 
-class MeshNode(SigmaModel):
+class MeshNode(OCCIDModel):
     node_id: str
     state: MeshNodeState | None = None
     last_seen_ts: float | None = None
@@ -73,7 +73,7 @@ class MeshNode(SigmaModel):
     connection_status: ConnectionStatus | None = None
     roles: list[CapabilityRole] = Field(default_factory=list)
 
-class MeshView(SigmaModel):
+class MeshView(OCCIDModel):
     epoch: int = '0'
     nodes: dict[str, MeshNode] = Field(default_factory=dict)
     links: list[MeshLink] = Field(default_factory=list)

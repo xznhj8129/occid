@@ -296,7 +296,7 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
 
 ### Models
 
-class OrgComposition(SigmaModel):
+class OrgComposition(OCCIDModel):
     category: NATOUnitCategory | None = None
     label: str | None = None
     qty: int = '0'

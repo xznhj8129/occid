@@ -78,15 +78,15 @@ class CommandResult(IntEnum):
 
 ### Models
 
-class MunitionAllocation(SigmaModel):
+class MunitionAllocation(OCCIDModel):
     munition_type: str
     qty: int = '0'
 
-class TaskTimeWindow(SigmaModel):
+class TaskTimeWindow(OCCIDModel):
     earliest_start: float | None = None
     latest_finish: float | None = None
 
-class ObjectiveSchema(SigmaModel):
+class ObjectiveSchema(OCCIDModel):
     objective_id: str
     intent: str
     success_rule: str | None = None
@@ -96,14 +96,14 @@ class ObjectiveSchema(SigmaModel):
     end_condition: str | None = None
     deadline_ts: float | None = None
 
-class ObjectiveBinding(SigmaModel):
+class ObjectiveBinding(OCCIDModel):
     objective_id: str
     task_ids: list[str] = Field(default_factory=list)
     priority: TaskPriority | None = None
     deadline_ts: float | None = None
     success_rule: str | None = None
 
-class TaskDelta(SigmaModel):
+class TaskDelta(OCCIDModel):
     task_id: str
     task_rev: int = '0'
     phase: TaskPhase
@@ -111,7 +111,7 @@ class TaskDelta(SigmaModel):
     owner: str | None = None
     updated_ts: float
 
-class TaskStatusEntry(SigmaModel):
+class TaskStatusEntry(OCCIDModel):
     ts: float
     status: TaskStatus
     command_result: CommandResult | None = None
@@ -121,7 +121,7 @@ class TaskStatusEntry(SigmaModel):
     detail: str | None = None
     source: str | None = None
 
-class BaseTask(SigmaModel):
+class BaseTask(OCCIDModel):
     task_id: str
     task_type: TaskType
     unit_code: str

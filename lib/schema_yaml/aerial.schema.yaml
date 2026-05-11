@@ -272,6 +272,24 @@ models:
       url: optional string
 
 
+  AutopilotMissionWaypoint:
+    fields:
+      waypoint_index: int
+      action_code: optional int
+      position: GlobalPosition
+      param1: optional int
+      param2: optional int
+      param3: optional int
+      flag: optional int
+
+
+  MissionProgress:
+    fields:
+      waypoint_count: optional int
+      current_waypoint_index: optional int
+      mission_valid: optional bool
+
+
   PlannerMissionPoint:
     fields:
       num: int

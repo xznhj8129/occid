@@ -77,6 +77,15 @@ enums:
     - CELESTIAL
     - VISUAL
 
+  GnssFixType:
+    - NONE = 0
+    - NO_FIX
+    - FIX_2D
+    - FIX_3D
+    - DGPS
+    - RTK_FLOAT
+    - RTK_FIXED
+
 models:
   EulerAngles:
     fields:
@@ -139,6 +148,47 @@ models:
       z: optional float
 
 
+  AngularVelocityVector:
+    fields:
+      x_rad_s: optional float
+      y_rad_s: optional float
+      z_rad_s: optional float
+      frame: optional BodyReferenceFrame
+
+
+  NavigationValidity:
+    fields:
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+
+
+  AltitudeState:
+    fields:
+      absolute_m: optional float
+      relative_m: optional float
+      datum: optional AltitudeDatum
+
+
+  GnssSolution:
+    fields:
+      fix_type: optional GnssFixType
+      fix_code: optional int
+      satellites_used: optional int
+      position: optional GlobalPosition
+      altitude: optional AltitudeState
+      ground_speed_ms: optional float
+      ground_course_deg: optional float
+      hdop: optional float
+      vdop: optional float
+      eph: optional float
+      epv: optional float
+      yaw_deg: optional float
+      last_message_dt: optional float
+      errors: optional float
+      timeouts: optional float
+
+
   FeaturePropertyValue:
     fields:
       text_value: optional string
@@ -193,3 +243,7 @@ models:
       position: optional GlobalPosition
       uncertainty: optional LocationUncertainty
       attitude: optional EulerAngles
+      altitude: optional AltitudeState
+      velocity: optional VelocityVector
+      navigation_validity: optional NavigationValidity
+      gnss: optional GnssSolution

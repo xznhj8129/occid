@@ -93,22 +93,22 @@ class CapabilityRole(IntEnum):
 
 ### Models
 
-class RetryProfile(SigmaModel):
+class RetryProfile(OCCIDModel):
     max_attempts: int = '0'
     base_delay_ms: int = '0'
     backoff_factor: float = '1.0'
     jitter_pct: float = '0.0'
 
-class NodeRef(SigmaModel):
+class NodeRef(OCCIDModel):
     node_id: str
 
-class RouteHint(SigmaModel):
+class RouteHint(OCCIDModel):
     next_hop: str | None = None
     hop_limit: int | None = None
     preferred_relays: list[NodeRef] = Field(default_factory=list)
     avoid_nodes: list[NodeRef] = Field(default_factory=list)
 
-class MessageEnvelope(SigmaModel):
+class MessageEnvelope(OCCIDModel):
     msg_id: str
     msg_type: str
     src: str
@@ -123,7 +123,7 @@ class MessageEnvelope(SigmaModel):
     route_hint: RouteHint | None = None
     retry: RetryProfile | None = None
 
-class DeliveryReceipt(SigmaModel):
+class DeliveryReceipt(OCCIDModel):
     msg_id: str
     node_id: str
     delivery_state: DeliveryState
@@ -131,14 +131,14 @@ class DeliveryReceipt(SigmaModel):
     exec_ts: float | None = None
     error_code: str | None = None
 
-class CapabilityAdvert(SigmaModel):
+class CapabilityAdvert(OCCIDModel):
     node_id: str
     roles: list[CapabilityRole] = Field(default_factory=list)
     link_ids: list[str] = Field(default_factory=list)
     sensor_ids: list[str] = Field(default_factory=list)
     payload_ids: list[str] = Field(default_factory=list)
 
-class StateDelta(SigmaModel):
+class StateDelta(OCCIDModel):
     entity_id: str
     changed_fields: list[str] = Field(default_factory=list)
     source: str | None = None

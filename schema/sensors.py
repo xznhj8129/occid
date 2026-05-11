@@ -82,21 +82,21 @@ class GimbalState(IntEnum):
 
 ### Models
 
-class SensorFieldOfView(SigmaModel):
+class SensorFieldOfView(OCCIDModel):
     horizontal: NumericRange | None = None
     vertical: NumericRange | None = None
 
-class SpotterOrigin(SigmaModel):
+class SpotterOrigin(OCCIDModel):
     position: GlobalPosition
     attitude: EulerAngles | None = None
     look_vector: LocalDirection | None = None
 
-class MeasurementQuality(SigmaModel):
+class MeasurementQuality(OCCIDModel):
     lat_err_m: float | None = None
     az_err_deg: float | None = None
     range_err_m: float | None = None
 
-class SensorSchema(SigmaModel):
+class SensorSchema(OCCIDModel):
     name: str
     model: str
     type: SensorType

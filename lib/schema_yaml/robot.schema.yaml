@@ -39,7 +39,129 @@ enums:
     - GUIDE
     - FULL
 
+  ControlAxis:
+    - ROLL = 0
+    - PITCH
+    - YAW
+    - THROTTLE
+    - AUX
+
+  FlightCommandType:
+    - ARM = 0
+    - DISARM
+    - TAKEOFF
+    - LAND
+    - RETURN_TO_LAUNCH
+    - SET_MODE
+    - GOTO
+    - SET_TAKEOFF_ALTITUDE
+    - SELECT_MISSION
+    - START_OFFBOARD
+    - STOP_OFFBOARD
+
 models:
+  SoftwareBuildInfo:
+    fields:
+      major: optional int
+      minor: optional int
+      patch: optional int
+      git_hash: optional string
+      version: optional string
+
+
+  HardwareIdentity:
+    fields:
+      hardware_uid: optional string
+      legacy_uid: optional string
+      vendor_id: optional int
+      vendor_name: optional string
+      product_id: optional int
+      product_name: optional string
+      board_info: optional string
+
+
+  FlightControllerIdentity:
+    fields:
+      api_version: optional string
+      controller_variant: optional string
+      hardware: optional HardwareIdentity
+      flight_software: optional SoftwareBuildInfo
+      os_software: optional SoftwareBuildInfo
+
+
+  ControlAxisSet:
+    fields:
+      roll: optional float
+      pitch: optional float
+      yaw: optional float
+      throttle: optional float
+      aux: list[float] = []
+
+
+  ControlChannelValue:
+    fields:
+      channel_index: int
+      value: optional float
+
+
+  ControlOverride:
+    fields:
+      roll: optional float
+      pitch: optional float
+      yaw: optional float
+      throttle: optional float
+      aux: list[ControlChannelValue] = []
+
+
+  ControlAttitudeSetpoint:
+    fields:
+      roll_deg: float
+      pitch_deg: float
+      yaw_deg: float
+      thrust_value: float
+
+
+  ReceiverConfig:
+    fields:
+      rx_min_usec: optional int
+      rx_max_usec: optional int
+      rx_center_usec: optional int
+
+
+  ChannelMapEntry:
+    fields:
+      axis: ControlAxis
+      source_channel: int
+      output_channel: optional int
+      label: optional string
+
+
+  ModeRange:
+    fields:
+      mode_id: optional int
+      mode_name: optional string
+      channel: int
+      range: NumericRange
+
+
+  FlightControlState:
+    fields:
+      armed: optional bool
+      in_air: optional bool
+      override_active: optional bool
+      failsafe: optional bool
+      active_modes: list[int] = []
+      active_mode_names: list[string] = []
+      nav_state_code: optional int
+      flight_mode: optional string
+      attitude_setpoint: optional ControlAttitudeSetpoint
+      mission_progress: optional MissionProgress
+      navigation_validity: optional NavigationValidity
+      readiness: optional VehicleReadinessState
+      controller_identity: optional FlightControllerIdentity
+      runtime_load: optional RuntimeLoadState
+
+
   RobotControlSchema:
     fields:
       control_modes: optional RobotControlMode
@@ -56,6 +178,13 @@ models:
       vid_link: string = ""
       ctrl_video_sep: optional bool
       telemetry: optional TelemetryState
+      rc_telemetry: optional ControlAxisSet
+      control_input: optional ControlAxisSet
+      control_output: optional ControlAxisSet
+      control_override: optional ControlOverride
+      receiver_config: optional ReceiverConfig
+      channel_map: list[ChannelMapEntry] = []
+      mode_ranges: list[ModeRange] = []
 
 
   ControlLease:

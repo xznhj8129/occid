@@ -4,12 +4,12 @@ from .common import *
 
 ### Models
 
-class DisplayMeta(SigmaModel):
+class DisplayMeta(OCCIDModel):
     icon_code: str | None = None
     tint: str | None = None
     short_label: str | None = None
 
-class RelationSchema(SigmaModel):
+class RelationSchema(OCCIDModel):
     src_id: str
     dst_id: str
     rel_kind: str

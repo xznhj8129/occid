@@ -115,7 +115,6 @@ def build_example_payload() -> dict:
         entity_id="air.uav.strike.01",
         sys_id="UAV_STRIKE_01",
         model="MK4V2-10",
-        type="FPV striker",
         status=EntityOperationalState.READY,
         machine_type=MachineType.ROBOT,
         payload=payload_common,
@@ -131,6 +130,15 @@ def build_example_payload() -> dict:
             attack_modes=[AirAttackMode.ONEWAY],
         ),
         navigation=AirNavigationSchema(
+            flight_type=AirframeType.COPTER,
+            control_modes=[FlightMode.ANGLE, FlightMode.GUIDED],
+            failsafe_mode=AirFailsafeMode.RTB,
+            weather_limits=WeatherLimits(
+                ifr=False,
+                wind=NumericRange(max_value=35.0),
+                vis=NumericRange(min_value=800.0),
+            ),
+            roles=[AirRole.GROUND, AirRole.ISR],
             propulsion=PropulsionType.ROTARY_WING,
             navigation=NavigationMode.GNSS,
             navaids=[NavAids.GNSS, NavAids.INS],
@@ -141,17 +149,6 @@ def build_example_payload() -> dict:
             cruise_spd=35.0,
             max_alt=2000.0,
             start_flight_time=0.0,
-        ),
-        flight=FlightSchema(
-            flight_type=AirframeType.COPTER,
-            control_modes=[FlightMode.ANGLE, FlightMode.GUIDED],
-            failsafe_mode=AirFailsafeMode.RTB,
-            weather_limits=WeatherLimits(
-                ifr=False,
-                wind=NumericRange(max_value=35.0),
-                vis=NumericRange(min_value=800.0),
-            ),
-            roles=[AirRole.GROUND, AirRole.RECON],
         ),
         robot_control=RobotControlSchema(
             control_modes=RobotControlMode.ASSISTED,

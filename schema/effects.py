@@ -97,17 +97,17 @@ class TargetCategory(IntEnum):
 
 ### Models
 
-class PayloadAllocation(SigmaModel):
+class PayloadAllocation(OCCIDModel):
     payload_type: PayloadType
     qty: int = '0'
 
-class PayloadPlanSchema(SigmaModel):
+class PayloadPlanSchema(OCCIDModel):
     requested: list[PayloadAllocation] = Field(default_factory=list)
     approved: list[PayloadAllocation] = Field(default_factory=list)
     loaded: list[PayloadAllocation] = Field(default_factory=list)
     notes: str | None = None
 
-class PayloadMountSchema(SigmaModel):
+class PayloadMountSchema(OCCIDModel):
     mount_id: str
     item_id: str
     qty: int = '0'
@@ -116,7 +116,7 @@ class PayloadMountSchema(SigmaModel):
     compat_tags: list[PayloadType] = Field(default_factory=list)
     loaded: list[PayloadAllocation] = Field(default_factory=list)
 
-class PayloadSchema(SigmaModel):
+class PayloadSchema(OCCIDModel):
     item_type: PayloadType
     state: PayloadState | None = None
     weapons: list[ItemCount] = Field(default_factory=list)
@@ -125,7 +125,7 @@ class PayloadSchema(SigmaModel):
     payload_mounts: dict[str, PayloadMountSchema] = Field(default_factory=dict)
     payload_plan: PayloadPlanSchema | None = None
 
-class EffectsSchema(SigmaModel):
+class EffectsSchema(OCCIDModel):
     has_launchers: bool
     esad: EsadMunitionStatus | None = None
     payload_mounts: dict[str, PayloadMountSchema] = Field(default_factory=dict)
@@ -142,17 +142,17 @@ class AirEffectsSchema(EffectsSchema):
     reusable: bool | None = None
     attack_modes: list[AirAttackMode] = Field(default_factory=list)
 
-class TargetPrioritySchema(SigmaModel):
+class TargetPrioritySchema(OCCIDModel):
     threat: ThreatLevel | None = None
     is_high_value: bool = 'false'
     note: str | None = None
 
-class TargetKinematics(SigmaModel):
+class TargetKinematics(OCCIDModel):
     location_state: LocationState
     velocity: VelocityVector | None = None
     velocity_covariance: VelocityVector | None = None
 
-class TargetSetCoord(SigmaModel):
+class TargetSetCoord(OCCIDModel):
     time_usec: int
     target_set_id: int
     target_set_name: str
@@ -161,7 +161,7 @@ class TargetSetCoord(SigmaModel):
     time_start_usec: int
     time_end_usec: int
 
-class TargetBoxCoord(SigmaModel):
+class TargetBoxCoord(OCCIDModel):
     time_usec: int
     target_set_id: int
     target_set_name: str
@@ -169,7 +169,7 @@ class TargetBoxCoord(SigmaModel):
     time_start_usec: int
     time_end_usec: int
 
-class TargetCoord(SigmaModel):
+class TargetCoord(OCCIDModel):
     time_usec: int
     target_set_id: int
     target_name: str
@@ -179,7 +179,7 @@ class TargetCoord(SigmaModel):
     target_class: ObservedObjectType
     target_force: Faction
 
-class Fires(SigmaModel):
+class Fires(OCCIDModel):
     time_usec: int
     time_impact_usec: int
     target_position: GlobalPosition
@@ -187,14 +187,14 @@ class Fires(SigmaModel):
     sequence: int
     cep_expected_m: float
 
-class SplashCorrection(SigmaModel):
+class SplashCorrection(OCCIDModel):
     time_usec: int
     splash_position: GlobalPosition
     sequence: int
     type_detected: int
     cep_expected_m: float
 
-class TargetHandover(SigmaModel):
+class TargetHandover(OCCIDModel):
     time_usec: int
     detected_first_usec: int
     valid_until_usec: int
@@ -208,7 +208,7 @@ class TargetHandover(SigmaModel):
     target_force: Faction
     match_media_type: SensorDataFormat
 
-class BattleDamageAssessment(SigmaModel):
+class BattleDamageAssessment(OCCIDModel):
     time_usec: int
     kinematics: TargetKinematics
     target_set_id: int
@@ -219,7 +219,7 @@ class BattleDamageAssessment(SigmaModel):
     target_class: ObservedObjectType
     target_force: Faction
 
-class EsadState(SigmaModel):
+class EsadState(OCCIDModel):
     time_usec: int
     arming_challenge_hash: int
     fault_flags: EsadFaultFlag
@@ -231,12 +231,12 @@ class EsadState(SigmaModel):
     ignition_status: EsadIgnitionStatus
     munition_type: int
 
-class EsadArming(SigmaModel):
+class EsadArming(OCCIDModel):
     time_usec: int
     arming_challenge_hash: int
     arming_request: EsadArmingRequest
 
-class RwsPose(SigmaModel):
+class RwsPose(OCCIDModel):
     time_usec: int
     kinematics: TargetKinematics
     offset_x_m: float
@@ -248,7 +248,7 @@ class RwsPose(SigmaModel):
     accuracy_yaw_rad: float
     coordinate_frame: int
 
-class RwsState(SigmaModel):
+class RwsState(OCCIDModel):
     time_usec: int
     weapon_string: str
     arming_state: RwsArmingState

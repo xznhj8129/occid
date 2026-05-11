@@ -45,21 +45,21 @@ class ControlLevel(IntEnum):
 
 ### Models
 
-class RobotControlSchema(SigmaModel):
+class RobotControlSchema(OCCIDModel):
     control_modes: RobotControlMode | None = None
     autopilot: bool | None = None
     autopilot_controller_model: str = '""'
     autopilot_type: AutopilotType | None = None
     autopilot_fw: FirmwareInfo | None = None
 
-class RemoteControlSchema(SigmaModel):
+class RemoteControlSchema(OCCIDModel):
     links: dict[str, LinkSchema] = Field(default_factory=dict)
     rc_link: str = '""'
     vid_link: str = '""'
     ctrl_video_sep: bool | None = None
     telemetry: TelemetryState | None = None
 
-class ControlLease(SigmaModel):
+class ControlLease(OCCIDModel):
     asset_id: str
     holder_id: str
     control_level: ControlLevel
