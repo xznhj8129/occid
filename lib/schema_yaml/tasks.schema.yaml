@@ -204,10 +204,3 @@ models:
       payload: list[PayloadAllocation] = []
       payload_plan: optional PayloadPlanSchema
 
-
-  HoldTask:
-    parent: BaseTask
-    fields:
-      task_type: const TaskType = HOLD
-      location: GlobalPosition
-      radius_m: optional float
