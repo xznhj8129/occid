@@ -100,10 +100,10 @@ class ProtocolPayloadFormat(IntEnum):
 ### Models
 
 class RetryProfile(OCCIDModel):
-    max_attempts: int = '0'
-    base_delay_ms: int = '0'
-    backoff_factor: float = '1.0'
-    jitter_pct: float = '0.0'
+    max_attempts: int = 0
+    base_delay_ms: int = 0
+    backoff_factor: float = 1.0
+    jitter_pct: float = 0.0
 
 class NodeRef(OCCIDModel):
     node_id: str
@@ -111,8 +111,8 @@ class NodeRef(OCCIDModel):
 class RouteHint(OCCIDModel):
     next_hop: str | None = None
     hop_limit: int | None = None
-    preferred_relays: list[NodeRef] = Field(default_factory=list)
-    avoid_nodes: list[NodeRef] = Field(default_factory=list)
+    preferred_relays: list[NodeRef]
+    avoid_nodes: list[NodeRef]
 
 class MessageEnvelope(OCCIDModel):
     msg_id: str
@@ -139,14 +139,14 @@ class DeliveryReceipt(OCCIDModel):
 
 class CapabilityAdvert(OCCIDModel):
     node_id: str
-    roles: list[CapabilityRole] = Field(default_factory=list)
-    link_ids: list[str] = Field(default_factory=list)
-    sensor_ids: list[str] = Field(default_factory=list)
-    payload_ids: list[str] = Field(default_factory=list)
+    roles: list[CapabilityRole]
+    link_ids: list[str]
+    sensor_ids: list[str]
+    payload_ids: list[str]
 
 class StateDelta(OCCIDModel):
     entity_id: str
-    changed_fields: list[str] = Field(default_factory=list)
+    changed_fields: list[str]
     source: str | None = None
     confidence: ConfidenceLevel | None = None
 
@@ -174,7 +174,7 @@ class ProtocolEventMessage(OCCIDModel):
     uncertainty: LocationUncertainty | None = None
     detail: ProtocolPayload | None = None
     source_address: NetworkAddress | None = None
-    targets: list[MessageTarget] = Field(default_factory=list)
+    targets: list[MessageTarget]
 
 class HumanTextMessage(OCCIDModel):
     sender_id: str | None = None
@@ -184,19 +184,19 @@ class HumanTextMessage(OCCIDModel):
     kind: str | None = None
     message: str
     position: GlobalPosition | None = None
-    targets: list[MessageTarget] = Field(default_factory=list)
+    targets: list[MessageTarget]
 
 class MessageTransferResult(OCCIDModel):
-    target_count: int = '0'
-    bytes_sent: int = '0'
+    target_count: int = 0
+    bytes_sent: int = 0
     delivery_state: DeliveryState | None = None
     error: str | None = None
 
 class TransportCounters(OCCIDModel):
-    rx_count: int = '0'
-    tx_count: int = '0'
-    parse_error_count: int = '0'
-    dropped_count: int = '0'
+    rx_count: int = 0
+    tx_count: int = 0
+    parse_error_count: int = 0
+    dropped_count: int = 0
 
 class TransportError(OCCIDModel):
     error: str

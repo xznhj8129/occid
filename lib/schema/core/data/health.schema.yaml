@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: health
+description: "Health, readiness, resources, power, maintenance, and fault state."
+tags:
+  - core
+root: data
+
 enums:
   AlertLevel:
     - ADVISORY = 0
@@ -85,8 +92,8 @@ models:
       temp_state: optional ResourceStatus
       fault_count: int = 0
       updated_ts: optional float
-      subsystems: list[SubsystemHealth] = []
-      alerts: list[HealthAlert] = []
+      subsystems: list[SubsystemHealth]
+      alerts: list[HealthAlert]
 
 
   MaintenanceStatus:
@@ -108,8 +115,8 @@ models:
   PowerStateSchema:
     fields:
       status: PowerStatus
-      sources: list[PowerSourceSchema] = []
-      electrical_sources: list[ElectricalResourceState] = []
+      sources: list[PowerSourceSchema]
+      electrical_sources: list[ElectricalResourceState]
 
 
   ElectricalResourceState:
@@ -148,5 +155,5 @@ models:
       ekf_using_gps: optional bool
       can_arm_or_run: optional bool
       mode_name: optional string
-      mode_problems: list[string] = []
-      health_problems: list[string] = []
+      mode_problems: list[string]
+      health_problems: list[string]

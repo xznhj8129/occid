@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: definition
+description: "Abstract semantic descriptors, classification axes, and symbology maps."
+tags:
+  - core
+root: core
+
 enums:
   ConfidenceLevel:
     - UNKNOWN = 0
@@ -89,11 +96,10 @@ enums:
     - BATTERY
     - HYBRID
 
-mappings:
+maps:
   SIDC_FACTION:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       UNKNOWN: U
       PENDING: P
       FRIENDLY: F
@@ -102,18 +108,16 @@ mappings:
       NEUTRAL: N
 
   SIDC_DOMAIN:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       ground: G
       air: A
       sea: S
       sub: U
 
   SIDC_STATUS:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       anticipated: A
       present: P
       present-capable: C
@@ -121,25 +125,22 @@ mappings:
       present-destroyed: X
 
   SIDC_AIR_A5:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       track: "-"
       military: M
       civilian: C
 
   SIDC_AIR_A6:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       fixed-wing: F
       rotary: H
       weapon: W
 
   SIDC_AIR_MILITARY:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       fighter: F
       attack: A
       bomber: B
@@ -151,24 +152,21 @@ mappings:
       ecm: J
 
   SIDC_GROUND_A5:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       track: "-"
       unit: U
 
   SIDC_GROUND_A6:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       combat: C
       combat-support: U
       service-support: S
 
   SIDC_COMBAT_GROUND:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       air-defence: D
       armor: A
       ssm: M
@@ -180,9 +178,8 @@ mappings:
       engineer: E
 
   SIDC_COMBAT_GROUND_INFANTRY:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       light: L
       motorized: M
       mechanized: Z
@@ -190,9 +187,8 @@ mappings:
       air-assault: A
 
   SIDC_AIR_WEAPON_MISSILE:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       ssm: S*APWMSS----
       sam: S*APWMSA----
       aam: S*APWMAA----
@@ -200,9 +196,8 @@ mappings:
       land-attack: S*APWML----
 
   SIDC_GROUND_ARTILLERY:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       spg: S*GPUCFHE---
       light_towed: S*GPUCFHL---
       medium_towed: S*GPUCFHM---
@@ -212,9 +207,8 @@ mappings:
       ssm: S*GPUCMMT---
 
   SIDC_UNIT_SIZE:
-    key_type: string
-    value_type: string
-    entries:
+    type: map[string, string]
+    value:
       single: "-"
       team: A
       squad: B
@@ -227,9 +221,8 @@ mappings:
       division: H
 
   SIDC_CODES:
-    key_type: string
-    value_type: any
-    entries:
+    type: map[string, any]
+    value:
       friendly:
         land:
           default: S*GP--------
@@ -248,107 +241,3 @@ mappings:
           default: SHGPU-------
         air:
           default: SHAPM-------
-
-models:
-
-  Time:
-    fields:
-      utime: int
-    
-
-  Duration:
-    fields:
-      ms: optional float
-      seconds: optional float
-      minutes: optional float
-      hours: optional float
-      days: optional float
-      weeks: optional float
-      months: optional float
-      years: optional float
-
-
-  Timestamp:
-    fields:
-      ms: float
-      seconds: float
-      minutes: float
-      hours: float
-      day: float
-      month: float
-      year: float
-      tz: float
-
-
-  AlternateId:
-    fields:
-      id_type: AlternateIdType
-      value: string
-
-
-  ItemCount:
-    fields:
-      item_type: string
-      qty: int = 0
-
-
-  NumericRange:
-    fields:
-      min_value: optional float
-      max_value: optional float
-
-
-  MetadataValue:
-    fields:
-      text_value: optional string
-      int_value: optional int
-      float_value: optional float
-      bool_value: optional bool
-
-
-  MetadataEntry:
-    fields:
-      key: string
-      value: MetadataValue
-
-
-  SymbologySchema:
-    fields:
-      sidc: optional string
-      cot: optional string
-
-
-  FirmwareInfo:
-    fields:
-      name: optional string
-      version: optional string
-      build: optional string
-
-
-  FuelState:
-    fields:
-      fuel_type: FuelType
-      capacity: optional float
-      remaining: optional float
-
-
-  SuppliesSchema:
-    fields:
-      fuel: optional FuelState
-      stores: list[ItemCount] = []
-
-  DisplayMeta:
-    fields:
-      icon_code: optional string
-      tint: optional string
-      short_label: optional string
-
-  RelationSchema:
-    fields:
-      src_id: string
-      dst_id: string
-      rel_kind: string
-      since_ts: optional float
-      until_ts: optional float
-      confidence: optional ConfidenceLevel
-      source: optional string

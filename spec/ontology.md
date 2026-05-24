@@ -1,5 +1,5 @@
 
-# Classes
+# Root
 
 **Definition**: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
     - **Frame**: Frames of reference
@@ -37,9 +37,14 @@
             - **Agent**: Artificial intelligence, distinct from it's substrate
 
         - **Machine**: Discrete non-inert man-made object capable of actions
+            - **Vehicle**: Machine capable of movement only through onboard human crew
+            - **Robot**: Machine capable of movement without human crew
+            - **Platform**: Reusable, static machine that carries out actions
 
     - **Set**: An object that represents many objects
         - **Organization**: A structured collection of organized entities and/or subordinate organizations with common command and control
+            - **Group**: An organization that contains subordinate organizations
+            - **Unit**: An organization that contains no subordinate organizations and consists only of entities
 
         - **Collection**: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
 
@@ -65,8 +70,14 @@
         - **Objective**: Specific desired future condition, effect, or end-state
 
     - **Directive**: What must be achieved, why, and within what bounds
+        - **Mission**: A directive to accomplish an objective; "do X to achieve Y"
+        - **Task**: A directive to carry out part of a mission
+        - **Command**: An immediate imperative requiring execution without interpretation
 
     - **Execution**: How directed activity is structured and carried out
+        - **Plan**: The ordered structure of actions toward an objective
+        - **Sequence**: The ordered steps within a plan or mission
+        - **Action**: A discrete intentional act that changes state
 
     - **Reference**: Control-side structural wrapper binding spatial definitions and structs into control-usable referents
         - **Mark**: A discrete spatial reference wrapper used by control logic or execution

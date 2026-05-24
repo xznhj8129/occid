@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .aerial import WeatherLimits
+from .definition import OperationalDomain, PropulsionType
 from .objects import BaseObject, ObjectType
 
 ### Enums
@@ -49,10 +49,10 @@ class BaseEntity(BaseObject):
     created_ts: float | None = None
     updated_ts: float | None = None
     origin_system: str | None = None
-    alt_ids: list[AlternateId] = Field(default_factory=list)
-    tags: list[str] = Field(default_factory=list)
-    metadata: list[MetadataEntry] = Field(default_factory=list)
-    relations: list[RelationSchema] = Field(default_factory=list)
+    alt_ids: list[AlternateId]
+    tags: list[str]
+    metadata: list[MetadataEntry]
+    relations: list[RelationSchema]
     location_state: LocationState | None = None
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
@@ -65,17 +65,17 @@ class EntityComponentRef(OCCIDModel):
 class Person(BaseEntity):
     entity_type: EntityType = EntityType.PERSON
     role: str
-    serial_uid: str = '""'
+    serial_uid: str = ''
     op_domain: OperationalDomain = OperationalDomain.LAND
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
-    navaids: list[NavAids] = Field(default_factory=list)
+    navaids: list[NavAids]
     health: HumanHealthStatus
-    attack_modes: list[AttackMode] = Field(default_factory=list)
-    sensors: dict[str, SensorSchema] = Field(default_factory=dict)
-    weapons: list[ItemCount] = Field(default_factory=list)
-    ammo: list[ItemCount] = Field(default_factory=list)
-    links: dict[str, LinkSchema] = Field(default_factory=dict)
+    attack_modes: list[AttackMode]
+    sensors: dict[str, SensorSchema]
+    weapons: list[ItemCount]
+    ammo: list[ItemCount]
+    links: dict[str, LinkSchema]
 
 class BaseMachine(BaseEntity):
     entity_type: EntityType = EntityType.MACHINE
@@ -88,25 +88,25 @@ class BaseMachine(BaseEntity):
     supplies: SuppliesSchema | None = None
     link_condition: LinkCondition | None = None
     control_level: ControlLevel | None = None
-    components: list[EntityComponentRef] = Field(default_factory=list)
+    components: list[EntityComponentRef]
 
 class GroundNavigationSchema(OCCIDModel):
     propulsion: PropulsionType
     navigation: NavigationMode
-    navaids: list[NavAids] = Field(default_factory=list)
+    navaids: list[NavAids]
     max_range: float
     max_spd: float
 
 class AirNavigationSchema(OCCIDModel):
     flight_type: AirframeType
-    control_modes: list[FlightMode] = Field(default_factory=list)
+    control_modes: list[FlightMode]
     failsafe_mode: AirFailsafeMode | None = None
-    weather_limits: WeatherLimits = Field(default_factory=WeatherLimits)
+    weather_limits: WeatherLimits
     ifr: bool | None = None
-    roles: list[AirRole] = Field(default_factory=list)
+    roles: list[AirRole]
     propulsion: PropulsionType
     navigation: NavigationMode
-    navaids: list[NavAids] = Field(default_factory=list)
+    navaids: list[NavAids]
     fuel: FuelState | None = None
     max_range: float
     max_flight_t: float
@@ -120,8 +120,8 @@ class GroundMachine(BaseMachine):
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: str
     role: str
-    serial_uid: str = '""'
-    sensors: dict[str, SensorSchema] = Field(default_factory=dict)
+    serial_uid: str = ''
+    sensors: dict[str, SensorSchema]
     payload: PayloadSchema
     effects: GroundEffectsSchema
     navigation: GroundNavigationSchema
@@ -135,8 +135,8 @@ class AirMachine(BaseMachine):
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: str
-    serial_uid: str = '""'
-    sensors: dict[str, SensorSchema] = Field(default_factory=dict)
+    serial_uid: str = ''
+    sensors: dict[str, SensorSchema]
     payload: PayloadSchema
     effects: AirEffectsSchema
     navigation: AirNavigationSchema

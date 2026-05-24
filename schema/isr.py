@@ -2,6 +2,7 @@
 from __future__ import annotations
 from .common import *
 
+from .definition import SchemaKind
 from .tasks import BaseTask, TaskType
 
 ### Enums
@@ -100,11 +101,11 @@ class IsrParameters(OCCIDModel):
     focus_point: GlobalPosition | None = None
     dwell_s: float | None = None
     revisit_s: float | None = None
-    sensor_types: list[SensorType] = Field(default_factory=list)
-    sensor_modes: list[SensorMode] = Field(default_factory=list)
-    effect_domains: list[EffectDomain] = Field(default_factory=list)
+    sensor_types: list[SensorType]
+    sensor_modes: list[SensorMode]
+    effect_domains: list[EffectDomain]
     track_improve_goal: TrackImproveGoal | None = None
-    bda_required: bool = 'false'
+    bda_required: bool = False
     evidence_level: EvidenceLevel | None = None
 
 class TrackUpdate(OCCIDModel):
@@ -114,11 +115,11 @@ class TrackUpdate(OCCIDModel):
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(OCCIDModel):
-    detections: list[IsrObservation] = Field(default_factory=list)
-    track_updates: list[TrackUpdate] = Field(default_factory=list)
+    detections: list[IsrObservation]
+    track_updates: list[TrackUpdate]
     media: MediaSchema | None = None
     confidence: ConfidenceLevel | None = None
-    observations: list[IsrObservation] = Field(default_factory=list)
+    observations: list[IsrObservation]
 
 class IntelTrackSchema(OCCIDModel):
     schema_id: str
@@ -127,8 +128,8 @@ class IntelTrackSchema(OCCIDModel):
     updated_ts: float | None = None
     origin_system: str | None = None
     trust_score: ConfidenceLevel | None = None
-    alt_ids: list[AlternateId] = Field(default_factory=list)
-    entity_flags: list[str] = Field(default_factory=list)
+    alt_ids: list[AlternateId]
+    entity_flags: list[str]
     faction: Faction
     spotted_time: float
     updated_time: float
@@ -141,13 +142,13 @@ class IntelTrackSchema(OCCIDModel):
     uncertainty: LocationUncertainty | None = None
     error_m: float | None = None
     latest_observation: IsrObservation | None = None
-    observations: list[IsrObservation] = Field(default_factory=list)
+    observations: list[IsrObservation]
 
 class BdaStrikeSummary(OCCIDModel):
-    casualties: int = '0'
-    destroyed: list[ItemCount] = Field(default_factory=list)
-    damaged: list[ItemCount] = Field(default_factory=list)
-    unknown: list[ItemCount] = Field(default_factory=list)
+    casualties: int = 0
+    destroyed: list[ItemCount]
+    damaged: list[ItemCount]
+    unknown: list[ItemCount]
 
 class BdaReportSchema(OCCIDModel):
     time: float
@@ -159,8 +160,8 @@ class BdaReportSchema(OCCIDModel):
     pos: GlobalPosition
     spotter_origin: SpotterOrigin | None = None
     confidence: ConfidenceLevel | None = None
-    casualties: int = '0'
-    assessment: BdaStrikeSummary = Field(default_factory=BdaStrikeSummary)
+    casualties: int = 0
+    assessment: BdaStrikeSummary
     summary: str | None = None
 
 class SaluteReportSchema(OCCIDModel):
@@ -172,6 +173,6 @@ class SaluteReportSchema(OCCIDModel):
     spotter_origin: SpotterOrigin
     activity: ActivityType | None = None
     pos: GlobalPosition
-    equipment: list[ItemCount] = Field(default_factory=list)
-    vehicles: list[ItemCount] = Field(default_factory=list)
+    equipment: list[ItemCount]
+    vehicles: list[ItemCount]
     summary: str | None = None

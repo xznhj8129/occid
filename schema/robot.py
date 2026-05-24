@@ -93,7 +93,7 @@ class ControlAxisSet(OCCIDModel):
     pitch: float | None = None
     yaw: float | None = None
     throttle: float | None = None
-    aux: list[float] = Field(default_factory=list)
+    aux: list[float]
 
 class ControlChannelValue(OCCIDModel):
     channel_index: int
@@ -104,7 +104,7 @@ class ControlOverride(OCCIDModel):
     pitch: float | None = None
     yaw: float | None = None
     throttle: float | None = None
-    aux: list[ControlChannelValue] = Field(default_factory=list)
+    aux: list[ControlChannelValue]
 
 class ControlAttitudeSetpoint(OCCIDModel):
     roll_deg: float
@@ -134,8 +134,8 @@ class FlightControlState(OCCIDModel):
     in_air: bool | None = None
     override_active: bool | None = None
     failsafe: bool | None = None
-    active_modes: list[int] = Field(default_factory=list)
-    active_mode_names: list[str] = Field(default_factory=list)
+    active_modes: list[int]
+    active_mode_names: list[str]
     nav_state_code: int | None = None
     flight_mode: str | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
@@ -148,14 +148,14 @@ class FlightControlState(OCCIDModel):
 class RobotControlSchema(OCCIDModel):
     control_modes: RobotControlMode | None = None
     autopilot: bool | None = None
-    autopilot_controller_model: str = '""'
+    autopilot_controller_model: str = ''
     autopilot_type: AutopilotType | None = None
     autopilot_fw: FirmwareInfo | None = None
 
 class RemoteControlSchema(OCCIDModel):
-    links: dict[str, LinkSchema] = Field(default_factory=dict)
-    rc_link: str = '""'
-    vid_link: str = '""'
+    links: dict[str, LinkSchema]
+    rc_link: str = ''
+    vid_link: str = ''
     ctrl_video_sep: bool | None = None
     telemetry: TelemetryState | None = None
     rc_telemetry: ControlAxisSet | None = None
@@ -163,8 +163,8 @@ class RemoteControlSchema(OCCIDModel):
     control_output: ControlAxisSet | None = None
     control_override: ControlOverride | None = None
     receiver_config: ReceiverConfig | None = None
-    channel_map: list[ChannelMapEntry] = Field(default_factory=list)
-    mode_ranges: list[ModeRange] = Field(default_factory=list)
+    channel_map: list[ChannelMapEntry]
+    mode_ranges: list[ModeRange]
 
 class ControlLease(OCCIDModel):
     asset_id: str
@@ -172,4 +172,4 @@ class ControlLease(OCCIDModel):
     control_level: ControlLevel
     lease_start: float
     lease_end: float
-    lease_rev: int = '0'
+    lease_rev: int = 0

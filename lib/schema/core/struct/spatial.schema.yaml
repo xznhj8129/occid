@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: spatial
+description: "Spatial reference frames, geometry, position, and navigation structs."
+tags:
+  - core
+root: struct
+
 enums:
   InertialReferenceFrame:
     - NEU = 0
@@ -27,13 +34,13 @@ enums:
     - GEOMETRY_COLLECTION
 
   GeoJsonGeometryTypes:
-    - POINT = 'Point'
-    - MULTI_POINT = 'MultiPoint'
-    - LINE_STRING = 'LineString'
-    - MULTI_LINE_STRING = 'MultiLineString'
-    - POLYGON = 'Polygon'
-    - MULTI_POLYGON = 'MultiPolygon'
-    - GEOMETRY_COLLECTION = 'GeometryCollection'
+    - POINT = "Point"
+    - MULTI_POINT = "MultiPoint"
+    - LINE_STRING = "LineString"
+    - MULTI_LINE_STRING = "MultiLineString"
+    - POLYGON = "Polygon"
+    - MULTI_POLYGON = "MultiPolygon"
+    - GEOMETRY_COLLECTION = "GeometryCollection"
 
   SurfaceFormationShapes:
     - COLUMN = 0
@@ -123,12 +130,12 @@ models:
 
   GeoPath:
     fields:
-      points: list[GlobalPosition] = []
+      points: list[GlobalPosition]
 
 
   GeoArea:
     fields:
-      vertices: list[GlobalPosition] = []
+      vertices: list[GlobalPosition]
 
 
   BoundingBox:
@@ -215,7 +222,7 @@ models:
     fields:
       type: const string = "Feature"
       geometry: GeoJsonGeometry
-      properties: list[FeatureProperty] = []
+      properties: list[FeatureProperty]
       id: optional (string | int)
       bbox: optional BoundingBox
 
@@ -223,7 +230,7 @@ models:
   GeoJsonFeatureCollection:
     fields:
       type: const string = "FeatureCollection"
-      features: list[GeoJsonFeature] = []
+      features: list[GeoJsonFeature]
       bbox: optional BoundingBox
 
 

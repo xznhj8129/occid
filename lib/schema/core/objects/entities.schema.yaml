@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: entities
+description: "Discrete entities capable of identity, state, action, or affiliation."
+tags:
+  - core
+root: objects
+
 enums:
   EntityType:
     - PERSON = 0
@@ -44,10 +51,10 @@ models:
       created_ts: optional float
       updated_ts: optional float
       origin_system: optional string
-      alt_ids: list[AlternateId] = []
-      tags: list[string] = []
-      metadata: list[MetadataEntry] = []
-      relations: list[RelationSchema] = []
+      alt_ids: list[AlternateId]
+      tags: list[string]
+      metadata: list[MetadataEntry]
+      relations: list[RelationSchema]
       location_state: optional LocationState
       symbology: optional SymbologySchema
       display_meta: optional DisplayMeta
@@ -69,13 +76,13 @@ models:
       op_domain: OperationalDomain = LAND
       propulsion: PropulsionType = FOOT
       navigation: NavigationMode
-      navaids: list[NavAids] = []
+      navaids: list[NavAids]
       health: HumanHealthStatus
-      attack_modes: list[AttackMode] = []
-      sensors: map[string, SensorSchema] = {}
-      weapons: list[ItemCount] = []
-      ammo: list[ItemCount] = []
-      links: map[string, LinkSchema] = {}
+      attack_modes: list[AttackMode]
+      sensors: map[string, SensorSchema]
+      weapons: list[ItemCount]
+      ammo: list[ItemCount]
+      links: map[string, LinkSchema]
 
 
   BaseMachine:
@@ -91,14 +98,14 @@ models:
       supplies: optional SuppliesSchema
       link_condition: optional LinkCondition
       control_level: optional ControlLevel
-      components: list[EntityComponentRef] = []
+      components: list[EntityComponentRef]
 
 
   GroundNavigationSchema:
     fields:
       propulsion: PropulsionType
       navigation: NavigationMode
-      navaids: list[NavAids] = []
+      navaids: list[NavAids]
       max_range: float
       max_spd: float
 
@@ -106,14 +113,14 @@ models:
   AirNavigationSchema:
     fields:
       flight_type: AirframeType
-      control_modes: list[FlightMode] = []
+      control_modes: list[FlightMode]
       failsafe_mode: optional AirFailsafeMode
-      weather_limits: WeatherLimits = {}
+      weather_limits: WeatherLimits
       ifr: optional bool
-      roles: list[AirRole] = []
+      roles: list[AirRole]
       propulsion: PropulsionType
       navigation: NavigationMode
-      navaids: list[NavAids] = []
+      navaids: list[NavAids]
       fuel: optional FuelState
       max_range: float
       max_flight_t: float
@@ -131,7 +138,7 @@ models:
       model: string
       role: string
       serial_uid: string = ""
-      sensors: map[string, SensorSchema] = {}
+      sensors: map[string, SensorSchema]
       payload: PayloadSchema
       effects: GroundEffectsSchema
       navigation: GroundNavigationSchema
@@ -152,7 +159,7 @@ models:
       op_domain: OperationalDomain = AIR
       model: string
       serial_uid: string = ""
-      sensors: map[string, SensorSchema] = {}
+      sensors: map[string, SensorSchema]
       payload: PayloadSchema
       effects: AirEffectsSchema
       navigation: AirNavigationSchema

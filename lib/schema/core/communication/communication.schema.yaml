@@ -1,4 +1,15 @@
 version: 1
+type: schema
+name: communication
+description: "Communication endpoints, transports, networks, feeds, messages, and protocol payloads."
+tags:
+  - core
+root: core
+branches:
+  - network
+  - radio
+  - mesh
+
 enums:
   DeliveryState:
     - QUEUED = 0
@@ -111,8 +122,8 @@ models:
     fields:
       next_hop: optional string
       hop_limit: optional int
-      preferred_relays: list[NodeRef] = []
-      avoid_nodes: list[NodeRef] = []
+      preferred_relays: list[NodeRef]
+      avoid_nodes: list[NodeRef]
 
 
   MessageEnvelope:
@@ -145,16 +156,16 @@ models:
   CapabilityAdvert:
     fields:
       node_id: string
-      roles: list[CapabilityRole] = []
-      link_ids: list[string] = []
-      sensor_ids: list[string] = []
-      payload_ids: list[string] = []
+      roles: list[CapabilityRole]
+      link_ids: list[string]
+      sensor_ids: list[string]
+      payload_ids: list[string]
 
 
   StateDelta:
     fields:
       entity_id: string
-      changed_fields: list[string] = []
+      changed_fields: list[string]
       source: optional string
       confidence: optional ConfidenceLevel
 
@@ -188,7 +199,7 @@ models:
       uncertainty: optional LocationUncertainty
       detail: optional ProtocolPayload
       source_address: optional NetworkAddress
-      targets: list[MessageTarget] = []
+      targets: list[MessageTarget]
 
 
   HumanTextMessage:
@@ -200,7 +211,7 @@ models:
       kind: optional string
       message: string
       position: optional GlobalPosition
-      targets: list[MessageTarget] = []
+      targets: list[MessageTarget]
 
 
   MessageTransferResult:

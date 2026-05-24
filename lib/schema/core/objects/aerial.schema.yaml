@@ -1,4 +1,12 @@
 version: 1
+type: schema
+name: aerial
+description: "Aerial platform roles, missions, flight state, and planning structs."
+tags:
+  - core
+  - aviation
+root: objects
+
 enums:
   TaskAir:
     - FLY = 0
@@ -176,11 +184,10 @@ enums:
     - STAGG_TRAIL_LEFT
     - STAGG_TRAIL_RIGHT
 
-mappings:
+maps:
   AIR_ROLE_LABELS:
-    key_type: AirRole
-    value_type: string
-    entries:
+    type: map[AirRole, string]
+    value:
       GROUND: Ground
       AIR_DEFENSE: Air Defense
       FIGHTER: Fighter
@@ -190,9 +197,8 @@ mappings:
       CARGO: Cargo
 
   AIR_ROLE_NAMES:
-    key_type: AirRole
-    value_type: string
-    entries:
+    type: map[AirRole, string]
+    value:
       GROUND: Ground
       AIR_DEFENSE: Air Defense
       FIGHTER: Fighter
@@ -253,10 +259,10 @@ models:
 
   MissionRouteGeometry:
     fields:
-      route_in: GeoPath = {}
-      survey: GeoPath = {}
-      survey_area: GeoArea = {}
-      route_out: GeoPath = {}
+      route_in: GeoPath
+      survey: GeoPath
+      survey_area: GeoArea
+      route_out: GeoPath
 
 
   MissionPoi:
@@ -301,10 +307,10 @@ models:
   PlannedRoutePoints:
     fields:
       start: PlannerMissionPoint
-      route_in: list[PlannerMissionPoint] = []
-      survey: list[PlannerMissionPoint] = []
-      survey_area: list[PlannerMissionPoint] = []
-      route_out: list[PlannerMissionPoint] = []
+      route_in: list[PlannerMissionPoint]
+      survey: list[PlannerMissionPoint]
+      survey_area: list[PlannerMissionPoint]
+      route_out: list[PlannerMissionPoint]
       end: PlannerMissionPoint
 
 
@@ -324,13 +330,13 @@ models:
       unit_num: int
       callsign: string
       fl: float
-      route_in: GeoPath = {}
+      route_in: GeoPath
       target: PlannerMissionPoint
-      route_out: GeoPath = {}
+      route_out: GeoPath
       home: GlobalPosition
       land_pos: GlobalPosition
       ip_wait_delay: float = 0.0
-      wp: GeoPath = {}
+      wp: GeoPath
 
 
   AirMissionSchema:
@@ -346,8 +352,8 @@ models:
       survey_area: FlightPhasePlan
       egress: FlightPhasePlan
       landing: FlightPhasePlan
-      pois: list[MissionPoi] = []
-      assignments: map[string, FlightAssignment] = {}
-      unit_plans: map[string, PlannedUnitMission] = {}
-      routes: MissionRouteGeometry = {}
-      route_points: PlannedRoutePoints = {}
+      pois: list[MissionPoi]
+      assignments: map[string, FlightAssignment]
+      unit_plans: map[string, PlannedUnitMission]
+      routes: MissionRouteGeometry
+      route_points: PlannedRoutePoints

@@ -2,8 +2,6 @@
 from __future__ import annotations
 from .common import *
 
-from .aerial import WeatherLimits
-
 ### Enums
 
 class SensorType(IntEnum):
@@ -123,13 +121,13 @@ class VisionDetection(OCCIDModel):
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
     source_frame_id: str | None = None
-    attributes: list[MetadataEntry] = Field(default_factory=list)
+    attributes: list[MetadataEntry]
 
 class VisionDetectionFrame(OCCIDModel):
     frame_id: str | None = None
     sensor_id: str | None = None
     timestamp_us: int | None = None
-    detections: list[VisionDetection] = Field(default_factory=list)
+    detections: list[VisionDetection]
 
 class TrackerState(OCCIDModel):
     locked: bool | None = None
@@ -149,18 +147,18 @@ class SensorSchema(OCCIDModel):
     name: str
     model: str
     type: SensorType
-    serial_uid: str = '""'
+    serial_uid: str = ''
     effect_domain: EffectDomain
     max_range: float
     ptz: bool
     spectrum: SensorSpectrum
     night_vision: bool
     all_weather: bool
-    weather_limits: WeatherLimits = Field(default_factory=WeatherLimits)
+    weather_limits: WeatherLimits
     error_margin: float
     error_type: SensorErrorType
-    data_formats: list[SensorDataFormat] = Field(default_factory=list)
-    ai: list[SensorAICapability] = Field(default_factory=list)
+    data_formats: list[SensorDataFormat]
+    ai: list[SensorAICapability]
     datalink: str
     field_of_view: SensorFieldOfView | None = None
     zoom_range: NumericRange | None = None

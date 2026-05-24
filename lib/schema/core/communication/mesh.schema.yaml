@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: mesh
+description: "Mesh node, link, message, position, and heartbeat structures."
+tags:
+  - core
+root: communication
+
 enums:
   MeshNodeState:
     - UNKNOWN = 0
@@ -77,12 +84,12 @@ models:
       hop_limit: optional int
       link_condition: optional LinkCondition
       connection_status: optional ConnectionStatus
-      roles: list[CapabilityRole] = []
+      roles: list[CapabilityRole]
 
 
   MeshView:
     fields:
       epoch: int = 0
-      nodes: map[string, MeshNode] = {}
-      links: list[MeshLink] = []
+      nodes: map[string, MeshNode]
+      links: list[MeshLink]
       partition_id: optional string

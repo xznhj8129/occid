@@ -30,8 +30,8 @@ class MediaType(IntEnum):
 
 class ClassificationSchema(OCCIDModel):
     level: ClassificationLevel
-    codewords: list[str] = Field(default_factory=list)
-    release_to: list[str] = Field(default_factory=list)
+    codewords: list[str]
+    release_to: list[str]
 
 class VideoConfigSchema(OCCIDModel):
     protocol: VideoProtocol | None = None
@@ -52,4 +52,4 @@ class MediaItemSchema(OCCIDModel):
     content_type: str | None = None
 
 class MediaSchema(OCCIDModel):
-    items: list[MediaItemSchema] = Field(default_factory=list)
+    items: list[MediaItemSchema]

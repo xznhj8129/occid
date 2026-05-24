@@ -115,14 +115,14 @@ class GlobalPosition(OCCIDModel):
     lon: float | None = None
     alt: float | None = None
     mgrs: str | None = None
-    datum: Literal['"WGS84"'] = Field(default='"WGS84"', frozen=True)
+    datum: Literal['WGS84'] = Field(default='WGS84', frozen=True)
     alt_frame: AltitudeDatum | None = None
 
 class GeoPath(OCCIDModel):
-    points: list[GlobalPosition] = Field(default_factory=list)
+    points: list[GlobalPosition]
 
 class GeoArea(OCCIDModel):
-    vertices: list[GlobalPosition] = Field(default_factory=list)
+    vertices: list[GlobalPosition]
 
 class BoundingBox(OCCIDModel):
     x1: float | None = None
@@ -187,15 +187,15 @@ class GeoJsonGeometry(OCCIDModel):
     bbox: BoundingBox | None = None
 
 class GeoJsonFeature(OCCIDModel):
-    type: Literal['"Feature"'] = Field(default='"Feature"', frozen=True)
+    type: Literal['Feature'] = Field(default='Feature', frozen=True)
     geometry: GeoJsonGeometry
-    properties: list[FeatureProperty] = Field(default_factory=list)
+    properties: list[FeatureProperty]
     id: (str | int) | None = None
     bbox: BoundingBox | None = None
 
 class GeoJsonFeatureCollection(OCCIDModel):
-    type: Literal['"FeatureCollection"'] = Field(default='"FeatureCollection"', frozen=True)
-    features: list[GeoJsonFeature] = Field(default_factory=list)
+    type: Literal['FeatureCollection'] = Field(default='FeatureCollection', frozen=True)
+    features: list[GeoJsonFeature]
     bbox: BoundingBox | None = None
 
 class LocationUncertainty(OCCIDModel):

@@ -1,0 +1,11 @@
+version: 1
+type: schema
+name: control
+description: "Control-side directives, tasks, objectives, constraints, and execution structures."
+tags:
+  - core
+root: core
+branches:
+  - tasks
+
+models:

@@ -1,0 +1,113 @@
+version: 1
+type: schema
+name: struct
+description: "Primitive reusable low-level struct families."
+tags:
+  - core
+root: core
+branches:
+  - spatial
+
+models:
+
+  Time:
+    fields:
+      utime: int
+    
+
+  Duration:
+    fields:
+      ms: optional float
+      seconds: optional float
+      minutes: optional float
+      hours: optional float
+      days: optional float
+      weeks: optional float
+      months: optional float
+      years: optional float
+
+
+  Timestamp:
+    fields:
+      ms: float
+      seconds: float
+      minutes: float
+      hours: float
+      day: float
+      month: float
+      year: float
+      tz: float
+
+
+  AlternateId:
+    fields:
+      id_type: AlternateIdType
+      value: string
+
+
+  ItemCount:
+    fields:
+      item_type: string
+      qty: int = 0
+
+
+  NumericRange:
+    fields:
+      min_value: optional float
+      max_value: optional float
+
+
+  MetadataValue:
+    fields:
+      text_value: optional string
+      int_value: optional int
+      float_value: optional float
+      bool_value: optional bool
+
+
+  MetadataEntry:
+    fields:
+      key: string
+      value: MetadataValue
+
+
+  SymbologySchema:
+    fields:
+      sidc: optional string
+      cot: optional string
+
+
+  FirmwareInfo:
+    fields:
+      name: optional string
+      version: optional string
+      build: optional string
+
+
+  FuelState:
+    fields:
+      fuel_type: FuelType
+      capacity: optional float
+      remaining: optional float
+
+
+  SuppliesSchema:
+    fields:
+      fuel: optional FuelState
+      stores: list[ItemCount]
+
+  DisplayMeta:
+    fields:
+      icon_code: optional string
+      tint: optional string
+      short_label: optional string
+
+  RelationSchema:
+    fields:
+      src_id: string
+      dst_id: string
+      rel_kind: string
+      since_ts: optional float
+      until_ts: optional float
+      confidence: optional ConfidenceLevel
+      source: optional string

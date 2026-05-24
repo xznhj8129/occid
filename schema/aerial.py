@@ -2,8 +2,6 @@
 from __future__ import annotations
 from .common import *
 
-from .spatial import GeoArea, GeoPath
-
 ### Enums
 
 class TaskAir(IntEnum):
@@ -246,10 +244,10 @@ class FlightPhasePlan(OCCIDModel):
     formation_3d: AirGroupFormation3DType | None = None
 
 class MissionRouteGeometry(OCCIDModel):
-    route_in: GeoPath = Field(default_factory=GeoPath)
-    survey: GeoPath = Field(default_factory=GeoPath)
-    survey_area: GeoArea = Field(default_factory=GeoArea)
-    route_out: GeoPath = Field(default_factory=GeoPath)
+    route_in: GeoPath
+    survey: GeoPath
+    survey_area: GeoArea
+    route_out: GeoPath
 
 class MissionPoi(OCCIDModel):
     uid: str
@@ -284,10 +282,10 @@ class PlannerMissionPoint(OCCIDModel):
 
 class PlannedRoutePoints(OCCIDModel):
     start: PlannerMissionPoint
-    route_in: list[PlannerMissionPoint] = Field(default_factory=list)
-    survey: list[PlannerMissionPoint] = Field(default_factory=list)
-    survey_area: list[PlannerMissionPoint] = Field(default_factory=list)
-    route_out: list[PlannerMissionPoint] = Field(default_factory=list)
+    route_in: list[PlannerMissionPoint]
+    survey: list[PlannerMissionPoint]
+    survey_area: list[PlannerMissionPoint]
+    route_out: list[PlannerMissionPoint]
     end: PlannerMissionPoint
 
 class FlightAssignment(OCCIDModel):
@@ -295,21 +293,21 @@ class FlightAssignment(OCCIDModel):
     unit_id: str | None = None
     callsign: str | None = None
     objective_assign: int | None = None
-    wave_n: int = '0'
-    formation_n: int = '0'
-    takeoff_time: float = '0.0'
+    wave_n: int = 0
+    formation_n: int = 0
+    takeoff_time: float = 0.0
 
 class PlannedUnitMission(OCCIDModel):
     unit_num: int
     callsign: str
     fl: float
-    route_in: GeoPath = Field(default_factory=GeoPath)
+    route_in: GeoPath
     target: PlannerMissionPoint
-    route_out: GeoPath = Field(default_factory=GeoPath)
+    route_out: GeoPath
     home: GlobalPosition
     land_pos: GlobalPosition
-    ip_wait_delay: float = '0.0'
-    wp: GeoPath = Field(default_factory=GeoPath)
+    ip_wait_delay: float = 0.0
+    wp: GeoPath
 
 class AirMissionSchema(OCCIDModel):
     mission_name: str
@@ -323,8 +321,8 @@ class AirMissionSchema(OCCIDModel):
     survey_area: FlightPhasePlan
     egress: FlightPhasePlan
     landing: FlightPhasePlan
-    pois: list[MissionPoi] = Field(default_factory=list)
-    assignments: dict[str, FlightAssignment] = Field(default_factory=dict)
-    unit_plans: dict[str, PlannedUnitMission] = Field(default_factory=dict)
-    routes: MissionRouteGeometry = Field(default_factory=MissionRouteGeometry)
-    route_points: PlannedRoutePoints = Field(default_factory=PlannedRoutePoints)
+    pois: list[MissionPoi]
+    assignments: dict[str, FlightAssignment]
+    unit_plans: dict[str, PlannedUnitMission]
+    routes: MissionRouteGeometry
+    route_points: PlannedRoutePoints

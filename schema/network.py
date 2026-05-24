@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .definition import SchemaKind
+
 ### Enums
 
 class LinkCondition(IntEnum):
@@ -93,8 +95,8 @@ class LinkSchema(OCCIDModel):
     user_capacity: LinkCapacity | None = None
     network_id: str | None = None
     primary_address: NetworkAddress | None = None
-    addresses: list[NetworkAddress] = Field(default_factory=list)
-    endpoints: list[LinkEndpoint] = Field(default_factory=list)
+    addresses: list[NetworkAddress]
+    endpoints: list[LinkEndpoint]
     radio: RadioProfile | None = None
     condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None

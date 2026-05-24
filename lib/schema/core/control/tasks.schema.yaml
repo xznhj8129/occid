@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: tasks
+description: "Tasking, assignment, lifecycle, command result, and task execution structures."
+tags:
+  - core
+root: control
+
 enums:
   Capability:
     - NONE = 0
@@ -98,7 +105,7 @@ models:
   ObjectiveBinding:
     fields:
       objective_id: string
-      task_ids: list[string] = []
+      task_ids: list[string]
       priority: optional TaskPriority
       deadline_ts: optional float
       success_rule: optional string
@@ -144,13 +151,13 @@ models:
       last_update: optional float
       issued_by: optional string
       accepted_by: optional string
-      assigned_assets: list[string] = []
+      assigned_assets: list[string]
       attempt_idx: int = 0
       dispatch_state: DeliveryState = QUEUED
       dispatch_error: optional string
       time_window: optional TaskTimeWindow
       retry_profile: optional RetryProfile
-      status_log: list[TaskStatusEntry] = []
+      status_log: list[TaskStatusEntry]
       qos: QosTier = ROUTINE
       ack_mode: AckMode = RECEIPT
       route_mode: RouteMode = DIRECT
@@ -191,7 +198,7 @@ models:
       strike_task: optional TaskCombat
       target_category: optional TargetCategory
       target_point: optional GlobalPosition
-      munitions: list[MunitionAllocation] = []
+      munitions: list[MunitionAllocation]
       effect: optional string
       desired_bda: bool = false
 
@@ -201,6 +208,5 @@ models:
     fields:
       task_type: const TaskType = RESUPPLY
       destination: GlobalPosition
-      payload: list[PayloadAllocation] = []
+      payload: list[PayloadAllocation]
       payload_plan: optional PayloadPlanSchema
-

@@ -15,23 +15,23 @@ Specific example names are not definitive.
 
 **3. Top-Level Document**
 
-A schema document is either a **class expansion file** (`type: schema`) or a **module manifest** (`type: module`). They share the same IDL syntax for enums, maps, and structs, but differ in header fields and resolution rules.
+A schema document is either a **class expansion file** (`type: schema`) or a **module manifest** (`type: module`). They share the same IDL syntax for enums, maps, and models, but differ in header fields and resolution rules.
 
 Common top-level keys (both types):
 - `version` — required
 - `type` — required, either `schema` or `module`
-- `name` — required, the document's identifier (filename for schema files, unique module name for modules)
+- `name` — required, the document's identifier (schema ID for schema files, unique module name for modules)
+- `description` — required, human-readable purpose
 - `tags` — required, list of profile tags for subset selection (see section 17.3)
 - `enums`
 - `maps`
-- `structs`
+- `models`
 
 **3.1. Class expansion file** (`type: schema`) — additional keys:
-- `root` — required for files that extend an existing class; the filename of the parent class file this file expands
-- `includes` — optional, list of filenames this file depends on (child class files it composes)
+- `root` — required for every schema file except `core`; the schema ID of the parent schema file this file expands
+- `branches` — optional, list of direct child schema IDs that continue this file's ontology branch
 
 **3.2. Module manifest** (`type: module`) — additional keys:
-- `description` — required, human-readable purpose
 - `requires` — optional, list of tags or module names this module depends on
 - `extend_variants` — optional, grafts new variants onto existing parents (see section 18.4)
 
@@ -39,30 +39,33 @@ Example class expansion file:
 ```yaml
 version: 1
 type: schema
-name: state.yaml
+name: state
+description: "State data describing current object condition and telemetry."
 tags:
   - core
-root: information.yaml
-includes:
-  - kinematic.yaml
-  - navigation.yaml
-  - resources.yaml
-  - condition.yaml
+root: information
+branches:
+  - kinematic
+  - navigation
+  - resources
+  - condition
 
 enums: 
 maps: 
-structs: 
+models:
 ```
 
-Minimal root file (no parent):
+Minimal branch file:
 ```yaml
 version: 1
 type: schema
-name: object.yaml
+name: objects
+description: "Top-level object branch."
 tags:
   - core
+root: core
 
-structs:
+models:
   Object:
     variants:
       ENTITY: Entity
@@ -74,7 +77,7 @@ Example module manifest:
 version: 1
 type: module
 name: ew
-description: Electronic warfare actions, effects, protection, and spectrum management
+description: "Electronic warfare actions, effects, protection, and spectrum management."
 tags:
   - military
 requires:
@@ -83,9 +86,9 @@ requires:
 
 **4. Names**
 - Identifier regex: `^[A-Za-z_][A-Za-z0-9_]*$`
-- Names must be unique across `enums`, `maps`, and `structs`
+- Names must be unique across `enums`, `maps`, and `models`
 - Field names use the same identifier regex
-- All struct and enum names are globally unique and imported flat — the ontological hierarchy is encoded in parent/variants relationships, not in qualified import paths
+- All model and enum names are globally unique and imported flat — the ontological hierarchy is encoded in parent/variants relationships, not in qualified import paths
 
 **5. Primitive Types**
 Built-in primitive types:
@@ -126,8 +129,8 @@ Rules:
 - `optional const ...` is invalid
 - `tuple[T1, T2, ...]` is an ordered fixed-length heterogeneous container
 - no inline anonymous object types
-- write imports, then `\n##Enums\n`, then enums, then `\n##structs\n`, then structs
-- One newline between enums, two newlines between structs 
+- write imports, then `\n##Enums\n`, then enums, then `\n##models\n`, then models
+- One newline between enums, two newlines between models
 - Order by ontological order
 - Use IntEnum for where only one aspect of the same attritube can be true
 - Use List[IntEnum] as a bitflag for where many aspects of the same attritube can be true
@@ -167,11 +170,11 @@ Rules:
 - `value` must be a YAML mapping
 - keys and values must match the declared map type
 
-**9. structs**
+**9. models**
 Syntax:
 ```yaml
-structs:
-  structName:
+models:
+  ModelName:
     fields:
       field_a: string
       field_b: optional string
@@ -181,16 +184,16 @@ structs:
 
 Rules:
 - `parent` is optional
-- `fields` is optional. If absent, the struct defines no own fields (inherited fields from a parent still apply)
-- `parent` must reference another struct
+- `fields` is optional. If absent, the model defines no own fields (inherited fields from a parent still apply)
+- `parent` must reference another model
 - inheritance is single-parent only
 - child fields are appended after parent fields
 - redefining an inherited field is an error
-- a struct may define `variants` to create a typed child family (see section 13)
-- a child struct inherits all fields from its `parent`
+- a model may define `variants` to create a typed child family (see section 13)
+- a child model inherits all fields from its `parent`
 - if the parent defines `variants`, the child is a typed variant of that parent
-- a struct may be both a child and a parent, allowing nested typed hierarchies
-- branch structs should stay flat and lightweight; inline nested authoring is reserved for final fielded leaves inside `variants`
+- a model may be both a child and a parent, allowing nested typed hierarchies
+- branch models should stay flat and lightweight; inline nested authoring is reserved for final fielded leaves inside `variants`
 
 **10. Field Shorthand**
 Allowed shorthand forms:
@@ -271,14 +274,14 @@ A parent/variants relationship is:
 - a typed variant family, equivalent to a tagged union or protobuf `oneof`
 - an implicit discriminator enum, derived from the variant keys
 
-There is no separate union mechanism or standalone enum declaration needed. `variants` on a struct defines the family. The authored form is intentionally optimized for readability:
+There is no separate union mechanism or standalone enum declaration needed. `variants` on a model defines the family. The authored form is intentionally optimized for readability:
 - branch families are declared flat
 - final fielded leaves are declared inline
-- the compiler may lower inline leaves into explicit child structs internally
+- the compiler may lower inline leaves into explicit child models internally
 
 Syntax:
 ```yaml
-structs:
+models:
   Task:
     variants:
       - MoveTask
@@ -305,15 +308,15 @@ structs:
 ```
 
 Rules:
-- `variants` is a direct key on the struct
+- `variants` is a direct key on the model
   - `variants` has exactly two authored forms:
     - list form for structural branches
     - mapping form for terminal fielded leaves
   - enum values auto-increment from 0 in declaration order
 - list form syntax:
-  - each item must reference a declared child struct
-  - each referenced child struct must declare `parent: <parent struct>`
-  - list form is for ontology and structure only; branch structs should be authored as top-level structs, not nested inline
+  - each item must reference a declared child model
+  - each referenced child model must declare `parent: <parent model>`
+  - list form is for ontology and structure only; branch models should be authored as top-level models, not nested inline
 - mapping form syntax:
   - each key becomes a member of the implicit discriminator enum
   - each value is an inline terminal leaf definition
@@ -322,18 +325,18 @@ Rules:
     - `fields`
   - `fields` is required on inline terminal leaf definitions
   - inline terminal leaves may not define `variants`, `parent`, `maps`, or `enums`
-  - the compiler synthesizes a child struct for each inline terminal leaf, with `parent` equal to the declaring struct
-- the implicit enum is named `{StructName}Type` (e.g., `Task` → `TaskType`) and is a first-class referenceable type
+  - the compiler synthesizes a child model for each inline terminal leaf, with `parent` equal to the declaring model
+- the implicit enum is named `{ModelName}Type` (e.g., `Task` → `TaskType`) and is a first-class referenceable type
 - the discriminator is reserved metadata on each child instance (accessible as `_type`). It cannot collide with user-defined field names
-- the effective shape of a child struct includes:
+- the effective shape of a child model includes:
   - all inherited parent fields
-  - the child struct's own fields
-- the parent struct itself is a type and may be used in fields like any other struct
-- a struct may define at most one `variants` block
-- a child struct declared via list form may also define `variants` of its own, allowing nested typed hierarchies
+- the child model's own fields
+- the parent model itself is a type and may be used in fields like any other model
+- a model may define at most one `variants` block
+- a child model declared via list form may also define `variants` of its own, allowing nested typed hierarchies
 - nested inline definitions are reserved for final fielded leaves only
-- when naming a child struct, if necessary, prefix only the parent's name
-- source readability takes precedence over normalized expansion; explicit synthetic child structs are an implementation detail, not the preferred authoring form
+- when naming a child model, if necessary, prefix only the parent's name
+- source readability takes precedence over normalized expansion; explicit synthetic child models are an implementation detail, not the preferred authoring form
 
 **14. Comments**
 - YAML `#` comments are allowed anywhere YAML allows them
@@ -342,46 +345,65 @@ Rules:
 **15. Errors**
 These are always errors:
 - unknown top-level section
-- unknown struct/enum/map reference
+- unknown model/enum/map reference
 - duplicate names
 - invalid type expression
-- parent is not a struct
+- parent is not a model
 - redefining inherited fields
 - `optional const ...`
 - list/map/object inline defaults in shorthand form
 - `required: true/false`
-- `variants` list form contains a value that is not a declared struct
-- `variants` list form contains a struct whose `parent` is not the declaring struct
+- `variants` list form contains a value that is not a declared model
+- `variants` list form contains a model whose `parent` is not the declaring model
 - `variants` mapping form contains a value that is not an inline terminal leaf definition
 - an inline terminal leaf definition is missing `fields`
 - an inline terminal leaf definition declares `variants`
 - an inline terminal leaf definition declares `parent`
-- a struct's parent chain does not lead to the class declared by the file's `root`
-- `includes` graph contains a cycle
-- `name` does not match the actual filename
-- missing `version`, `type`, `name`, or `tags`
+- a model's parent chain does not lead to the class declared by the file's `root`
+- `branches` graph contains a cycle
+- `name` does not match the schema file basename without `.schema.yaml`
+- missing `version`, `type`, `name`, `description`, or `tags`
+- missing `root` on any schema file except `core`
+- schema ID `core` declares `root`
 - `type` is not `schema` or `module`
 - a module's `extend_variants` references a parent that has no `variants` block
 - a module's `extend_variants` introduces a variant key that collides with an existing one
 - a module's `requires` list is not satisfied at load time
-- a module redefines or alters an existing struct, enum, or field from core or another module
-- a module's struct declares a `parent` that does not exist in core schema or required modules
+- a module redefines or alters an existing model, enum, or field from core or another module
+- a module's model declares a `parent` that does not exist in core schema or required modules
 
 **16. Not Supported**
 - anchors / aliases
 - multiple inheritance
-- anonymous inline structs outside terminal variant leaves
+- anonymous inline models outside terminal variant leaves
 - JSON-Schema keys like `$defs`, `oneOf`, `additionalProperties`
 
 **17. File Organization**
 
-Each schema file is a **class expansion**, not a subject-domain bucket. A file expands exactly one branch of the ontology tree. If a domain concept (e.g. electronic warfare) touches multiple ontological branches (Task, Intel, Plan, Instruction), those structs belong in their respective class files, not in a single "ew.yaml."
+Each schema file is a **class expansion**, not a subject-domain bucket. A file expands exactly one branch of the ontology tree. If a domain concept (e.g. electronic warfare) touches multiple ontological branches (Task, Intel, Plan, Instruction), those models belong in their respective class files, not in a single "ew.yaml."
+
+Schema files live under `lib/schema/core/` and may be organized in subdirectories for readability. Directory placement is organizational only and is not part of the schema ID. A schema file's `name` is the basename without `.schema.yaml`; `root` and `branches` use those schema IDs. The core directory layout should mirror the first-level ontology branches:
+
+```text
+schema/
+  core/
+    core.schema.yaml
+    definition/
+    struct/
+    object/
+    control/
+    communication/
+    data/
+  modules/
+    military/
+      military.schema.yaml
+```
 
 **17.1. One file, one class branch**
-- Every file declares a `root` (the parent class file it extends) or is itself a root of the ontology tree
-- All structs in a file must be descendants of the class that file expands
-- A file that declares `root: control.yaml` may only contain structs whose parent chain leads to Control
-- Enums used exclusively by structs in the file are co-located. Enums shared across files belong in the root or a common ancestor file
+- Every file except `core` declares a `root` ID for the parent class file it extends
+- All models in a file must be descendants of the class that file expands
+- A file that declares `root: control` may only contain models whose parent chain leads to Control
+- Enums used exclusively by models in the file are co-located. Enums shared across files belong in the root or a common ancestor file
 
 **17.2. File header**
 The header declares the file's position in the schema graph:
@@ -389,22 +411,24 @@ The header declares the file's position in the schema graph:
 ```yaml
 version: 1
 type: schema
-name: information.yaml
+name: information
+description: "Symbolic data that can be directly read."
 tags:
   - core
-root: data.yaml
-includes:
-  - properties.yaml
-  - state.yaml
-  - event.yaml
-  - intel.yaml
+root: data
+branches:
+  - properties
+  - state
+  - event
+  - intel
 ```
 
 - `type` — always `schema` for class expansion files
-- `name` — the file's own filename, for self-identification
+- `name` — the file's own schema ID, for self-identification
+- `description` — human-readable purpose of this schema branch
 - `tags` — profile tags that classify this file for subset selection (see 17.3)
-- `root` — the parent class file. Omitted only for ontology root files (Object, Reference, Control, Communication, Data)
-- `includes` — child class files that further expand this branch. Declares the dependency graph so tools can resolve a complete subtree without parsing struct references
+- `root` — the parent schema ID. Omitted only for `root`
+- `branches` — direct child schema IDs that further expand this ontology branch. Declares schema-tree topology so tools can resolve a complete subtree without treating the list as ordinary imports or type dependencies
 
 **17.3. Tags and profiles**
 Tags classify files by domain applicability. A **profile** is a named set of tag inclusion/exclusion rules that selects a subset of the schema.
@@ -422,7 +446,7 @@ Profile resolution rules:
 2. A profile declares which non-core tags to include or exclude
 3. Include is the default — a profile only needs to declare exclusions
 4. If a file carries no matching include tag and no matching exclude tag, it is included by default
-5. A file excluded by a profile is entirely absent — its structs, enums, and maps do not exist in that profile's schema
+5. A file excluded by a profile is entirely absent — its models, enums, and maps do not exist in that profile's schema
 
 Example profiles:
 ```yaml
@@ -443,30 +467,30 @@ include:
 exclude_untagged: true
 ```
 
-**17.4. Includes and dependency resolution**
-The `includes` list declares which files expand sub-branches of this file's class. A schema tool can resolve the full tree from any root by following `includes` recursively. This also means:
-- Removing a file from `includes` prunes that entire sub-branch
-- The `includes` graph must be a tree (no cycles, no diamond includes)
-- A file not included by any parent is orphaned and will not appear in any resolved schema unless explicitly added
+**17.4. Branches and tree resolution**
+The `branches` list declares which direct child files expand this file's class branch. Branch entries are schema IDs. A schema tool can resolve the full tree from any root by following `branches` recursively. This also means:
+- Removing a file from `branches` prunes that entire sub-branch
+- The `branches` graph must be a tree (no cycles, no diamond branches)
+- A file not branched to by any parent is orphaned and will not appear in any resolved schema unless explicitly added
 
 **18. Modules**
 
-A module is a self-contained extension that grafts domain-specific structs, enums, and maps onto the existing class tree without modifying core schema files. Modules are the mechanism for domain-specific, third-party, and classified extensions.
+A module is a self-contained extension that grafts domain-specific models, enums, and maps onto the existing class tree without modifying core schema files. Modules are the mechanism for domain-specific, third-party, and classified extensions.
 
 **18.1. What a module is**
 - A separate YAML manifest file, not a class expansion file
-- It declares new structs, enums, and maps that attach to existing parents in the class tree
+- It declares new models, enums, and maps that attach to existing parents in the class tree
 - It does not modify, override, or redefine anything in core schema files
 - It is the extension boundary: adding capability means dropping in a module, not forking the tree
 
 **18.2. Module manifest format**
-Module manifests live in `modules/` as YAML files following the IDL syntax for enums, maps, and structs, plus module-specific header fields.
+Module manifests live under `lib/schema/modules/` as YAML files following the IDL syntax for enums, maps, and models, plus module-specific header fields.
 
 ```yaml
 version: 1
 type: module
 name: ew
-description: Electronic warfare actions, effects, protection, and spectrum management
+description: "Electronic warfare actions, effects, protection, and spectrum management."
 tags:
   - military
 requires:
@@ -490,7 +514,7 @@ enums:
     - RESPONSIVE
     - FOLLOWER
 
-structs:
+models:
   EWActionTask:
     parent: Task
     fields:
@@ -521,15 +545,14 @@ structs:
 ```
 
 Header fields (in addition to the common fields in section 3):
-- `description` — human-readable purpose
 - `requires` — list of tags or module names this module depends on. The resolver must include those dependencies before this module can be applied
 
 **18.3. Rules**
-- A module's structs must declare `parent` referencing a struct from the core schema or from a required module
-- A module may define structs that extend any branch of the class tree — this is the key difference from class expansion files, which are locked to one branch
-- All names (structs, enums, maps) must be globally unique across core schema and all loaded modules
+- A module's models must declare `parent` referencing a model from the core schema or from a required module
+- A module may define models that extend any branch of the class tree — this is the key difference from class expansion files, which are locked to one branch
+- All names (models, enums, maps) must be globally unique across core schema and all loaded modules
 - A module may add new variants to an existing parent's `variants` block via `extend_variants` (see 18.4)
-- A module cannot redefine, remove, or alter existing structs, enums, or fields
+- A module cannot redefine, remove, or alter existing models, enums, or fields
 - Modules are optional — the core schema is complete and valid without any modules loaded
 - A module's `requires` list must be satisfied before the module is loaded; unsatisfied dependencies are an error
 
@@ -548,18 +571,18 @@ extend_variants:
 ```
 
 Rules:
-- `extend_variants` keys must reference structs from core schema or required modules
+- `extend_variants` keys must reference models from core schema or required modules
 - The referenced parent must already have a `variants` block
 - New variant keys must not collide with existing variant keys on that parent
 - The new variant enum values auto-increment from the last existing value on the parent
-- Each struct listed must declare `parent` matching the extended parent
+- Each model listed must declare `parent` matching the extended parent
 
 **18.5. Module resolution**
 When building a schema with modules:
-1. Resolve the core schema tree (files + includes + tag filtering)
+1. Resolve the core schema tree (files + branches + tag filtering)
 2. For each selected module, verify `requires` are satisfied
 3. Apply `extend_variants` to graft new variant members onto existing parents
-4. Merge the module's structs, enums, and maps into the global namespace
+4. Merge the module's models, enums, and maps into the global namespace
 5. Validate: no name collisions, no orphan parents, no cycles
 
 Module selection is independent of tag filtering but compatible with it:
@@ -578,10 +601,11 @@ Module selection is independent of tag filtering but compatible with it:
 ```yaml
 version: 1
 type: schema
-name: directive.yaml
+name: directive
+description: "Directive branch under control."
 tags:
   - core
-root: control.yaml
+root: control
 
 maps:
   JsonGeometryTypes:
@@ -590,7 +614,7 @@ maps:
       "Point": POINT
       "Polygon": POLYGON
 
-structs:
+models:
   Task:
     fields:
       task_id: string

@@ -1,0 +1,8 @@
+version: 1
+type: module
+name: military
+description: "Military-specific OCCID extensions."
+tags:
+  - military
+requires:
+  - core

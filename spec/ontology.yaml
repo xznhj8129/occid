@@ -1,4 +1,4 @@
-Class:
+Root:
   description: Any distinct part of the overall framework that can be identified, described, or referenced
   children:
 

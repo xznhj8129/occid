@@ -70,12 +70,12 @@ class HealthAlert(OCCIDModel):
     alert_id: str | None = None
     level: AlertLevel
     condition: str
-    acknowledged: bool = 'false'
+    acknowledged: bool = False
 
 class SubsystemHealth(OCCIDModel):
     subsystem_id: str
     state: HealthStatus
-    fault_count: int = '0'
+    fault_count: int = 0
     note: str | None = None
 
 class HealthSnapshot(OCCIDModel):
@@ -83,10 +83,10 @@ class HealthSnapshot(OCCIDModel):
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
     temp_state: ResourceStatus | None = None
-    fault_count: int = '0'
+    fault_count: int = 0
     updated_ts: float | None = None
-    subsystems: list[SubsystemHealth] = Field(default_factory=list)
-    alerts: list[HealthAlert] = Field(default_factory=list)
+    subsystems: list[SubsystemHealth]
+    alerts: list[HealthAlert]
 
 class MaintenanceStatus(OCCIDModel):
     state: MaintenanceState
@@ -102,8 +102,8 @@ class PowerSourceSchema(OCCIDModel):
 
 class PowerStateSchema(OCCIDModel):
     status: PowerStatus
-    sources: list[PowerSourceSchema] = Field(default_factory=list)
-    electrical_sources: list[ElectricalResourceState] = Field(default_factory=list)
+    sources: list[PowerSourceSchema]
+    electrical_sources: list[ElectricalResourceState]
 
 class ElectricalResourceState(OCCIDModel):
     source_id: str | None = None
@@ -136,5 +136,5 @@ class VehicleReadinessState(OCCIDModel):
     ekf_using_gps: bool | None = None
     can_arm_or_run: bool | None = None
     mode_name: str | None = None
-    mode_problems: list[str] = Field(default_factory=list)
-    health_problems: list[str] = Field(default_factory=list)
+    mode_problems: list[str]
+    health_problems: list[str]

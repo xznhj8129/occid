@@ -1,0 +1,22 @@
+version: 1
+type: schema
+name: objects
+description: "Objects, entities, organizations, machines, and platforms."
+tags:
+  - core
+root: core
+branches:
+  - entities
+  - organization
+  - robot
+  - aerial
+
+enums:
+  ObjectType:
+    - ENTITY = 0
+    - ORGANIZATION
+
+models:
+  BaseObject:
+    fields:
+      object_type: ObjectType

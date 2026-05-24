@@ -80,7 +80,7 @@ class CommandResult(IntEnum):
 
 class MunitionAllocation(OCCIDModel):
     munition_type: str
-    qty: int = '0'
+    qty: int = 0
 
 class TaskTimeWindow(OCCIDModel):
     earliest_start: float | None = None
@@ -98,14 +98,14 @@ class ObjectiveSchema(OCCIDModel):
 
 class ObjectiveBinding(OCCIDModel):
     objective_id: str
-    task_ids: list[str] = Field(default_factory=list)
+    task_ids: list[str]
     priority: TaskPriority | None = None
     deadline_ts: float | None = None
     success_rule: str | None = None
 
 class TaskDelta(OCCIDModel):
     task_id: str
-    task_rev: int = '0'
+    task_rev: int = 0
     phase: TaskPhase
     progress: float | None = None
     owner: str | None = None
@@ -138,13 +138,13 @@ class BaseTask(OCCIDModel):
     last_update: float | None = None
     issued_by: str | None = None
     accepted_by: str | None = None
-    assigned_assets: list[str] = Field(default_factory=list)
-    attempt_idx: int = '0'
+    assigned_assets: list[str]
+    attempt_idx: int = 0
     dispatch_state: DeliveryState = DeliveryState.QUEUED
     dispatch_error: str | None = None
     time_window: TaskTimeWindow | None = None
     retry_profile: RetryProfile | None = None
-    status_log: list[TaskStatusEntry] = Field(default_factory=list)
+    status_log: list[TaskStatusEntry]
     qos: QosTier = QosTier.ROUTINE
     ack_mode: AckMode = AckMode.RECEIPT
     route_mode: RouteMode = RouteMode.DIRECT
@@ -177,12 +177,12 @@ class CombatTask(BaseTask):
     strike_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None
-    munitions: list[MunitionAllocation] = Field(default_factory=list)
+    munitions: list[MunitionAllocation]
     effect: str | None = None
-    desired_bda: bool = 'false'
+    desired_bda: bool = False
 
 class ResupplyTask(BaseTask):
     task_type: TaskType = Field(default=TaskType.RESUPPLY, frozen=True)
     destination: GlobalPosition
-    payload: list[PayloadAllocation] = Field(default_factory=list)
+    payload: list[PayloadAllocation]
     payload_plan: PayloadPlanSchema | None = None

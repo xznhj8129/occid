@@ -1,4 +1,12 @@
 version: 1
+type: schema
+name: effects
+description: "Effects, payloads, fires, target handover, munitions, and damage assessment."
+tags:
+  - core
+  - military
+root: data
+
 enums:
   GuidanceType:
     - UNGUIDED = 0
@@ -100,9 +108,9 @@ models:
 
   PayloadPlanSchema:
     fields:
-      requested: list[PayloadAllocation] = []
-      approved: list[PayloadAllocation] = []
-      loaded: list[PayloadAllocation] = []
+      requested: list[PayloadAllocation]
+      approved: list[PayloadAllocation]
+      loaded: list[PayloadAllocation]
       notes: optional string
 
 
@@ -113,18 +121,18 @@ models:
       qty: int = 0
       pylons: string = ""
       launcher: string = ""
-      compat_tags: list[PayloadType] = []
-      loaded: list[PayloadAllocation] = []
+      compat_tags: list[PayloadType]
+      loaded: list[PayloadAllocation]
 
 
   PayloadSchema:
     fields:
       item_type: PayloadType
       state: optional PayloadState
-      weapons: list[ItemCount] = []
-      ammo: list[ItemCount] = []
-      ordnance: list[ItemCount] = []
-      payload_mounts: map[string, PayloadMountSchema] = {}
+      weapons: list[ItemCount]
+      ammo: list[ItemCount]
+      ordnance: list[ItemCount]
+      payload_mounts: map[string, PayloadMountSchema]
       payload_plan: optional PayloadPlanSchema
 
 
@@ -132,7 +140,7 @@ models:
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
-      payload_mounts: map[string, PayloadMountSchema] = {}
+      payload_mounts: map[string, PayloadMountSchema]
       effect_domain: OperationalDomain
       launch_domain: OperationalDomain
       guidance: GuidanceType
@@ -143,14 +151,14 @@ models:
   GroundEffectsSchema:
     parent: EffectsSchema
     fields:
-      attack_modes: list[AttackMode] = []
+      attack_modes: list[AttackMode]
 
 
   AirEffectsSchema:
     parent: EffectsSchema
     fields:
       reusable: optional bool
-      attack_modes: list[AirAttackMode] = []
+      attack_modes: list[AirAttackMode]
 
 
   TargetPrioritySchema:

@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: organization
+description: "Organized sets of entities and subordinate organizations."
+tags:
+  - core
+root: objects
+
 enums:
   OrgLevel:
     - UNIT = 0
@@ -37,20 +44,20 @@ enums:
     - WNG
 
   OOBSizeLabel:
-    - IND = 'Individual'
-    - TEM = 'Team'
-    - SQD = 'Squad'
-    - SEC = 'Section'
-    - PLT = 'Platoon'
-    - COY = 'Company'
-    - BTN = 'Battalion'
-    - RGT = 'Regiment'
-    - BDE = 'Brigade'
-    - DIV = 'Division'
-    - FLT = 'Flight'
-    - SQN = 'Squadron'
-    - GRP = 'Group'
-    - WNG = 'Wing'
+    - IND = "Individual"
+    - TEM = "Team"
+    - SQD = "Squad"
+    - SEC = "Section"
+    - PLT = "Platoon"
+    - COY = "Company"
+    - BTN = "Battalion"
+    - RGT = "Regiment"
+    - BDE = "Brigade"
+    - DIV = "Division"
+    - FLT = "Flight"
+    - SQN = "Squadron"
+    - GRP = "Group"
+    - WNG = "Wing"
 
   NATOUnitCategory:
     - COMB = 0
@@ -92,49 +99,48 @@ enums:
     - TRG
 
   NATOUnitCategoryLabel:
-    - COMB = 'Combined Arms'
-    - BATT = 'Battery'
-    - TF = 'Task Force'
-    - MECH = 'Mechanized Infantry'
-    - INF = 'Light Infantry'
-    - MOT = 'Motorized Infantry'
-    - REC = 'Reconnaissance'
-    - UAV = 'Unmanned Aerial Systems'
-    - UAVA = 'UAV Attack'
-    - UAVR = 'UAV Recon'
-    - UGV = 'Unmanned Ground Systems'
-    - SIG = 'Signal'
-    - ENG = 'Engineer'
-    - ART = 'Artillery'
-    - MORT = 'Mortar'
-    - MRL = 'Rocket Artillery'
-    - ARM = 'Armored'
-    - CAV = 'Cavalry'
-    - MED = 'Medical'
-    - SUP = 'Supply'
-    - LOG = 'Logistics'
-    - HQ = 'Headquarters'
-    - NBC = 'Nuclear, Biological, and Chemical Defense'
-    - MP = 'Military Police'
-    - AIR = 'Airborne Infantry'
-    - SOF = 'Special Operations Forces'
-    - NAV = 'Naval Infantry'
-    - AMP = 'Amphibious Infantry'
-    - ADA = 'Air Defense Artillery'
-    - EW = 'Electronic Warfare'
-    - ISR = 'Intelligence, Surveillance, and Reconnaissance'
-    - CBT = 'Combat Support'
-    - CSS = 'Combat Service Support'
-    - COM = 'Command'
-    - DET = 'Detachment'
-    - RES = 'Reserve'
-    - TRG = 'Training'
+    - COMB = "Combined Arms"
+    - BATT = "Battery"
+    - TF = "Task Force"
+    - MECH = "Mechanized Infantry"
+    - INF = "Light Infantry"
+    - MOT = "Motorized Infantry"
+    - REC = "Reconnaissance"
+    - UAV = "Unmanned Aerial Systems"
+    - UAVA = "UAV Attack"
+    - UAVR = "UAV Recon"
+    - UGV = "Unmanned Ground Systems"
+    - SIG = "Signal"
+    - ENG = "Engineer"
+    - ART = "Artillery"
+    - MORT = "Mortar"
+    - MRL = "Rocket Artillery"
+    - ARM = "Armored"
+    - CAV = "Cavalry"
+    - MED = "Medical"
+    - SUP = "Supply"
+    - LOG = "Logistics"
+    - HQ = "Headquarters"
+    - NBC = "Nuclear, Biological, and Chemical Defense"
+    - MP = "Military Police"
+    - AIR = "Airborne Infantry"
+    - SOF = "Special Operations Forces"
+    - NAV = "Naval Infantry"
+    - AMP = "Amphibious Infantry"
+    - ADA = "Air Defense Artillery"
+    - EW = "Electronic Warfare"
+    - ISR = "Intelligence, Surveillance, and Reconnaissance"
+    - CBT = "Combat Support"
+    - CSS = "Combat Service Support"
+    - COM = "Command"
+    - DET = "Detachment"
+    - RES = "Reserve"
+    - TRG = "Training"
 
-mappings:
+maps:
   UNIT_SIZE_LABELS:
-    key_type: OOBSize
-    value_type: string
-    entries:
+    type: map[OOBSize, string]
+    value:
       IND: Individual
       TEM: Team
       SQD: Squad
@@ -151,9 +157,8 @@ mappings:
       WNG: Wing
 
   UNIT_SIZE_SHORT:
-    key_type: OOBSize
-    value_type: string
-    entries:
+    type: map[OOBSize, string]
+    value:
       IND: Individual
       TEM: Team
       SQD: Squad
@@ -170,9 +175,8 @@ mappings:
       WNG: Wing
 
   UNIT_CATEGORY_LABELS:
-    key_type: NATOUnitCategory
-    value_type: string
-    entries:
+    type: map[NATOUnitCategory, string]
+    value:
       COMB: Combined Arms
       BATT: Battery
       TF: Task Force
@@ -212,9 +216,8 @@ mappings:
       TRG: Training
 
   UNIT_CATEGORY_NAMES:
-    key_type: NATOUnitCategory
-    value_type: string
-    entries:
+    type: map[NATOUnitCategory, string]
+    value:
       COMB: Combined Arms
       BATT: Battery
       TF: Task Force
@@ -254,9 +257,8 @@ mappings:
       TRG: Training
 
   UNIT_SIZE_LEVELS_LAND:
-    key_type: OOBSize
-    value_type: int
-    entries:
+    type: map[OOBSize, int]
+    value:
       IND: 0
       TEM: 1
       SQD: 2
@@ -269,9 +271,8 @@ mappings:
       DIV: 9
 
   UNIT_SIZE_LEVELS_AIR:
-    key_type: OOBSize
-    value_type: int
-    entries:
+    type: map[OOBSize, int]
+    value:
       IND: 0
       TEM: 1
       FLT: 2
@@ -280,9 +281,8 @@ mappings:
       WNG: 5
 
   CALLSIGN_TEMPLATES:
-    key_type: OOBSize
-    value_type: string
-    entries:
+    type: map[OOBSize, string]
+    value:
       SQD: <coy_callsign>-<plt_num>-<s_num>
       SEC: <coy_callsign>-<plt_num>-<s_num>
       PLT: <coy_callsign>-<plt_num>
@@ -292,9 +292,8 @@ mappings:
       BDE: <bde_num>BDE
 
   ENEMY_CALLSIGN_TEMPLATES:
-    key_type: OOBSize
-    value_type: string
-    entries:
+    type: map[OOBSize, string]
+    value:
       SQD: <coy_callsign>-<plt_num>-<s_num>
       SEC: <coy_callsign>-<plt_num>-<s_num>
       PLT: <coy_callsign>-<plt_num>
@@ -322,7 +321,7 @@ models:
       position: optional GlobalPosition
       control_level: optional ControlLevel
       link_condition: optional LinkCondition
-      link_loadout: list[ItemCount] = []
+      link_loadout: list[ItemCount]
 
 
   FlyingOrg:
@@ -330,7 +329,7 @@ models:
     fields:
       category: NATOUnitCategory
       op_domain: OperationalDomain = AIR
-      air_units: list[ItemCount] = []
+      air_units: list[ItemCount]
 
 
   BaseOrbatOrg:
@@ -342,14 +341,14 @@ models:
       size: OOBSize
       op_domain: OperationalDomain
       taskforce: optional bool
-      links: map[string, LinkSchema] = {}
-      tac_elements: list[OrgComposition] = []
-      sup_elements: list[OrgComposition] = []
-      tac_e_comp: list[ItemCount] = []
-      sup_e_comp: list[ItemCount] = []
-      personnel: list[ItemCount] = []
-      vehicles: list[ItemCount] = []
-      equipment: list[ItemCount] = []
+      links: map[string, LinkSchema]
+      tac_elements: list[OrgComposition]
+      sup_elements: list[OrgComposition]
+      tac_e_comp: list[ItemCount]
+      sup_e_comp: list[ItemCount]
+      personnel: list[ItemCount]
+      vehicles: list[ItemCount]
+      equipment: list[ItemCount]
       spacing: float = 0.0
 
 
@@ -359,6 +358,6 @@ models:
       category: NATOUnitCategory
       op_domain: OperationalDomain = LAND
       combat_domain: OperationalDomain
-      ammo: list[ItemCount] = []
-      weapons: list[ItemCount] = []
-      air_units: list[ItemCount] = []
+      ammo: list[ItemCount]
+      weapons: list[ItemCount]
+      air_units: list[ItemCount]

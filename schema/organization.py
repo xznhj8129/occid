@@ -2,6 +2,7 @@
 from __future__ import annotations
 from .common import *
 
+from .definition import OperationalDomain
 from .objects import BaseObject, ObjectType
 
 ### Enums
@@ -299,7 +300,7 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
 class OrgComposition(OCCIDModel):
     category: NATOUnitCategory | None = None
     label: str | None = None
-    qty: int = '0'
+    qty: int = 0
 
 class BaseOrg(BaseObject):
     org_uid: str
@@ -310,12 +311,12 @@ class BaseOrg(BaseObject):
     position: GlobalPosition | None = None
     control_level: ControlLevel | None = None
     link_condition: LinkCondition | None = None
-    link_loadout: list[ItemCount] = Field(default_factory=list)
+    link_loadout: list[ItemCount]
 
 class FlyingOrg(BaseOrg):
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.AIR
-    air_units: list[ItemCount] = Field(default_factory=list)
+    air_units: list[ItemCount]
 
 class BaseOrbatOrg(BaseOrg):
     Orgtype: OrgLayout = OrgLayout.ORBAT
@@ -324,20 +325,20 @@ class BaseOrbatOrg(BaseOrg):
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: bool | None = None
-    links: dict[str, LinkSchema] = Field(default_factory=dict)
-    tac_elements: list[OrgComposition] = Field(default_factory=list)
-    sup_elements: list[OrgComposition] = Field(default_factory=list)
-    tac_e_comp: list[ItemCount] = Field(default_factory=list)
-    sup_e_comp: list[ItemCount] = Field(default_factory=list)
-    personnel: list[ItemCount] = Field(default_factory=list)
-    vehicles: list[ItemCount] = Field(default_factory=list)
-    equipment: list[ItemCount] = Field(default_factory=list)
-    spacing: float = '0.0'
+    links: dict[str, LinkSchema]
+    tac_elements: list[OrgComposition]
+    sup_elements: list[OrgComposition]
+    tac_e_comp: list[ItemCount]
+    sup_e_comp: list[ItemCount]
+    personnel: list[ItemCount]
+    vehicles: list[ItemCount]
+    equipment: list[ItemCount]
+    spacing: float = 0.0
 
 class GroundOrbatOrg(BaseOrbatOrg):
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.LAND
     combat_domain: OperationalDomain
-    ammo: list[ItemCount] = Field(default_factory=list)
-    weapons: list[ItemCount] = Field(default_factory=list)
-    air_units: list[ItemCount] = Field(default_factory=list)
+    ammo: list[ItemCount]
+    weapons: list[ItemCount]
+    air_units: list[ItemCount]

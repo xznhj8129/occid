@@ -71,10 +71,10 @@ class MeshNode(OCCIDModel):
     hop_limit: int | None = None
     link_condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
-    roles: list[CapabilityRole] = Field(default_factory=list)
+    roles: list[CapabilityRole]
 
 class MeshView(OCCIDModel):
-    epoch: int = '0'
-    nodes: dict[str, MeshNode] = Field(default_factory=dict)
-    links: list[MeshLink] = Field(default_factory=list)
+    epoch: int = 0
+    nodes: dict[str, MeshNode]
+    links: list[MeshLink]
     partition_id: str | None = None

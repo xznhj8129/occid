@@ -99,52 +99,52 @@ class TargetCategory(IntEnum):
 
 class PayloadAllocation(OCCIDModel):
     payload_type: PayloadType
-    qty: int = '0'
+    qty: int = 0
 
 class PayloadPlanSchema(OCCIDModel):
-    requested: list[PayloadAllocation] = Field(default_factory=list)
-    approved: list[PayloadAllocation] = Field(default_factory=list)
-    loaded: list[PayloadAllocation] = Field(default_factory=list)
+    requested: list[PayloadAllocation]
+    approved: list[PayloadAllocation]
+    loaded: list[PayloadAllocation]
     notes: str | None = None
 
 class PayloadMountSchema(OCCIDModel):
     mount_id: str
     item_id: str
-    qty: int = '0'
-    pylons: str = '""'
-    launcher: str = '""'
-    compat_tags: list[PayloadType] = Field(default_factory=list)
-    loaded: list[PayloadAllocation] = Field(default_factory=list)
+    qty: int = 0
+    pylons: str = ''
+    launcher: str = ''
+    compat_tags: list[PayloadType]
+    loaded: list[PayloadAllocation]
 
 class PayloadSchema(OCCIDModel):
     item_type: PayloadType
     state: PayloadState | None = None
-    weapons: list[ItemCount] = Field(default_factory=list)
-    ammo: list[ItemCount] = Field(default_factory=list)
-    ordnance: list[ItemCount] = Field(default_factory=list)
-    payload_mounts: dict[str, PayloadMountSchema] = Field(default_factory=dict)
+    weapons: list[ItemCount]
+    ammo: list[ItemCount]
+    ordnance: list[ItemCount]
+    payload_mounts: dict[str, PayloadMountSchema]
     payload_plan: PayloadPlanSchema | None = None
 
 class EffectsSchema(OCCIDModel):
     has_launchers: bool
     esad: EsadMunitionStatus | None = None
-    payload_mounts: dict[str, PayloadMountSchema] = Field(default_factory=dict)
+    payload_mounts: dict[str, PayloadMountSchema]
     effect_domain: OperationalDomain
     launch_domain: OperationalDomain
     guidance: GuidanceType
     warhead: WarheadType
-    pylon_format: str = '""'
+    pylon_format: str = ''
 
 class GroundEffectsSchema(EffectsSchema):
-    attack_modes: list[AttackMode] = Field(default_factory=list)
+    attack_modes: list[AttackMode]
 
 class AirEffectsSchema(EffectsSchema):
     reusable: bool | None = None
-    attack_modes: list[AirAttackMode] = Field(default_factory=list)
+    attack_modes: list[AirAttackMode]
 
 class TargetPrioritySchema(OCCIDModel):
     threat: ThreatLevel | None = None
-    is_high_value: bool = 'false'
+    is_high_value: bool = False
     note: str | None = None
 
 class TargetKinematics(OCCIDModel):

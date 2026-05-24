@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: network
+description: "Network links, addresses, capacities, endpoints, and link state."
+tags:
+  - core
+root: communication
+
 enums:
   LinkCondition:
     - UNKNOWN = 0
@@ -99,8 +106,8 @@ models:
       user_capacity: optional LinkCapacity
       network_id: optional string
       primary_address: optional NetworkAddress
-      addresses: list[NetworkAddress] = []
-      endpoints: list[LinkEndpoint] = []
+      addresses: list[NetworkAddress]
+      endpoints: list[LinkEndpoint]
       radio: optional RadioProfile
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus

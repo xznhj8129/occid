@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: robot
+description: "Robotic platform hardware, control, telemetry, and configuration structs."
+tags:
+  - core
+root: objects
+
 enums:
   SerialTelemetryType:
     - MSP = 0
@@ -95,7 +102,7 @@ models:
       pitch: optional float
       yaw: optional float
       throttle: optional float
-      aux: list[float] = []
+      aux: list[float]
 
 
   ControlChannelValue:
@@ -110,7 +117,7 @@ models:
       pitch: optional float
       yaw: optional float
       throttle: optional float
-      aux: list[ControlChannelValue] = []
+      aux: list[ControlChannelValue]
 
 
   ControlAttitudeSetpoint:
@@ -150,8 +157,8 @@ models:
       in_air: optional bool
       override_active: optional bool
       failsafe: optional bool
-      active_modes: list[int] = []
-      active_mode_names: list[string] = []
+      active_modes: list[int]
+      active_mode_names: list[string]
       nav_state_code: optional int
       flight_mode: optional string
       attitude_setpoint: optional ControlAttitudeSetpoint
@@ -173,7 +180,7 @@ models:
 
   RemoteControlSchema:
     fields:
-      links: map[string, LinkSchema] = {}
+      links: map[string, LinkSchema]
       rc_link: string = ""
       vid_link: string = ""
       ctrl_video_sep: optional bool
@@ -183,8 +190,8 @@ models:
       control_output: optional ControlAxisSet
       control_override: optional ControlOverride
       receiver_config: optional ReceiverConfig
-      channel_map: list[ChannelMapEntry] = []
-      mode_ranges: list[ModeRange] = []
+      channel_map: list[ChannelMapEntry]
+      mode_ranges: list[ModeRange]
 
 
   ControlLease:

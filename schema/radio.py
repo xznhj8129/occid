@@ -56,7 +56,7 @@ class CryptoKey(OCCIDModel):
 class CryptoProfile(OCCIDModel):
     active_crypto: CryptoType | None = None
     keyset_id: str | None = None
-    keys: list[CryptoKey] = Field(default_factory=list)
+    keys: list[CryptoKey]
 
 class LoRaProfile(OCCIDModel):
     spreading_factor: int | None = None
@@ -77,12 +77,12 @@ class FpvProfile(OCCIDModel):
 
 class RadioProfile(OCCIDModel):
     service: RadioService | None = None
-    bands: list[NATORadioBands] = Field(default_factory=list)
+    bands: list[NATORadioBands]
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None
-    channel_plan: list[ChannelSpec] = Field(default_factory=list)
+    channel_plan: list[ChannelSpec]
     active_channel_id: str | None = None
-    crypto_types: list[CryptoType] = Field(default_factory=list)
+    crypto_types: list[CryptoType]
     crypto_profile: CryptoProfile | None = None
     lora: LoRaProfile | None = None
     aprs: AprsProfile | None = None

@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: radio
+description: "Radio waveforms, channels, crypto profiles, emitters, and signal measurements."
+tags:
+  - core
+root: communication
+
 enums:
   Waveform:
     - FM = 0
@@ -58,7 +65,7 @@ models:
     fields:
       active_crypto: optional CryptoType
       keyset_id: optional string
-      keys: list[CryptoKey] = []
+      keys: list[CryptoKey]
 
 
   LoRaProfile:
@@ -89,12 +96,12 @@ models:
   RadioProfile:
     fields:
       service: optional RadioService
-      bands: list[NATORadioBands] = []
+      bands: list[NATORadioBands]
       waveform: optional Waveform
       frequency: optional FrequencyRange
-      channel_plan: list[ChannelSpec] = []
+      channel_plan: list[ChannelSpec]
       active_channel_id: optional string
-      crypto_types: list[CryptoType] = []
+      crypto_types: list[CryptoType]
       crypto_profile: optional CryptoProfile
       lora: optional LoRaProfile
       aprs: optional AprsProfile

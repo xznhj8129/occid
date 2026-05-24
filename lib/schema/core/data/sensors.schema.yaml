@@ -1,4 +1,11 @@
 version: 1
+type: schema
+name: sensors
+description: "Sensor types, observations, detections, tracker state, and sensor payload metadata."
+tags:
+  - core
+root: data
+
 enums:
   SensorType:
     - EO = 0
@@ -127,7 +134,7 @@ models:
       bearing: optional LocalDirection
       position: optional GlobalPosition
       source_frame_id: optional string
-      attributes: list[MetadataEntry] = []
+      attributes: list[MetadataEntry]
 
 
   VisionDetectionFrame:
@@ -135,7 +142,7 @@ models:
       frame_id: optional string
       sensor_id: optional string
       timestamp_us: optional int
-      detections: list[VisionDetection] = []
+      detections: list[VisionDetection]
 
 
   TrackerState:
@@ -168,11 +175,11 @@ models:
       spectrum: SensorSpectrum
       night_vision: bool
       all_weather: bool
-      weather_limits: WeatherLimits = {}
+      weather_limits: WeatherLimits
       error_margin: float
       error_type: SensorErrorType
-      data_formats: list[SensorDataFormat] = []
-      ai: list[SensorAICapability] = []
+      data_formats: list[SensorDataFormat]
+      ai: list[SensorAICapability]
       datalink: string
       field_of_view: optional SensorFieldOfView
       zoom_range: optional NumericRange

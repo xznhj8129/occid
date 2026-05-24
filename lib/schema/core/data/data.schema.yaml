@@ -1,4 +1,16 @@
 version: 1
+type: schema
+name: data
+description: "Concrete typed data describing information, state, events, intel, and sensory products."
+tags:
+  - core
+root: core
+branches:
+  - health
+  - sensors
+  - effects
+  - isr
+
 enums:
   ClassificationLevel:
     - UNCLASSIFIED = 0
@@ -26,8 +38,8 @@ models:
   ClassificationSchema:
     fields:
       level: ClassificationLevel
-      codewords: list[string] = []
-      release_to: list[string] = []
+      codewords: list[string]
+      release_to: list[string]
 
 
   VideoConfigSchema:
@@ -54,4 +66,4 @@ models:
 
   MediaSchema:
     fields:
-      items: list[MediaItemSchema] = []
+      items: list[MediaItemSchema]
