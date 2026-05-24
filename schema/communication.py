@@ -91,6 +91,12 @@ class CapabilityRole(IntEnum):
     GATEWAY = auto()
     RECORDER = auto()
 
+class ProtocolPayloadFormat(IntEnum):
+    TEXT = 0
+    XML = auto()
+    JSON = auto()
+    BYTES = auto()
+
 ### Models
 
 class RetryProfile(OCCIDModel):
@@ -143,3 +149,56 @@ class StateDelta(OCCIDModel):
     changed_fields: list[str] = Field(default_factory=list)
     source: str | None = None
     confidence: ConfidenceLevel | None = None
+
+class MessageTarget(OCCIDModel):
+    target_id: str | None = None
+    target_type: str | None = None
+    callsign: str | None = None
+    address: NetworkAddress | None = None
+
+class ProtocolPayload(OCCIDModel):
+    format: ProtocolPayloadFormat
+    content_type: str | None = None
+    text: str | None = None
+    data: bytes | None = None
+
+class ProtocolEventMessage(OCCIDModel):
+    uid: str
+    event_type: str
+    event_method: str | None = None
+    callsign: str | None = None
+    time_text: str | None = None
+    start_text: str | None = None
+    stale_text: str | None = None
+    position: GlobalPosition | None = None
+    uncertainty: LocationUncertainty | None = None
+    detail: ProtocolPayload | None = None
+    source_address: NetworkAddress | None = None
+    targets: list[MessageTarget] = Field(default_factory=list)
+
+class HumanTextMessage(OCCIDModel):
+    sender_id: str | None = None
+    sender_name: str | None = None
+    destination_id: str | None = None
+    destination_group: str | None = None
+    kind: str | None = None
+    message: str
+    position: GlobalPosition | None = None
+    targets: list[MessageTarget] = Field(default_factory=list)
+
+class MessageTransferResult(OCCIDModel):
+    target_count: int = '0'
+    bytes_sent: int = '0'
+    delivery_state: DeliveryState | None = None
+    error: str | None = None
+
+class TransportCounters(OCCIDModel):
+    rx_count: int = '0'
+    tx_count: int = '0'
+    parse_error_count: int = '0'
+    dropped_count: int = '0'
+
+class TransportError(OCCIDModel):
+    error: str
+    source_address: NetworkAddress | None = None
+    payload: ProtocolPayload | None = None

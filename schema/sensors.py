@@ -80,6 +80,12 @@ class GimbalState(IntEnum):
     SCANNING = auto()
     TRACKING = auto()
 
+class DetectionBoxSpace(IntEnum):
+    IMAGE_PIXEL = 0
+    IMAGE_NORMALIZED = auto()
+    BODY_ANGULAR = auto()
+    WORLD = auto()
+
 ### Models
 
 class SensorFieldOfView(OCCIDModel):
@@ -95,6 +101,49 @@ class MeasurementQuality(OCCIDModel):
     lat_err_m: float | None = None
     az_err_deg: float | None = None
     range_err_m: float | None = None
+
+class ImuSample(OCCIDModel):
+    acceleration: LocalVector | None = None
+    angular_velocity: AngularVelocityVector | None = None
+    magnetic_field: LocalVector | None = None
+    temperature_deg_c: float | None = None
+    timestamp_us: int | None = None
+    frame: BodyReferenceFrame | None = None
+
+class VisionBox(OCCIDModel):
+    space: DetectionBoxSpace
+    bounds: BoundingBox
+
+class VisionDetection(OCCIDModel):
+    detection_id: str | None = None
+    label: str | None = None
+    class_id: int | None = None
+    confidence: float | None = None
+    box: VisionBox | None = None
+    bearing: LocalDirection | None = None
+    position: GlobalPosition | None = None
+    source_frame_id: str | None = None
+    attributes: list[MetadataEntry] = Field(default_factory=list)
+
+class VisionDetectionFrame(OCCIDModel):
+    frame_id: str | None = None
+    sensor_id: str | None = None
+    timestamp_us: int | None = None
+    detections: list[VisionDetection] = Field(default_factory=list)
+
+class TrackerState(OCCIDModel):
+    locked: bool | None = None
+    target_id: str | None = None
+    angular_error: LocalDirection | None = None
+    search_box_size: int | None = None
+    detections: VisionDetectionFrame | None = None
+
+class TrackerCommand(OCCIDModel):
+    lock: bool | None = None
+    reset: bool | None = None
+    slew: LocalDirection | None = None
+    search_box_size: int | None = None
+    shutdown: bool | None = None
 
 class SensorSchema(OCCIDModel):
     name: str

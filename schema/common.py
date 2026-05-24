@@ -302,8 +302,21 @@ class FuelState(OCCIDModel):
     fuel_type: FuelType
     capacity: float | None = None
     remaining: float | None = None
-    burn_rate_per_hour: float | None = None
 
 class SuppliesSchema(OCCIDModel):
     fuel: FuelState | None = None
     stores: list[ItemCount] = Field(default_factory=list)
+
+class DisplayMeta(OCCIDModel):
+    icon_code: str | None = None
+    tint: str | None = None
+    short_label: str | None = None
+
+class RelationSchema(OCCIDModel):
+    src_id: str
+    dst_id: str
+    rel_kind: str
+    since_ts: float | None = None
+    until_ts: float | None = None
+    confidence: ConfidenceLevel | None = None
+    source: str | None = None

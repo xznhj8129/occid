@@ -4,7 +4,6 @@ from .data import *
 from .effects import *
 from .health import *
 from .mesh import *
-from .meta import *
 from .network import *
 from .objects import *
 from .radio import *

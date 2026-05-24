@@ -81,6 +81,15 @@ class NavAids(IntEnum):
     CELESTIAL = auto()
     VISUAL = auto()
 
+class GnssFixType(IntEnum):
+    NONE = 0
+    NO_FIX = auto()
+    FIX_2D = auto()
+    FIX_3D = auto()
+    DGPS = auto()
+    RTK_FLOAT = auto()
+    RTK_FIXED = auto()
+
 ### Models
 
 class EulerAngles(OCCIDModel):
@@ -128,6 +137,39 @@ class VelocityVector(OCCIDModel):
     y: float | None = None
     z: float | None = None
 
+class AngularVelocityVector(OCCIDModel):
+    x_rad_s: float | None = None
+    y_rad_s: float | None = None
+    z_rad_s: float | None = None
+    frame: BodyReferenceFrame | None = None
+
+class NavigationValidity(OCCIDModel):
+    local_position_ok: bool | None = None
+    global_position_ok: bool | None = None
+    home_position_ok: bool | None = None
+
+class AltitudeState(OCCIDModel):
+    absolute_m: float | None = None
+    relative_m: float | None = None
+    datum: AltitudeDatum | None = None
+
+class GnssSolution(OCCIDModel):
+    fix_type: GnssFixType | None = None
+    fix_code: int | None = None
+    satellites_used: int | None = None
+    position: GlobalPosition | None = None
+    altitude: AltitudeState | None = None
+    ground_speed_ms: float | None = None
+    ground_course_deg: float | None = None
+    hdop: float | None = None
+    vdop: float | None = None
+    eph: float | None = None
+    epv: float | None = None
+    yaw_deg: float | None = None
+    last_message_dt: float | None = None
+    errors: float | None = None
+    timeouts: float | None = None
+
 class FeaturePropertyValue(OCCIDModel):
     text_value: str | None = None
     int_value: int | None = None
@@ -169,3 +211,7 @@ class LocationState(OCCIDModel):
     position: GlobalPosition | None = None
     uncertainty: LocationUncertainty | None = None
     attitude: EulerAngles | None = None
+    altitude: AltitudeState | None = None
+    velocity: VelocityVector | None = None
+    navigation_validity: NavigationValidity | None = None
+    gnss: GnssSolution | None = None

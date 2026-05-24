@@ -103,3 +103,38 @@ class PowerSourceSchema(OCCIDModel):
 class PowerStateSchema(OCCIDModel):
     status: PowerStatus
     sources: list[PowerSourceSchema] = Field(default_factory=list)
+    electrical_sources: list[ElectricalResourceState] = Field(default_factory=list)
+
+class ElectricalResourceState(OCCIDModel):
+    source_id: str | None = None
+    battery_id: int | None = None
+    voltage_v: float | None = None
+    current_a: float | None = None
+    power_w: float | None = None
+    consumed_mah: float | None = None
+    consumed_mwh: float | None = None
+    consumed_ah: float | None = None
+    remaining_pct: float | None = None
+    remaining_capacity: float | None = None
+    temperature_deg_c: float | None = None
+    rssi: float | None = None
+
+class RuntimeLoadState(OCCIDModel):
+    cpu_load: int | None = None
+    cycle_time_us: int | None = None
+
+class VehicleReadinessState(OCCIDModel):
+    gyro_ok: bool | None = None
+    accel_ok: bool | None = None
+    mag_ok: bool | None = None
+    local_position_ok: bool | None = None
+    global_position_ok: bool | None = None
+    home_position_ok: bool | None = None
+    armable: bool | None = None
+    arm_ready: bool | None = None
+    takeoff_ready: bool | None = None
+    ekf_using_gps: bool | None = None
+    can_arm_or_run: bool | None = None
+    mode_name: str | None = None
+    mode_problems: list[str] = Field(default_factory=list)
+    health_problems: list[str] = Field(default_factory=list)

@@ -151,6 +151,20 @@ class BaseTask(OCCIDModel):
     conflict_policy: ConflictPolicy = ConflictPolicy.VECTOR_CLOCK
     objective: ObjectiveSchema | None = None
 
+class VehicleCommand(OCCIDModel):
+    command_id: str
+    command_type: FlightCommandType
+    asset_id: str
+    mode: str | None = None
+    enabled: bool | None = None
+    altitude_m: float | None = None
+    yaw_deg: float | None = None
+    destination: GlobalPosition | None = None
+    waypoint: AutopilotMissionWaypoint | None = None
+    sequence: int | None = None
+    control_override: ControlOverride | None = None
+    attitude_setpoint: ControlAttitudeSetpoint | None = None
+
 class MoveTask(BaseTask):
     task_type: TaskType = Field(default=TaskType.MOVE, frozen=True)
     movement_domain: OperationalDomain
@@ -172,8 +186,3 @@ class ResupplyTask(BaseTask):
     destination: GlobalPosition
     payload: list[PayloadAllocation] = Field(default_factory=list)
     payload_plan: PayloadPlanSchema | None = None
-
-class HoldTask(BaseTask):
-    task_type: TaskType = Field(default=TaskType.HOLD, frozen=True)
-    location: GlobalPosition
-    radius_m: float | None = None

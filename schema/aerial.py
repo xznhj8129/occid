@@ -262,6 +262,20 @@ class MissionPoi(OCCIDModel):
     stale_after_s: float | None = None
     url: str | None = None
 
+class AutopilotMissionWaypoint(OCCIDModel):
+    waypoint_index: int
+    action_code: int | None = None
+    position: GlobalPosition
+    param1: int | None = None
+    param2: int | None = None
+    param3: int | None = None
+    flag: int | None = None
+
+class MissionProgress(OCCIDModel):
+    waypoint_count: int | None = None
+    current_waypoint_index: int | None = None
+    mission_valid: bool | None = None
+
 class PlannerMissionPoint(OCCIDModel):
     num: int
     point_type: PlannerPointType
