@@ -1,2 +1,0 @@
-# Autonomy [Control → Process]
-

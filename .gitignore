@@ -2,3 +2,17 @@
 .qwen/
 __pycache__/
 spec/.test/
+.env
+*.key
+*.pem
+*.crt
+*.ovpn
+*.log
+logs/
+captures/
+recordings/
+field/
+secrets/
+private/
+config/local*
+config/real*
