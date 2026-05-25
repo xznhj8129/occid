@@ -9,30 +9,18 @@ root: control
 enums:
   Capability:
     - NONE = 0
-    - DIRECT_FIRES
-    - INDIRECT_FIRES
     - LOGISTICS_SUPPLY
     - COMMUNICATIONS
     - FUEL
     - RESCUE
-    - SURVEILLANCE
 
   TaskType:
     - POSITIONING = 0
-    - COMBAT
-    - ISR
     - CARGO
     - HOLD
     - SUPPORT
     - MOVE
     - RESUPPLY
-
-  TaskCombat:
-    - DEFEND = 0
-    - ATTACK
-    - PROTECT
-    - COMBAT_SUPPORT
-    - COMBAT_RESERVE
 
   TaskPhase:
     - CREATED = 0
@@ -78,19 +66,15 @@ enums:
     - CANCELLED
 
 models:
-  MunitionAllocation:
-    fields:
-      munition_type: string
-      qty: int = 0
-
-
   TaskTimeWindow:
+    parent: Constraint
     fields:
       earliest_start: optional float
       latest_finish: optional float
 
 
   ObjectiveSchema:
+    parent: Objective
     fields:
       objective_id: string
       intent: string
@@ -103,6 +87,7 @@ models:
 
 
   ObjectiveBinding:
+    parent: Objective
     fields:
       objective_id: string
       task_ids: list[string]
@@ -112,6 +97,7 @@ models:
 
 
   TaskDelta:
+    parent: Assignment
     fields:
       task_id: string
       task_rev: int = 0
@@ -122,6 +108,7 @@ models:
 
 
   TaskStatusEntry:
+    parent: Lifecycle
     fields:
       ts: float
       status: TaskStatus
@@ -134,6 +121,10 @@ models:
 
 
   BaseTask:
+    parent: Task
+    variants:
+      - MoveTask
+      - ResupplyTask
     fields:
       task_id: string
       task_type: TaskType
@@ -166,6 +157,7 @@ models:
 
 
   VehicleCommand:
+    parent: Command
     fields:
       command_id: string
       command_type: FlightCommandType
@@ -191,22 +183,9 @@ models:
       speed_ms: optional float
 
 
-  CombatTask:
-    parent: BaseTask
-    fields:
-      task_type: const TaskType = COMBAT
-      strike_task: optional TaskCombat
-      target_category: optional TargetCategory
-      target_point: optional GlobalPosition
-      munitions: list[MunitionAllocation]
-      effect: optional string
-      desired_bda: bool = false
-
-
   ResupplyTask:
     parent: BaseTask
     fields:
       task_type: const TaskType = RESUPPLY
       destination: GlobalPosition
-      payload: list[PayloadAllocation]
-      payload_plan: optional PayloadPlanSchema
+      supplies: list[ItemCount]

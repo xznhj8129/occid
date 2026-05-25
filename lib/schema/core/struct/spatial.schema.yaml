@@ -95,6 +95,7 @@ enums:
 
 models:
   EulerAngles:
+    parent: Pose
     fields:
       pitch: optional float
       heading: optional float
@@ -103,6 +104,7 @@ models:
 
 
   LocalDirection:
+    parent: Bearing
     fields:
       bearing: optional float
       azimuth: optional float
@@ -111,6 +113,7 @@ models:
 
 
   LocalVector:
+    parent: Vector
     fields:
       x: optional float
       y: optional float
@@ -119,6 +122,7 @@ models:
 
 
   GlobalPosition:
+    parent: GeoPos
     fields:
       lat: optional float
       lon: optional float
@@ -129,16 +133,19 @@ models:
 
 
   GeoPath:
+    parent: StructPath
     fields:
       points: list[GlobalPosition]
 
 
   GeoArea:
+    parent: Shape
     fields:
       vertices: list[GlobalPosition]
 
 
   BoundingBox:
+    parent: Bounding
     fields:
       x1: optional float
       y1: optional float
@@ -149,6 +156,7 @@ models:
 
 
   VelocityVector:
+    parent: Vector
     fields:
       x: optional float
       y: optional float
@@ -156,6 +164,7 @@ models:
 
 
   AngularVelocityVector:
+    parent: Vector
     fields:
       x_rad_s: optional float
       y_rad_s: optional float
@@ -164,6 +173,7 @@ models:
 
 
   NavigationValidity:
+    parent: Guidance
     fields:
       local_position_ok: optional bool
       global_position_ok: optional bool
@@ -171,6 +181,7 @@ models:
 
 
   AltitudeState:
+    parent: Measurement
     fields:
       absolute_m: optional float
       relative_m: optional float
@@ -178,6 +189,7 @@ models:
 
 
   GnssSolution:
+    parent: Guidance
     fields:
       fix_type: optional GnssFixType
       fix_code: optional int
@@ -197,6 +209,7 @@ models:
 
 
   FeaturePropertyValue:
+    parent: Properties
     fields:
       text_value: optional string
       int_value: optional int
@@ -205,12 +218,14 @@ models:
 
 
   FeatureProperty:
+    parent: Properties
     fields:
       key: string
       value: FeaturePropertyValue
 
 
   GeoJsonGeometry:
+    parent: Geometry
     fields:
       type: GeoJsonGeometryTypes
       coordinates: optional any
@@ -219,6 +234,7 @@ models:
 
 
   GeoJsonFeature:
+    parent: Feature
     fields:
       type: const string = "Feature"
       geometry: GeoJsonGeometry
@@ -228,6 +244,7 @@ models:
 
 
   GeoJsonFeatureCollection:
+    parent: Collection
     fields:
       type: const string = "FeatureCollection"
       features: list[GeoJsonFeature]
@@ -235,6 +252,7 @@ models:
 
 
   LocationUncertainty:
+    parent: Uncertainty
     fields:
       horiz_err_m: optional float
       vert_err_m: optional float
@@ -244,6 +262,7 @@ models:
 
 
   LocationState:
+    parent: Position
     fields:
       inertial_frame: optional InertialReferenceFrame
       body_frame: optional BodyReferenceFrame

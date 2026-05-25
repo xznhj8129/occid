@@ -62,34 +62,6 @@ enums:
     - STALE
     - DIVERGED
 
-  NATOAlphabet:
-    - ALPHA = 0
-    - BRAVO
-    - CHARLIE
-    - DELTA
-    - ECHO
-    - FOXTROT
-    - GOLF
-    - HOTEL
-    - INDIA
-    - JULIETT
-    - KILO
-    - LIMA
-    - MIKE
-    - NOVEMBER
-    - OSCAR
-    - PAPA
-    - QUEBEC
-    - ROMEO
-    - SIERRA
-    - TANGO
-    - UNIFORM
-    - VICTOR
-    - WHISKEY
-    - XRAY
-    - YANKEE
-    - ZULU
-
   CapabilityRole:
     - CONTROLLER = 0
     - RELAY
@@ -106,6 +78,7 @@ enums:
 
 models:
   RetryProfile:
+    parent: Transport
     fields:
       max_attempts: int = 0
       base_delay_ms: int = 0
@@ -114,11 +87,13 @@ models:
 
 
   NodeRef:
+    parent: Node
     fields:
       node_id: string
 
 
   RouteHint:
+    parent: Network
     fields:
       next_hop: optional string
       hop_limit: optional int
@@ -127,6 +102,7 @@ models:
 
 
   MessageEnvelope:
+    parent: Message
     fields:
       msg_id: string
       msg_type: string
@@ -144,6 +120,7 @@ models:
 
 
   DeliveryReceipt:
+    parent: Response
     fields:
       msg_id: string
       node_id: string
@@ -154,6 +131,7 @@ models:
 
 
   CapabilityAdvert:
+    parent: Telemetry
     fields:
       node_id: string
       roles: list[CapabilityRole]
@@ -163,6 +141,7 @@ models:
 
 
   StateDelta:
+    parent: Telemetry
     fields:
       entity_id: string
       changed_fields: list[string]
@@ -171,6 +150,7 @@ models:
 
 
   MessageTarget:
+    parent: Message
     fields:
       target_id: optional string
       target_type: optional string
@@ -179,6 +159,7 @@ models:
 
 
   ProtocolPayload:
+    parent: Protocol
     fields:
       format: ProtocolPayloadFormat
       content_type: optional string
@@ -187,6 +168,7 @@ models:
 
 
   ProtocolEventMessage:
+    parent: ISR
     fields:
       uid: string
       event_type: string
@@ -203,6 +185,7 @@ models:
 
 
   HumanTextMessage:
+    parent: C3
     fields:
       sender_id: optional string
       sender_name: optional string
@@ -215,6 +198,7 @@ models:
 
 
   MessageTransferResult:
+    parent: Response
     fields:
       target_count: int = 0
       bytes_sent: int = 0
@@ -223,6 +207,7 @@ models:
 
 
   TransportCounters:
+    parent: Telemetry
     fields:
       rx_count: int = 0
       tx_count: int = 0
@@ -231,6 +216,7 @@ models:
 
 
   TransportError:
+    parent: Telemetry
     fields:
       error: string
       source_address: optional NetworkAddress

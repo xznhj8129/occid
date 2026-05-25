@@ -77,7 +77,6 @@ class FpvProfile(OCCIDModel):
 
 class RadioProfile(OCCIDModel):
     service: RadioService | None = None
-    bands: list[NATORadioBands]
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None
     channel_plan: list[ChannelSpec]

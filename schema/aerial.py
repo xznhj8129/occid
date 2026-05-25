@@ -6,56 +6,21 @@ from .common import *
 
 class TaskAir(IntEnum):
     FLY = 0
-    ISR = auto()
-    CLOSE_AIR_SUPPORT = auto()
     AIR_DROP = auto()
-    ELECTRONIC_WARFARE = auto()
-    STRIKE = auto()
     RECOVERY = auto()
-    SEAD = auto()
-
-class AirRole(IntEnum):
-    GROUND = 0
-    AIR_DEFENSE = auto()
-    FIGHTER = auto()
-    GROUND_ATTACK = auto()
-    ISR = auto()
-    MINE = auto()
-    CARGO = auto()
 
 class AirMissionType(IntEnum):
     SURVEY = 0
     SEARCH = auto()
-    ISR = auto()
     DELIVERY = auto()
 
 class AirMoveTask(IntEnum):
     FLY = 0
     RELOCATION = auto()
 
-class AirCombatTask(IntEnum):
-    STRIKE = 0
-    CAS = auto()
-    CAP = auto()
-    INTERCEPT = auto()
-    HK = auto()
-
-class AirISRType(IntEnum):
-    OVERFLY = 0
-    FLYBY = auto()
-    ORBIT = auto()
-
-class AirAttackMode(IntEnum):
-    ONEWAY = 0
-    DROPPER = auto()
-    DIVE = auto()
-    STRAFE = auto()
-    STANDOFF_LAUNCH = auto()
-
 class AirFailsafeMode(IntEnum):
     HOLD = 0
     RTB = auto()
-    DROP = auto()
     LAND = auto()
     LOITER = auto()
     CONTINUE_LAST = auto()
@@ -112,8 +77,6 @@ class PlannerPointType(IntEnum):
     HOLD = auto()
     WAYPOINT = auto()
     ASSEMBLY = auto()
-    TARGET = auto()
-    DISPERSAL = auto()
     POI = auto()
     ROI = auto()
     SURVEY = auto()
@@ -180,28 +143,6 @@ class AirGroupFormation2DType(IntEnum):
     STAGG_TRAIL_LEFT = auto()
     STAGG_TRAIL_RIGHT = auto()
 
-### Mappings
-
-AIR_ROLE_LABELS: dict[AirRole, str] = {
-    AirRole.GROUND: 'Ground',
-    AirRole.AIR_DEFENSE: 'Air Defense',
-    AirRole.FIGHTER: 'Fighter',
-    AirRole.GROUND_ATTACK: 'Ground Attack',
-    AirRole.ISR: 'ISR',
-    AirRole.MINE: 'Mine',
-    AirRole.CARGO: 'Cargo',
-}
-
-AIR_ROLE_NAMES: dict[AirRole, str] = {
-    AirRole.GROUND: 'Ground',
-    AirRole.AIR_DEFENSE: 'Air Defense',
-    AirRole.FIGHTER: 'Fighter',
-    AirRole.GROUND_ATTACK: 'Ground Attack',
-    AirRole.ISR: 'ISR',
-    AirRole.MINE: 'Mine',
-    AirRole.CARGO: 'Cargo',
-}
-
 ### Models
 
 class LoiterOrbit(OCCIDModel):
@@ -255,7 +196,6 @@ class MissionPoi(OCCIDModel):
     pos: GlobalPosition
     origin: str
     cot: str | None = None
-    sidc: int | None = None
     added_ts: float | None = None
     stale_after_s: float | None = None
     url: str | None = None
@@ -302,7 +242,7 @@ class PlannedUnitMission(OCCIDModel):
     callsign: str
     fl: float
     route_in: GeoPath
-    target: PlannerMissionPoint
+    objective: PlannerMissionPoint
     route_out: GeoPath
     home: GlobalPosition
     land_pos: GlobalPosition

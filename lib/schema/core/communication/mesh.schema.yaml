@@ -20,6 +20,7 @@ enums:
 
 models:
   MeshReceiveMetrics:
+    parent: Telemetry
     fields:
       snr: optional float
       rssi: optional float
@@ -28,6 +29,7 @@ models:
 
 
   MeshPositionSample:
+    parent: Telemetry
     fields:
       position: GlobalPosition
       position_ts: optional float
@@ -38,6 +40,7 @@ models:
 
 
   MeshtasticMessage:
+    parent: Message
     fields:
       sender_id: string
       sender_name: optional string
@@ -51,6 +54,7 @@ models:
 
 
   MeshLink:
+    parent: Link
     fields:
       src_id: string
       dst_id: string
@@ -62,6 +66,7 @@ models:
 
 
   NodeHeartbeat:
+    parent: Telemetry
     fields:
       node_id: string
       last_seen_ts: float
@@ -74,6 +79,7 @@ models:
 
 
   MeshNode:
+    parent: Node
     fields:
       node_id: string
       state: optional MeshNodeState
@@ -88,6 +94,7 @@ models:
 
 
   MeshView:
+    parent: Network
     fields:
       epoch: int = 0
       nodes: map[string, MeshNode]

@@ -37,6 +37,7 @@ enums:
 
 models:
   FrequencyRange:
+    parent: Carrier
     fields:
       low_mhz: optional float
       high_mhz: optional float
@@ -44,6 +45,7 @@ models:
 
 
   ChannelSpec:
+    parent: Carrier
     fields:
       channel_id: optional string
       label: optional string
@@ -53,6 +55,7 @@ models:
 
 
   CryptoKey:
+    parent: Protocol
     fields:
       key_id: string
       label: optional string
@@ -62,6 +65,7 @@ models:
 
 
   CryptoProfile:
+    parent: Protocol
     fields:
       active_crypto: optional CryptoType
       keyset_id: optional string
@@ -69,6 +73,7 @@ models:
 
 
   LoRaProfile:
+    parent: Protocol
     fields:
       spreading_factor: optional int
       bandwidth_mhz: optional float
@@ -76,27 +81,31 @@ models:
 
 
   AprsProfile:
+    parent: Protocol
     fields:
       callsign: optional string
       path: optional string
 
 
   ElrsProfile:
+    parent: Protocol
     fields:
       packet_rate_hz: optional int
       telemetry_ratio: optional string
 
 
   FpvProfile:
+    parent: Protocol
     fields:
       video_standard: optional string
       low_latency: optional bool
 
 
   RadioProfile:
+    parent: Carrier
+    variants:
     fields:
       service: optional RadioService
-      bands: list[NATORadioBands]
       waveform: optional Waveform
       frequency: optional FrequencyRange
       channel_plan: list[ChannelSpec]
@@ -110,6 +119,7 @@ models:
 
 
   EmitterNotationSchema:
+    parent: Detection
     fields:
       emitter_name: optional string
       emitter_class: optional string
@@ -117,6 +127,7 @@ models:
 
 
   SignalMeasurement:
+    parent: Detection
     fields:
       value: optional float
       unit: optional string
@@ -124,12 +135,14 @@ models:
 
 
   LineOfBearingSchema:
+    parent: Detection
     fields:
       bearing_deg: optional float
       bearing_error_deg: optional float
 
 
   AngleOfArrivalSchema:
+    parent: Detection
     fields:
       azimuth_deg: optional float
       elevation_deg: optional float
@@ -138,18 +151,21 @@ models:
 
 
   PulseRepetitionIntervalSchema:
+    parent: Detection
     fields:
       pri_us: optional float
       jitter_us: optional float
 
 
   ScanCharacteristicsSchema:
+    parent: Detection
     fields:
       period_s: optional float
       frame_time_s: optional float
 
 
   SignalSchema:
+    parent: Detection
     fields:
       signal_id: string
       source_id: optional string

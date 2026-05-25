@@ -1,0 +1,92 @@
+version: 1
+type: module
+name: military_aerial
+description: "Military aviation roles, air combat tasks, ISR tasks, attack modes, and mission extensions."
+tags:
+  - military
+requires:
+  - core
+extend_variants:
+  AirNavigationSchema:
+    - MilitaryAirNavigation
+  MissionPoi:
+    - MilitaryMissionPoi
+  PlannedUnitMission:
+    - MilitaryPlannedUnitMission
+
+enums:
+  MilitaryAirTask:
+    - ISR = 0
+    - CLOSE_AIR_SUPPORT
+    - ELECTRONIC_WARFARE
+    - STRIKE
+    - SEAD
+
+  AirRole:
+    - GROUND = 0
+    - AIR_DEFENSE
+    - FIGHTER
+    - GROUND_ATTACK
+    - ISR
+    - MINE
+    - CARGO
+
+  AirCombatTask:
+    - STRIKE = 0
+    - CAS
+    - CAP
+    - INTERCEPT
+    - HK
+
+  AirISRType:
+    - OVERFLY = 0
+    - FLYBY
+    - ORBIT
+
+  AirAttackMode:
+    - ONEWAY = 0
+    - DROPPER
+    - DIVE
+    - STRAFE
+    - STANDOFF_LAUNCH
+
+maps:
+  AIR_ROLE_LABELS:
+    type: map[AirRole, string]
+    value:
+      GROUND: Ground
+      AIR_DEFENSE: Air Defense
+      FIGHTER: Fighter
+      GROUND_ATTACK: Ground Attack
+      ISR: ISR
+      MINE: Mine
+      CARGO: Cargo
+
+  AIR_ROLE_NAMES:
+    type: map[AirRole, string]
+    value:
+      GROUND: Ground
+      AIR_DEFENSE: Air Defense
+      FIGHTER: Fighter
+      GROUND_ATTACK: Ground Attack
+      ISR: ISR
+      MINE: Mine
+      CARGO: Cargo
+
+models:
+  MilitaryAirNavigation:
+    parent: AirNavigationSchema
+    fields:
+      roles: list[AirRole]
+
+
+  MilitaryMissionPoi:
+    parent: MissionPoi
+    fields:
+      sidc: optional int
+
+
+  MilitaryPlannedUnitMission:
+    parent: PlannedUnitMission
+    fields:
+      target: PlannerMissionPoint

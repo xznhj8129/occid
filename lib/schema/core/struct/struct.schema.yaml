@@ -11,11 +11,13 @@ branches:
 models:
 
   Time:
+    parent: Measurement
     fields:
       utime: int
     
 
   Duration:
+    parent: Measurement
     fields:
       ms: optional float
       seconds: optional float
@@ -28,6 +30,7 @@ models:
 
 
   Timestamp:
+    parent: Measurement
     fields:
       ms: float
       seconds: float
@@ -40,24 +43,28 @@ models:
 
 
   AlternateId:
+    parent: Identity
     fields:
       id_type: AlternateIdType
       value: string
 
 
   ItemCount:
+    parent: Measurement
     fields:
       item_type: string
       qty: int = 0
 
 
   NumericRange:
+    parent: Range
     fields:
       min_value: optional float
       max_value: optional float
 
 
   MetadataValue:
+    parent: Attributes
     fields:
       text_value: optional string
       int_value: optional int
@@ -66,18 +73,21 @@ models:
 
 
   MetadataEntry:
+    parent: Attributes
     fields:
       key: string
       value: MetadataValue
 
 
   SymbologySchema:
+    parent: Attributes
     fields:
       sidc: optional string
       cot: optional string
 
 
   FirmwareInfo:
+    parent: Internal
     fields:
       name: optional string
       version: optional string
@@ -85,6 +95,7 @@ models:
 
 
   FuelState:
+    parent: Resources
     fields:
       fuel_type: FuelType
       capacity: optional float
@@ -92,17 +103,20 @@ models:
 
 
   SuppliesSchema:
+    parent: Resources
     fields:
       fuel: optional FuelState
       stores: list[ItemCount]
 
   DisplayMeta:
+    parent: Attributes
     fields:
       icon_code: optional string
       tint: optional string
       short_label: optional string
 
   RelationSchema:
+    parent: PropertyRelationship
     fields:
       src_id: string
       dst_id: string

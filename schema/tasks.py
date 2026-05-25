@@ -8,30 +8,18 @@ from .communication import AckMode, ConflictPolicy, DeliveryState, QosTier, Rout
 
 class Capability(IntEnum):
     NONE = 0
-    DIRECT_FIRES = auto()
-    INDIRECT_FIRES = auto()
     LOGISTICS_SUPPLY = auto()
     COMMUNICATIONS = auto()
     FUEL = auto()
     RESCUE = auto()
-    SURVEILLANCE = auto()
 
 class TaskType(IntEnum):
     POSITIONING = 0
-    COMBAT = auto()
-    ISR = auto()
     CARGO = auto()
     HOLD = auto()
     SUPPORT = auto()
     MOVE = auto()
     RESUPPLY = auto()
-
-class TaskCombat(IntEnum):
-    DEFEND = 0
-    ATTACK = auto()
-    PROTECT = auto()
-    COMBAT_SUPPORT = auto()
-    COMBAT_RESERVE = auto()
 
 class TaskPhase(IntEnum):
     CREATED = 0
@@ -76,11 +64,11 @@ class CommandResult(IntEnum):
     IN_PROGRESS = auto()
     CANCELLED = auto()
 
-### Models
+class BaseTaskType(IntEnum):
+    MOVE = 0
+    RESUPPLY = auto()
 
-class MunitionAllocation(OCCIDModel):
-    munition_type: str
-    qty: int = 0
+### Models
 
 class TaskTimeWindow(OCCIDModel):
     earliest_start: float | None = None
@@ -172,17 +160,7 @@ class MoveTask(BaseTask):
     route: GeoPath | None = None
     speed_ms: float | None = None
 
-class CombatTask(BaseTask):
-    task_type: TaskType = Field(default=TaskType.COMBAT, frozen=True)
-    strike_task: TaskCombat | None = None
-    target_category: TargetCategory | None = None
-    target_point: GlobalPosition | None = None
-    munitions: list[MunitionAllocation]
-    effect: str | None = None
-    desired_bda: bool = False
-
 class ResupplyTask(BaseTask):
     task_type: TaskType = Field(default=TaskType.RESUPPLY, frozen=True)
     destination: GlobalPosition
-    payload: list[PayloadAllocation]
-    payload_plan: PayloadPlanSchema | None = None
+    supplies: list[ItemCount]

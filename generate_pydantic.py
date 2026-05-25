@@ -1,7 +1,8 @@
-"""Generate a Pydantic schema package from `occid/lib/schema/core`.
+"""Generate a Pydantic schema package from `occid/lib/schema`.
 
 Usage:
     python generate_pydantic.py
+    python generate_pydantic.py --module-tag military
     python generate_pydantic.py --output-dir schema
 """
 
@@ -19,6 +20,7 @@ from yaml.tokens import AliasToken, AnchorToken, FlowMappingStartToken, FlowSequ
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_DIR = SCRIPT_DIR / "lib" / "schema" / "core"
+MODULE_DIR = SCRIPT_DIR / "lib" / "schema" / "modules"
 DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "schema"
 TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
 
@@ -40,7 +42,20 @@ PRIMITIVE_TYPES = {
 }
 
 TYPE_KEYWORDS = {"list", "map", "tuple"}
-TOP_LEVEL_KEYS = {"version", "type", "name", "description", "tags", "root", "branches", "enums", "maps", "models"}
+TOP_LEVEL_KEYS = {
+    "version",
+    "type",
+    "name",
+    "description",
+    "tags",
+    "root",
+    "branches",
+    "requires",
+    "extend_variants",
+    "enums",
+    "maps",
+    "models",
+}
 MAP_KEYS = {"type", "value"}
 MODEL_KEYS = {"parent", "fields", "variants"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
@@ -84,6 +99,8 @@ class ModelDef:
     name: str
     parent: str | None
     fields: list[FieldDef]
+    variants: list[str]
+    has_variants: bool
 
 
 @dataclass
@@ -96,8 +113,12 @@ class MappingDef:
 
 @dataclass
 class ModuleDef:
+    doc_type: str
     name: str
     path: Path
+    tags: list[str]
+    requires: list[str]
+    extend_variants: dict[str, list[str]]
     enums: list[EnumDef]
     models: list[ModelDef]
     maps: list[MappingDef]
@@ -106,6 +127,10 @@ class ModuleDef:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--schema-dir", type=Path, default=SCHEMA_DIR)
+    parser.add_argument("--module-dir", type=Path, default=MODULE_DIR)
+    parser.add_argument("--module", action="append", default=[])
+    parser.add_argument("--module-tag", action="append", default=[])
+    parser.add_argument("--all-modules", action="store_true")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     return parser.parse_args()
 
@@ -286,12 +311,19 @@ def parse_model(name: str, spec: dict) -> ModelDef:
     unknown_keys = sorted(set(spec) - MODEL_KEYS)
     if unknown_keys:
         raise SchemaError(f"unknown model keys {unknown_keys} on {name}")
-    if "variants" in spec:
-        raise SchemaError(f"variants are specified by the IDL but not implemented by the compiler yet on {name}")
+    has_variants = "variants" in spec
+    variants = spec.get("variants") or []
+    if type(variants) != list:
+        raise SchemaError(f"variants must be a list on {name}")
+    for variant_name in variants:
+        if type(variant_name) != str:
+            raise SchemaError(f"variants must be a list of model names on {name}")
     return ModelDef(
         name=name,
         parent=spec.get("parent"),
         fields=[parse_field(field_name, field_spec) for field_name, field_spec in (spec.get("fields") or {}).items()],
+        variants=variants,
+        has_variants=has_variants,
     )
 
 
@@ -310,41 +342,94 @@ def parse_mapping(name: str, spec: dict) -> MappingDef:
     )
 
 
-def load_modules(schema_dir: Path) -> list[ModuleDef]:
+def parse_document(path: Path) -> tuple[ModuleDef, dict]:
+    text = path.read_text()
+    validate_yaml_subset(path, text)
+    data = yaml.safe_load(text)
+    unknown_keys = sorted(set(data) - TOP_LEVEL_KEYS)
+    if unknown_keys:
+        raise SchemaError(f"unknown top-level keys {unknown_keys} in {path}")
+    for key in ("version", "type", "name", "description", "tags"):
+        if key not in data:
+            raise SchemaError(f"missing {key} in {path}")
+    if data["type"] not in {"schema", "module"}:
+        raise SchemaError(f"type must be schema or module in {path}")
+    expected_name = path.stem.replace(".schema", "")
+    if data["type"] == "schema" and data["name"] != expected_name:
+        raise SchemaError(f"name {data['name']} does not match schema id {expected_name}")
+    if type(data["tags"]) != list:
+        raise SchemaError(f"tags must be a list in {path}")
+    for tag in data["tags"]:
+        if type(tag) != str:
+            raise SchemaError(f"tags must be strings in {path}")
+
+    requires = data.get("requires") or []
+    if type(requires) != list:
+        raise SchemaError(f"requires must be a list in {path}")
+    for requirement in requires:
+        if type(requirement) != str:
+            raise SchemaError(f"requires must be strings in {path}")
+
+    extend_variants = data.get("extend_variants") or {}
+    if type(extend_variants) != dict:
+        raise SchemaError(f"extend_variants must be a mapping in {path}")
+    for parent_name, variant_names in extend_variants.items():
+        if type(parent_name) != str or type(variant_names) != list:
+            raise SchemaError(f"extend_variants must map model names to lists in {path}")
+        for variant_name in variant_names:
+            if type(variant_name) != str:
+                raise SchemaError(f"extend_variants values must be model names in {path}")
+
+    if data["type"] == "schema":
+        for module_key in ("requires", "extend_variants"):
+            if module_key in data:
+                raise SchemaError(f"{module_key} is only valid on module files in {path}")
+    else:
+        for schema_key in ("root", "branches"):
+            if schema_key in data:
+                raise SchemaError(f"{schema_key} is only valid on schema files in {path}")
+
+    return (
+        ModuleDef(
+            doc_type=data["type"],
+            name=data["name"],
+            path=path,
+            tags=data["tags"],
+            requires=requires,
+            extend_variants=extend_variants,
+            enums=[parse_enum(name, entries) for name, entries in (data.get("enums") or {}).items()],
+            models=[parse_model(name, spec) for name, spec in (data.get("models") or {}).items()],
+            maps=[parse_mapping(name, spec) for name, spec in (data.get("maps") or {}).items()],
+        ),
+        data,
+    )
+
+
+def load_schema_documents(schema_dir: Path) -> list[ModuleDef]:
     modules: list[ModuleDef] = []
-    paths = sorted(schema_dir.rglob("*.schema.yaml"))
     schema_names: set[str] = set()
     schema_data: list[tuple[Path, dict]] = []
-    for path in paths:
-        text = path.read_text()
-        validate_yaml_subset(path, text)
-        data = yaml.safe_load(text)
-        unknown_keys = sorted(set(data) - TOP_LEVEL_KEYS)
-        if unknown_keys:
-            raise SchemaError(f"unknown top-level keys {unknown_keys} in {path}")
-        for key in ("version", "type", "name", "description", "tags"):
-            if key not in data:
-                raise SchemaError(f"missing {key} in {path}")
-        if data["type"] != "schema":
-            raise SchemaError(f"type must be schema in {path}")
-        expected_name = path.stem.replace(".schema", "")
-        if data["name"] != expected_name:
-            raise SchemaError(f"name {data['name']} does not match schema id {expected_name}")
+    for path in sorted(schema_dir.rglob("*.schema.yaml")):
+        module, data = parse_document(path)
+        if module.doc_type != "schema":
+            raise SchemaError(f"type must be schema in core schema dir: {path}")
         if data["name"] in schema_names:
             raise SchemaError(f"duplicate schema id {data['name']} in {path}")
         schema_names.add(data["name"])
         schema_data.append((path, data))
+        modules.append(module)
 
     branch_graph: dict[str, set[str]] = {}
     branch_parent: dict[str, str] = {}
     root_by_name: dict[str, str] = {}
     rootless_schema_names = [data["name"] for path, data in schema_data if not data.get("root")]
-    if len(rootless_schema_names) != 1:
-        raise SchemaError(f"expected one schema with no root, found {rootless_schema_names}")
-    tree_root = rootless_schema_names[0]
+    if rootless_schema_names != ["core"]:
+        raise SchemaError(f"expected only core with no root, found {rootless_schema_names}")
     for path, data in schema_data:
         schema_name = data["name"]
-        if schema_name != tree_root and not data.get("root"):
+        if schema_name == "core" and data.get("root"):
+            raise SchemaError(f"core must not declare root in {path}")
+        if schema_name != "core" and not data.get("root"):
             raise SchemaError(f"missing root in {path}")
         if data.get("root") and data["root"] not in schema_names:
             raise SchemaError(f"unknown root {data['root']} in {path}")
@@ -357,15 +442,6 @@ def load_modules(schema_dir: Path) -> list[ModuleDef]:
             if branch_name in branch_parent:
                 raise SchemaError(f"branch {branch_name} has multiple roots: {branch_parent[branch_name]}, {schema_name}")
             branch_parent[branch_name] = schema_name
-        modules.append(
-            ModuleDef(
-                name=path.stem.replace(".schema", ""),
-                path=path,
-                enums=[parse_enum(name, entries) for name, entries in (data.get("enums") or {}).items()],
-                models=[parse_model(name, spec) for name, spec in (data.get("models") or {}).items()],
-                maps=[parse_mapping(name, spec) for name, spec in (data.get("maps") or {}).items()],
-            )
-        )
     checking: set[str] = set()
     checked: set[str] = set()
     for name in schema_names:
@@ -390,6 +466,110 @@ def load_modules(schema_dir: Path) -> list[ModuleDef]:
     return modules
 
 
+def load_available_module_documents(module_dir: Path) -> list[ModuleDef]:
+    if not module_dir.exists():
+        return []
+    modules: list[ModuleDef] = []
+    for path in sorted(module_dir.rglob("*.schema.yaml")):
+        module, data = parse_document(path)
+        if module.doc_type != "module":
+            raise SchemaError(f"type must be module in module dir: {path}")
+        modules.append(module)
+    return modules
+
+
+def select_module_documents(
+    available_modules: list[ModuleDef], selected_names: list[str], selected_tags: list[str], all_modules: bool
+) -> list[ModuleDef]:
+    selected: dict[str, ModuleDef] = {}
+    modules_by_name = {module.name: module for module in available_modules}
+    if len(modules_by_name) != len(available_modules):
+        raise SchemaError("duplicate module names in module dir")
+
+    selected_tag_set = set(selected_tags)
+    if all_modules:
+        for module in available_modules:
+            selected[module.name] = module
+    for module in available_modules:
+        if module.name in selected_names or selected_tag_set.intersection(module.tags):
+            selected[module.name] = module
+        if set(selected_names).intersection(module.tags):
+            selected[module.name] = module
+
+    changed = True
+    while changed:
+        changed = False
+        satisfied_names = {"core", *selected}
+        satisfied_tags = {"core"}
+        for module in selected.values():
+            satisfied_tags.update(module.tags)
+        for module in list(selected.values()):
+            for requirement in module.requires:
+                if requirement in satisfied_names or requirement in satisfied_tags:
+                    continue
+                if requirement in modules_by_name:
+                    selected[requirement] = modules_by_name[requirement]
+                    changed = True
+                    continue
+                matching_modules = [candidate for candidate in available_modules if requirement in candidate.tags]
+                for candidate in matching_modules:
+                    if candidate.name not in selected:
+                        selected[candidate.name] = candidate
+                        changed = True
+
+    satisfied_names = {"core", *selected}
+    satisfied_tags = {"core"}
+    for module in selected.values():
+        satisfied_tags.update(module.tags)
+    for module in selected.values():
+        for requirement in module.requires:
+            if requirement not in satisfied_names and requirement not in satisfied_tags:
+                raise SchemaError(f"unsatisfied requirement {requirement} in {module.path}")
+    return sorted(selected.values(), key=lambda module: module.name)
+
+
+def apply_extend_variants(modules: list[ModuleDef]) -> None:
+    models_by_name: dict[str, ModelDef] = {}
+    model_paths: dict[str, Path] = {}
+    for module in modules:
+        for model_def in module.models:
+            if model_def.name in models_by_name:
+                raise SchemaError(f"duplicate model {model_def.name} in {module.path} and {model_paths[model_def.name]}")
+            models_by_name[model_def.name] = model_def
+            model_paths[model_def.name] = module.path
+
+    for module in modules:
+        if module.doc_type != "module":
+            continue
+        for parent_name, variant_names in module.extend_variants.items():
+            if parent_name not in models_by_name:
+                raise SchemaError(f"extend_variants references unknown parent {parent_name} in {module.path}")
+            parent_model = models_by_name[parent_name]
+            if not parent_model.has_variants:
+                raise SchemaError(f"extend_variants references non-variant parent {parent_name} in {module.path}")
+            existing_members = {variant_member_name(parent_name, variant_name) for variant_name in parent_model.variants}
+            for variant_name in variant_names:
+                if variant_name not in models_by_name:
+                    raise SchemaError(f"extend_variants references unknown child {variant_name} in {module.path}")
+                if models_by_name[variant_name].parent != parent_name:
+                    raise SchemaError(f"extend_variants child {variant_name} parent is not {parent_name} in {module.path}")
+                member_name = variant_member_name(parent_name, variant_name)
+                if member_name in existing_members:
+                    raise SchemaError(f"extend_variants member {parent_name}.{member_name} already exists in {module.path}")
+                existing_members.add(member_name)
+                parent_model.variants.append(variant_name)
+
+
+def load_modules(
+    schema_dir: Path, module_dir: Path, selected_names: list[str], selected_tags: list[str], all_modules: bool
+) -> list[ModuleDef]:
+    schema_modules = load_schema_documents(schema_dir)
+    selected_modules = select_module_documents(load_available_module_documents(module_dir), selected_names, selected_tags, all_modules)
+    modules = schema_modules + selected_modules
+    apply_extend_variants(modules)
+    return modules
+
+
 def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
     symbols = {"OCCIDModel": "common", "IntEnum": "common"}
     for module in modules:
@@ -397,6 +577,12 @@ def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
             if enum_def.name in symbols:
                 raise SchemaError(f"duplicate symbol {enum_def.name} in {module.path}")
             symbols[enum_def.name] = module.name
+        for model_def in module.models:
+            if model_def.variants:
+                enum_name = variant_enum_name(model_def.name)
+                if enum_name in symbols:
+                    raise SchemaError(f"duplicate symbol {enum_name} in {module.path}")
+                symbols[enum_name] = module.name
         for model_def in module.models:
             if model_def.name in symbols:
                 raise SchemaError(f"duplicate symbol {model_def.name} in {module.path}")
@@ -414,7 +600,42 @@ def build_enum_members(modules: list[ModuleDef]) -> dict[str, set[str]]:
                     raise SchemaError(f"duplicate enum member {enum_def.name}.{value.name} in {module.path}")
                 members.add(value.name)
             enum_members[enum_def.name] = members
+        for model_def in module.models:
+            if model_def.variants:
+                enum_name = variant_enum_name(model_def.name)
+                members = set(variant_member_name(model_def.name, variant_name) for variant_name in model_def.variants)
+                if len(members) != len(model_def.variants):
+                    raise SchemaError(f"duplicate derived variant member in {module.path}:{model_def.name}")
+                enum_members[enum_name] = members
     return enum_members
+
+
+def variant_enum_name(model_name: str) -> str:
+    return f"{model_name}Type"
+
+
+def screaming_snake(name: str) -> str:
+    parts: list[str] = []
+    current = ""
+    for char in name:
+        if char.isupper() and current:
+            parts.append(current)
+            current = char
+        else:
+            current += char
+    if current:
+        parts.append(current)
+    return "_".join(part.upper() for part in parts)
+
+
+def variant_member_name(parent_name: str, child_name: str) -> str:
+    parent_root = parent_name[4:] if parent_name.startswith("Base") else parent_name
+    child_root = child_name[4:] if child_name.startswith("Base") else child_name
+    if child_root.startswith(parent_root) and child_root != parent_root:
+        child_root = child_root[len(parent_root) :]
+    elif child_root.endswith(parent_root) and child_root != parent_root:
+        child_root = child_root[: -len(parent_root)]
+    return screaming_snake(child_root)
 
 
 def collect_type_refs(node: TypeNode) -> set[str]:
@@ -441,6 +662,9 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
         for model_def in module.models:
             if model_def.parent and model_def.parent not in symbol_index:
                 raise SchemaError(f"unknown parent {model_def.parent} in {module.path}")
+            for variant_name in model_def.variants:
+                if variant_name not in symbol_index:
+                    raise SchemaError(f"unknown variant {variant_name} in {module.path}:{model_def.name}")
             for field_def in model_def.fields:
                 unknown_refs = sorted(ref for ref in collect_type_refs(field_def.type_node) if ref not in symbol_index)
                 if unknown_refs:
@@ -452,6 +676,12 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     raise SchemaError(
                         f"invalid enum default {type_name}.{field_def.default} in {module.path}:{model_def.name}.{field_def.name}"
                     )
+    models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
+    for module in modules:
+        for model_def in module.models:
+            for variant_name in model_def.variants:
+                if models_by_name[variant_name].parent != model_def.name:
+                    raise SchemaError(f"variant {variant_name} parent is not {model_def.name} in {module.path}")
 
 
 def python_type_expr(node: TypeNode) -> str:
@@ -586,6 +816,17 @@ def render_enum_block(enum_def: EnumDef) -> str:
     return "\n".join(lines)
 
 
+def render_variant_enum_block(model_def: ModelDef) -> str:
+    enum_def = EnumDef(
+        name=variant_enum_name(model_def.name),
+        values=[
+            EnumValue(name=variant_member_name(model_def.name, variant_name), value=0 if index == 0 else None)
+            for index, variant_name in enumerate(model_def.variants)
+        ],
+    )
+    return render_enum_block(enum_def)
+
+
 def model_type_refs(model_def: ModelDef) -> set[str]:
     refs: set[str] = set()
     if model_def.parent:
@@ -637,6 +878,8 @@ def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]]) -
     lines = [f"class {model_def.name}({parent}):"]
     for field_def in model_def.fields:
         lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members)}")
+    if not model_def.fields:
+        lines.append("    pass")
     return "\n".join(lines)
 
 
@@ -672,9 +915,12 @@ def render_module(module: ModuleDef, symbol_index: dict[str, str], enum_members:
     imports = module_imports(module, symbol_index, enum_members)
     if imports:
         sections.append("\n".join(imports))
-    if module.enums:
+    variant_models = [model_def for model_def in module.models if model_def.variants]
+    if module.enums or variant_models:
         sections.append("### Enums")
-        sections.append("\n\n".join(render_enum_block(enum_def) for enum_def in module.enums))
+        enum_blocks = [render_enum_block(enum_def) for enum_def in module.enums]
+        enum_blocks.extend(render_variant_enum_block(model_def) for model_def in variant_models)
+        sections.append("\n\n".join(enum_blocks))
     if module.maps:
         sections.append("### Mappings")
         sections.append("\n\n".join(render_mapping_block(mapping_def, enum_members) for mapping_def in module.maps))
@@ -688,12 +934,16 @@ def module_dependency_graph(
     modules: list[ModuleDef], symbol_index: dict[str, str], enum_members: dict[str, set[str]]
 ) -> dict[str, set[str]]:
     graph: dict[str, set[str]] = {}
+    module_names = {module.name for module in modules}
     for module in modules:
         refs: set[str] = set()
+        for requirement in module.requires:
+            if requirement in module_names and requirement != module.name:
+                refs.add(requirement)
         for mapping_def in module.maps:
             for ref in (mapping_def.key_type, mapping_def.value_type):
                 if ref in symbol_index and symbol_index[ref] != module.name:
-                    refs.add(ref)
+                    refs.add(symbol_index[ref])
         for model_def in module.models:
             for ref in runtime_type_refs(model_def, enum_members):
                 ref_module = symbol_index[ref]
@@ -750,12 +1000,13 @@ def write_package(output_dir: Path, modules: list[ModuleDef], symbol_index: dict
 
 def main() -> None:
     args = parse_args()
-    modules = load_modules(args.schema_dir)
+    modules = load_modules(args.schema_dir, args.module_dir, args.module, args.module_tag, args.all_modules)
     symbol_index = build_symbol_index(modules)
     enum_members = build_enum_members(modules)
     validate_schema(modules, symbol_index, enum_members)
     write_package(args.output_dir, modules, symbol_index, enum_members)
     print(f"schema_dir={args.schema_dir}")
+    print(f"module_dir={args.module_dir}")
     print(f"output_dir={args.output_dir}")
     print(f"module_count={len(modules)}")
 

@@ -56,6 +56,7 @@ enums:
 
 models:
   BandwidthSpec:
+    parent: Link
     fields:
       mhz: optional float
       occupied_mhz: optional float
@@ -63,6 +64,7 @@ models:
 
 
   DataRateSpec:
+    parent: Link
     fields:
       nominal_bps: optional float
       sustained_bps: optional float
@@ -70,6 +72,7 @@ models:
 
 
   NetworkAddress:
+    parent: Network
     fields:
       kind: AddressKind
       value: string
@@ -77,6 +80,7 @@ models:
 
 
   LinkCapacity:
+    parent: Link
     fields:
       max_nodes: optional int
       max_users: optional int
@@ -84,6 +88,7 @@ models:
 
 
   LinkEndpoint:
+    parent: Link
     fields:
       node_id: optional string
       interface_name: optional string
@@ -91,6 +96,7 @@ models:
 
 
   LinkSchema:
+    parent: Link
     fields:
       schema_id: string
       schema_type: SchemaKind = LINK

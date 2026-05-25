@@ -1,0 +1,33 @@
+version: 1
+type: module
+name: military_radio
+description: "Military and NATO radio band extensions."
+tags:
+  - military
+requires:
+  - core
+extend_variants:
+  RadioProfile:
+    - MilitaryRadioProfile
+
+enums:
+  NATORadioBands:
+    - A_BAND_0_250M = 0
+    - B_BAND_250M_500M
+    - C_BAND_500M_1G
+    - D_BAND_1G_2G
+    - E_BAND_2G_3G
+    - F_BAND_3G_4G
+    - G_BAND_4G_6G
+    - H_BAND_6G_8G
+    - I_BAND_8G_10G
+    - J_BAND_10G_20G
+    - K_BAND_20G_40G
+    - L_BAND_40G_60G
+    - M_BAND_60G_100G
+
+models:
+  MilitaryRadioProfile:
+    parent: RadioProfile
+    fields:
+      bands: list[NATORadioBands]

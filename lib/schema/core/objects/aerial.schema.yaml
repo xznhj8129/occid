@@ -10,56 +10,21 @@ root: objects
 enums:
   TaskAir:
     - FLY = 0
-    - ISR
-    - CLOSE_AIR_SUPPORT
     - AIR_DROP
-    - ELECTRONIC_WARFARE
-    - STRIKE
     - RECOVERY
-    - SEAD
-
-  AirRole:
-    - GROUND = 0
-    - AIR_DEFENSE
-    - FIGHTER
-    - GROUND_ATTACK
-    - ISR
-    - MINE
-    - CARGO
 
   AirMissionType:
     - SURVEY = 0
     - SEARCH
-    - ISR
     - DELIVERY
 
   AirMoveTask:
     - FLY = 0
     - RELOCATION
 
-  AirCombatTask:
-    - STRIKE = 0
-    - CAS
-    - CAP
-    - INTERCEPT
-    - HK
-
-  AirISRType:
-    - OVERFLY = 0
-    - FLYBY
-    - ORBIT
-
-  AirAttackMode:
-    - ONEWAY = 0
-    - DROPPER
-    - DIVE
-    - STRAFE
-    - STANDOFF_LAUNCH
-
   AirFailsafeMode:
     - HOLD = 0
     - RTB
-    - DROP
     - LAND
     - LOITER
     - CONTINUE_LAST
@@ -116,8 +81,6 @@ enums:
     - HOLD
     - WAYPOINT
     - ASSEMBLY
-    - TARGET
-    - DISPERSAL
     - POI
     - ROI
     - SURVEY
@@ -184,31 +147,9 @@ enums:
     - STAGG_TRAIL_LEFT
     - STAGG_TRAIL_RIGHT
 
-maps:
-  AIR_ROLE_LABELS:
-    type: map[AirRole, string]
-    value:
-      GROUND: Ground
-      AIR_DEFENSE: Air Defense
-      FIGHTER: Fighter
-      GROUND_ATTACK: Ground Attack
-      ISR: ISR
-      MINE: Mine
-      CARGO: Cargo
-
-  AIR_ROLE_NAMES:
-    type: map[AirRole, string]
-    value:
-      GROUND: Ground
-      AIR_DEFENSE: Air Defense
-      FIGHTER: Fighter
-      GROUND_ATTACK: Ground Attack
-      ISR: ISR
-      MINE: Mine
-      CARGO: Cargo
-
 models:
   LoiterOrbit:
+    parent: ReferencePath
     fields:
       orbit_direction: int
       orbit_radius: int
@@ -216,6 +157,7 @@ models:
 
 
   WeatherLimits:
+    parent: Constraint
     fields:
       ifr: optional bool
       night: optional bool
@@ -228,6 +170,7 @@ models:
 
 
   TelemetryState:
+    parent: State
     fields:
       flight_mode: optional FlightMode
       flight_phase: optional FlightPhase
@@ -239,12 +182,14 @@ models:
 
 
   FlightLevelBand:
+    parent: Region
     fields:
       altitude_range_m: NumericRange
       alt_sep_m: float
 
 
   FlightPhasePlan:
+    parent: Sequence
     fields:
       phase: AirMissionPhase
       flight_level: optional FlightLevelBand
@@ -258,6 +203,7 @@ models:
 
 
   MissionRouteGeometry:
+    parent: ReferencePath
     fields:
       route_in: GeoPath
       survey: GeoPath
@@ -266,19 +212,21 @@ models:
 
 
   MissionPoi:
+    parent: Mark
+    variants:
     fields:
       uid: string
       name: string
       pos: GlobalPosition
       origin: string
       cot: optional string
-      sidc: optional int
       added_ts: optional float
       stale_after_s: optional float
       url: optional string
 
 
   AutopilotMissionWaypoint:
+    parent: Mark
     fields:
       waypoint_index: int
       action_code: optional int
@@ -290,6 +238,7 @@ models:
 
 
   MissionProgress:
+    parent: Lifecycle
     fields:
       waypoint_count: optional int
       current_waypoint_index: optional int
@@ -297,6 +246,7 @@ models:
 
 
   PlannerMissionPoint:
+    parent: Mark
     fields:
       num: int
       point_type: PlannerPointType
@@ -305,6 +255,7 @@ models:
 
 
   PlannedRoutePoints:
+    parent: ReferencePath
     fields:
       start: PlannerMissionPoint
       route_in: list[PlannerMissionPoint]
@@ -315,6 +266,7 @@ models:
 
 
   FlightAssignment:
+    parent: Assignment
     fields:
       num: int
       unit_id: optional string
@@ -326,12 +278,14 @@ models:
 
 
   PlannedUnitMission:
+    parent: Plan
+    variants:
     fields:
       unit_num: int
       callsign: string
       fl: float
       route_in: GeoPath
-      target: PlannerMissionPoint
+      objective: PlannerMissionPoint
       route_out: GeoPath
       home: GlobalPosition
       land_pos: GlobalPosition
@@ -340,6 +294,7 @@ models:
 
 
   AirMissionSchema:
+    parent: Mission
     fields:
       mission_name: string
       mission_uid: string

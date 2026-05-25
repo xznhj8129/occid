@@ -1,0 +1,48 @@
+version: 1
+type: module
+name: military_entities
+description: "Military entity extensions for combat loadouts, NATO categories, payloads, and effects."
+tags:
+  - military
+requires:
+  - core
+  - military_effects
+  - military_organization
+  - military_aerial
+extend_variants:
+  Person:
+    - MilitaryPerson
+  BaseMachine:
+    - MilitaryMachine
+  GroundMachine:
+    - MilitaryGroundMachine
+  AirMachine:
+    - MilitaryAirMachine
+
+models:
+  MilitaryPerson:
+    parent: Person
+    fields:
+      attack_modes: list[AttackMode]
+      weapons: list[ItemCount]
+      ammo: list[ItemCount]
+
+
+  MilitaryMachine:
+    parent: BaseMachine
+    fields:
+      category: optional NATOUnitCategory
+
+
+  MilitaryGroundMachine:
+    parent: GroundMachine
+    fields:
+      payload: PayloadSchema
+      effects: GroundEffectsSchema
+
+
+  MilitaryAirMachine:
+    parent: AirMachine
+    fields:
+      payload: PayloadSchema
+      effects: AirEffectsSchema

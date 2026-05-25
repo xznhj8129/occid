@@ -19,7 +19,6 @@ enums:
   SystemType:
     - PLATFORM = 0
     - EQUIPMENT
-    - MUNITION
 
   EntityOperationalState:
     - UNKNOWN = 0
@@ -40,13 +39,15 @@ enums:
 models:
   BaseEntity:
     parent: BaseObject
+    variants:
+      - Person
+      - BaseMachine
     fields:
       object_type: ObjectType = ENTITY
       entity_id: string
       short_id: optional string
       name: optional string
       entity_type: optional EntityType
-      faction: optional Faction
       lifecycle_status: optional EntityLifecycleStatus
       created_ts: optional float
       updated_ts: optional float
@@ -61,6 +62,7 @@ models:
 
 
   EntityComponentRef:
+    parent: PropertyRelationship
     fields:
       component_id: string
       component_type: optional string
@@ -69,6 +71,7 @@ models:
 
   Person:
     parent: BaseEntity
+    variants:
     fields:
       entity_type: EntityType = PERSON
       role: string
@@ -78,20 +81,19 @@ models:
       navigation: NavigationMode
       navaids: list[NavAids]
       health: HumanHealthStatus
-      attack_modes: list[AttackMode]
       sensors: map[string, SensorSchema]
-      weapons: list[ItemCount]
-      ammo: list[ItemCount]
       links: map[string, LinkSchema]
 
 
   BaseMachine:
     parent: BaseEntity
+    variants:
+      - GroundMachine
+      - AirMachine
     fields:
       entity_type: EntityType = MACHINE
       sys_id: string
       machine_type: optional MachineType
-      category: optional NATOUnitCategory
       status: EntityOperationalState
       health_snapshot: optional HealthSnapshot
       power_state: optional PowerStateSchema
@@ -102,6 +104,7 @@ models:
 
 
   GroundNavigationSchema:
+    parent: Guidance
     fields:
       propulsion: PropulsionType
       navigation: NavigationMode
@@ -111,13 +114,14 @@ models:
 
 
   AirNavigationSchema:
+    parent: Guidance
+    variants:
     fields:
       flight_type: AirframeType
       control_modes: list[FlightMode]
       failsafe_mode: optional AirFailsafeMode
       weather_limits: WeatherLimits
       ifr: optional bool
-      roles: list[AirRole]
       propulsion: PropulsionType
       navigation: NavigationMode
       navaids: list[NavAids]
@@ -132,6 +136,8 @@ models:
 
   GroundMachine:
     parent: BaseMachine
+    variants:
+      - GroundRobot
     fields:
       machine_type: MachineType
       op_domain: OperationalDomain = LAND
@@ -139,8 +145,6 @@ models:
       role: string
       serial_uid: string = ""
       sensors: map[string, SensorSchema]
-      payload: PayloadSchema
-      effects: GroundEffectsSchema
       navigation: GroundNavigationSchema
 
 
@@ -154,14 +158,14 @@ models:
 
   AirMachine:
     parent: BaseMachine
+    variants:
+      - AirRobot
     fields:
       machine_type: optional MachineType
       op_domain: OperationalDomain = AIR
       model: string
       serial_uid: string = ""
       sensors: map[string, SensorSchema]
-      payload: PayloadSchema
-      effects: AirEffectsSchema
       navigation: AirNavigationSchema
       maint_status: optional MaintenanceStatus
 

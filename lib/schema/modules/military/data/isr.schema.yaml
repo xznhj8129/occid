@@ -1,11 +1,15 @@
 version: 1
-type: schema
-name: isr
-description: "ISR tasks, observations, tracks, reports, evidence, and assessment data."
+type: module
+name: military_isr
+description: "Military ISR tasks, observations, tracks, reports, evidence, and assessment data."
 tags:
-  - core
   - military
-root: data
+requires:
+  - core
+  - military_definition
+extend_variants:
+  BaseTask:
+    - IsrTask
 
 enums:
   TaskISR:
@@ -78,7 +82,6 @@ models:
   IsrTask:
     parent: BaseTask
     fields:
-      task_type: const TaskType = ISR
       isr_task: optional TaskISR
       area: GeoArea
       dwell_seconds: optional float
@@ -135,7 +138,7 @@ models:
   IntelTrackSchema:
     fields:
       schema_id: string
-      schema_type: SchemaKind = INTEL_TRACK
+      schema_type: string = "INTEL_TRACK"
       created_ts: optional float
       updated_ts: optional float
       origin_system: optional string

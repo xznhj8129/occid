@@ -8,6 +8,10 @@ class ObjectType(IntEnum):
     ENTITY = 0
     ORGANIZATION = auto()
 
+class BaseObjectType(IntEnum):
+    ENTITY = 0
+    ORG = auto()
+
 ### Models
 
 class BaseObject(OCCIDModel):

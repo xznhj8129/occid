@@ -1,0 +1,37 @@
+version: 1
+type: module
+name: military_communication
+description: "Military communication conventions."
+tags:
+  - military
+requires:
+  - core
+
+enums:
+  NATOAlphabet:
+    - ALPHA = 0
+    - BRAVO
+    - CHARLIE
+    - DELTA
+    - ECHO
+    - FOXTROT
+    - GOLF
+    - HOTEL
+    - INDIA
+    - JULIETT
+    - KILO
+    - LIMA
+    - MIKE
+    - NOVEMBER
+    - OSCAR
+    - PAPA
+    - QUEBEC
+    - ROMEO
+    - SIERRA
+    - TANGO
+    - UNIFORM
+    - VICTOR
+    - WHISKEY
+    - XRAY
+    - YANKEE
+    - ZULU

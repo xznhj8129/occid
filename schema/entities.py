@@ -19,7 +19,6 @@ class MachineType(IntEnum):
 class SystemType(IntEnum):
     PLATFORM = 0
     EQUIPMENT = auto()
-    MUNITION = auto()
 
 class EntityOperationalState(IntEnum):
     UNKNOWN = 0
@@ -36,6 +35,20 @@ class EntityLifecycleStatus(IntEnum):
     INACTIVE = auto()
     UNKNOWN = auto()
 
+class BaseEntityType(IntEnum):
+    PERSON = 0
+    MACHINE = auto()
+
+class BaseMachineType(IntEnum):
+    GROUND = 0
+    AIR = auto()
+
+class GroundMachineType(IntEnum):
+    GROUND_ROBOT = 0
+
+class AirMachineType(IntEnum):
+    AIR_ROBOT = 0
+
 ### Models
 
 class BaseEntity(BaseObject):
@@ -44,7 +57,6 @@ class BaseEntity(BaseObject):
     short_id: str | None = None
     name: str | None = None
     entity_type: EntityType | None = None
-    faction: Faction | None = None
     lifecycle_status: EntityLifecycleStatus | None = None
     created_ts: float | None = None
     updated_ts: float | None = None
@@ -71,17 +83,13 @@ class Person(BaseEntity):
     navigation: NavigationMode
     navaids: list[NavAids]
     health: HumanHealthStatus
-    attack_modes: list[AttackMode]
     sensors: dict[str, SensorSchema]
-    weapons: list[ItemCount]
-    ammo: list[ItemCount]
     links: dict[str, LinkSchema]
 
 class BaseMachine(BaseEntity):
     entity_type: EntityType = EntityType.MACHINE
     sys_id: str
     machine_type: MachineType | None = None
-    category: NATOUnitCategory | None = None
     status: EntityOperationalState
     health_snapshot: HealthSnapshot | None = None
     power_state: PowerStateSchema | None = None
@@ -103,7 +111,6 @@ class AirNavigationSchema(OCCIDModel):
     failsafe_mode: AirFailsafeMode | None = None
     weather_limits: WeatherLimits
     ifr: bool | None = None
-    roles: list[AirRole]
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
@@ -122,8 +129,6 @@ class GroundMachine(BaseMachine):
     role: str
     serial_uid: str = ''
     sensors: dict[str, SensorSchema]
-    payload: PayloadSchema
-    effects: GroundEffectsSchema
     navigation: GroundNavigationSchema
 
 class GroundRobot(GroundMachine):
@@ -137,8 +142,6 @@ class AirMachine(BaseMachine):
     model: str
     serial_uid: str = ''
     sensors: dict[str, SensorSchema]
-    payload: PayloadSchema
-    effects: AirEffectsSchema
     navigation: AirNavigationSchema
     maint_status: MaintenanceStatus | None = None
 

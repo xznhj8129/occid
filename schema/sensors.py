@@ -19,21 +19,6 @@ class SensorSpectrum(IntEnum):
     RF = auto()
     UV = auto()
 
-class NATORadioBands(IntEnum):
-    A_BAND_0_250M = 0
-    B_BAND_250M_500M = auto()
-    C_BAND_500M_1G = auto()
-    D_BAND_1G_2G = auto()
-    E_BAND_2G_3G = auto()
-    F_BAND_3G_4G = auto()
-    G_BAND_4G_6G = auto()
-    H_BAND_6G_8G = auto()
-    I_BAND_8G_10G = auto()
-    J_BAND_10G_20G = auto()
-    K_BAND_20G_40G = auto()
-    L_BAND_40G_60G = auto()
-    M_BAND_60G_100G = auto()
-
 class SensorErrorType(IntEnum):
     CEP = 0
     RMS = auto()

@@ -18,5 +18,9 @@ enums:
 
 models:
   BaseObject:
+    parent: Object
+    variants:
+      - BaseEntity
+      - BaseOrg
     fields:
       object_type: ObjectType

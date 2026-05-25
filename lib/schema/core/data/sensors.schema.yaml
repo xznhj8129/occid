@@ -22,21 +22,6 @@ enums:
     - RF
     - UV
 
-  NATORadioBands:
-    - A_BAND_0_250M = 0
-    - B_BAND_250M_500M
-    - C_BAND_500M_1G
-    - D_BAND_1G_2G
-    - E_BAND_2G_3G
-    - F_BAND_3G_4G
-    - G_BAND_4G_6G
-    - H_BAND_6G_8G
-    - I_BAND_8G_10G
-    - J_BAND_10G_20G
-    - K_BAND_20G_40G
-    - L_BAND_40G_60G
-    - M_BAND_60G_100G
-
   SensorErrorType:
     - CEP = 0
     - RMS
@@ -89,12 +74,14 @@ enums:
 
 models:
   SensorFieldOfView:
+    parent: Attributes
     fields:
       horizontal: optional NumericRange
       vertical: optional NumericRange
 
 
   SpotterOrigin:
+    parent: Position
     fields:
       position: GlobalPosition
       attitude: optional EulerAngles
@@ -102,6 +89,7 @@ models:
 
 
   MeasurementQuality:
+    parent: Sensor
     fields:
       lat_err_m: optional float
       az_err_deg: optional float
@@ -109,6 +97,7 @@ models:
 
 
   ImuSample:
+    parent: Sensor
     fields:
       acceleration: optional LocalVector
       angular_velocity: optional AngularVelocityVector
@@ -119,12 +108,14 @@ models:
 
 
   VisionBox:
+    parent: Detection
     fields:
       space: DetectionBoxSpace
       bounds: BoundingBox
 
 
   VisionDetection:
+    parent: Detection
     fields:
       detection_id: optional string
       label: optional string
@@ -138,6 +129,7 @@ models:
 
 
   VisionDetectionFrame:
+    parent: Detection
     fields:
       frame_id: optional string
       sensor_id: optional string
@@ -146,6 +138,7 @@ models:
 
 
   TrackerState:
+    parent: Sensor
     fields:
       locked: optional bool
       target_id: optional string
@@ -155,6 +148,7 @@ models:
 
 
   TrackerCommand:
+    parent: Command
     fields:
       lock: optional bool
       reset: optional bool
@@ -164,6 +158,7 @@ models:
 
 
   SensorSchema:
+    parent: Payload
     fields:
       name: string
       model: string

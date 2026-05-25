@@ -1,11 +1,14 @@
 version: 1
-type: schema
-name: effects
-description: "Effects, payloads, fires, target handover, munitions, and damage assessment."
+type: module
+name: military_effects
+description: "Military effects, payloads, fires, target handover, munitions, and damage assessment."
 tags:
-  - core
   - military
-root: data
+requires:
+  - core
+  - military_aerial
+  - military_definition
+  - military_isr
 
 enums:
   GuidanceType:
@@ -137,6 +140,9 @@ models:
 
 
   EffectsSchema:
+    variants:
+      - GroundEffectsSchema
+      - AirEffectsSchema
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus

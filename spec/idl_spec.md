@@ -68,7 +68,7 @@ root: core
 models:
   Object:
     variants:
-      ENTITY: Entity
+      - Entity
       ...
 ```
 
@@ -272,12 +272,10 @@ geomap:
 A parent/variants relationship is:
 - field inheritance
 - a typed variant family, equivalent to a tagged union or protobuf `oneof`
-- an implicit discriminator enum, derived from the variant keys
+- an implicit discriminator enum, derived from the variant model names
 
 There is no separate union mechanism or standalone enum declaration needed. `variants` on a model defines the family. The authored form is intentionally optimized for readability:
 - branch families are declared flat
-- final fielded leaves are declared inline
-- the compiler may lower inline leaves into explicit child models internally
 
 Syntax:
 ```yaml
@@ -289,54 +287,36 @@ models:
 
   MoveTask:
     parent: Task
-    variants:
-      GoTo:
-        description: Move to one destination
-        fields:
-          destination: GlobalPosition
-          speed_ms: optional float
+    fields:
+      destination: GlobalPosition
+      speed_ms: optional float
 
   PatrolTask:
     parent: Task
-    variants:
-      Route:
-        description: Patrol along an ordered path
-        fields:
-          path: list[GlobalPosition]
-          loiter_s: optional int
+    fields:
+      path: list[GlobalPosition]
+      loiter_s: optional int
 
 ```
 
 Rules:
 - `variants` is a direct key on the model
-  - `variants` has exactly two authored forms:
-    - list form for structural branches
-    - mapping form for terminal fielded leaves
-  - enum values auto-increment from 0 in declaration order
-- list form syntax:
-  - each item must reference a declared child model
-  - each referenced child model must declare `parent: <parent model>`
-  - list form is for ontology and structure only; branch models should be authored as top-level models, not nested inline
-- mapping form syntax:
-  - each key becomes a member of the implicit discriminator enum
-  - each value is an inline terminal leaf definition
-  - an inline terminal leaf definition may contain:
-    - `description`
-    - `fields`
-  - `fields` is required on inline terminal leaf definitions
-  - inline terminal leaves may not define `variants`, `parent`, `maps`, or `enums`
-  - the compiler synthesizes a child model for each inline terminal leaf, with `parent` equal to the declaring model
+- `variants` is always a list of declared child model names
+- `variants:` with no entries is valid only as an extension point for modules
+- each item must reference a declared child model
+- each referenced child model must declare `parent: <parent model>`
+- enum values auto-increment from 0 in declaration order
 - the implicit enum is named `{ModelName}Type` (e.g., `Task` → `TaskType`) and is a first-class referenceable type
+- each implicit enum member is derived from the child model name by dropping the parent model's prefix when present and converting to `SCREAMING_SNAKE_CASE` (`MoveTask` under `Task` becomes `MOVE`)
 - the discriminator is reserved metadata on each child instance (accessible as `_type`). It cannot collide with user-defined field names
 - the effective shape of a child model includes:
   - all inherited parent fields
 - the child model's own fields
 - the parent model itself is a type and may be used in fields like any other model
 - a model may define at most one `variants` block
-- a child model declared via list form may also define `variants` of its own, allowing nested typed hierarchies
-- nested inline definitions are reserved for final fielded leaves only
+- a child model may also define `variants` of its own, allowing nested typed hierarchies
 - when naming a child model, if necessary, prefix only the parent's name
-- source readability takes precedence over normalized expansion; explicit synthetic child models are an implementation detail, not the preferred authoring form
+- source readability takes precedence over normalized expansion
 
 **14. Comments**
 - YAML `#` comments are allowed anywhere YAML allows them
@@ -353,12 +333,8 @@ These are always errors:
 - `optional const ...`
 - list/map/object inline defaults in shorthand form
 - `required: true/false`
-- `variants` list form contains a value that is not a declared model
-- `variants` list form contains a model whose `parent` is not the declaring model
-- `variants` mapping form contains a value that is not an inline terminal leaf definition
-- an inline terminal leaf definition is missing `fields`
-- an inline terminal leaf definition declares `variants`
-- an inline terminal leaf definition declares `parent`
+- `variants` contains a value that is not a declared model
+- `variants` contains a model whose `parent` is not the declaring model
 - a model's parent chain does not lead to the class declared by the file's `root`
 - `branches` graph contains a cycle
 - `name` does not match the schema file basename without `.schema.yaml`
@@ -367,7 +343,7 @@ These are always errors:
 - schema ID `core` declares `root`
 - `type` is not `schema` or `module`
 - a module's `extend_variants` references a parent that has no `variants` block
-- a module's `extend_variants` introduces a variant key that collides with an existing one
+- a module's `extend_variants` introduces a derived variant name that collides with an existing one
 - a module's `requires` list is not satisfied at load time
 - a module redefines or alters an existing model, enum, or field from core or another module
 - a module's model declares a `parent` that does not exist in core schema or required modules
@@ -390,7 +366,7 @@ schema/
     core.schema.yaml
     definition/
     struct/
-    object/
+    objects/
     control/
     communication/
     data/
@@ -427,7 +403,7 @@ branches:
 - `name` — the file's own schema ID, for self-identification
 - `description` — human-readable purpose of this schema branch
 - `tags` — profile tags that classify this file for subset selection (see 17.3)
-- `root` — the parent schema ID. Omitted only for `root`
+- `root` — the parent schema ID. Omitted only for `core`
 - `branches` — direct child schema IDs that further expand this ontology branch. Declares schema-tree topology so tools can resolve a complete subtree without treating the list as ordinary imports or type dependencies
 
 **17.3. Tags and profiles**
@@ -484,7 +460,7 @@ A module is a self-contained extension that grafts domain-specific models, enums
 - It is the extension boundary: adding capability means dropping in a module, not forking the tree
 
 **18.2. Module manifest format**
-Module manifests live under `lib/schema/modules/` as YAML files following the IDL syntax for enums, maps, and models, plus module-specific header fields.
+Module files live under `lib/schema/modules/` as YAML files following the IDL syntax for enums, maps, and models, plus module-specific header fields. A domain module may be organized as a directory containing several `type: module` files. Directory placement is organizational only; each module file still has a globally unique `name`.
 
 ```yaml
 version: 1
@@ -562,18 +538,19 @@ When a module adds a new child to an existing parent that has a `variants` block
 ```yaml
 extend_variants:
   Task:
-    EW: EWTask
+    - EWTask
   Intel:
-    DIRECTION_FINDING: DirectionFindingResult
-    THREAT_EMITTER: ThreatEmitter
+    - DirectionFindingResult
+    - ThreatEmitter
   Plan:
-    SPECTRUM_ALLOCATION: SpectrumAllocation
+    - SpectrumAllocation
 ```
 
 Rules:
 - `extend_variants` keys must reference models from core schema or required modules
 - The referenced parent must already have a `variants` block
-- New variant keys must not collide with existing variant keys on that parent
+- `extend_variants` values are lists of declared child model names
+- New derived variant names must not collide with existing variant names on that parent
 - The new variant enum values auto-increment from the last existing value on the parent
 - Each model listed must declare `parent` matching the extended parent
 
@@ -621,8 +598,8 @@ models:
       unit_id: string
       priority: int
     variants:
-      MOVE: MoveTask
-      PATROL: PatrolTask
+      - MoveTask
+      - PatrolTask
 
   MoveTask:
     parent: Task

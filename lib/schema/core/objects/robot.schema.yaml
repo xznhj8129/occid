@@ -68,6 +68,7 @@ enums:
 
 models:
   SoftwareBuildInfo:
+    parent: Internal
     fields:
       major: optional int
       minor: optional int
@@ -77,6 +78,7 @@ models:
 
 
   HardwareIdentity:
+    parent: Identity
     fields:
       hardware_uid: optional string
       legacy_uid: optional string
@@ -88,6 +90,7 @@ models:
 
 
   FlightControllerIdentity:
+    parent: Identity
     fields:
       api_version: optional string
       controller_variant: optional string
@@ -97,6 +100,7 @@ models:
 
 
   ControlAxisSet:
+    parent: Input
     fields:
       roll: optional float
       pitch: optional float
@@ -106,12 +110,14 @@ models:
 
 
   ControlChannelValue:
+    parent: Input
     fields:
       channel_index: int
       value: optional float
 
 
   ControlOverride:
+    parent: Input
     fields:
       roll: optional float
       pitch: optional float
@@ -121,6 +127,7 @@ models:
 
 
   ControlAttitudeSetpoint:
+    parent: Input
     fields:
       roll_deg: float
       pitch_deg: float
@@ -129,6 +136,7 @@ models:
 
 
   ReceiverConfig:
+    parent: Parameters
     fields:
       rx_min_usec: optional int
       rx_max_usec: optional int
@@ -136,6 +144,7 @@ models:
 
 
   ChannelMapEntry:
+    parent: Parameters
     fields:
       axis: ControlAxis
       source_channel: int
@@ -144,6 +153,7 @@ models:
 
 
   ModeRange:
+    parent: Parameters
     fields:
       mode_id: optional int
       mode_name: optional string
@@ -152,6 +162,7 @@ models:
 
 
   FlightControlState:
+    parent: Guidance
     fields:
       armed: optional bool
       in_air: optional bool
@@ -170,6 +181,7 @@ models:
 
 
   RobotControlSchema:
+    parent: Parameters
     fields:
       control_modes: optional RobotControlMode
       autopilot: optional bool
@@ -179,6 +191,7 @@ models:
 
 
   RemoteControlSchema:
+    parent: Interface
     fields:
       links: map[string, LinkSchema]
       rc_link: string = ""
@@ -195,6 +208,7 @@ models:
 
 
   ControlLease:
+    parent: Interface
     fields:
       asset_id: string
       holder_id: string

@@ -69,6 +69,7 @@ enums:
 
 models:
   HealthAlert:
+    parent: Condition
     fields:
       alert_id: optional string
       level: AlertLevel
@@ -77,6 +78,7 @@ models:
 
 
   SubsystemHealth:
+    parent: Condition
     fields:
       subsystem_id: string
       state: HealthStatus
@@ -85,6 +87,7 @@ models:
 
 
   HealthSnapshot:
+    parent: Condition
     fields:
       overall_state: HealthStatus
       link_state: optional LinkCondition
@@ -97,6 +100,7 @@ models:
 
 
   MaintenanceStatus:
+    parent: Condition
     fields:
       state: MaintenanceState
       last_service_ts: optional float
@@ -105,6 +109,7 @@ models:
 
 
   PowerSourceSchema:
+    parent: Resources
     fields:
       source_id: string
       power_type: PowerType
@@ -113,6 +118,7 @@ models:
 
 
   PowerStateSchema:
+    parent: Resources
     fields:
       status: PowerStatus
       sources: list[PowerSourceSchema]
@@ -120,6 +126,7 @@ models:
 
 
   ElectricalResourceState:
+    parent: Resources
     fields:
       source_id: optional string
       battery_id: optional int
@@ -136,12 +143,14 @@ models:
 
 
   RuntimeLoadState:
+    parent: Internal
     fields:
       cpu_load: optional int
       cycle_time_us: optional int
 
 
   VehicleReadinessState:
+    parent: Condition
     fields:
       gyro_ok: optional bool
       accel_ok: optional bool
