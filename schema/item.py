@@ -2,9 +2,32 @@
 from __future__ import annotations
 from .common import *
 
-from .objects import Payload
+from .object import Object
+
+### Enums
+
+class Item_type(IntEnum):
+    RECORD = 0
+    EQUIPMENT = auto()
+    COMPONENT = auto()
+    PAYLOAD = auto()
 
 ### Models
+
+class Item(Object):
+    pass
+
+class Record(Item):
+    pass
+
+class Equipment(Item):
+    pass
+
+class Component(Item):
+    pass
+
+class Payload(Item):
+    pass
 
 class SensorSchema(Payload):
     name: str

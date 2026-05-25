@@ -2,9 +2,12 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Input
+from .state import State
 
 ### Models
+
+class Input(State):
+    pass
 
 class ControlAxisSet(Input):
     roll: float | None = None

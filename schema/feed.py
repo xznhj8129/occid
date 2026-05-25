@@ -47,7 +47,7 @@ class NetType(IntEnum):
     WIFI = auto()
     WIRED = auto()
 
-class FeedType(IntEnum):
+class Feed_type(IntEnum):
     LINK = 0
     STREAM = auto()
 

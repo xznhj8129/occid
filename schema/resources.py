@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Resources
+from .state import State
 
 ### Enums
 
@@ -21,6 +21,9 @@ class PowerType(IntEnum):
     NUCLEAR = auto()
 
 ### Models
+
+class Resources(State):
+    pass
 
 class FuelState(Resources):
     fuel_type: FuelType

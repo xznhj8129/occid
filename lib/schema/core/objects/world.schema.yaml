@@ -1,12 +1,28 @@
 version: 1
 type: schema
 name: world
-description: "World features, locations, sites, and geospatial object records."
+description: ""
 tags:
   - core
-root: objects
+root: object
 
 models:
+  World:
+    parent: Object
+    variants:
+      - Feature
+      - Location
+      - Site
+
+  Feature:
+    parent: World
+
+  Location:
+    parent: World
+
+  Site:
+    parent: World
+
   GeoJsonFeature:
     parent: Feature
     fields:

@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: condition
-description: "Integrity, damage, readiness, maintenance, and fault condition state."
+description: "Integrity, damage, faults, readiness"
 tags:
   - core
 root: state
@@ -54,6 +54,9 @@ enums:
     - FAILED
 
 models:
+  Condition:
+    parent: State
+
   HealthAlert:
     parent: Condition
     fields:

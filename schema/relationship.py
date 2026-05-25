@@ -2,11 +2,14 @@
 from __future__ import annotations
 from .common import *
 
-from .properties import PropertyRelationship
+from .properties import Properties
 
 ### Models
 
-class RelationSchema(PropertyRelationship):
+class Relationship(Properties):
+    pass
+
+class RelationSchema(Relationship):
     src_id: str
     dst_id: str
     rel_kind: str
@@ -15,7 +18,7 @@ class RelationSchema(PropertyRelationship):
     confidence: ConfidenceLevel | None = None
     source: str | None = None
 
-class EntityComponentRef(PropertyRelationship):
+class EntityComponentRef(Relationship):
     component_id: str
     component_type: str | None = None
     label: str | None = None

@@ -3,7 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .definition import OperationalDomain
-from .organization import BaseOrg, OrgTopology
+from .organization import OrgTopology, Organization
 
 ### Enums
 
@@ -121,11 +121,11 @@ class OrgLayout(IntEnum):
     FREEFORM = 0
     ORBAT = auto()
 
-class MilitaryOrgType(IntEnum):
+class MilitaryOrg_type(IntEnum):
     FLYING_ORG = 0
     ORBAT_ORG = auto()
 
-class BaseOrbatOrgType(IntEnum):
+class OrbatOrg_type(IntEnum):
     GROUND = 0
 
 ### Mappings
@@ -293,7 +293,7 @@ class OrgComposition(OCCIDModel):
     label: str | None = None
     qty: int = 0
 
-class MilitaryOrg(BaseOrg):
+class MilitaryOrg(Organization):
     sidc: str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
@@ -303,7 +303,7 @@ class FlyingOrg(MilitaryOrg):
     op_domain: OperationalDomain = OperationalDomain.AIR
     air_units: list[ItemCount]
 
-class BaseOrbatOrg(MilitaryOrg):
+class OrbatOrg(MilitaryOrg):
     org_layout: OrgLayout = OrgLayout.ORBAT
     topology: OrgTopology = OrgTopology.HIERARCHICAL
     category: NATOUnitCategory
@@ -320,7 +320,7 @@ class BaseOrbatOrg(MilitaryOrg):
     equipment: list[ItemCount]
     spacing: float = 0.0
 
-class GroundOrbatOrg(BaseOrbatOrg):
+class GroundOrbatOrg(OrbatOrg):
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.LAND
     combat_domain: OperationalDomain

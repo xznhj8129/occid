@@ -6,7 +6,7 @@ from .data import Data
 
 ### Enums
 
-class InformationType(IntEnum):
+class Information_type(IntEnum):
     PROPERTIES = 0
     STATE = auto()
     EVENT = auto()

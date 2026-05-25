@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Guidance
+from .state import State
 
 ### Enums
 
@@ -75,10 +75,13 @@ class GnssFixType(IntEnum):
     RTK_FLOAT = auto()
     RTK_FIXED = auto()
 
-class AirNavigationSchemaType(IntEnum):
+class AirNavigationSchema_type(IntEnum):
     MILITARY_AIR_NAVIGATION = 0
 
 ### Models
+
+class Guidance(State):
+    pass
 
 class NavigationValidity(Guidance):
     local_position_ok: bool | None = None

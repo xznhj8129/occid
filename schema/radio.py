@@ -42,24 +42,32 @@ class NATORadioBands(IntEnum):
     L_BAND_40G_60G = auto()
     M_BAND_60G_100G = auto()
 
-class RadioProfileType(IntEnum):
+class Radio_type(IntEnum):
+    FREQUENCY_RANGE = 0
+    CHANNEL_SPEC = auto()
+    PROFILE = auto()
+
+class RadioProfile_type(IntEnum):
     MILITARY = 0
 
 ### Models
 
-class FrequencyRange(Carrier):
+class Radio(Carrier):
+    pass
+
+class FrequencyRange(Radio):
     low_mhz: float | None = None
     high_mhz: float | None = None
     center_mhz: float | None = None
 
-class ChannelSpec(Carrier):
+class ChannelSpec(Radio):
     channel_id: str | None = None
     label: str | None = None
     frequency: FrequencyRange | None = None
     bandwidth_mhz: float | None = None
     spacing_mhz: float | None = None
 
-class RadioProfile(Carrier):
+class RadioProfile(Radio):
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None

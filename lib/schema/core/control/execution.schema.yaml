@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: execution
-description: "Plans, sequences, and actions used to execute directed activity."
+description: "How directed activity is structured and carried out"
 tags:
   - core
 root: control

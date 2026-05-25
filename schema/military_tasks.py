@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .tasks import BaseTask
+from .task import Task
 
 ### Enums
 
@@ -19,7 +19,7 @@ class MunitionAllocation(OCCIDModel):
     munition_type: str
     qty: int = 0
 
-class CombatTask(BaseTask):
+class CombatTask(Task):
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None

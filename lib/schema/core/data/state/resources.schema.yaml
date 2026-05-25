@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: resources
-description: "Power, fuel, supply, and consumable resource state."
+description: "How much of something something has; power, fuel, food, etc"
 tags:
   - core
 root: state
@@ -22,6 +22,9 @@ enums:
     - NUCLEAR
 
 models:
+  Resources:
+    parent: State
+
   FuelState:
     parent: Resources
     fields:

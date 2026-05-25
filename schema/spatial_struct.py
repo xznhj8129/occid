@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .struct import Bearing, Bounding, GeoPos, Measurement, Pose, Shape, StructPath, Uncertainty, Vector
+from .struct import Bearing, Bounding, GeoPos, Measurement, Pose, Shape, Struct, StructPath, Uncertainty, Vector
 
 ### Enums
 
@@ -76,6 +76,9 @@ class WaypointType(IntEnum):
     OBJECT = auto()
 
 ### Models
+
+class SpatialStruct(Struct):
+    pass
 
 class EulerAngles(Pose):
     pitch: float

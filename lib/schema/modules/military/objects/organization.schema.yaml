@@ -7,7 +7,7 @@ tags:
 requires:
   - core
 extend_variants:
-  BaseOrg:
+  Organization:
     - MilitaryOrg
 
 enums:
@@ -299,10 +299,10 @@ models:
 
 
   MilitaryOrg:
-    parent: BaseOrg
+    parent: Organization
     variants:
       - FlyingOrg
-      - BaseOrbatOrg
+      - OrbatOrg
     fields:
       sidc: optional string
       category: optional NATOUnitCategory
@@ -317,7 +317,7 @@ models:
       air_units: list[ItemCount]
 
 
-  BaseOrbatOrg:
+  OrbatOrg:
     parent: MilitaryOrg
     variants:
       - GroundOrbatOrg
@@ -340,7 +340,7 @@ models:
 
 
   GroundOrbatOrg:
-    parent: BaseOrbatOrg
+    parent: OrbatOrg
     fields:
       category: NATOUnitCategory
       op_domain: OperationalDomain = LAND

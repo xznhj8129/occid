@@ -7,8 +7,9 @@ tags:
 requires:
   - core
   - military_definition
+  
 extend_variants:
-  BaseTask:
+  Task:
     - IsrTask
 
 enums:
@@ -50,13 +51,6 @@ enums:
     - ROUTE
     - TARGET
 
-  TrackImproveGoal:
-    - POSITION = 0
-    - IDENTITY
-    - ACTIVITY
-    - COMPOSITION
-    - DAMAGE
-
   EvidenceLevel:
     - SUSPECTED = 0
     - DETECTED
@@ -80,7 +74,7 @@ enums:
 
 models:
   IsrTask:
-    parent: BaseTask
+    parent: Task
     fields:
       isr_task: optional TaskISR
       area: GeoArea
@@ -113,7 +107,6 @@ models:
       sensor_types: list[SensorType]
       sensor_modes: list[SensorMode]
       effect_domains: list[EffectDomain]
-      track_improve_goal: optional TrackImproveGoal
       bda_required: bool = false
       evidence_level: optional EvidenceLevel
 
@@ -130,7 +123,7 @@ models:
     fields:
       detections: list[IsrObservation]
       track_updates: list[TrackUpdate]
-      media: optional MediaSchema
+      media: optional list[MediaItemSchema]
       confidence: optional ConfidenceLevel
       observations: list[IsrObservation]
 

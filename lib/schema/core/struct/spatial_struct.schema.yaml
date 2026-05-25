@@ -1,7 +1,7 @@
 version: 1
 type: schema
-name: spatial
-description: "Spatial reference frames, geometry, position, and navigation structs."
+name: spatial_struct
+description: "Spatial struct support models"
 tags:
   - core
 root: struct
@@ -77,6 +77,9 @@ enums:
     - OBJECT
 
 models:
+  SpatialStruct:
+    parent: Struct
+
   EulerAngles:
     parent: Pose
     fields:

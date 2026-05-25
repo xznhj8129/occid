@@ -13,7 +13,7 @@ class MediaType(IntEnum):
     DOCUMENT = auto()
     BINARY = auto()
 
-class SensoryType(IntEnum):
+class Sensory_type(IntEnum):
     A_V = 0
     SPATIAL = auto()
     SAMPLES = auto()
@@ -40,6 +40,3 @@ class MediaItemSchema(AV):
     created_ts: float | None = None
     size_bytes: int | None = None
     content_type: str | None = None
-
-class MediaSchema(AV):
-    items: list[MediaItemSchema]

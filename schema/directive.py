@@ -6,7 +6,7 @@ from .control import Control
 
 ### Enums
 
-class DirectiveType(IntEnum):
+class Directive_type(IntEnum):
     MISSION = 0
     TASK = auto()
     COMMAND = auto()
@@ -19,8 +19,10 @@ class Directive(Control):
 class Mission(Directive):
     pass
 
-class Task(Directive):
-    pass
-
 class Command(Directive):
     pass
+
+class MissionProgress(Mission):
+    waypoint_count: int | None = None
+    current_waypoint_index: int | None = None
+    mission_valid: bool | None = None

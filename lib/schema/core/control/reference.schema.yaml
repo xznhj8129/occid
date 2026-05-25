@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: reference
-description: "Control-side spatial marks, paths, regions, and boundaries."
+description: "Control-side structural wrapper binding spatial definitions and structs into control-usable referents"
 tags:
   - core
 root: control

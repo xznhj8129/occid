@@ -6,7 +6,7 @@ from .core import Root
 
 ### Enums
 
-class DataType(IntEnum):
+class Data_type(IntEnum):
     INFORMATION = 0
     SENSORY = auto()
 

@@ -1,0 +1,73 @@
+version: 1
+type: schema
+name: telemetry
+description: "Communication about the sender's own internal state or process"
+tags:
+  - core
+root: message
+
+models:
+  Telemetry:
+    parent: Message
+
+  CapabilityAdvert:
+    parent: Telemetry
+    fields:
+      node_id: string
+      roles: list[CapabilityRole]
+      link_ids: list[string]
+      sensor_ids: list[string]
+      payload_ids: list[string]
+
+  StateDelta:
+    parent: Telemetry
+    fields:
+      entity_id: string
+      changed_fields: list[string]
+      source: optional string
+      confidence: optional ConfidenceLevel
+
+  TransportCounters:
+    parent: Telemetry
+    fields:
+      rx_count: int = 0
+      tx_count: int = 0
+      parse_error_count: int = 0
+      dropped_count: int = 0
+
+  TransportError:
+    parent: Telemetry
+    fields:
+      error: string
+      source_address: optional NetworkAddress
+      payload: optional ProtocolPayload
+
+  MeshReceiveMetrics:
+    parent: Telemetry
+    fields:
+      snr: optional float
+      rssi: optional float
+      hop_limit: optional int
+      rx_time: optional float
+
+  MeshPositionSample:
+    parent: Telemetry
+    fields:
+      position: GlobalPosition
+      position_ts: optional float
+      pdop: optional float
+      ground_speed: optional float
+      ground_track: optional float
+      sats_in_view: optional int
+
+  NodeHeartbeat:
+    parent: Telemetry
+    fields:
+      node_id: string
+      last_seen_ts: float
+      node_state: optional MeshNodeState
+      rssi: optional float
+      snr: optional float
+      hop_limit: optional int
+      link_condition: optional LinkCondition
+      connection_status: optional ConnectionStatus

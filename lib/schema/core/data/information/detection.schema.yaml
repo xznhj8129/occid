@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: detection
-description: "Detected objects, signals, bearings, and interpreted sensor detections."
+description: "Assessment that something exists or occurred"
 tags:
   - core
 root: intel
@@ -14,6 +14,9 @@ enums:
     - WORLD
 
 models:
+  Detection:
+    parent: Intel
+
   VisionBox:
     parent: Detection
     fields:

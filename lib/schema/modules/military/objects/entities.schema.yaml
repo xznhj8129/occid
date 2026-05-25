@@ -12,7 +12,7 @@ requires:
 extend_variants:
   Person:
     - MilitaryPerson
-  BaseMachine:
+  Machine:
     - MilitaryMachine
   GroundMachine:
     - MilitaryGroundMachine
@@ -29,7 +29,7 @@ models:
 
 
   MilitaryMachine:
-    parent: BaseMachine
+    parent: Machine
     fields:
       category: optional NATOUnitCategory
 

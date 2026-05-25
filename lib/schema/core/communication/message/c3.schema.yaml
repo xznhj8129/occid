@@ -1,0 +1,23 @@
+version: 1
+type: schema
+name: c3
+description: "Communication whose purpose is to direct, command or control"
+tags:
+  - core
+root: message
+
+models:
+  C3:
+    parent: Message
+
+  HumanTextMessage:
+    parent: C3
+    fields:
+      sender_id: optional string
+      sender_name: optional string
+      destination_id: optional string
+      destination_group: optional string
+      kind: optional string
+      message: string
+      position: optional GlobalPosition
+      targets: list[MessageTarget]

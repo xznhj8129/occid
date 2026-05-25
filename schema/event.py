@@ -6,7 +6,7 @@ from .information import Information
 
 ### Enums
 
-class EventType(IntEnum):
+class Event_type(IntEnum):
     FLIGHT = 0
     MISSION = auto()
 

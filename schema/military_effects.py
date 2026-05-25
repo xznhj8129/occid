@@ -95,7 +95,7 @@ class TargetCategory(IntEnum):
     LOCATION = auto()
     AREA = auto()
 
-class EffectsSchemaType(IntEnum):
+class EffectsSchema_type(IntEnum):
     GROUND = 0
     AIR = auto()
 

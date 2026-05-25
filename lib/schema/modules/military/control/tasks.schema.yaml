@@ -8,7 +8,7 @@ requires:
   - core
   - military_effects
 extend_variants:
-  BaseTask:
+  Task:
     - CombatTask
 
 enums:
@@ -27,7 +27,7 @@ models:
 
 
   CombatTask:
-    parent: BaseTask
+    parent: Task
     fields:
       combat_task: optional TaskCombat
       target_category: optional TargetCategory

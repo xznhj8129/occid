@@ -1,12 +1,15 @@
 version: 1
 type: schema
 name: position
-description: "Position, address, placement, and sensor origin state."
+description: "Position in space, address or placement"
 tags:
   - core
 root: state
 
 models:
+  Position:
+    parent: State
+
   LocationState:
     parent: Position
     fields:

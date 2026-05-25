@@ -611,7 +611,7 @@ def build_enum_members(modules: list[ModuleDef]) -> dict[str, set[str]]:
 
 
 def variant_enum_name(model_name: str) -> str:
-    return f"{model_name}Type"
+    return f"{model_name}_type"
 
 
 def screaming_snake(name: str) -> str:

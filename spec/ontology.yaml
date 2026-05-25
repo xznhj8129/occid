@@ -171,7 +171,7 @@ Root:
               description: An item that is part of a machine and has an external effect or mission purpose
               
         World: 
-          description:
+          description: Location in the physical world
           # Country -> Region -> Town -> Street -> Address -> House -> Floor -> Room
           # Grid square -> Position mark -> Object
 

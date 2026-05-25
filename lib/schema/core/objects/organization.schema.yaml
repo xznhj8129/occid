@@ -1,10 +1,10 @@
 version: 1
 type: schema
 name: organization
-description: "Organized sets of entities and subordinate organizations."
+description: "A structured collection of organized entities and/or subordinate organizations with common command and control"
 tags:
   - core
-root: objects
+root: object
 
 enums:
   OrgLevel:
@@ -23,9 +23,11 @@ enums:
     - CELLULAR
 
 models:
-  BaseOrg:
-    parent: Organization
+  Organization:
+    parent: Set
     variants:
+      - Group
+      - Unit
     fields:
       org_uid: string
       object_type: ObjectType = ORGANIZATION
@@ -35,3 +37,13 @@ models:
       position: optional GlobalPosition
       control_level: optional ControlLevel
       link_condition: optional LinkCondition
+
+  Group:
+    parent: Organization
+    fields:
+      orglevel: OrgLevel = GROUP
+
+  Unit:
+    parent: Organization
+    fields:
+      orglevel: OrgLevel = UNIT

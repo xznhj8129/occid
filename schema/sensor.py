@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Sensor
+from .state import State
 
 ### Enums
 
@@ -66,6 +66,9 @@ class GimbalState(IntEnum):
     TRACKING = auto()
 
 ### Models
+
+class Sensor(State):
+    pass
 
 class MeasurementQuality(Sensor):
     lat_err_m: float | None = None

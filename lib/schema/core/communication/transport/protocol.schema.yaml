@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: protocol
-description: "Message formats, protocol payloads, crypto, and protocol profiles."
+description: "Format and standard of messages"
 tags:
   - core
 root: transport

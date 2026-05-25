@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: definition
-description: "Abstract semantic descriptors, classification axes, and symbology maps."
+description: "Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors."
 tags:
   - core
 root: core

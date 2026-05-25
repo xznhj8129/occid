@@ -41,7 +41,7 @@ class AirMissionEvent(IntEnum):
     ABORTING = auto()
     FAILING = auto()
 
-class StateType(IntEnum):
+class State_type(IntEnum):
     KINEMATIC = 0
     INTERNAL = auto()
     POSITION = auto()
@@ -59,33 +59,6 @@ class State(Information):
     pass
 
 class Kinematic(State):
-    pass
-
-class Internal(State):
-    pass
-
-class Position(State):
-    pass
-
-class Guidance(State):
-    pass
-
-class Sensor(State):
-    pass
-
-class Input(State):
-    pass
-
-class Resources(State):
-    pass
-
-class Condition(State):
-    pass
-
-class Lifecycle(State):
-    pass
-
-class Assignment(State):
     pass
 
 class TelemetryState(State):

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Condition
+from .state import State
 
 ### Enums
 
@@ -53,6 +53,9 @@ class MaintenanceState(IntEnum):
     FAILED = auto()
 
 ### Models
+
+class Condition(State):
+    pass
 
 class HealthAlert(Condition):
     alert_id: str | None = None

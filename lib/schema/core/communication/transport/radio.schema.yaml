@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: radio
-description: "Radio waveform, channel, and carrier profiles."
+description: "What are messages transmitted over"
 tags:
   - core
 root: carrier
@@ -44,15 +44,22 @@ enums:
     - M_BAND_60G_100G
 
 models:
-  FrequencyRange:
+  Radio:
     parent: Carrier
+    variants:
+      - FrequencyRange
+      - ChannelSpec
+      - RadioProfile
+
+  FrequencyRange:
+    parent: Radio
     fields:
       low_mhz: optional float
       high_mhz: optional float
       center_mhz: optional float
 
   ChannelSpec:
-    parent: Carrier
+    parent: Radio
     fields:
       channel_id: optional string
       label: optional string
@@ -61,7 +68,7 @@ models:
       spacing_mhz: optional float
 
   RadioProfile:
-    parent: Carrier
+    parent: Radio
     variants:
     fields:
       service: optional RadioService

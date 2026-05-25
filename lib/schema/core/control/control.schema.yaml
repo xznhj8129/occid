@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: control
-description: "Control-side binding of agents to objectives through structured decomposition."
+description: "Scale-invariant; the binding of agents to objectives through structured decomposition"
 tags:
   - core
 root: core

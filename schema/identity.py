@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .properties import Identity
+from .properties import Properties
 
 ### Enums
 
@@ -16,6 +16,9 @@ class IdentifierType(IntEnum):
     REGISTRATION = auto()
 
 ### Models
+
+class Identity(Properties):
+    pass
 
 class Identifier(Identity):
     id_type: IdentifierType

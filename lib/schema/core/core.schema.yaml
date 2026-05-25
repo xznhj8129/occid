@@ -1,13 +1,13 @@
 version: 1
 type: schema
 name: core
-description: "Top-level OCCID schema tree root."
+description: "Any distinct part of the overall framework that can be identified, described, or referenced"
 tags:
   - core
 branches:
   - definition
   - struct
-  - objects
+  - object
   - control
   - communication
   - data

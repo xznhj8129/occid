@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: constraint
-description: "Control constraints, restrictions, limitations, and conditional bounds."
+description: "A boundary, limitation, or rule restricting permissible action"
 tags:
   - core
 root: control

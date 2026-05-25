@@ -6,27 +6,15 @@ from .information import Information
 
 ### Enums
 
-class PropertiesType(IntEnum):
+class Properties_type(IntEnum):
     IDENTITY = 0
     ATTRIBUTES = auto()
     PARAMETERS = auto()
-    PROPERTY_RELATIONSHIP = auto()
+    RELATIONSHIP = auto()
 
 ### Models
 
 class Properties(Information):
-    pass
-
-class Identity(Properties):
-    pass
-
-class Attributes(Properties):
-    pass
-
-class Parameters(Properties):
-    pass
-
-class PropertyRelationship(Properties):
     pass
 
 class FeaturePropertyValue(Properties):

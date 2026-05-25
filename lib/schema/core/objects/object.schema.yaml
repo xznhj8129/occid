@@ -1,0 +1,45 @@
+version: 1
+type: schema
+name: object
+description: "Atoms"
+tags:
+  - core
+root: core
+branches:
+  - entity
+  - organization
+  - item
+  - world
+
+enums:
+  ObjectType:
+    - ENTITY = 0
+    - ORGANIZATION
+
+models:
+  Object:
+    parent: Root
+    variants:
+      - Entity
+      - Set
+      - Item
+      - World
+    fields:
+      object_type: ObjectType
+
+  Set:
+    parent: Object
+    variants:
+      - Organization
+      - Collection
+      - Cluster
+      - System
+
+  Collection:
+    parent: Set
+
+  Cluster:
+    parent: Set
+
+  System:
+    parent: Set

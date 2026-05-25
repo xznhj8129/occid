@@ -73,14 +73,14 @@ class FuelType(IntEnum):
     JET_FUEL = auto()
     HYBRID = auto()
 
-class DefinitionType(IntEnum):
+class Definition_type(IntEnum):
     FRAME = 0
     COORDINATE = auto()
     GEOMETRY = auto()
     SEMANTIC_TYPE = auto()
     RELATIONSHIP = auto()
 
-class SemanticTypeType(IntEnum):
+class SemanticType_type(IntEnum):
     CATEGORY = 0
     ROLE = auto()
     FUNCTION = auto()

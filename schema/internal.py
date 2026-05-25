@@ -2,9 +2,12 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Internal
+from .state import State
 
 ### Models
+
+class Internal(State):
+    pass
 
 class FirmwareInfo(Internal):
     name: str

@@ -6,7 +6,7 @@ tags:
   - core
 root: core
 branches:
-  - spatial
+  - spatial_struct
 
 models:
   Struct:
@@ -26,6 +26,7 @@ models:
       - Range
       - Transform
       - Orbital
+      - SpatialStruct
 
   Vector:
     parent: Struct

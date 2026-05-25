@@ -1,7 +1,7 @@
 version: 1
 type: schema
-name: tasks
-description: "Concrete tasking, mission, and command directive models."
+name: task
+description: "A directive to carry out part of a mission"
 tags:
   - core
 root: directive
@@ -93,8 +93,8 @@ enums:
     - RELOCATION
 
 models:
-  BaseTask:
-    parent: Task
+  Task:
+    parent: Directive
     variants:
       - MoveTask
       - ResupplyTask
@@ -154,7 +154,7 @@ models:
       shutdown: optional bool
 
   MoveTask:
-    parent: BaseTask
+    parent: Task
     fields:
       task_type: const TaskType = MOVE
       movement_domain: OperationalDomain
@@ -163,7 +163,7 @@ models:
       speed_ms: optional float
 
   ResupplyTask:
-    parent: BaseTask
+    parent: Task
     fields:
       task_type: const TaskType = RESUPPLY
       destination: GlobalPosition
@@ -188,10 +188,3 @@ models:
       unit_plans: map[string, PlannedUnitMission]
       routes: MissionRouteGeometry
       route_points: PlannedRoutePoints
-
-  MissionProgress:
-    parent: Mission
-    fields:
-      waypoint_count: optional int
-      current_waypoint_index: optional int
-      mission_valid: optional bool

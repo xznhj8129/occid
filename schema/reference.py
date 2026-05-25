@@ -44,13 +44,13 @@ class AirGroupFormation2DType(IntEnum):
     STAGG_TRAIL_LEFT = auto()
     STAGG_TRAIL_RIGHT = auto()
 
-class ReferenceType(IntEnum):
+class Reference_type(IntEnum):
     MARK = 0
     PATH = auto()
     REGION = auto()
     BOUNDARY = auto()
 
-class MissionPoiType(IntEnum):
+class MissionPoi_type(IntEnum):
     MILITARY = 0
 
 ### Models

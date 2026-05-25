@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: event
-description: "Discrete events and execution transitions."
+description: "A discrete occurrence — something that happened at a point in time, whether planned or not"
 tags:
   - core
 root: information

@@ -1,7 +1,7 @@
 version: 1
 type: schema
-name: sensors
-description: "Onboard sensor readings, readiness, calibration, and tracker state."
+name: sensor
+description: "Onboard sensor readings, readiness, calibration, and availability"
 tags:
   - core
 root: state
@@ -67,6 +67,9 @@ enums:
     - TRACKING
 
 models:
+  Sensor:
+    parent: State
+
   MeasurementQuality:
     parent: Sensor
     fields:

@@ -1,0 +1,27 @@
+version: 1
+type: schema
+name: isr
+description: "Communication about external objects, events, or the environment"
+tags:
+  - core
+root: message
+
+models:
+  ISR:
+    parent: Message
+
+  ProtocolEventMessage:
+    parent: ISR
+    fields:
+      uid: string
+      event_type: string
+      event_method: optional string
+      callsign: optional string
+      time_text: optional string
+      start_text: optional string
+      stale_text: optional string
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      detail: optional ProtocolPayload
+      source_address: optional NetworkAddress
+      targets: list[MessageTarget]

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .entities import AirMachine, BaseMachine, GroundMachine, Person
+from .entity import AirMachine, GroundMachine, Machine, Person
 
 ### Models
 
@@ -11,7 +11,7 @@ class MilitaryPerson(Person):
     weapons: list[ItemCount]
     ammo: list[ItemCount]
 
-class MilitaryMachine(BaseMachine):
+class MilitaryMachine(Machine):
     category: NATOUnitCategory | None = None
 
 class MilitaryGroundMachine(GroundMachine):

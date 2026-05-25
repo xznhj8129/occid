@@ -1,12 +1,15 @@
 version: 1
 type: schema
 name: input
-description: "Operator, receiver, control input, and setpoint state."
+description: "Current operator / receiver input state and control mapping"
 tags:
   - core
 root: state
 
 models:
+  Input:
+    parent: State
+
   ControlAxisSet:
     parent: Input
     fields:

@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: identity
-description: "Identity and alternate identifier properties."
+description: "Fundamental identity, name, ID"
 tags:
   - core
 root: properties
@@ -17,6 +17,9 @@ enums:
     - REGISTRATION
 
 models:
+  Identity:
+    parent: Properties
+
   Identifier:
     parent: Identity
     fields:

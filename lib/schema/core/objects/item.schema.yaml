@@ -1,12 +1,32 @@
 version: 1
 type: schema
-name: items
-description: "Discrete item, component, equipment, and payload object records."
+name: item
+description: "A discrete bounded non-agent object"
 tags:
   - core
-root: objects
+root: object
 
 models:
+  Item:
+    parent: Object
+    variants:
+      - Record
+      - Equipment
+      - Component
+      - Payload
+
+  Record:
+    parent: Item
+
+  Equipment:
+    parent: Item
+
+  Component:
+    parent: Item
+
+  Payload:
+    parent: Item
+
   SensorSchema:
     parent: Payload
     fields:

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .intel import Detection
+from .intel import Intel
 
 ### Enums
 
@@ -13,6 +13,9 @@ class DetectionBoxSpace(IntEnum):
     WORLD = auto()
 
 ### Models
+
+class Detection(Intel):
+    pass
 
 class VisionBox(Detection):
     space: DetectionBoxSpace

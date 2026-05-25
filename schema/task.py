@@ -3,7 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .communication import AckMode, ConflictPolicy, DeliveryState, QosTier, RouteMode
-from .directive import Command, Mission, Task
+from .directive import Command, Directive, Mission
 
 ### Enums
 
@@ -92,7 +92,7 @@ class AirMoveTask(IntEnum):
     FLY = 0
     RELOCATION = auto()
 
-class BaseTaskType(IntEnum):
+class Task_type(IntEnum):
     MOVE = 0
     RESUPPLY = auto()
     ISR = auto()
@@ -100,7 +100,7 @@ class BaseTaskType(IntEnum):
 
 ### Models
 
-class BaseTask(Task):
+class Task(Directive):
     task_id: str
     task_type: TaskType
     unit_code: str
@@ -151,14 +151,14 @@ class TrackerCommand(Command):
     search_box_size: int | None = None
     shutdown: bool | None = None
 
-class MoveTask(BaseTask):
+class MoveTask(Task):
     task_type: TaskType = Field(default=TaskType.MOVE, frozen=True)
     movement_domain: OperationalDomain
     destination: GlobalPosition
     route: GeoPath | None = None
     speed_ms: float | None = None
 
-class ResupplyTask(BaseTask):
+class ResupplyTask(Task):
     task_type: TaskType = Field(default=TaskType.RESUPPLY, frozen=True)
     destination: GlobalPosition
     supplies: list[ItemCount]
@@ -180,8 +180,3 @@ class AirMissionSchema(Mission):
     unit_plans: dict[str, PlannedUnitMission]
     routes: MissionRouteGeometry
     route_points: PlannedRoutePoints
-
-class MissionProgress(Mission):
-    waypoint_count: int | None = None
-    current_waypoint_index: int | None = None
-    mission_valid: bool | None = None

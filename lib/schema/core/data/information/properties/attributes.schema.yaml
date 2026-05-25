@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: attributes
-description: "Classification, metadata, symbology, display, and feature attributes."
+description: "Fundamental characteristics, type, form"
 tags:
   - core
 root: properties
@@ -15,6 +15,9 @@ enums:
     - TOP_SECRET
 
 models:
+  Attributes:
+    parent: Properties
+
   MetadataValue:
     parent: Attributes
     fields:

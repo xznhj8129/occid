@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: guidance
-description: "Navigation solution, flight control, guidance status, and navigation capability data."
+description: "Status and quality of the navigation solution, mode, source, and validity"
 tags:
   - core
 root: state
@@ -77,6 +77,9 @@ enums:
     - RTK_FIXED
 
 models:
+  Guidance:
+    parent: State
+
   NavigationValidity:
     parent: Guidance
     fields:

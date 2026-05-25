@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: reasoning
-description: "Control reasoning, purpose, intent, and objectives."
+description: ""
 tags:
   - core
 root: control

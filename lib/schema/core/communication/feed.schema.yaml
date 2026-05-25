@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: feed
-description: "Communication feeds, links, streams, endpoints, and link state."
+description: "Information pipe"
 tags:
   - core
 root: communication

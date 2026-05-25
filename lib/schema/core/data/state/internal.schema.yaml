@@ -1,12 +1,15 @@
 version: 1
 type: schema
 name: internal
-description: "Diagnostic internal machine and system state."
+description: "Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)"
 tags:
   - core
 root: state
 
 models:
+  Internal:
+    parent: State
+
   FirmwareInfo:
     parent: Internal
     fields:

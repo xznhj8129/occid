@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: intel
-description: "External effect-side detections, classifications, tracks, and assessments."
+description: "Effect-side data that something happened or changed external to the sender object"
 tags:
   - core
 root: information
@@ -16,9 +16,6 @@ models:
       - Classification
       - Track
       - Assessment
-
-  Detection:
-    parent: Intel
 
   Classification:
     parent: Intel

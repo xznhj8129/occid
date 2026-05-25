@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: communication
-description: "Communication endpoints, transports, feeds, messages, and protocol payloads."
+description: "Definition, implementation, metadata and formats of information transfer"
 tags:
   - core
 root: core

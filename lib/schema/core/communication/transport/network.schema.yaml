@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: network
-description: "Network topology, addresses, route hints, and network views."
+description: "Graph topology of information flow"
 tags:
   - core
 root: transport

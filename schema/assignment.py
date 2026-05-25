@@ -2,9 +2,12 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Assignment, Lifecycle
+from .state import State
 
 ### Models
+
+class Assignment(State):
+    pass
 
 class TaskDelta(Assignment):
     task_id: str
@@ -22,13 +25,3 @@ class FlightAssignment(Assignment):
     wave_n: int = 0
     formation_n: int = 0
     takeoff_time: float = 0.0
-
-class TaskStatusEntry(Lifecycle):
-    ts: float
-    status: TaskStatus
-    command_result: CommandResult | None = None
-    reply_ack: ReplyAck | None = None
-    assign_fail: TaskAssignFail | None = None
-    phase: TaskPhase | None = None
-    detail: str | None = None
-    source: str | None = None

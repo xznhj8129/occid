@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .properties import Attributes
+from .properties import Properties
 
 ### Enums
 
@@ -14,6 +14,9 @@ class ClassificationLevel(IntEnum):
     TOP_SECRET = auto()
 
 ### Models
+
+class Attributes(Properties):
+    pass
 
 class MetadataValue(Attributes):
     text_value: str | None = None

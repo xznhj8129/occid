@@ -1,12 +1,17 @@
 version: 1
 type: schema
 name: node
-description: "Communication endpoints that transmit or receive messages."
+description: "Endpoint that transmits or receives messages"
 tags:
   - core
 root: communication
-branches:
-  - mesh
+
+enums:
+  MeshNodeState:
+    - UNKNOWN = 0
+    - ACTIVE
+    - DEGRADED
+    - LOST
 
 models:
   Node:
@@ -16,3 +21,17 @@ models:
     parent: Node
     fields:
       node_id: string
+
+  MeshNode:
+    parent: Node
+    fields:
+      node_id: string
+      state: optional MeshNodeState
+      last_seen_ts: optional float
+      position: optional GlobalPosition
+      rssi: optional float
+      snr: optional float
+      hop_limit: optional int
+      link_condition: optional LinkCondition
+      connection_status: optional ConnectionStatus
+      roles: list[CapabilityRole]

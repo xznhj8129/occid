@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: interface
-description: "Control interfaces and leases to executing layers."
+description: "The translation of an action into the terms of the executing layer"
 tags:
   - core
 root: control

@@ -59,7 +59,7 @@ Minimal branch file:
 ```yaml
 version: 1
 type: schema
-name: objects
+name: object
 description: "Top-level object branch."
 tags:
   - core
@@ -306,7 +306,7 @@ Rules:
 - each item must reference a declared child model
 - each referenced child model must declare `parent: <parent model>`
 - enum values auto-increment from 0 in declaration order
-- the implicit enum is named `{ModelName}Type` (e.g., `Task` → `TaskType`) and is a first-class referenceable type
+- the implicit enum is named `{ModelName}_type` (e.g., `Task` → `Task_type`) and is a first-class referenceable type
 - each implicit enum member is derived from the child model name by dropping the parent model's prefix when present and converting to `SCREAMING_SNAKE_CASE` (`MoveTask` under `Task` becomes `MOVE`)
 - the discriminator is reserved metadata on each child instance (accessible as `_type`). It cannot collide with user-defined field names
 - the effective shape of a child model includes:
@@ -379,6 +379,7 @@ schema/
 - Every file except `core` declares a `root` ID for the parent class file it extends
 - All models in a file must be descendants of the class that file expands
 - A file that declares `root: control` may only contain models whose parent chain leads to Control
+- If a model branch has its own schema file, that model declaration belongs in that file, not in its parent's file. The parent file may name the branched model in `variants`, but must not define the branched model.
 - Enums used exclusively by models in the file are co-located. Enums shared across files belong in the root or a common ancestor file
 
 **17.2. File header**

@@ -65,7 +65,7 @@ class CapabilityRole(IntEnum):
     GATEWAY = auto()
     RECORDER = auto()
 
-class CommunicationType(IntEnum):
+class Communication_type(IntEnum):
     NODE = 0
     TRANSPORT = auto()
     FEED = auto()

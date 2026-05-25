@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .tasks import BaseTask
+from .task import Task
 
 ### Enums
 
@@ -44,13 +44,6 @@ class IsrFocusType(IntEnum):
     ROUTE = auto()
     TARGET = auto()
 
-class TrackImproveGoal(IntEnum):
-    POSITION = 0
-    IDENTITY = auto()
-    ACTIVITY = auto()
-    COMPOSITION = auto()
-    DAMAGE = auto()
-
 class EvidenceLevel(IntEnum):
     SUSPECTED = 0
     DETECTED = auto()
@@ -74,7 +67,7 @@ class ActivityType(IntEnum):
 
 ### Models
 
-class IsrTask(BaseTask):
+class IsrTask(Task):
     isr_task: TaskISR | None = None
     area: GeoArea
     dwell_seconds: float | None = None
@@ -102,7 +95,6 @@ class IsrParameters(OCCIDModel):
     sensor_types: list[SensorType]
     sensor_modes: list[SensorMode]
     effect_domains: list[EffectDomain]
-    track_improve_goal: TrackImproveGoal | None = None
     bda_required: bool = False
     evidence_level: EvidenceLevel | None = None
 
@@ -115,7 +107,7 @@ class TrackUpdate(OCCIDModel):
 class IsrResult(OCCIDModel):
     detections: list[IsrObservation]
     track_updates: list[TrackUpdate]
-    media: MediaSchema | None = None
+    media: list[MediaItemSchema] | None = None
     confidence: ConfidenceLevel | None = None
     observations: list[IsrObservation]
 

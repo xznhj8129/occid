@@ -6,7 +6,7 @@ from .communication import Communication
 
 ### Enums
 
-class TransportType(IntEnum):
+class Transport_type(IntEnum):
     NETWORK = 0
     CARRIER = auto()
     PROTOCOL = auto()

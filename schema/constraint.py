@@ -6,7 +6,7 @@ from .control import Control
 
 ### Enums
 
-class ConstraintType(IntEnum):
+class Constraint_type(IntEnum):
     RESTRICTION = 0
     LIMITATION = auto()
     CONDITION = auto()

@@ -3,7 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .definition import OperationalDomain, PropulsionType
-from .objects import Entity, ObjectType
+from .object import Object, ObjectType
 
 ### Enums
 
@@ -35,33 +35,36 @@ class EntityLifecycleStatus(IntEnum):
     INACTIVE = auto()
     UNKNOWN = auto()
 
-class BaseEntityType(IntEnum):
+class Entity_type(IntEnum):
     ACTOR = 0
     MACHINE = auto()
 
-class ActorType(IntEnum):
+class Actor_type(IntEnum):
     PERSON = 0
     AGENT = auto()
 
-class PersonType(IntEnum):
+class Person_type(IntEnum):
     MILITARY = 0
 
-class BaseMachineType(IntEnum):
-    GROUND = 0
+class Machine_type(IntEnum):
+    VEHICLE = 0
+    ROBOT = auto()
+    PLATFORM = auto()
+    GROUND = auto()
     AIR = auto()
     MILITARY = auto()
 
-class GroundMachineType(IntEnum):
+class GroundMachine_type(IntEnum):
     GROUND_ROBOT = 0
     MILITARY = auto()
 
-class AirMachineType(IntEnum):
+class AirMachine_type(IntEnum):
     AIR_ROBOT = 0
     MILITARY = auto()
 
 ### Models
 
-class BaseEntity(Entity):
+class Entity(Object):
     object_type: ObjectType = ObjectType.ENTITY
     entity_id: str
     short_id: str | None = None
@@ -79,22 +82,10 @@ class BaseEntity(Entity):
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 
-class Actor(BaseEntity):
+class Actor(Entity):
     pass
 
 class Agent(Actor):
-    pass
-
-class Machine(BaseEntity):
-    pass
-
-class Vehicle(Machine):
-    pass
-
-class Robot(Machine):
-    pass
-
-class Platform(Machine):
     pass
 
 class Person(Actor):
@@ -109,7 +100,7 @@ class Person(Actor):
     sensors: dict[str, SensorSchema]
     links: dict[str, LinkSchema]
 
-class BaseMachine(Machine):
+class Machine(Entity):
     entity_type: EntityType = EntityType.MACHINE
     sys_id: str
     machine_type: MachineType | None = None
@@ -121,7 +112,16 @@ class BaseMachine(Machine):
     control_level: ControlLevel | None = None
     components: list[EntityComponentRef]
 
-class GroundMachine(BaseMachine):
+class Vehicle(Machine):
+    pass
+
+class Robot(Machine):
+    pass
+
+class Platform(Machine):
+    pass
+
+class GroundMachine(Machine):
     machine_type: MachineType
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: str
@@ -135,7 +135,7 @@ class GroundRobot(GroundMachine):
     robot_control: RobotControlSchema | None = None
     remote_control: RemoteControlSchema
 
-class AirMachine(BaseMachine):
+class AirMachine(Machine):
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: str

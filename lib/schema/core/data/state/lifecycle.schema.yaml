@@ -1,10 +1,23 @@
 version: 1
 type: schema
 name: lifecycle
-description: "Existence and execution lifecycle state."
+description: "Current stage in existence or execution"
 tags:
   - core
 root: state
 
 models:
+  Lifecycle:
+    parent: State
 
+  TaskStatusEntry:
+    parent: Lifecycle
+    fields:
+      ts: float
+      status: TaskStatus
+      command_result: optional CommandResult
+      reply_ack: optional ReplyAck
+      assign_fail: optional TaskAssignFail
+      phase: optional TaskPhase
+      detail: optional string
+      source: optional string

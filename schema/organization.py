@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .objects import ObjectType, Organization
+from .object import ObjectType, Set
 
 ### Enums
 
@@ -21,12 +21,14 @@ class OrgTopology(IntEnum):
     HIERARCHICAL = auto()
     CELLULAR = auto()
 
-class BaseOrgType(IntEnum):
-    MILITARY = 0
+class Organization_type(IntEnum):
+    GROUP = 0
+    UNIT = auto()
+    MILITARY_ORG = auto()
 
 ### Models
 
-class BaseOrg(Organization):
+class Organization(Set):
     org_uid: str
     object_type: ObjectType = ObjectType.ORGANIZATION
     orglevel: OrgLevel = OrgLevel.GROUP
@@ -35,3 +37,9 @@ class BaseOrg(Organization):
     position: GlobalPosition | None = None
     control_level: ControlLevel | None = None
     link_condition: LinkCondition | None = None
+
+class Group(Organization):
+    orglevel: OrgLevel = OrgLevel.GROUP
+
+class Unit(Organization):
+    orglevel: OrgLevel = OrgLevel.UNIT

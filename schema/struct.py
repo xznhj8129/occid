@@ -6,7 +6,7 @@ from .core import Root
 
 ### Enums
 
-class StructType(IntEnum):
+class Struct_type(IntEnum):
     VECTOR = 0
     MEASUREMENT = auto()
     BEARING = auto()
@@ -21,6 +21,7 @@ class StructType(IntEnum):
     RANGE = auto()
     TRANSFORM = auto()
     ORBITAL = auto()
+    SPATIAL = auto()
 
 ### Models
 

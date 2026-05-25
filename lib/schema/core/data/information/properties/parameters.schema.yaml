@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: parameters
-description: "Operating configuration and control parameter data."
+description: "Current operating configuration or control regime"
 tags:
   - core
 root: properties
@@ -56,6 +56,9 @@ enums:
     - AUX
 
 models:
+  Parameters:
+    parent: Properties
+
   VideoConfigSchema:
     parent: Parameters
     fields:

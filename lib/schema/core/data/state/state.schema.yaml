@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: state
-description: "Changing own-state and condition data at a point in time."
+description: "Telemetric, changing data describing the own state or condition of an object at a given time"
 tags:
   - core
 root: information
@@ -9,7 +9,7 @@ branches:
   - internal
   - position
   - guidance
-  - sensors
+  - sensor
   - input
   - resources
   - condition
@@ -68,33 +68,6 @@ models:
       - Assignment
 
   Kinematic:
-    parent: State
-
-  Internal:
-    parent: State
-
-  Position:
-    parent: State
-
-  Guidance:
-    parent: State
-
-  Sensor:
-    parent: State
-
-  Input:
-    parent: State
-
-  Resources:
-    parent: State
-
-  Condition:
-    parent: State
-
-  Lifecycle:
-    parent: State
-
-  Assignment:
     parent: State
 
   TelemetryState:

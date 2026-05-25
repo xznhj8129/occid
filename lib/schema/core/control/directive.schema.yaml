@@ -1,12 +1,12 @@
 version: 1
 type: schema
 name: directive
-description: "Directives, missions, tasks, and commands."
+description: "What must be achieved, why, and within what bounds"
 tags:
   - core
 root: control
 branches:
-  - tasks
+  - task
 
 models:
   Directive:
@@ -19,8 +19,12 @@ models:
   Mission:
     parent: Directive
 
-  Task:
-    parent: Directive
-
   Command:
     parent: Directive
+
+  MissionProgress:
+    parent: Mission
+    fields:
+      waypoint_count: optional int
+      current_waypoint_index: optional int
+      mission_valid: optional bool

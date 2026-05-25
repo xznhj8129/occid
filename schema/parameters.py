@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .properties import Parameters
+from .properties import Properties
 
 ### Enums
 
@@ -55,6 +55,9 @@ class ControlAxis(IntEnum):
     AUX = auto()
 
 ### Models
+
+class Parameters(Properties):
+    pass
 
 class VideoConfigSchema(Parameters):
     protocol: VideoProtocol | None = None

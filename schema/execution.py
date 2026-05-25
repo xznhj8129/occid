@@ -6,12 +6,12 @@ from .control import Control
 
 ### Enums
 
-class ExecutionType(IntEnum):
+class Execution_type(IntEnum):
     PLAN = 0
     SEQUENCE = auto()
     ACTION = auto()
 
-class PlannedUnitMissionType(IntEnum):
+class PlannedUnitMission_type(IntEnum):
     MILITARY = 0
 
 ### Models

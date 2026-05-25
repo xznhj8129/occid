@@ -6,7 +6,7 @@ from .core import Root
 
 ### Enums
 
-class ControlType(IntEnum):
+class Control_type(IntEnum):
     REASONING = 0
     DIRECTIVE = auto()
     EXECUTION = auto()

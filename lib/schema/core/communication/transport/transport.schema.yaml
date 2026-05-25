@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: transport
-description: "Communication transport forms, networks, carriers, and protocols."
+description: "The form of information flow"
 tags:
   - core
 root: communication

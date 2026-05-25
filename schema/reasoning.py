@@ -6,7 +6,7 @@ from .control import Control
 
 ### Enums
 
-class ReasoningType(IntEnum):
+class Reasoning_type(IntEnum):
     PURPOSE = 0
     INTENT = auto()
     OBJECTIVE = auto()

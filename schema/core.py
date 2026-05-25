@@ -4,7 +4,7 @@ from .common import *
 
 ### Enums
 
-class RootType(IntEnum):
+class Root_type(IntEnum):
     DEFINITION = 0
     STRUCT = auto()
     OBJECT = auto()

@@ -1,12 +1,15 @@
 version: 1
 type: schema
 name: assignment
-description: "Assignment, task, plan, mission, and stage state."
+description: "Assignments, tasks, plans, missions, stages"
 tags:
   - core
 root: state
 
 models:
+  Assignment:
+    parent: State
+
   TaskDelta:
     parent: Assignment
     fields:
@@ -27,15 +30,3 @@ models:
       wave_n: int = 0
       formation_n: int = 0
       takeoff_time: float = 0.0
-
-  TaskStatusEntry:
-    parent: Lifecycle
-    fields:
-      ts: float
-      status: TaskStatus
-      command_result: optional CommandResult
-      reply_ack: optional ReplyAck
-      assign_fail: optional TaskAssignFail
-      phase: optional TaskPhase
-      detail: optional string
-      source: optional string

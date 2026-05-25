@@ -1,10 +1,10 @@
 version: 1
 type: schema
-name: entities
-description: "Discrete entities, actors, machines, and mobile platforms."
+name: entity
+description: 'One discrete "atom" capable of actions'
 tags:
   - core
-root: objects
+root: object
 
 enums:
   EntityType:
@@ -36,8 +36,8 @@ enums:
     - UNKNOWN
 
 models:
-  BaseEntity:
-    parent: Entity
+  Entity:
+    parent: Object
     variants:
       - Actor
       - Machine
@@ -60,26 +60,14 @@ models:
       display_meta: optional DisplayMeta
 
   Actor:
-    parent: BaseEntity
+    parent: Entity
     variants:
       - Person
       - Agent
 
   Agent:
     parent: Actor
-
-  Machine:
-    parent: BaseEntity
-
-  Vehicle:
-    parent: Machine
-
-  Robot:
-    parent: Machine
-
-  Platform:
-    parent: Machine
-
+    
   Person:
     parent: Actor
     variants:
@@ -95,9 +83,12 @@ models:
       sensors: map[string, SensorSchema]
       links: map[string, LinkSchema]
 
-  BaseMachine:
-    parent: Machine
+  Machine:
+    parent: Entity
     variants:
+      - Vehicle
+      - Robot
+      - Platform
       - GroundMachine
       - AirMachine
     fields:
@@ -112,8 +103,18 @@ models:
       control_level: optional ControlLevel
       components: list[EntityComponentRef]
 
+  Vehicle:
+    parent: Machine
+
+  Robot:
+    parent: Machine
+
+  Platform:
+    parent: Machine
+
+
   GroundMachine:
-    parent: BaseMachine
+    parent: Machine
     variants:
       - GroundRobot
     fields:
@@ -133,7 +134,7 @@ models:
       remote_control: RemoteControlSchema
 
   AirMachine:
-    parent: BaseMachine
+    parent: Machine
     variants:
       - AirRobot
     fields:

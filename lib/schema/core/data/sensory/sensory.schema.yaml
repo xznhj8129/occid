@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: sensory
-description: "Unstructured non-symbolic sensory signal products."
+description: "Unstructured, non-symbolic sensory signal data that has to be interpreted"
 tags:
   - core
 root: data
@@ -41,8 +41,3 @@ models:
       created_ts: optional float
       size_bytes: optional int
       content_type: optional string
-
-  MediaSchema:
-    parent: AV
-    fields:
-      items: list[MediaItemSchema]

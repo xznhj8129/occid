@@ -2,9 +2,28 @@
 from __future__ import annotations
 from .common import *
 
-from .objects import Collection, Feature
+from .object import Collection, Object
+
+### Enums
+
+class World_type(IntEnum):
+    FEATURE = 0
+    LOCATION = auto()
+    SITE = auto()
 
 ### Models
+
+class World(Object):
+    pass
+
+class Feature(World):
+    pass
+
+class Location(World):
+    pass
+
+class Site(World):
+    pass
 
 class GeoJsonFeature(Feature):
     type: Literal['Feature'] = Field(default='Feature', frozen=True)

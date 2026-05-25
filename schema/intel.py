@@ -6,7 +6,7 @@ from .information import Information
 
 ### Enums
 
-class IntelType(IntEnum):
+class Intel_type(IntEnum):
     DETECTION = 0
     CLASSIFICATION = auto()
     TRACK = auto()
@@ -15,9 +15,6 @@ class IntelType(IntEnum):
 ### Models
 
 class Intel(Information):
-    pass
-
-class Detection(Intel):
     pass
 
 class Classification(Intel):

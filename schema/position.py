@@ -2,9 +2,12 @@
 from __future__ import annotations
 from .common import *
 
-from .state import Position
+from .state import State
 
 ### Models
+
+class Position(State):
+    pass
 
 class LocationState(Position):
     inertial_frame: InertialReferenceFrame | None = None
