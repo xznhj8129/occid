@@ -2,12 +2,77 @@
 from __future__ import annotations
 from .common import *
 
+from .core import Root
+
+### Enums
+
+class StructType(IntEnum):
+    VECTOR = 0
+    MEASUREMENT = auto()
+    BEARING = auto()
+    GEO_POS = auto()
+    LOCAL_POS = auto()
+    LINE = auto()
+    PATH = auto()
+    SHAPE = auto()
+    BOUNDING = auto()
+    UNCERTAINTY = auto()
+    POSE = auto()
+    RANGE = auto()
+    TRANSFORM = auto()
+    ORBITAL = auto()
+
 ### Models
 
-class Time(OCCIDModel):
+class Struct(Root):
+    pass
+
+class Vector(Struct):
+    pass
+
+class Measurement(Struct):
+    pass
+
+class Bearing(Struct):
+    pass
+
+class GeoPos(Struct):
+    pass
+
+class LocalPos(Struct):
+    pass
+
+class Line(Struct):
+    pass
+
+class StructPath(Struct):
+    pass
+
+class Shape(Struct):
+    pass
+
+class Bounding(Struct):
+    pass
+
+class Uncertainty(Struct):
+    pass
+
+class Pose(Struct):
+    pass
+
+class Range(Struct):
+    pass
+
+class Transform(Struct):
+    pass
+
+class Orbital(Struct):
+    pass
+
+class Time(Measurement):
     utime: int
 
-class Duration(OCCIDModel):
+class Duration(Measurement):
     ms: float | None = None
     seconds: float | None = None
     minutes: float | None = None
@@ -17,7 +82,7 @@ class Duration(OCCIDModel):
     months: float | None = None
     years: float | None = None
 
-class Timestamp(OCCIDModel):
+class Timestamp(Measurement):
     ms: float
     seconds: float
     minutes: float
@@ -27,56 +92,10 @@ class Timestamp(OCCIDModel):
     year: float
     tz: float
 
-class AlternateId(OCCIDModel):
-    id_type: AlternateIdType
-    value: str
-
-class ItemCount(OCCIDModel):
+class ItemCount(Measurement):
     item_type: str
     qty: int = 0
 
-class NumericRange(OCCIDModel):
+class NumericRange(Range):
     min_value: float | None = None
     max_value: float | None = None
-
-class MetadataValue(OCCIDModel):
-    text_value: str | None = None
-    int_value: int | None = None
-    float_value: float | None = None
-    bool_value: bool | None = None
-
-class MetadataEntry(OCCIDModel):
-    key: str
-    value: MetadataValue
-
-class SymbologySchema(OCCIDModel):
-    sidc: str | None = None
-    cot: str | None = None
-
-class FirmwareInfo(OCCIDModel):
-    name: str | None = None
-    version: str | None = None
-    build: str | None = None
-
-class FuelState(OCCIDModel):
-    fuel_type: FuelType
-    capacity: float | None = None
-    remaining: float | None = None
-
-class SuppliesSchema(OCCIDModel):
-    fuel: FuelState | None = None
-    stores: list[ItemCount]
-
-class DisplayMeta(OCCIDModel):
-    icon_code: str | None = None
-    tint: str | None = None
-    short_label: str | None = None
-
-class RelationSchema(OCCIDModel):
-    src_id: str
-    dst_id: str
-    rel_kind: str
-    since_ts: float | None = None
-    until_ts: float | None = None
-    confidence: ConfidenceLevel | None = None
-    source: str | None = None

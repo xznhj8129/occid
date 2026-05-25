@@ -1,0 +1,28 @@
+version: 1
+type: schema
+name: position
+description: "Position, address, placement, and sensor origin state."
+tags:
+  - core
+root: state
+
+models:
+  LocationState:
+    parent: Position
+    fields:
+      inertial_frame: optional InertialReferenceFrame
+      body_frame: optional BodyReferenceFrame
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      attitude: optional EulerAngles
+      altitude: optional AltitudeState
+      velocity: optional VelocityVector
+      navigation_validity: optional NavigationValidity
+      gnss: optional GnssSolution
+
+  SpotterOrigin:
+    parent: Position
+    fields:
+      position: GlobalPosition
+      attitude: optional EulerAngles
+      look_vector: optional LocalDirection

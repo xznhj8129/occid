@@ -1,0 +1,30 @@
+version: 1
+type: schema
+name: intel
+description: "External effect-side detections, classifications, tracks, and assessments."
+tags:
+  - core
+root: information
+branches:
+  - detection
+
+models:
+  Intel:
+    parent: Information
+    variants:
+      - Detection
+      - Classification
+      - Track
+      - Assessment
+
+  Detection:
+    parent: Intel
+
+  Classification:
+    parent: Intel
+
+  Track:
+    parent: Intel
+
+  Assessment:
+    parent: Intel

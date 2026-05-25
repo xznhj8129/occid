@@ -1,11 +1,25 @@
 version: 1
 type: schema
 name: control
-description: "Control-side directives, tasks, objectives, constraints, and execution structures."
+description: "Control-side binding of agents to objectives through structured decomposition."
 tags:
   - core
 root: core
 branches:
-  - tasks
+  - reasoning
+  - directive
+  - execution
+  - reference
+  - constraint
+  - interface
 
 models:
+  Control:
+    parent: Root
+    variants:
+      - Reasoning
+      - Directive
+      - Execution
+      - Reference
+      - Constraint
+      - Interface

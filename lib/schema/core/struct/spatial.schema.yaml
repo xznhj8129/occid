@@ -76,180 +76,82 @@ enums:
     - LOCAL
     - OBJECT
 
-  NavAids:
-    - NONE = 0
-    - GNSS
-    - INS
-    - TERRAIN_MATCH
-    - CELESTIAL
-    - VISUAL
-
-  GnssFixType:
-    - NONE = 0
-    - NO_FIX
-    - FIX_2D
-    - FIX_3D
-    - DGPS
-    - RTK_FLOAT
-    - RTK_FIXED
-
 models:
   EulerAngles:
     parent: Pose
     fields:
-      pitch: optional float
-      heading: optional float
-      roll: optional float
-      frame: optional BodyReferenceFrame
-
+      pitch: float
+      heading: float
+      roll: float
+      frame: BodyReferenceFrame
 
   LocalDirection:
     parent: Bearing
     fields:
-      bearing: optional float
-      azimuth: optional float
-      elevation: optional float
-      slant_range: optional float
-
+      bearing: float
+      azimuth: float
+      elevation: float
+      slant_range: float
 
   LocalVector:
     parent: Vector
     fields:
-      x: optional float
-      y: optional float
-      z: optional float
-      frame: optional InertialReferenceFrame
-
+      x: float
+      y: float
+      z: float
+      frame: InertialReferenceFrame
 
   GlobalPosition:
     parent: GeoPos
     fields:
-      lat: optional float
-      lon: optional float
-      alt: optional float
+      lat: float
+      lon: float
+      alt: float
       mgrs: optional string
       datum: const string = "WGS84"
-      alt_frame: optional AltitudeDatum
-
+      alt_frame: AltitudeDatum
 
   GeoPath:
     parent: StructPath
     fields:
       points: list[GlobalPosition]
 
-
   GeoArea:
     parent: Shape
     fields:
       vertices: list[GlobalPosition]
 
-
   BoundingBox:
     parent: Bounding
     fields:
-      x1: optional float
-      y1: optional float
-      z1: optional float
-      x2: optional float
-      y2: optional float
-      z2: optional float
-
+      x1: float
+      y1: float
+      z1: float
+      x2: float
+      y2: float
+      z2: float
 
   VelocityVector:
     parent: Vector
     fields:
-      x: optional float
-      y: optional float
-      z: optional float
-
+      x: float
+      y: float
+      z: float
 
   AngularVelocityVector:
     parent: Vector
     fields:
-      x_rad_s: optional float
-      y_rad_s: optional float
-      z_rad_s: optional float
-      frame: optional BodyReferenceFrame
-
-
-  NavigationValidity:
-    parent: Guidance
-    fields:
-      local_position_ok: optional bool
-      global_position_ok: optional bool
-      home_position_ok: optional bool
-
+      x_rad_s: float
+      y_rad_s: float
+      z_rad_s: float
+      frame: BodyReferenceFrame
 
   AltitudeState:
     parent: Measurement
     fields:
       absolute_m: optional float
       relative_m: optional float
-      datum: optional AltitudeDatum
-
-
-  GnssSolution:
-    parent: Guidance
-    fields:
-      fix_type: optional GnssFixType
-      fix_code: optional int
-      satellites_used: optional int
-      position: optional GlobalPosition
-      altitude: optional AltitudeState
-      ground_speed_ms: optional float
-      ground_course_deg: optional float
-      hdop: optional float
-      vdop: optional float
-      eph: optional float
-      epv: optional float
-      yaw_deg: optional float
-      last_message_dt: optional float
-      errors: optional float
-      timeouts: optional float
-
-
-  FeaturePropertyValue:
-    parent: Properties
-    fields:
-      text_value: optional string
-      int_value: optional int
-      float_value: optional float
-      bool_value: optional bool
-
-
-  FeatureProperty:
-    parent: Properties
-    fields:
-      key: string
-      value: FeaturePropertyValue
-
-
-  GeoJsonGeometry:
-    parent: Geometry
-    fields:
-      type: GeoJsonGeometryTypes
-      coordinates: optional any
-      geometries: optional list[GeoJsonGeometry]
-      bbox: optional BoundingBox
-
-
-  GeoJsonFeature:
-    parent: Feature
-    fields:
-      type: const string = "Feature"
-      geometry: GeoJsonGeometry
-      properties: list[FeatureProperty]
-      id: optional (string | int)
-      bbox: optional BoundingBox
-
-
-  GeoJsonFeatureCollection:
-    parent: Collection
-    fields:
-      type: const string = "FeatureCollection"
-      features: list[GeoJsonFeature]
-      bbox: optional BoundingBox
-
+      datum: AltitudeDatum
 
   LocationUncertainty:
     parent: Uncertainty
@@ -260,16 +162,10 @@ models:
       ellipse_minor_m: optional float
       ellipse_bearing_deg: optional float
 
-
-  LocationState:
-    parent: Position
+  GeoJsonGeometry:
+    parent: Shape
     fields:
-      inertial_frame: optional InertialReferenceFrame
-      body_frame: optional BodyReferenceFrame
-      position: optional GlobalPosition
-      uncertainty: optional LocationUncertainty
-      attitude: optional EulerAngles
-      altitude: optional AltitudeState
-      velocity: optional VelocityVector
-      navigation_validity: optional NavigationValidity
-      gnss: optional GnssSolution
+      type: GeoJsonGeometryTypes
+      coordinates: optional any
+      geometries: optional list[GeoJsonGeometry]
+      bbox: optional BoundingBox

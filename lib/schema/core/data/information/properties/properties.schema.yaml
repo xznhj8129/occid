@@ -1,0 +1,47 @@
+version: 1
+type: schema
+name: properties
+description: "Fixed identity, attributes, parameters, and relationship data."
+tags:
+  - core
+root: information
+branches:
+  - identity
+  - attributes
+  - parameters
+  - relationship
+
+models:
+  Properties:
+    parent: Information
+    variants:
+      - Identity
+      - Attributes
+      - Parameters
+      - PropertyRelationship
+
+  Identity:
+    parent: Properties
+
+  Attributes:
+    parent: Properties
+
+  Parameters:
+    parent: Properties
+
+  PropertyRelationship:
+    parent: Properties
+
+  FeaturePropertyValue:
+    parent: Properties
+    fields:
+      text_value: optional string
+      int_value: optional int
+      float_value: optional float
+      bool_value: optional bool
+
+  FeatureProperty:
+    parent: Properties
+    fields:
+      key: string
+      value: FeaturePropertyValue

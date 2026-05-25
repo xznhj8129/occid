@@ -1,0 +1,40 @@
+version: 1
+type: schema
+name: input
+description: "Operator, receiver, control input, and setpoint state."
+tags:
+  - core
+root: state
+
+models:
+  ControlAxisSet:
+    parent: Input
+    fields:
+      roll: optional float
+      pitch: optional float
+      yaw: optional float
+      throttle: optional float
+      aux: list[float]
+
+  ControlChannelValue:
+    parent: Input
+    fields:
+      channel_index: int
+      value: optional float
+
+  ControlOverride:
+    parent: Input
+    fields:
+      roll: optional float
+      pitch: optional float
+      yaw: optional float
+      throttle: optional float
+      aux: list[ControlChannelValue]
+
+  ControlAttitudeSetpoint:
+    parent: Input
+    fields:
+      roll_deg: float
+      pitch_deg: float
+      yaw_deg: float
+      thrust_value: float

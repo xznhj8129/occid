@@ -1,0 +1,44 @@
+version: 1
+type: schema
+name: identity
+description: "Identity and alternate identifier properties."
+tags:
+  - core
+root: properties
+
+enums:
+  IdentifierType:
+    - UNIT_CODE = 0
+    - CALLSIGN
+    - SERIAL_NUMBER
+    - DB_ID
+    - TRACK_ID
+    - ASSET_ID
+    - REGISTRATION
+
+models:
+  Identifier:
+    parent: Identity
+    fields:
+      id_type: IdentifierType
+      value: string
+
+  HardwareIdentity:
+    parent: Identity
+    fields:
+      hardware_uid: optional string
+      legacy_uid: optional string
+      vendor_id: optional int
+      vendor_name: optional string
+      product_id: optional int
+      product_name: optional string
+      board_info: optional string
+
+  FlightControllerIdentity:
+    parent: Identity
+    fields:
+      api_version: Version
+      controller_variant: optional string
+      hardware: optional HardwareIdentity
+      flight_software: optional FirmwareInfo
+      os_software: optional FirmwareInfo

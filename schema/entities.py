@@ -3,7 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .definition import OperationalDomain, PropulsionType
-from .objects import BaseObject, ObjectType
+from .objects import Entity, ObjectType
 
 ### Enums
 
@@ -36,22 +36,32 @@ class EntityLifecycleStatus(IntEnum):
     UNKNOWN = auto()
 
 class BaseEntityType(IntEnum):
-    PERSON = 0
+    ACTOR = 0
     MACHINE = auto()
+
+class ActorType(IntEnum):
+    PERSON = 0
+    AGENT = auto()
+
+class PersonType(IntEnum):
+    MILITARY = 0
 
 class BaseMachineType(IntEnum):
     GROUND = 0
     AIR = auto()
+    MILITARY = auto()
 
 class GroundMachineType(IntEnum):
     GROUND_ROBOT = 0
+    MILITARY = auto()
 
 class AirMachineType(IntEnum):
     AIR_ROBOT = 0
+    MILITARY = auto()
 
 ### Models
 
-class BaseEntity(BaseObject):
+class BaseEntity(Entity):
     object_type: ObjectType = ObjectType.ENTITY
     entity_id: str
     short_id: str | None = None
@@ -61,7 +71,7 @@ class BaseEntity(BaseObject):
     created_ts: float | None = None
     updated_ts: float | None = None
     origin_system: str | None = None
-    alt_ids: list[AlternateId]
+    alt_ids: list[Identifier]
     tags: list[str]
     metadata: list[MetadataEntry]
     relations: list[RelationSchema]
@@ -69,12 +79,25 @@ class BaseEntity(BaseObject):
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 
-class EntityComponentRef(OCCIDModel):
-    component_id: str
-    component_type: str | None = None
-    label: str | None = None
+class Actor(BaseEntity):
+    pass
 
-class Person(BaseEntity):
+class Agent(Actor):
+    pass
+
+class Machine(BaseEntity):
+    pass
+
+class Vehicle(Machine):
+    pass
+
+class Robot(Machine):
+    pass
+
+class Platform(Machine):
+    pass
+
+class Person(Actor):
     entity_type: EntityType = EntityType.PERSON
     role: str
     serial_uid: str = ''
@@ -86,7 +109,7 @@ class Person(BaseEntity):
     sensors: dict[str, SensorSchema]
     links: dict[str, LinkSchema]
 
-class BaseMachine(BaseEntity):
+class BaseMachine(Machine):
     entity_type: EntityType = EntityType.MACHINE
     sys_id: str
     machine_type: MachineType | None = None
@@ -97,30 +120,6 @@ class BaseMachine(BaseEntity):
     link_condition: LinkCondition | None = None
     control_level: ControlLevel | None = None
     components: list[EntityComponentRef]
-
-class GroundNavigationSchema(OCCIDModel):
-    propulsion: PropulsionType
-    navigation: NavigationMode
-    navaids: list[NavAids]
-    max_range: float
-    max_spd: float
-
-class AirNavigationSchema(OCCIDModel):
-    flight_type: AirframeType
-    control_modes: list[FlightMode]
-    failsafe_mode: AirFailsafeMode | None = None
-    weather_limits: WeatherLimits
-    ifr: bool | None = None
-    propulsion: PropulsionType
-    navigation: NavigationMode
-    navaids: list[NavAids]
-    fuel: FuelState | None = None
-    max_range: float
-    max_flight_t: float
-    max_spd: float
-    cruise_spd: float
-    max_alt: float
-    start_flight_time: float
 
 class GroundMachine(BaseMachine):
     machine_type: MachineType

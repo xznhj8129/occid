@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .state import Condition
+
 ### Enums
 
 class AlertLevel(IntEnum):
@@ -50,35 +52,21 @@ class MaintenanceState(IntEnum):
     GROUNDED = auto()
     FAILED = auto()
 
-class PowerStatus(IntEnum):
-    UNKNOWN = 0
-    NOT_PRESENT = auto()
-    OPERATING = auto()
-    DISABLED = auto()
-    ERROR = auto()
-
-class PowerType(IntEnum):
-    UNKNOWN = 0
-    GAS = auto()
-    BATTERY = auto()
-    SOLAR = auto()
-    NUCLEAR = auto()
-
 ### Models
 
-class HealthAlert(OCCIDModel):
+class HealthAlert(Condition):
     alert_id: str | None = None
     level: AlertLevel
     condition: str
     acknowledged: bool = False
 
-class SubsystemHealth(OCCIDModel):
+class SubsystemHealth(Condition):
     subsystem_id: str
     state: HealthStatus
     fault_count: int = 0
     note: str | None = None
 
-class HealthSnapshot(OCCIDModel):
+class HealthSnapshot(Condition):
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
@@ -88,42 +76,13 @@ class HealthSnapshot(OCCIDModel):
     subsystems: list[SubsystemHealth]
     alerts: list[HealthAlert]
 
-class MaintenanceStatus(OCCIDModel):
+class MaintenanceStatus(Condition):
     state: MaintenanceState
     last_service_ts: float | None = None
     next_service_ts: float | None = None
     note: str | None = None
 
-class PowerSourceSchema(OCCIDModel):
-    source_id: str
-    power_type: PowerType
-    status: PowerStatus
-    remaining_pct: float | None = None
-
-class PowerStateSchema(OCCIDModel):
-    status: PowerStatus
-    sources: list[PowerSourceSchema]
-    electrical_sources: list[ElectricalResourceState]
-
-class ElectricalResourceState(OCCIDModel):
-    source_id: str | None = None
-    battery_id: int | None = None
-    voltage_v: float | None = None
-    current_a: float | None = None
-    power_w: float | None = None
-    consumed_mah: float | None = None
-    consumed_mwh: float | None = None
-    consumed_ah: float | None = None
-    remaining_pct: float | None = None
-    remaining_capacity: float | None = None
-    temperature_deg_c: float | None = None
-    rssi: float | None = None
-
-class RuntimeLoadState(OCCIDModel):
-    cpu_load: int | None = None
-    cycle_time_us: int | None = None
-
-class VehicleReadinessState(OCCIDModel):
+class VehicleReadinessState(Condition):
     gyro_ok: bool | None = None
     accel_ok: bool | None = None
     mag_ok: bool | None = None

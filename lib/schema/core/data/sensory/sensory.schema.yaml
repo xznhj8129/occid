@@ -1,0 +1,48 @@
+version: 1
+type: schema
+name: sensory
+description: "Unstructured non-symbolic sensory signal products."
+tags:
+  - core
+root: data
+
+enums:
+  MediaType:
+    - IMAGE = 0
+    - VIDEO
+    - AUDIO
+    - DOCUMENT
+    - BINARY
+
+models:
+  Sensory:
+    parent: Data
+    variants:
+      - AV
+      - Spatial
+      - Samples
+
+  AV:
+    parent: Sensory
+
+  Spatial:
+    parent: Sensory
+
+  Samples:
+    parent: Sensory
+
+  MediaItemSchema:
+    parent: AV
+    fields:
+      media_id: string
+      media_type: MediaType
+      uri: string
+      label: optional string
+      created_ts: optional float
+      size_bytes: optional int
+      content_type: optional string
+
+  MediaSchema:
+    parent: AV
+    fields:
+      items: list[MediaItemSchema]

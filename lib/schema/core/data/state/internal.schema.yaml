@@ -1,0 +1,21 @@
+version: 1
+type: schema
+name: internal
+description: "Diagnostic internal machine and system state."
+tags:
+  - core
+root: state
+
+models:
+  FirmwareInfo:
+    parent: Internal
+    fields:
+      name: string
+      version: Version
+      build: optional string
+
+  RuntimeLoadState:
+    parent: Internal
+    fields:
+      cpu_load: optional int
+      cycle_time_us: optional int

@@ -1,0 +1,27 @@
+version: 1
+type: schema
+name: transport
+description: "Communication transport forms, networks, carriers, and protocols."
+tags:
+  - core
+root: communication
+branches:
+  - network
+  - carrier
+  - protocol
+
+models:
+  Transport:
+    parent: Communication
+    variants:
+      - Network
+      - Carrier
+      - Protocol
+
+  RetryProfile:
+    parent: Transport
+    fields:
+      max_attempts: int = 0
+      base_delay_ms: int = 0
+      backoff_factor: float = 1.0
+      jitter_pct: float = 0.0

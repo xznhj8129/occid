@@ -143,7 +143,7 @@ models:
       updated_ts: optional float
       origin_system: optional string
       trust_score: optional ConfidenceLevel
-      alt_ids: list[AlternateId]
+      alt_ids: list[Identifier]
       entity_flags: list[string]
       faction: Faction
       spotted_time: float

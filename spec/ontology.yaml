@@ -29,7 +29,7 @@ Root:
             Category: 
               description: What kind of thing something is within its structural class (ie, waypoint, route, zone)
 
-            Purpose: 
+            Role: 
               description: Why something exists, is designated, or is intended to be used
 
             Function: 

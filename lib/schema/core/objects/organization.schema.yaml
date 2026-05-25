@@ -24,7 +24,7 @@ enums:
 
 models:
   BaseOrg:
-    parent: BaseObject
+    parent: Organization
     variants:
     fields:
       org_uid: string

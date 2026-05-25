@@ -1,0 +1,63 @@
+version: 1
+type: schema
+name: attributes
+description: "Classification, metadata, symbology, display, and feature attributes."
+tags:
+  - core
+root: properties
+
+enums:
+  ClassificationLevel:
+    - UNCLASSIFIED = 0
+    - CONTROLLED
+    - CONFIDENTIAL
+    - SECRET
+    - TOP_SECRET
+
+models:
+  MetadataValue:
+    parent: Attributes
+    fields:
+      text_value: optional string
+      int_value: optional int
+      float_value: optional float
+      bool_value: optional bool
+
+  MetadataEntry:
+    parent: Attributes
+    fields:
+      key: string
+      value: MetadataValue
+
+  SymbologySchema:
+    parent: Attributes
+    fields:
+      sidc: optional string
+      cot: optional string
+
+  DisplayMeta:
+    parent: Attributes
+    fields:
+      icon_code: optional string
+      tint: optional string
+      short_label: optional string
+
+  ClassificationSchema:
+    parent: Attributes
+    fields:
+      level: ClassificationLevel
+      codewords: list[string]
+      release_to: list[string]
+
+  SensorFieldOfView:
+    parent: Attributes
+    fields:
+      horizontal: optional NumericRange
+      vertical: optional NumericRange
+
+  Version:
+    parent: Attributes
+    fields:
+      major: int
+      minor: int
+      patch: int

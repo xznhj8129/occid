@@ -1,0 +1,74 @@
+version: 1
+type: schema
+name: protocol
+description: "Message formats, protocol payloads, crypto, and protocol profiles."
+tags:
+  - core
+root: transport
+
+enums:
+  CryptoType:
+    - NONE = 0
+    - STATIC_KEY
+    - HOPSET
+    - STREAM
+    - PUBLIC_KEY
+
+  ProtocolPayloadFormat:
+    - TEXT = 0
+    - XML
+    - JSON
+    - BYTES
+
+models:
+  Protocol:
+    parent: Transport
+
+  ProtocolPayload:
+    parent: Protocol
+    fields:
+      format: ProtocolPayloadFormat
+      content_type: optional string
+      text: optional string
+      data: optional bytes
+
+  CryptoKey:
+    parent: Protocol
+    fields:
+      key_id: string
+      label: optional string
+      crypto_type: CryptoType
+      version: optional string
+      fill_ts: optional float
+
+  CryptoProfile:
+    parent: Protocol
+    fields:
+      active_crypto: optional CryptoType
+      keyset_id: optional string
+      keys: list[CryptoKey]
+
+  LoRaProfile:
+    parent: Protocol
+    fields:
+      spreading_factor: optional int
+      bandwidth_mhz: optional float
+      coding_rate: optional string
+
+  AprsProfile:
+    parent: Protocol
+    fields:
+      callsign: optional string
+      path: optional string
+
+  ElrsProfile:
+    parent: Protocol
+    fields:
+      packet_rate_hz: optional int
+      telemetry_ratio: optional string
+
+  FpvProfile:
+    parent: Protocol
+    fields:
+      video_standard: optional string
+      low_latency: optional bool

@@ -1,0 +1,96 @@
+version: 1
+type: schema
+name: detection
+description: "Detected objects, signals, bearings, and interpreted sensor detections."
+tags:
+  - core
+root: intel
+
+enums:
+  DetectionBoxSpace:
+    - IMAGE_PIXEL = 0
+    - IMAGE_NORMALIZED
+    - BODY_ANGULAR
+    - WORLD
+
+models:
+  VisionBox:
+    parent: Detection
+    fields:
+      space: DetectionBoxSpace
+      bounds: BoundingBox
+
+  VisionDetection:
+    parent: Detection
+    fields:
+      detection_id: optional string
+      label: optional string
+      class_id: optional int
+      confidence: optional float
+      box: optional VisionBox
+      bearing: optional LocalDirection
+      position: optional GlobalPosition
+      source_frame_id: optional string
+      attributes: list[MetadataEntry]
+
+  VisionDetectionFrame:
+    parent: Detection
+    fields:
+      frame_id: optional string
+      sensor_id: optional string
+      timestamp_us: optional int
+      detections: list[VisionDetection]
+
+  EmitterNotationSchema:
+    parent: Detection
+    fields:
+      emitter_name: optional string
+      emitter_class: optional string
+      platform_class: optional string
+
+  SignalMeasurement:
+    parent: Detection
+    fields:
+      value: optional float
+      unit: optional string
+      confidence: optional ConfidenceLevel
+
+  LineOfBearingSchema:
+    parent: Detection
+    fields:
+      bearing_deg: optional float
+      bearing_error_deg: optional float
+
+  AngleOfArrivalSchema:
+    parent: Detection
+    fields:
+      azimuth_deg: optional float
+      elevation_deg: optional float
+      azimuth_error_deg: optional float
+      elevation_error_deg: optional float
+
+  PulseRepetitionIntervalSchema:
+    parent: Detection
+    fields:
+      pri_us: optional float
+      jitter_us: optional float
+
+  ScanCharacteristicsSchema:
+    parent: Detection
+    fields:
+      period_s: optional float
+      frame_time_s: optional float
+
+  SignalSchema:
+    parent: Detection
+    fields:
+      signal_id: string
+      source_id: optional string
+      emitter: optional EmitterNotationSchema
+      frequency: optional FrequencyRange
+      strength: optional SignalMeasurement
+      line_of_bearing: optional LineOfBearingSchema
+      angle_of_arrival: optional AngleOfArrivalSchema
+      pulse_interval: optional PulseRepetitionIntervalSchema
+      scan: optional ScanCharacteristicsSchema
+      fixed_position_id: optional string

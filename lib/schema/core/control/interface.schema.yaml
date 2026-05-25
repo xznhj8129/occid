@@ -1,0 +1,44 @@
+version: 1
+type: schema
+name: interface
+description: "Control interfaces and leases to executing layers."
+tags:
+  - core
+root: control
+
+enums:
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
+models:
+  Interface:
+    parent: Control
+
+  RemoteControlSchema:
+    parent: Interface
+    fields:
+      links: map[string, LinkSchema]
+      rc_link: string = ""
+      vid_link: string = ""
+      ctrl_video_sep: optional bool
+      telemetry: optional TelemetryState
+      rc_telemetry: optional ControlAxisSet
+      control_input: optional ControlAxisSet
+      control_output: optional ControlAxisSet
+      control_override: optional ControlOverride
+      receiver_config: optional ReceiverConfig
+      channel_map: list[ChannelMapEntry]
+      mode_ranges: list[ModeRange]
+
+  ControlLease:
+    parent: Interface
+    fields:
+      asset_id: string
+      holder_id: string
+      control_level: ControlLevel
+      lease_start: float
+      lease_end: float
+      lease_rev: int = 0

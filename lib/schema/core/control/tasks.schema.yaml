@@ -1,10 +1,10 @@
 version: 1
 type: schema
 name: tasks
-description: "Tasking, assignment, lifecycle, command result, and task execution structures."
+description: "Concrete tasking, mission, and command directive models."
 tags:
   - core
-root: control
+root: directive
 
 enums:
   Capability:
@@ -65,61 +65,34 @@ enums:
     - IN_PROGRESS
     - CANCELLED
 
+  FlightCommandType:
+    - ARM = 0
+    - DISARM
+    - TAKEOFF
+    - LAND
+    - RETURN_TO_LAUNCH
+    - SET_MODE
+    - GOTO
+    - SET_TAKEOFF_ALTITUDE
+    - SELECT_MISSION
+    - START_OFFBOARD
+    - STOP_OFFBOARD
+
+  TaskAir:
+    - FLY = 0
+    - AIR_DROP
+    - RECOVERY
+
+  AirMissionType:
+    - SURVEY = 0
+    - SEARCH
+    - DELIVERY
+
+  AirMoveTask:
+    - FLY = 0
+    - RELOCATION
+
 models:
-  TaskTimeWindow:
-    parent: Constraint
-    fields:
-      earliest_start: optional float
-      latest_finish: optional float
-
-
-  ObjectiveSchema:
-    parent: Objective
-    fields:
-      objective_id: string
-      intent: string
-      success_rule: optional string
-      priority: optional TaskPriority
-      target_ref: optional string
-      geo_goal: optional GlobalPosition
-      end_condition: optional string
-      deadline_ts: optional float
-
-
-  ObjectiveBinding:
-    parent: Objective
-    fields:
-      objective_id: string
-      task_ids: list[string]
-      priority: optional TaskPriority
-      deadline_ts: optional float
-      success_rule: optional string
-
-
-  TaskDelta:
-    parent: Assignment
-    fields:
-      task_id: string
-      task_rev: int = 0
-      phase: TaskPhase
-      progress: optional float
-      owner: optional string
-      updated_ts: float
-
-
-  TaskStatusEntry:
-    parent: Lifecycle
-    fields:
-      ts: float
-      status: TaskStatus
-      command_result: optional CommandResult
-      reply_ack: optional ReplyAck
-      assign_fail: optional TaskAssignFail
-      phase: optional TaskPhase
-      detail: optional string
-      source: optional string
-
-
   BaseTask:
     parent: Task
     variants:
@@ -155,7 +128,6 @@ models:
       conflict_policy: ConflictPolicy = VECTOR_CLOCK
       objective: optional ObjectiveSchema
 
-
   VehicleCommand:
     parent: Command
     fields:
@@ -172,6 +144,14 @@ models:
       control_override: optional ControlOverride
       attitude_setpoint: optional ControlAttitudeSetpoint
 
+  TrackerCommand:
+    parent: Command
+    fields:
+      lock: optional bool
+      reset: optional bool
+      slew: optional LocalDirection
+      search_box_size: optional int
+      shutdown: optional bool
 
   MoveTask:
     parent: BaseTask
@@ -182,10 +162,36 @@ models:
       route: optional GeoPath
       speed_ms: optional float
 
-
   ResupplyTask:
     parent: BaseTask
     fields:
       task_type: const TaskType = RESUPPLY
       destination: GlobalPosition
       supplies: list[ItemCount]
+
+  AirMissionSchema:
+    parent: Mission
+    fields:
+      mission_name: string
+      mission_uid: string
+      mission_time: float
+      mission_type: TaskType
+      takeoff: FlightPhasePlan
+      assembly_point: FlightPhasePlan
+      route: FlightPhasePlan
+      ingress: FlightPhasePlan
+      survey_area: FlightPhasePlan
+      egress: FlightPhasePlan
+      landing: FlightPhasePlan
+      pois: list[MissionPoi]
+      assignments: map[string, FlightAssignment]
+      unit_plans: map[string, PlannedUnitMission]
+      routes: MissionRouteGeometry
+      route_points: PlannedRoutePoints
+
+  MissionProgress:
+    parent: Mission
+    fields:
+      waypoint_count: optional int
+      current_waypoint_index: optional int
+      mission_valid: optional bool

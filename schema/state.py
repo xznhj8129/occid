@@ -1,0 +1,98 @@
+"""Generated from core/schemav2."""
+from __future__ import annotations
+from .common import *
+
+from .information import Information
+
+### Enums
+
+class AirMissionPhase(IntEnum):
+    ONLINE = 0
+    PREPARING = auto()
+    TAKEOFF = auto()
+    ASSEMBLY = auto()
+    HOLDING = auto()
+    ENROUTE = auto()
+    INITIAL = auto()
+    OBJECTIVE = auto()
+    EGRESS = auto()
+    RETURN = auto()
+    APPROACH = auto()
+    LANDING = auto()
+    SHUTDOWN = auto()
+
+class AirMissionEvent(IntEnum):
+    ONLINE = 0
+    PREPARED = auto()
+    LOADED = auto()
+    READY_TAKEOFF = auto()
+    TAKEOFF_COMPLETE = auto()
+    ASSEMBLY = auto()
+    ENROUTE = auto()
+    HOLDING = auto()
+    ACTING = auto()
+    PROCEEDING = auto()
+    RESUMING = auto()
+    BINGO = auto()
+    RTB = auto()
+    LANDING = auto()
+    LANDED = auto()
+    SHUTDOWN = auto()
+    ABORTING = auto()
+    FAILING = auto()
+
+class StateType(IntEnum):
+    KINEMATIC = 0
+    INTERNAL = auto()
+    POSITION = auto()
+    GUIDANCE = auto()
+    SENSOR = auto()
+    INPUT = auto()
+    RESOURCES = auto()
+    CONDITION = auto()
+    LIFECYCLE = auto()
+    ASSIGNMENT = auto()
+
+### Models
+
+class State(Information):
+    pass
+
+class Kinematic(State):
+    pass
+
+class Internal(State):
+    pass
+
+class Position(State):
+    pass
+
+class Guidance(State):
+    pass
+
+class Sensor(State):
+    pass
+
+class Input(State):
+    pass
+
+class Resources(State):
+    pass
+
+class Condition(State):
+    pass
+
+class Lifecycle(State):
+    pass
+
+class Assignment(State):
+    pass
+
+class TelemetryState(State):
+    flight_mode: FlightMode | None = None
+    flight_phase: FlightPhase | None = None
+    mission_phase: AirMissionPhase | None = None
+    attitude: EulerAngles | None = None
+    velocity: VelocityVector | None = None
+    battery_pct: float | None = None
+    link_rssi: float | None = None

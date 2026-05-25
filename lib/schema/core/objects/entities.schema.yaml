@@ -1,7 +1,7 @@
 version: 1
 type: schema
 name: entities
-description: "Discrete entities capable of identity, state, action, or affiliation."
+description: "Discrete entities, actors, machines, and mobile platforms."
 tags:
   - core
 root: objects
@@ -35,13 +35,12 @@ enums:
     - INACTIVE
     - UNKNOWN
 
-
 models:
   BaseEntity:
-    parent: BaseObject
+    parent: Entity
     variants:
-      - Person
-      - BaseMachine
+      - Actor
+      - Machine
     fields:
       object_type: ObjectType = ENTITY
       entity_id: string
@@ -52,7 +51,7 @@ models:
       created_ts: optional float
       updated_ts: optional float
       origin_system: optional string
-      alt_ids: list[AlternateId]
+      alt_ids: list[Identifier]
       tags: list[string]
       metadata: list[MetadataEntry]
       relations: list[RelationSchema]
@@ -60,17 +59,29 @@ models:
       symbology: optional SymbologySchema
       display_meta: optional DisplayMeta
 
+  Actor:
+    parent: BaseEntity
+    variants:
+      - Person
+      - Agent
 
-  EntityComponentRef:
-    parent: PropertyRelationship
-    fields:
-      component_id: string
-      component_type: optional string
-      label: optional string
+  Agent:
+    parent: Actor
 
+  Machine:
+    parent: BaseEntity
+
+  Vehicle:
+    parent: Machine
+
+  Robot:
+    parent: Machine
+
+  Platform:
+    parent: Machine
 
   Person:
-    parent: BaseEntity
+    parent: Actor
     variants:
     fields:
       entity_type: EntityType = PERSON
@@ -84,9 +95,8 @@ models:
       sensors: map[string, SensorSchema]
       links: map[string, LinkSchema]
 
-
   BaseMachine:
-    parent: BaseEntity
+    parent: Machine
     variants:
       - GroundMachine
       - AirMachine
@@ -102,38 +112,6 @@ models:
       control_level: optional ControlLevel
       components: list[EntityComponentRef]
 
-
-  GroundNavigationSchema:
-    parent: Guidance
-    fields:
-      propulsion: PropulsionType
-      navigation: NavigationMode
-      navaids: list[NavAids]
-      max_range: float
-      max_spd: float
-
-
-  AirNavigationSchema:
-    parent: Guidance
-    variants:
-    fields:
-      flight_type: AirframeType
-      control_modes: list[FlightMode]
-      failsafe_mode: optional AirFailsafeMode
-      weather_limits: WeatherLimits
-      ifr: optional bool
-      propulsion: PropulsionType
-      navigation: NavigationMode
-      navaids: list[NavAids]
-      fuel: optional FuelState
-      max_range: float
-      max_flight_t: float
-      max_spd: float
-      cruise_spd: float
-      max_alt: float
-      start_flight_time: float
-
-
   GroundMachine:
     parent: BaseMachine
     variants:
@@ -147,14 +125,12 @@ models:
       sensors: map[string, SensorSchema]
       navigation: GroundNavigationSchema
 
-
   GroundRobot:
     parent: GroundMachine
     fields:
       machine_type: MachineType = ROBOT
       robot_control: optional RobotControlSchema
       remote_control: RemoteControlSchema
-
 
   AirMachine:
     parent: BaseMachine
@@ -168,7 +144,6 @@ models:
       sensors: map[string, SensorSchema]
       navigation: AirNavigationSchema
       maint_status: optional MaintenanceStatus
-
 
   AirRobot:
     parent: AirMachine

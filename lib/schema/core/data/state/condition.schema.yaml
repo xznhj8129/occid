@@ -1,10 +1,10 @@
 version: 1
 type: schema
-name: health
-description: "Health, readiness, resources, power, maintenance, and fault state."
+name: condition
+description: "Integrity, damage, readiness, maintenance, and fault condition state."
 tags:
   - core
-root: data
+root: state
 
 enums:
   AlertLevel:
@@ -53,20 +53,6 @@ enums:
     - GROUNDED
     - FAILED
 
-  PowerStatus:
-    - UNKNOWN = 0
-    - NOT_PRESENT
-    - OPERATING
-    - DISABLED
-    - ERROR
-
-  PowerType:
-    - UNKNOWN = 0
-    - GAS
-    - BATTERY
-    - SOLAR
-    - NUCLEAR
-
 models:
   HealthAlert:
     parent: Condition
@@ -76,7 +62,6 @@ models:
       condition: string
       acknowledged: bool = false
 
-
   SubsystemHealth:
     parent: Condition
     fields:
@@ -84,7 +69,6 @@ models:
       state: HealthStatus
       fault_count: int = 0
       note: optional string
-
 
   HealthSnapshot:
     parent: Condition
@@ -98,7 +82,6 @@ models:
       subsystems: list[SubsystemHealth]
       alerts: list[HealthAlert]
 
-
   MaintenanceStatus:
     parent: Condition
     fields:
@@ -106,48 +89,6 @@ models:
       last_service_ts: optional float
       next_service_ts: optional float
       note: optional string
-
-
-  PowerSourceSchema:
-    parent: Resources
-    fields:
-      source_id: string
-      power_type: PowerType
-      status: PowerStatus
-      remaining_pct: optional float
-
-
-  PowerStateSchema:
-    parent: Resources
-    fields:
-      status: PowerStatus
-      sources: list[PowerSourceSchema]
-      electrical_sources: list[ElectricalResourceState]
-
-
-  ElectricalResourceState:
-    parent: Resources
-    fields:
-      source_id: optional string
-      battery_id: optional int
-      voltage_v: optional float
-      current_a: optional float
-      power_w: optional float
-      consumed_mah: optional float
-      consumed_mwh: optional float
-      consumed_ah: optional float
-      remaining_pct: optional float
-      remaining_capacity: optional float
-      temperature_deg_c: optional float
-      rssi: optional float
-
-
-  RuntimeLoadState:
-    parent: Internal
-    fields:
-      cpu_load: optional int
-      cycle_time_us: optional int
-
 
   VehicleReadinessState:
     parent: Condition

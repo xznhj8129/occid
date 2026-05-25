@@ -1,0 +1,42 @@
+version: 1
+type: schema
+name: constraint
+description: "Control constraints, restrictions, limitations, and conditional bounds."
+tags:
+  - core
+root: control
+
+models:
+  Constraint:
+    parent: Control
+    variants:
+      - Restriction
+      - Limitation
+      - ConstraintCondition
+
+  Restriction:
+    parent: Constraint
+
+  Limitation:
+    parent: Constraint
+
+  ConstraintCondition:
+    parent: Constraint
+
+  TaskTimeWindow:
+    parent: Constraint
+    fields:
+      earliest_start: optional float
+      latest_finish: optional float
+
+  WeatherLimits:
+    parent: Constraint
+    fields:
+      ifr: optional bool
+      night: optional bool
+      rain: optional NumericRange
+      snow: optional NumericRange
+      temp: optional NumericRange
+      wind: optional NumericRange
+      vis: optional NumericRange
+      icing: optional bool

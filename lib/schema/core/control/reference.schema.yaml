@@ -1,0 +1,130 @@
+version: 1
+type: schema
+name: reference
+description: "Control-side spatial marks, paths, regions, and boundaries."
+tags:
+  - core
+root: control
+
+enums:
+  PlannerPointType:
+    - HOME = 0
+    - TAKEOFF
+    - LANDING
+    - HOLD
+    - WAYPOINT
+    - ASSEMBLY
+    - POI
+    - ROI
+    - SURVEY
+
+  PlannerPointCategory:
+    - ROUTE_IN = 0
+    - SURVEY
+    - SURVEY_AREA
+    - ROUTE_OUT
+
+  AirGroupFormation3DType:
+    - NONE = 0
+    - BOX
+    - SEP_2D_PER_FL
+    - SEP_2D_SPACED
+
+  AirGroupFormation2DType:
+    - NONE = 0
+    - LINE
+    - ECHELON
+    - TRAIL
+    - SQUARE
+    - DIAMOND
+    - VEE
+    - HEAVY_LEFT
+    - HEAVY_RIGHT
+    - ECHELON_LEFT
+    - ECHELON_RIGHT
+    - STAGG_TRAIL_LEFT
+    - STAGG_TRAIL_RIGHT
+
+models:
+  Reference:
+    parent: Control
+    variants:
+      - Mark
+      - ReferencePath
+      - Region
+      - Boundary
+
+  Mark:
+    parent: Reference
+
+  ReferencePath:
+    parent: Reference
+
+  Region:
+    parent: Reference
+
+  Boundary:
+    parent: Reference
+
+  LoiterOrbit:
+    parent: ReferencePath
+    fields:
+      orbit_direction: int
+      orbit_radius: int
+      loiter_time: int
+
+  FlightLevelBand:
+    parent: Region
+    fields:
+      altitude_range_m: NumericRange
+      alt_sep_m: float
+
+  MissionRouteGeometry:
+    parent: ReferencePath
+    fields:
+      route_in: GeoPath
+      survey: GeoPath
+      survey_area: GeoArea
+      route_out: GeoPath
+
+  MissionPoi:
+    parent: Mark
+    variants:
+    fields:
+      uid: string
+      name: string
+      pos: GlobalPosition
+      origin: string
+      cot: optional string
+      added_ts: optional float
+      stale_after_s: optional float
+      url: optional string
+
+  AutopilotMissionWaypoint:
+    parent: Mark
+    fields:
+      waypoint_index: int
+      action_code: optional int
+      position: GlobalPosition
+      param1: optional int
+      param2: optional int
+      param3: optional int
+      flag: optional int
+
+  PlannerMissionPoint:
+    parent: Mark
+    fields:
+      num: int
+      point_type: PlannerPointType
+      category: PlannerPointCategory
+      pos: GlobalPosition
+
+  PlannedRoutePoints:
+    parent: ReferencePath
+    fields:
+      start: PlannerMissionPoint
+      route_in: list[PlannerMissionPoint]
+      survey: list[PlannerMissionPoint]
+      survey_area: list[PlannerMissionPoint]
+      route_out: list[PlannerMissionPoint]
+      end: PlannerMissionPoint

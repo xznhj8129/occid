@@ -1,0 +1,26 @@
+version: 1
+type: schema
+name: directive
+description: "Directives, missions, tasks, and commands."
+tags:
+  - core
+root: control
+branches:
+  - tasks
+
+models:
+  Directive:
+    parent: Control
+    variants:
+      - Mission
+      - Task
+      - Command
+
+  Mission:
+    parent: Directive
+
+  Task:
+    parent: Directive
+
+  Command:
+    parent: Directive

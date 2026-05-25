@@ -9,12 +9,70 @@ branches:
   - spatial
 
 models:
+  Struct:
+    parent: Root
+    variants:
+      - Vector
+      - Measurement
+      - Bearing
+      - GeoPos
+      - LocalPos
+      - Line
+      - StructPath
+      - Shape
+      - Bounding
+      - Uncertainty
+      - Pose
+      - Range
+      - Transform
+      - Orbital
+
+  Vector:
+    parent: Struct
+
+  Measurement:
+    parent: Struct
+
+  Bearing:
+    parent: Struct
+
+  GeoPos:
+    parent: Struct
+
+  LocalPos:
+    parent: Struct
+
+  Line:
+    parent: Struct
+
+  StructPath:
+    parent: Struct
+
+  Shape:
+    parent: Struct
+
+  Bounding:
+    parent: Struct
+
+  Uncertainty:
+    parent: Struct
+
+  Pose:
+    parent: Struct
+
+  Range:
+    parent: Struct
+
+  Transform:
+    parent: Struct
+
+  Orbital:
+    parent: Struct
 
   Time:
     parent: Measurement
     fields:
       utime: int
-    
 
   Duration:
     parent: Measurement
@@ -28,7 +86,6 @@ models:
       months: optional float
       years: optional float
 
-
   Timestamp:
     parent: Measurement
     fields:
@@ -41,87 +98,14 @@ models:
       year: float
       tz: float
 
-
-  AlternateId:
-    parent: Identity
-    fields:
-      id_type: AlternateIdType
-      value: string
-
-
   ItemCount:
     parent: Measurement
     fields:
       item_type: string
       qty: int = 0
 
-
   NumericRange:
     parent: Range
     fields:
       min_value: optional float
       max_value: optional float
-
-
-  MetadataValue:
-    parent: Attributes
-    fields:
-      text_value: optional string
-      int_value: optional int
-      float_value: optional float
-      bool_value: optional bool
-
-
-  MetadataEntry:
-    parent: Attributes
-    fields:
-      key: string
-      value: MetadataValue
-
-
-  SymbologySchema:
-    parent: Attributes
-    fields:
-      sidc: optional string
-      cot: optional string
-
-
-  FirmwareInfo:
-    parent: Internal
-    fields:
-      name: optional string
-      version: optional string
-      build: optional string
-
-
-  FuelState:
-    parent: Resources
-    fields:
-      fuel_type: FuelType
-      capacity: optional float
-      remaining: optional float
-
-
-  SuppliesSchema:
-    parent: Resources
-    fields:
-      fuel: optional FuelState
-      stores: list[ItemCount]
-
-  DisplayMeta:
-    parent: Attributes
-    fields:
-      icon_code: optional string
-      tint: optional string
-      short_label: optional string
-
-  RelationSchema:
-    parent: PropertyRelationship
-    fields:
-      src_id: string
-      dst_id: string
-      rel_kind: string
-      since_ts: optional float
-      until_ts: optional float
-      confidence: optional ConfidenceLevel
-      source: optional string

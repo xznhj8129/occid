@@ -1,0 +1,20 @@
+version: 1
+type: schema
+name: event
+description: "Discrete events and execution transitions."
+tags:
+  - core
+root: information
+
+models:
+  Event:
+    parent: Information
+    variants:
+      - FlightEvent
+      - MissionEvent
+
+  FlightEvent:
+    parent: Event
+
+  MissionEvent:
+    parent: Event

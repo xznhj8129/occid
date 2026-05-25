@@ -11,3 +11,13 @@ branches:
   - control
   - communication
   - data
+
+models:
+  Root:
+    variants:
+      - Definition
+      - Struct
+      - Object
+      - Control
+      - Communication
+      - Data

@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .struct import Bearing, Bounding, GeoPos, Measurement, Pose, Shape, StructPath, Uncertainty, Vector
+
 ### Enums
 
 class InertialReferenceFrame(IntEnum):
@@ -73,145 +75,73 @@ class WaypointType(IntEnum):
     LOCAL = auto()
     OBJECT = auto()
 
-class NavAids(IntEnum):
-    NONE = 0
-    GNSS = auto()
-    INS = auto()
-    TERRAIN_MATCH = auto()
-    CELESTIAL = auto()
-    VISUAL = auto()
-
-class GnssFixType(IntEnum):
-    NONE = 0
-    NO_FIX = auto()
-    FIX_2D = auto()
-    FIX_3D = auto()
-    DGPS = auto()
-    RTK_FLOAT = auto()
-    RTK_FIXED = auto()
-
 ### Models
 
-class EulerAngles(OCCIDModel):
-    pitch: float | None = None
-    heading: float | None = None
-    roll: float | None = None
-    frame: BodyReferenceFrame | None = None
+class EulerAngles(Pose):
+    pitch: float
+    heading: float
+    roll: float
+    frame: BodyReferenceFrame
 
-class LocalDirection(OCCIDModel):
-    bearing: float | None = None
-    azimuth: float | None = None
-    elevation: float | None = None
-    slant_range: float | None = None
+class LocalDirection(Bearing):
+    bearing: float
+    azimuth: float
+    elevation: float
+    slant_range: float
 
-class LocalVector(OCCIDModel):
-    x: float | None = None
-    y: float | None = None
-    z: float | None = None
-    frame: InertialReferenceFrame | None = None
+class LocalVector(Vector):
+    x: float
+    y: float
+    z: float
+    frame: InertialReferenceFrame
 
-class GlobalPosition(OCCIDModel):
-    lat: float | None = None
-    lon: float | None = None
-    alt: float | None = None
+class GlobalPosition(GeoPos):
+    lat: float
+    lon: float
+    alt: float
     mgrs: str | None = None
     datum: Literal['WGS84'] = Field(default='WGS84', frozen=True)
-    alt_frame: AltitudeDatum | None = None
+    alt_frame: AltitudeDatum
 
-class GeoPath(OCCIDModel):
+class GeoPath(StructPath):
     points: list[GlobalPosition]
 
-class GeoArea(OCCIDModel):
+class GeoArea(Shape):
     vertices: list[GlobalPosition]
 
-class BoundingBox(OCCIDModel):
-    x1: float | None = None
-    y1: float | None = None
-    z1: float | None = None
-    x2: float | None = None
-    y2: float | None = None
-    z2: float | None = None
+class BoundingBox(Bounding):
+    x1: float
+    y1: float
+    z1: float
+    x2: float
+    y2: float
+    z2: float
 
-class VelocityVector(OCCIDModel):
-    x: float | None = None
-    y: float | None = None
-    z: float | None = None
+class VelocityVector(Vector):
+    x: float
+    y: float
+    z: float
 
-class AngularVelocityVector(OCCIDModel):
-    x_rad_s: float | None = None
-    y_rad_s: float | None = None
-    z_rad_s: float | None = None
-    frame: BodyReferenceFrame | None = None
+class AngularVelocityVector(Vector):
+    x_rad_s: float
+    y_rad_s: float
+    z_rad_s: float
+    frame: BodyReferenceFrame
 
-class NavigationValidity(OCCIDModel):
-    local_position_ok: bool | None = None
-    global_position_ok: bool | None = None
-    home_position_ok: bool | None = None
-
-class AltitudeState(OCCIDModel):
+class AltitudeState(Measurement):
     absolute_m: float | None = None
     relative_m: float | None = None
-    datum: AltitudeDatum | None = None
+    datum: AltitudeDatum
 
-class GnssSolution(OCCIDModel):
-    fix_type: GnssFixType | None = None
-    fix_code: int | None = None
-    satellites_used: int | None = None
-    position: GlobalPosition | None = None
-    altitude: AltitudeState | None = None
-    ground_speed_ms: float | None = None
-    ground_course_deg: float | None = None
-    hdop: float | None = None
-    vdop: float | None = None
-    eph: float | None = None
-    epv: float | None = None
-    yaw_deg: float | None = None
-    last_message_dt: float | None = None
-    errors: float | None = None
-    timeouts: float | None = None
-
-class FeaturePropertyValue(OCCIDModel):
-    text_value: str | None = None
-    int_value: int | None = None
-    float_value: float | None = None
-    bool_value: bool | None = None
-
-class FeatureProperty(OCCIDModel):
-    key: str
-    value: FeaturePropertyValue
-
-class GeoJsonGeometry(OCCIDModel):
-    type: GeoJsonGeometryTypes
-    coordinates: Any | None = None
-    geometries: list[GeoJsonGeometry] | None = None
-    bbox: BoundingBox | None = None
-
-class GeoJsonFeature(OCCIDModel):
-    type: Literal['Feature'] = Field(default='Feature', frozen=True)
-    geometry: GeoJsonGeometry
-    properties: list[FeatureProperty]
-    id: (str | int) | None = None
-    bbox: BoundingBox | None = None
-
-class GeoJsonFeatureCollection(OCCIDModel):
-    type: Literal['FeatureCollection'] = Field(default='FeatureCollection', frozen=True)
-    features: list[GeoJsonFeature]
-    bbox: BoundingBox | None = None
-
-class LocationUncertainty(OCCIDModel):
+class LocationUncertainty(Uncertainty):
     horiz_err_m: float | None = None
     vert_err_m: float | None = None
     ellipse_major_m: float | None = None
     ellipse_minor_m: float | None = None
     ellipse_bearing_deg: float | None = None
 
-class LocationState(OCCIDModel):
-    inertial_frame: InertialReferenceFrame | None = None
-    body_frame: BodyReferenceFrame | None = None
-    position: GlobalPosition | None = None
-    uncertainty: LocationUncertainty | None = None
-    attitude: EulerAngles | None = None
-    altitude: AltitudeState | None = None
-    velocity: VelocityVector | None = None
-    navigation_validity: NavigationValidity | None = None
-    gnss: GnssSolution | None = None
+class GeoJsonGeometry(Shape):
+    type: GeoJsonGeometryTypes
+    coordinates: Any | None = None
+    geometries: list[GeoJsonGeometry] | None = None
+    bbox: BoundingBox | None = None

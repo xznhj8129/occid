@@ -1,0 +1,24 @@
+version: 1
+type: schema
+name: world
+description: "World features, locations, sites, and geospatial object records."
+tags:
+  - core
+root: objects
+
+models:
+  GeoJsonFeature:
+    parent: Feature
+    fields:
+      type: const string = "Feature"
+      geometry: GeoJsonGeometry
+      properties: list[FeatureProperty]
+      id: optional (string | int)
+      bbox: optional BoundingBox
+
+  GeoJsonFeatureCollection:
+    parent: Collection
+    fields:
+      type: const string = "FeatureCollection"
+      features: list[GeoJsonFeature]
+      bbox: optional BoundingBox

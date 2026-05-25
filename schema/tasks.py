@@ -3,6 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .communication import AckMode, ConflictPolicy, DeliveryState, QosTier, RouteMode
+from .directive import Command, Mission, Task
 
 ### Enums
 
@@ -64,52 +65,42 @@ class CommandResult(IntEnum):
     IN_PROGRESS = auto()
     CANCELLED = auto()
 
+class FlightCommandType(IntEnum):
+    ARM = 0
+    DISARM = auto()
+    TAKEOFF = auto()
+    LAND = auto()
+    RETURN_TO_LAUNCH = auto()
+    SET_MODE = auto()
+    GOTO = auto()
+    SET_TAKEOFF_ALTITUDE = auto()
+    SELECT_MISSION = auto()
+    START_OFFBOARD = auto()
+    STOP_OFFBOARD = auto()
+
+class TaskAir(IntEnum):
+    FLY = 0
+    AIR_DROP = auto()
+    RECOVERY = auto()
+
+class AirMissionType(IntEnum):
+    SURVEY = 0
+    SEARCH = auto()
+    DELIVERY = auto()
+
+class AirMoveTask(IntEnum):
+    FLY = 0
+    RELOCATION = auto()
+
 class BaseTaskType(IntEnum):
     MOVE = 0
     RESUPPLY = auto()
+    ISR = auto()
+    COMBAT = auto()
 
 ### Models
 
-class TaskTimeWindow(OCCIDModel):
-    earliest_start: float | None = None
-    latest_finish: float | None = None
-
-class ObjectiveSchema(OCCIDModel):
-    objective_id: str
-    intent: str
-    success_rule: str | None = None
-    priority: TaskPriority | None = None
-    target_ref: str | None = None
-    geo_goal: GlobalPosition | None = None
-    end_condition: str | None = None
-    deadline_ts: float | None = None
-
-class ObjectiveBinding(OCCIDModel):
-    objective_id: str
-    task_ids: list[str]
-    priority: TaskPriority | None = None
-    deadline_ts: float | None = None
-    success_rule: str | None = None
-
-class TaskDelta(OCCIDModel):
-    task_id: str
-    task_rev: int = 0
-    phase: TaskPhase
-    progress: float | None = None
-    owner: str | None = None
-    updated_ts: float
-
-class TaskStatusEntry(OCCIDModel):
-    ts: float
-    status: TaskStatus
-    command_result: CommandResult | None = None
-    reply_ack: ReplyAck | None = None
-    assign_fail: TaskAssignFail | None = None
-    phase: TaskPhase | None = None
-    detail: str | None = None
-    source: str | None = None
-
-class BaseTask(OCCIDModel):
+class BaseTask(Task):
     task_id: str
     task_type: TaskType
     unit_code: str
@@ -139,7 +130,7 @@ class BaseTask(OCCIDModel):
     conflict_policy: ConflictPolicy = ConflictPolicy.VECTOR_CLOCK
     objective: ObjectiveSchema | None = None
 
-class VehicleCommand(OCCIDModel):
+class VehicleCommand(Command):
     command_id: str
     command_type: FlightCommandType
     asset_id: str
@@ -153,6 +144,13 @@ class VehicleCommand(OCCIDModel):
     control_override: ControlOverride | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
 
+class TrackerCommand(Command):
+    lock: bool | None = None
+    reset: bool | None = None
+    slew: LocalDirection | None = None
+    search_box_size: int | None = None
+    shutdown: bool | None = None
+
 class MoveTask(BaseTask):
     task_type: TaskType = Field(default=TaskType.MOVE, frozen=True)
     movement_domain: OperationalDomain
@@ -164,3 +162,26 @@ class ResupplyTask(BaseTask):
     task_type: TaskType = Field(default=TaskType.RESUPPLY, frozen=True)
     destination: GlobalPosition
     supplies: list[ItemCount]
+
+class AirMissionSchema(Mission):
+    mission_name: str
+    mission_uid: str
+    mission_time: float
+    mission_type: TaskType
+    takeoff: FlightPhasePlan
+    assembly_point: FlightPhasePlan
+    route: FlightPhasePlan
+    ingress: FlightPhasePlan
+    survey_area: FlightPhasePlan
+    egress: FlightPhasePlan
+    landing: FlightPhasePlan
+    pois: list[MissionPoi]
+    assignments: dict[str, FlightAssignment]
+    unit_plans: dict[str, PlannedUnitMission]
+    routes: MissionRouteGeometry
+    route_points: PlannedRoutePoints
+
+class MissionProgress(Mission):
+    waypoint_count: int | None = None
+    current_waypoint_index: int | None = None
+    mission_valid: bool | None = None

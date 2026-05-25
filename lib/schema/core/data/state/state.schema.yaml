@@ -1,0 +1,109 @@
+version: 1
+type: schema
+name: state
+description: "Changing own-state and condition data at a point in time."
+tags:
+  - core
+root: information
+branches:
+  - internal
+  - position
+  - guidance
+  - sensors
+  - input
+  - resources
+  - condition
+  - lifecycle
+  - assignment
+
+enums:
+  AirMissionPhase:
+    - ONLINE = 0
+    - PREPARING
+    - TAKEOFF
+    - ASSEMBLY
+    - HOLDING
+    - ENROUTE
+    - INITIAL
+    - OBJECTIVE
+    - EGRESS
+    - RETURN
+    - APPROACH
+    - LANDING
+    - SHUTDOWN
+
+  AirMissionEvent:
+    - ONLINE = 0
+    - PREPARED
+    - LOADED
+    - READY_TAKEOFF
+    - TAKEOFF_COMPLETE
+    - ASSEMBLY
+    - ENROUTE
+    - HOLDING
+    - ACTING
+    - PROCEEDING
+    - RESUMING
+    - BINGO
+    - RTB
+    - LANDING
+    - LANDED
+    - SHUTDOWN
+    - ABORTING
+    - FAILING
+
+models:
+  State:
+    parent: Information
+    variants:
+      - Kinematic
+      - Internal
+      - Position
+      - Guidance
+      - Sensor
+      - Input
+      - Resources
+      - Condition
+      - Lifecycle
+      - Assignment
+
+  Kinematic:
+    parent: State
+
+  Internal:
+    parent: State
+
+  Position:
+    parent: State
+
+  Guidance:
+    parent: State
+
+  Sensor:
+    parent: State
+
+  Input:
+    parent: State
+
+  Resources:
+    parent: State
+
+  Condition:
+    parent: State
+
+  Lifecycle:
+    parent: State
+
+  Assignment:
+    parent: State
+
+  TelemetryState:
+    parent: State
+    fields:
+      flight_mode: optional FlightMode
+      flight_phase: optional FlightPhase
+      mission_phase: optional AirMissionPhase
+      attitude: optional EulerAngles
+      velocity: optional VelocityVector
+      battery_pct: optional float
+      link_rssi: optional float

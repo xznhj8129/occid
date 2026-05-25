@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .carrier import Carrier
+
 ### Enums
 
 class Waveform(IntEnum):
@@ -15,13 +17,6 @@ class Waveform(IntEnum):
     DSSS = auto()
     FHSS = auto()
 
-class CryptoType(IntEnum):
-    NONE = 0
-    STATIC_KEY = auto()
-    HOPSET = auto()
-    STREAM = auto()
-    PUBLIC_KEY = auto()
-
 class RadioService(IntEnum):
     VOICE = 0
     APRS = auto()
@@ -32,50 +27,39 @@ class RadioService(IntEnum):
     MESHTASTIC = auto()
     MESHCORE = auto()
 
+class NATORadioBands(IntEnum):
+    A_BAND_0_250M = 0
+    B_BAND_250M_500M = auto()
+    C_BAND_500M_1G = auto()
+    D_BAND_1G_2G = auto()
+    E_BAND_2G_3G = auto()
+    F_BAND_3G_4G = auto()
+    G_BAND_4G_6G = auto()
+    H_BAND_6G_8G = auto()
+    I_BAND_8G_10G = auto()
+    J_BAND_10G_20G = auto()
+    K_BAND_20G_40G = auto()
+    L_BAND_40G_60G = auto()
+    M_BAND_60G_100G = auto()
+
+class RadioProfileType(IntEnum):
+    MILITARY = 0
+
 ### Models
 
-class FrequencyRange(OCCIDModel):
+class FrequencyRange(Carrier):
     low_mhz: float | None = None
     high_mhz: float | None = None
     center_mhz: float | None = None
 
-class ChannelSpec(OCCIDModel):
+class ChannelSpec(Carrier):
     channel_id: str | None = None
     label: str | None = None
     frequency: FrequencyRange | None = None
     bandwidth_mhz: float | None = None
     spacing_mhz: float | None = None
 
-class CryptoKey(OCCIDModel):
-    key_id: str
-    label: str | None = None
-    crypto_type: CryptoType
-    version: str | None = None
-    fill_ts: float | None = None
-
-class CryptoProfile(OCCIDModel):
-    active_crypto: CryptoType | None = None
-    keyset_id: str | None = None
-    keys: list[CryptoKey]
-
-class LoRaProfile(OCCIDModel):
-    spreading_factor: int | None = None
-    bandwidth_mhz: float | None = None
-    coding_rate: str | None = None
-
-class AprsProfile(OCCIDModel):
-    callsign: str | None = None
-    path: str | None = None
-
-class ElrsProfile(OCCIDModel):
-    packet_rate_hz: int | None = None
-    telemetry_ratio: str | None = None
-
-class FpvProfile(OCCIDModel):
-    video_standard: str | None = None
-    low_latency: bool | None = None
-
-class RadioProfile(OCCIDModel):
+class RadioProfile(Carrier):
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None
@@ -87,43 +71,3 @@ class RadioProfile(OCCIDModel):
     aprs: AprsProfile | None = None
     elrs: ElrsProfile | None = None
     fpv: FpvProfile | None = None
-
-class EmitterNotationSchema(OCCIDModel):
-    emitter_name: str | None = None
-    emitter_class: str | None = None
-    platform_class: str | None = None
-
-class SignalMeasurement(OCCIDModel):
-    value: float | None = None
-    unit: str | None = None
-    confidence: ConfidenceLevel | None = None
-
-class LineOfBearingSchema(OCCIDModel):
-    bearing_deg: float | None = None
-    bearing_error_deg: float | None = None
-
-class AngleOfArrivalSchema(OCCIDModel):
-    azimuth_deg: float | None = None
-    elevation_deg: float | None = None
-    azimuth_error_deg: float | None = None
-    elevation_error_deg: float | None = None
-
-class PulseRepetitionIntervalSchema(OCCIDModel):
-    pri_us: float | None = None
-    jitter_us: float | None = None
-
-class ScanCharacteristicsSchema(OCCIDModel):
-    period_s: float | None = None
-    frame_time_s: float | None = None
-
-class SignalSchema(OCCIDModel):
-    signal_id: str
-    source_id: str | None = None
-    emitter: EmitterNotationSchema | None = None
-    frequency: FrequencyRange | None = None
-    strength: SignalMeasurement | None = None
-    line_of_bearing: LineOfBearingSchema | None = None
-    angle_of_arrival: AngleOfArrivalSchema | None = None
-    pulse_interval: PulseRepetitionIntervalSchema | None = None
-    scan: ScanCharacteristicsSchema | None = None
-    fixed_position_id: str | None = None

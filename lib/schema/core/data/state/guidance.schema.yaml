@@ -1,0 +1,151 @@
+version: 1
+type: schema
+name: guidance
+description: "Navigation solution, flight control, guidance status, and navigation capability data."
+tags:
+  - core
+root: state
+
+enums:
+  AirFailsafeMode:
+    - HOLD = 0
+    - RTB
+    - LAND
+    - LOITER
+    - CONTINUE_LAST
+
+  FlightMode:
+    - ACRO = 0
+    - ANGLE
+    - POSHOLD
+    - GUIDED
+    - NAV_WP
+    - LOITER
+    - CRUSE
+    - RTH
+    - LANDING
+    - DISARMED
+
+  FlightPhase:
+    - PREFLIGHT = 0
+    - TAKEOFF
+    - CRUISE
+    - LOITER
+    - MISSION_OPERATION
+    - RTB
+    - LANDING
+    - POSTFLIGHT
+    - ABORT
+
+  AirframeType:
+    - FIXED_WING = 0
+    - COPTER
+    - VTOL
+    - TAILSITTER
+    - FLYING_WING
+
+  CopterType:
+    - X = 0
+    - Y
+    - HEXA
+    - OCTO
+    - DECA
+    - HELICOPTER
+
+  VTOLType:
+    - NONE = 0
+    - QUADPLANE
+    - TILT
+    - VECTORING
+    - TAILSITTER
+
+  NavAids:
+    - NONE = 0
+    - GNSS
+    - INS
+    - TERRAIN_MATCH
+    - CELESTIAL
+    - VISUAL
+
+  GnssFixType:
+    - NONE = 0
+    - NO_FIX
+    - FIX_2D
+    - FIX_3D
+    - DGPS
+    - RTK_FLOAT
+    - RTK_FIXED
+
+models:
+  NavigationValidity:
+    parent: Guidance
+    fields:
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+
+  GnssSolution:
+    parent: Guidance
+    fields:
+      fix_type: optional GnssFixType
+      fix_code: optional int
+      satellites_used: optional int
+      position: optional GlobalPosition
+      altitude: optional AltitudeState
+      ground_speed_ms: optional float
+      ground_course_deg: optional float
+      hdop: optional float
+      vdop: optional float
+      eph: optional float
+      epv: optional float
+      yaw_deg: optional float
+      last_message_dt: optional float
+      errors: optional float
+      timeouts: optional float
+
+  GroundNavigationSchema:
+    parent: Guidance
+    fields:
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      max_range: float
+      max_spd: float
+
+  AirNavigationSchema:
+    parent: Guidance
+    variants:
+    fields:
+      flight_type: AirframeType
+      control_modes: list[FlightMode]
+      failsafe_mode: optional AirFailsafeMode
+      weather_limits: WeatherLimits
+      ifr: optional bool
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      fuel: optional FuelState
+      max_range: float
+      max_flight_t: float
+      max_spd: float
+      cruise_spd: float
+      max_alt: float
+      start_flight_time: float
+
+  FlightControlState:
+    parent: Guidance
+    fields:
+      armed: optional bool
+      in_air: optional bool
+      override_active: optional bool
+      failsafe: optional bool
+      active_modes: list[int]
+      active_mode_names: list[string]
+      nav_state_code: optional int
+      flight_mode: optional string
+      attitude_setpoint: optional ControlAttitudeSetpoint
+      mission_progress: optional MissionProgress
+      navigation_validity: optional NavigationValidity
+      readiness: optional VehicleReadinessState
+      controller_identity: optional FlightControllerIdentity
+      runtime_load: optional RuntimeLoadState

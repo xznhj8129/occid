@@ -1,0 +1,26 @@
+version: 1
+type: schema
+name: relationship
+description: "Ownership, provenance, component, and object relationship data."
+tags:
+  - core
+root: properties
+
+models:
+  RelationSchema:
+    parent: PropertyRelationship
+    fields:
+      src_id: string
+      dst_id: string
+      rel_kind: string
+      since_ts: optional float
+      until_ts: optional float
+      confidence: optional ConfidenceLevel
+      source: optional string
+
+  EntityComponentRef:
+    parent: PropertyRelationship
+    fields:
+      component_id: string
+      component_type: optional string
+      label: optional string

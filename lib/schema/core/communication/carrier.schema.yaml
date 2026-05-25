@@ -1,0 +1,13 @@
+version: 1
+type: schema
+name: carrier
+description: "Physical or logical carriers that messages are transmitted over."
+tags:
+  - core
+root: transport
+branches:
+  - radio
+
+models:
+  Carrier:
+    parent: Transport

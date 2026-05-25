@@ -1,0 +1,18 @@
+version: 1
+type: schema
+name: node
+description: "Communication endpoints that transmit or receive messages."
+tags:
+  - core
+root: communication
+branches:
+  - mesh
+
+models:
+  Node:
+    parent: Communication
+
+  NodeRef:
+    parent: Node
+    fields:
+      node_id: string

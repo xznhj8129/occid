@@ -10,7 +10,7 @@
         - **Category**: What kind of thing something is within its structural class (ie, waypoint, route, zone)
         - **Purpose**: Why something exists, is designated, or is intended to be used
         - **Function**: What something does, how it behaves, or what rule semantics it carries (ie, include, exclude, trigger, hold)
-        - **Factions**: Appartnance buckets
+        - **Faction**: Appartnance buckets
         - **Domains**: Domains of existence, movement, operations and effects
     - **Relationship**: Nature of relations, ownership, provenance, link
 
@@ -22,7 +22,7 @@
     - **LocalPos**: Local coordinate position structs
     - **Line**: Two-point linear structs
     - **Path**: Ordered multi-point path structs
-    - **Shape**: Area and volume geometry-carrier structs
+    - **Shape**: Area and volume geometry-carrier structsf
     - **Bounding**: Bounding region structs
     - **Uncertainty**: Error and covariance structs
     - **Pose**: Position and attitude combination structs

@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .core import Root
+
 ### Enums
 
 class ConfidenceLevel(IntEnum):
@@ -39,16 +41,6 @@ class SchemaKind(IntEnum):
     SENSOR = auto()
     INSTALLATION = auto()
 
-class AlternateIdType(IntEnum):
-    TRACK_ID = 0
-    ASSET_ID = auto()
-    CALLSIGN = auto()
-    SERIAL_NUMBER = auto()
-    REGISTRATION = auto()
-    UNIT_CODE = auto()
-    TRACK_NUMBER = auto()
-    JU_NUMBER = auto()
-
 class PriorityLevel(IntEnum):
     LOW = 0
     NORMAL = auto()
@@ -74,9 +66,58 @@ class NavigationMode(IntEnum):
     TERRAIN_FOLLOW = auto()
 
 class FuelType(IntEnum):
-    GASOLINE = 0
+    BATTERY = 0
+    GASOLINE = auto()
     DIESEL = auto()
     HEAVY_FUEL = auto()
     JET_FUEL = auto()
-    BATTERY = auto()
     HYBRID = auto()
+
+class DefinitionType(IntEnum):
+    FRAME = 0
+    COORDINATE = auto()
+    GEOMETRY = auto()
+    SEMANTIC_TYPE = auto()
+    RELATIONSHIP = auto()
+
+class SemanticTypeType(IntEnum):
+    CATEGORY = 0
+    ROLE = auto()
+    FUNCTION = auto()
+    FACTION_AXIS = auto()
+    DOMAIN = auto()
+
+### Models
+
+class Definition(Root):
+    pass
+
+class Frame(Definition):
+    pass
+
+class Coordinate(Definition):
+    pass
+
+class Geometry(Definition):
+    pass
+
+class SemanticType(Definition):
+    pass
+
+class Category(SemanticType):
+    pass
+
+class Role(SemanticType):
+    pass
+
+class Function(SemanticType):
+    pass
+
+class FactionAxis(SemanticType):
+    pass
+
+class Domain(SemanticType):
+    pass
+
+class DefinitionRelationship(Definition):
+    pass

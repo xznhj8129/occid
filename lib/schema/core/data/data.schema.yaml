@@ -1,71 +1,17 @@
 version: 1
 type: schema
 name: data
-description: "Concrete typed data describing information, state, events, and sensory products."
+description: "Concrete typed data describing information, state, events, intel, and sensory products."
 tags:
   - core
 root: core
 branches:
-  - health
-  - sensors
-
-enums:
-  ClassificationLevel:
-    - UNCLASSIFIED = 0
-    - CONTROLLED
-    - CONFIDENTIAL
-    - SECRET
-    - TOP_SECRET
-
-  VideoProtocol:
-    - RTSP = 0
-    - RTMP
-    - SRT
-    - HLS
-    - UDP
-    - TCP
-
-  MediaType:
-    - IMAGE = 0
-    - VIDEO
-    - AUDIO
-    - DOCUMENT
-    - BINARY
+  - information
+  - sensory
 
 models:
-  ClassificationSchema:
-    parent: Attributes
-    fields:
-      level: ClassificationLevel
-      codewords: list[string]
-      release_to: list[string]
-
-
-  VideoConfigSchema:
-    parent: Parameters
-    fields:
-      protocol: optional VideoProtocol
-      port: optional int
-      stream_url: optional string
-      overlay_url: optional string
-      webrtc_url: optional string
-      overlay_webrtc_url: optional string
-      hls_url: optional string
-
-
-  MediaItemSchema:
-    parent: AV
-    fields:
-      media_id: string
-      media_type: MediaType
-      uri: string
-      label: optional string
-      created_ts: optional float
-      size_bytes: optional int
-      content_type: optional string
-
-
-  MediaSchema:
-    parent: AV
-    fields:
-      items: list[MediaItemSchema]
+  Data:
+    parent: Root
+    variants:
+      - Information
+      - Sensory

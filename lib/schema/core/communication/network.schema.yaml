@@ -1,52 +1,12 @@
 version: 1
 type: schema
 name: network
-description: "Network links, addresses, capacities, endpoints, and link state."
+description: "Network topology, addresses, route hints, and network views."
 tags:
   - core
-root: communication
+root: transport
 
 enums:
-  LinkCondition:
-    - UNKNOWN = 0
-    - GOOD
-    - DEGRADED
-    - INTERMITTENT
-    - LOST
-
-  ConnectionStatus:
-    - UNKNOWN = 0
-    - ONLINE
-    - OFFLINE
-
-  LinkDirection:
-    - RX = 0
-    - TX
-    - HALF_DUPLEX
-    - FULL_DUPLEX
-
-  LinkDataType:
-    - TEXT = 0
-    - AUDIO
-    - VIDEO
-    - PACKET
-    - SERIAL
-    - CONTROL
-
-  LinkType:
-    - BROADCAST = 0
-    - POINT_TO_POINT
-    - HUB
-    - MESH
-
-  NetType:
-    - RF = 0
-    - CELLULAR
-    - LTE
-    - SATCOM
-    - WIFI
-    - WIRED
-
   AddressKind:
     - IPV4 = 0
     - IPV6
@@ -55,21 +15,16 @@ enums:
     - URI
 
 models:
-  BandwidthSpec:
-    parent: Link
+  Network:
+    parent: Transport
+
+  RouteHint:
+    parent: Network
     fields:
-      mhz: optional float
-      occupied_mhz: optional float
-      usable_mhz: optional float
-
-
-  DataRateSpec:
-    parent: Link
-    fields:
-      nominal_bps: optional float
-      sustained_bps: optional float
-      burst_bps: optional float
-
+      next_hop: optional string
+      hop_limit: optional int
+      preferred_relays: list[NodeRef]
+      avoid_nodes: list[NodeRef]
 
   NetworkAddress:
     parent: Network
@@ -78,42 +33,10 @@ models:
       value: string
       port: optional int
 
-
-  LinkCapacity:
-    parent: Link
+  MeshView:
+    parent: Network
     fields:
-      max_nodes: optional int
-      max_users: optional int
-      max_streams: optional int
-
-
-  LinkEndpoint:
-    parent: Link
-    fields:
-      node_id: optional string
-      interface_name: optional string
-      address: optional NetworkAddress
-
-
-  LinkSchema:
-    parent: Link
-    fields:
-      schema_id: string
-      schema_type: SchemaKind = LINK
-      uuid: optional string
-      name: string
-      link_type: LinkType
-      net_type: NetType
-      io: int
-      data_type: LinkDataType
-      direction: optional LinkDirection
-      bandwidth: optional BandwidthSpec
-      rate_spec: optional DataRateSpec
-      user_capacity: optional LinkCapacity
-      network_id: optional string
-      primary_address: optional NetworkAddress
-      addresses: list[NetworkAddress]
-      endpoints: list[LinkEndpoint]
-      radio: optional RadioProfile
-      condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
+      epoch: int = 0
+      nodes: map[string, MeshNode]
+      links: list[MeshLink]
+      partition_id: optional string

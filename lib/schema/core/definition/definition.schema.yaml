@@ -42,16 +42,6 @@ enums:
     - SENSOR
     - INSTALLATION
 
-  AlternateIdType:
-    - TRACK_ID = 0
-    - ASSET_ID
-    - CALLSIGN
-    - SERIAL_NUMBER
-    - REGISTRATION
-    - UNIT_CODE
-    - TRACK_NUMBER
-    - JU_NUMBER
-
   PriorityLevel:
     - LOW = 0
     - NORMAL
@@ -77,9 +67,55 @@ enums:
     - TERRAIN_FOLLOW
 
   FuelType:
-    - GASOLINE = 0
+    - BATTERY = 0
+    - GASOLINE
     - DIESEL
     - HEAVY_FUEL
     - JET_FUEL
-    - BATTERY
     - HYBRID
+
+models:
+  Definition:
+    parent: Root
+    variants:
+      - Frame
+      - Coordinate
+      - Geometry
+      - SemanticType
+      - DefinitionRelationship
+
+  Frame:
+    parent: Definition
+
+  Coordinate:
+    parent: Definition
+
+  Geometry:
+    parent: Definition
+
+  SemanticType:
+    parent: Definition
+    variants:
+      - Category
+      - Role
+      - Function
+      - FactionAxis
+      - Domain
+
+  Category:
+    parent: SemanticType
+
+  Role:
+    parent: SemanticType
+
+  Function:
+    parent: SemanticType
+
+  FactionAxis:
+    parent: SemanticType
+
+  Domain:
+    parent: SemanticType
+
+  DefinitionRelationship:
+    parent: Definition

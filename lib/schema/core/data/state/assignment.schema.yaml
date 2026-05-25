@@ -1,0 +1,41 @@
+version: 1
+type: schema
+name: assignment
+description: "Assignment, task, plan, mission, and stage state."
+tags:
+  - core
+root: state
+
+models:
+  TaskDelta:
+    parent: Assignment
+    fields:
+      task_id: string
+      task_rev: int = 0
+      phase: TaskPhase
+      progress: optional float
+      owner: optional string
+      updated_ts: float
+
+  FlightAssignment:
+    parent: Assignment
+    fields:
+      num: int
+      unit_id: optional string
+      callsign: optional string
+      objective_assign: optional int
+      wave_n: int = 0
+      formation_n: int = 0
+      takeoff_time: float = 0.0
+
+  TaskStatusEntry:
+    parent: Lifecycle
+    fields:
+      ts: float
+      status: TaskStatus
+      command_result: optional CommandResult
+      reply_ack: optional ReplyAck
+      assign_fail: optional TaskAssignFail
+      phase: optional TaskPhase
+      detail: optional string
+      source: optional string
