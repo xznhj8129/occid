@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_communication
+package: military_communication
 description: "Military communication conventions."
 tags:
   - military

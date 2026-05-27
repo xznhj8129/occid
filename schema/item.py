@@ -15,7 +15,7 @@ class Item_type(IntEnum):
 ### Models
 
 class Item(Object):
-    pass
+    'A discrete bounded non-agent object'
 
 class Record(Item):
     pass

@@ -1,18 +1,13 @@
 version: 1
 type: schema
-name: information
-description: "Symbolic, usually structured data that can be directly read"
+package: information
+root: Information
 tags:
   - core
-root: data
-branches:
-  - properties
-  - state
-  - event
-  - intel
 
 models:
   Information:
+    description: "Symbolic, usually structured data that can be directly read"
     parent: Data
     variants:
       - Properties

@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: protocol
-description: "Format and standard of messages"
+package: protocol
+root: Protocol
 tags:
   - core
-root: transport
 
 enums:
   CryptoType:
@@ -22,6 +21,7 @@ enums:
 
 models:
   Protocol:
+    description: "Format and standard of messages"
     parent: Transport
 
   ProtocolPayload:

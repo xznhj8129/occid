@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Position(State):
-    pass
+    'Position in space, address or placement'
 
 class LocationState(Position):
     inertial_frame: InertialReferenceFrame | None = None

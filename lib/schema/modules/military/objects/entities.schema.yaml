@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_entities
+package: military_entities
 description: "Military entity extensions for combat loadouts, NATO categories, payloads, and effects."
 tags:
   - military

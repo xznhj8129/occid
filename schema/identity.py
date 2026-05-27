@@ -18,7 +18,7 @@ class IdentifierType(IntEnum):
 ### Models
 
 class Identity(Properties):
-    pass
+    'Fundamental identity, name, ID'
 
 class Identifier(Identity):
     id_type: IdentifierType

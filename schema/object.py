@@ -25,6 +25,7 @@ class Set_type(IntEnum):
 ### Models
 
 class Object(Root):
+    'Atoms'
     object_type: ObjectType
 
 class Set(Object):

@@ -15,4 +15,4 @@ class Root_type(IntEnum):
 ### Models
 
 class Root(OCCIDModel):
-    pass
+    'Any distinct part of the overall framework that can be identified, described, or referenced'

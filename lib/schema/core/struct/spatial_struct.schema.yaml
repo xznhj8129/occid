@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: spatial_struct
-description: "Spatial struct support models"
+package: spatial_struct
+root: SpatialStruct
 tags:
   - core
-root: struct
 
 enums:
   InertialReferenceFrame:
@@ -78,6 +77,7 @@ enums:
 
 models:
   SpatialStruct:
+    description: "Spatial struct support models"
     parent: Struct
 
   EulerAngles:

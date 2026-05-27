@@ -16,7 +16,7 @@ class ClassificationLevel(IntEnum):
 ### Models
 
 class Attributes(Properties):
-    pass
+    'Fundamental characteristics, type, form'
 
 class MetadataValue(Attributes):
     text_value: str | None = None

@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: definition
-description: "Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors."
+package: definition
+root: Definition
 tags:
   - core
-root: core
 
 enums:
   ConfidenceLevel:
@@ -76,6 +75,7 @@ enums:
 
 models:
   Definition:
+    description: "Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors."
     parent: Root
     variants:
       - Frame

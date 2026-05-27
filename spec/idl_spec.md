@@ -20,53 +20,50 @@ A schema document is either a **class expansion file** (`type: schema`) or a **m
 Common top-level keys (both types):
 - `version` — required
 - `type` — required, either `schema` or `module`
-- `name` — required, the document's identifier (schema ID for schema files, unique module name for modules)
-- `description` — required, human-readable purpose
+- `package` — required, the document's package/output module identifier
 - `tags` — required, list of profile tags for subset selection (see section 17.3)
 - `enums`
 - `maps`
 - `models`
 
 **3.1. Class expansion file** (`type: schema`) — additional keys:
-- `root` — required for every schema file except `core`; the schema ID of the parent schema file this file expands
-- `branches` — optional, list of direct child schema IDs that continue this file's ontology branch
+- `root` — required; the primary model owned by this schema file
 
 **3.2. Module manifest** (`type: module`) — additional keys:
-- `requires` — optional, list of tags or module names this module depends on
+- `description` — optional, human-readable package purpose
+- `requires` — optional, list of tags or module packages this module depends on
 - `extend_variants` — optional, grafts new variants onto existing parents (see section 18.4)
 
 Example class expansion file:
 ```yaml
 version: 1
 type: schema
-name: state
-description: "State data describing current object condition and telemetry."
+package: state
+root: State
 tags:
   - core
-root: information
-branches:
-  - kinematic
-  - navigation
-  - resources
-  - condition
 
 enums: 
 maps: 
 models:
+  State:
+    description: "State data describing current object condition and telemetry."
+    parent: Information
 ```
 
-Minimal branch file:
+Minimal schema file:
 ```yaml
 version: 1
 type: schema
-name: object
-description: "Top-level object branch."
+package: object
+root: Object
 tags:
   - core
-root: core
 
 models:
   Object:
+    description: "Top-level object branch."
+    parent: Root
     variants:
       - Entity
       ...
@@ -76,7 +73,7 @@ Example module manifest:
 ```yaml
 version: 1
 type: module
-name: ew
+package: ew
 description: "Electronic warfare actions, effects, protection, and spectrum management."
 tags:
   - military
@@ -89,6 +86,8 @@ requires:
 - Names must be unique across `enums`, `maps`, and `models`
 - Field names use the same identifier regex
 - All model and enum names are globally unique and imported flat — the ontological hierarchy is encoded in parent/variants relationships, not in qualified import paths
+- For schema files, `package` must match the schema file basename without `.schema.yaml`
+- For module files, `package` must be globally unique across loaded packages
 
 **5. Primitive Types**
 Built-in primitive types:
@@ -175,6 +174,7 @@ Syntax:
 ```yaml
 models:
   ModelName:
+    description: "Human-readable model purpose."
     fields:
       field_a: string
       field_b: optional string
@@ -183,6 +183,7 @@ models:
 ```
 
 Rules:
+- `description` is optional on ordinary models and required on a schema file's root model
 - `parent` is optional
 - `fields` is optional. If absent, the model defines no own fields (inherited fields from a parent still apply)
 - `parent` must reference another model
@@ -335,12 +336,13 @@ These are always errors:
 - `required: true/false`
 - `variants` contains a value that is not a declared model
 - `variants` contains a model whose `parent` is not the declaring model
-- a model's parent chain does not lead to the class declared by the file's `root`
-- `branches` graph contains a cycle
-- `name` does not match the schema file basename without `.schema.yaml`
-- missing `version`, `type`, `name`, `description`, or `tags`
-- missing `root` on any schema file except `core`
-- schema ID `core` declares `root`
+- `package` does not match the schema file basename without `.schema.yaml`
+- missing `version`, `type`, `package`, or `tags`
+- missing `root` on a schema file
+- `root` on a schema file does not reference a declared model
+- schema file root model is missing `description`
+- top-level `description` on a schema file
+- `root` on a module file
 - `type` is not `schema` or `module`
 - a module's `extend_variants` references a parent that has no `variants` block
 - a module's `extend_variants` introduces a derived variant name that collides with an existing one
@@ -356,9 +358,9 @@ These are always errors:
 
 **17. File Organization**
 
-Each schema file is a **class expansion**, not a subject-domain bucket. A file expands exactly one branch of the ontology tree. If a domain concept (e.g. electronic warfare) touches multiple ontological branches (Task, Intel, Plan, Instruction), those models belong in their respective class files, not in a single "ew.yaml."
+Each schema file is a package centered on one primary model, not a subject-domain bucket. If a domain concept (e.g. electronic warfare) touches multiple ontological branches (Task, Intel, Plan, Instruction), those models belong in their respective class files, not in a single "ew.yaml."
 
-Schema files live under `lib/schema/core/` and may be organized in subdirectories for readability. Directory placement is organizational only and is not part of the schema ID. A schema file's `name` is the basename without `.schema.yaml`; `root` and `branches` use those schema IDs. The core directory layout should mirror the first-level ontology branches:
+Schema files live under `lib/schema/core/` and may be organized in subdirectories for readability. Directory placement is organizational only and is not part of the schema package. A schema file's `package` is the basename without `.schema.yaml`; `root` is the primary model in that package. The core directory layout should mirror the first-level ontology branches:
 
 ```text
 schema/
@@ -375,37 +377,29 @@ schema/
       military.schema.yaml
 ```
 
-**17.1. One file, one class branch**
-- Every file except `core` declares a `root` ID for the parent class file it extends
-- All models in a file must be descendants of the class that file expands
-- A file that declares `root: control` may only contain models whose parent chain leads to Control
+**17.1. One file, one package**
+- Every schema file declares a `root` model: the main class the package is about
+- A schema package may also contain local enums, maps, variants, and auxiliary models used by that package
+- The model graph is declared only by `parent` and `variants`
 - If a model branch has its own schema file, that model declaration belongs in that file, not in its parent's file. The parent file may name the branched model in `variants`, but must not define the branched model.
 - Enums used exclusively by models in the file are co-located. Enums shared across files belong in the root or a common ancestor file
 
 **17.2. File header**
-The header declares the file's position in the schema graph:
+The header declares the package identity and primary model:
 
 ```yaml
 version: 1
 type: schema
-name: information
-description: "Symbolic data that can be directly read."
+package: information
+root: Information
 tags:
   - core
-root: data
-branches:
-  - properties
-  - state
-  - event
-  - intel
 ```
 
 - `type` — always `schema` for class expansion files
-- `name` — the file's own schema ID, for self-identification
-- `description` — human-readable purpose of this schema branch
+- `package` — package/output module identifier, matching the schema file basename
+- `root` — primary model declared in the file
 - `tags` — profile tags that classify this file for subset selection (see 17.3)
-- `root` — the parent schema ID. Omitted only for `core`
-- `branches` — direct child schema IDs that further expand this ontology branch. Declares schema-tree topology so tools can resolve a complete subtree without treating the list as ordinary imports or type dependencies
 
 **17.3. Tags and profiles**
 Tags classify files by domain applicability. A **profile** is a named set of tag inclusion/exclusion rules that selects a subset of the schema.
@@ -444,11 +438,8 @@ include:
 exclude_untagged: true
 ```
 
-**17.4. Branches and tree resolution**
-The `branches` list declares which direct child files expand this file's class branch. Branch entries are schema IDs. A schema tool can resolve the full tree from any root by following `branches` recursively. This also means:
-- Removing a file from `branches` prunes that entire sub-branch
-- The `branches` graph must be a tree (no cycles, no diamond branches)
-- A file not branched to by any parent is orphaned and will not appear in any resolved schema unless explicitly added
+**17.4. Model tree resolution**
+The ontology tree is resolved from the model graph. `parent` declares inheritance; `variants` declares typed child families. There is no separate schema-file branch graph.
 
 **18. Modules**
 
@@ -461,12 +452,12 @@ A module is a self-contained extension that grafts domain-specific models, enums
 - It is the extension boundary: adding capability means dropping in a module, not forking the tree
 
 **18.2. Module manifest format**
-Module files live under `lib/schema/modules/` as YAML files following the IDL syntax for enums, maps, and models, plus module-specific header fields. A domain module may be organized as a directory containing several `type: module` files. Directory placement is organizational only; each module file still has a globally unique `name`.
+Module files live under `lib/schema/modules/` as YAML files following the IDL syntax for enums, maps, and models, plus module-specific header fields. A domain module may be organized as a directory containing several `type: module` files. Directory placement is organizational only; each module file still has a globally unique `package`.
 
 ```yaml
 version: 1
 type: module
-name: ew
+package: ew
 description: "Electronic warfare actions, effects, protection, and spectrum management."
 tags:
   - military
@@ -522,7 +513,7 @@ models:
 ```
 
 Header fields (in addition to the common fields in section 3):
-- `requires` — list of tags or module names this module depends on. The resolver must include those dependencies before this module can be applied
+- `requires` — list of tags or module packages this module depends on. The resolver must include those dependencies before this module can be applied
 
 **18.3. Rules**
 - A module's models must declare `parent` referencing a model from the core schema or from a required module
@@ -557,7 +548,7 @@ Rules:
 
 **18.5. Module resolution**
 When building a schema with modules:
-1. Resolve the core schema tree (files + branches + tag filtering)
+1. Resolve the core schema files and model graph
 2. For each selected module, verify `requires` are satisfied
 3. Apply `extend_variants` to graft new variant members onto existing parents
 4. Merge the module's models, enums, and maps into the global namespace
@@ -579,11 +570,10 @@ Module selection is independent of tag filtering but compatible with it:
 ```yaml
 version: 1
 type: schema
-name: directive
-description: "Directive branch under control."
+package: task
+root: Task
 tags:
   - core
-root: control
 
 maps:
   JsonGeometryTypes:
@@ -594,6 +584,8 @@ maps:
 
 models:
   Task:
+    description: "A directive to carry out part of a mission."
+    parent: Directive
     fields:
       task_id: string
       unit_id: string

@@ -1,15 +1,13 @@
 version: 1
 type: schema
-name: carrier
-description: "What are messages transmitted over"
+package: carrier
+root: Carrier
 tags:
   - core
-root: transport
-branches:
-  - radio
 
 models:
   Carrier:
+    description: "What are messages transmitted over"
     parent: Transport
     variants:
       - Radio

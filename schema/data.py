@@ -13,4 +13,4 @@ class Data_type(IntEnum):
 ### Models
 
 class Data(Root):
-    pass
+    'Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects'

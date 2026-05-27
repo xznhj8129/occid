@@ -1,15 +1,13 @@
 version: 1
 type: schema
-name: directive
-description: "What must be achieved, why, and within what bounds"
+package: directive
+root: Directive
 tags:
   - core
-root: control
-branches:
-  - task
 
 models:
   Directive:
+    description: "What must be achieved, why, and within what bounds"
     parent: Control
     variants:
       - Mission

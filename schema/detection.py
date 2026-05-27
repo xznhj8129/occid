@@ -15,7 +15,7 @@ class DetectionBoxSpace(IntEnum):
 ### Models
 
 class Detection(Intel):
-    pass
+    'Assessment that something exists or occurred'
 
 class VisionBox(Detection):
     space: DetectionBoxSpace

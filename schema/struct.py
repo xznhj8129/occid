@@ -26,7 +26,7 @@ class Struct_type(IntEnum):
 ### Models
 
 class Struct(Root):
-    pass
+    'Primitive reusable low-level struct families.'
 
 class Vector(Struct):
     pass

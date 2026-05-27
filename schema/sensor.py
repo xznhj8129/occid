@@ -68,7 +68,7 @@ class GimbalState(IntEnum):
 ### Models
 
 class Sensor(State):
-    pass
+    'Onboard sensor readings, readiness, calibration, and availability'
 
 class MeasurementQuality(Sensor):
     lat_err_m: float | None = None

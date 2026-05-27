@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: event
-description: "A discrete occurrence — something that happened at a point in time, whether planned or not"
+package: event
+root: Event
 tags:
   - core
-root: information
 
 models:
   Event:
+    description: "A discrete occurrence — something that happened at a point in time, whether planned or not"
     parent: Information
     variants:
       - FlightEvent

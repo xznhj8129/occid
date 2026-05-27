@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: telemetry
-description: "Communication about the sender's own internal state or process"
+package: telemetry
+root: Telemetry
 tags:
   - core
-root: message
 
 models:
   Telemetry:
+    description: "Communication about the sender's own internal state or process"
     parent: Message
 
   CapabilityAdvert:
@@ -25,7 +25,6 @@ models:
       entity_id: string
       changed_fields: list[string]
       source: optional string
-      confidence: optional ConfidenceLevel
 
   TransportCounters:
     parent: Telemetry

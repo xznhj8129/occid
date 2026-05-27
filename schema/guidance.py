@@ -81,7 +81,7 @@ class AirNavigationSchema_type(IntEnum):
 ### Models
 
 class Guidance(State):
-    pass
+    'Status and quality of the navigation solution, mode, source, and validity'
 
 class NavigationValidity(Guidance):
     local_position_ok: bool | None = None

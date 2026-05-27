@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: item
-description: "A discrete bounded non-agent object"
+package: item
+root: Item
 tags:
   - core
-root: object
 
 models:
   Item:
+    description: "A discrete bounded non-agent object"
     parent: Object
     variants:
       - Record

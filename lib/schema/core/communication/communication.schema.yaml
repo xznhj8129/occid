@@ -1,15 +1,9 @@
 version: 1
 type: schema
-name: communication
-description: "Definition, implementation, metadata and formats of information transfer"
+package: communication
+root: Communication
 tags:
   - core
-root: core
-branches:
-  - node
-  - transport
-  - feed
-  - message
 
 enums:
   DeliveryState:
@@ -73,6 +67,7 @@ enums:
 
 models:
   Communication:
+    description: "Definition, implementation, metadata and formats of information transfer"
     parent: Root
     variants:
       - Node

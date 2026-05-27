@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_effects
+package: military_effects
 description: "Military effects, payloads, fires, target handover, munitions, and damage assessment."
 tags:
   - military

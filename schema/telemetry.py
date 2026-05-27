@@ -7,7 +7,7 @@ from .message import Message
 ### Models
 
 class Telemetry(Message):
-    pass
+    "Communication about the sender's own internal state or process"
 
 class CapabilityAdvert(Telemetry):
     node_id: str

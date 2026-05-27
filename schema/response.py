@@ -7,7 +7,7 @@ from .message import Message
 ### Models
 
 class Response(Message):
-    pass
+    'Communication whose purpose is acknowledgment, acceptance, rejection, result, or completion notice'
 
 class DeliveryReceipt(Response):
     msg_id: str

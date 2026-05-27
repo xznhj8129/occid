@@ -1,15 +1,13 @@
 version: 1
 type: schema
-name: struct
-description: "Primitive reusable low-level struct families."
+package: struct
+root: Struct
 tags:
   - core
-root: core
-branches:
-  - spatial_struct
 
 models:
   Struct:
+    description: "Primitive reusable low-level struct families."
     parent: Root
     variants:
       - Vector

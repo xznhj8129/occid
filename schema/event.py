@@ -13,7 +13,7 @@ class Event_type(IntEnum):
 ### Models
 
 class Event(Information):
-    pass
+    'A discrete occurrence — something that happened at a point in time, whether planned or not'
 
 class FlightEvent(Event):
     pass

@@ -15,4 +15,4 @@ class Information_type(IntEnum):
 ### Models
 
 class Information(Data):
-    pass
+    'Symbolic, usually structured data that can be directly read'

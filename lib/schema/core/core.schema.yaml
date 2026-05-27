@@ -1,19 +1,13 @@
 version: 1
 type: schema
-name: core
-description: "Any distinct part of the overall framework that can be identified, described, or referenced"
+package: core
+root: Root
 tags:
   - core
-branches:
-  - definition
-  - struct
-  - object
-  - control
-  - communication
-  - data
 
 models:
   Root:
+    description: "Any distinct part of the overall framework that can be identified, described, or referenced"
     variants:
       - Definition
       - Struct

@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: position
-description: "Position in space, address or placement"
+package: position
+root: Position
 tags:
   - core
-root: state
 
 models:
   Position:
+    description: "Position in space, address or placement"
     parent: State
 
   LocationState:

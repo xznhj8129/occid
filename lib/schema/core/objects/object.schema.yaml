@@ -1,15 +1,9 @@
 version: 1
 type: schema
-name: object
-description: "Atoms"
+package: object
+root: Object
 tags:
   - core
-root: core
-branches:
-  - entity
-  - organization
-  - item
-  - world
 
 enums:
   ObjectType:
@@ -18,6 +12,7 @@ enums:
 
 models:
   Object:
+    description: "Atoms"
     parent: Root
     variants:
       - Entity

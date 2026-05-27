@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: organization
-description: "A structured collection of organized entities and/or subordinate organizations with common command and control"
+package: organization
+root: Organization
 tags:
   - core
-root: object
 
 enums:
   OrgLevel:
@@ -24,6 +23,7 @@ enums:
 
 models:
   Organization:
+    description: "A structured collection of organized entities and/or subordinate organizations with common command and control"
     parent: Set
     variants:
       - Group

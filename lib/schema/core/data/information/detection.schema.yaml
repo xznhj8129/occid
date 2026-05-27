@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: detection
-description: "Assessment that something exists or occurred"
+package: detection
+root: Detection
 tags:
   - core
-root: intel
 
 enums:
   DetectionBoxSpace:
@@ -15,6 +14,7 @@ enums:
 
 models:
   Detection:
+    description: "Assessment that something exists or occurred"
     parent: Intel
 
   VisionBox:

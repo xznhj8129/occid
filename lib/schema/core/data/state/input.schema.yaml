@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: input
-description: "Current operator / receiver input state and control mapping"
+package: input
+root: Input
 tags:
   - core
-root: state
 
 models:
   Input:
+    description: "Current operator / receiver input state and control mapping"
     parent: State
 
   ControlAxisSet:

@@ -1,17 +1,13 @@
 version: 1
 type: schema
-name: transport
-description: "The form of information flow"
+package: transport
+root: Transport
 tags:
   - core
-root: communication
-branches:
-  - network
-  - carrier
-  - protocol
 
 models:
   Transport:
+    description: "The form of information flow"
     parent: Communication
     variants:
       - Network

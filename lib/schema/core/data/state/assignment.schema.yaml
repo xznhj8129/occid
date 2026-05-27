@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: assignment
-description: "Assignments, tasks, plans, missions, stages"
+package: assignment
+root: Assignment
 tags:
   - core
-root: state
 
 models:
   Assignment:
+    description: "Assignments, tasks, plans, missions, stages"
     parent: State
 
   TaskDelta:

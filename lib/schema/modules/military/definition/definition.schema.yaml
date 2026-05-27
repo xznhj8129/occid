@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_definition
+package: military_definition
 description: "Military classification, faction, and SIDC symbology definitions."
 tags:
   - military

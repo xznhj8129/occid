@@ -15,7 +15,7 @@ class MeshNodeState(IntEnum):
 ### Models
 
 class Node(Communication):
-    pass
+    'Endpoint that transmits or receives messages'
 
 class NodeRef(Node):
     node_id: str

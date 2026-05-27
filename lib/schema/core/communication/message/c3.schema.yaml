@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: c3
-description: "Communication whose purpose is to direct, command or control"
+package: c3
+root: C3
 tags:
   - core
-root: message
 
 models:
   C3:
+    description: "Communication whose purpose is to direct, command or control"
     parent: Message
 
   HumanTextMessage:

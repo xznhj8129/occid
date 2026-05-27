@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: isr
-description: "Communication about external objects, events, or the environment"
+package: isr
+root: ISR
 tags:
   - core
-root: message
 
 models:
   ISR:
+    description: "Communication about external objects, events, or the environment"
     parent: Message
 
   ProtocolEventMessage:

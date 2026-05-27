@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: constraint
-description: "A boundary, limitation, or rule restricting permissible action"
+package: constraint
+root: Constraint
 tags:
   - core
-root: control
 
 models:
   Constraint:
+    description: "A boundary, limitation, or rule restricting permissible action"
     parent: Control
     variants:
       - Restriction

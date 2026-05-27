@@ -1,20 +1,9 @@
 version: 1
 type: schema
-name: state
-description: "Telemetric, changing data describing the own state or condition of an object at a given time"
+package: state
+root: State
 tags:
   - core
-root: information
-branches:
-  - internal
-  - position
-  - guidance
-  - sensor
-  - input
-  - resources
-  - condition
-  - lifecycle
-  - assignment
 
 enums:
   AirMissionPhase:
@@ -54,6 +43,7 @@ enums:
 
 models:
   State:
+    description: "Telemetric, changing data describing the own state or condition of an object at a given time"
     parent: Information
     variants:
       - Kinematic

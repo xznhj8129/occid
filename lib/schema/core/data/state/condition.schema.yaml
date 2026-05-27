@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: condition
-description: "Integrity, damage, faults, readiness"
+package: condition
+root: Condition
 tags:
   - core
-root: state
 
 enums:
   AlertLevel:
@@ -55,6 +54,7 @@ enums:
 
 models:
   Condition:
+    description: "Integrity, damage, faults, readiness"
     parent: State
 
   HealthAlert:

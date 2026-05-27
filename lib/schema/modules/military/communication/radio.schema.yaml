@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_radio
+package: military_radio
 description: "Military and NATO radio band extensions."
 tags:
   - military

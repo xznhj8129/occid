@@ -65,6 +65,7 @@ class AirMachine_type(IntEnum):
 ### Models
 
 class Entity(Object):
+    'One discrete "atom" capable of actions'
     object_type: ObjectType = ObjectType.ENTITY
     entity_id: str
     short_id: str | None = None

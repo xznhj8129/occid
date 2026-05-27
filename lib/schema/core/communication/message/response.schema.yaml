@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: response
-description: "Communication whose purpose is acknowledgment, acceptance, rejection, result, or completion notice"
+package: response
+root: Response
 tags:
   - core
-root: message
 
 models:
   Response:
+    description: "Communication whose purpose is acknowledgment, acceptance, rejection, result, or completion notice"
     parent: Message
 
   DeliveryReceipt:

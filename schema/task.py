@@ -101,6 +101,7 @@ class Task_type(IntEnum):
 ### Models
 
 class Task(Directive):
+    'A directive to carry out part of a mission'
     task_id: str
     task_type: TaskType
     unit_code: str

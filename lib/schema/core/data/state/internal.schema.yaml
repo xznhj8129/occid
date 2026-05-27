@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: internal
-description: "Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)"
+package: internal
+root: Internal
 tags:
   - core
-root: state
 
 models:
   Internal:
+    description: "Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)"
     parent: State
 
   FirmwareInfo:

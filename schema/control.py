@@ -17,4 +17,4 @@ class Control_type(IntEnum):
 ### Models
 
 class Control(Root):
-    pass
+    'Scale-invariant; the binding of agents to objectives through structured decomposition'

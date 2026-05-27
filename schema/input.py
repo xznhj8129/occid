@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Input(State):
-    pass
+    'Current operator / receiver input state and control mapping'
 
 class ControlAxisSet(Input):
     roll: float | None = None

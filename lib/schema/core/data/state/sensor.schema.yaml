@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: sensor
-description: "Onboard sensor readings, readiness, calibration, and availability"
+package: sensor
+root: Sensor
 tags:
   - core
-root: state
 
 enums:
   SensorType:
@@ -68,6 +67,7 @@ enums:
 
 models:
   Sensor:
+    description: "Onboard sensor readings, readiness, calibration, and availability"
     parent: State
 
   MeasurementQuality:

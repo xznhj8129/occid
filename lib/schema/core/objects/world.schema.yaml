@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: world
-description: ""
+package: world
+root: World
 tags:
   - core
-root: object
 
 models:
   World:
+    description: ""
     parent: Object
     variants:
       - Feature

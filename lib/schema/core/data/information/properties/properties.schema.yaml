@@ -1,18 +1,13 @@
 version: 1
 type: schema
-name: properties
-description: "A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition"
+package: properties
+root: Properties
 tags:
   - core
-root: information
-branches:
-  - identity
-  - attributes
-  - parameters
-  - relationship
 
 models:
   Properties:
+    description: "A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition"
     parent: Information
     variants:
       - Identity

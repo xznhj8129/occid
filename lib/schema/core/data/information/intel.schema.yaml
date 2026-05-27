@@ -1,15 +1,13 @@
 version: 1
 type: schema
-name: intel
-description: "Effect-side data that something happened or changed external to the sender object"
+package: intel
+root: Intel
 tags:
   - core
-root: information
-branches:
-  - detection
 
 models:
   Intel:
+    description: "Effect-side data that something happened or changed external to the sender object"
     parent: Information
     variants:
       - Detection

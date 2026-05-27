@@ -21,7 +21,7 @@ class Sensory_type(IntEnum):
 ### Models
 
 class Sensory(Data):
-    pass
+    'Unstructured, non-symbolic sensory signal data that has to be interpreted'
 
 class AV(Sensory):
     pass

@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_tasks
+package: military_tasks
 description: "Military tasking extensions for combat, fires, and munition allocation."
 tags:
   - military

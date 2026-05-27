@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: reference
-description: "Control-side structural wrapper binding spatial definitions and structs into control-usable referents"
+package: reference
+root: Reference
 tags:
   - core
-root: control
 
 enums:
   PlannerPointType:
@@ -47,6 +46,7 @@ enums:
 
 models:
   Reference:
+    description: "Control-side structural wrapper binding spatial definitions and structs into control-usable referents"
     parent: Control
     variants:
       - Mark

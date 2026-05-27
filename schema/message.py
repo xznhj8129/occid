@@ -20,7 +20,7 @@ class Message_type(IntEnum):
 ### Models
 
 class Message(Communication):
-    pass
+    'Discrete typed envelope for feed data'
 
 class MessageEnvelope(Message):
     msg_id: str

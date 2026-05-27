@@ -57,7 +57,7 @@ class ControlAxis(IntEnum):
 ### Models
 
 class Parameters(Properties):
-    pass
+    'Current operating configuration or control regime'
 
 class VideoConfigSchema(Parameters):
     protocol: VideoProtocol | None = None

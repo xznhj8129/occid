@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: sensory
-description: "Unstructured, non-symbolic sensory signal data that has to be interpreted"
+package: sensory
+root: Sensory
 tags:
   - core
-root: data
 
 enums:
   MediaType:
@@ -16,6 +15,7 @@ enums:
 
 models:
   Sensory:
+    description: "Unstructured, non-symbolic sensory signal data that has to be interpreted"
     parent: Data
     variants:
       - AV

@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: guidance
-description: "Status and quality of the navigation solution, mode, source, and validity"
+package: guidance
+root: Guidance
 tags:
   - core
-root: state
 
 enums:
   AirFailsafeMode:
@@ -78,6 +77,7 @@ enums:
 
 models:
   Guidance:
+    description: "Status and quality of the navigation solution, mode, source, and validity"
     parent: State
 
   NavigationValidity:

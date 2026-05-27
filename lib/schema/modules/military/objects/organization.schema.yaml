@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_organization
+package: military_organization
 description: "Military organization, OOB, NATO unit category, ORBAT, and callsign structures."
 tags:
   - military

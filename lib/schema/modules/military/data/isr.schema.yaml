@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_isr
+package: military_isr
 description: "Military ISR tasks, observations, tracks, reports, evidence, and assessment data."
 tags:
   - military

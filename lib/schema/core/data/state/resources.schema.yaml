@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: resources
-description: "How much of something something has; power, fuel, food, etc"
+package: resources
+root: Resources
 tags:
   - core
-root: state
 
 enums:
   PowerStatus:
@@ -23,6 +22,7 @@ enums:
 
 models:
   Resources:
+    description: "How much of something something has; power, fuel, food, etc"
     parent: State
 
   FuelState:

@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: reasoning
-description: ""
+package: reasoning
+root: Reasoning
 tags:
   - core
-root: control
 
 models:
   Reasoning:
+    description: ""
     parent: Control
     variants:
       - Purpose

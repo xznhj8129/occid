@@ -56,7 +56,7 @@ class MissionPoi_type(IntEnum):
 ### Models
 
 class Reference(Control):
-    pass
+    'Control-side structural wrapper binding spatial definitions and structs into control-usable referents'
 
 class Mark(Reference):
     pass

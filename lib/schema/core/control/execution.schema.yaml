@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: execution
-description: "How directed activity is structured and carried out"
+package: execution
+root: Execution
 tags:
   - core
-root: control
 
 models:
   Execution:
+    description: "How directed activity is structured and carried out"
     parent: Control
     variants:
       - Plan

@@ -12,4 +12,4 @@ class Carrier_type(IntEnum):
 ### Models
 
 class Carrier(Transport):
-    pass
+    'What are messages transmitted over'

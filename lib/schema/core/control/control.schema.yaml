@@ -1,20 +1,13 @@
 version: 1
 type: schema
-name: control
-description: "Scale-invariant; the binding of agents to objectives through structured decomposition"
+package: control
+root: Control
 tags:
   - core
-root: core
-branches:
-  - reasoning
-  - directive
-  - execution
-  - reference
-  - constraint
-  - interface
 
 models:
   Control:
+    description: "Scale-invariant; the binding of agents to objectives through structured decomposition"
     parent: Root
     variants:
       - Reasoning

@@ -26,6 +26,8 @@ def build_example_payload() -> dict:
         net_type=NetType.RF,
         io=0,
         data_type=LinkDataType.CONTROL,
+        addresses=[],
+        endpoints=[],
         condition=LinkCondition.GOOD,
     )
     video_link = LinkSchema(
@@ -35,9 +37,12 @@ def build_example_payload() -> dict:
         net_type=NetType.RF,
         io=0,
         data_type=LinkDataType.VIDEO,
+        addresses=[],
+        endpoints=[],
         condition=LinkCondition.GOOD,
     )
     camera = SensorSchema(
+        object_type=ObjectType.ENTITY,
         name="NOSE_CAM",
         model="Fixed Camera",
         type=SensorType.EO,
@@ -47,8 +52,11 @@ def build_example_payload() -> dict:
         spectrum=SensorSpectrum.VISUAL,
         night_vision=False,
         all_weather=False,
+        weather_limits=WeatherLimits(ifr=False),
         error_margin=5.0,
         error_type=SensorErrorType.CEP,
+        data_formats=[SensorDataFormat.VIDEO],
+        ai=[SensorAICapability.DETECTION],
         datalink="FPV_VIDEO",
     )
 
@@ -78,23 +86,15 @@ def build_example_payload() -> dict:
     ground_robot = GroundRobot(
         entity_id="robot.ugv.01",
         sys_id="UGV_01",
+        alt_ids=[],
+        tags=[],
+        metadata=[],
+        relations=[],
+        components=[],
+        sensors={},
         model="Tracked Mule",
         role="Ammo carrier",
         status=EntityOperationalState.READY,
-        payload=PayloadSchema(
-            item_type=PayloadType.CARGO,
-            ammo=[ItemCount(item_type="7.62x54R", qty=800)],
-            ordnance=[ItemCount(item_type="smoke", qty=4)],
-        ),
-        effects=GroundEffectsSchema(
-            has_launchers=False,
-            payload_mounts={},
-            effect_domain=EffectDomain.LAND,
-            launch_domain=OperationalDomain.LAND,
-            guidance=GuidanceType.UNGUIDED,
-            warhead=WarheadType.INERT,
-            attack_modes=[AttackMode.DIRECT_FIRE],
-        ),
         navigation=GroundNavigationSchema(
             propulsion=PropulsionType.TRACKED,
             navigation=NavigationMode.GNSS,
@@ -108,28 +108,23 @@ def build_example_payload() -> dict:
         remote_control=RemoteControlSchema(
             links={"RC": rc_link},
             rc_link="ELRS_915",
+            channel_map=[],
+            mode_ranges=[],
         ),
     )
 
     air_robot = AirRobot(
         entity_id="air.uav.strike.01",
         sys_id="UAV_STRIKE_01",
+        alt_ids=[],
+        tags=[],
+        metadata=[],
+        relations=[],
+        components=[],
         model="MK4V2-10",
         status=EntityOperationalState.READY,
         machine_type=MachineType.ROBOT,
-        payload=payload_common,
-        effects=AirEffectsSchema(
-            has_launchers=False,
-            payload_mounts=payload_common.payload_mounts,
-            effect_domain=EffectDomain.LAND,
-            launch_domain=OperationalDomain.AIR,
-            guidance=GuidanceType.FPV,
-            warhead=WarheadType.HEAT,
-            pylon_format="",
-            reusable=False,
-            attack_modes=[AirAttackMode.ONEWAY],
-        ),
-        navigation=AirNavigationSchema(
+        navigation=MilitaryAirNavigation(
             flight_type=AirframeType.COPTER,
             control_modes=[FlightMode.ANGLE, FlightMode.GUIDED],
             failsafe_mode=AirFailsafeMode.RTB,
@@ -155,13 +150,15 @@ def build_example_payload() -> dict:
             autopilot=True,
             autopilot_controller_model="F405",
             autopilot_type=AutopilotType.INAV,
-            autopilot_fw=FirmwareInfo(name="INAV", version="8.0"),
+            autopilot_fw=FirmwareInfo(name="INAV", version=Version(major=8, minor=0, patch=0)),
         ),
         remote_control=RemoteControlSchema(
             links={"RC": rc_link, "VIDEO": video_link},
             rc_link="ELRS_915",
             vid_link="FPV_VIDEO",
             ctrl_video_sep=True,
+            channel_map=[],
+            mode_ranges=[],
             telemetry=TelemetryState(
                 flight_mode=FlightMode.GUIDED,
                 battery_pct=100.0,
@@ -177,6 +174,9 @@ def build_example_payload() -> dict:
         category=NATOUnitCategory.UAV,
         size=OOBSize.PLT,
         taskforce=False,
+        links={},
+        tac_elements=[],
+        sup_elements=[],
         link_loadout=[
             ItemCount(item_type="ELRS_915", qty=3),
             ItemCount(item_type="FPV_VIDEO", qty=2),
@@ -185,8 +185,12 @@ def build_example_payload() -> dict:
             ItemCount(item_type="robot.ugv.01", qty=1),
             ItemCount(item_type="air.uav.strike.01", qty=2),
         ],
+        sup_e_comp=[],
         personnel=[ItemCount(item_type="personnel", qty=6)],
         vehicles=[ItemCount(item_type="pickup", qty=1)],
+        equipment=[],
+        ammo=[],
+        weapons=[],
         air_units=[ItemCount(item_type="air.uav.strike.01", qty=2)],
         spacing=500.0,
     )

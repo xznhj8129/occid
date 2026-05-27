@@ -15,7 +15,7 @@ class ControlLevel(IntEnum):
 ### Models
 
 class Interface(Control):
-    pass
+    'The translation of an action into the terms of the executing layer'
 
 class RemoteControlSchema(Interface):
     links: dict[str, LinkSchema]

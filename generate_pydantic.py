@@ -45,11 +45,10 @@ TYPE_KEYWORDS = {"list", "map", "tuple"}
 TOP_LEVEL_KEYS = {
     "version",
     "type",
-    "name",
+    "package",
     "description",
     "tags",
     "root",
-    "branches",
     "requires",
     "extend_variants",
     "enums",
@@ -57,7 +56,7 @@ TOP_LEVEL_KEYS = {
     "models",
 }
 MAP_KEYS = {"type", "value"}
-MODEL_KEYS = {"parent", "fields", "variants"}
+MODEL_KEYS = {"description", "parent", "fields", "variants"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 
@@ -97,6 +96,7 @@ class FieldDef:
 @dataclass
 class ModelDef:
     name: str
+    description: str | None
     parent: str | None
     fields: list[FieldDef]
     variants: list[str]
@@ -115,6 +115,8 @@ class MappingDef:
 class ModuleDef:
     doc_type: str
     name: str
+    root: str | None
+    description: str | None
     path: Path
     tags: list[str]
     requires: list[str]
@@ -311,6 +313,8 @@ def parse_model(name: str, spec: dict) -> ModelDef:
     unknown_keys = sorted(set(spec) - MODEL_KEYS)
     if unknown_keys:
         raise SchemaError(f"unknown model keys {unknown_keys} on {name}")
+    if "description" in spec and type(spec["description"]) != str:
+        raise SchemaError(f"description must be a string on {name}")
     has_variants = "variants" in spec
     variants = spec.get("variants") or []
     if type(variants) != list:
@@ -320,6 +324,7 @@ def parse_model(name: str, spec: dict) -> ModelDef:
             raise SchemaError(f"variants must be a list of model names on {name}")
     return ModelDef(
         name=name,
+        description=spec.get("description"),
         parent=spec.get("parent"),
         fields=[parse_field(field_name, field_spec) for field_name, field_spec in (spec.get("fields") or {}).items()],
         variants=variants,
@@ -349,14 +354,14 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
     unknown_keys = sorted(set(data) - TOP_LEVEL_KEYS)
     if unknown_keys:
         raise SchemaError(f"unknown top-level keys {unknown_keys} in {path}")
-    for key in ("version", "type", "name", "description", "tags"):
+    for key in ("version", "type", "package", "tags"):
         if key not in data:
             raise SchemaError(f"missing {key} in {path}")
     if data["type"] not in {"schema", "module"}:
         raise SchemaError(f"type must be schema or module in {path}")
-    expected_name = path.stem.replace(".schema", "")
-    if data["type"] == "schema" and data["name"] != expected_name:
-        raise SchemaError(f"name {data['name']} does not match schema id {expected_name}")
+    expected_package = path.stem.replace(".schema", "")
+    if data["type"] == "schema" and data["package"] != expected_package:
+        raise SchemaError(f"package {data['package']} does not match schema package {expected_package}")
     if type(data["tags"]) != list:
         raise SchemaError(f"tags must be a list in {path}")
     for tag in data["tags"]:
@@ -384,15 +389,24 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
         for module_key in ("requires", "extend_variants"):
             if module_key in data:
                 raise SchemaError(f"{module_key} is only valid on module files in {path}")
+        if "description" in data:
+            raise SchemaError(f"description belongs on the root model in {path}")
+        if "root" not in data:
+            raise SchemaError(f"missing root in {path}")
+        if type(data["root"]) != str:
+            raise SchemaError(f"root must be a model name in {path}")
     else:
-        for schema_key in ("root", "branches"):
-            if schema_key in data:
-                raise SchemaError(f"{schema_key} is only valid on schema files in {path}")
+        if "root" in data:
+            raise SchemaError(f"root is only valid on schema files in {path}")
+        if "description" in data and type(data["description"]) != str:
+            raise SchemaError(f"description must be a string in {path}")
 
     return (
         ModuleDef(
             doc_type=data["type"],
-            name=data["name"],
+            name=data["package"],
+            root=data.get("root"),
+            description=data.get("description"),
             path=path,
             tags=data["tags"],
             requires=requires,
@@ -408,61 +422,14 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
 def load_schema_documents(schema_dir: Path) -> list[ModuleDef]:
     modules: list[ModuleDef] = []
     schema_names: set[str] = set()
-    schema_data: list[tuple[Path, dict]] = []
     for path in sorted(schema_dir.rglob("*.schema.yaml")):
         module, data = parse_document(path)
         if module.doc_type != "schema":
             raise SchemaError(f"type must be schema in core schema dir: {path}")
-        if data["name"] in schema_names:
-            raise SchemaError(f"duplicate schema id {data['name']} in {path}")
-        schema_names.add(data["name"])
-        schema_data.append((path, data))
+        if data["package"] in schema_names:
+            raise SchemaError(f"duplicate schema package {data['package']} in {path}")
+        schema_names.add(data["package"])
         modules.append(module)
-
-    branch_graph: dict[str, set[str]] = {}
-    branch_parent: dict[str, str] = {}
-    root_by_name: dict[str, str] = {}
-    rootless_schema_names = [data["name"] for path, data in schema_data if not data.get("root")]
-    if rootless_schema_names != ["core"]:
-        raise SchemaError(f"expected only core with no root, found {rootless_schema_names}")
-    for path, data in schema_data:
-        schema_name = data["name"]
-        if schema_name == "core" and data.get("root"):
-            raise SchemaError(f"core must not declare root in {path}")
-        if schema_name != "core" and not data.get("root"):
-            raise SchemaError(f"missing root in {path}")
-        if data.get("root") and data["root"] not in schema_names:
-            raise SchemaError(f"unknown root {data['root']} in {path}")
-        if data.get("root"):
-            root_by_name[schema_name] = data["root"]
-        branch_graph[schema_name] = set(data.get("branches") or [])
-        for branch_name in data.get("branches") or []:
-            if branch_name not in schema_names:
-                raise SchemaError(f"unknown branch {branch_name} in {path}")
-            if branch_name in branch_parent:
-                raise SchemaError(f"branch {branch_name} has multiple roots: {branch_parent[branch_name]}, {schema_name}")
-            branch_parent[branch_name] = schema_name
-    checking: set[str] = set()
-    checked: set[str] = set()
-    for name in schema_names:
-        stack: list[tuple[str, bool]] = [(name, False)]
-        while stack:
-            current, leaving = stack.pop()
-            if leaving:
-                checking.remove(current)
-                checked.add(current)
-                continue
-            if current in checked:
-                continue
-            if current in checking:
-                raise SchemaError(f"branches graph contains a cycle at {current}")
-            checking.add(current)
-            stack.append((current, True))
-            for branch_name in branch_graph[current]:
-                stack.append((branch_name, False))
-    for name, root in root_by_name.items():
-        if branch_parent.get(name) != root:
-            raise SchemaError(f"root {root} does not branch to {name}")
     return modules
 
 
@@ -484,7 +451,7 @@ def select_module_documents(
     selected: dict[str, ModuleDef] = {}
     modules_by_name = {module.name: module for module in available_modules}
     if len(modules_by_name) != len(available_modules):
-        raise SchemaError("duplicate module names in module dir")
+        raise SchemaError("duplicate module packages in module dir")
 
     selected_tag_set = set(selected_tags)
     if all_modules:
@@ -650,6 +617,13 @@ def collect_type_refs(node: TypeNode) -> set[str]:
 
 
 def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum_members: dict[str, set[str]]) -> None:
+    models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
+    for module in modules:
+        if module.doc_type == "schema":
+            if module.root not in models_by_name:
+                raise SchemaError(f"root {module.root} is not a declared model in {module.path}")
+            if models_by_name[module.root].description is None:
+                raise SchemaError(f"root model {module.root} is missing description in {module.path}")
     for module in modules:
         for mapping_def in module.maps:
             for type_name in (mapping_def.key_type, mapping_def.value_type):
@@ -676,7 +650,6 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     raise SchemaError(
                         f"invalid enum default {type_name}.{field_def.default} in {module.path}:{model_def.name}.{field_def.name}"
                     )
-    models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
     for module in modules:
         for model_def in module.models:
             for variant_name in model_def.variants:
@@ -876,9 +849,11 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
 def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]]) -> str:
     parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
+    if model_def.description:
+        lines.append(f"    {model_def.description!r}")
     for field_def in model_def.fields:
         lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members)}")
-    if not model_def.fields:
+    if not model_def.description and not model_def.fields:
         lines.append("    pass")
     return "\n".join(lines)
 

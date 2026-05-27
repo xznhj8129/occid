@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military_aerial
+package: military_aerial
 description: "Military aviation roles, air combat tasks, ISR tasks, attack modes, and mission extensions."
 tags:
   - military

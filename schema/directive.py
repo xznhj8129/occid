@@ -14,7 +14,7 @@ class Directive_type(IntEnum):
 ### Models
 
 class Directive(Control):
-    pass
+    'What must be achieved, why, and within what bounds'
 
 class Mission(Directive):
     pass

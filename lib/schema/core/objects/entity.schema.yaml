@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: entity
-description: 'One discrete "atom" capable of actions'
+package: entity
+root: Entity
 tags:
   - core
-root: object
 
 enums:
   EntityType:
@@ -37,6 +36,7 @@ enums:
 
 models:
   Entity:
+    description: 'One discrete "atom" capable of actions'
     parent: Object
     variants:
       - Actor

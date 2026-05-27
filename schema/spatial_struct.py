@@ -78,7 +78,7 @@ class WaypointType(IntEnum):
 ### Models
 
 class SpatialStruct(Struct):
-    pass
+    'Spatial struct support models'
 
 class EulerAngles(Pose):
     pitch: float

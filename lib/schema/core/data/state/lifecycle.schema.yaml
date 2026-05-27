@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: lifecycle
-description: "Current stage in existence or execution"
+package: lifecycle
+root: Lifecycle
 tags:
   - core
-root: state
 
 models:
   Lifecycle:
+    description: "Current stage in existence or execution"
     parent: State
 
   TaskStatusEntry:

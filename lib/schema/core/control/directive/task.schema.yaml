@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: task
-description: "A directive to carry out part of a mission"
+package: task
+root: Task
 tags:
   - core
-root: directive
 
 enums:
   Capability:
@@ -94,6 +93,7 @@ enums:
 
 models:
   Task:
+    description: "A directive to carry out part of a mission"
     parent: Directive
     variants:
       - MoveTask

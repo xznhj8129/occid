@@ -55,7 +55,7 @@ class MaintenanceState(IntEnum):
 ### Models
 
 class Condition(State):
-    pass
+    'Integrity, damage, faults, readiness'
 
 class HealthAlert(Condition):
     alert_id: str | None = None

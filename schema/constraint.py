@@ -14,7 +14,7 @@ class Constraint_type(IntEnum):
 ### Models
 
 class Constraint(Control):
-    pass
+    'A boundary, limitation, or rule restricting permissible action'
 
 class Restriction(Constraint):
     pass

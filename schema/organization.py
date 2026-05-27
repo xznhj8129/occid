@@ -29,6 +29,7 @@ class Organization_type(IntEnum):
 ### Models
 
 class Organization(Set):
+    'A structured collection of organized entities and/or subordinate organizations with common command and control'
     org_uid: str
     object_type: ObjectType = ObjectType.ORGANIZATION
     orglevel: OrgLevel = OrgLevel.GROUP

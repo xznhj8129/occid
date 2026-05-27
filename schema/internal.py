@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Internal(State):
-    pass
+    'Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)'
 
 class FirmwareInfo(Internal):
     name: str

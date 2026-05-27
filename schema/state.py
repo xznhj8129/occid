@@ -56,7 +56,7 @@ class State_type(IntEnum):
 ### Models
 
 class State(Information):
-    pass
+    'Telemetric, changing data describing the own state or condition of an object at a given time'
 
 class Kinematic(State):
     pass

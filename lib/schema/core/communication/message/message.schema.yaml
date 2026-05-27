@@ -1,15 +1,9 @@
 version: 1
 type: schema
-name: message
-description: "Discrete typed envelope for feed data"
+package: message
+root: Message
 tags:
   - core
-root: communication
-branches:
-  - c3
-  - isr
-  - telemetry
-  - response
 
 enums:
   MeshtasticPort:
@@ -19,6 +13,7 @@ enums:
 
 models:
   Message:
+    description: "Discrete typed envelope for feed data"
     parent: Communication
     variants:
       - C3

@@ -16,7 +16,7 @@ class AddressKind(IntEnum):
 ### Models
 
 class Network(Transport):
-    pass
+    'Graph topology of information flow'
 
 class RouteHint(Network):
     next_hop: str | None = None

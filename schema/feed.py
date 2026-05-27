@@ -54,7 +54,7 @@ class Feed_type(IntEnum):
 ### Models
 
 class Feed(Communication):
-    pass
+    'Information pipe'
 
 class Link(Feed):
     pass

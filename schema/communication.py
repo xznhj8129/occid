@@ -74,4 +74,4 @@ class Communication_type(IntEnum):
 ### Models
 
 class Communication(Root):
-    pass
+    'Definition, implementation, metadata and formats of information transfer'

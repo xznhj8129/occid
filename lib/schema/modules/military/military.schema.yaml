@@ -1,6 +1,6 @@
 version: 1
 type: module
-name: military
+package: military
 description: "Military-specific OCCID extensions."
 tags:
   - military

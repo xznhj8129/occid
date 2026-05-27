@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: attributes
-description: "Fundamental characteristics, type, form"
+package: attributes
+root: Attributes
 tags:
   - core
-root: properties
 
 enums:
   ClassificationLevel:
@@ -16,6 +15,7 @@ enums:
 
 models:
   Attributes:
+    description: "Fundamental characteristics, type, form"
     parent: Properties
 
   MetadataValue:

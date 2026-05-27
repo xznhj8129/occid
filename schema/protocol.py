@@ -22,7 +22,7 @@ class ProtocolPayloadFormat(IntEnum):
 ### Models
 
 class Protocol(Transport):
-    pass
+    'Format and standard of messages'
 
 class ProtocolPayload(Protocol):
     format: ProtocolPayloadFormat

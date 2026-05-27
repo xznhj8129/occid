@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: network
-description: "Graph topology of information flow"
+package: network
+root: Network
 tags:
   - core
-root: transport
 
 enums:
   AddressKind:
@@ -16,6 +15,7 @@ enums:
 
 models:
   Network:
+    description: "Graph topology of information flow"
     parent: Transport
 
   RouteHint:

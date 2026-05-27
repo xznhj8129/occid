@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Assignment(State):
-    pass
+    'Assignments, tasks, plans, missions, stages'
 
 class TaskDelta(Assignment):
     task_id: str

@@ -1,13 +1,13 @@
 version: 1
 type: schema
-name: relationship
-description: "Nature of relations, ownership, provenance, link"
+package: relationship
+root: Relationship
 tags:
   - core
-root: properties
 
 models:
   Relationship:
+    description: "Nature of relations, ownership, provenance, link"
     parent: Properties
 
   RelationSchema:

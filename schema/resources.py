@@ -23,7 +23,7 @@ class PowerType(IntEnum):
 ### Models
 
 class Resources(State):
-    pass
+    'How much of something something has; power, fuel, food, etc'
 
 class FuelState(Resources):
     fuel_type: FuelType

@@ -90,7 +90,7 @@ class SemanticType_type(IntEnum):
 ### Models
 
 class Definition(Root):
-    pass
+    'Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.'
 
 class Frame(Definition):
     pass

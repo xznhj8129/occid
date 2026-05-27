@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Lifecycle(State):
-    pass
+    'Current stage in existence or execution'
 
 class TaskStatusEntry(Lifecycle):
     ts: float

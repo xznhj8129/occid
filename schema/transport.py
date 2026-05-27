@@ -14,7 +14,7 @@ class Transport_type(IntEnum):
 ### Models
 
 class Transport(Communication):
-    pass
+    'The form of information flow'
 
 class RetryProfile(Transport):
     max_attempts: int = 0

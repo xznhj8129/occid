@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: feed
-description: "Information pipe"
+package: feed
+root: Feed
 tags:
   - core
-root: communication
 
 enums:
   LinkCondition:
@@ -49,6 +48,7 @@ enums:
 
 models:
   Feed:
+    description: "Information pipe"
     parent: Communication
     variants:
       - Link
@@ -105,7 +105,7 @@ models:
       user_capacity: optional LinkCapacity
       network_id: optional string
       primary_address: optional NetworkAddress
-      addresses: list[NetworkAddress]
+      addresses: optional list[NetworkAddress]
       endpoints: list[LinkEndpoint]
       radio: optional RadioProfile
       condition: optional LinkCondition

@@ -15,7 +15,7 @@ class Intel_type(IntEnum):
 ### Models
 
 class Intel(Information):
-    pass
+    'Effect-side data that something happened or changed external to the sender object'
 
 class Classification(Intel):
     pass

@@ -1,10 +1,9 @@
 version: 1
 type: schema
-name: interface
-description: "The translation of an action into the terms of the executing layer"
+package: interface
+root: Interface
 tags:
   - core
-root: control
 
 enums:
   ControlLevel:
@@ -15,6 +14,7 @@ enums:
 
 models:
   Interface:
+    description: "The translation of an action into the terms of the executing layer"
     parent: Control
 
   RemoteControlSchema:

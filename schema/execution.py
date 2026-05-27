@@ -17,7 +17,7 @@ class PlannedUnitMission_type(IntEnum):
 ### Models
 
 class Execution(Control):
-    pass
+    'How directed activity is structured and carried out'
 
 class Plan(Execution):
     pass

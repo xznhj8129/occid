@@ -7,7 +7,7 @@ from .properties import Properties
 ### Models
 
 class Relationship(Properties):
-    pass
+    'Nature of relations, ownership, provenance, link'
 
 class RelationSchema(Relationship):
     src_id: str

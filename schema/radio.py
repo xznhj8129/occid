@@ -53,7 +53,7 @@ class RadioProfile_type(IntEnum):
 ### Models
 
 class Radio(Carrier):
-    pass
+    'What are messages transmitted over'
 
 class FrequencyRange(Radio):
     low_mhz: float | None = None

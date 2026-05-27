@@ -15,7 +15,7 @@ class Properties_type(IntEnum):
 ### Models
 
 class Properties(Information):
-    pass
+    'A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition'
 
 class FeaturePropertyValue(Properties):
     text_value: str | None = None
