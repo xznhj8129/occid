@@ -5,46 +5,10 @@ root: State
 tags:
   - core
 
-enums:
-  AirMissionPhase:
-    - ONLINE = 0
-    - PREPARING
-    - TAKEOFF
-    - ASSEMBLY
-    - HOLDING
-    - ENROUTE
-    - INITIAL
-    - OBJECTIVE
-    - EGRESS
-    - RETURN
-    - APPROACH
-    - LANDING
-    - SHUTDOWN
-
-  AirMissionEvent:
-    - ONLINE = 0
-    - PREPARED
-    - LOADED
-    - READY_TAKEOFF
-    - TAKEOFF_COMPLETE
-    - ASSEMBLY
-    - ENROUTE
-    - HOLDING
-    - ACTING
-    - PROCEEDING
-    - RESUMING
-    - BINGO
-    - RTB
-    - LANDING
-    - LANDED
-    - SHUTDOWN
-    - ABORTING
-    - FAILING
-
 models:
   State:
-    description: "Telemetric, changing data describing the own state or condition of an object at a given time"
-    parent: Information
+    description: Changing condition of an object, node, link, task, system, or process
+    parent: Data
     variants:
       - Kinematic
       - Internal
@@ -56,17 +20,3 @@ models:
       - Condition
       - Lifecycle
       - Assignment
-
-  Kinematic:
-    parent: State
-
-  TelemetryState:
-    parent: State
-    fields:
-      flight_mode: optional FlightMode
-      flight_phase: optional FlightPhase
-      mission_phase: optional AirMissionPhase
-      attitude: optional EulerAngles
-      velocity: optional VelocityVector
-      battery_pct: optional float
-      link_rssi: optional float

@@ -7,7 +7,7 @@ tags:
 
 models:
   Telemetry:
-    description: "Communication about the sender's own internal state or process"
+    description: Message whose payload reports sender or asset state
     parent: Message
 
   CapabilityAdvert:
@@ -40,33 +40,3 @@ models:
       error: string
       source_address: optional NetworkAddress
       payload: optional ProtocolPayload
-
-  MeshReceiveMetrics:
-    parent: Telemetry
-    fields:
-      snr: optional float
-      rssi: optional float
-      hop_limit: optional int
-      rx_time: optional float
-
-  MeshPositionSample:
-    parent: Telemetry
-    fields:
-      position: GlobalPosition
-      position_ts: optional float
-      pdop: optional float
-      ground_speed: optional float
-      ground_track: optional float
-      sats_in_view: optional int
-
-  NodeHeartbeat:
-    parent: Telemetry
-    fields:
-      node_id: string
-      last_seen_ts: float
-      node_state: optional MeshNodeState
-      rssi: optional float
-      snr: optional float
-      hop_limit: optional int
-      link_condition: optional LinkCondition
-      connection_status: optional ConnectionStatus

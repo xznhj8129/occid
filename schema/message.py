@@ -2,14 +2,54 @@
 from __future__ import annotations
 from .common import *
 
-from .communication import AckMode, Communication, MessagePriority, QosTier, RouteMode
+from .communication import Communication
 
 ### Enums
 
-class MeshtasticPort(IntEnum):
-    TEXT_MESSAGE = 0
-    POSITION = auto()
-    PRIVATE = auto()
+class DeliveryState(IntEnum):
+    QUEUED = 0
+    SENT = auto()
+    RECEIVED = auto()
+    ACKED = auto()
+    NACKED = auto()
+    EXECUTED = auto()
+    EXPIRED = auto()
+    DROPPED = auto()
+
+class ReplyAck(IntEnum):
+    ACK = 0
+    RECEIVED = auto()
+    WILCO = auto()
+
+class AckMode(IntEnum):
+    NONE = 0
+    RECEIPT = auto()
+    EXECUTION = auto()
+    BOTH = auto()
+
+class QosTier(IntEnum):
+    BULK = 0
+    ROUTINE = auto()
+    URGENT = auto()
+    CRITICAL = auto()
+
+class MessagePriority(IntEnum):
+    ROUTINE = 0
+    PRIORITY = auto()
+    IMMEDIATE = auto()
+    FLASH = auto()
+
+class RouteMode(IntEnum):
+    DIRECT = 0
+    RELAY = auto()
+    STORE_FORWARD = auto()
+    FLOOD = auto()
+
+class ConflictPolicy(IntEnum):
+    LAST_WRITE = 0
+    AUTHORITY_WINS = auto()
+    VECTOR_CLOCK = auto()
+    MANUAL = auto()
 
 class Message_type(IntEnum):
     C3 = 0
@@ -20,7 +60,19 @@ class Message_type(IntEnum):
 ### Models
 
 class Message(Communication):
-    'Discrete typed envelope for feed data'
+    'Transmitted envelope plus payload'
+
+class RetryProfile(OCCIDModel):
+    max_attempts: int = 0
+    base_delay_ms: int = 0
+    backoff_factor: float = 1.0
+    jitter_pct: float = 0.0
+
+class RouteHint(OCCIDModel):
+    next_hop: str | None = None
+    hop_limit: int | None = None
+    preferred_relays: list[NodeRef]
+    avoid_nodes: list[NodeRef]
 
 class MessageEnvelope(Message):
     msg_id: str
@@ -42,14 +94,3 @@ class MessageTarget(Message):
     target_type: str | None = None
     callsign: str | None = None
     address: NetworkAddress | None = None
-
-class MeshtasticMessage(Message):
-    sender_id: str
-    sender_name: str | None = None
-    destination_id: str
-    port: MeshtasticPort | None = None
-    private_port_num: int | None = None
-    text: str | None = None
-    payload: bytes | None = None
-    position: MeshPositionSample | None = None
-    metrics: MeshReceiveMetrics | None = None

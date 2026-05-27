@@ -7,7 +7,7 @@ tags:
 
 models:
   Input:
-    description: "Current operator / receiver input state and control mapping"
+    description: Current operator or receiver input state and control mapping.
     parent: State
 
   ControlAxisSet:

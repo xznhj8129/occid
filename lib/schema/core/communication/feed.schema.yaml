@@ -48,16 +48,18 @@ enums:
 
 models:
   Feed:
-    description: "Information pipe"
+    description: Information pipe
     parent: Communication
     variants:
       - Link
       - Stream
 
   Link:
+    description: Discrete packet or message path with endpoints, addresses, capacity, condition, and status
     parent: Feed
 
   Stream:
+    description: Continuous or ordered data flow such as telemetry, media, sensor samples, or raw bytes
     parent: Feed
 
   BandwidthSpec:
@@ -110,14 +112,3 @@ models:
       radio: optional RadioProfile
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
-
-  MeshLink:
-    parent: Link
-    fields:
-      src_id: string
-      dst_id: string
-      condition: LinkCondition
-      connection_status: optional ConnectionStatus
-      latency_ms: optional float
-      packet_loss: optional float
-      updated_ts: optional float

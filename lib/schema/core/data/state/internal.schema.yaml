@@ -7,7 +7,7 @@ tags:
 
 models:
   Internal:
-    description: "Diagnostic internals of a machine or system (CPU, memory, cycles, firmware, connectivity)"
+    description: Diagnostic internals of a machine or system.
     parent: State
 
   FirmwareInfo:

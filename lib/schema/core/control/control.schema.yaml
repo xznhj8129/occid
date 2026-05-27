@@ -5,14 +5,144 @@ root: Control
 tags:
   - core
 
+enums:
+  Capability:
+    - NONE = 0
+    - LOGISTICS_SUPPLY
+    - COMMUNICATIONS
+    - FUEL
+    - RESCUE
+
+  TaskType:
+    - POSITIONING = 0
+    - CARGO
+    - HOLD
+    - SUPPORT
+    - MOVE
+    - RESUPPLY
+
+  TaskPhase:
+    - CREATED = 0
+    - DISPATCHED
+    - ASSIGNED
+    - RUNNING
+    - DONE_OK
+    - DONE_FAIL
+    - CANCELLED
+
+  TaskPriority:
+    - ROUTINE = 0
+    - HIGH
+    - IMMEDIATE
+
+  TaskStatus:
+    - NEW = 0
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+
+  TaskAssignFail:
+    - FAIL = 0
+    - FAIL_NO_ASSETS
+    - FAIL_BAD_REQUEST_CANTPRO
+    - FAIL_DENIED
+    - FAIL_INSUFFICIENT_INFO
+    - FAIL_REJECTED
+    - FAIL_C2_ELEMENT
+    - FAIL_PLATFORM_CANTCO
+    - FAIL_STALE
+    - FAIL_CANCELLED
+
+  CommandResult:
+    - ACCEPTED = 0
+    - TEMPORARILY_REJECTED
+    - DENIED
+    - UNSUPPORTED
+    - FAILED
+    - IN_PROGRESS
+    - CANCELLED
+
+  FlightCommandType:
+    - ARM = 0
+    - DISARM
+    - TAKEOFF
+    - LAND
+    - RETURN_TO_LAUNCH
+    - SET_MODE
+    - GOTO
+    - SET_TAKEOFF_ALTITUDE
+    - SELECT_MISSION
+    - START_OFFBOARD
+    - STOP_OFFBOARD
+
+  TaskAir:
+    - FLY = 0
+    - AIR_DROP
+    - RECOVERY
+
+  AirMissionType:
+    - SURVEY = 0
+    - SEARCH
+    - DELIVERY
+
+  AirMoveTask:
+    - FLY = 0
+    - RELOCATION
+
+  PlannerPointType:
+    - HOME = 0
+    - TAKEOFF
+    - LANDING
+    - HOLD
+    - WAYPOINT
+    - ASSEMBLY
+    - POI
+    - ROI
+    - SURVEY
+
+  PlannerPointCategory:
+    - ROUTE_IN = 0
+    - SURVEY
+    - SURVEY_AREA
+    - ROUTE_OUT
+
+  AirGroupFormation3DType:
+    - NONE = 0
+    - BOX
+    - SEP_2D_PER_FL
+    - SEP_2D_SPACED
+
+  AirGroupFormation2DType:
+    - NONE = 0
+    - LINE
+    - ECHELON
+    - TRAIL
+    - SQUARE
+    - DIAMOND
+    - VEE
+    - HEAVY_LEFT
+    - HEAVY_RIGHT
+    - ECHELON_LEFT
+    - ECHELON_RIGHT
+    - STAGG_TRAIL_LEFT
+    - STAGG_TRAIL_RIGHT
+
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
 models:
   Control:
-    description: "Scale-invariant; the binding of agents to objectives through structured decomposition"
+    description: Desired outcomes and directed work
     parent: Root
     variants:
-      - Reasoning
+      - Objective
       - Directive
-      - Execution
+      - Plan
       - Reference
       - Constraint
       - Interface

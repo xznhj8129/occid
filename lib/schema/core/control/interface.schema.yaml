@@ -5,33 +5,10 @@ root: Interface
 tags:
   - core
 
-enums:
-  ControlLevel:
-    - NONE = 0
-    - MONITOR
-    - GUIDE
-    - FULL
-
 models:
   Interface:
-    description: "The translation of an action into the terms of the executing layer"
+    description: Control surface, lease, operator input, remote-control mapping, or executor-facing command interface
     parent: Control
-
-  RemoteControlSchema:
-    parent: Interface
-    fields:
-      links: map[string, LinkSchema]
-      rc_link: string = ""
-      vid_link: string = ""
-      ctrl_video_sep: optional bool
-      telemetry: optional TelemetryState
-      rc_telemetry: optional ControlAxisSet
-      control_input: optional ControlAxisSet
-      control_output: optional ControlAxisSet
-      control_override: optional ControlOverride
-      receiver_config: optional ReceiverConfig
-      channel_map: list[ChannelMapEntry]
-      mode_ranges: list[ModeRange]
 
   ControlLease:
     parent: Interface

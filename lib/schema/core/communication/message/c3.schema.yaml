@@ -7,7 +7,7 @@ tags:
 
 models:
   C3:
-    description: "Communication whose purpose is to direct, command or control"
+    description: Message whose payload directs action
     parent: Message
 
   HumanTextMessage:

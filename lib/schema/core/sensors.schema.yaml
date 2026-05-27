@@ -1,0 +1,99 @@
+version: 1
+type: schema
+package: sensors
+root: Sensor
+tags:
+  - core
+  
+
+enums:
+  SensorType:
+    - EO = 0
+    - EO_MULTISPECTRAL
+    - RADAR
+    - ELINT
+    - LIDAR
+
+  SensorSpectrum:
+    - VISUAL = 0
+    - SWIR
+    - MWIR
+    - LWIR
+    - RF
+    - UV
+
+  SensorErrorType:
+    - CEP = 0
+    - RMS
+
+  SensorMode:
+    - OFF = 0
+    - LOOK
+    - SCAN
+    - TRACK
+
+  SensorRunState:
+    - OFFLINE = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+
+  SensorDataFormat:
+    - TEXT = 0
+    - STILL_IMAGE
+    - VIDEO
+    - TRACK
+    - RANGE
+    - POINT_CLOUD
+
+  SensorAICapability:
+    - DETECTION = 0
+    - TRACKING
+    - CLASSIFICATION
+    - IDENTIFICATION
+    - OCR
+    - CHANGE_DETECTION
+
+  SensorFrustumShape:
+    - CONICAL = 0
+    - RECTANGULAR
+    - ELLIPTICAL
+    - SECTOR
+
+  GimbalState:
+    - STOWED = 0
+    - STABILIZED
+    - SCANNING
+    - TRACKING
+
+models:
+
+  Sensor:
+    description: Onboard sensor readings, readiness, calibration, and availability
+    parent: State
+
+  MeasurementQuality:
+    parent: Sensor
+    fields:
+      lat_err_m: optional float
+      az_err_deg: optional float
+      range_err_m: optional float
+
+  ImuSample:
+    parent: Sensor
+    fields:
+      acceleration: optional LocalVector
+      angular_velocity: optional AngularVelocityVector
+      magnetic_field: optional LocalVector
+      temperature_deg_c: optional float
+      timestamp_us: optional int
+      frame: optional BodyReferenceFrame
+
+  TrackerState:
+    parent: Sensor
+    fields:
+      locked: optional bool
+      target_id: optional string
+      angular_error: optional LocalDirection
+      search_box_size: optional int
+      detections: optional VisionDetectionFrame

@@ -23,6 +23,7 @@ SCHEMA_DIR = SCRIPT_DIR / "lib" / "schema" / "core"
 MODULE_DIR = SCRIPT_DIR / "lib" / "schema" / "modules"
 DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "schema"
 TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
+CORE_SCHEMA_MAX_PARTS = 3
 
 PRIMITIVE_TYPES = {
     "string": "str",
@@ -423,6 +424,9 @@ def load_schema_documents(schema_dir: Path) -> list[ModuleDef]:
     modules: list[ModuleDef] = []
     schema_names: set[str] = set()
     for path in sorted(schema_dir.rglob("*.schema.yaml")):
+        relative_parts = path.relative_to(schema_dir).parts
+        if len(relative_parts) > CORE_SCHEMA_MAX_PARTS:
+            raise SchemaError(f"core schema files are nested too deeply: {path}")
         module, data = parse_document(path)
         if module.doc_type != "schema":
             raise SchemaError(f"type must be schema in core schema dir: {path}")
@@ -905,6 +909,23 @@ def render_module(module: ModuleDef, symbol_index: dict[str, str], enum_members:
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
 
+def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[str]]) -> str:
+    sections = []
+    variant_models = [model_def for model_def in module.models if model_def.variants]
+    if module.enums or variant_models:
+        sections.append("### Schema Enums")
+        enum_blocks = [render_enum_block(enum_def) for enum_def in module.enums]
+        enum_blocks.extend(render_variant_enum_block(model_def) for model_def in variant_models)
+        sections.append("\n\n".join(enum_blocks))
+    if module.maps:
+        sections.append("### Schema Mappings")
+        sections.append("\n\n".join(render_mapping_block(mapping_def, enum_members) for mapping_def in module.maps))
+    if module.models:
+        sections.append("### Schema Models")
+        sections.append("\n\n".join(render_model_block(model_def, enum_members) for model_def in module.models))
+    return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
+
+
 def module_dependency_graph(
     modules: list[ModuleDef], symbol_index: dict[str, str], enum_members: dict[str, set[str]]
 ) -> dict[str, set[str]]:
@@ -943,7 +964,7 @@ def topo_sort_modules(modules: list[ModuleDef], graph: dict[str, set[str]]) -> l
 
 def render_init(module_names: list[str]) -> str:
     lines = ["from .common import *"]
-    lines.extend(f"from .{name} import *" for name in module_names)
+    lines.extend(f"from .{name} import *" for name in module_names if name != "common")
     lines.extend(
         [
             "",
@@ -964,9 +985,14 @@ def write_package(output_dir: Path, modules: list[ModuleDef], symbol_index: dict
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
-    (output_dir / "common.py").write_text(render_common_runtime())
+    common_sections = [render_common_runtime().rstrip()]
+    if "common" in module_map:
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members))
+    (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
+        if module_name == "common":
+            continue
         module = module_map[module_name]
         (output_dir / f"{module_name}.py").write_text(render_module(module, symbol_index, enum_members))
 

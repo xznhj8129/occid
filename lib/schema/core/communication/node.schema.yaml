@@ -6,32 +6,20 @@ tags:
   - core
 
 enums:
-  MeshNodeState:
-    - UNKNOWN = 0
-    - ACTIVE
-    - DEGRADED
-    - LOST
+  CapabilityRole:
+    - CONTROLLER = 0
+    - RELAY
+    - SENSOR
+    - EFFECTOR
+    - GATEWAY
+    - RECORDER
 
 models:
   Node:
-    description: "Endpoint that transmits or receives messages"
+    description: Endpoint that sends, receives, relays, records, controls, or bridges messages
     parent: Communication
 
   NodeRef:
     parent: Node
     fields:
       node_id: string
-
-  MeshNode:
-    parent: Node
-    fields:
-      node_id: string
-      state: optional MeshNodeState
-      last_seen_ts: optional float
-      position: optional GlobalPosition
-      rssi: optional float
-      snr: optional float
-      hop_limit: optional int
-      link_condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
-      roles: list[CapabilityRole]

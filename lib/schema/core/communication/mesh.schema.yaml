@@ -1,0 +1,96 @@
+version: 1
+type: schema
+package: mesh
+root: MeshView
+tags:
+  - core
+
+enums:
+  MeshNodeState:
+    - UNKNOWN = 0
+    - ACTIVE
+    - DEGRADED
+    - LOST
+
+  MeshtasticPort:
+    - TEXT_MESSAGE = 0
+    - POSITION
+    - PRIVATE
+
+models:
+  MeshLink:
+    parent: Link
+    fields:
+      src_id: string
+      dst_id: string
+      condition: LinkCondition
+      connection_status: optional ConnectionStatus
+      latency_ms: optional float
+      packet_loss: optional float
+      updated_ts: optional float
+
+  MeshNode:
+    parent: Node
+    fields:
+      node_id: string
+      state: optional MeshNodeState
+      last_seen_ts: optional float
+      position: optional GlobalPosition
+      rssi: optional float
+      snr: optional float
+      hop_limit: optional int
+      link_condition: optional LinkCondition
+      connection_status: optional ConnectionStatus
+      roles: list[CapabilityRole]
+
+  MeshView:
+    description: Current observed mesh topology and node/link state
+    parent: Network
+    fields:
+      epoch: int = 0
+      nodes: map[string, MeshNode]
+      links: list[MeshLink]
+      partition_id: optional string
+
+  MeshtasticMessage:
+    parent: Message
+    fields:
+      sender_id: string
+      sender_name: optional string
+      destination_id: string
+      port: optional MeshtasticPort
+      private_port_num: optional int
+      text: optional string
+      payload: optional bytes
+      position: optional MeshPositionSample
+      metrics: optional MeshReceiveMetrics
+
+  MeshReceiveMetrics:
+    parent: Telemetry
+    fields:
+      snr: optional float
+      rssi: optional float
+      hop_limit: optional int
+      rx_time: optional float
+
+  MeshPositionSample:
+    parent: Telemetry
+    fields:
+      position: GlobalPosition
+      position_ts: optional float
+      pdop: optional float
+      ground_speed: optional float
+      ground_track: optional float
+      sats_in_view: optional int
+
+  NodeHeartbeat:
+    parent: Telemetry
+    fields:
+      node_id: string
+      last_seen_ts: float
+      node_state: optional MeshNodeState
+      rssi: optional float
+      snr: optional float
+      hop_limit: optional int
+      link_condition: optional LinkCondition
+      connection_status: optional ConnectionStatus

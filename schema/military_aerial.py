@@ -2,8 +2,8 @@
 from __future__ import annotations
 from .common import *
 
-from .execution import PlannedUnitMission
-from .guidance import AirNavigationSchema
+from .aerial import AirNavigationSchema
+from .plan import PlannedUnitMission
 from .reference import MissionPoi
 
 ### Enums

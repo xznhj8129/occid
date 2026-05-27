@@ -1,0 +1,40 @@
+version: 1
+type: schema
+package: network
+root: Network
+tags:
+  - core
+
+enums:
+  AddressKind:
+    - IPV4 = 0
+    - IPV6
+    - MAC
+    - CALLSIGN
+    - URI
+
+models:
+  Transport:
+    description: The form of information flow
+    parent: Communication
+    variants:
+      - Network
+      - Carrier
+      - Protocol
+
+  Network:
+    description: Connectivity topology and routing state
+    parent: Transport
+
+  NetworkAddress:
+    parent: Network
+    fields:
+      kind: AddressKind
+      value: string
+      port: optional int
+
+  Carrier:
+    description: What messages are transmitted over
+    parent: Transport
+    variants:
+      - Radio

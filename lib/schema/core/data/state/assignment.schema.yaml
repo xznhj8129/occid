@@ -7,7 +7,7 @@ tags:
 
 models:
   Assignment:
-    description: "Assignments, tasks, plans, missions, stages"
+    description: Current task, owner, control lease, objective binding, dispatch state, phase, and status log.
     parent: State
 
   TaskDelta:

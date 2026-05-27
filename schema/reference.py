@@ -6,44 +6,6 @@ from .control import Control
 
 ### Enums
 
-class PlannerPointType(IntEnum):
-    HOME = 0
-    TAKEOFF = auto()
-    LANDING = auto()
-    HOLD = auto()
-    WAYPOINT = auto()
-    ASSEMBLY = auto()
-    POI = auto()
-    ROI = auto()
-    SURVEY = auto()
-
-class PlannerPointCategory(IntEnum):
-    ROUTE_IN = 0
-    SURVEY = auto()
-    SURVEY_AREA = auto()
-    ROUTE_OUT = auto()
-
-class AirGroupFormation3DType(IntEnum):
-    NONE = 0
-    BOX = auto()
-    SEP_2D_PER_FL = auto()
-    SEP_2D_SPACED = auto()
-
-class AirGroupFormation2DType(IntEnum):
-    NONE = 0
-    LINE = auto()
-    ECHELON = auto()
-    TRAIL = auto()
-    SQUARE = auto()
-    DIAMOND = auto()
-    VEE = auto()
-    HEAVY_LEFT = auto()
-    HEAVY_RIGHT = auto()
-    ECHELON_LEFT = auto()
-    ECHELON_RIGHT = auto()
-    STAGG_TRAIL_LEFT = auto()
-    STAGG_TRAIL_RIGHT = auto()
-
 class Reference_type(IntEnum):
     MARK = 0
     PATH = auto()
@@ -56,7 +18,7 @@ class MissionPoi_type(IntEnum):
 ### Models
 
 class Reference(Control):
-    'Control-side structural wrapper binding spatial definitions and structs into control-usable referents'
+    'Control-side referent such as mark, path, region, boundary, target, waypoint, route, or area'
 
 class Mark(Reference):
     pass

@@ -3,7 +3,6 @@ from __future__ import annotations
 from .common import *
 
 from .communication import Communication
-from .definition import SchemaKind
 
 ### Enums
 
@@ -57,10 +56,10 @@ class Feed(Communication):
     'Information pipe'
 
 class Link(Feed):
-    pass
+    'Discrete packet or message path with endpoints, addresses, capacity, condition, and status'
 
 class Stream(Feed):
-    pass
+    'Continuous or ordered data flow such as telemetry, media, sensor samples, or raw bytes'
 
 class BandwidthSpec(Link):
     mhz: float | None = None
@@ -97,17 +96,8 @@ class LinkSchema(Link):
     user_capacity: LinkCapacity | None = None
     network_id: str | None = None
     primary_address: NetworkAddress | None = None
-    addresses: list[NetworkAddress]
+    addresses: list[NetworkAddress] | None = None
     endpoints: list[LinkEndpoint]
     radio: RadioProfile | None = None
     condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
-
-class MeshLink(Link):
-    src_id: str
-    dst_id: str
-    condition: LinkCondition
-    connection_status: ConnectionStatus | None = None
-    latency_ms: float | None = None
-    packet_loss: float | None = None
-    updated_ts: float | None = None

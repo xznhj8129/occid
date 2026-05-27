@@ -7,7 +7,7 @@ tags:
 
 models:
   Constraint:
-    description: "A boundary, limitation, or rule restricting permissible action"
+    description: Limit, rule, condition, or time/resource bound applied to directed work
     parent: Control
     variants:
       - Restriction
@@ -28,15 +28,3 @@ models:
     fields:
       earliest_start: optional float
       latest_finish: optional float
-
-  WeatherLimits:
-    parent: Constraint
-    fields:
-      ifr: optional bool
-      night: optional bool
-      rain: optional NumericRange
-      snow: optional NumericRange
-      temp: optional NumericRange
-      wind: optional NumericRange
-      vis: optional NumericRange
-      icing: optional bool

@@ -7,7 +7,7 @@ from .message import Message
 ### Models
 
 class C3(Message):
-    'Communication whose purpose is to direct, command or control'
+    'Message whose payload directs action'
 
 class HumanTextMessage(C3):
     sender_id: str | None = None

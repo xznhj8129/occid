@@ -1,0 +1,23 @@
+version: 1
+type: schema
+package: lifecycle
+root: Lifecycle
+tags:
+  - core
+
+models:
+  Lifecycle:
+    description: Current stage in existence or execution.
+    parent: State
+
+  TaskStatusEntry:
+    parent: Lifecycle
+    fields:
+      ts: float
+      status: TaskStatus
+      command_result: optional CommandResult
+      reply_ack: optional ReplyAck
+      assign_fail: optional TaskAssignFail
+      phase: optional TaskPhase
+      detail: optional string
+      source: optional string

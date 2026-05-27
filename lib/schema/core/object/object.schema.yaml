@@ -1,0 +1,126 @@
+version: 1
+type: schema
+package: object
+root: Object
+tags:
+  - core
+
+enums:
+  ObjectType:
+    - ENTITY = 0
+    - ORGANIZATION
+
+models:
+  Object:
+    description: Atoms
+    parent: Root
+    variants:
+      - Entity
+      - Set
+      - Item
+      - World
+    fields:
+      object_type: ObjectType
+
+  Set:
+    parent: Object
+    variants:
+      - Organization
+      - Collection
+      - Cluster
+      - System
+
+  Collection:
+    parent: Set
+
+  Cluster:
+    parent: Set
+
+  System:
+    parent: Set
+
+  Item:
+    description: A discrete bounded non-agent object
+    parent: Object
+    variants:
+      - Record
+      - Equipment
+      - Component
+      - Payload
+
+  Record:
+    parent: Item
+
+  Equipment:
+    parent: Item
+
+  Component:
+    parent: Item
+
+  Payload:
+    parent: Item
+
+  SensorSchema:
+    parent: Payload
+    fields:
+      name: string
+      model: string
+      type: SensorType
+      serial_uid: string = ""
+      effect_domain: EffectDomain
+      max_range: float
+      ptz: bool
+      spectrum: SensorSpectrum
+      night_vision: bool
+      all_weather: bool
+      weather_limits: WeatherLimits
+      error_margin: float
+      error_type: SensorErrorType
+      data_formats: list[SensorDataFormat]
+      ai: list[SensorAICapability]
+      datalink: string
+      field_of_view: optional SensorFieldOfView
+      zoom_range: optional NumericRange
+      run_state: optional SensorRunState
+      mode: optional SensorMode
+      sensor_family: optional string
+      frustum_shape: optional SensorFrustumShape
+      field_of_regard: optional SensorFieldOfView
+      gimbal_state: optional GimbalState
+      freq_span: optional NumericRange
+      chan_bw: optional float
+      emit_profile: optional string
+      quality_hint: optional MeasurementQuality
+
+  World:
+    description: ''
+    parent: Object
+    variants:
+      - Feature
+      - Location
+      - Site
+
+  Feature:
+    parent: World
+
+  Location:
+    parent: World
+
+  Site:
+    parent: World
+
+  GeoJsonFeature:
+    parent: Feature
+    fields:
+      type: const string = "Feature"
+      geometry: GeoJsonGeometry
+      properties: list[FeatureProperty]
+      id: optional (string | int)
+      bbox: optional BoundingBox
+
+  GeoJsonFeatureCollection:
+    parent: Collection
+    fields:
+      type: const string = "FeatureCollection"
+      features: list[GeoJsonFeature]
+      bbox: optional BoundingBox

@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .information import Information
+from .data import Data
 
 ### Enums
 
@@ -12,8 +12,8 @@ class Event_type(IntEnum):
 
 ### Models
 
-class Event(Information):
-    'A discrete occurrence — something that happened at a point in time, whether planned or not'
+class Event(Data):
+    'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
 
 class FlightEvent(Event):
     pass

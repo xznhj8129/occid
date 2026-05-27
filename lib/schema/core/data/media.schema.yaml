@@ -1,0 +1,22 @@
+version: 1
+type: schema
+package: media
+root: Media
+tags:
+  - core
+
+models:
+  Media:
+    description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference
+    parent: Data
+
+  MediaItemSchema:
+    parent: Media
+    fields:
+      media_id: string
+      media_type: MediaType
+      uri: string
+      label: optional string
+      created_ts: optional float
+      size_bytes: optional int
+      content_type: optional string

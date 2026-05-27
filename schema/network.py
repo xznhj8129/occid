@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .transport import Transport
+from .communication import Communication
 
 ### Enums
 
@@ -13,24 +13,26 @@ class AddressKind(IntEnum):
     CALLSIGN = auto()
     URI = auto()
 
+class Transport_type(IntEnum):
+    NETWORK = 0
+    CARRIER = auto()
+    PROTOCOL = auto()
+
+class Carrier_type(IntEnum):
+    RADIO = 0
+
 ### Models
 
-class Network(Transport):
-    'Graph topology of information flow'
+class Transport(Communication):
+    'The form of information flow'
 
-class RouteHint(Network):
-    next_hop: str | None = None
-    hop_limit: int | None = None
-    preferred_relays: list[NodeRef]
-    avoid_nodes: list[NodeRef]
+class Network(Transport):
+    'Connectivity topology and routing state'
 
 class NetworkAddress(Network):
     kind: AddressKind
     value: str
     port: int | None = None
 
-class MeshView(Network):
-    epoch: int = 0
-    nodes: dict[str, MeshNode]
-    links: list[MeshLink]
-    partition_id: str | None = None
+class Carrier(Transport):
+    'What messages are transmitted over'

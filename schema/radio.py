@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .carrier import Carrier
+from .network import Carrier
 
 ### Enums
 
@@ -53,7 +53,7 @@ class RadioProfile_type(IntEnum):
 ### Models
 
 class Radio(Carrier):
-    'What are messages transmitted over'
+    'What messages are transmitted over'
 
 class FrequencyRange(Radio):
     low_mhz: float | None = None

@@ -4,26 +4,10 @@ from .common import *
 
 from .state import State
 
-### Enums
-
-class PowerStatus(IntEnum):
-    UNKNOWN = 0
-    NOT_PRESENT = auto()
-    OPERATING = auto()
-    DISABLED = auto()
-    ERROR = auto()
-
-class PowerType(IntEnum):
-    UNKNOWN = 0
-    GAS = auto()
-    BATTERY = auto()
-    SOLAR = auto()
-    NUCLEAR = auto()
-
 ### Models
 
 class Resources(State):
-    'How much of something something has; power, fuel, food, etc'
+    'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
 
 class FuelState(Resources):
     fuel_type: FuelType

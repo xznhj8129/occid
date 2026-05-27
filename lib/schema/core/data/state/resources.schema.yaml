@@ -5,24 +5,9 @@ root: Resources
 tags:
   - core
 
-enums:
-  PowerStatus:
-    - UNKNOWN = 0
-    - NOT_PRESENT
-    - OPERATING
-    - DISABLED
-    - ERROR
-
-  PowerType:
-    - UNKNOWN = 0
-    - GAS
-    - BATTERY
-    - SOLAR
-    - NUCLEAR
-
 models:
   Resources:
-    description: "How much of something something has; power, fuel, food, etc"
+    description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
     parent: State
 
   FuelState:

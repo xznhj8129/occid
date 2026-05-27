@@ -7,7 +7,7 @@ from .state import State
 ### Models
 
 class Assignment(State):
-    'Assignments, tasks, plans, missions, stages'
+    'Current task, owner, control lease, objective binding, dispatch state, phase, and status log.'
 
 class TaskDelta(Assignment):
     task_id: str

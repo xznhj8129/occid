@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .entity import AirMachine, GroundMachine, Machine, Person
+from .entities import AirMachine, GroundMachine, Machine, Person
 
 ### Models
 

@@ -7,7 +7,7 @@ tags:
 
 models:
   Response:
-    description: "Communication whose purpose is acknowledgment, acceptance, rejection, result, or completion notice"
+    description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
     parent: Message
 
   DeliveryReceipt:

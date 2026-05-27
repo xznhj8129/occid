@@ -1,0 +1,48 @@
+version: 1
+type: schema
+package: plan
+root: Plan
+tags:
+  - core
+
+models:
+  Plan:
+    description: Structured execution plan, route plan, mission plan, phase plan, or unit plan
+    parent: Control
+    variants:
+      - Sequence
+      - Action
+
+  Sequence:
+    parent: Plan
+
+  Action:
+    parent: Plan
+
+  FlightPhasePlan:
+    parent: Sequence
+    fields:
+      phase: AirMissionPhase
+      flight_level: optional FlightLevelBand
+      alt_frame: optional AltitudeDatum
+      h_sep_m: optional float
+      delay_s: optional float
+      airspeed: optional float
+      path_offset: optional LocalDirection
+      formation_2d: optional AirGroupFormation2DType
+      formation_3d: optional AirGroupFormation3DType
+
+  PlannedUnitMission:
+    parent: Plan
+    variants: null
+    fields:
+      unit_num: int
+      callsign: string
+      fl: float
+      route_in: GeoPath
+      objective: PlannerMissionPoint
+      route_out: GeoPath
+      home: GlobalPosition
+      land_pos: GlobalPosition
+      ip_wait_delay: float = 0.0
+      wp: GeoPath

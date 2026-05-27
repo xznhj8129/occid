@@ -7,7 +7,7 @@ tags:
 
 models:
   ISR:
-    description: "Communication about external objects, events, or the environment"
+    description: Message whose payload reports external objects, events, environment, or intelligence
     parent: Message
 
   ProtocolEventMessage:

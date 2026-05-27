@@ -1,0 +1,11 @@
+version: 1
+type: schema
+package: kinematic
+root: Kinematic
+tags:
+  - core
+
+models:
+  Kinematic:
+    description: Motion and derived movement state.
+    parent: State

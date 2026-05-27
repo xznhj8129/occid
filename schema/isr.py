@@ -7,7 +7,7 @@ from .message import Message
 ### Models
 
 class ISR(Message):
-    'Communication about external objects, events, or the environment'
+    'Message whose payload reports external objects, events, environment, or intelligence'
 
 class ProtocolEventMessage(ISR):
     uid: str

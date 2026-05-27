@@ -1,0 +1,195 @@
+# OCCID ontology
+#
+# This file defines the structural buckets used by OCCID records.
+# It must not become a taxonomy of possible classes, kinds, symbols, or
+# protocol enums. Those belong in schema enums, module files, or protocol
+# mapping tables.
+#
+# Rule:
+# - ontology node = what role this data plays in the model
+# - schema enum/map = which concrete kind/code/value it has
+#
+# Examples:
+# - a CoT type code is Definition/SemanticCode data, not a new ontology branch
+# - a MAVLink/MSP/Hivelink message id is Communication/Protocol mapping data
+# - a waypoint, route, target area, or geofence is Control/Reference data
+
+Root:
+  description: Top-level OCCID record families.
+  children:
+
+    Definition:
+      description: Reference systems and mappings that give values their meaning.
+      children:
+
+        ReferenceFrame:
+          description: Frame, datum, unit, and coordinate-system definitions used by spatial, temporal, and sensor data.
+
+        SemanticCode:
+          description: Named code systems and enum dictionaries used by records.
+
+        ProtocolMapping:
+          description: Mapping between external protocol codes/messages and OCCID records.
+
+        RelationKind:
+          description: Relationship vocabulary used to connect records.
+
+    Struct:
+      description: Embedded value structs used inside records. Structs do not have operational identity by themselves.
+      children:
+
+        Measurement:
+          description: Scalar value with unit meaning.
+
+        Vector:
+          description: Ordered numeric components in a declared frame.
+
+        Position:
+          description: Global, local, or body-relative position value.
+
+        Attitude:
+          description: Orientation value.
+
+        Direction:
+          description: Bearing, azimuth, elevation, range, or look vector.
+
+        Geometry:
+          description: Point, line, path, area, volume, bounds, or external geometry payload.
+
+        Uncertainty:
+          description: Error, covariance, quality, dilution, confidence, or estimate bounds.
+
+        Time:
+          description: Timestamp, duration, interval, deadline, stale time, or validity window.
+
+        Payload:
+          description: Opaque or encoded data bytes carried by a protocol, media item, or stream.
+
+    Object:
+      description: Things with identity that can be named, tracked, owned, grouped, related, or assigned.
+      children:
+
+        Entity:
+          description: Individually tracked actor, machine, software agent, or system.
+
+        Organization:
+          description: Structured group with membership, command, ownership, or parent-child organization links.
+
+        Collection:
+          description: Named set of objects without requiring command hierarchy.
+
+        Item:
+          description: Physical or logical item that can be carried, mounted, consumed, stored, or attached.
+
+        Place:
+          description: Physical-world feature, named location, site, or bounded place.
+
+    Control:
+      description: Desired outcomes and directed work.
+      children:
+
+        Objective:
+          description: Desired end state with intent, success rule, target, priority, and deadline.
+
+        Directive:
+          description: Ordered or requested work, including missions, tasks, and immediate commands.
+
+          Mission: 
+            description: A directive to accomplish an objective; "do X to achieve Y"
+
+          Task: 
+            description: A directive to carry out part of a mission
+
+          Command: 
+            description: An immediate imperative requiring execution without interpretation
+
+        Plan:
+          description: Structured execution plan, route plan, mission plan, phase plan, or unit plan.
+
+        Reference:
+          description: Control-side referent such as mark, path, region, boundary, target, waypoint, route, or area.
+
+        Constraint:
+          description: Limit, rule, condition, or time/resource bound applied to directed work.
+
+        Interface:
+          description: Control surface, lease, operator input, remote-control mapping, or executor-facing command interface.
+
+    Communication:
+      description: Movement of information between endpoints.
+      children:
+
+        Node:
+          description: Endpoint that sends, receives, relays, records, controls, or bridges messages.
+
+        Network:
+          description: Connectivity topology and routing state.
+
+        Link:
+          description: Discrete packet/message path with endpoints, addresses, capacity, condition, and status.
+
+        Stream:
+          description: Continuous or ordered data flow such as telemetry, media, sensor samples, or raw bytes.
+
+        Protocol:
+          description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata.
+
+        Message:
+          description: Transmitted envelope plus payload.
+          children:
+
+            Command:
+              description: Message whose payload directs action.
+
+            Telemetry:
+              description: Message whose payload reports sender or asset state.
+
+            Observation:
+              description: Message whose payload reports external objects, events, environment, or intelligence.
+
+            Response:
+              description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors.
+
+    Data:
+      description: Concrete facts, state, observations, media, events, and effects.
+      children:
+
+        Property:
+          description: Mostly stable identity, attribute, configuration, classification, display, provenance, and relationship data.
+
+        State:
+          description: Changing condition of an object, node, link, task, system, or process.
+          children:
+
+            Location:
+              description: Position, attitude, motion, altitude, navigation validity, and location uncertainty.
+
+            Guidance:
+              description: Navigation, arming, mode, mission progress, readiness, failsafe, estimator, and control state.
+
+            Health:
+              description: Fault, readiness, maintenance, damage, alert, subsystem, and resource health state.
+
+            Resource:
+              description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
+
+            Sensor:
+              description: Sensor sample, sensor mode, tracker, gimbal, environment sample, calibration, or measurement quality.
+
+            Runtime:
+              description: Firmware, hardware identity, software build, load, counters, storage, diagnostics, and internal process state.
+
+            Assignment:
+              description: Current task, owner, control lease, objective binding, dispatch state, phase, and status log.
+
+        Event:
+          description: Discrete occurrence with subject, source, time, type, and event data.
+
+        Observation:
+          description: External detection, classification, track, signal, spot report, threat, or assessment data.
+
+        Media:
+          description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference.
+
+        Effect:
+          description: Payload use, target handover, fires, arming, effector state, result, or damage assessment.

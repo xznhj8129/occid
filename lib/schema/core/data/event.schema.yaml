@@ -1,0 +1,20 @@
+version: 1
+type: schema
+package: event
+root: Event
+tags:
+  - core
+
+models:
+  Event:
+    description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data
+    parent: Data
+    variants:
+      - FlightEvent
+      - MissionEvent
+
+  FlightEvent:
+    parent: Event
+
+  MissionEvent:
+    parent: Event

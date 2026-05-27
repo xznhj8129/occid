@@ -1,0 +1,112 @@
+version: 1
+type: schema
+package: health
+root: Condition
+tags:
+  - core
+
+enums:
+  AlertLevel:
+    - ADVISORY = 0
+    - CAUTION
+    - WARNING
+
+  HealthStatus:
+    - HEALTHY = 0
+    - WARN
+    - FAIL
+    - OFFLINE
+    - NOT_READY
+
+  HumanHealthStatus:
+    - HEALTHY = 0
+    - TIRED
+    - SICK
+    - WOUNDED_LIGHT
+    - WOUNDED_CRITICAL
+    - DEAD
+    - MISSING
+    - CAPTURED
+
+  ResourceStatus:
+    - UNKNOWN = 0
+    - NOMINAL
+    - DEGRADED
+    - FAILED
+    - OFFLINE
+
+  SystemError:
+    - NO_ERROR = 0
+    - NOT_FOUND
+    - DEVICE_UNAVAILABLE
+    - HARDWARE_ERROR
+    - SOFTWARE_ERROR
+    - DATABASE_ERROR
+    - NETWORK_ERROR
+
+  MaintenanceState:
+    - UNKNOWN = 0
+    - READY
+    - DUE
+    - IN_PROGRESS
+    - GROUNDED
+    - FAILED
+
+models:
+  Condition:
+    description: Integrity, damage, faults, readiness
+    parent: State
+
+  HealthAlert:
+    parent: Condition
+    fields:
+      alert_id: optional string
+      level: AlertLevel
+      condition: string
+      acknowledged: bool = false
+
+  SubsystemHealth:
+    parent: Condition
+    fields:
+      subsystem_id: string
+      state: HealthStatus
+      fault_count: int = 0
+      note: optional string
+
+  HealthSnapshot:
+    parent: Condition
+    fields:
+      overall_state: HealthStatus
+      link_state: optional LinkCondition
+      power_state: optional ResourceStatus
+      temp_state: optional ResourceStatus
+      fault_count: int = 0
+      updated_ts: optional float
+      subsystems: list[SubsystemHealth]
+      alerts: list[HealthAlert]
+
+  MaintenanceStatus:
+    parent: Condition
+    fields:
+      state: MaintenanceState
+      last_service_ts: optional float
+      next_service_ts: optional float
+      note: optional string
+
+  VehicleReadinessState:
+    parent: Condition
+    fields:
+      gyro_ok: optional bool
+      accel_ok: optional bool
+      mag_ok: optional bool
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+      armable: optional bool
+      arm_ready: optional bool
+      takeoff_ready: optional bool
+      ekf_using_gps: optional bool
+      can_arm_or_run: optional bool
+      mode_name: optional string
+      mode_problems: list[string]
+      health_problems: list[string]

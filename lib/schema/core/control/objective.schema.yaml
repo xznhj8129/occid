@@ -1,0 +1,41 @@
+version: 1
+type: schema
+package: objective
+root: Objective
+tags:
+  - core
+
+models:
+  Objective:
+    description: Desired end state with intent, success rule, target, priority, and deadline
+    parent: Control
+    variants:
+      - Purpose
+      - Intent
+
+  Purpose:
+    parent: Objective
+
+  Intent:
+    parent: Objective
+
+  ObjectiveSchema:
+    parent: Objective
+    fields:
+      objective_id: string
+      intent: string
+      success_rule: optional string
+      priority: optional TaskPriority
+      target_ref: optional string
+      geo_goal: optional GlobalPosition
+      end_condition: optional string
+      deadline_ts: optional float
+
+  ObjectiveBinding:
+    parent: Objective
+    fields:
+      objective_id: string
+      task_ids: list[string]
+      priority: optional TaskPriority
+      deadline_ts: optional float
+      success_rule: optional string

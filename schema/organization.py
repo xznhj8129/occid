@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .object import ObjectType, Set
+from .objects import ObjectType, Set
 
 ### Enums
 

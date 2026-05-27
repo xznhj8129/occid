@@ -6,68 +6,15 @@ tags:
   - core
 
 enums:
-  DeliveryState:
-    - QUEUED = 0
-    - SENT
-    - RECEIVED
-    - ACKED
-    - NACKED
-    - EXECUTED
-    - EXPIRED
-    - DROPPED
-
-  ReplyAck:
-    - ACK = 0
-    - RECEIVED
-    - WILCO
-
-  AckMode:
-    - NONE = 0
-    - RECEIPT
-    - EXECUTION
-    - BOTH
-
-  QosTier:
-    - BULK = 0
-    - ROUTINE
-    - URGENT
-    - CRITICAL
-
-  MessagePriority:
-    - ROUTINE = 0
-    - PRIORITY
-    - IMMEDIATE
-    - FLASH
-
-  RouteMode:
-    - DIRECT = 0
-    - RELAY
-    - STORE_FORWARD
-    - FLOOD
-
-  ConflictPolicy:
-    - LAST_WRITE = 0
-    - AUTHORITY_WINS
-    - VECTOR_CLOCK
-    - MANUAL
-
   SyncState:
     - IN_SYNC = 0
     - PARTIAL
     - STALE
     - DIVERGED
 
-  CapabilityRole:
-    - CONTROLLER = 0
-    - RELAY
-    - SENSOR
-    - EFFECTOR
-    - GATEWAY
-    - RECORDER
-
 models:
   Communication:
-    description: "Definition, implementation, metadata and formats of information transfer"
+    description: Movement of information between endpoints
     parent: Root
     variants:
       - Node

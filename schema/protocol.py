@@ -2,9 +2,15 @@
 from __future__ import annotations
 from .common import *
 
-from .transport import Transport
+from .network import Transport
 
 ### Enums
+
+class ProtocolPayloadFormat(IntEnum):
+    TEXT = 0
+    XML = auto()
+    JSON = auto()
+    BYTES = auto()
 
 class CryptoType(IntEnum):
     NONE = 0
@@ -13,16 +19,10 @@ class CryptoType(IntEnum):
     STREAM = auto()
     PUBLIC_KEY = auto()
 
-class ProtocolPayloadFormat(IntEnum):
-    TEXT = 0
-    XML = auto()
-    JSON = auto()
-    BYTES = auto()
-
 ### Models
 
 class Protocol(Transport):
-    'Format and standard of messages'
+    'Wire format, message id space, payload format, command/result vocabulary, and mapping metadata'
 
 class ProtocolPayload(Protocol):
     format: ProtocolPayloadFormat
