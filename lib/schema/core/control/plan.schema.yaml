@@ -5,24 +5,42 @@ root: Plan
 tags:
   - core
 
+enums:
+  FlightPlanPhase:
+    - ONLINE = 0
+    - PREPARING
+    - TAKEOFF
+    - ASSEMBLY
+    - HOLDING
+    - ENROUTE
+    - INITIAL
+    - OBJECTIVE
+    - EGRESS
+    - RETURN
+    - APPROACH
+    - LANDING
+    - SHUTDOWN
+
 models:
   Plan:
-    description: Structured execution plan, route plan, mission plan, phase plan, or unit plan
-    parent: Control
+    description: Plan-level task with structured execution data and no task subdivision
+    parent: Task
     variants:
-      - Sequence
-      - Action
-
-  Sequence:
-    parent: Plan
-
-  Action:
-    parent: Plan
-
-  FlightPhasePlan:
-    parent: Sequence
+      - AutopilotFlightPlan
+      - GroupFlightPlan
+      - UnitFlightPlan
     fields:
-      phase: AirMissionPhase
+      task_level: const TaskLevel = PLAN
+
+  AutopilotFlightPlan:
+    parent: Plan
+    fields:
+      waypoints: list[AutopilotMissionWaypoint]
+
+  GroupFlightPlan:
+    parent: Plan
+    fields:
+      plan_phase: FlightPlanPhase
       flight_level: optional FlightLevelBand
       alt_frame: optional AltitudeDatum
       h_sep_m: optional float
@@ -32,7 +50,7 @@ models:
       formation_2d: optional AirGroupFormation2DType
       formation_3d: optional AirGroupFormation3DType
 
-  PlannedUnitMission:
+  UnitFlightPlan:
     parent: Plan
     variants: null
     fields:
@@ -40,7 +58,7 @@ models:
       callsign: string
       fl: float
       route_in: GeoPath
-      objective: PlannerMissionPoint
+      target: PlannerMissionPoint
       route_out: GeoPath
       home: GlobalPosition
       land_pos: GlobalPosition

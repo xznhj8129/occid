@@ -1,17 +1,19 @@
 version: 1
 type: schema
 package: c3
-root: C3
+root: CommandMessage
 tags:
   - core
 
 models:
-  C3:
+  CommandMessage:
     description: Message whose payload directs action
     parent: Message
+    fields:
+      command: Command
 
   HumanTextMessage:
-    parent: C3
+    parent: Message
     fields:
       sender_id: optional string
       sender_name: optional string

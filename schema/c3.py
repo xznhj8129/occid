@@ -6,10 +6,11 @@ from .message import Message
 
 ### Models
 
-class C3(Message):
+class CommandMessage(Message):
     'Message whose payload directs action'
+    command: SerializeAsAny[Command | VehicleCommand | TaskCommand | TrackerCommand]
 
-class HumanTextMessage(C3):
+class HumanTextMessage(Message):
     sender_id: str | None = None
     sender_name: str | None = None
     destination_id: str | None = None

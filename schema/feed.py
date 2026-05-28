@@ -3,6 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .communication import Communication
+from .root import SchemaKind
 
 ### Enums
 

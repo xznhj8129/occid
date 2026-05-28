@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .root import Root
+
 ### Enums
 
 class ClassificationLevel(IntEnum):
@@ -19,12 +21,6 @@ class IdentifierType(IntEnum):
     TRACK_ID = auto()
     ASSET_ID = auto()
     REGISTRATION = auto()
-
-class DetectionBoxSpace(IntEnum):
-    IMAGE_PIXEL = 0
-    IMAGE_NORMALIZED = auto()
-    BODY_ANGULAR = auto()
-    WORLD = auto()
 
 class MediaType(IntEnum):
     IMAGE = 0
@@ -53,7 +49,6 @@ class Data_type(IntEnum):
     EVENT = auto()
     OBSERVATION = auto()
     MEDIA = auto()
-    EFFECT = auto()
 
 ### Models
 

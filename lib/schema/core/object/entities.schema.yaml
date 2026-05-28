@@ -34,6 +34,36 @@ enums:
     - INACTIVE
     - UNKNOWN
 
+  AirframeType:
+    - FIXED_WING = 0
+    - COPTER
+    - VTOL
+    - TAILSITTER
+    - FLYING_WING
+
+  CopterType:
+    - X = 0
+    - Y
+    - HEXA
+    - OCTO
+    - DECA
+    - HELICOPTER
+
+  VTOLType:
+    - NONE = 0
+    - QUADPLANE
+    - TILT
+    - VECTORING
+    - TAILSITTER
+
+  NavAids:
+    - NONE = 0
+    - GNSS
+    - INS
+    - TERRAIN_MATCH
+    - CELESTIAL
+    - VISUAL
+
 models:
   Entity:
     description: One discrete "atom" capable of actions
@@ -67,6 +97,35 @@ models:
 
   Agent:
     parent: Actor
+
+  GroundNavigationSchema:
+    parent: Attributes
+    fields:
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      max_range: float
+      max_spd: float
+
+  AirNavigationSchema:
+    parent: Attributes
+    variants: null
+    fields:
+      flight_type: AirframeType
+      control_modes: list[FlightMode]
+      failsafe_mode: optional AirFailsafeMode
+      weather_limits: WeatherLimits
+      ifr: optional bool
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      fuel: optional FuelState
+      max_range: float
+      max_flight_t: float
+      max_spd: float
+      cruise_spd: float
+      max_alt: float
+      start_flight_time: float
 
   Person:
     parent: Actor

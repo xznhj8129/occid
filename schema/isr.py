@@ -6,10 +6,11 @@ from .message import Message
 
 ### Models
 
-class ISR(Message):
+class ObservationMessage(Message):
     'Message whose payload reports external objects, events, environment, or intelligence'
+    observation: SerializeAsAny[Observation | Detection | Classification | Track | TrackUpdate | IntelTrackSchema | Assessment | IsrResult | IsrObservation]
 
-class ProtocolEventMessage(ISR):
+class ProtocolEventMessage(ObservationMessage):
     uid: str
     event_type: str
     event_method: str | None = None

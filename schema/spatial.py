@@ -3,6 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .state import State
+from .struct import Bearing, Bounding, GeoPos, Measurement, Pose, Shape, Struct, StructPath, Uncertainty, Vector
 
 ### Enums
 

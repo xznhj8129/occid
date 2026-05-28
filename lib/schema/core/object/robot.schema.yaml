@@ -148,7 +148,7 @@ models:
       nav_state_code: optional int
       flight_mode: optional string
       attitude_setpoint: optional ControlAttitudeSetpoint
-      mission_progress: optional MissionProgress
+      plan_progress: optional PlanProgress
       navigation_validity: optional NavigationValidity
       readiness: optional VehicleReadinessState
       controller_identity: optional FlightControllerIdentity

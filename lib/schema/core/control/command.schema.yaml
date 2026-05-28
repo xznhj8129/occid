@@ -1,0 +1,38 @@
+version: 1
+type: schema
+package: command
+root: Command
+tags:
+  - core
+
+models:
+
+  Command:
+    description: An immediate imperative requiring execution without interpretation
+    parent: Control
+    variants:
+      - VehicleCommand
+      - TaskCommand
+      - TrackerCommand
+    fields:
+      command_id: string
+      target_ref: string
+
+  VehicleCommand:
+    parent: Command
+    fields:
+      command_type: FlightCommandType
+
+  TaskCommand:
+    parent: Command
+    fields:
+      task: Task
+
+  TrackerCommand:
+    parent: Command
+    fields:
+      lock: optional bool
+      reset: optional bool
+      slew: optional LocalDirection
+      search_box_size: optional int
+      shutdown: optional bool

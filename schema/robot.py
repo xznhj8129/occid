@@ -2,8 +2,8 @@
 from __future__ import annotations
 from .common import *
 
-from .aerial import Guidance
 from .entities import AirMachine, GroundMachine, Machine, MachineType
+from .guidance import Guidance
 from .interface import Interface
 from .property import Property
 
@@ -132,7 +132,7 @@ class FlightControlState(Guidance):
     nav_state_code: int | None = None
     flight_mode: str | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
-    mission_progress: MissionProgress | None = None
+    plan_progress: PlanProgress | None = None
     navigation_validity: NavigationValidity | None = None
     readiness: VehicleReadinessState | None = None
     controller_identity: FlightControllerIdentity | None = None

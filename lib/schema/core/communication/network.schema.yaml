@@ -13,6 +13,10 @@ enums:
     - CALLSIGN
     - URI
 
+  NetworkError:
+    - PLACEHOLDER1 = 0
+    - PLACEHOLDER2
+
 models:
   Transport:
     description: The form of information flow

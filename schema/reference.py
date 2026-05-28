@@ -32,20 +32,9 @@ class Region(Reference):
 class Boundary(Reference):
     pass
 
-class LoiterOrbit(ReferencePath):
-    orbit_direction: int
-    orbit_radius: int
-    loiter_time: int
-
 class FlightLevelBand(Region):
     altitude_range_m: NumericRange
     alt_sep_m: float
-
-class MissionRouteGeometry(ReferencePath):
-    route_in: GeoPath
-    survey: GeoPath
-    survey_area: GeoArea
-    route_out: GeoPath
 
 class MissionPoi(Mark):
     uid: str
@@ -71,6 +60,17 @@ class PlannerMissionPoint(Mark):
     point_type: PlannerPointType
     category: PlannerPointCategory
     pos: GlobalPosition
+
+class LoiterOrbit(ReferencePath):
+    orbit_direction: int
+    orbit_radius: int
+    loiter_time: int
+
+class MissionRouteGeometry(ReferencePath):
+    route_in: GeoPath
+    survey: GeoPath
+    survey_area: GeoArea
+    route_out: GeoPath
 
 class PlannedRoutePoints(ReferencePath):
     start: PlannerMissionPoint

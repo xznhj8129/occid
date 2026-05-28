@@ -5,50 +5,6 @@ root: Data
 tags:
   - core
 
-enums:
-  ClassificationLevel:
-    - UNCLASSIFIED = 0
-    - CONTROLLED
-    - CONFIDENTIAL
-    - SECRET
-    - TOP_SECRET
-
-  IdentifierType:
-    - UNIT_CODE = 0
-    - CALLSIGN
-    - SERIAL_NUMBER
-    - DB_ID
-    - TRACK_ID
-    - ASSET_ID
-    - REGISTRATION
-
-  DetectionBoxSpace:
-    - IMAGE_PIXEL = 0
-    - IMAGE_NORMALIZED
-    - BODY_ANGULAR
-    - WORLD
-
-  MediaType:
-    - IMAGE = 0
-    - VIDEO
-    - AUDIO
-    - DOCUMENT
-    - BINARY
-
-  PowerStatus:
-    - UNKNOWN = 0
-    - NOT_PRESENT
-    - OPERATING
-    - DISABLED
-    - ERROR
-
-  PowerType:
-    - UNKNOWN = 0
-    - GAS
-    - BATTERY
-    - SOLAR
-    - NUCLEAR
-
 models:
   Data:
     description: Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects
@@ -59,7 +15,6 @@ models:
       - Event
       - Observation
       - Media
-      - Effect
 
   Version:
     parent: Data

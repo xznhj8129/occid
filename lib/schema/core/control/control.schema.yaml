@@ -21,6 +21,10 @@ enums:
     - MOVE
     - RESUPPLY
 
+  TaskLevel:
+    - MISSION = 0
+    - PLAN
+
   TaskPhase:
     - CREATED = 0
     - DISPATCHED
@@ -82,11 +86,6 @@ enums:
     - AIR_DROP
     - RECOVERY
 
-  AirMissionType:
-    - SURVEY = 0
-    - SEARCH
-    - DELIVERY
-
   AirMoveTask:
     - FLY = 0
     - RELOCATION
@@ -141,8 +140,8 @@ models:
     parent: Root
     variants:
       - Objective
-      - Directive
-      - Plan
+      - Task
+      - Command
       - Reference
       - Constraint
       - Interface

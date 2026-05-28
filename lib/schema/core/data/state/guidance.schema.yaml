@@ -1,0 +1,101 @@
+version: 1
+type: schema
+package: guidance
+root: Guidance
+tags:
+  - core
+
+enums:
+  AirFailsafeMode:
+    - HOLD = 0
+    - RTB
+    - LAND
+    - LOITER
+    - CONTINUE_LAST
+
+  FlightMode:
+    - ACRO = 0
+    - ANGLE
+    - POSHOLD
+    - GUIDED
+    - NAV_WP
+    - LOITER
+    - CRUSE
+    - RTH
+    - LANDING
+    - DISARMED
+
+  FlightPhase:
+    - PREFLIGHT = 0
+    - TAKEOFF
+    - CRUISE
+    - LOITER
+    - PLAN_OPERATION
+    - RTB
+    - LANDING
+    - POSTFLIGHT
+    - ABORT
+
+  GnssFixType:
+    - NONE = 0
+    - NO_FIX
+    - FIX_2D
+    - FIX_3D
+    - DGPS
+    - RTK_FLOAT
+    - RTK_FIXED
+
+models:
+  Guidance:
+    description: Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state
+    parent: State
+    variants:
+      - PlanProgress
+      - TelemetryState
+      - NavigationValidity
+      - GnssSolution
+      - FlightControlState
+
+  PlanProgress:
+    parent: Guidance
+    fields:
+      waypoint_count: optional int
+      current_waypoint_index: optional int
+      plan_valid: optional bool
+
+  TelemetryState:
+    parent: Guidance
+    fields:
+      flight_mode: optional FlightMode
+      flight_phase: optional FlightPhase
+      plan_phase: optional FlightPlanPhase
+      attitude: optional EulerAngles
+      velocity: optional VelocityVector
+      battery_pct: optional float
+      link_rssi: optional float
+
+  NavigationValidity:
+    parent: Guidance
+    fields:
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+
+  GnssSolution:
+    parent: Guidance
+    fields:
+      fix_type: optional GnssFixType
+      fix_code: optional int
+      satellites_used: optional int
+      position: optional GlobalPosition
+      altitude: optional AltitudeState
+      ground_speed_ms: optional float
+      ground_course_deg: optional float
+      hdop: optional float
+      vdop: optional float
+      eph: optional float
+      epv: optional float
+      yaw_deg: optional float
+      last_message_dt: optional float
+      errors: optional float
+      timeouts: optional float

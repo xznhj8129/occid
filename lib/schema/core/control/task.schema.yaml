@@ -1,0 +1,71 @@
+version: 1
+type: schema
+package: task
+root: Task
+tags:
+  - core
+
+enums:
+  TaskISR:
+    - OBSERVE = 0
+    - SEARCH
+    - FIND
+    - SURVEY
+    - INVESTIGATE
+    - IMPROVE_TRACK
+    - IMAGERY
+
+models:
+  Task:
+    description: A directive to accomplish an objective
+    parent: Control
+    variants:
+      - Mission
+      - Plan
+      - IsrTask
+
+    fields:
+      task_id: string
+      task_level: TaskLevel
+      task_type: optional TaskType
+      unit_code: string
+      capability: optional Capability
+      status: TaskStatus = NEW
+      command_result: optional CommandResult
+      assign_fail: optional TaskAssignFail
+      phase: TaskPhase = CREATED
+      geometry_id: optional string
+      start_time: optional float
+      deadline: optional float
+      priority: TaskPriority = ROUTINE
+      remarks: optional string
+      last_update: optional float
+      issued_by: optional string
+      accepted_by: optional string
+      assigned_assets: list[string]
+      attempt_idx: int = 0
+      dispatch_state: DeliveryState = QUEUED
+      dispatch_error: optional string
+      time_window: optional TaskTimeWindow
+      status_log: list[TaskStatusEntry]
+      qos: QosTier = ROUTINE
+      ack_mode: AckMode = RECEIPT
+      route_mode: RouteMode = DIRECT
+      conflict_policy: ConflictPolicy = VECTOR_CLOCK
+      objective: optional Objective
+
+  Mission:
+    description: Tactical, intent-based task that may contain other tasks
+    parent: Task
+    fields:
+      task_level: const TaskLevel = MISSION
+      tasks: list[Task]
+
+  IsrTask:
+    parent: Task
+    fields:
+      isr_task: optional TaskISR
+      area: GeoArea
+      dwell_seconds: optional float
+      isr_params: optional IsrParameters
+      isr_result: optional IsrResult

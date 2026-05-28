@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .root import Root
+
 ### Enums
 
 class SyncState(IntEnum):

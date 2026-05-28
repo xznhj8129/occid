@@ -52,45 +52,41 @@ class ConflictPolicy(IntEnum):
     MANUAL = auto()
 
 class Message_type(IntEnum):
-    C3 = 0
-    I_S_R = auto()
+    COMMAND = 0
     TELEMETRY = auto()
+    OBSERVATION = auto()
     RESPONSE = auto()
+
+class ResponseMessage_type(IntEnum):
+    DELIVERY_RECEIPT = 0
+    MESSAGE_TRANSFER_RESULT = auto()
 
 ### Models
 
 class Message(Communication):
     'Transmitted envelope plus payload'
-
-class RetryProfile(OCCIDModel):
-    max_attempts: int = 0
-    base_delay_ms: int = 0
-    backoff_factor: float = 1.0
-    jitter_pct: float = 0.0
-
-class RouteHint(OCCIDModel):
-    next_hop: str | None = None
-    hop_limit: int | None = None
-    preferred_relays: list[NodeRef]
-    avoid_nodes: list[NodeRef]
-
-class MessageEnvelope(Message):
     msg_id: str
-    msg_type: str
-    src: str
-    dst: str
-    ts: float
-    conversation_id: str | None = None
-    ttl_s: float | None = None
-    qos: QosTier = QosTier.ROUTINE
-    priority: MessagePriority = MessagePriority.ROUTINE
-    ack_mode: AckMode = AckMode.RECEIPT
-    route_mode: RouteMode = RouteMode.DIRECT
-    route_hint: RouteHint | None = None
-    retry: RetryProfile | None = None
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
 
-class MessageTarget(Message):
-    target_id: str | None = None
-    target_type: str | None = None
-    callsign: str | None = None
-    address: NetworkAddress | None = None
+class MessageTarget(OCCIDModel):
+    target_id: str
+
+class ResponseMessage(Message):
+    'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
+    in_reply_to: str
+
+class DeliveryReceipt(ResponseMessage):
+    node_id: str
+    delivery_state: DeliveryState
+    seen_ts: float | None = None
+    exec_ts: float | None = None
+    error_code: str | None = None
+
+class MessageTransferResult(ResponseMessage):
+    target_count: int = 0
+    bytes_sent: int = 0
+    delivery_state: DeliveryState | None = None
+    error: str | None = None

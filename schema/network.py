@@ -13,6 +13,10 @@ class AddressKind(IntEnum):
     CALLSIGN = auto()
     URI = auto()
 
+class NetworkError(IntEnum):
+    PLACEHOLDER1 = 0
+    PLACEHOLDER2 = auto()
+
 class Transport_type(IntEnum):
     NETWORK = 0
     CARRIER = auto()

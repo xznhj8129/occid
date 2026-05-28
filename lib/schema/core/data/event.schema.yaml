@@ -5,6 +5,27 @@ root: Event
 tags:
   - core
 
+enums:
+  AirMissionEvent:
+    - ONLINE = 0
+    - PREPARED
+    - LOADED
+    - READY_TAKEOFF
+    - TAKEOFF_COMPLETE
+    - ASSEMBLY
+    - ENROUTE
+    - HOLDING
+    - ACTING
+    - PROCEEDING
+    - RESUMING
+    - BINGO
+    - RTB
+    - LANDING
+    - LANDED
+    - SHUTDOWN
+    - ABORTING
+    - FAILING
+
 models:
   Event:
     description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data

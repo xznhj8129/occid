@@ -1,17 +1,19 @@
 version: 1
 type: schema
 package: isr
-root: ISR
+root: ObservationMessage
 tags:
   - core
 
 models:
-  ISR:
+  ObservationMessage:
     description: Message whose payload reports external objects, events, environment, or intelligence
     parent: Message
+    fields:
+      observation: Observation
 
   ProtocolEventMessage:
-    parent: ISR
+    parent: ObservationMessage
     fields:
       uid: string
       event_type: string

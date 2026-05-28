@@ -56,46 +56,43 @@ models:
     description: Transmitted envelope plus payload
     parent: Communication
     variants:
-      - C3
-      - ISR
-      - Telemetry
-      - Response
-
-  RetryProfile:
-    fields:
-      max_attempts: int = 0
-      base_delay_ms: int = 0
-      backoff_factor: float = 1.0
-      jitter_pct: float = 0.0
-
-  RouteHint:
-    fields:
-      next_hop: optional string
-      hop_limit: optional int
-      preferred_relays: list[NodeRef]
-      avoid_nodes: list[NodeRef]
-
-  MessageEnvelope:
-    parent: Message
+      - CommandMessage
+      - TelemetryMessage
+      - ObservationMessage
+      - ResponseMessage
     fields:
       msg_id: string
-      msg_type: string
-      src: string
-      dst: string
-      ts: float
-      conversation_id: optional string
-      ttl_s: optional float
-      qos: QosTier = ROUTINE
-      priority: MessagePriority = ROUTINE
-      ack_mode: AckMode = RECEIPT
-      route_mode: RouteMode = DIRECT
-      route_hint: optional RouteHint
-      retry: optional RetryProfile
+      src: MessageTarget
+      dst: MessageTarget
+      ts: Timestamp
+      priority: MessagePriority
 
   MessageTarget:
-    parent: Message
     fields:
-      target_id: optional string
-      target_type: optional string
-      callsign: optional string
-      address: optional NetworkAddress
+      target_id: string
+
+  ResponseMessage:
+    description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
+    parent: Message
+    variants:
+      - DeliveryReceipt
+      - MessageTransferResult
+    fields:
+      in_reply_to: string
+
+  DeliveryReceipt:
+    parent: ResponseMessage
+    fields:
+      node_id: string
+      delivery_state: DeliveryState
+      seen_ts: optional float
+      exec_ts: optional float
+      error_code: optional string
+
+  MessageTransferResult:
+    parent: ResponseMessage
+    fields:
+      target_count: int = 0
+      bytes_sent: int = 0
+      delivery_state: optional DeliveryState
+      error: optional string

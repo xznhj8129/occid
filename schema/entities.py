@@ -2,7 +2,9 @@
 from __future__ import annotations
 from .common import *
 
-from .objects import Object, ObjectType
+from .object import Object, ObjectType
+from .property import Attributes
+from .root import OperationalDomain, PropulsionType
 
 ### Enums
 
@@ -34,6 +36,36 @@ class EntityLifecycleStatus(IntEnum):
     INACTIVE = auto()
     UNKNOWN = auto()
 
+class AirframeType(IntEnum):
+    FIXED_WING = 0
+    COPTER = auto()
+    VTOL = auto()
+    TAILSITTER = auto()
+    FLYING_WING = auto()
+
+class CopterType(IntEnum):
+    X = 0
+    Y = auto()
+    HEXA = auto()
+    OCTO = auto()
+    DECA = auto()
+    HELICOPTER = auto()
+
+class VTOLType(IntEnum):
+    NONE = 0
+    QUADPLANE = auto()
+    TILT = auto()
+    VECTORING = auto()
+    TAILSITTER = auto()
+
+class NavAids(IntEnum):
+    NONE = 0
+    GNSS = auto()
+    INS = auto()
+    TERRAIN_MATCH = auto()
+    CELESTIAL = auto()
+    VISUAL = auto()
+
 class Entity_type(IntEnum):
     ACTOR = 0
     MACHINE = auto()
@@ -41,6 +73,9 @@ class Entity_type(IntEnum):
 class Actor_type(IntEnum):
     PERSON = 0
     AGENT = auto()
+
+class AirNavigationSchema_type(IntEnum):
+    MILITARY_AIR_NAVIGATION = 0
 
 class Person_type(IntEnum):
     MILITARY = 0
@@ -87,6 +122,30 @@ class Actor(Entity):
 
 class Agent(Actor):
     pass
+
+class GroundNavigationSchema(Attributes):
+    propulsion: PropulsionType
+    navigation: NavigationMode
+    navaids: list[NavAids]
+    max_range: float
+    max_spd: float
+
+class AirNavigationSchema(Attributes):
+    flight_type: AirframeType
+    control_modes: list[FlightMode]
+    failsafe_mode: AirFailsafeMode | None = None
+    weather_limits: WeatherLimits
+    ifr: bool | None = None
+    propulsion: PropulsionType
+    navigation: NavigationMode
+    navaids: list[NavAids]
+    fuel: FuelState | None = None
+    max_range: float
+    max_flight_t: float
+    max_spd: float
+    cruise_spd: float
+    max_alt: float
+    start_flight_time: float
 
 class Person(Actor):
     entity_type: EntityType = EntityType.PERSON

@@ -2,6 +2,8 @@
 from __future__ import annotations
 from .common import *
 
+from .root import Root
+
 ### Enums
 
 class Capability(IntEnum):
@@ -18,6 +20,10 @@ class TaskType(IntEnum):
     SUPPORT = auto()
     MOVE = auto()
     RESUPPLY = auto()
+
+class TaskLevel(IntEnum):
+    MISSION = 0
+    PLAN = auto()
 
 class TaskPhase(IntEnum):
     CREATED = 0
@@ -80,11 +86,6 @@ class TaskAir(IntEnum):
     AIR_DROP = auto()
     RECOVERY = auto()
 
-class AirMissionType(IntEnum):
-    SURVEY = 0
-    SEARCH = auto()
-    DELIVERY = auto()
-
 class AirMoveTask(IntEnum):
     FLY = 0
     RELOCATION = auto()
@@ -135,8 +136,8 @@ class ControlLevel(IntEnum):
 
 class Control_type(IntEnum):
     OBJECTIVE = 0
-    DIRECTIVE = auto()
-    PLAN = auto()
+    TASK = auto()
+    COMMAND = auto()
     REFERENCE = auto()
     CONSTRAINT = auto()
     INTERFACE = auto()

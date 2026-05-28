@@ -1,7 +1,7 @@
 version: 1
 type: module
 package: military_aerial
-description: "Military aviation roles, air combat tasks, ISR tasks, attack modes, and mission extensions."
+description: "Military aviation roles, air combat tasks, ISR tasks, attack modes, and plan extensions."
 tags:
   - military
 requires:
@@ -11,8 +11,8 @@ extend_variants:
     - MilitaryAirNavigation
   MissionPoi:
     - MilitaryMissionPoi
-  PlannedUnitMission:
-    - MilitaryPlannedUnitMission
+  UnitFlightPlan:
+    - MilitaryUnitFlightPlan
 
 enums:
   MilitaryAirTask:
@@ -86,7 +86,7 @@ models:
       sidc: optional int
 
 
-  MilitaryPlannedUnitMission:
-    parent: PlannedUnitMission
+  MilitaryUnitFlightPlan:
+    parent: UnitFlightPlan
     fields:
       target: PlannerMissionPoint

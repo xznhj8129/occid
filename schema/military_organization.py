@@ -3,6 +3,7 @@ from __future__ import annotations
 from .common import *
 
 from .organization import OrgTopology, Organization
+from .root import OperationalDomain
 
 ### Enums
 

@@ -661,22 +661,27 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     raise SchemaError(f"variant {variant_name} parent is not {model_def.name} in {module.path}")
 
 
-def python_type_expr(node: TypeNode) -> str:
+def python_type_expr(node: TypeNode, variant_type_members: dict[str, list[str]]) -> str:
     if node.kind == "name":
-        return PRIMITIVE_TYPES.get(node.name, node.name)
+        if node.name in PRIMITIVE_TYPES:
+            return PRIMITIVE_TYPES[node.name]
+        variant_names = variant_type_members.get(node.name) or []
+        if variant_names:
+            return f"SerializeAsAny[{' | '.join([node.name, *variant_names])}]"
+        return node.name
     if node.kind == "list":
-        return f"list[{python_type_expr(node.args[0])}]"
+        return f"list[{python_type_expr(node.args[0], variant_type_members)}]"
     if node.kind == "map":
-        return f"dict[{python_type_expr(node.args[0])}, {python_type_expr(node.args[1])}]"
+        return f"dict[{python_type_expr(node.args[0], variant_type_members)}, {python_type_expr(node.args[1], variant_type_members)}]"
     if node.kind == "tuple":
-        return f"tuple[{', '.join(python_type_expr(arg) for arg in node.args)}]"
+        return f"tuple[{', '.join(python_type_expr(arg, variant_type_members) for arg in node.args)}]"
     if node.kind == "union":
-        return " | ".join(python_type_expr(arg) for arg in node.args)
+        return " | ".join(python_type_expr(arg, variant_type_members) for arg in node.args)
     raise SchemaError(f"unsupported type node {node.kind}")
 
 
-def field_annotation(field_def: FieldDef) -> str:
-    python_type = python_type_expr(field_def.type_node)
+def field_annotation(field_def: FieldDef, variant_type_members: dict[str, list[str]]) -> str:
+    python_type = python_type_expr(field_def.type_node, variant_type_members)
     if field_def.const and field_def.default is not None and field_def.type_node.kind == "name":
         if field_def.type_node.name in {"string", "int", "float", "bool"}:
             return f"Literal[{python_default_literal(field_def.default)}]"
@@ -713,8 +718,8 @@ def enum_default_expr(type_name: str, default: str, enum_members: dict[str, set[
     return f"{type_name}.{default}"
 
 
-def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]]) -> str:
-    annotation = field_annotation(field_def)
+def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
+    annotation = field_annotation(field_def, variant_type_members)
 
     if field_def.const:
         type_name = field_def.type_node.name if field_def.type_node.kind == "name" else None
@@ -850,13 +855,13 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
     return lines
 
 
-def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]]) -> str:
+def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
     parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
     if model_def.description:
         lines.append(f"    {model_def.description!r}")
     for field_def in model_def.fields:
-        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members)}")
+        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, variant_type_members)}")
     if not model_def.description and not model_def.fields:
         lines.append("    pass")
     return "\n".join(lines)
@@ -874,8 +879,10 @@ def mapping_value_literal(value: object, value_type: str, enum_members: dict[str
     return repr(value)
 
 
-def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]]) -> str:
-    lines = [f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse())}, {python_type_expr(TypeParser(mapping_def.value_type).parse())}] = {{"]
+def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
+    lines = [
+        f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse(), variant_type_members)}, {python_type_expr(TypeParser(mapping_def.value_type).parse(), variant_type_members)}] = {{"
+    ]
     for key, value in mapping_def.entries.items():
         key_expr = mapping_key_literal(key, mapping_def.key_type, enum_members)
         value_expr = mapping_value_literal(value, mapping_def.value_type, enum_members)
@@ -889,7 +896,9 @@ def render_common_runtime() -> str:
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
 
-def render_module(module: ModuleDef, symbol_index: dict[str, str], enum_members: dict[str, set[str]]) -> str:
+def render_module(
+    module: ModuleDef, symbol_index: dict[str, str], enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]
+) -> str:
     sections = [load_template("module_header.py")]
     imports = module_imports(module, symbol_index, enum_members)
     if imports:
@@ -902,14 +911,16 @@ def render_module(module: ModuleDef, symbol_index: dict[str, str], enum_members:
         sections.append("\n\n".join(enum_blocks))
     if module.maps:
         sections.append("### Mappings")
-        sections.append("\n\n".join(render_mapping_block(mapping_def, enum_members) for mapping_def in module.maps))
+        sections.append(
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, variant_type_members) for mapping_def in module.maps)
+        )
     if module.models:
         sections.append("### Models")
-        sections.append("\n\n".join(render_model_block(model_def, enum_members) for model_def in module.models))
+        sections.append("\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models))
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
 
-def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[str]]) -> str:
+def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
     sections = []
     variant_models = [model_def for model_def in module.models if model_def.variants]
     if module.enums or variant_models:
@@ -919,11 +930,38 @@ def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[s
         sections.append("\n\n".join(enum_blocks))
     if module.maps:
         sections.append("### Schema Mappings")
-        sections.append("\n\n".join(render_mapping_block(mapping_def, enum_members) for mapping_def in module.maps))
+        sections.append(
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, variant_type_members) for mapping_def in module.maps)
+        )
     if module.models:
         sections.append("### Schema Models")
-        sections.append("\n\n".join(render_model_block(model_def, enum_members) for model_def in module.models))
+        sections.append("\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models))
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
+
+
+def build_variant_type_members(modules: list[ModuleDef], symbol_index: dict[str, str]) -> dict[str, list[str]]:
+    schema_module_names = {module.name for module in modules if module.doc_type == "schema"}
+    models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
+    variant_type_members: dict[str, list[str]] = {}
+
+    def collect_schema_variants(model_name: str, seen: set[str]) -> list[str]:
+        variant_names: list[str] = []
+        for variant_name in models_by_name[model_name].variants:
+            if variant_name in seen:
+                continue
+            seen.add(variant_name)
+            if symbol_index[variant_name] not in schema_module_names:
+                continue
+            variant_names.append(variant_name)
+            variant_names.extend(collect_schema_variants(variant_name, seen))
+        return variant_names
+
+    for module in modules:
+        for model_def in module.models:
+            variant_names = collect_schema_variants(model_def.name, set())
+            if variant_names:
+                variant_type_members[model_def.name] = variant_names
+    return variant_type_members
 
 
 def module_dependency_graph(
@@ -981,20 +1019,21 @@ def write_package(output_dir: Path, modules: list[ModuleDef], symbol_index: dict
     graph = module_dependency_graph(modules, symbol_index, enum_members)
     ordered_names = topo_sort_modules(modules, graph)
     module_map = {module.name: module for module in modules}
+    variant_type_members = build_variant_type_members(modules, symbol_index)
 
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
     common_sections = [render_common_runtime().rstrip()]
     if "common" in module_map:
-        common_sections.append(render_common_schema_module(module_map["common"], enum_members))
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members))
     (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
         if module_name == "common":
             continue
         module = module_map[module_name]
-        (output_dir / f"{module_name}.py").write_text(render_module(module, symbol_index, enum_members))
+        (output_dir / f"{module_name}.py").write_text(render_module(module, symbol_index, enum_members, variant_type_members))
 
     (output_dir / "__init__.py").write_text(render_init(ordered_names))
 

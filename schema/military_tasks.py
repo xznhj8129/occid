@@ -2,7 +2,7 @@
 from __future__ import annotations
 from .common import *
 
-from .directive import Task
+from .task import Task
 
 ### Enums
 

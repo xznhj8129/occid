@@ -8,7 +8,6 @@ requires:
   - core
   - military_aerial
   - military_definition
-  - military_isr
 
 enums:
   GuidanceType:

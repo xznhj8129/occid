@@ -1,17 +1,19 @@
 version: 1
 type: schema
 package: telemetry
-root: Telemetry
+root: TelemetryMessage
 tags:
   - core
 
 models:
-  Telemetry:
+  TelemetryMessage:
     description: Message whose payload reports sender or asset state
     parent: Message
+    fields:
+      state: State
 
   CapabilityAdvert:
-    parent: Telemetry
+    parent: TelemetryMessage
     fields:
       node_id: string
       roles: list[CapabilityRole]
@@ -20,14 +22,13 @@ models:
       payload_ids: list[string]
 
   StateDelta:
-    parent: Telemetry
+    parent: TelemetryMessage
     fields:
       entity_id: string
-      changed_fields: list[string]
-      source: optional string
+      changed_fields: map[string, State]
 
   TransportCounters:
-    parent: Telemetry
+    parent: TelemetryMessage
     fields:
       rx_count: int = 0
       tx_count: int = 0
@@ -35,8 +36,8 @@ models:
       dropped_count: int = 0
 
   TransportError:
-    parent: Telemetry
+    parent: TelemetryMessage
     fields:
-      error: string
+      error: NetworkError
       source_address: optional NetworkAddress
       payload: optional ProtocolPayload

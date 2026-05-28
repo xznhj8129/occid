@@ -89,22 +89,13 @@ Root:
       children:
 
         Objective:
-          description: Desired end state with intent, success rule, target, priority, and deadline.
+          description: Desired end state conveying intent, success rule, target, constraints
 
-        Directive:
-          description: Ordered or requested work, including missions, tasks, and immediate commands.
+        Task:
+          description: A directive to accomplish an objective; TaskLevel distinguishes mission-level and plan-level task structure.
 
-          Mission: 
-            description: A directive to accomplish an objective; "do X to achieve Y"
-
-          Task: 
-            description: A directive to carry out part of a mission
-
-          Command: 
-            description: An immediate imperative requiring execution without interpretation
-
-        Plan:
-          description: Structured execution plan, route plan, mission plan, phase plan, or unit plan.
+        Command:
+          description: An immediate imperative requiring execution without interpretation
 
         Reference:
           description: Control-side referent such as mark, path, region, boundary, target, waypoint, route, or area.

@@ -2,8 +2,8 @@
 from __future__ import annotations
 from .common import *
 
-from .aerial import AirNavigationSchema
-from .plan import PlannedUnitMission
+from .entities import AirNavigationSchema
+from .plan import UnitFlightPlan
 from .reference import MissionPoi
 
 ### Enums
@@ -73,5 +73,5 @@ class MilitaryAirNavigation(AirNavigationSchema):
 class MilitaryMissionPoi(MissionPoi):
     sidc: int | None = None
 
-class MilitaryPlannedUnitMission(PlannedUnitMission):
+class MilitaryUnitFlightPlan(UnitFlightPlan):
     target: PlannerMissionPoint

@@ -1,0 +1,108 @@
+version: 1
+type: schema
+package: struct
+root: Struct
+tags:
+  - core
+
+models:
+  Struct:
+    description: Primitive reusable low-level struct families.
+    parent: Root
+    variants:
+      - Vector
+      - Measurement
+      - Bearing
+      - GeoPos
+      - LocalPos
+      - Line
+      - StructPath
+      - Shape
+      - Bounding
+      - Uncertainty
+      - Pose
+      - Range
+      - Transform
+      - Orbital
+      - SpatialStruct
+
+  Vector:
+    parent: Struct
+
+  Measurement:
+    parent: Struct
+
+  Bearing:
+    parent: Struct
+
+  GeoPos:
+    parent: Struct
+
+  LocalPos:
+    parent: Struct
+
+  Line:
+    parent: Struct
+
+  StructPath:
+    parent: Struct
+
+  Shape:
+    parent: Struct
+
+  Bounding:
+    parent: Struct
+
+  Uncertainty:
+    parent: Struct
+
+  Pose:
+    parent: Struct
+
+  Range:
+    parent: Struct
+
+  Transform:
+    parent: Struct
+
+  Orbital:
+    parent: Struct
+
+  Time:
+    parent: Measurement
+    fields:
+      utime: int
+
+  Duration:
+    parent: Measurement
+    fields:
+      seconds: optional float
+      minutes: optional int
+      hours: optional int
+      days: optional int
+      weeks: optional int
+      months: optional int
+      years: optional int
+
+  Timestamp:
+    parent: Measurement
+    fields:
+      seconds: float
+      minutes: int
+      hours: int
+      day: int
+      month: int
+      year: int
+      tz: int
+
+  ItemCount:
+    parent: Measurement
+    fields:
+      item_type: string
+      qty: int = 0
+
+  NumericRange:
+    parent: Range
+    fields:
+      min_value: optional float
+      max_value: optional float

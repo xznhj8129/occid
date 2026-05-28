@@ -5,6 +5,54 @@ root: Observation
 tags:
   - core
 
+enums:
+  IntelCategory:
+    - IMINT = 0
+    - ELINT
+    - SIGINT
+    - MASINT
+
+  ObservationKind:
+    - DETECTION = 0
+    - TRACK
+    - IDENTIFICATION
+    - CLASSIFICATION
+
+  ObservedObjectType:
+    - PERSONNEL = 0
+    - VEHICLES
+    - AIRCRAFT
+    - INSTALLATION
+    - WATERCRAFT
+    - ROUTE
+    - TRACE_SIGNATURE
+
+  IsrFocusType:
+    - POINT = 0
+    - AREA
+    - TRACK
+    - ROUTE
+    - TARGET
+
+  EvidenceLevel:
+    - SUSPECTED = 0
+    - DETECTED
+    - OBSERVED
+    - CONFIRMED
+    - POSITIVE_ID
+
+  TrackState:
+    - NEW = 0
+    - ACTIVE
+    - STALE
+    - LOST
+
+  DetectionBoxSpace:
+    - IMAGE_PIXEL = 0
+    - IMAGE_NORMALIZED
+    - BODY_ANGULAR
+    - WORLD
+    
 models:
   Observation:
     description: External detection, classification, track, signal, spot report, threat, or assessment data
@@ -14,15 +62,21 @@ models:
       - Classification
       - Track
       - Assessment
+      - IsrObservation
 
   Classification:
     parent: Observation
 
   Track:
     parent: Observation
+    variants:
+      - TrackUpdate
+      - IntelTrackSchema
 
   Assessment:
     parent: Observation
+    variants:
+      - IsrResult
 
   Detection:
     description: Assessment that something exists or occurred
@@ -55,56 +109,69 @@ models:
       timestamp_us: optional int
       detections: list[VisionDetection]
 
-  EmitterNotationSchema:
-    parent: Detection
+  IsrObservation:
+    parent: Observation
     fields:
-      emitter_name: optional string
-      emitter_class: optional string
-      platform_class: optional string
-
-  SignalMeasurement:
-    parent: Detection
-    fields:
-      value: optional float
-      unit: optional string
+      obs_id: string
+      track_id: optional string
+      sensor_id: optional string
+      obs_ts: float
+      observation_kind: optional ObservationKind
+      category: optional IntelCategory
+      spotter_origin: optional SpotterOrigin
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
       confidence: optional ConfidenceLevel
 
-  LineOfBearingSchema:
-    parent: Detection
+  IsrParameters:
     fields:
-      bearing_deg: optional float
-      bearing_error_deg: optional float
+      focus_type: optional IsrFocusType
+      focus_point: optional GlobalPosition
+      dwell_s: optional float
+      revisit_s: optional float
+      sensor_types: list[SensorType]
+      sensor_modes: list[SensorMode]
+      effect_domains: list[EffectDomain]
+      evidence_level: optional EvidenceLevel
 
-  AngleOfArrivalSchema:
-    parent: Detection
+  TrackUpdate:
+    parent: Track
     fields:
-      azimuth_deg: optional float
-      elevation_deg: optional float
-      azimuth_error_deg: optional float
-      elevation_error_deg: optional float
+      track_id: string
+      track_state: optional TrackState
+      updated_ts: float
+      confidence: optional ConfidenceLevel
 
-  PulseRepetitionIntervalSchema:
-    parent: Detection
+  IsrResult:
+    parent: Assessment
     fields:
-      pri_us: optional float
-      jitter_us: optional float
+      detections: list[IsrObservation]
+      track_updates: list[TrackUpdate]
+      media: optional list[MediaItemSchema]
+      confidence: optional ConfidenceLevel
+      observations: list[IsrObservation]
 
-  ScanCharacteristicsSchema:
-    parent: Detection
+  IntelTrackSchema:
+    parent: Track
     fields:
-      period_s: optional float
-      frame_time_s: optional float
-
-  SignalSchema:
-    parent: Detection
-    fields:
-      signal_id: string
-      source_id: optional string
-      emitter: optional EmitterNotationSchema
-      frequency: optional FrequencyRange
-      strength: optional SignalMeasurement
-      line_of_bearing: optional LineOfBearingSchema
-      angle_of_arrival: optional AngleOfArrivalSchema
-      pulse_interval: optional PulseRepetitionIntervalSchema
-      scan: optional ScanCharacteristicsSchema
-      fixed_position_id: optional string
+      schema_id: string
+      schema_type: string = "INTEL_TRACK"
+      created_ts: optional float
+      updated_ts: optional float
+      origin_system: optional string
+      trust_score: optional ConfidenceLevel
+      alt_ids: list[Identifier]
+      entity_flags: list[string]
+      faction: optional string
+      spotted_time: float
+      updated_time: float
+      stale_time: float
+      track_state: TrackState = NEW
+      category: optional IntelCategory
+      sensor_id: optional string
+      spotter_last: optional SpotterOrigin
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      error_m: optional float
+      latest_observation: optional IsrObservation
+      observations: list[IsrObservation]

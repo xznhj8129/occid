@@ -27,26 +27,11 @@ models:
   Boundary:
     parent: Reference
 
-  LoiterOrbit:
-    parent: ReferencePath
-    fields:
-      orbit_direction: int
-      orbit_radius: int
-      loiter_time: int
-
   FlightLevelBand:
     parent: Region
     fields:
       altitude_range_m: NumericRange
       alt_sep_m: float
-
-  MissionRouteGeometry:
-    parent: ReferencePath
-    fields:
-      route_in: GeoPath
-      survey: GeoPath
-      survey_area: GeoArea
-      route_out: GeoPath
 
   MissionPoi:
     parent: Mark
@@ -79,6 +64,22 @@ models:
       point_type: PlannerPointType
       category: PlannerPointCategory
       pos: GlobalPosition
+
+
+  LoiterOrbit:
+    parent: ReferencePath
+    fields:
+      orbit_direction: int
+      orbit_radius: int
+      loiter_time: int
+
+  MissionRouteGeometry:
+    parent: ReferencePath
+    fields:
+      route_in: GeoPath
+      survey: GeoPath
+      survey_area: GeoArea
+      route_out: GeoPath
 
   PlannedRoutePoints:
     parent: ReferencePath

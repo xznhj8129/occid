@@ -244,7 +244,6 @@ Allowed keys:
 - `default` optional
 - `value` optional
 - `description` optional, comments preferred if inline
-- additional fields are allowed as the schema language evolves, currently used includes `min`, `max`, `min_length`, and `max_length`
 
 Rules:
 - `default` is for non-const fields
@@ -274,9 +273,6 @@ A parent/variants relationship is:
 - field inheritance
 - a typed variant family, equivalent to a tagged union or protobuf `oneof`
 - an implicit discriminator enum, derived from the variant model names
-
-There is no separate union mechanism or standalone enum declaration needed. `variants` on a model defines the family. The authored form is intentionally optimized for readability:
-- branch families are declared flat
 
 Syntax:
 ```yaml
@@ -405,10 +401,7 @@ tags:
 Tags classify files by domain applicability. A **profile** is a named set of tag inclusion/exclusion rules that selects a subset of the schema.
 
 Reserved tags:
-- `core` — foundational, always included in every profile. The universal grammar
-- `military` — military-specific concepts (ROE, fire support, EW, etc.)
-- `aviation` — aviation and airspace concepts
-- `maritime` — maritime-specific concepts
+- `core` — foundational, always included in every profile.
 
 Tags are additive: a file tagged `[core, military]` is both foundational and military-relevant. A profile that excludes `military` drops any file whose tags include `military` (unless the file is also tagged `core`, in which case `core` takes precedence as the always-included foundation).
 
@@ -558,58 +551,3 @@ Module selection is independent of tag filtering but compatible with it:
 - A module tagged `military` is excluded when the profile excludes `military`
 - A module with no conflicting tags is included by default when explicitly selected
 - Modules are never auto-included — they must be explicitly selected by name or by matching tag inclusion rules
-
-**18.6. Use cases**
-- **Domain extension**: EW, fire support, logistics, CBRN as military modules
-- **Classification boundary**: classified munitions, sensor capabilities, or TTPs as restricted modules distributed separately
-- **Third-party extension**: a vendor adds their proprietary sensor types, task types, or telemetry formats without forking the schema
-- **Application-specific**: a maritime survey company adds bathymetry, seabed classification, and tidal data as a module
-- **Composable stacks**: select `core` + `aviation` + `isr` modules for a civil ISR drone system; select `core` + `military` + `ew` + `fires` + `logistics` for a full C2 stack
-
-**19. Canonical Examples**
-```yaml
-version: 1
-type: schema
-package: task
-root: Task
-tags:
-  - core
-
-maps:
-  JsonGeometryTypes:
-    type: map[string, GeometryTypes]
-    value:
-      "Point": POINT
-      "Polygon": POLYGON
-
-models:
-  Task:
-    description: "A directive to carry out part of a mission."
-    parent: Directive
-    fields:
-      task_id: string
-      unit_id: string
-      priority: int
-    variants:
-      - MoveTask
-      - PatrolTask
-
-  MoveTask:
-    parent: Task
-    fields:
-      speed_ms: float = 0.0
-      destination: GlobalPosition
-      path: list[GlobalPosition]
-
-      geomap:
-        type: const map[string, GeometryTypes]
-        value:
-          "Point": POINT
-          "Polygon": POLYGON
-
-  PatrolTask:
-    parent: Task
-    fields:
-      path: list[GlobalPosition]
-      loiter_s: optional int
-```

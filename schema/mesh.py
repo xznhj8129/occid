@@ -6,7 +6,7 @@ from .feed import Link
 from .message import Message
 from .network import Network
 from .node import Node
-from .telemetry import Telemetry
+from .telemetry import TelemetryMessage
 
 ### Enums
 
@@ -62,13 +62,13 @@ class MeshtasticMessage(Message):
     position: MeshPositionSample | None = None
     metrics: MeshReceiveMetrics | None = None
 
-class MeshReceiveMetrics(Telemetry):
+class MeshReceiveMetrics(TelemetryMessage):
     snr: float | None = None
     rssi: float | None = None
     hop_limit: int | None = None
     rx_time: float | None = None
 
-class MeshPositionSample(Telemetry):
+class MeshPositionSample(TelemetryMessage):
     position: GlobalPosition
     position_ts: float | None = None
     pdop: float | None = None
@@ -76,7 +76,7 @@ class MeshPositionSample(Telemetry):
     ground_track: float | None = None
     sats_in_view: int | None = None
 
-class NodeHeartbeat(Telemetry):
+class NodeHeartbeat(TelemetryMessage):
     node_id: str
     last_seen_ts: float
     node_state: MeshNodeState | None = None

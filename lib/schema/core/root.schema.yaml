@@ -1,0 +1,17 @@
+version: 1
+type: schema
+package: root
+root: Root
+tags:
+  - core
+
+models:
+  Root:
+    description: Any distinct part of the overall framework that can be identified, described, or referenced
+    variants:
+      - Definition
+      - Struct
+      - Object
+      - Control
+      - Communication
+      - Data
