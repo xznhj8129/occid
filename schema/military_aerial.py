@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .entities import AirNavigationSchema
@@ -45,7 +46,7 @@ class AirAttackMode(IntEnum):
 
 ### Mappings
 
-AIR_ROLE_LABELS: dict[AirRole, str] = {
+AIR_ROLE_LABELS: dict[AirRole, builtins.str] = {
     AirRole.GROUND: 'Ground',
     AirRole.AIR_DEFENSE: 'Air Defense',
     AirRole.FIGHTER: 'Fighter',
@@ -55,7 +56,7 @@ AIR_ROLE_LABELS: dict[AirRole, str] = {
     AirRole.CARGO: 'Cargo',
 }
 
-AIR_ROLE_NAMES: dict[AirRole, str] = {
+AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
     AirRole.GROUND: 'Ground',
     AirRole.AIR_DEFENSE: 'Air Defense',
     AirRole.FIGHTER: 'Fighter',
@@ -71,7 +72,7 @@ class MilitaryAirNavigation(AirNavigationSchema):
     roles: list[AirRole]
 
 class MilitaryMissionPoi(MissionPoi):
-    sidc: int | None = None
+    sidc: builtins.int | None = None
 
 class MilitaryUnitFlightPlan(UnitFlightPlan):
     target: PlannerMissionPoint

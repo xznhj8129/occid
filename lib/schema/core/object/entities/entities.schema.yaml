@@ -64,6 +64,16 @@ enums:
     - CELESTIAL
     - VISUAL
 
+  PropulsionType:
+    - FOOT = 0
+    - WHEELED
+    - TRACKED
+    - ROTARY_WING
+    - FIXED_WING
+    - JET
+    - MARITIME
+    - STATIC
+
 models:
   Entity:
     description: One discrete "atom" capable of actions
@@ -72,18 +82,17 @@ models:
       - Actor
       - Machine
     fields:
-      object_type: ObjectType = ENTITY
-      entity_id: string
-      short_id: optional string
+      entity_id: StringID
+      short_id: optional StringID
       name: optional string
       entity_type: optional EntityType
       lifecycle_status: optional EntityLifecycleStatus
       created_ts: optional float
       updated_ts: optional float
       origin_system: optional string
-      alt_ids: list[Identifier]
+      alt_ids: list[StringID]
       tags: list[string]
-      metadata: list[MetadataEntry]
+      metadata: map[string, MetadataValue]
       relations: list[RelationSchema]
       location_state: optional LocationState
       symbology: optional SymbologySchema
@@ -99,7 +108,7 @@ models:
     parent: Actor
 
   GroundNavigationSchema:
-    parent: Attributes
+    parent: Attribute
     fields:
       propulsion: PropulsionType
       navigation: NavigationMode
@@ -108,7 +117,7 @@ models:
       max_spd: float
 
   AirNavigationSchema:
-    parent: Attributes
+    parent: Attribute
     variants: null
     fields:
       flight_type: AirframeType
@@ -133,13 +142,13 @@ models:
     fields:
       entity_type: EntityType = PERSON
       role: string
-      serial_uid: string = ""
+      serial_uid: StringID
       op_domain: OperationalDomain = LAND
       propulsion: PropulsionType = FOOT
       navigation: NavigationMode
       navaids: list[NavAids]
       health: HumanHealthStatus
-      sensors: map[string, SensorSchema]
+      sensors: map[string, SensorPayload]
       links: map[string, LinkSchema]
 
   Machine:
@@ -148,11 +157,9 @@ models:
       - Vehicle
       - Robot
       - Platform
-      - GroundMachine
-      - AirMachine
     fields:
       entity_type: EntityType = MACHINE
-      sys_id: string
+      sys_id: StringID
       machine_type: optional MachineType
       status: EntityOperationalState
       health_snapshot: optional HealthSnapshot
@@ -170,26 +177,22 @@ models:
 
   GroundMachine:
     parent: Machine
-    variants:
-      - GroundRobot
     fields:
       machine_type: MachineType
       op_domain: OperationalDomain = LAND
       model: string
       role: string
-      serial_uid: string = ""
-      sensors: map[string, SensorSchema]
+      serial_uid: StringID
+      sensors: map[string, SensorPayload]
       navigation: GroundNavigationSchema
 
   AirMachine:
     parent: Machine
-    variants:
-      - AirRobot
     fields:
       machine_type: optional MachineType
       op_domain: OperationalDomain = AIR
       model: string
-      serial_uid: string = ""
-      sensors: map[string, SensorSchema]
+      serial_uid: StringID
+      sensors: map[string, SensorPayload]
       navigation: AirNavigationSchema
       maint_status: optional MaintenanceStatus

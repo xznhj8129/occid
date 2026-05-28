@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .message import Message
@@ -8,14 +9,14 @@ from .message import Message
 
 class CommandMessage(Message):
     'Message whose payload directs action'
-    command: SerializeAsAny[Command | VehicleCommand | TaskCommand | TrackerCommand]
+    command: SerializeAsAny[Command | FlightCommand | TaskCommand | TrackerCommand]
 
 class HumanTextMessage(Message):
-    sender_id: str | None = None
-    sender_name: str | None = None
-    destination_id: str | None = None
-    destination_group: str | None = None
-    kind: str | None = None
-    message: str
+    sender_id: StringID | None = None
+    sender_name: builtins.str | None = None
+    destination_id: StringID | None = None
+    destination_group: builtins.str | None = None
+    kind: builtins.str | None = None
+    message: builtins.str
     position: GlobalPosition | None = None
     targets: list[MessageTarget]

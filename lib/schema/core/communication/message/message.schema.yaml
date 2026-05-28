@@ -61,15 +61,15 @@ models:
       - ObservationMessage
       - ResponseMessage
     fields:
-      msg_id: string
       src: MessageTarget
       dst: MessageTarget
       ts: Timestamp
       priority: MessagePriority
+      seq: int
 
   MessageTarget:
     fields:
-      target_id: string
+      target_id: StringID
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
@@ -78,12 +78,12 @@ models:
       - DeliveryReceipt
       - MessageTransferResult
     fields:
-      in_reply_to: string
+      seq_reply: int
 
   DeliveryReceipt:
     parent: ResponseMessage
     fields:
-      node_id: string
+      node_id: StringID
       delivery_state: DeliveryState
       seen_ts: optional float
       exec_ts: optional float

@@ -37,7 +37,7 @@ models:
     parent: Mark
     variants: null
     fields:
-      uid: string
+      uid: StringID
       name: string
       pos: GlobalPosition
       origin: string

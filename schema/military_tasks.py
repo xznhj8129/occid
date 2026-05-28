@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .task import Task
@@ -16,13 +17,13 @@ class TaskCombat(IntEnum):
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    munition_type: str
-    qty: int = 0
+    munition_type: builtins.str
+    qty: builtins.int = 0
 
 class CombatTask(Task):
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None
     munitions: list[MunitionAllocation]
-    effect: str | None = None
-    desired_bda: bool = False
+    effect: builtins.str | None = None
+    desired_bda: builtins.bool = False

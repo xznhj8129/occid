@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .network import Carrier
@@ -56,23 +57,23 @@ class Radio(Carrier):
     'What messages are transmitted over'
 
 class FrequencyRange(Radio):
-    low_mhz: float | None = None
-    high_mhz: float | None = None
-    center_mhz: float | None = None
+    low_mhz: builtins.float | None = None
+    high_mhz: builtins.float | None = None
+    center_mhz: builtins.float | None = None
 
 class ChannelSpec(Radio):
-    channel_id: str | None = None
-    label: str | None = None
+    channel_id: StringID | None = None
+    label: builtins.str | None = None
     frequency: FrequencyRange | None = None
-    bandwidth_mhz: float | None = None
-    spacing_mhz: float | None = None
+    bandwidth_mhz: builtins.float | None = None
+    spacing_mhz: builtins.float | None = None
 
 class RadioProfile(Radio):
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None
     channel_plan: list[ChannelSpec]
-    active_channel_id: str | None = None
+    active_channel_id: StringID | None = None
     crypto_types: list[CryptoType]
     crypto_profile: CryptoProfile | None = None
     lora: LoRaProfile | None = None

@@ -1,0 +1,102 @@
+version: 1
+type: schema
+package: payload
+root: Payload
+tags:
+  - core
+
+enums:
+
+  SensorType:
+    - EO = 0
+    - EO_MULTISPECTRAL
+    - RADAR
+    - ELINT
+    - LIDAR
+
+  SensorSpectrum:
+    - VISUAL = 0
+    - SWIR
+    - MWIR
+    - LWIR
+    - RF
+    - UV
+
+  SensorErrorType:
+    - CEP = 0
+    - RMS
+
+  SensorDataFormat:
+    - TEXT = 0
+    - STILL_IMAGE
+    - VIDEO
+    - TRACK
+    - RANGE
+    - POINT_CLOUD
+
+  SensorAICapability:
+    - DETECTION = 0
+    - TRACKING
+    - CLASSIFICATION
+    - IDENTIFICATION
+    - OCR
+    - CHANGE_DETECTION
+
+  SensorFrustumShape:
+    - CONICAL = 0
+    - RECTANGULAR
+    - ELLIPTICAL
+    - SECTOR
+
+
+models:
+
+  Payload:
+    description: Object-carried sensor, effector, cargo, or other mounted payload
+    parent: Item
+
+  SensorPayload:
+    parent: Payload
+    fields:
+      name: string
+      model: string
+      type: SensorType
+      serial_uid: StringID
+      effect_domain: EffectDomain
+      max_range: float
+      ptz: bool
+      spectrum: SensorSpectrum
+      all_weather: bool
+      weather_limits: WeatherLimits
+      error_margin: float
+      error_type: SensorErrorType
+      data_formats: list[SensorDataFormat]
+      ai: list[SensorAICapability]
+      field_of_view: optional SensorFieldOfView
+      zoom_range: optional NumericRange
+
+  MeasurementQuality:
+    parent: MetadataValue
+    fields:
+      lat_err_m: optional float
+      az_err_deg: optional float
+      range_err_m: optional float
+
+  ImageSensor:
+    parent: SensorPayload
+    fields:
+      fov: optional SensorFieldOfView
+      night_vision: bool
+  
+  RFSensor:
+    parent: SensorPayload
+    fields:
+      frustum_shape: optional SensorFrustumShape
+      freq_span: optional NumericRange
+      chan_bw: optional float
+
+  SensorFieldOfView:
+    parent: Attribute
+    fields:
+      horizontal: optional NumericRange
+      vertical: optional NumericRange

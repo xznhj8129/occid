@@ -3,10 +3,7 @@ python3 -m examples.example_usage
 python3 examples/example_usage.py
 """
 
-import json
-import msgpack
 import sys
-import zlib
 from pathlib import Path
 
 if __package__ in (None, ""):
@@ -15,12 +12,11 @@ if __package__ in (None, ""):
 from occid.schema import *
 
 
-EXAMPLE_PAYLOAD_VERSION = (1, 0, 0)
-
-
-def build_example_payload() -> dict:
+def main() -> None:
+    EXAMPLE_PAYLOAD_VERSION = (1, 0, 0)
+    EXAMPLE_ID_TYPE = IdentifierType.DB_ID
     rc_link = LinkSchema(
-        schema_id="ELRS_915",
+        schema_id=StringID(id_type=EXAMPLE_ID_TYPE, value="ELRS_915"),
         name="ELRS_915",
         link_type=LinkType.POINT_TO_POINT,
         net_type=NetType.RF,
@@ -31,7 +27,7 @@ def build_example_payload() -> dict:
         condition=LinkCondition.GOOD,
     )
     video_link = LinkSchema(
-        schema_id="FPV_VIDEO",
+        schema_id=StringID(id_type=EXAMPLE_ID_TYPE, value="FPV_VIDEO"),
         name="FPV_VIDEO",
         link_type=LinkType.POINT_TO_POINT,
         net_type=NetType.RF,
@@ -41,33 +37,33 @@ def build_example_payload() -> dict:
         endpoints=[],
         condition=LinkCondition.GOOD,
     )
-    camera = SensorSchema(
-        object_type=ObjectType.ENTITY,
+    camera = ImageSensor(
         name="NOSE_CAM",
         model="Fixed Camera",
         type=SensorType.EO,
+        serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="sensor.nose-cam.serial"),
         effect_domain=EffectDomain.AIR,
         max_range=10000.0,
         ptz=False,
         spectrum=SensorSpectrum.VISUAL,
-        night_vision=False,
         all_weather=False,
         weather_limits=WeatherLimits(ifr=False),
         error_margin=5.0,
         error_type=SensorErrorType.CEP,
         data_formats=[SensorDataFormat.VIDEO],
         ai=[SensorAICapability.DETECTION],
-        datalink="FPV_VIDEO",
+        night_vision=False,
     )
 
     ground_robot = GroundRobot(
-        entity_id="robot.ugv.01",
-        sys_id="UGV_01",
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="robot.ugv.01"),
+        sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UGV_01"),
         alt_ids=[],
         tags=[],
-        metadata=[],
+        metadata={},
         relations=[],
         components=[],
+        serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="robot.ugv.01.serial"),
         sensors={},
         model="Tracked Mule",
         role="Ammo carrier",
@@ -91,13 +87,14 @@ def build_example_payload() -> dict:
     )
 
     air_robot = AirRobot(
-        entity_id="air.uav.strike.01",
-        sys_id="UAV_STRIKE_01",
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"),
+        sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UAV_STRIKE_01"),
         alt_ids=[],
         tags=[],
-        metadata=[],
+        metadata={},
         relations=[],
         components=[],
+        serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01.serial"),
         model="MK4V2-10",
         status=EntityOperationalState.READY,
         machine_type=MachineType.ROBOT,
@@ -146,7 +143,7 @@ def build_example_payload() -> dict:
     )
 
     ground_org = GroundOrbatOrg(
-        org_uid="org.uav.platoon",
+        org_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="org.uav.platoon"),
         combat_domain=EffectDomain.AIR,
         category=NATOUnitCategory.UAV,
         size=OOBSize.PLT,
@@ -172,8 +169,8 @@ def build_example_payload() -> dict:
         spacing=500.0,
     )
 
-    gcs_target = MessageTarget(target_id="gcs")
-    uav_target = MessageTarget(target_id="air.uav.strike.01")
+    gcs_target = MessageTarget(target_id=StringID(id_type=EXAMPLE_ID_TYPE, value="gcs"))
+    uav_target = MessageTarget(target_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"))
     ts_upload = Timestamp(
         seconds=0.0,
         minutes=0.0,
@@ -251,14 +248,14 @@ def build_example_payload() -> dict:
         AutopilotMissionWaypoint(waypoint_index=3, position=uav_land),
     ]
     uav_flight_plan = AutopilotFlightPlan(
-        task_id="task.plan.uav-01.flight",
+        task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.plan.uav-01.flight"),
         unit_code="UAV_01",
         assigned_assets=["air.uav.strike.01"],
         status_log=[],
         waypoints=uav_waypoints,
     )
     uav_mission = Mission(
-        task_id="task.mission.uav-demo",
+        task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.mission.uav-demo"),
         unit_code="UAV_SECTION",
         assigned_assets=["air.uav.strike.01"],
         status_log=[],
@@ -266,269 +263,103 @@ def build_example_payload() -> dict:
     )
 
     upload_mission_command = TaskCommand(
-        command_id="cmd.upload-mission.001",
-        target_ref="air.uav.strike.01",
         task=uav_mission,
     )
-    arm_command = VehicleCommand(
-        command_id="cmd.arm.001",
-        target_ref="air.uav.strike.01",
+    arm_command = FlightCommand(
         command_type=FlightCommandType.ARM,
     )
-    takeoff_command = VehicleCommand(
-        command_id="cmd.takeoff.001",
-        target_ref="air.uav.strike.01",
+    takeoff_command = FlightCommand(
         command_type=FlightCommandType.TAKEOFF,
     )
     upload_mission_message = CommandMessage(
-        msg_id="msg.command.upload-mission.001",
         src=gcs_target,
         dst=uav_target,
         ts=ts_upload,
         priority=MessagePriority.ROUTINE,
+        seq=1,
         command=upload_mission_command,
     )
     arm_message = CommandMessage(
-        msg_id="msg.command.arm.001",
         src=gcs_target,
         dst=uav_target,
         ts=ts_arm,
         priority=MessagePriority.ROUTINE,
+        seq=2,
         command=arm_command,
     )
     takeoff_message = CommandMessage(
-        msg_id="msg.command.takeoff.001",
         src=gcs_target,
         dst=uav_target,
         ts=ts_takeoff,
         priority=MessagePriority.ROUTINE,
+        seq=3,
         command=takeoff_command,
     )
-    telemetry_armed_message = TelemetryMessage(
-        msg_id="msg.telemetry.armed.001",
+    telemetry_armed_message = UAVTelemetryMessage(
         src=uav_target,
         dst=gcs_target,
         ts=ts_telemetry_armed,
         priority=MessagePriority.ROUTINE,
-        state=FlightControlState(
-            active_modes=[1],
-            active_mode_names=["ARMED"],
+        seq=4,
+        state=TelemetryState(
+            flight_mode=FlightMode.GUIDED,
+            battery_pct=99.0,
         ),
     )
-    telemetry_airborne_message = TelemetryMessage(
-        msg_id="msg.telemetry.airborne.001",
+    telemetry_airborne_message = UAVTelemetryMessage(
         src=uav_target,
         dst=gcs_target,
         ts=ts_telemetry_airborne,
         priority=MessagePriority.ROUTINE,
-        state=FlightControlState(
-            active_modes=[1, 2],
-            active_mode_names=["ARMED", "NAV_WP"],
+        seq=5,
+        state=TelemetryState(
+            flight_mode=FlightMode.NAV_WP,
+            flight_phase=FlightPhase.CRUISE,
+            battery_pct=98.0,
         ),
     )
 
-    return {
-        "version": EXAMPLE_PAYLOAD_VERSION,
-        "link_templates": [
-            link.model_dump(mode="json", exclude_none=True)
-            for link in [rc_link, video_link]
-        ],
-        "ground_robots": [
-            ground_robot.model_dump(mode="json", exclude_none=True)
-        ],
-        "air_robots": [
-            air_robot.model_dump(mode="json", exclude_none=True)
-        ],
-        "ground_orgs": [
-            ground_org.model_dump(mode="json", exclude_none=True)
-        ],
-        "uav_waypoints": [
-            waypoint.model_dump(mode="json", exclude_none=True)
-            for waypoint in uav_waypoints
-        ],
-        "uav_flight_plan": uav_flight_plan.model_dump(mode="json", exclude_none=True),
-        "uav_mission": uav_mission.model_dump(mode="json", exclude_none=True),
-        "uav_commands": [
-            command.model_dump(mode="json", exclude_none=True)
-            for command in [upload_mission_command, arm_command, takeoff_command]
-        ],
-        "command_messages": [
-            message.model_dump(mode="json", exclude_none=True)
-            for message in [upload_mission_message, arm_message, takeoff_message]
-        ],
-        "telemetry_messages": [
-            message.model_dump(mode="json", exclude_none=True)
-            for message in [telemetry_armed_message, telemetry_airborne_message]
-        ],
-    }
-
-
-def roundtrip_payload(payload: dict) -> dict:
-    payload_json = json.dumps(payload, separators=(",", ":")).encode()
-    packed_json = zlib.compress(payload_json, level=6)
-    payload_msgpack = msgpack.packb(payload, use_bin_type=True)
-    packed_msgpack = zlib.compress(payload_msgpack, level=6)
-    unpacked_json = json.loads(zlib.decompress(packed_json))
-    unpacked_msgpack = msgpack.unpackb(zlib.decompress(packed_msgpack), raw=False)
-
-    unpacked_links = [
-        LinkSchema.model_validate(link_payload)
-        for link_payload in unpacked_json["link_templates"]
-    ]
-    unpacked_ground_robots = [
-        GroundRobot.model_validate(robot_payload)
-        for robot_payload in unpacked_json["ground_robots"]
-    ]
-    unpacked_air_robots = [
-        AirRobot.model_validate(machine_payload)
-        for machine_payload in unpacked_json["air_robots"]
-    ]
-    unpacked_ground_orgs = [
-        GroundOrbatOrg.model_validate(org_payload)
-        for org_payload in unpacked_json["ground_orgs"]
-    ]
-    unpacked_uav_waypoints = [
-        AutopilotMissionWaypoint.model_validate(waypoint_payload)
-        for waypoint_payload in unpacked_json["uav_waypoints"]
-    ]
-    unpacked_uav_flight_plan = AutopilotFlightPlan.model_validate(unpacked_json["uav_flight_plan"])
-    unpacked_uav_mission = Mission.model_validate(unpacked_json["uav_mission"])
-    unpacked_uav_commands = [
-        TaskCommand.model_validate(unpacked_json["uav_commands"][0]),
-        VehicleCommand.model_validate(unpacked_json["uav_commands"][1]),
-        VehicleCommand.model_validate(unpacked_json["uav_commands"][2]),
-    ]
-    unpacked_command_messages = [
-        CommandMessage.model_validate(message_payload)
-        for message_payload in unpacked_json["command_messages"]
-    ]
-    unpacked_telemetry_messages = [
-        TelemetryMessage.model_validate(message_payload)
-        for message_payload in unpacked_json["telemetry_messages"]
-    ]
-
-    unpacked_msgpack_links = [
-        LinkSchema.model_validate(link_payload)
-        for link_payload in unpacked_msgpack["link_templates"]
-    ]
-    unpacked_msgpack_ground_robots = [
-        GroundRobot.model_validate(robot_payload)
-        for robot_payload in unpacked_msgpack["ground_robots"]
-    ]
-    unpacked_msgpack_air_robots = [
-        AirRobot.model_validate(machine_payload)
-        for machine_payload in unpacked_msgpack["air_robots"]
-    ]
-    unpacked_msgpack_ground_orgs = [
-        GroundOrbatOrg.model_validate(org_payload)
-        for org_payload in unpacked_msgpack["ground_orgs"]
-    ]
-    unpacked_msgpack_uav_waypoints = [
-        AutopilotMissionWaypoint.model_validate(waypoint_payload)
-        for waypoint_payload in unpacked_msgpack["uav_waypoints"]
-    ]
-    print(unpacked_msgpack_uav_waypoints)
-    for i in unpacked_msgpack_uav_waypoints:
-        print(i)
-    unpacked_msgpack_uav_flight_plan = AutopilotFlightPlan.model_validate(unpacked_msgpack["uav_flight_plan"])
-    unpacked_msgpack_uav_mission = Mission.model_validate(unpacked_msgpack["uav_mission"])
-    unpacked_msgpack_uav_commands = [
-        TaskCommand.model_validate(unpacked_msgpack["uav_commands"][0]),
-        VehicleCommand.model_validate(unpacked_msgpack["uav_commands"][1]),
-        VehicleCommand.model_validate(unpacked_msgpack["uav_commands"][2]),
-    ]
-    unpacked_msgpack_command_messages = [
-        CommandMessage.model_validate(message_payload)
-        for message_payload in unpacked_msgpack["command_messages"]
-    ]
-    unpacked_msgpack_telemetry_messages = [
-        TelemetryMessage.model_validate(message_payload)
-        for message_payload in unpacked_msgpack["telemetry_messages"]
-    ]
-
-    return {
-        "payload_json": payload_json,
-        "packed_json": packed_json,
-        "payload_msgpack": payload_msgpack,
-        "packed_msgpack": packed_msgpack,
-        "unpacked_links": unpacked_links,
-        "unpacked_ground_robots": unpacked_ground_robots,
-        "unpacked_air_robots": unpacked_air_robots,
-        "unpacked_ground_orgs": unpacked_ground_orgs,
-        "unpacked_msgpack_links": unpacked_msgpack_links,
-        "unpacked_msgpack_ground_robots": unpacked_msgpack_ground_robots,
-        "unpacked_msgpack_air_robots": unpacked_msgpack_air_robots,
-        "unpacked_msgpack_ground_orgs": unpacked_msgpack_ground_orgs,
-        "unpacked_uav_waypoints": unpacked_uav_waypoints,
-        "unpacked_uav_flight_plan": unpacked_uav_flight_plan,
-        "unpacked_uav_mission": unpacked_uav_mission,
-        "unpacked_uav_commands": unpacked_uav_commands,
-        "unpacked_command_messages": unpacked_command_messages,
-        "unpacked_telemetry_messages": unpacked_telemetry_messages,
-        "unpacked_msgpack_uav_waypoints": unpacked_msgpack_uav_waypoints,
-        "unpacked_msgpack_uav_flight_plan": unpacked_msgpack_uav_flight_plan,
-        "unpacked_msgpack_uav_mission": unpacked_msgpack_uav_mission,
-        "unpacked_msgpack_uav_commands": unpacked_msgpack_uav_commands,
-        "unpacked_msgpack_command_messages": unpacked_msgpack_command_messages,
-        "unpacked_msgpack_telemetry_messages": unpacked_msgpack_telemetry_messages,
-    }
-
-
-def main() -> None:
-    payload = build_example_payload()
-    roundtrip = roundtrip_payload(payload)
-
-    print(json.dumps(payload, indent=2))
     print()
-    print(f"json_bytes={len(roundtrip['payload_json'])}")
-    print(f"json_zlib_bytes={len(roundtrip['packed_json'])}")
-    print(f"msgpack_bytes={len(roundtrip['payload_msgpack'])}")
-    print(f"msgpack_zlib_bytes={len(roundtrip['packed_msgpack'])}")
-    print(f"unpacked_links={[link.schema_id for link in roundtrip['unpacked_links']]}")
-    print(
-        f"unpacked_ground_robots={[robot.entity_id for robot in roundtrip['unpacked_ground_robots']]}"
-    )
-    print(
-        f"unpacked_air_robots={[machine.entity_id for machine in roundtrip['unpacked_air_robots']]}"
-    )
-    print(
-        f"unpacked_ground_orgs={[org.org_uid for org in roundtrip['unpacked_ground_orgs']]}"
-    )
-    print(
-        f"unpacked_uav_waypoints={[waypoint.waypoint_index for waypoint in roundtrip['unpacked_uav_waypoints']]}"
-    )
-    print(f"unpacked_uav_flight_plan={roundtrip['unpacked_uav_flight_plan'].task_id}")
-    print(
-        f"unpacked_uav_mission_tasks={[task.task_id for task in roundtrip['unpacked_uav_mission'].tasks]}"
-    )
-    print(
-        f"unpacked_command_messages={[message.msg_id for message in roundtrip['unpacked_command_messages']]}"
-    )
-    print(
-        f"unpacked_telemetry_messages={[message.msg_id for message in roundtrip['unpacked_telemetry_messages']]}"
-    )
-    print(
-        f"unpacked_msgpack_ground_robots={[robot.entity_id for robot in roundtrip['unpacked_msgpack_ground_robots']]}"
-    )
-    print(
-        f"unpacked_msgpack_air_robots={[machine.entity_id for machine in roundtrip['unpacked_msgpack_air_robots']]}"
-    )
-    print(
-        f"unpacked_msgpack_ground_orgs={[org.org_uid for org in roundtrip['unpacked_msgpack_ground_orgs']]}"
-    )
-    print(
-        f"unpacked_msgpack_uav_waypoints={[waypoint.waypoint_index for waypoint in roundtrip['unpacked_msgpack_uav_waypoints']]}"
-    )
-    print(f"unpacked_msgpack_uav_flight_plan={roundtrip['unpacked_msgpack_uav_flight_plan'].task_id}")
-    print(
-        f"unpacked_msgpack_uav_mission_tasks={[task.task_id for task in roundtrip['unpacked_msgpack_uav_mission'].tasks]}"
-    )
-    print(
-        f"unpacked_msgpack_command_messages={[message.msg_id for message in roundtrip['unpacked_msgpack_command_messages']]}"
-    )
-    print(
-        f"unpacked_msgpack_telemetry_messages={[message.msg_id for message in roundtrip['unpacked_msgpack_telemetry_messages']]}"
-    )
+    upload_mission_encoded = upload_mission_message.encode()
+    upload_mission_decoded = CommandMessage.decode(upload_mission_encoded)
+    print("SEQ:", upload_mission_decoded.seq)
+    print("TARGET:", upload_mission_decoded.dst.target_id.value)
+    print("SIZE:", len(upload_mission_encoded))
+
+    print()
+    arm_encoded = arm_message.encode()
+    arm_decoded = CommandMessage.decode(arm_encoded)
+    print(arm_message)
+    print(arm_encoded)
+    print("SEQ:", arm_decoded.seq)
+    print("TARGET:", arm_decoded.dst.target_id.value)
+    print("SIZE:", len(arm_encoded))
+
+    print()
+    takeoff_encoded = takeoff_message.encode()
+    takeoff_decoded = CommandMessage.decode(takeoff_encoded)
+    print(takeoff_message)
+    print(takeoff_encoded)
+    print("SEQ:", takeoff_decoded.seq)
+    print("TARGET:", takeoff_decoded.dst.target_id.value)
+    print("SIZE:", len(takeoff_encoded))
+
+    print()
+    telemetry_armed_encoded = telemetry_armed_message.encode()
+    telemetry_armed_decoded = UAVTelemetryMessage.decode(telemetry_armed_encoded)
+    print("SEQ:", telemetry_armed_decoded.seq)
+    print("MODE:", telemetry_armed_decoded.state.flight_mode.name)
+    print("BATTERY:", telemetry_armed_decoded.state.battery_pct)
+    print("SIZE:", len(telemetry_armed_encoded))
+
+    print()
+    telemetry_airborne_encoded = telemetry_airborne_message.encode()
+    telemetry_airborne_decoded = UAVTelemetryMessage.decode(telemetry_airborne_encoded)
+    print("SEQ:", telemetry_airborne_decoded.seq)
+    print("MODE:", telemetry_airborne_decoded.state.flight_mode.name)
+    print("PHASE:", telemetry_airborne_decoded.state.flight_phase.name)
+    print("BATTERY:", telemetry_airborne_decoded.state.battery_pct)
+    print("SIZE:", len(telemetry_airborne_encoded))
 
 
 if __name__ == "__main__":

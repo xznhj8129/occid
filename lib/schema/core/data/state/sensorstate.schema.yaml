@@ -1,0 +1,40 @@
+version: 1
+type: schema
+package: sensorstate
+root: SensorState
+tags:
+  - core
+
+enums:
+  SensorMode:
+    - OFF = 0
+    - LOOK
+    - SCAN
+    - TRACK
+
+  SensorRunState:
+    - OFFLINE = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+
+  GimbalState:
+    - STOWED = 0
+    - STABILIZED
+    - SCANNING
+    - TRACKING
+
+models:
+
+  SensorState:
+    description: Onboard sensor readings, readiness, calibration, and availability
+    parent: State
+
+  TrackerState:
+    parent: SensorState
+    fields:
+      locked: optional bool
+      target_id: optional StringID
+      angular_error: optional LocalDirection
+      search_box_size: optional int
+      detections: optional VisionDetectionFrame

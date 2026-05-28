@@ -26,19 +26,19 @@ TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
 CORE_SCHEMA_MAX_PARTS = 3
 
 PRIMITIVE_TYPES = {
-    "string": "str",
-    "int": "int",
-    "int8": "int",
-    "int16": "int",
-    "int32": "int",
-    "int64": "int",
-    "uint8": "int",
-    "uint16": "int",
-    "uint32": "int",
-    "uint64": "int",
-    "float": "float",
-    "bool": "bool",
-    "bytes": "bytes",
+    "string": "builtins.str",
+    "int": "builtins.int",
+    "int8": "builtins.int",
+    "int16": "builtins.int",
+    "int32": "builtins.int",
+    "int64": "builtins.int",
+    "uint8": "builtins.int",
+    "uint16": "builtins.int",
+    "uint32": "builtins.int",
+    "uint64": "builtins.int",
+    "float": "builtins.float",
+    "bool": "builtins.bool",
+    "bytes": "builtins.bytes",
     "any": "Any",
 }
 
@@ -516,8 +516,7 @@ def apply_extend_variants(modules: list[ModuleDef]) -> None:
             if parent_name not in models_by_name:
                 raise SchemaError(f"extend_variants references unknown parent {parent_name} in {module.path}")
             parent_model = models_by_name[parent_name]
-            if not parent_model.has_variants:
-                raise SchemaError(f"extend_variants references non-variant parent {parent_name} in {module.path}")
+            parent_model.has_variants = True
             existing_members = {variant_member_name(parent_name, variant_name) for variant_name in parent_model.variants}
             for variant_name in variant_names:
                 if variant_name not in models_by_name:
@@ -942,11 +941,15 @@ def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[s
 def build_variant_type_members(modules: list[ModuleDef], symbol_index: dict[str, str]) -> dict[str, list[str]]:
     schema_module_names = {module.name for module in modules if module.doc_type == "schema"}
     models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
+    children_by_parent: dict[str, list[str]] = {}
+    for model_def in models_by_name.values():
+        if model_def.parent:
+            children_by_parent.setdefault(model_def.parent, []).append(model_def.name)
     variant_type_members: dict[str, list[str]] = {}
 
     def collect_schema_variants(model_name: str, seen: set[str]) -> list[str]:
         variant_names: list[str] = []
-        for variant_name in models_by_name[model_name].variants:
+        for variant_name in [*models_by_name[model_name].variants, *children_by_parent.get(model_name, [])]:
             if variant_name in seen:
                 continue
             seen.add(variant_name)

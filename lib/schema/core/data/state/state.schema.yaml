@@ -14,9 +14,9 @@ models:
       - Internal
       - Position
       - Guidance
-      - Sensor
+      - SensorState
       - Input
-      - Resources
+      - Resource
       - Condition
       - Lifecycle
       - Assignment

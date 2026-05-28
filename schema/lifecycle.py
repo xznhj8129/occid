@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .state import State
@@ -10,11 +11,11 @@ class Lifecycle(State):
     'Current stage in existence or execution.'
 
 class TaskStatusEntry(Lifecycle):
-    ts: float
+    ts: builtins.float
     status: TaskStatus
     command_result: CommandResult | None = None
     reply_ack: ReplyAck | None = None
     assign_fail: TaskAssignFail | None = None
     phase: TaskPhase | None = None
-    detail: str | None = None
-    source: str | None = None
+    detail: builtins.str | None = None
+    source: builtins.str | None = None

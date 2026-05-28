@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .feed import Link
@@ -24,64 +25,64 @@ class MeshtasticPort(IntEnum):
 ### Models
 
 class MeshLink(Link):
-    src_id: str
-    dst_id: str
+    src_id: StringID
+    dst_id: StringID
     condition: LinkCondition
     connection_status: ConnectionStatus | None = None
-    latency_ms: float | None = None
-    packet_loss: float | None = None
-    updated_ts: float | None = None
+    latency_ms: builtins.float | None = None
+    packet_loss: builtins.float | None = None
+    updated_ts: builtins.float | None = None
 
 class MeshNode(Node):
-    node_id: str
+    node_id: StringID
     state: MeshNodeState | None = None
-    last_seen_ts: float | None = None
+    last_seen_ts: builtins.float | None = None
     position: GlobalPosition | None = None
-    rssi: float | None = None
-    snr: float | None = None
-    hop_limit: int | None = None
+    rssi: builtins.float | None = None
+    snr: builtins.float | None = None
+    hop_limit: builtins.int | None = None
     link_condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
     roles: list[CapabilityRole]
 
 class MeshView(Network):
     'Current observed mesh topology and node/link state'
-    epoch: int = 0
-    nodes: dict[str, MeshNode]
+    epoch: builtins.int = 0
+    nodes: dict[builtins.str, MeshNode]
     links: list[MeshLink]
-    partition_id: str | None = None
+    partition_id: StringID | None = None
 
 class MeshtasticMessage(Message):
-    sender_id: str
-    sender_name: str | None = None
-    destination_id: str
+    sender_id: StringID
+    sender_name: builtins.str | None = None
+    destination_id: StringID
     port: MeshtasticPort | None = None
-    private_port_num: int | None = None
-    text: str | None = None
-    payload: bytes | None = None
+    private_port_num: builtins.int | None = None
+    text: builtins.str | None = None
+    payload: builtins.bytes | None = None
     position: MeshPositionSample | None = None
     metrics: MeshReceiveMetrics | None = None
 
 class MeshReceiveMetrics(TelemetryMessage):
-    snr: float | None = None
-    rssi: float | None = None
-    hop_limit: int | None = None
-    rx_time: float | None = None
+    snr: builtins.float | None = None
+    rssi: builtins.float | None = None
+    hop_limit: builtins.int | None = None
+    rx_time: builtins.float | None = None
 
 class MeshPositionSample(TelemetryMessage):
     position: GlobalPosition
-    position_ts: float | None = None
-    pdop: float | None = None
-    ground_speed: float | None = None
-    ground_track: float | None = None
-    sats_in_view: int | None = None
+    position_ts: builtins.float | None = None
+    pdop: builtins.float | None = None
+    ground_speed: builtins.float | None = None
+    ground_track: builtins.float | None = None
+    sats_in_view: builtins.int | None = None
 
 class NodeHeartbeat(TelemetryMessage):
-    node_id: str
-    last_seen_ts: float
+    node_id: StringID
+    last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None
-    rssi: float | None = None
-    snr: float | None = None
-    hop_limit: int | None = None
+    rssi: builtins.float | None = None
+    snr: builtins.float | None = None
+    hop_limit: builtins.int | None = None
     link_condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None

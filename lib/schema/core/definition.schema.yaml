@@ -47,16 +47,6 @@ enums:
     - HIGH
     - CRITICAL
 
-  PropulsionType:
-    - FOOT = 0
-    - WHEELED
-    - TRACKED
-    - ROTARY_WING
-    - FIXED_WING
-    - JET
-    - MARITIME
-    - STATIC
-
   NavigationMode:
     - MANUAL = 0
     - INS
@@ -80,15 +70,6 @@ enums:
     - SECRET
     - TOP_SECRET
 
-  IdentifierType:
-    - UNIT_CODE = 0
-    - CALLSIGN
-    - SERIAL_NUMBER
-    - DB_ID
-    - TRACK_ID
-    - ASSET_ID
-    - REGISTRATION
-
   MediaType:
     - IMAGE = 0
     - VIDEO
@@ -109,6 +90,17 @@ enums:
     - BATTERY
     - SOLAR
     - NUCLEAR
+
+  Faction:
+    - UNKNOWN = 0
+    - PENDING
+    - FRIENDLY
+    - SUSPECT
+    - HOSTILE
+    - NEUTRAL
+    - ASSUMED
+    - FAKER
+    - JOKER
 
 models:
 
@@ -132,13 +124,15 @@ models:
   Geometry:
     parent: Definition
 
+  DefinitionRelationship:
+    parent: Definition
+
   SemanticType:
     parent: Definition
     variants:
       - Category
       - Role
       - Function
-      - FactionAxis
       - Domain
 
   Category:
@@ -150,11 +144,6 @@ models:
   Function:
     parent: SemanticType
 
-  FactionAxis:
-    parent: SemanticType
-
   Domain:
     parent: SemanticType
 
-  DefinitionRelationship:
-    parent: Definition

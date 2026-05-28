@@ -73,12 +73,8 @@ models:
       robot_control: optional RobotControlSchema
       remote_control: RemoteControlSchema
 
-  Parameters:
-    description: Current operating configuration or control regime
-    parent: Property
-
   VideoConfigSchema:
-    parent: Parameters
+    parent: Parameter
     fields:
       protocol: optional VideoProtocol
       port: optional int
@@ -89,14 +85,14 @@ models:
       hls_url: optional string
 
   ReceiverConfig:
-    parent: Parameters
+    parent: Parameter
     fields:
       rx_min_usec: int
       rx_max_usec: int
       rx_center_usec: int
 
   ChannelMapEntry:
-    parent: Parameters
+    parent: Parameter
     fields:
       axis: ControlAxis
       source_channel: int
@@ -104,7 +100,7 @@ models:
       label: optional string
 
   ModeRange:
-    parent: Parameters
+    parent: Parameter
     fields:
       mode_id: optional int
       mode_name: optional string
@@ -112,7 +108,7 @@ models:
       range: NumericRange
 
   RobotControlSchema:
-    parent: Parameters
+    parent: Parameter
     fields:
       control_modes: optional RobotControlMode
       autopilot: optional bool
@@ -135,6 +131,16 @@ models:
       receiver_config: optional ReceiverConfig
       channel_map: list[ChannelMapEntry]
       mode_ranges: list[ModeRange]
+
+
+  FlightControllerIdentity:
+    parent: Identity
+    fields:
+      api_version: Version
+      controller_variant: optional string
+      hardware: optional HardwareIdentity
+      flight_software: optional FirmwareInfo
+      os_software: optional FirmwareInfo
 
   FlightControlState:
     parent: Guidance

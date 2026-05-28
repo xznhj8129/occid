@@ -13,8 +13,8 @@ models:
   ControlLease:
     parent: Interface
     fields:
-      asset_id: string
-      holder_id: string
+      asset_id: StringID
+      holder_id: StringID
       control_level: ControlLevel
       lease_start: float
       lease_end: float

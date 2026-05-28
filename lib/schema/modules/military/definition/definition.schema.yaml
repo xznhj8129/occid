@@ -7,18 +7,6 @@ tags:
 requires:
   - core
 
-enums:
-  Faction:
-    - UNKNOWN = 0
-    - PENDING
-    - FRIENDLY
-    - SUSPECT
-    - HOSTILE
-    - NEUTRAL
-    - ASSUMED
-    - FAKER
-    - JOKER
-
 maps:
   SIDC_FACTION:
     type: map[string, string]

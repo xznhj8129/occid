@@ -15,7 +15,7 @@ models:
   ProtocolEventMessage:
     parent: ObservationMessage
     fields:
-      uid: string
+      uid: StringID
       event_type: string
       event_method: optional string
       callsign: optional string

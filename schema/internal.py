@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .state import State
@@ -10,10 +11,10 @@ class Internal(State):
     'Diagnostic internals of a machine or system.'
 
 class FirmwareInfo(Internal):
-    name: str
+    name: builtins.str
     version: Version
-    build: str | None = None
+    build: builtins.str | None = None
 
 class RuntimeLoadState(Internal):
-    cpu_load: int | None = None
-    cycle_time_us: int | None = None
+    cpu_load: builtins.int | None = None
+    cycle_time_us: builtins.int | None = None

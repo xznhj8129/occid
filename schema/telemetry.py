@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .message import Message
@@ -8,24 +9,27 @@ from .message import Message
 
 class TelemetryMessage(Message):
     'Message whose payload reports sender or asset state'
-    state: SerializeAsAny[State | Kinematic | Internal | Position | Guidance | PlanProgress | TelemetryState | NavigationValidity | GnssSolution | FlightControlState | Sensor | Input | Resources | Condition | Lifecycle | Assignment]
+    state: SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | Guidance | PlanProgress | TelemetryState | NavigationValidity | GnssSolution | FlightControlState | SensorState | TrackerState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Condition | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | VehicleReadinessState | Lifecycle | TaskStatusEntry | Assignment | TaskDelta | FlightAssignment]
+
+class UAVTelemetryMessage(TelemetryMessage):
+    state: TelemetryState
 
 class CapabilityAdvert(TelemetryMessage):
-    node_id: str
+    node_id: StringID
     roles: list[CapabilityRole]
-    link_ids: list[str]
-    sensor_ids: list[str]
-    payload_ids: list[str]
+    link_ids: list[builtins.str]
+    sensor_ids: list[builtins.str]
+    payload_ids: list[builtins.str]
 
 class StateDelta(TelemetryMessage):
-    entity_id: str
-    changed_fields: dict[str, SerializeAsAny[State | Kinematic | Internal | Position | Guidance | PlanProgress | TelemetryState | NavigationValidity | GnssSolution | FlightControlState | Sensor | Input | Resources | Condition | Lifecycle | Assignment]]
+    entity_id: StringID
+    changed_fields: dict[builtins.str, SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | Guidance | PlanProgress | TelemetryState | NavigationValidity | GnssSolution | FlightControlState | SensorState | TrackerState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Condition | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | VehicleReadinessState | Lifecycle | TaskStatusEntry | Assignment | TaskDelta | FlightAssignment]]
 
 class TransportCounters(TelemetryMessage):
-    rx_count: int = 0
-    tx_count: int = 0
-    parse_error_count: int = 0
-    dropped_count: int = 0
+    rx_count: builtins.int = 0
+    tx_count: builtins.int = 0
+    parse_error_count: builtins.int = 0
+    dropped_count: builtins.int = 0
 
 class TransportError(TelemetryMessage):
     error: NetworkError

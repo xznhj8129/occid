@@ -1,8 +1,9 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
-from .control import Control, TaskLevel, TaskPhase, TaskPriority, TaskStatus
+from .control import Control
 from .message import AckMode, ConflictPolicy, DeliveryState, QosTier, RouteMode
 
 ### Enums
@@ -16,37 +17,91 @@ class TaskISR(IntEnum):
     IMPROVE_TRACK = auto()
     IMAGERY = auto()
 
+class TaskType(IntEnum):
+    POSITIONING = 0
+    CARGO = auto()
+    HOLD = auto()
+    SUPPORT = auto()
+    MOVE = auto()
+    RESUPPLY = auto()
+
+class TaskLevel(IntEnum):
+    MISSION = 0
+    PLAN = auto()
+
+class TaskPhase(IntEnum):
+    CREATED = 0
+    DISPATCHED = auto()
+    ASSIGNED = auto()
+    RUNNING = auto()
+    DONE_OK = auto()
+    DONE_FAIL = auto()
+    CANCELLED = auto()
+
+class TaskPriority(IntEnum):
+    ROUTINE = 0
+    HIGH = auto()
+    IMMEDIATE = auto()
+
+class TaskStatus(IntEnum):
+    NEW = 0
+    ACCEPTED = auto()
+    ACTIVE = auto()
+    COMPLETE = auto()
+    FAILED = auto()
+    CANCELLED = auto()
+
+class TaskAssignFail(IntEnum):
+    FAIL = 0
+    FAIL_NO_ASSETS = auto()
+    FAIL_BAD_REQUEST_CANTPRO = auto()
+    FAIL_DENIED = auto()
+    FAIL_INSUFFICIENT_INFO = auto()
+    FAIL_REJECTED = auto()
+    FAIL_C2_ELEMENT = auto()
+    FAIL_PLATFORM_CANTCO = auto()
+    FAIL_STALE = auto()
+    FAIL_CANCELLED = auto()
+
+class TaskAir(IntEnum):
+    FLY = 0
+    AIR_DROP = auto()
+    RECOVERY = auto()
+
+class AirMoveTask(IntEnum):
+    FLY = 0
+    RELOCATION = auto()
+
 class Task_type(IntEnum):
     MISSION = 0
     PLAN = auto()
-    ISR = auto()
     COMBAT = auto()
 
 ### Models
 
 class Task(Control):
     'A directive to accomplish an objective'
-    task_id: str
+    task_id: StringID
     task_level: TaskLevel
     task_type: TaskType | None = None
-    unit_code: str
+    unit_code: builtins.str
     capability: Capability | None = None
     status: TaskStatus = TaskStatus.NEW
     command_result: CommandResult | None = None
     assign_fail: TaskAssignFail | None = None
     phase: TaskPhase = TaskPhase.CREATED
-    geometry_id: str | None = None
-    start_time: float | None = None
-    deadline: float | None = None
+    geometry_id: StringID | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
-    remarks: str | None = None
-    last_update: float | None = None
-    issued_by: str | None = None
-    accepted_by: str | None = None
-    assigned_assets: list[str]
-    attempt_idx: int = 0
+    remarks: builtins.str | None = None
+    last_update: builtins.float | None = None
+    issued_by: builtins.str | None = None
+    accepted_by: builtins.str | None = None
+    assigned_assets: list[builtins.str]
+    attempt_idx: builtins.int = 0
     dispatch_state: DeliveryState = DeliveryState.QUEUED
-    dispatch_error: str | None = None
+    dispatch_error: builtins.str | None = None
     time_window: TaskTimeWindow | None = None
     status_log: list[TaskStatusEntry]
     qos: QosTier = QosTier.ROUTINE
@@ -63,6 +118,6 @@ class Mission(Task):
 class IsrTask(Task):
     isr_task: TaskISR | None = None
     area: GeoArea
-    dwell_seconds: float | None = None
+    dwell_seconds: builtins.float | None = None
     isr_params: IsrParameters | None = None
     isr_result: IsrResult | None = None

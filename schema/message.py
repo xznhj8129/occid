@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .communication import Communication
@@ -65,28 +66,28 @@ class ResponseMessage_type(IntEnum):
 
 class Message(Communication):
     'Transmitted envelope plus payload'
-    msg_id: str
     src: MessageTarget
     dst: MessageTarget
     ts: Timestamp
     priority: MessagePriority
+    seq: builtins.int
 
 class MessageTarget(OCCIDModel):
-    target_id: str
+    target_id: StringID
 
 class ResponseMessage(Message):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    in_reply_to: str
+    seq_reply: builtins.int
 
 class DeliveryReceipt(ResponseMessage):
-    node_id: str
+    node_id: StringID
     delivery_state: DeliveryState
-    seen_ts: float | None = None
-    exec_ts: float | None = None
-    error_code: str | None = None
+    seen_ts: builtins.float | None = None
+    exec_ts: builtins.float | None = None
+    error_code: builtins.str | None = None
 
 class MessageTransferResult(ResponseMessage):
-    target_count: int = 0
-    bytes_sent: int = 0
+    target_count: builtins.int = 0
+    bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None
-    error: str | None = None
+    error: builtins.str | None = None

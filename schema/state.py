@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .data import Data
@@ -13,7 +14,7 @@ class State_type(IntEnum):
     GUIDANCE = auto()
     SENSOR = auto()
     INPUT = auto()
-    RESOURCES = auto()
+    RESOURCE = auto()
     CONDITION = auto()
     LIFECYCLE = auto()
     ASSIGNMENT = auto()

@@ -1,0 +1,14 @@
+version: 1
+type: schema
+package: parameter
+root: Parameter
+tags:
+  - core
+
+models:
+  Parameter:
+    description: Current operating configuration or control regime
+    parent: Property
+    fields:
+      key: optional string
+      value: optional MetadataValue

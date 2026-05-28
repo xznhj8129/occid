@@ -1,0 +1,29 @@
+version: 1
+type: schema
+package: relationship
+root: Relationship
+tags:
+  - core
+
+models:
+  Relationship:
+    description: Nature of relations, ownership, provenance, link
+    parent: Property
+
+  RelationSchema:
+    parent: Relationship
+    fields:
+      src_id: StringID
+      dst_id: StringID
+      rel_kind: string
+      since_ts: optional float
+      until_ts: optional float
+      confidence: optional ConfidenceLevel
+      source: optional string
+
+  EntityComponentRef:
+    parent: Relationship
+    fields:
+      component_id: StringID
+      component_type: optional string
+      label: optional string

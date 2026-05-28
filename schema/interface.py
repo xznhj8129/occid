@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .control import Control
@@ -10,9 +11,9 @@ class Interface(Control):
     'Control surface, lease, operator input, remote-control mapping, or executor-facing command interface'
 
 class ControlLease(Interface):
-    asset_id: str
-    holder_id: str
+    asset_id: StringID
+    holder_id: StringID
     control_level: ControlLevel
-    lease_start: float
-    lease_end: float
-    lease_rev: int = 0
+    lease_start: builtins.float
+    lease_end: builtins.float
+    lease_rev: builtins.int = 0

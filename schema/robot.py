@@ -1,11 +1,13 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .entities import AirMachine, GroundMachine, Machine, MachineType
 from .guidance import Guidance
+from .identity import Identity
 from .interface import Interface
-from .property import Property
+from .parameter import Parameter
 
 ### Enums
 
@@ -72,47 +74,44 @@ class AirRobot(AirMachine):
     robot_control: RobotControlSchema | None = None
     remote_control: RemoteControlSchema
 
-class Parameters(Property):
-    'Current operating configuration or control regime'
-
-class VideoConfigSchema(Parameters):
+class VideoConfigSchema(Parameter):
     protocol: VideoProtocol | None = None
-    port: int | None = None
-    stream_url: str | None = None
-    overlay_url: str | None = None
-    webrtc_url: str | None = None
-    overlay_webrtc_url: str | None = None
-    hls_url: str | None = None
+    port: builtins.int | None = None
+    stream_url: builtins.str | None = None
+    overlay_url: builtins.str | None = None
+    webrtc_url: builtins.str | None = None
+    overlay_webrtc_url: builtins.str | None = None
+    hls_url: builtins.str | None = None
 
-class ReceiverConfig(Parameters):
-    rx_min_usec: int
-    rx_max_usec: int
-    rx_center_usec: int
+class ReceiverConfig(Parameter):
+    rx_min_usec: builtins.int
+    rx_max_usec: builtins.int
+    rx_center_usec: builtins.int
 
-class ChannelMapEntry(Parameters):
+class ChannelMapEntry(Parameter):
     axis: ControlAxis
-    source_channel: int
-    output_channel: int | None = None
-    label: str | None = None
+    source_channel: builtins.int
+    output_channel: builtins.int | None = None
+    label: builtins.str | None = None
 
-class ModeRange(Parameters):
-    mode_id: int | None = None
-    mode_name: str | None = None
-    channel: int
+class ModeRange(Parameter):
+    mode_id: builtins.int | None = None
+    mode_name: builtins.str | None = None
+    channel: builtins.int
     range: NumericRange
 
-class RobotControlSchema(Parameters):
+class RobotControlSchema(Parameter):
     control_modes: RobotControlMode | None = None
-    autopilot: bool | None = None
-    autopilot_controller_model: str = ''
+    autopilot: builtins.bool | None = None
+    autopilot_controller_model: builtins.str = ''
     autopilot_type: AutopilotType | None = None
     autopilot_fw: FirmwareInfo | None = None
 
 class RemoteControlSchema(Interface):
-    links: dict[str, LinkSchema]
-    rc_link: str = ''
-    vid_link: str = ''
-    ctrl_video_sep: bool | None = None
+    links: dict[builtins.str, LinkSchema]
+    rc_link: builtins.str = ''
+    vid_link: builtins.str = ''
+    ctrl_video_sep: builtins.bool | None = None
     telemetry: TelemetryState | None = None
     rc_telemetry: ControlAxisSet | None = None
     control_input: ControlAxisSet | None = None
@@ -122,15 +121,22 @@ class RemoteControlSchema(Interface):
     channel_map: list[ChannelMapEntry]
     mode_ranges: list[ModeRange]
 
+class FlightControllerIdentity(Identity):
+    api_version: Version
+    controller_variant: builtins.str | None = None
+    hardware: HardwareIdentity | None = None
+    flight_software: FirmwareInfo | None = None
+    os_software: FirmwareInfo | None = None
+
 class FlightControlState(Guidance):
-    armed: bool | None = None
-    in_air: bool | None = None
-    override_active: bool | None = None
-    failsafe: bool | None = None
-    active_modes: list[int]
-    active_mode_names: list[str]
-    nav_state_code: int | None = None
-    flight_mode: str | None = None
+    armed: builtins.bool | None = None
+    in_air: builtins.bool | None = None
+    override_active: builtins.bool | None = None
+    failsafe: builtins.bool | None = None
+    active_modes: list[builtins.int]
+    active_mode_names: list[builtins.str]
+    nav_state_code: builtins.int | None = None
+    flight_mode: builtins.str | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
     plan_progress: PlanProgress | None = None
     navigation_validity: NavigationValidity | None = None

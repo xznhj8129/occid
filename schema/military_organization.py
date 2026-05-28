@@ -1,9 +1,10 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
+from .definition import OperationalDomain
 from .organization import OrgTopology, Organization
-from .root import OperationalDomain
 
 ### Enums
 
@@ -130,7 +131,7 @@ class OrbatOrg_type(IntEnum):
 
 ### Mappings
 
-UNIT_SIZE_LABELS: dict[OOBSize, str] = {
+UNIT_SIZE_LABELS: dict[OOBSize, builtins.str] = {
     OOBSize.IND: 'Individual',
     OOBSize.TEM: 'Team',
     OOBSize.SQD: 'Squad',
@@ -147,7 +148,7 @@ UNIT_SIZE_LABELS: dict[OOBSize, str] = {
     OOBSize.WNG: 'Wing',
 }
 
-UNIT_SIZE_SHORT: dict[OOBSize, str] = {
+UNIT_SIZE_SHORT: dict[OOBSize, builtins.str] = {
     OOBSize.IND: 'Individual',
     OOBSize.TEM: 'Team',
     OOBSize.SQD: 'Squad',
@@ -164,7 +165,7 @@ UNIT_SIZE_SHORT: dict[OOBSize, str] = {
     OOBSize.WNG: 'Wing',
 }
 
-UNIT_CATEGORY_LABELS: dict[NATOUnitCategory, str] = {
+UNIT_CATEGORY_LABELS: dict[NATOUnitCategory, builtins.str] = {
     NATOUnitCategory.COMB: 'Combined Arms',
     NATOUnitCategory.BATT: 'Battery',
     NATOUnitCategory.TF: 'Task Force',
@@ -204,7 +205,7 @@ UNIT_CATEGORY_LABELS: dict[NATOUnitCategory, str] = {
     NATOUnitCategory.TRG: 'Training',
 }
 
-UNIT_CATEGORY_NAMES: dict[NATOUnitCategory, str] = {
+UNIT_CATEGORY_NAMES: dict[NATOUnitCategory, builtins.str] = {
     NATOUnitCategory.COMB: 'Combined Arms',
     NATOUnitCategory.BATT: 'Battery',
     NATOUnitCategory.TF: 'Task Force',
@@ -244,7 +245,7 @@ UNIT_CATEGORY_NAMES: dict[NATOUnitCategory, str] = {
     NATOUnitCategory.TRG: 'Training',
 }
 
-UNIT_SIZE_LEVELS_LAND: dict[OOBSize, int] = {
+UNIT_SIZE_LEVELS_LAND: dict[OOBSize, builtins.int] = {
     OOBSize.IND: 0,
     OOBSize.TEM: 1,
     OOBSize.SQD: 2,
@@ -257,7 +258,7 @@ UNIT_SIZE_LEVELS_LAND: dict[OOBSize, int] = {
     OOBSize.DIV: 9,
 }
 
-UNIT_SIZE_LEVELS_AIR: dict[OOBSize, int] = {
+UNIT_SIZE_LEVELS_AIR: dict[OOBSize, builtins.int] = {
     OOBSize.IND: 0,
     OOBSize.TEM: 1,
     OOBSize.FLT: 2,
@@ -266,7 +267,7 @@ UNIT_SIZE_LEVELS_AIR: dict[OOBSize, int] = {
     OOBSize.WNG: 5,
 }
 
-CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
+CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
     OOBSize.SQD: '<coy_callsign>-<plt_num>-<s_num>',
     OOBSize.SEC: '<coy_callsign>-<plt_num>-<s_num>',
     OOBSize.PLT: '<coy_callsign>-<plt_num>',
@@ -276,7 +277,7 @@ CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
     OOBSize.BDE: '<bde_num>BDE',
 }
 
-ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
+ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
     OOBSize.SQD: '<coy_callsign>-<plt_num>-<s_num>',
     OOBSize.SEC: '<coy_callsign>-<plt_num>-<s_num>',
     OOBSize.PLT: '<coy_callsign>-<plt_num>',
@@ -290,11 +291,11 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, str] = {
 
 class OrgComposition(OCCIDModel):
     category: NATOUnitCategory | None = None
-    label: str | None = None
-    qty: int = 0
+    label: builtins.str | None = None
+    qty: builtins.int = 0
 
 class MilitaryOrg(Organization):
-    sidc: str | None = None
+    sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
@@ -309,8 +310,8 @@ class OrbatOrg(MilitaryOrg):
     category: NATOUnitCategory
     size: OOBSize
     op_domain: OperationalDomain
-    taskforce: bool | None = None
-    links: dict[str, LinkSchema]
+    taskforce: builtins.bool | None = None
+    links: dict[builtins.str, LinkSchema]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]
@@ -318,7 +319,7 @@ class OrbatOrg(MilitaryOrg):
     personnel: list[ItemCount]
     vehicles: list[ItemCount]
     equipment: list[ItemCount]
-    spacing: float = 0.0
+    spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OrbatOrg):
     category: NATOUnitCategory

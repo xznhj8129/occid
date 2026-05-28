@@ -12,10 +12,15 @@ models:
     fields:
       state: State
 
+  UAVTelemetryMessage:
+    parent: TelemetryMessage
+    fields:
+      state: TelemetryState
+
   CapabilityAdvert:
     parent: TelemetryMessage
     fields:
-      node_id: string
+      node_id: StringID
       roles: list[CapabilityRole]
       link_ids: list[string]
       sensor_ids: list[string]
@@ -24,7 +29,7 @@ models:
   StateDelta:
     parent: TelemetryMessage
     fields:
-      entity_id: string
+      entity_id: StringID
       changed_fields: map[string, State]
 
   TransportCounters:

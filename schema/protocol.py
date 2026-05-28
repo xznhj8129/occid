@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .network import Transport
@@ -26,35 +27,35 @@ class Protocol(Transport):
 
 class ProtocolPayload(Protocol):
     format: ProtocolPayloadFormat
-    content_type: str | None = None
-    text: str | None = None
-    data: bytes | None = None
+    content_type: builtins.str | None = None
+    text: builtins.str | None = None
+    data: builtins.bytes | None = None
 
 class CryptoKey(Protocol):
-    key_id: str
-    label: str | None = None
+    key_id: StringID
+    label: builtins.str | None = None
     crypto_type: CryptoType
-    version: str | None = None
-    fill_ts: float | None = None
+    version: builtins.str | None = None
+    fill_ts: builtins.float | None = None
 
 class CryptoProfile(Protocol):
     active_crypto: CryptoType | None = None
-    keyset_id: str | None = None
+    keyset_id: StringID | None = None
     keys: list[CryptoKey]
 
 class LoRaProfile(Protocol):
-    spreading_factor: int | None = None
-    bandwidth_mhz: float | None = None
-    coding_rate: str | None = None
+    spreading_factor: builtins.int | None = None
+    bandwidth_mhz: builtins.float | None = None
+    coding_rate: builtins.str | None = None
 
 class AprsProfile(Protocol):
-    callsign: str | None = None
-    path: str | None = None
+    callsign: builtins.str | None = None
+    path: builtins.str | None = None
 
 class ElrsProfile(Protocol):
-    packet_rate_hz: int | None = None
-    telemetry_ratio: str | None = None
+    packet_rate_hz: builtins.int | None = None
+    telemetry_ratio: builtins.str | None = None
 
 class FpvProfile(Protocol):
-    video_standard: str | None = None
-    low_latency: bool | None = None
+    video_standard: builtins.str | None = None
+    low_latency: builtins.bool | None = None

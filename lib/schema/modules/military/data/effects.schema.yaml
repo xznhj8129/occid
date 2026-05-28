@@ -118,8 +118,8 @@ models:
 
   PayloadMountSchema:
     fields:
-      mount_id: string
-      item_id: string
+      mount_id: StringID
+      item_id: StringID
       qty: int = 0
       pylons: string = ""
       launcher: string = ""

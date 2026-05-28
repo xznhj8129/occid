@@ -15,9 +15,9 @@ models:
   HumanTextMessage:
     parent: Message
     fields:
-      sender_id: optional string
+      sender_id: optional StringID
       sender_name: optional string
-      destination_id: optional string
+      destination_id: optional StringID
       destination_group: optional string
       kind: optional string
       message: string

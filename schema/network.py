@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .communication import Communication
@@ -35,8 +36,8 @@ class Network(Transport):
 
 class NetworkAddress(Network):
     kind: AddressKind
-    value: str
-    port: int | None = None
+    value: builtins.str
+    port: builtins.int | None = None
 
 class Carrier(Transport):
     'What messages are transmitted over'

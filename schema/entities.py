@@ -1,10 +1,11 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
-from .object import Object, ObjectType
-from .property import Attributes
-from .root import OperationalDomain, PropulsionType
+from .attribute import Attribute
+from .definition import OperationalDomain
+from .object import Object
 
 ### Enums
 
@@ -66,6 +67,16 @@ class NavAids(IntEnum):
     CELESTIAL = auto()
     VISUAL = auto()
 
+class PropulsionType(IntEnum):
+    FOOT = 0
+    WHEELED = auto()
+    TRACKED = auto()
+    ROTARY_WING = auto()
+    FIXED_WING = auto()
+    JET = auto()
+    MARITIME = auto()
+    STATIC = auto()
+
 class Entity_type(IntEnum):
     ACTOR = 0
     MACHINE = auto()
@@ -84,34 +95,29 @@ class Machine_type(IntEnum):
     VEHICLE = 0
     ROBOT = auto()
     PLATFORM = auto()
-    GROUND = auto()
-    AIR = auto()
     MILITARY = auto()
 
 class GroundMachine_type(IntEnum):
-    GROUND_ROBOT = 0
-    MILITARY = auto()
+    MILITARY = 0
 
 class AirMachine_type(IntEnum):
-    AIR_ROBOT = 0
-    MILITARY = auto()
+    MILITARY = 0
 
 ### Models
 
 class Entity(Object):
     'One discrete "atom" capable of actions'
-    object_type: ObjectType = ObjectType.ENTITY
-    entity_id: str
-    short_id: str | None = None
-    name: str | None = None
+    entity_id: StringID
+    short_id: StringID | None = None
+    name: builtins.str | None = None
     entity_type: EntityType | None = None
     lifecycle_status: EntityLifecycleStatus | None = None
-    created_ts: float | None = None
-    updated_ts: float | None = None
-    origin_system: str | None = None
-    alt_ids: list[Identifier]
-    tags: list[str]
-    metadata: list[MetadataEntry]
+    created_ts: builtins.float | None = None
+    updated_ts: builtins.float | None = None
+    origin_system: builtins.str | None = None
+    alt_ids: list[StringID]
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[RelationSchema]
     location_state: LocationState | None = None
     symbology: SymbologySchema | None = None
@@ -123,45 +129,45 @@ class Actor(Entity):
 class Agent(Actor):
     pass
 
-class GroundNavigationSchema(Attributes):
+class GroundNavigationSchema(Attribute):
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
-    max_range: float
-    max_spd: float
+    max_range: builtins.float
+    max_spd: builtins.float
 
-class AirNavigationSchema(Attributes):
+class AirNavigationSchema(Attribute):
     flight_type: AirframeType
     control_modes: list[FlightMode]
     failsafe_mode: AirFailsafeMode | None = None
     weather_limits: WeatherLimits
-    ifr: bool | None = None
+    ifr: builtins.bool | None = None
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
     fuel: FuelState | None = None
-    max_range: float
-    max_flight_t: float
-    max_spd: float
-    cruise_spd: float
-    max_alt: float
-    start_flight_time: float
+    max_range: builtins.float
+    max_flight_t: builtins.float
+    max_spd: builtins.float
+    cruise_spd: builtins.float
+    max_alt: builtins.float
+    start_flight_time: builtins.float
 
 class Person(Actor):
     entity_type: EntityType = EntityType.PERSON
-    role: str
-    serial_uid: str = ''
+    role: builtins.str
+    serial_uid: StringID
     op_domain: OperationalDomain = OperationalDomain.LAND
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
     navaids: list[NavAids]
     health: HumanHealthStatus
-    sensors: dict[str, SensorSchema]
-    links: dict[str, LinkSchema]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    links: dict[builtins.str, LinkSchema]
 
 class Machine(Entity):
     entity_type: EntityType = EntityType.MACHINE
-    sys_id: str
+    sys_id: StringID
     machine_type: MachineType | None = None
     status: EntityOperationalState
     health_snapshot: HealthSnapshot | None = None
@@ -180,17 +186,17 @@ class Platform(Machine):
 class GroundMachine(Machine):
     machine_type: MachineType
     op_domain: OperationalDomain = OperationalDomain.LAND
-    model: str
-    role: str
-    serial_uid: str = ''
-    sensors: dict[str, SensorSchema]
+    model: builtins.str
+    role: builtins.str
+    serial_uid: StringID
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: GroundNavigationSchema
 
 class AirMachine(Machine):
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
-    model: str
-    serial_uid: str = ''
-    sensors: dict[str, SensorSchema]
+    model: builtins.str
+    serial_uid: StringID
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: AirNavigationSchema
     maint_status: MaintenanceStatus | None = None

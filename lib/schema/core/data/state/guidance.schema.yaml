@@ -49,12 +49,6 @@ models:
   Guidance:
     description: Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state
     parent: State
-    variants:
-      - PlanProgress
-      - TelemetryState
-      - NavigationValidity
-      - GnssSolution
-      - FlightControlState
 
   PlanProgress:
     parent: Guidance

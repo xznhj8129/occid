@@ -60,7 +60,7 @@ models:
   HealthAlert:
     parent: Condition
     fields:
-      alert_id: optional string
+      alert_id: optional StringID
       level: AlertLevel
       condition: string
       acknowledged: bool = false
@@ -68,7 +68,7 @@ models:
   SubsystemHealth:
     parent: Condition
     fields:
-      subsystem_id: string
+      subsystem_id: StringID
       state: HealthStatus
       fault_count: int = 0
       note: optional string

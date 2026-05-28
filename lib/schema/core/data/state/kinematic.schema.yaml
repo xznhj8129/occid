@@ -9,3 +9,13 @@ models:
   Kinematic:
     description: Motion and derived movement state.
     parent: State
+
+  ImuSample:
+    parent: Kinematic
+    fields:
+      acceleration: optional LocalVector
+      angular_velocity: optional AngularVelocityVector
+      magnetic_field: optional LocalVector
+      temperature_deg_c: optional float
+      timestamp_us: optional int
+      frame: optional BodyReferenceFrame

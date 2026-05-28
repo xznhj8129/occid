@@ -35,7 +35,7 @@ models:
   CryptoKey:
     parent: Protocol
     fields:
-      key_id: string
+      key_id: StringID
       label: optional string
       crypto_type: CryptoType
       version: optional string
@@ -45,7 +45,7 @@ models:
     parent: Protocol
     fields:
       active_crypto: optional CryptoType
-      keyset_id: optional string
+      keyset_id: optional StringID
       keys: list[CryptoKey]
 
   LoRaProfile:

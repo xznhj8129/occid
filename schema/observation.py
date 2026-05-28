@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .data import Data
@@ -89,27 +90,27 @@ class VisionBox(Detection):
     bounds: BoundingBox
 
 class VisionDetection(Detection):
-    detection_id: str | None = None
-    label: str | None = None
-    class_id: int | None = None
-    confidence: float | None = None
+    detection_id: StringID | None = None
+    label: builtins.str | None = None
+    class_id: builtins.int | None = None
+    confidence: builtins.float | None = None
     box: VisionBox | None = None
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
-    source_frame_id: str | None = None
-    attributes: list[MetadataEntry]
+    source_frame_id: StringID | None = None
+    attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
 
 class VisionDetectionFrame(Detection):
-    frame_id: str | None = None
-    sensor_id: str | None = None
-    timestamp_us: int | None = None
+    frame_id: StringID | None = None
+    sensor_id: StringID | None = None
+    timestamp_us: builtins.int | None = None
     detections: list[VisionDetection]
 
 class IsrObservation(Observation):
-    obs_id: str
-    track_id: str | None = None
-    sensor_id: str | None = None
-    obs_ts: float
+    obs_id: StringID
+    track_id: StringID | None = None
+    sensor_id: StringID | None = None
+    obs_ts: builtins.float
     observation_kind: ObservationKind | None = None
     category: IntelCategory | None = None
     spotter_origin: SpotterOrigin | None = None
@@ -120,17 +121,17 @@ class IsrObservation(Observation):
 class IsrParameters(OCCIDModel):
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
-    dwell_s: float | None = None
-    revisit_s: float | None = None
+    dwell_s: builtins.float | None = None
+    revisit_s: builtins.float | None = None
     sensor_types: list[SensorType]
     sensor_modes: list[SensorMode]
     effect_domains: list[EffectDomain]
     evidence_level: EvidenceLevel | None = None
 
 class TrackUpdate(Track):
-    track_id: str
+    track_id: StringID
     track_state: TrackState | None = None
-    updated_ts: float
+    updated_ts: builtins.float
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(Assessment):
@@ -141,24 +142,24 @@ class IsrResult(Assessment):
     observations: list[IsrObservation]
 
 class IntelTrackSchema(Track):
-    schema_id: str
-    schema_type: str = 'INTEL_TRACK'
-    created_ts: float | None = None
-    updated_ts: float | None = None
-    origin_system: str | None = None
+    schema_id: StringID
+    schema_type: builtins.str = 'INTEL_TRACK'
+    created_ts: builtins.float | None = None
+    updated_ts: builtins.float | None = None
+    origin_system: builtins.str | None = None
     trust_score: ConfidenceLevel | None = None
-    alt_ids: list[Identifier]
-    entity_flags: list[str]
-    faction: str | None = None
-    spotted_time: float
-    updated_time: float
-    stale_time: float
+    alt_ids: list[StringID]
+    entity_flags: list[builtins.str]
+    faction: builtins.str | None = None
+    spotted_time: builtins.float
+    updated_time: builtins.float
+    stale_time: builtins.float
     track_state: TrackState = TrackState.NEW
     category: IntelCategory | None = None
-    sensor_id: str | None = None
+    sensor_id: StringID | None = None
     spotter_last: SpotterOrigin | None = None
     position: GlobalPosition | None = None
     uncertainty: LocationUncertainty | None = None
-    error_m: float | None = None
+    error_m: builtins.float | None = None
     latest_observation: IsrObservation | None = None
     observations: list[IsrObservation]

@@ -1,0 +1,24 @@
+version: 1
+type: schema
+package: property
+root: Property
+tags:
+  - core
+
+models:
+  Property:
+    description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
+    parent: Data
+    variants:
+      - Identity
+      - Attribute
+      - Parameter
+      - Relationship
+
+  MetadataValue:
+    parent: Property
+    fields:
+      str: optional string
+      int: optional int
+      float: optional float
+      bool: optional bool

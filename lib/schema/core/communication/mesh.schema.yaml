@@ -21,8 +21,8 @@ models:
   MeshLink:
     parent: Link
     fields:
-      src_id: string
-      dst_id: string
+      src_id: StringID
+      dst_id: StringID
       condition: LinkCondition
       connection_status: optional ConnectionStatus
       latency_ms: optional float
@@ -32,7 +32,7 @@ models:
   MeshNode:
     parent: Node
     fields:
-      node_id: string
+      node_id: StringID
       state: optional MeshNodeState
       last_seen_ts: optional float
       position: optional GlobalPosition
@@ -50,14 +50,14 @@ models:
       epoch: int = 0
       nodes: map[string, MeshNode]
       links: list[MeshLink]
-      partition_id: optional string
+      partition_id: optional StringID
 
   MeshtasticMessage:
     parent: Message
     fields:
-      sender_id: string
+      sender_id: StringID
       sender_name: optional string
-      destination_id: string
+      destination_id: StringID
       port: optional MeshtasticPort
       private_port_num: optional int
       text: optional string
@@ -86,7 +86,7 @@ models:
   NodeHeartbeat:
     parent: TelemetryMessage
     fields:
-      node_id: string
+      node_id: StringID
       last_seen_ts: float
       node_state: optional MeshNodeState
       rssi: optional float

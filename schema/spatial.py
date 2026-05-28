@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .state import State
@@ -82,28 +83,28 @@ class SpatialStruct(Struct):
     'Spatial struct support models'
 
 class EulerAngles(Pose):
-    pitch: float
-    heading: float
-    roll: float
+    pitch: builtins.float
+    heading: builtins.float
+    roll: builtins.float
     frame: BodyReferenceFrame
 
 class LocalDirection(Bearing):
-    bearing: float
-    azimuth: float
-    elevation: float
-    slant_range: float
+    bearing: builtins.float
+    azimuth: builtins.float
+    elevation: builtins.float
+    slant_range: builtins.float
 
 class LocalVector(Vector):
-    x: float
-    y: float
-    z: float
+    x: builtins.float
+    y: builtins.float
+    z: builtins.float
     frame: InertialReferenceFrame
 
 class GlobalPosition(GeoPos):
-    lat: float
-    lon: float
-    alt: float
-    mgrs: str | None = None
+    lat: builtins.float
+    lon: builtins.float
+    alt: builtins.float
+    mgrs: builtins.str | None = None
     datum: Literal['WGS84'] = Field(default='WGS84', frozen=True)
     alt_frame: AltitudeDatum
 
@@ -114,35 +115,35 @@ class GeoArea(Shape):
     vertices: list[GlobalPosition]
 
 class BoundingBox(Bounding):
-    x1: float
-    y1: float
-    z1: float
-    x2: float
-    y2: float
-    z2: float
+    x1: builtins.float
+    y1: builtins.float
+    z1: builtins.float
+    x2: builtins.float
+    y2: builtins.float
+    z2: builtins.float
 
 class VelocityVector(Vector):
-    x: float
-    y: float
-    z: float
+    x: builtins.float
+    y: builtins.float
+    z: builtins.float
 
 class AngularVelocityVector(Vector):
-    x_rad_s: float
-    y_rad_s: float
-    z_rad_s: float
+    x_rad_s: builtins.float
+    y_rad_s: builtins.float
+    z_rad_s: builtins.float
     frame: BodyReferenceFrame
 
 class AltitudeState(Measurement):
-    absolute_m: float | None = None
-    relative_m: float | None = None
+    absolute_m: builtins.float | None = None
+    relative_m: builtins.float | None = None
     datum: AltitudeDatum
 
 class LocationUncertainty(Uncertainty):
-    horiz_err_m: float | None = None
-    vert_err_m: float | None = None
-    ellipse_major_m: float | None = None
-    ellipse_minor_m: float | None = None
-    ellipse_bearing_deg: float | None = None
+    horiz_err_m: builtins.float | None = None
+    vert_err_m: builtins.float | None = None
+    ellipse_major_m: builtins.float | None = None
+    ellipse_minor_m: builtins.float | None = None
+    ellipse_bearing_deg: builtins.float | None = None
 
 class GeoJsonGeometry(Shape):
     type: GeoJsonGeometryTypes

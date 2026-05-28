@@ -1,0 +1,27 @@
+version: 1
+type: schema
+package: attribute
+root: Attribute
+tags:
+  - core
+
+models:
+
+  Attribute:
+    description: Fundamental characteristics, type, form
+    parent: Property
+
+  SymbologySchema:
+    parent: Attribute
+    fields:
+      sidc: optional string
+      cot: optional string
+
+  DisplayMeta:
+    parent: Attribute
+    fields:
+      icon_code: optional string
+      tint: optional string
+      short_label: optional string
+
+

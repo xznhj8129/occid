@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .root import Root
@@ -71,30 +72,30 @@ class Orbital(Struct):
     pass
 
 class Time(Measurement):
-    utime: int
+    utime: builtins.int
 
 class Duration(Measurement):
-    seconds: float | None = None
-    minutes: int | None = None
-    hours: int | None = None
-    days: int | None = None
-    weeks: int | None = None
-    months: int | None = None
-    years: int | None = None
+    seconds: builtins.float | None = None
+    minutes: builtins.int | None = None
+    hours: builtins.int | None = None
+    days: builtins.int | None = None
+    weeks: builtins.int | None = None
+    months: builtins.int | None = None
+    years: builtins.int | None = None
 
 class Timestamp(Measurement):
-    seconds: float
-    minutes: int
-    hours: int
-    day: int
-    month: int
-    year: int
-    tz: int
+    seconds: builtins.float
+    minutes: builtins.int
+    hours: builtins.int
+    day: builtins.int
+    month: builtins.int
+    year: builtins.int
+    tz: builtins.int
 
 class ItemCount(Measurement):
-    item_type: str
-    qty: int = 0
+    item_type: builtins.str
+    qty: builtins.int = 0
 
 class NumericRange(Range):
-    min_value: float | None = None
-    max_value: float | None = None
+    min_value: builtins.float | None = None
+    max_value: builtins.float | None = None

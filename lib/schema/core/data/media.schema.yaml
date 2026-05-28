@@ -13,7 +13,7 @@ models:
   MediaItemSchema:
     parent: Media
     fields:
-      media_id: string
+      media_id: StringID
       media_type: MediaType
       uri: string
       label: optional string

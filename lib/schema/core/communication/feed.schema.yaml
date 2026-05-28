@@ -86,16 +86,16 @@ models:
   LinkEndpoint:
     parent: Link
     fields:
-      node_id: optional string
+      node_id: optional StringID
       interface_name: optional string
       address: optional NetworkAddress
 
   LinkSchema:
     parent: Link
     fields:
-      schema_id: string
+      schema_id: StringID
       schema_type: SchemaKind = LINK
-      uuid: optional string
+      uuid: optional StringID
       name: string
       link_type: LinkType
       net_type: NetType
@@ -105,7 +105,7 @@ models:
       bandwidth: optional BandwidthSpec
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_id: optional string
+      network_id: optional StringID
       primary_address: optional NetworkAddress
       addresses: optional list[NetworkAddress]
       endpoints: list[LinkEndpoint]

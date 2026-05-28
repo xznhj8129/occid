@@ -1,8 +1,9 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
-from .object import ObjectType, Set
+from .object import Set
 
 ### Enums
 
@@ -30,8 +31,7 @@ class Organization_type(IntEnum):
 
 class Organization(Set):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
-    org_uid: str
-    object_type: ObjectType = ObjectType.ORGANIZATION
+    org_uid: StringID
     orglevel: OrgLevel = OrgLevel.GROUP
     org_type: OrgType | None = None
     topology: OrgTopology | None = None

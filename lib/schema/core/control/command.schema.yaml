@@ -5,20 +5,36 @@ root: Command
 tags:
   - core
 
+enums:
+  CommandResult:
+    - ACCEPTED = 0
+    - TEMPORARILY_REJECTED
+    - DENIED
+    - UNSUPPORTED
+    - FAILED
+    - IN_PROGRESS
+    - CANCELLED
+
+  FlightCommandType:
+    - ARM = 0
+    - DISARM
+    - TAKEOFF
+    - LAND
+    - RETURN_TO_LAUNCH
+    - SET_MODE
+    - GOTO
+    - SET_TAKEOFF_ALTITUDE
+    - SELECT_MISSION
+    - START_OFFBOARD
+    - STOP_OFFBOARD
+
 models:
 
   Command:
     description: An immediate imperative requiring execution without interpretation
     parent: Control
-    variants:
-      - VehicleCommand
-      - TaskCommand
-      - TrackerCommand
-    fields:
-      command_id: string
-      target_ref: string
 
-  VehicleCommand:
+  FlightCommand:
     parent: Command
     fields:
       command_type: FlightCommandType

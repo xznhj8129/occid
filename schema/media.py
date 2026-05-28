@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .data import Data
@@ -10,10 +11,10 @@ class Media(Data):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
 
 class MediaItemSchema(Media):
-    media_id: str
+    media_id: StringID
     media_type: MediaType
-    uri: str
-    label: str | None = None
-    created_ts: float | None = None
-    size_bytes: int | None = None
-    content_type: str | None = None
+    uri: builtins.str
+    label: builtins.str | None = None
+    created_ts: builtins.float | None = None
+    size_bytes: builtins.int | None = None
+    content_type: builtins.str | None = None

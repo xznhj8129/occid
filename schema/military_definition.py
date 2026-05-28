@@ -1,23 +1,11 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
-
-### Enums
-
-class Faction(IntEnum):
-    UNKNOWN = 0
-    PENDING = auto()
-    FRIENDLY = auto()
-    SUSPECT = auto()
-    HOSTILE = auto()
-    NEUTRAL = auto()
-    ASSUMED = auto()
-    FAKER = auto()
-    JOKER = auto()
 
 ### Mappings
 
-SIDC_FACTION: dict[str, str] = {
+SIDC_FACTION: dict[builtins.str, builtins.str] = {
     'UNKNOWN': 'U',
     'PENDING': 'P',
     'FRIENDLY': 'F',
@@ -26,14 +14,14 @@ SIDC_FACTION: dict[str, str] = {
     'NEUTRAL': 'N',
 }
 
-SIDC_DOMAIN: dict[str, str] = {
+SIDC_DOMAIN: dict[builtins.str, builtins.str] = {
     'ground': 'G',
     'air': 'A',
     'sea': 'S',
     'sub': 'U',
 }
 
-SIDC_STATUS: dict[str, str] = {
+SIDC_STATUS: dict[builtins.str, builtins.str] = {
     'anticipated': 'A',
     'present': 'P',
     'present-capable': 'C',
@@ -41,19 +29,19 @@ SIDC_STATUS: dict[str, str] = {
     'present-destroyed': 'X',
 }
 
-SIDC_AIR_A5: dict[str, str] = {
+SIDC_AIR_A5: dict[builtins.str, builtins.str] = {
     'track': '-',
     'military': 'M',
     'civilian': 'C',
 }
 
-SIDC_AIR_A6: dict[str, str] = {
+SIDC_AIR_A6: dict[builtins.str, builtins.str] = {
     'fixed-wing': 'F',
     'rotary': 'H',
     'weapon': 'W',
 }
 
-SIDC_AIR_MILITARY: dict[str, str] = {
+SIDC_AIR_MILITARY: dict[builtins.str, builtins.str] = {
     'fighter': 'F',
     'attack': 'A',
     'bomber': 'B',
@@ -65,18 +53,18 @@ SIDC_AIR_MILITARY: dict[str, str] = {
     'ecm': 'J',
 }
 
-SIDC_GROUND_A5: dict[str, str] = {
+SIDC_GROUND_A5: dict[builtins.str, builtins.str] = {
     'track': '-',
     'unit': 'U',
 }
 
-SIDC_GROUND_A6: dict[str, str] = {
+SIDC_GROUND_A6: dict[builtins.str, builtins.str] = {
     'combat': 'C',
     'combat-support': 'U',
     'service-support': 'S',
 }
 
-SIDC_COMBAT_GROUND: dict[str, str] = {
+SIDC_COMBAT_GROUND: dict[builtins.str, builtins.str] = {
     'air-defence': 'D',
     'armor': 'A',
     'ssm': 'M',
@@ -88,7 +76,7 @@ SIDC_COMBAT_GROUND: dict[str, str] = {
     'engineer': 'E',
 }
 
-SIDC_COMBAT_GROUND_INFANTRY: dict[str, str] = {
+SIDC_COMBAT_GROUND_INFANTRY: dict[builtins.str, builtins.str] = {
     'light': 'L',
     'motorized': 'M',
     'mechanized': 'Z',
@@ -96,7 +84,7 @@ SIDC_COMBAT_GROUND_INFANTRY: dict[str, str] = {
     'air-assault': 'A',
 }
 
-SIDC_AIR_WEAPON_MISSILE: dict[str, str] = {
+SIDC_AIR_WEAPON_MISSILE: dict[builtins.str, builtins.str] = {
     'ssm': 'S*APWMSS----',
     'sam': 'S*APWMSA----',
     'aam': 'S*APWMAA----',
@@ -104,7 +92,7 @@ SIDC_AIR_WEAPON_MISSILE: dict[str, str] = {
     'land-attack': 'S*APWML----',
 }
 
-SIDC_GROUND_ARTILLERY: dict[str, str] = {
+SIDC_GROUND_ARTILLERY: dict[builtins.str, builtins.str] = {
     'spg': 'S*GPUCFHE---',
     'light_towed': 'S*GPUCFHL---',
     'medium_towed': 'S*GPUCFHM---',
@@ -114,7 +102,7 @@ SIDC_GROUND_ARTILLERY: dict[str, str] = {
     'ssm': 'S*GPUCMMT---',
 }
 
-SIDC_UNIT_SIZE: dict[str, str] = {
+SIDC_UNIT_SIZE: dict[builtins.str, builtins.str] = {
     'single': '-',
     'team': 'A',
     'squad': 'B',
@@ -127,7 +115,7 @@ SIDC_UNIT_SIZE: dict[str, str] = {
     'division': 'H',
 }
 
-SIDC_CODES: dict[str, Any] = {
+SIDC_CODES: dict[builtins.str, Any] = {
     'friendly': {'land': {'default': 'S*GP--------', 'unit': 'S*GPUC------', 'infantry': 'S*GPUCI-----', 'armor': 'S*GPUCA-----', 'recon': 'S*GPUCR-----', 'artillery': 'S*GPUCF-----', 'hq': 'S*GPUH----A-', 'tfhq': 'S*GPUH----B-', 'tf': 'S*GPUH----E-'}, 'air': {'default': 'S*APM-------'}},
     'hostile': {'land': {'default': 'SHGPU-------'}, 'air': {'default': 'SHAPM-------'}},
 }

@@ -29,8 +29,7 @@ models:
       - Group
       - Unit
     fields:
-      org_uid: string
-      object_type: ObjectType = ORGANIZATION
+      org_uid: StringID
       orglevel: OrgLevel = GROUP
       org_type: optional OrgType
       topology: optional OrgTopology

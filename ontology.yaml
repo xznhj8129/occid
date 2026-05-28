@@ -72,16 +72,23 @@ Root:
         Entity:
           description: Individually tracked actor, machine, software agent, or system.
 
-        Organization:
-          description: Structured group with membership, command, ownership, or parent-child organization links.
+        Set:
+          description: An object that represents many objects
+          children: 
 
-        Collection:
-          description: Named set of objects without requiring command hierarchy.
+            Organization:
+              description: Structured group with membership, command, ownership, or parent-child organization links.
+
+            Collection:
+              description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
+                  
+            Cluster:
+              description: A set of objects united only by criterion
 
         Item:
-          description: Physical or logical item that can be carried, mounted, consumed, stored, or attached.
+          description: A discrete bounded non-agent object
 
-        Place:
+        Location:
           description: Physical-world feature, named location, site, or bounded place.
 
     Control:
@@ -146,13 +153,26 @@ Root:
       children:
 
         Property:
-          description: Mostly stable identity, attribute, configuration, classification, display, provenance, and relationship data.
+          description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
+          children:
+
+            Identity:
+              description: Fundamental identity, name, ID
+              
+            Attribute:
+              description: Fundamental characteristics, type, form
+              
+            Parameter:
+              description: Current operating configuration or control regime
+              
+            Relationship:
+              description: Nature of relations, ownership, provenance, link
 
         State:
           description: Changing condition of an object, node, link, task, system, or process.
           children:
 
-            Location:
+            Position:
               description: Position, attitude, motion, altitude, navigation validity, and location uncertainty.
 
             Guidance:
@@ -178,6 +198,18 @@ Root:
 
         Observation:
           description: External detection, classification, track, signal, spot report, threat, or assessment data.
+
+          Detection:
+            description: Assessment that something exists or occurred
+            
+          Classification:
+            description: Assessment assigning type or identity to an object
+            
+          Track:
+            description: Assessment of the state of an external object over time
+            
+          Assessment:
+            description: Evaluation of effect, damage, outcome, or threat
 
         Media:
           description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference.

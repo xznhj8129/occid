@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .message import Message
@@ -8,16 +9,16 @@ from .message import Message
 
 class ObservationMessage(Message):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    observation: SerializeAsAny[Observation | Detection | Classification | Track | TrackUpdate | IntelTrackSchema | Assessment | IsrResult | IsrObservation]
+    observation: SerializeAsAny[Observation | Detection | VisionBox | VisionDetection | VisionDetectionFrame | Classification | Track | TrackUpdate | IntelTrackSchema | Assessment | IsrResult | IsrObservation]
 
 class ProtocolEventMessage(ObservationMessage):
-    uid: str
-    event_type: str
-    event_method: str | None = None
-    callsign: str | None = None
-    time_text: str | None = None
-    start_text: str | None = None
-    stale_text: str | None = None
+    uid: StringID
+    event_type: builtins.str
+    event_method: builtins.str | None = None
+    callsign: builtins.str | None = None
+    time_text: builtins.str | None = None
+    start_text: builtins.str | None = None
+    stale_text: builtins.str | None = None
     position: GlobalPosition | None = None
     uncertainty: LocationUncertainty | None = None
     detail: ProtocolPayload | None = None

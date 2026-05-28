@@ -15,6 +15,61 @@ enums:
     - IMPROVE_TRACK
     - IMAGERY
 
+  TaskType:
+    - POSITIONING = 0
+    - CARGO
+    - HOLD
+    - SUPPORT
+    - MOVE
+    - RESUPPLY
+
+  TaskLevel:
+    - MISSION = 0
+    - PLAN
+
+  TaskPhase:
+    - CREATED = 0
+    - DISPATCHED
+    - ASSIGNED
+    - RUNNING
+    - DONE_OK
+    - DONE_FAIL
+    - CANCELLED
+
+  TaskPriority:
+    - ROUTINE = 0
+    - HIGH
+    - IMMEDIATE
+
+  TaskStatus:
+    - NEW = 0
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+
+  TaskAssignFail:
+    - FAIL = 0
+    - FAIL_NO_ASSETS
+    - FAIL_BAD_REQUEST_CANTPRO
+    - FAIL_DENIED
+    - FAIL_INSUFFICIENT_INFO
+    - FAIL_REJECTED
+    - FAIL_C2_ELEMENT
+    - FAIL_PLATFORM_CANTCO
+    - FAIL_STALE
+    - FAIL_CANCELLED
+
+  TaskAir:
+    - FLY = 0
+    - AIR_DROP
+    - RECOVERY
+
+  AirMoveTask:
+    - FLY = 0
+    - RELOCATION
+
 models:
   Task:
     description: A directive to accomplish an objective
@@ -22,10 +77,9 @@ models:
     variants:
       - Mission
       - Plan
-      - IsrTask
 
     fields:
-      task_id: string
+      task_id: StringID
       task_level: TaskLevel
       task_type: optional TaskType
       unit_code: string
@@ -34,7 +88,7 @@ models:
       command_result: optional CommandResult
       assign_fail: optional TaskAssignFail
       phase: TaskPhase = CREATED
-      geometry_id: optional string
+      geometry_id: optional StringID
       start_time: optional float
       deadline: optional float
       priority: TaskPriority = ROUTINE

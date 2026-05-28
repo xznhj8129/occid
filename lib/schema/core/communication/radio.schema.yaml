@@ -61,7 +61,7 @@ models:
   ChannelSpec:
     parent: Radio
     fields:
-      channel_id: optional string
+      channel_id: optional StringID
       label: optional string
       frequency: optional FrequencyRange
       bandwidth_mhz: optional float
@@ -75,7 +75,7 @@ models:
       waveform: optional Waveform
       frequency: optional FrequencyRange
       channel_plan: list[ChannelSpec]
-      active_channel_id: optional string
+      active_channel_id: optional StringID
       crypto_types: list[CryptoType]
       crypto_profile: optional CryptoProfile
       lora: optional LoRaProfile

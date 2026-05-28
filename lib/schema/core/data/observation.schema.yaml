@@ -91,30 +91,30 @@ models:
   VisionDetection:
     parent: Detection
     fields:
-      detection_id: optional string
+      detection_id: optional StringID
       label: optional string
       class_id: optional int
       confidence: optional float
       box: optional VisionBox
       bearing: optional LocalDirection
       position: optional GlobalPosition
-      source_frame_id: optional string
-      attributes: list[MetadataEntry]
+      source_frame_id: optional StringID
+      attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
     parent: Detection
     fields:
-      frame_id: optional string
-      sensor_id: optional string
+      frame_id: optional StringID
+      sensor_id: optional StringID
       timestamp_us: optional int
       detections: list[VisionDetection]
 
   IsrObservation:
     parent: Observation
     fields:
-      obs_id: string
-      track_id: optional string
-      sensor_id: optional string
+      obs_id: StringID
+      track_id: optional StringID
+      sensor_id: optional StringID
       obs_ts: float
       observation_kind: optional ObservationKind
       category: optional IntelCategory
@@ -137,7 +137,7 @@ models:
   TrackUpdate:
     parent: Track
     fields:
-      track_id: string
+      track_id: StringID
       track_state: optional TrackState
       updated_ts: float
       confidence: optional ConfidenceLevel
@@ -154,13 +154,13 @@ models:
   IntelTrackSchema:
     parent: Track
     fields:
-      schema_id: string
+      schema_id: StringID
       schema_type: string = "INTEL_TRACK"
       created_ts: optional float
       updated_ts: optional float
       origin_system: optional string
       trust_score: optional ConfidenceLevel
-      alt_ids: list[Identifier]
+      alt_ids: list[StringID]
       entity_flags: list[string]
       faction: optional string
       spotted_time: float
@@ -168,7 +168,7 @@ models:
       stale_time: float
       track_state: TrackState = NEW
       category: optional IntelCategory
-      sensor_id: optional string
+      sensor_id: optional StringID
       spotter_last: optional SpotterOrigin
       position: optional GlobalPosition
       uncertainty: optional LocationUncertainty

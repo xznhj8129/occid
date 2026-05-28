@@ -1,47 +1,47 @@
 version: 1
 type: schema
-package: resources
-root: Resources
+package: resource
+root: Resource
 tags:
   - core
 
 models:
-  Resources:
+  Resource:
     description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
     parent: State
 
   FuelState:
-    parent: Resources
+    parent: Resource
     fields:
       fuel_type: FuelType
       capacity: optional float
       remaining: optional float
 
   SuppliesSchema:
-    parent: Resources
+    parent: Resource
     fields:
       fuel: optional FuelState
       stores: list[ItemCount]
 
   PowerSourceSchema:
-    parent: Resources
+    parent: Resource
     fields:
-      source_id: string
+      source_id: StringID
       power_type: PowerType
       status: PowerStatus
       remaining_pct: optional float
 
   PowerStateSchema:
-    parent: Resources
+    parent: Resource
     fields:
       status: PowerStatus
       sources: list[PowerSourceSchema]
       electrical_sources: list[ElectricalResourceState]
 
   ElectricalResourceState:
-    parent: Resources
+    parent: Resource
     fields:
-      source_id: optional string
+      source_id: optional StringID
       battery_id: optional int
       voltage_v: optional float
       current_a: optional float

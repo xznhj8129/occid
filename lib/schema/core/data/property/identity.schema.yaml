@@ -1,0 +1,43 @@
+version: 1
+type: schema
+package: identity
+root: Identity
+tags:
+  - core
+
+enums:
+  IdentifierType:
+    - UNIT_CODE = 0
+    - CALLSIGN
+    - SERIAL_NUMBER
+    - DB_ID
+    - TRACK_ID
+    - ASSET_ID
+    - REGISTRATION
+
+models:
+  Identity:
+    description: Fundamental identity, name, ID
+    parent: Property
+
+  StringID:
+    parent: Identity
+    fields:
+      id_type: IdentifierType
+      value: string
+
+  IntID:
+    parent: Identity
+    fields:
+      id_type: IdentifierType
+      value: int
+
+  HardwareIdentity:
+    parent: Identity
+    fields:
+      hardware_uid: optional StringID
+      vendor_id: optional StringID
+      product_id: optional StringID
+      product_name: optional string
+      board_info: optional StringID
+

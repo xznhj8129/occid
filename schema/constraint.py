@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .control import Control
@@ -26,15 +27,15 @@ class ConstraintCondition(Constraint):
     pass
 
 class TaskTimeWindow(Constraint):
-    earliest_start: float | None = None
-    latest_finish: float | None = None
+    earliest_start: builtins.float | None = None
+    latest_finish: builtins.float | None = None
 
 class WeatherLimits(Constraint):
-    ifr: bool | None = None
-    night: bool | None = None
+    ifr: builtins.bool | None = None
+    night: builtins.bool | None = None
     rain: NumericRange | None = None
     snow: NumericRange | None = None
     temp: NumericRange | None = None
     wind: NumericRange | None = None
     vis: NumericRange | None = None
-    icing: bool | None = None
+    icing: builtins.bool | None = None

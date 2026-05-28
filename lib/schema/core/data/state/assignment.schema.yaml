@@ -13,7 +13,7 @@ models:
   TaskDelta:
     parent: Assignment
     fields:
-      task_id: string
+      task_id: StringID
       task_rev: int = 0
       phase: TaskPhase
       progress: optional float
@@ -24,7 +24,7 @@ models:
     parent: Assignment
     fields:
       num: int
-      unit_id: optional string
+      unit_id: optional StringID
       callsign: optional string
       objective_assign: optional int
       wave_n: int = 0

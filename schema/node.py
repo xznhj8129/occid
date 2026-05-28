@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .communication import Communication
@@ -20,4 +21,4 @@ class Node(Communication):
     'Endpoint that sends, receives, relays, records, controls, or bridges messages'
 
 class NodeRef(Node):
-    node_id: str
+    node_id: StringID

@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 from .state import State
@@ -45,22 +46,15 @@ class GnssFixType(IntEnum):
     RTK_FLOAT = auto()
     RTK_FIXED = auto()
 
-class Guidance_type(IntEnum):
-    PLAN_PROGRESS = 0
-    TELEMETRY_STATE = auto()
-    NAVIGATION_VALIDITY = auto()
-    GNSS_SOLUTION = auto()
-    FLIGHT_CONTROL_STATE = auto()
-
 ### Models
 
 class Guidance(State):
     'Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state'
 
 class PlanProgress(Guidance):
-    waypoint_count: int | None = None
-    current_waypoint_index: int | None = None
-    plan_valid: bool | None = None
+    waypoint_count: builtins.int | None = None
+    current_waypoint_index: builtins.int | None = None
+    plan_valid: builtins.bool | None = None
 
 class TelemetryState(Guidance):
     flight_mode: FlightMode | None = None
@@ -68,27 +62,27 @@ class TelemetryState(Guidance):
     plan_phase: FlightPlanPhase | None = None
     attitude: EulerAngles | None = None
     velocity: VelocityVector | None = None
-    battery_pct: float | None = None
-    link_rssi: float | None = None
+    battery_pct: builtins.float | None = None
+    link_rssi: builtins.float | None = None
 
 class NavigationValidity(Guidance):
-    local_position_ok: bool | None = None
-    global_position_ok: bool | None = None
-    home_position_ok: bool | None = None
+    local_position_ok: builtins.bool | None = None
+    global_position_ok: builtins.bool | None = None
+    home_position_ok: builtins.bool | None = None
 
 class GnssSolution(Guidance):
     fix_type: GnssFixType | None = None
-    fix_code: int | None = None
-    satellites_used: int | None = None
+    fix_code: builtins.int | None = None
+    satellites_used: builtins.int | None = None
     position: GlobalPosition | None = None
     altitude: AltitudeState | None = None
-    ground_speed_ms: float | None = None
-    ground_course_deg: float | None = None
-    hdop: float | None = None
-    vdop: float | None = None
-    eph: float | None = None
-    epv: float | None = None
-    yaw_deg: float | None = None
-    last_message_dt: float | None = None
-    errors: float | None = None
-    timeouts: float | None = None
+    ground_speed_ms: builtins.float | None = None
+    ground_course_deg: builtins.float | None = None
+    hdop: builtins.float | None = None
+    vdop: builtins.float | None = None
+    eph: builtins.float | None = None
+    epv: builtins.float | None = None
+    yaw_deg: builtins.float | None = None
+    last_message_dt: builtins.float | None = None
+    errors: builtins.float | None = None
+    timeouts: builtins.float | None = None

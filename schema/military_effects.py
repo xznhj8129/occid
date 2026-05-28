@@ -1,5 +1,6 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
+import builtins
 from .common import *
 
 ### Enums
@@ -103,20 +104,20 @@ class EffectsSchema_type(IntEnum):
 
 class PayloadAllocation(OCCIDModel):
     payload_type: PayloadType
-    qty: int = 0
+    qty: builtins.int = 0
 
 class PayloadPlanSchema(OCCIDModel):
     requested: list[PayloadAllocation]
     approved: list[PayloadAllocation]
     loaded: list[PayloadAllocation]
-    notes: str | None = None
+    notes: builtins.str | None = None
 
 class PayloadMountSchema(OCCIDModel):
-    mount_id: str
-    item_id: str
-    qty: int = 0
-    pylons: str = ''
-    launcher: str = ''
+    mount_id: StringID
+    item_id: StringID
+    qty: builtins.int = 0
+    pylons: builtins.str = ''
+    launcher: builtins.str = ''
     compat_tags: list[PayloadType]
     loaded: list[PayloadAllocation]
 
@@ -126,30 +127,30 @@ class PayloadSchema(OCCIDModel):
     weapons: list[ItemCount]
     ammo: list[ItemCount]
     ordnance: list[ItemCount]
-    payload_mounts: dict[str, PayloadMountSchema]
+    payload_mounts: dict[builtins.str, PayloadMountSchema]
     payload_plan: PayloadPlanSchema | None = None
 
 class EffectsSchema(OCCIDModel):
-    has_launchers: bool
+    has_launchers: builtins.bool
     esad: EsadMunitionStatus | None = None
-    payload_mounts: dict[str, PayloadMountSchema]
+    payload_mounts: dict[builtins.str, PayloadMountSchema]
     effect_domain: OperationalDomain
     launch_domain: OperationalDomain
     guidance: GuidanceType
     warhead: WarheadType
-    pylon_format: str = ''
+    pylon_format: builtins.str = ''
 
 class GroundEffectsSchema(EffectsSchema):
     attack_modes: list[AttackMode]
 
 class AirEffectsSchema(EffectsSchema):
-    reusable: bool | None = None
+    reusable: builtins.bool | None = None
     attack_modes: list[AirAttackMode]
 
 class TargetPrioritySchema(OCCIDModel):
     threat: ThreatLevel | None = None
-    is_high_value: bool = False
-    note: str | None = None
+    is_high_value: builtins.bool = False
+    note: builtins.str | None = None
 
 class TargetKinematics(OCCIDModel):
     location_state: LocationState
@@ -157,103 +158,103 @@ class TargetKinematics(OCCIDModel):
     velocity_covariance: VelocityVector | None = None
 
 class TargetSetCoord(OCCIDModel):
-    time_usec: int
-    target_set_id: int
-    target_set_name: str
+    time_usec: builtins.int
+    target_set_id: builtins.int
+    target_set_name: builtins.str
     center: GlobalPosition
-    radius_m: float
-    time_start_usec: int
-    time_end_usec: int
+    radius_m: builtins.float
+    time_start_usec: builtins.int
+    time_end_usec: builtins.int
 
 class TargetBoxCoord(OCCIDModel):
-    time_usec: int
-    target_set_id: int
-    target_set_name: str
+    time_usec: builtins.int
+    target_set_id: builtins.int
+    target_set_name: builtins.str
     corners: list[GlobalPosition]
-    time_start_usec: int
-    time_end_usec: int
+    time_start_usec: builtins.int
+    time_end_usec: builtins.int
 
 class TargetCoord(OCCIDModel):
-    time_usec: int
-    target_set_id: int
-    target_name: str
+    time_usec: builtins.int
+    target_set_id: builtins.int
+    target_name: builtins.str
     kinematics: TargetKinematics
-    cep_desired_m: float
-    cep_max_m: float
+    cep_desired_m: builtins.float
+    cep_max_m: builtins.float
     target_class: ObservedObjectType
     target_force: Faction
 
 class Fires(OCCIDModel):
-    time_usec: int
-    time_impact_usec: int
+    time_usec: builtins.int
+    time_impact_usec: builtins.int
     target_position: GlobalPosition
-    effector_id: int
-    sequence: int
-    cep_expected_m: float
+    effector_id: builtins.int
+    sequence: builtins.int
+    cep_expected_m: builtins.float
 
 class SplashCorrection(OCCIDModel):
-    time_usec: int
+    time_usec: builtins.int
     splash_position: GlobalPosition
-    sequence: int
-    type_detected: int
-    cep_expected_m: float
+    sequence: builtins.int
+    type_detected: builtins.int
+    cep_expected_m: builtins.float
 
 class TargetHandover(OCCIDModel):
-    time_usec: int
-    detected_first_usec: int
-    valid_until_usec: int
+    time_usec: builtins.int
+    detected_first_usec: builtins.int
+    valid_until_usec: builtins.int
     kinematics: TargetKinematics
-    target_set_id: int
-    target_name: str
-    match_media_url: str
-    confidence_score: float
-    authorization: list[int]
+    target_set_id: builtins.int
+    target_name: builtins.str
+    match_media_url: builtins.str
+    confidence_score: builtins.float
+    authorization: list[builtins.int]
     target_class: ObservedObjectType
     target_force: Faction
     match_media_type: SensorDataFormat
 
 class BattleDamageAssessment(OCCIDModel):
-    time_usec: int
+    time_usec: builtins.int
     kinematics: TargetKinematics
-    target_set_id: int
-    target_name: str
-    authorization: list[int]
-    destruction_pct: int
-    confidence_pct: int
+    target_set_id: builtins.int
+    target_name: builtins.str
+    authorization: list[builtins.int]
+    destruction_pct: builtins.int
+    confidence_pct: builtins.int
     target_class: ObservedObjectType
     target_force: Faction
 
 class EsadState(OCCIDModel):
-    time_usec: int
-    arming_challenge_hash: int
+    time_usec: builtins.int
+    arming_challenge_hash: builtins.int
     fault_flags: EsadFaultFlag
-    input_1: float
-    input_2: float
-    sw_version_hash: list[int]
+    input_1: builtins.float
+    input_2: builtins.float
+    sw_version_hash: list[builtins.int]
     arming_status: ArmingStatus
     munition_status: EsadMunitionStatus
     ignition_status: EsadIgnitionStatus
-    munition_type: int
+    munition_type: builtins.int
 
 class EsadArming(OCCIDModel):
-    time_usec: int
-    arming_challenge_hash: int
+    time_usec: builtins.int
+    arming_challenge_hash: builtins.int
     arming_request: EsadArmingRequest
 
 class RwsPose(OCCIDModel):
-    time_usec: int
+    time_usec: builtins.int
     kinematics: TargetKinematics
-    offset_x_m: float
-    offset_y_m: float
-    offset_z_m: float
-    orientation_quaternion: tuple[float, float, float, float]
-    accuracy_roll_rad: float
-    accuracy_pitch_rad: float
-    accuracy_yaw_rad: float
-    coordinate_frame: int
+    offset_x_m: builtins.float
+    offset_y_m: builtins.float
+    offset_z_m: builtins.float
+    orientation_quaternion: tuple[builtins.float, builtins.float, builtins.float, builtins.float]
+    accuracy_roll_rad: builtins.float
+    accuracy_pitch_rad: builtins.float
+    accuracy_yaw_rad: builtins.float
+    coordinate_frame: builtins.int
 
 class RwsState(OCCIDModel):
-    time_usec: int
-    weapon_string: str
+    time_usec: builtins.int
+    weapon_string: builtins.str
     arming_state: RwsArmingState
-    weapon_type: int
+    weapon_type: builtins.int
