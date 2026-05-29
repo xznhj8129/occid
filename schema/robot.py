@@ -3,9 +3,8 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .entities import AirMachine, GroundMachine, Machine, MachineType
+from .entities import GroundMachine, Machine, MachineType
 from .guidance import Guidance
-from .identity import Identity
 from .interface import Interface
 from .parameter import Parameter
 
@@ -19,9 +18,10 @@ class VideoProtocol(IntEnum):
     UDP = auto()
     TCP = auto()
 
-class SerialTelemetryType(IntEnum):
+class TelemetryType(IntEnum):
     MSP = 0
     MAVLINK = auto()
+    CRSF = auto()
 
 class RCType(IntEnum):
     PWM = 0
@@ -63,18 +63,16 @@ class ControlAxis(IntEnum):
 
 class Robot(Machine):
     'Robot entities and control surfaces'
+    __occid_model_id__: ClassVar[int] = 238
+    robot_control: RobotController | None = None
+    remote_control: RemoteControlSchema
 
 class GroundRobot(GroundMachine):
+    __occid_model_id__: ClassVar[int] = 239
     machine_type: MachineType = MachineType.ROBOT
-    robot_control: RobotControlSchema | None = None
-    remote_control: RemoteControlSchema
-
-class AirRobot(AirMachine):
-    machine_type: MachineType = MachineType.ROBOT
-    robot_control: RobotControlSchema | None = None
-    remote_control: RemoteControlSchema
 
 class VideoConfigSchema(Parameter):
+    __occid_model_id__: ClassVar[int] = 240
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -84,31 +82,33 @@ class VideoConfigSchema(Parameter):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(Parameter):
+    __occid_model_id__: ClassVar[int] = 241
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
 
 class ChannelMapEntry(Parameter):
+    __occid_model_id__: ClassVar[int] = 242
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
     label: builtins.str | None = None
 
 class ModeRange(Parameter):
+    __occid_model_id__: ClassVar[int] = 243
     mode_id: builtins.int | None = None
     mode_name: builtins.str | None = None
     channel: builtins.int
     range: NumericRange
 
-class RobotControlSchema(Parameter):
+class RobotController(Parameter):
+    __occid_model_id__: ClassVar[int] = 244
     control_modes: RobotControlMode | None = None
-    autopilot: builtins.bool | None = None
-    autopilot_controller_model: builtins.str = ''
-    autopilot_type: AutopilotType | None = None
-    autopilot_fw: FirmwareInfo | None = None
+    autopilot_type: AutopilotType
+    autopilot_firmware: FirmwareInfo
 
 class RemoteControlSchema(Interface):
-    links: dict[builtins.str, LinkSchema]
+    __occid_model_id__: ClassVar[int] = 245
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
@@ -121,14 +121,8 @@ class RemoteControlSchema(Interface):
     channel_map: list[ChannelMapEntry]
     mode_ranges: list[ModeRange]
 
-class FlightControllerIdentity(Identity):
-    api_version: Version
-    controller_variant: builtins.str | None = None
-    hardware: HardwareIdentity | None = None
-    flight_software: FirmwareInfo | None = None
-    os_software: FirmwareInfo | None = None
-
 class FlightControlState(Guidance):
+    __occid_model_id__: ClassVar[int] = 246
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None
@@ -138,8 +132,6 @@ class FlightControlState(Guidance):
     nav_state_code: builtins.int | None = None
     flight_mode: builtins.str | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
-    plan_progress: PlanProgress | None = None
     navigation_validity: NavigationValidity | None = None
-    readiness: VehicleReadinessState | None = None
-    controller_identity: FlightControllerIdentity | None = None
+    readiness: NavReadinessState | None = None
     runtime_load: RuntimeLoadState | None = None

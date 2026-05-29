@@ -18,17 +18,9 @@ enums:
     - PLACEHOLDER2
 
 models:
-  Transport:
-    description: The form of information flow
-    parent: Communication
-    variants:
-      - Network
-      - Carrier
-      - Protocol
-
   Network:
     description: Connectivity topology and routing state
-    parent: Transport
+    parent: Communication
 
   NetworkAddress:
     parent: Network
@@ -36,9 +28,3 @@ models:
       kind: AddressKind
       value: string
       port: optional int
-
-  Carrier:
-    description: What messages are transmitted over
-    parent: Transport
-    variants:
-      - Radio

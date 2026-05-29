@@ -25,10 +25,6 @@ models:
   Plan:
     description: Plan-level task with structured execution data and no task subdivision
     parent: Task
-    variants:
-      - AutopilotFlightPlan
-      - GroupFlightPlan
-      - UnitFlightPlan
     fields:
       task_level: const TaskLevel = PLAN
 

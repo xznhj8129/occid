@@ -9,8 +9,10 @@ from .control import Control
 
 class Interface(Control):
     'Control surface, lease, operator input, remote-control mapping, or executor-facing command interface'
+    __occid_model_id__: ClassVar[int] = 69
 
 class ControlLease(Interface):
+    __occid_model_id__: ClassVar[int] = 70
     asset_id: StringID
     holder_id: StringID
     control_level: ControlLevel

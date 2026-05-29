@@ -9,3 +9,4 @@ from .control import Control
 
 class Objective(Control):
     'Desired end state with intent, success rule, target, priority, and deadline'
+    __occid_model_id__: ClassVar[int] = 84

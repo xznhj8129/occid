@@ -5,6 +5,11 @@ root: Root
 tags:
   - core
 
+enums:
+  RootFlagExample:
+    - SOMETHING = 1 << 1
+    - OTHER = 1 << 2
+
 models:
   Root:
     description: Any distinct part of the overall framework that can be identified, described, or referenced

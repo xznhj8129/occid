@@ -9,8 +9,10 @@ from .data import Data
 
 class Media(Data):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
+    __occid_model_id__: ClassVar[int] = 74
 
 class MediaItemSchema(Media):
+    __occid_model_id__: ClassVar[int] = 75
     media_id: StringID
     media_type: MediaType
     uri: builtins.str

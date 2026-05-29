@@ -16,31 +16,59 @@ class CommandResult(IntEnum):
     IN_PROGRESS = auto()
     CANCELLED = auto()
 
-class FlightCommandType(IntEnum):
-    ARM = 0
-    DISARM = auto()
-    TAKEOFF = auto()
-    LAND = auto()
-    RETURN_TO_LAUNCH = auto()
-    SET_MODE = auto()
-    GOTO = auto()
-    SET_TAKEOFF_ALTITUDE = auto()
-    SELECT_MISSION = auto()
-    START_OFFBOARD = auto()
-    STOP_OFFBOARD = auto()
-
 ### Models
 
 class Command(Control):
     'An immediate imperative requiring execution without interpretation'
+    __occid_model_id__: ClassVar[int] = 45
 
 class FlightCommand(Command):
-    command_type: FlightCommandType
+    __occid_model_id__: ClassVar[int] = 46
+
+class ArmCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 47
+
+class DisarmCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 48
+
+class TakeoffCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 49
+
+class LandCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 50
+
+class ReturnToLaunchCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 51
+
+class SetModeCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 52
+    mode: FlightMode
+
+class GoToCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 53
+    position: GlobalPosition
+    yaw_deg: builtins.float
+
+class SetTakeoffAltitudeCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 54
+    altitude_m: builtins.float
+
+class SelectMissionCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 55
+    sequence: builtins.int
+
+class StartOffboardCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 56
+
+class StopOffboardCommand(FlightCommand):
+    __occid_model_id__: ClassVar[int] = 57
 
 class TaskCommand(Command):
+    __occid_model_id__: ClassVar[int] = 58
     task: SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask]
 
 class TrackerCommand(Command):
+    __occid_model_id__: ClassVar[int] = 59
     lock: builtins.bool | None = None
     reset: builtins.bool | None = None
     slew: LocalDirection | None = None

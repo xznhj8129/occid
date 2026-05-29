@@ -1,7 +1,19 @@
 ### Models
 
+OCCID_MODEL_BY_ID = {}
+OCCID_MODEL_ID_BY_CLASS = {}
+
+
 class OCCIDModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    __occid_model_id__: ClassVar[int | None] = None
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        model_id = getattr(cls, "__occid_model_id__", None)
+        if model_id is not None:
+            OCCID_MODEL_BY_ID[model_id] = cls
+            OCCID_MODEL_ID_BY_CLASS[cls] = model_id
 
     def encode(self) -> bytes:
         return msgpack.packb(self._wire_value(self), use_bin_type=True)
@@ -27,6 +39,9 @@ class OCCIDModel(BaseModel):
 
     @classmethod
     def _wire_to_value(cls, annotation, data):
+        if data is None:
+            return None
+
         origin = get_origin(annotation)
         args = get_args(annotation)
 
@@ -43,6 +58,8 @@ class OCCIDModel(BaseModel):
             return tuple(cls._wire_to_value(arg, item) for arg, item in zip(args, data))
 
         if origin in (Union, UnionType):
+            if type(data) == list and len(data) == 2 and type(data[0]) == int and data[0] in OCCID_MODEL_BY_ID:
+                return OCCID_MODEL_BY_ID[data[0]]._from_wire(data[1])
             for arg in args:
                 try:
                     return cls._wire_to_value(arg, data)
@@ -73,7 +90,53 @@ class OCCIDModel(BaseModel):
     @classmethod
     def _wire_value(cls, value):
         if issubclass(type(value), OCCIDModel):
-            values = [cls._wire_value(getattr(value, field_name)) for field_name in value.model_fields]
+            values = cls._wire_model_payload(value)
+            return values
+        if type(value) == dict:
+            return {key: cls._wire_value(item) for key, item in value.items()}
+        if type(value) in (list, tuple):
+            return [cls._wire_value(item) for item in value]
+        if issubclass(type(value), IntEnum):
+            return value.value
+        if issubclass(type(value), Enum):
+            return value.value
+        return value
+
+    @classmethod
+    def _wire_model_payload(cls, value):
+        values = [
+            cls._wire_field_value(field_info.annotation, getattr(value, field_name))
+            for field_name, field_info in type(value).model_fields.items()
+        ]
+        while values and values[-1] is None:
+            values.pop()
+        return values
+
+    @classmethod
+    def _wire_field_value(cls, annotation, value):
+        if value is None:
+            return None
+
+        origin = get_origin(annotation)
+        args = get_args(annotation)
+
+        if origin is Annotated:
+            return cls._wire_field_value(args[0], value)
+
+        if origin is list:
+            return [cls._wire_field_value(args[0], item) for item in value]
+
+        if origin is dict:
+            return {key: cls._wire_field_value(args[1], item) for key, item in value.items()}
+
+        if origin is tuple:
+            return [cls._wire_field_value(arg, item) for arg, item in zip(args, value)]
+
+        if origin in (Union, UnionType) and issubclass(type(value), OCCIDModel):
+            return [OCCID_MODEL_ID_BY_CLASS[type(value)], cls._wire_model_payload(value)]
+
+        if issubclass(type(value), OCCIDModel):
+            values = cls._wire_model_payload(value)
             while values and values[-1] is None:
                 values.pop()
             return values

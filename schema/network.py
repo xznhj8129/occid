@@ -18,26 +18,14 @@ class NetworkError(IntEnum):
     PLACEHOLDER1 = 0
     PLACEHOLDER2 = auto()
 
-class Transport_type(IntEnum):
-    NETWORK = 0
-    CARRIER = auto()
-    PROTOCOL = auto()
-
-class Carrier_type(IntEnum):
-    RADIO = 0
-
 ### Models
 
-class Transport(Communication):
-    'The form of information flow'
-
-class Network(Transport):
+class Network(Communication):
     'Connectivity topology and routing state'
+    __occid_model_id__: ClassVar[int] = 81
 
 class NetworkAddress(Network):
+    __occid_model_id__: ClassVar[int] = 82
     kind: AddressKind
     value: builtins.str
     port: builtins.int | None = None
-
-class Carrier(Transport):
-    'What messages are transmitted over'

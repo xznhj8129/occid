@@ -122,13 +122,6 @@ class OrgLayout(IntEnum):
     FREEFORM = 0
     ORBAT = auto()
 
-class MilitaryOrg_type(IntEnum):
-    FLYING_ORG = 0
-    ORBAT_ORG = auto()
-
-class OrbatOrg_type(IntEnum):
-    GROUND = 0
-
 ### Mappings
 
 UNIT_SIZE_LABELS: dict[OOBSize, builtins.str] = {
@@ -290,28 +283,32 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 163
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(Organization):
+    __occid_model_id__: ClassVar[int] = 164
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
 class FlyingOrg(MilitaryOrg):
+    __occid_model_id__: ClassVar[int] = 165
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.AIR
     air_units: list[ItemCount]
 
 class OrbatOrg(MilitaryOrg):
+    __occid_model_id__: ClassVar[int] = 166
     org_layout: OrgLayout = OrgLayout.ORBAT
     topology: OrgTopology = OrgTopology.HIERARCHICAL
     category: NATOUnitCategory
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, LinkSchema]
+    links: dict[builtins.str, SerializeAsAny[Link | MeshLink | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]
@@ -322,6 +319,7 @@ class OrbatOrg(MilitaryOrg):
     spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OrbatOrg):
+    __occid_model_id__: ClassVar[int] = 167
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.LAND
     combat_domain: OperationalDomain

@@ -1,0 +1,85 @@
+version: 1
+type: schema
+package: link
+root: Link
+tags:
+  - core
+
+enums:
+
+  LinkCondition:
+    - UNKNOWN = 0
+    - GOOD
+    - DEGRADED
+    - INTERMITTENT
+    - LOST
+
+  ConnectionStatus:
+    - UNKNOWN = 0
+    - ONLINE
+    - OFFLINE
+
+  LinkDirection:
+    - RX = 0
+    - TX
+    - HALF_DUPLEX
+    - FULL_DUPLEX
+
+  LinkDataType:
+    - TEXT = 0
+    - AUDIO
+    - VIDEO
+    - PACKET
+    - SERIAL
+    - CONTROL
+
+  LinkType:
+    - BROADCAST = 0
+    - POINT_TO_POINT
+    - HUB
+    - MESH
+
+  NetType:
+    - RF = 0
+    - CELLULAR
+    - LTE
+    - SATCOM
+    - WIFI
+    - WIRED
+
+
+models:
+  Link:
+    description: Communication capability or connection kind a node can use
+    parent: Communication
+    fields:
+      schema_id: optional StringID
+      name: optional string
+      uuid: optional StringID
+      endpoint_id: optional StringID
+      interface_name: optional string
+      address: optional NetworkAddress
+      radio_id: optional string
+      link_type: optional LinkType
+      net_type: optional NetType
+      data_type: optional LinkDataType
+      direction: optional LinkDirection
+      rate_spec: optional DataRateSpec
+      user_capacity: optional LinkCapacity
+      network_id: optional StringID
+      condition: optional LinkCondition
+      connection_status: optional ConnectionStatus
+
+  DataRateSpec:
+    parent: Communication
+    fields:
+      nominal_bps: optional float
+      sustained_bps: optional float
+      burst_bps: optional float
+
+  LinkCapacity:
+    parent: Communication
+    fields:
+      max_nodes: optional int
+      max_users: optional int
+      max_streams: optional int

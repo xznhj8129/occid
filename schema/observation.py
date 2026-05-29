@@ -54,42 +54,32 @@ class DetectionBoxSpace(IntEnum):
     BODY_ANGULAR = auto()
     WORLD = auto()
 
-class Observation_type(IntEnum):
-    DETECTION = 0
-    CLASSIFICATION = auto()
-    TRACK = auto()
-    ASSESSMENT = auto()
-    ISR = auto()
-
-class Track_type(IntEnum):
-    UPDATE = 0
-    INTEL_TRACK_SCHEMA = auto()
-
-class Assessment_type(IntEnum):
-    ISR_RESULT = 0
-
 ### Models
 
 class Observation(Data):
     'External detection, classification, track, signal, spot report, threat, or assessment data'
+    __occid_model_id__: ClassVar[int] = 85
 
 class Classification(Observation):
-    pass
+    __occid_model_id__: ClassVar[int] = 86
 
 class Track(Observation):
-    pass
+    __occid_model_id__: ClassVar[int] = 87
 
 class Assessment(Observation):
-    pass
+    __occid_model_id__: ClassVar[int] = 88
 
 class Detection(Observation):
     'Assessment that something exists or occurred'
+    __occid_model_id__: ClassVar[int] = 89
 
 class VisionBox(Detection):
+    __occid_model_id__: ClassVar[int] = 90
     space: DetectionBoxSpace
     bounds: BoundingBox
 
 class VisionDetection(Detection):
+    __occid_model_id__: ClassVar[int] = 91
     detection_id: StringID | None = None
     label: builtins.str | None = None
     class_id: builtins.int | None = None
@@ -101,12 +91,14 @@ class VisionDetection(Detection):
     attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
 
 class VisionDetectionFrame(Detection):
+    __occid_model_id__: ClassVar[int] = 92
     frame_id: StringID | None = None
     sensor_id: StringID | None = None
     timestamp_us: builtins.int | None = None
     detections: list[VisionDetection]
 
 class IsrObservation(Observation):
+    __occid_model_id__: ClassVar[int] = 93
     obs_id: StringID
     track_id: StringID | None = None
     sensor_id: StringID | None = None
@@ -119,6 +111,7 @@ class IsrObservation(Observation):
     confidence: ConfidenceLevel | None = None
 
 class IsrParameters(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 94
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
     dwell_s: builtins.float | None = None
@@ -129,12 +122,14 @@ class IsrParameters(OCCIDModel):
     evidence_level: EvidenceLevel | None = None
 
 class TrackUpdate(Track):
+    __occid_model_id__: ClassVar[int] = 95
     track_id: StringID
     track_state: TrackState | None = None
     updated_ts: builtins.float
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(Assessment):
+    __occid_model_id__: ClassVar[int] = 96
     detections: list[IsrObservation]
     track_updates: list[TrackUpdate]
     media: list[MediaItemSchema] | None = None
@@ -142,6 +137,7 @@ class IsrResult(Assessment):
     observations: list[IsrObservation]
 
 class IntelTrackSchema(Track):
+    __occid_model_id__: ClassVar[int] = 97
     schema_id: StringID
     schema_type: builtins.str = 'INTEL_TRACK'
     created_ts: builtins.float | None = None

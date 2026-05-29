@@ -83,6 +83,7 @@ models:
       - Machine
     fields:
       entity_id: StringID
+      node: Node
       short_id: optional StringID
       name: optional string
       entity_type: optional EntityType
@@ -149,7 +150,6 @@ models:
       navaids: list[NavAids]
       health: HumanHealthStatus
       sensors: map[string, SensorPayload]
-      links: map[string, LinkSchema]
 
   Machine:
     parent: Entity
@@ -160,6 +160,7 @@ models:
     fields:
       entity_type: EntityType = MACHINE
       sys_id: StringID
+      propulsion: PropulsionType
       machine_type: optional MachineType
       status: EntityOperationalState
       health_snapshot: optional HealthSnapshot
@@ -168,6 +169,7 @@ models:
       link_condition: optional LinkCondition
       control_level: optional ControlLevel
       components: list[EntityComponentRef]
+      maint_status: optional MaintenanceStatus
 
   Vehicle:
     parent: Machine
@@ -189,6 +191,7 @@ models:
   AirMachine:
     parent: Machine
     fields:
+      airframe: AirframeType
       machine_type: optional MachineType
       op_domain: OperationalDomain = AIR
       model: string

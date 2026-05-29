@@ -22,24 +22,19 @@ class FlightPlanPhase(IntEnum):
     LANDING = auto()
     SHUTDOWN = auto()
 
-class Plan_type(IntEnum):
-    AUTOPILOT_FLIGHT = 0
-    GROUP_FLIGHT = auto()
-    UNIT_FLIGHT = auto()
-
-class UnitFlightPlan_type(IntEnum):
-    MILITARY = 0
-
 ### Models
 
 class Plan(Task):
     'Plan-level task with structured execution data and no task subdivision'
+    __occid_model_id__: ClassVar[int] = 169
     task_level: TaskLevel = Field(default=TaskLevel.PLAN, frozen=True)
 
 class AutopilotFlightPlan(Plan):
+    __occid_model_id__: ClassVar[int] = 170
     waypoints: list[AutopilotMissionWaypoint]
 
 class GroupFlightPlan(Plan):
+    __occid_model_id__: ClassVar[int] = 171
     plan_phase: FlightPlanPhase
     flight_level: FlightLevelBand | None = None
     alt_frame: AltitudeDatum | None = None
@@ -51,6 +46,7 @@ class GroupFlightPlan(Plan):
     formation_3d: AirGroupFormation3DType | None = None
 
 class UnitFlightPlan(Plan):
+    __occid_model_id__: ClassVar[int] = 172
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float

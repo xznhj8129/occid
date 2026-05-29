@@ -69,10 +69,13 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 ### Models
 
 class MilitaryAirNavigation(AirNavigationSchema):
+    __occid_model_id__: ClassVar[int] = 235
     roles: list[AirRole]
 
 class MilitaryMissionPoi(MissionPoi):
+    __occid_model_id__: ClassVar[int] = 236
     sidc: builtins.int | None = None
 
 class MilitaryUnitFlightPlan(UnitFlightPlan):
+    __occid_model_id__: ClassVar[int] = 237
     target: PlannerMissionPoint

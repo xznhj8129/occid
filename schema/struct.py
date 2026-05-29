@@ -5,76 +5,60 @@ from .common import *
 
 from .root import Root
 
-### Enums
-
-class Struct_type(IntEnum):
-    VECTOR = 0
-    MEASUREMENT = auto()
-    BEARING = auto()
-    GEO_POS = auto()
-    LOCAL_POS = auto()
-    LINE = auto()
-    PATH = auto()
-    SHAPE = auto()
-    BOUNDING = auto()
-    UNCERTAINTY = auto()
-    POSE = auto()
-    RANGE = auto()
-    TRANSFORM = auto()
-    ORBITAL = auto()
-    SPATIAL = auto()
-
 ### Models
 
 class Struct(Root):
     'Primitive reusable low-level struct families.'
+    __occid_model_id__: ClassVar[int] = 25
 
 class Vector(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 26
 
 class Measurement(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 27
 
 class Bearing(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 28
 
 class GeoPos(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 29
 
 class LocalPos(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 30
 
 class Line(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 31
 
 class StructPath(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 32
 
 class Shape(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 33
 
 class Bounding(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 34
 
 class Uncertainty(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 35
 
 class Pose(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 36
 
 class Range(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 37
 
 class Transform(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 38
 
 class Orbital(Struct):
-    pass
+    __occid_model_id__: ClassVar[int] = 39
 
 class Time(Measurement):
+    __occid_model_id__: ClassVar[int] = 40
     utime: builtins.int
 
 class Duration(Measurement):
+    __occid_model_id__: ClassVar[int] = 41
     seconds: builtins.float | None = None
     minutes: builtins.int | None = None
     hours: builtins.int | None = None
@@ -84,6 +68,7 @@ class Duration(Measurement):
     years: builtins.int | None = None
 
 class Timestamp(Measurement):
+    __occid_model_id__: ClassVar[int] = 42
     seconds: builtins.float
     minutes: builtins.int
     hours: builtins.int
@@ -93,9 +78,11 @@ class Timestamp(Measurement):
     tz: builtins.int
 
 class ItemCount(Measurement):
+    __occid_model_id__: ClassVar[int] = 43
     item_type: builtins.str
     qty: builtins.int = 0
 
 class NumericRange(Range):
+    __occid_model_id__: ClassVar[int] = 44
     min_value: builtins.float | None = None
     max_value: builtins.float | None = None

@@ -2,8 +2,8 @@
 from __future__ import annotations
 import builtins
 from types import UnionType
-from enum import IntEnum as _StdIntEnum, IntEnum, auto, Enum
-from typing import Annotated, Any, Literal, Union, get_args, get_origin
+from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
+from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
 import msgpack
 from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 

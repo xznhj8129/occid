@@ -82,31 +82,10 @@ models:
       task_id: StringID
       task_level: TaskLevel
       task_type: optional TaskType
-      unit_code: string
-      capability: optional Capability
       status: TaskStatus = NEW
-      command_result: optional CommandResult
-      assign_fail: optional TaskAssignFail
-      phase: TaskPhase = CREATED
-      geometry_id: optional StringID
       start_time: optional float
       deadline: optional float
       priority: TaskPriority = ROUTINE
-      remarks: optional string
-      last_update: optional float
-      issued_by: optional string
-      accepted_by: optional string
-      assigned_assets: list[string]
-      attempt_idx: int = 0
-      dispatch_state: DeliveryState = QUEUED
-      dispatch_error: optional string
-      time_window: optional TaskTimeWindow
-      status_log: list[TaskStatusEntry]
-      qos: QosTier = ROUTINE
-      ack_mode: AckMode = RECEIPT
-      route_mode: RouteMode = DIRECT
-      conflict_policy: ConflictPolicy = VECTOR_CLOCK
-      objective: optional Objective
 
   Mission:
     description: Tactical, intent-based task that may contain other tasks

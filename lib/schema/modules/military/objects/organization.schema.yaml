@@ -328,7 +328,7 @@ models:
       size: OOBSize
       op_domain: OperationalDomain
       taskforce: optional bool
-      links: map[string, LinkSchema]
+      links: map[string, Link]
       tac_elements: list[OrgComposition]
       sup_elements: list[OrgComposition]
       tac_e_comp: list[ItemCount]

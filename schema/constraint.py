@@ -5,32 +5,28 @@ from .common import *
 
 from .control import Control
 
-### Enums
-
-class Constraint_type(IntEnum):
-    RESTRICTION = 0
-    LIMITATION = auto()
-    CONDITION = auto()
-
 ### Models
 
 class Constraint(Control):
     'Limit, rule, condition, or time/resource bound applied to directed work'
+    __occid_model_id__: ClassVar[int] = 60
 
 class Restriction(Constraint):
-    pass
+    __occid_model_id__: ClassVar[int] = 61
 
 class Limitation(Constraint):
-    pass
+    __occid_model_id__: ClassVar[int] = 62
 
 class ConstraintCondition(Constraint):
-    pass
+    __occid_model_id__: ClassVar[int] = 63
 
 class TaskTimeWindow(Constraint):
+    __occid_model_id__: ClassVar[int] = 64
     earliest_start: builtins.float | None = None
     latest_finish: builtins.float | None = None
 
 class WeatherLimits(Constraint):
+    __occid_model_id__: ClassVar[int] = 65
     ifr: builtins.bool | None = None
     night: builtins.bool | None = None
     rain: NumericRange | None = None

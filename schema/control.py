@@ -58,15 +58,8 @@ class ControlLevel(IntEnum):
     GUIDE = auto()
     FULL = auto()
 
-class Control_type(IntEnum):
-    OBJECTIVE = 0
-    TASK = auto()
-    COMMAND = auto()
-    REFERENCE = auto()
-    CONSTRAINT = auto()
-    INTERFACE = auto()
-
 ### Models
 
 class Control(Root):
     'Desired outcomes and directed work'
+    __occid_model_id__: ClassVar[int] = 2

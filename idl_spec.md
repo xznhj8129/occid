@@ -143,12 +143,15 @@ enums:
     - VALUE = 0
     - NEXT
     - OTHER = 7
+    - FLAG_A = 1 << 1
+    - FLAG_B = 1 << 2
 ```
 
 Rules:
-- Each item is `NAME` or `NAME = INT`
+- Each item is `NAME`, `NAME = INT`, `NAME = "string"`, or `NAME = 1 << INT`
 - First unassigned item gets `0`
 - Later unassigned items auto-increment from previous
+- Any enum using `1 << INT` values is generated as a bitflag enum
 - Enum numeric values must be unique
 - Enum names must be unique within the enum
 
@@ -302,6 +305,7 @@ Rules:
 - `variants:` with no entries is valid only as an extension point for modules
 - each item must reference a declared child model
 - each referenced child model must declare `parent: <parent model>`
+- `variants` is only necessary for general ontological groups, not every model all the way down
 - enum values auto-increment from 0 in declaration order
 - the implicit enum is named `{ModelName}_type` (e.g., `Task` → `Task_type`) and is a first-class referenceable type
 - each implicit enum member is derived from the child model name by dropping the parent model's prefix when present and converting to `SCREAMING_SNAKE_CASE` (`MoveTask` under `Task` becomes `MOVE`)
@@ -374,10 +378,12 @@ schema/
 ```
 
 **17.1. One file, one package**
-- Every schema file declares a `root` model: the main class the package is about
+- Every schema file declares a `root` model: the default entry point for the package, not a hard boundary
+- Files are not necessarily hard-bound to a model family; `command.schema.yaml` containing `Command` is a convenience, not a rule
+- Split a file only when more compartmentalization is necessary
 - A schema package may also contain local enums, maps, variants, and auxiliary models used by that package
 - The model graph is declared only by `parent` and `variants`
-- If a model branch has its own schema file, that model declaration belongs in that file, not in its parent's file. The parent file may name the branched model in `variants`, but must not define the branched model.
+- If a model branch has its own schema file, that is an organizational choice. The model graph still comes only from `parent` and `variants`.
 - Enums used exclusively by models in the file are co-located. Enums shared across files belong in the root or a common ancestor file
 
 **17.2. File header**

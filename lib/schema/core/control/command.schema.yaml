@@ -15,19 +15,6 @@ enums:
     - IN_PROGRESS
     - CANCELLED
 
-  FlightCommandType:
-    - ARM = 0
-    - DISARM
-    - TAKEOFF
-    - LAND
-    - RETURN_TO_LAUNCH
-    - SET_MODE
-    - GOTO
-    - SET_TAKEOFF_ALTITUDE
-    - SELECT_MISSION
-    - START_OFFBOARD
-    - STOP_OFFBOARD
-
 models:
 
   Command:
@@ -36,8 +23,48 @@ models:
 
   FlightCommand:
     parent: Command
+
+  ArmCommand:
+    parent: FlightCommand
+
+  DisarmCommand:
+    parent: FlightCommand
+
+  TakeoffCommand:
+    parent: FlightCommand
+
+  LandCommand:
+    parent: FlightCommand
+
+  ReturnToLaunchCommand:
+    parent: FlightCommand
+
+  SetModeCommand:
+    parent: FlightCommand
     fields:
-      command_type: FlightCommandType
+      mode: FlightMode
+
+  GoToCommand:
+    parent: FlightCommand
+    fields:
+      position: GlobalPosition
+      yaw_deg: float
+
+  SetTakeoffAltitudeCommand:
+    parent: FlightCommand
+    fields:
+      altitude_m: float
+
+  SelectMissionCommand:
+    parent: FlightCommand
+    fields:
+      sequence: int
+
+  StartOffboardCommand:
+    parent: FlightCommand
+
+  StopOffboardCommand:
+    parent: FlightCommand
 
   TaskCommand:
     parent: Command

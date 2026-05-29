@@ -5,15 +5,12 @@ from .common import *
 
 ### Enums
 
-class Root_type(IntEnum):
-    DEFINITION = 0
-    STRUCT = auto()
-    OBJECT = auto()
-    CONTROL = auto()
-    COMMUNICATION = auto()
-    DATA = auto()
+class RootFlagExample(IntFlag):
+    SOMETHING = 2
+    OTHER = 4
 
 ### Models
 
 class Root(OCCIDModel):
     'Any distinct part of the overall framework that can be identified, described, or referenced'
+    __occid_model_id__: ClassVar[int] = 0

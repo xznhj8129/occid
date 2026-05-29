@@ -77,37 +77,13 @@ class PropulsionType(IntEnum):
     MARITIME = auto()
     STATIC = auto()
 
-class Entity_type(IntEnum):
-    ACTOR = 0
-    MACHINE = auto()
-
-class Actor_type(IntEnum):
-    PERSON = 0
-    AGENT = auto()
-
-class AirNavigationSchema_type(IntEnum):
-    MILITARY_AIR_NAVIGATION = 0
-
-class Person_type(IntEnum):
-    MILITARY = 0
-
-class Machine_type(IntEnum):
-    VEHICLE = 0
-    ROBOT = auto()
-    PLATFORM = auto()
-    MILITARY = auto()
-
-class GroundMachine_type(IntEnum):
-    MILITARY = 0
-
-class AirMachine_type(IntEnum):
-    MILITARY = 0
-
 ### Models
 
 class Entity(Object):
     'One discrete "atom" capable of actions'
+    __occid_model_id__: ClassVar[int] = 210
     entity_id: StringID
+    node: SerializeAsAny[Node | MeshNode]
     short_id: StringID | None = None
     name: builtins.str | None = None
     entity_type: EntityType | None = None
@@ -124,12 +100,13 @@ class Entity(Object):
     display_meta: DisplayMeta | None = None
 
 class Actor(Entity):
-    pass
+    __occid_model_id__: ClassVar[int] = 211
 
 class Agent(Actor):
-    pass
+    __occid_model_id__: ClassVar[int] = 212
 
 class GroundNavigationSchema(Attribute):
+    __occid_model_id__: ClassVar[int] = 213
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
@@ -137,6 +114,7 @@ class GroundNavigationSchema(Attribute):
     max_spd: builtins.float
 
 class AirNavigationSchema(Attribute):
+    __occid_model_id__: ClassVar[int] = 214
     flight_type: AirframeType
     control_modes: list[FlightMode]
     failsafe_mode: AirFailsafeMode | None = None
@@ -154,6 +132,7 @@ class AirNavigationSchema(Attribute):
     start_flight_time: builtins.float
 
 class Person(Actor):
+    __occid_model_id__: ClassVar[int] = 215
     entity_type: EntityType = EntityType.PERSON
     role: builtins.str
     serial_uid: StringID
@@ -163,11 +142,12 @@ class Person(Actor):
     navaids: list[NavAids]
     health: HumanHealthStatus
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
-    links: dict[builtins.str, LinkSchema]
 
 class Machine(Entity):
+    __occid_model_id__: ClassVar[int] = 216
     entity_type: EntityType = EntityType.MACHINE
     sys_id: StringID
+    propulsion: PropulsionType
     machine_type: MachineType | None = None
     status: EntityOperationalState
     health_snapshot: HealthSnapshot | None = None
@@ -176,14 +156,16 @@ class Machine(Entity):
     link_condition: LinkCondition | None = None
     control_level: ControlLevel | None = None
     components: list[EntityComponentRef]
+    maint_status: MaintenanceStatus | None = None
 
 class Vehicle(Machine):
-    pass
+    __occid_model_id__: ClassVar[int] = 217
 
 class Platform(Machine):
-    pass
+    __occid_model_id__: ClassVar[int] = 218
 
 class GroundMachine(Machine):
+    __occid_model_id__: ClassVar[int] = 219
     machine_type: MachineType
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
@@ -193,6 +175,8 @@ class GroundMachine(Machine):
     navigation: GroundNavigationSchema
 
 class AirMachine(Machine):
+    __occid_model_id__: ClassVar[int] = 220
+    airframe: AirframeType
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str

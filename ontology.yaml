@@ -124,10 +124,7 @@ Root:
           description: Connectivity topology and routing state.
 
         Link:
-          description: Discrete packet/message path with endpoints, addresses, capacity, condition, and status.
-
-        Stream:
-          description: Continuous or ordered data flow such as telemetry, media, sensor samples, or raw bytes.
+          description: Continuous or ordered data flow with endpoints, addresses, capacity, condition, and status.
 
         Protocol:
           description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata.

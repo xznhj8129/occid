@@ -7,8 +7,8 @@ from .communication import Communication
 
 ### Enums
 
-class CapabilityRole(IntEnum):
-    CONTROLLER = 0
+class CapabilityRole(IntFlag):
+    CONTROLLER = 1
     RELAY = auto()
     SENSOR = auto()
     EFFECTOR = auto()
@@ -18,7 +18,12 @@ class CapabilityRole(IntEnum):
 ### Models
 
 class Node(Communication):
-    'Endpoint that sends, receives, relays, records, controls, or bridges messages'
-
-class NodeRef(Node):
+    'Communication identity of an entity, including addresses and available links'
+    __occid_model_id__: ClassVar[int] = 83
     node_id: StringID
+    entity_id: StringID | None = None
+    roles: list[CapabilityRole]
+    addresses: list[NetworkAddress]
+    links: dict[builtins.str, SerializeAsAny[Link | MeshLink | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
+    radios: dict[builtins.str, RadioProfile]
+    protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]

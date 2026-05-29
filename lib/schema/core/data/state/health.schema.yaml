@@ -93,7 +93,7 @@ models:
       next_service_ts: optional float
       note: optional string
 
-  VehicleReadinessState:
+  NavReadinessState:
     parent: Condition
     fields:
       gyro_ok: optional bool

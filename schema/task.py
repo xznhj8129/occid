@@ -4,7 +4,6 @@ import builtins
 from .common import *
 
 from .control import Control
-from .message import AckMode, ConflictPolicy, DeliveryState, QosTier, RouteMode
 
 ### Enums
 
@@ -72,50 +71,27 @@ class AirMoveTask(IntEnum):
     FLY = 0
     RELOCATION = auto()
 
-class Task_type(IntEnum):
-    MISSION = 0
-    PLAN = auto()
-    COMBAT = auto()
-
 ### Models
 
 class Task(Control):
     'A directive to accomplish an objective'
+    __occid_model_id__: ClassVar[int] = 124
     task_id: StringID
     task_level: TaskLevel
     task_type: TaskType | None = None
-    unit_code: builtins.str
-    capability: Capability | None = None
     status: TaskStatus = TaskStatus.NEW
-    command_result: CommandResult | None = None
-    assign_fail: TaskAssignFail | None = None
-    phase: TaskPhase = TaskPhase.CREATED
-    geometry_id: StringID | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
-    remarks: builtins.str | None = None
-    last_update: builtins.float | None = None
-    issued_by: builtins.str | None = None
-    accepted_by: builtins.str | None = None
-    assigned_assets: list[builtins.str]
-    attempt_idx: builtins.int = 0
-    dispatch_state: DeliveryState = DeliveryState.QUEUED
-    dispatch_error: builtins.str | None = None
-    time_window: TaskTimeWindow | None = None
-    status_log: list[TaskStatusEntry]
-    qos: QosTier = QosTier.ROUTINE
-    ack_mode: AckMode = AckMode.RECEIPT
-    route_mode: RouteMode = RouteMode.DIRECT
-    conflict_policy: ConflictPolicy = ConflictPolicy.VECTOR_CLOCK
-    objective: Objective | None = None
 
 class Mission(Task):
     'Tactical, intent-based task that may contain other tasks'
+    __occid_model_id__: ClassVar[int] = 125
     task_level: TaskLevel = Field(default=TaskLevel.MISSION, frozen=True)
     tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask]]
 
 class IsrTask(Task):
+    __occid_model_id__: ClassVar[int] = 126
     isr_task: TaskISR | None = None
     area: GeoArea
     dwell_seconds: builtins.float | None = None

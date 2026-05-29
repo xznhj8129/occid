@@ -52,20 +52,11 @@ class ConflictPolicy(IntEnum):
     VECTOR_CLOCK = auto()
     MANUAL = auto()
 
-class Message_type(IntEnum):
-    COMMAND = 0
-    TELEMETRY = auto()
-    OBSERVATION = auto()
-    RESPONSE = auto()
-
-class ResponseMessage_type(IntEnum):
-    DELIVERY_RECEIPT = 0
-    MESSAGE_TRANSFER_RESULT = auto()
-
 ### Models
 
 class Message(Communication):
     'Transmitted envelope plus payload'
+    __occid_model_id__: ClassVar[int] = 76
     src: MessageTarget
     dst: MessageTarget
     ts: Timestamp
@@ -73,13 +64,16 @@ class Message(Communication):
     seq: builtins.int
 
 class MessageTarget(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 77
     target_id: StringID
 
 class ResponseMessage(Message):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
+    __occid_model_id__: ClassVar[int] = 78
     seq_reply: builtins.int
 
 class DeliveryReceipt(ResponseMessage):
+    __occid_model_id__: ClassVar[int] = 79
     node_id: StringID
     delivery_state: DeliveryState
     seen_ts: builtins.float | None = None
@@ -87,6 +81,7 @@ class DeliveryReceipt(ResponseMessage):
     error_code: builtins.str | None = None
 
 class MessageTransferResult(ResponseMessage):
+    __occid_model_id__: ClassVar[int] = 80
     target_count: builtins.int = 0
     bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None

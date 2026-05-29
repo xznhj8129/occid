@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .network import Carrier
+from .link import Link
 
 ### Enums
 
@@ -43,25 +43,20 @@ class NATORadioBands(IntEnum):
     L_BAND_40G_60G = auto()
     M_BAND_60G_100G = auto()
 
-class Radio_type(IntEnum):
-    FREQUENCY_RANGE = 0
-    CHANNEL_SPEC = auto()
-    PROFILE = auto()
-
-class RadioProfile_type(IntEnum):
-    MILITARY = 0
-
 ### Models
 
-class Radio(Carrier):
+class Radio(Link):
     'What messages are transmitted over'
+    __occid_model_id__: ClassVar[int] = 173
 
 class FrequencyRange(Radio):
+    __occid_model_id__: ClassVar[int] = 174
     low_mhz: builtins.float | None = None
     high_mhz: builtins.float | None = None
     center_mhz: builtins.float | None = None
 
 class ChannelSpec(Radio):
+    __occid_model_id__: ClassVar[int] = 175
     channel_id: StringID | None = None
     label: builtins.str | None = None
     frequency: FrequencyRange | None = None
@@ -69,6 +64,7 @@ class ChannelSpec(Radio):
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(Radio):
+    __occid_model_id__: ClassVar[int] = 176
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None

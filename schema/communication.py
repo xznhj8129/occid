@@ -13,13 +13,8 @@ class SyncState(IntEnum):
     STALE = auto()
     DIVERGED = auto()
 
-class Communication_type(IntEnum):
-    NODE = 0
-    TRANSPORT = auto()
-    FEED = auto()
-    MESSAGE = auto()
-
 ### Models
 
 class Communication(Root):
     'Movement of information between endpoints'
+    __occid_model_id__: ClassVar[int] = 1

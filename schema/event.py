@@ -27,17 +27,14 @@ class AirMissionEvent(IntEnum):
     ABORTING = auto()
     FAILING = auto()
 
-class Event_type(IntEnum):
-    FLIGHT = 0
-    MISSION = auto()
-
 ### Models
 
 class Event(Data):
     'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
+    __occid_model_id__: ClassVar[int] = 66
 
 class FlightEvent(Event):
-    pass
+    __occid_model_id__: ClassVar[int] = 67
 
 class MissionEvent(Event):
-    pass
+    __occid_model_id__: ClassVar[int] = 68

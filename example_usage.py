@@ -15,26 +15,20 @@ from occid.schema import *
 def main() -> None:
     EXAMPLE_PAYLOAD_VERSION = (1, 0, 0)
     EXAMPLE_ID_TYPE = IdentifierType.DB_ID
-    rc_link = LinkSchema(
+    rc_link = Link(
         schema_id=StringID(id_type=EXAMPLE_ID_TYPE, value="ELRS_915"),
         name="ELRS_915",
         link_type=LinkType.POINT_TO_POINT,
         net_type=NetType.RF,
-        io=0,
         data_type=LinkDataType.CONTROL,
-        addresses=[],
-        endpoints=[],
         condition=LinkCondition.GOOD,
     )
-    video_link = LinkSchema(
+    video_link = Link(
         schema_id=StringID(id_type=EXAMPLE_ID_TYPE, value="FPV_VIDEO"),
         name="FPV_VIDEO",
         link_type=LinkType.POINT_TO_POINT,
         net_type=NetType.RF,
-        io=0,
         data_type=LinkDataType.VIDEO,
-        addresses=[],
-        endpoints=[],
         condition=LinkCondition.GOOD,
     )
     camera = ImageSensor(
@@ -55,9 +49,30 @@ def main() -> None:
         night_vision=False,
     )
 
+    ground_node = Node(
+        node_id=StringID(id_type=EXAMPLE_ID_TYPE, value="node.ugv.01"),
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="robot.ugv.01"),
+        roles=[CapabilityRole.EFFECTOR],
+        addresses=[],
+        links={"RC": rc_link},
+        radios={},
+        protocols={},
+    )
+    uav_node = Node(
+        node_id=StringID(id_type=EXAMPLE_ID_TYPE, value="node.uav.strike.01"),
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"),
+        roles=[CapabilityRole.EFFECTOR, CapabilityRole.SENSOR],
+        addresses=[],
+        links={"RC": rc_link, "VIDEO": video_link},
+        radios={},
+        protocols={},
+    )
+
     ground_robot = GroundRobot(
         entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="robot.ugv.01"),
+        node=ground_node,
         sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UGV_01"),
+        propulsion=PropulsionType.TRACKED,
         alt_ids=[],
         tags=[],
         metadata={},
@@ -75,20 +90,13 @@ def main() -> None:
             max_range=25000.0,
             max_spd=12.0,
         ),
-        robot_control=RobotControlSchema(
-            control_modes=RobotControlMode.REMOTE,
-        ),
-        remote_control=RemoteControlSchema(
-            links={"RC": rc_link},
-            rc_link="ELRS_915",
-            channel_map=[],
-            mode_ranges=[],
-        ),
     )
 
-    air_robot = AirRobot(
+    air_robot = Drone(
         entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"),
+        node=uav_node,
         sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UAV_STRIKE_01"),
+        propulsion=PropulsionType.ROTARY_WING,
         alt_ids=[],
         tags=[],
         metadata={},
@@ -119,15 +127,12 @@ def main() -> None:
             max_alt=2000.0,
             start_flight_time=0.0,
         ),
-        robot_control=RobotControlSchema(
+        controller=RobotController(
             control_modes=RobotControlMode.ASSISTED,
-            autopilot=True,
-            autopilot_controller_model="F405",
             autopilot_type=AutopilotType.INAV,
-            autopilot_fw=FirmwareInfo(name="INAV", version=Version(major=8, minor=0, patch=0)),
+            autopilot_firmware=FirmwareInfo(name="INAV", version=Version(major=8, minor=0, patch=0)),
         ),
         remote_control=RemoteControlSchema(
-            links={"RC": rc_link, "VIDEO": video_link},
             rc_link="ELRS_915",
             vid_link="FPV_VIDEO",
             ctrl_video_sep=True,
@@ -249,28 +254,19 @@ def main() -> None:
     ]
     uav_flight_plan = AutopilotFlightPlan(
         task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.plan.uav-01.flight"),
-        unit_code="UAV_01",
-        assigned_assets=["air.uav.strike.01"],
-        status_log=[],
         waypoints=uav_waypoints,
     )
     uav_mission = Mission(
         task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.mission.uav-demo"),
-        unit_code="UAV_SECTION",
-        assigned_assets=["air.uav.strike.01"],
-        status_log=[],
         tasks=[uav_flight_plan],
     )
 
     upload_mission_command = TaskCommand(
-        task=uav_mission,
+        task=uav_flight_plan,
     )
-    arm_command = FlightCommand(
-        command_type=FlightCommandType.ARM,
-    )
-    takeoff_command = FlightCommand(
-        command_type=FlightCommandType.TAKEOFF,
-    )
+
+    arm_command = ArmCommand()
+    takeoff_command = TakeoffCommand()
     upload_mission_message = CommandMessage(
         src=gcs_target,
         dst=uav_target,
@@ -322,15 +318,24 @@ def main() -> None:
     print()
     upload_mission_encoded = upload_mission_message.encode()
     upload_mission_decoded = CommandMessage.decode(upload_mission_encoded)
+    print(upload_mission_message)
     print("SEQ:", upload_mission_decoded.seq)
     print("TARGET:", upload_mission_decoded.dst.target_id.value)
     print("SIZE:", len(upload_mission_encoded))
+    for waypoint in upload_mission_decoded.command.task.waypoints:
+        print(
+            "WAYPOINT:",
+            waypoint.waypoint_index,
+            waypoint.position.lat,
+            waypoint.position.lon,
+            waypoint.position.alt,
+            waypoint.position.alt_frame,
+        )
 
     print()
     arm_encoded = arm_message.encode()
     arm_decoded = CommandMessage.decode(arm_encoded)
     print(arm_message)
-    print(arm_encoded)
     print("SEQ:", arm_decoded.seq)
     print("TARGET:", arm_decoded.dst.target_id.value)
     print("SIZE:", len(arm_encoded))
@@ -339,7 +344,6 @@ def main() -> None:
     takeoff_encoded = takeoff_message.encode()
     takeoff_decoded = CommandMessage.decode(takeoff_encoded)
     print(takeoff_message)
-    print(takeoff_encoded)
     print("SEQ:", takeoff_decoded.seq)
     print("TARGET:", takeoff_decoded.dst.target_id.value)
     print("SIZE:", len(takeoff_encoded))

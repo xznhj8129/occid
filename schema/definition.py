@@ -32,16 +32,6 @@ class EffectDomain(IntEnum):
     CYBER = auto()
     ALL = auto()
 
-class SchemaKind(IntEnum):
-    BASIC_UNIT = 0
-    GROUND_ORG = auto()
-    AIR_ORG = auto()
-    AIR_UNIT = auto()
-    GROUND_UNIT = auto()
-    LINK = auto()
-    SENSOR = auto()
-    INSTALLATION = auto()
-
 class PriorityLevel(IntEnum):
     LOW = 0
     NORMAL = auto()
@@ -103,47 +93,35 @@ class Faction(IntEnum):
     FAKER = auto()
     JOKER = auto()
 
-class Definition_type(IntEnum):
-    FRAME = 0
-    COORDINATE = auto()
-    GEOMETRY = auto()
-    SEMANTIC_TYPE = auto()
-    RELATIONSHIP = auto()
-
-class SemanticType_type(IntEnum):
-    CATEGORY = 0
-    ROLE = auto()
-    FUNCTION = auto()
-    DOMAIN = auto()
-
 ### Models
 
 class Definition(Root):
     'Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.'
+    __occid_model_id__: ClassVar[int] = 5
 
 class Frame(Definition):
-    pass
+    __occid_model_id__: ClassVar[int] = 6
 
 class Coordinate(Definition):
-    pass
+    __occid_model_id__: ClassVar[int] = 7
 
 class Geometry(Definition):
-    pass
+    __occid_model_id__: ClassVar[int] = 8
 
 class DefinitionRelationship(Definition):
-    pass
+    __occid_model_id__: ClassVar[int] = 9
 
 class SemanticType(Definition):
-    pass
+    __occid_model_id__: ClassVar[int] = 10
 
 class Category(SemanticType):
-    pass
+    __occid_model_id__: ClassVar[int] = 11
 
 class Role(SemanticType):
-    pass
+    __occid_model_id__: ClassVar[int] = 12
 
 class Function(SemanticType):
-    pass
+    __occid_model_id__: ClassVar[int] = 13
 
 class Domain(SemanticType):
-    pass
+    __occid_model_id__: ClassVar[int] = 14

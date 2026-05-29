@@ -31,16 +31,6 @@ enums:
     - CYBER
     - ALL
 
-  SchemaKind:
-    - BASIC_UNIT = 0
-    - GROUND_ORG
-    - AIR_ORG
-    - AIR_UNIT
-    - GROUND_UNIT
-    - LINK
-    - SENSOR
-    - INSTALLATION
-
   PriorityLevel:
     - LOW = 0
     - NORMAL

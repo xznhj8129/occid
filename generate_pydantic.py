@@ -76,6 +76,7 @@ class TypeNode:
 class EnumValue:
     name: str
     value: int | str | None
+    bitflag: bool = False
 
 
 @dataclass
@@ -270,6 +271,9 @@ def parse_enum_value(raw_entry: str) -> EnumValue:
     name, value_text = [part.strip() for part in raw_entry.split("=", 1)]
     if value_text.startswith(("'", '"')):
         return EnumValue(name=name, value=yaml.safe_load(value_text))
+    if "<<" in value_text:
+        left, right = [part.strip() for part in value_text.split("<<", 1)]
+        return EnumValue(name=name, value=int(left) << int(right), bitflag=True)
     return EnumValue(name=name, value=int(value_text))
 
 
@@ -776,6 +780,10 @@ def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], var
 
 def enum_base(enum_def: EnumDef) -> str:
     has_string_values = any(type(value.value) == str for value in enum_def.values if value.value is not None)
+    if any(value.bitflag for value in enum_def.values):
+        if has_string_values:
+            raise SchemaError(f"bitflag enum {enum_def.name} cannot contain string values")
+        return "IntFlag"
     return "str, Enum" if has_string_values else "IntEnum"
 
 
@@ -854,15 +862,19 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
     return lines
 
 
-def render_model_block(model_def: ModelDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
+def render_model_block(
+    model_def: ModelDef,
+    enum_members: dict[str, set[str]],
+    variant_type_members: dict[str, list[str]],
+    model_ids: dict[str, int],
+) -> str:
     parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
     if model_def.description:
         lines.append(f"    {model_def.description!r}")
+    lines.append(f"    __occid_model_id__: ClassVar[int] = {model_ids[model_def.name]}")
     for field_def in model_def.fields:
         lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, variant_type_members)}")
-    if not model_def.description and not model_def.fields:
-        lines.append("    pass")
     return "\n".join(lines)
 
 
@@ -896,17 +908,19 @@ def render_common_runtime() -> str:
 
 
 def render_module(
-    module: ModuleDef, symbol_index: dict[str, str], enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]
+    module: ModuleDef,
+    symbol_index: dict[str, str],
+    enum_members: dict[str, set[str]],
+    variant_type_members: dict[str, list[str]],
+    model_ids: dict[str, int],
 ) -> str:
     sections = [load_template("module_header.py")]
     imports = module_imports(module, symbol_index, enum_members)
     if imports:
         sections.append("\n".join(imports))
-    variant_models = [model_def for model_def in module.models if model_def.variants]
-    if module.enums or variant_models:
+    if module.enums:
         sections.append("### Enums")
         enum_blocks = [render_enum_block(enum_def) for enum_def in module.enums]
-        enum_blocks.extend(render_variant_enum_block(model_def) for model_def in variant_models)
         sections.append("\n\n".join(enum_blocks))
     if module.maps:
         sections.append("### Mappings")
@@ -915,17 +929,22 @@ def render_module(
         )
     if module.models:
         sections.append("### Models")
-        sections.append("\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models))
+        sections.append(
+            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members, model_ids) for model_def in module.models)
+        )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
 
-def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
+def render_common_schema_module(
+    module: ModuleDef,
+    enum_members: dict[str, set[str]],
+    variant_type_members: dict[str, list[str]],
+    model_ids: dict[str, int],
+) -> str:
     sections = []
-    variant_models = [model_def for model_def in module.models if model_def.variants]
-    if module.enums or variant_models:
+    if module.enums:
         sections.append("### Schema Enums")
         enum_blocks = [render_enum_block(enum_def) for enum_def in module.enums]
-        enum_blocks.extend(render_variant_enum_block(model_def) for model_def in variant_models)
         sections.append("\n\n".join(enum_blocks))
     if module.maps:
         sections.append("### Schema Mappings")
@@ -934,7 +953,9 @@ def render_common_schema_module(module: ModuleDef, enum_members: dict[str, set[s
         )
     if module.models:
         sections.append("### Schema Models")
-        sections.append("\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models))
+        sections.append(
+            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members, model_ids) for model_def in module.models)
+        )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
 
 
@@ -1023,20 +1044,26 @@ def write_package(output_dir: Path, modules: list[ModuleDef], symbol_index: dict
     ordered_names = topo_sort_modules(modules, graph)
     module_map = {module.name: module for module in modules}
     variant_type_members = build_variant_type_members(modules, symbol_index)
+    model_ids: dict[str, int] = {}
+    for module_name in ordered_names:
+        for model_def in module_map[module_name].models:
+            model_ids[model_def.name] = len(model_ids)
 
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
     common_sections = [render_common_runtime().rstrip()]
     if "common" in module_map:
-        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members))
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members, model_ids))
     (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
         if module_name == "common":
             continue
         module = module_map[module_name]
-        (output_dir / f"{module_name}.py").write_text(render_module(module, symbol_index, enum_members, variant_type_members))
+        (output_dir / f"{module_name}.py").write_text(
+            render_module(module, symbol_index, enum_members, variant_type_members, model_ids)
+        )
 
     (output_dir / "__init__.py").write_text(render_init(ordered_names))
 

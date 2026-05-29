@@ -50,13 +50,6 @@ models:
     description: Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state
     parent: State
 
-  PlanProgress:
-    parent: Guidance
-    fields:
-      waypoint_count: optional int
-      current_waypoint_index: optional int
-      plan_valid: optional bool
-
   TelemetryState:
     parent: Guidance
     fields:

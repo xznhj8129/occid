@@ -9,8 +9,10 @@ from .state import State
 
 class Assignment(State):
     'Current task, owner, control lease, objective binding, dispatch state, phase, and status log.'
+    __occid_model_id__: ClassVar[int] = 127
 
 class TaskDelta(Assignment):
+    __occid_model_id__: ClassVar[int] = 128
     task_id: StringID
     task_rev: builtins.int = 0
     phase: TaskPhase
@@ -19,6 +21,7 @@ class TaskDelta(Assignment):
     updated_ts: builtins.float
 
 class FlightAssignment(Assignment):
+    __occid_model_id__: ClassVar[int] = 129
     num: builtins.int
     unit_id: StringID | None = None
     callsign: builtins.str | None = None

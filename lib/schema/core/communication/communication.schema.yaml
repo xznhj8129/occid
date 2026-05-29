@@ -18,6 +18,7 @@ models:
     parent: Root
     variants:
       - Node
-      - Transport
-      - Feed
+      - Network
+      - Link
+      - Protocol
       - Message

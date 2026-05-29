@@ -22,15 +22,11 @@ class OrgTopology(IntEnum):
     HIERARCHICAL = auto()
     CELLULAR = auto()
 
-class Organization_type(IntEnum):
-    GROUP = 0
-    UNIT = auto()
-    MILITARY_ORG = auto()
-
 ### Models
 
 class Organization(Set):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
+    __occid_model_id__: ClassVar[int] = 98
     org_uid: StringID
     orglevel: OrgLevel = OrgLevel.GROUP
     org_type: OrgType | None = None
@@ -40,7 +36,9 @@ class Organization(Set):
     link_condition: LinkCondition | None = None
 
 class Group(Organization):
+    __occid_model_id__: ClassVar[int] = 99
     orglevel: OrgLevel = OrgLevel.GROUP
 
 class Unit(Organization):
+    __occid_model_id__: ClassVar[int] = 100
     orglevel: OrgLevel = OrgLevel.UNIT

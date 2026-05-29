@@ -1,3 +1,4 @@
+# The actual communications endpoint equipment of an entity
 version: 1
 type: schema
 package: node
@@ -7,19 +8,22 @@ tags:
 
 enums:
   CapabilityRole:
-    - CONTROLLER = 0
-    - RELAY
-    - SENSOR
-    - EFFECTOR
-    - GATEWAY
-    - RECORDER
+    - CONTROLLER = 1 << 0
+    - RELAY 
+    - SENSOR 
+    - EFFECTOR 
+    - GATEWAY 
+    - RECORDER 
 
 models:
   Node:
-    description: Endpoint that sends, receives, relays, records, controls, or bridges messages
+    description: Communication identity of an entity, including addresses and available links
     parent: Communication
-
-  NodeRef:
-    parent: Node
     fields:
       node_id: StringID
+      entity_id: optional StringID
+      roles: list[CapabilityRole]
+      addresses: list[NetworkAddress]
+      links: map[string, Link]
+      radios: map[string, RadioProfile]
+      protocols: map[string, Protocol]
