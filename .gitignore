@@ -16,3 +16,4 @@ secrets/
 private/
 config/local*
 config/real*
+.agents/

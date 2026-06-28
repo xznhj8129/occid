@@ -86,7 +86,7 @@ enums:
     - NONE = 0
     - MSP
     - MAVLINK
-    - HIVEOS_UAV
+    - MPFC_UAV
     - HIVELINK
     - COT
 

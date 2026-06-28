@@ -59,8 +59,8 @@ def main() -> None:
         protocols={},
     )
     uav_node = Node(
-        node_id=StringID(id_type=EXAMPLE_ID_TYPE, value="node.uav.strike.01"),
-        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"),
+        node_id=StringID(id_type=EXAMPLE_ID_TYPE, value="node.uav01"),
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01"),
         roles=[CapabilityRole.EFFECTOR, CapabilityRole.SENSOR],
         addresses=[],
         links={"RC": rc_link, "VIDEO": video_link},
@@ -93,20 +93,20 @@ def main() -> None:
     )
 
     air_robot = Drone(
-        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"),
+        entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01"),
         node=uav_node,
-        sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UAV_STRIKE_01"),
+        sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UAV01"),
         propulsion=PropulsionType.ROTARY_WING,
         alt_ids=[],
         tags=[],
         metadata={},
         relations=[],
         components=[],
-        serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01.serial"),
+        serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01.serial"),
         model="MK4V2-10",
         status=EntityOperationalState.READY,
         machine_type=MachineType.ROBOT,
-        navigation=MilitaryAirNavigation(
+        navigation=AirNavigationSchema(
             flight_type=AirframeType.COPTER,
             control_modes=[FlightMode.ANGLE, FlightMode.GUIDED],
             failsafe_mode=AirFailsafeMode.RTB,
@@ -115,7 +115,6 @@ def main() -> None:
                 wind=NumericRange(max_value=35.0),
                 vis=NumericRange(min_value=800.0),
             ),
-            roles=[AirRole.GROUND, AirRole.ISR],
             propulsion=PropulsionType.ROTARY_WING,
             navigation=NavigationMode.GNSS,
             navaids=[NavAids.GNSS, NavAids.INS],
@@ -162,7 +161,7 @@ def main() -> None:
         ],
         tac_e_comp=[
             ItemCount(item_type="robot.ugv.01", qty=1),
-            ItemCount(item_type="air.uav.strike.01", qty=2),
+            ItemCount(item_type="air.uav01", qty=2),
         ],
         sup_e_comp=[],
         personnel=[ItemCount(item_type="personnel", qty=6)],
@@ -170,12 +169,12 @@ def main() -> None:
         equipment=[],
         ammo=[],
         weapons=[],
-        air_units=[ItemCount(item_type="air.uav.strike.01", qty=2)],
+        air_units=[ItemCount(item_type="air.uav01", qty=2)],
         spacing=500.0,
     )
 
     gcs_target = MessageTarget(target_id=StringID(id_type=EXAMPLE_ID_TYPE, value="gcs"))
-    uav_target = MessageTarget(target_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav.strike.01"))
+    uav_target = MessageTarget(target_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01"))
     ts_upload = Timestamp(
         seconds=0.0,
         minutes=0.0,
