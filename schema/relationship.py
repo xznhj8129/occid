@@ -9,10 +9,10 @@ from .property import Property
 
 class Relationship(Property):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 177
+    __occid_model_id__: ClassVar[int] = 180
 
 class RelationSchema(Relationship):
-    __occid_model_id__: ClassVar[int] = 178
+    __occid_model_id__: ClassVar[int] = 181
     src_id: StringID
     dst_id: StringID
     rel_kind: builtins.str
@@ -22,7 +22,7 @@ class RelationSchema(Relationship):
     source: builtins.str | None = None
 
 class EntityComponentRef(Relationship):
-    __occid_model_id__: ClassVar[int] = 179
+    __occid_model_id__: ClassVar[int] = 182
     component_id: StringID
     component_type: builtins.str | None = None
     label: builtins.str | None = None

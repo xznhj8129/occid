@@ -102,3 +102,30 @@ models:
       dwell_seconds: optional float
       isr_params: optional IsrParameters
       isr_result: optional IsrResult
+
+  MoveTask:
+    description: Reposition to a destination; the entity resolves how
+    parent: Task
+    fields:
+      task_type: const TaskType = MOVE
+      destination: GlobalPosition
+      route: optional GeoPath
+      speed_ms: optional float
+      altitude_m: optional float
+      hold_seconds: optional float
+
+  HoldTask:
+    description: Hold position within a radius of a location
+    parent: Task
+    fields:
+      task_type: const TaskType = HOLD
+      location: GlobalPosition
+      radius_m: float
+
+  ResupplyTask:
+    description: Deliver a payload to a destination
+    parent: Task
+    fields:
+      task_type: const TaskType = RESUPPLY
+      destination: GlobalPosition
+      payload: map[string, int]

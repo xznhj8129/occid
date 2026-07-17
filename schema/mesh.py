@@ -25,7 +25,7 @@ class MeshtasticPort(IntEnum):
 ### Models
 
 class MeshLink(Link):
-    __occid_model_id__: ClassVar[int] = 221
+    __occid_model_id__: ClassVar[int] = 224
     src_id: StringID
     dst_id: StringID
     condition: LinkCondition
@@ -35,7 +35,7 @@ class MeshLink(Link):
     updated_ts: builtins.float | None = None
 
 class MeshNode(Node):
-    __occid_model_id__: ClassVar[int] = 222
+    __occid_model_id__: ClassVar[int] = 225
     node_id: StringID
     state: MeshNodeState | None = None
     last_seen_ts: builtins.float | None = None
@@ -49,14 +49,14 @@ class MeshNode(Node):
 
 class MeshView(Network):
     'Current observed mesh topology and node/link state'
-    __occid_model_id__: ClassVar[int] = 223
+    __occid_model_id__: ClassVar[int] = 226
     epoch: builtins.int = 0
     nodes: dict[builtins.str, MeshNode]
     links: list[MeshLink]
     partition_id: StringID | None = None
 
 class MeshtasticMessage(Message):
-    __occid_model_id__: ClassVar[int] = 224
+    __occid_model_id__: ClassVar[int] = 227
     sender_id: StringID
     sender_name: builtins.str | None = None
     destination_id: StringID
@@ -68,14 +68,14 @@ class MeshtasticMessage(Message):
     metrics: MeshReceiveMetrics | None = None
 
 class MeshReceiveMetrics(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 228
     snr: builtins.float | None = None
     rssi: builtins.float | None = None
     hop_limit: builtins.int | None = None
     rx_time: builtins.float | None = None
 
 class MeshPositionSample(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 226
+    __occid_model_id__: ClassVar[int] = 229
     position: GlobalPosition
     position_ts: builtins.float | None = None
     pdop: builtins.float | None = None
@@ -84,7 +84,7 @@ class MeshPositionSample(TelemetryMessage):
     sats_in_view: builtins.int | None = None
 
 class NodeHeartbeat(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 230
     node_id: StringID
     last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None

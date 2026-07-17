@@ -9,11 +9,11 @@ from .message import Message
 
 class CommandMessage(Message):
     'Message whose payload directs action'
-    __occid_model_id__: ClassVar[int] = 133
+    __occid_model_id__: ClassVar[int] = 136
     command: SerializeAsAny[Command | FlightCommand | ArmCommand | DisarmCommand | TakeoffCommand | LandCommand | ReturnToLaunchCommand | SetModeCommand | GoToCommand | SetTakeoffAltitudeCommand | SelectMissionCommand | StartOffboardCommand | StopOffboardCommand | TaskCommand | TrackerCommand]
 
 class HumanTextMessage(Message):
-    __occid_model_id__: ClassVar[int] = 134
+    __occid_model_id__: ClassVar[int] = 137
     sender_id: StringID | None = None
     sender_name: builtins.str | None = None
     destination_id: StringID | None = None

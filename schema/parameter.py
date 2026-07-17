@@ -9,6 +9,6 @@ from .property import Property
 
 class Parameter(Property):
     'Current operating configuration or control regime'
-    __occid_model_id__: ClassVar[int] = 168
+    __occid_model_id__: ClassVar[int] = 171
     key: builtins.str | None = None
     value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None

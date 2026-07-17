@@ -17,12 +17,12 @@ class TaskCombat(IntEnum):
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 273
+    __occid_model_id__: ClassVar[int] = 277
     munition_type: builtins.str
     qty: builtins.int = 0
 
 class CombatTask(Task):
-    __occid_model_id__: ClassVar[int] = 274
+    __occid_model_id__: ClassVar[int] = 278
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None

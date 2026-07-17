@@ -99,19 +99,19 @@ class TargetCategory(IntEnum):
 ### Models
 
 class PayloadAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 249
+    __occid_model_id__: ClassVar[int] = 253
     payload_type: PayloadType
     qty: builtins.int = 0
 
 class PayloadPlanSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 250
+    __occid_model_id__: ClassVar[int] = 254
     requested: list[PayloadAllocation]
     approved: list[PayloadAllocation]
     loaded: list[PayloadAllocation]
     notes: builtins.str | None = None
 
 class PayloadMountSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 251
+    __occid_model_id__: ClassVar[int] = 255
     mount_id: StringID
     item_id: StringID
     qty: builtins.int = 0
@@ -121,7 +121,7 @@ class PayloadMountSchema(OCCIDModel):
     loaded: list[PayloadAllocation]
 
 class PayloadSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 252
+    __occid_model_id__: ClassVar[int] = 256
     item_type: PayloadType
     state: PayloadState | None = None
     weapons: list[ItemCount]
@@ -131,7 +131,7 @@ class PayloadSchema(OCCIDModel):
     payload_plan: PayloadPlanSchema | None = None
 
 class EffectsSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 253
+    __occid_model_id__: ClassVar[int] = 257
     has_launchers: builtins.bool
     esad: EsadMunitionStatus | None = None
     payload_mounts: dict[builtins.str, PayloadMountSchema]
@@ -142,28 +142,28 @@ class EffectsSchema(OCCIDModel):
     pylon_format: builtins.str = ''
 
 class GroundEffectsSchema(EffectsSchema):
-    __occid_model_id__: ClassVar[int] = 254
+    __occid_model_id__: ClassVar[int] = 258
     attack_modes: list[AttackMode]
 
 class AirEffectsSchema(EffectsSchema):
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 259
     reusable: builtins.bool | None = None
     attack_modes: list[AirAttackMode]
 
 class TargetPrioritySchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 256
+    __occid_model_id__: ClassVar[int] = 260
     threat: ThreatLevel | None = None
     is_high_value: builtins.bool = False
     note: builtins.str | None = None
 
 class TargetKinematics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 257
+    __occid_model_id__: ClassVar[int] = 261
     location_state: LocationState
     velocity: VelocityVector | None = None
     velocity_covariance: VelocityVector | None = None
 
 class TargetSetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 258
+    __occid_model_id__: ClassVar[int] = 262
     time_usec: builtins.int
     target_set_id: builtins.int
     target_set_name: builtins.str
@@ -173,7 +173,7 @@ class TargetSetCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetBoxCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 259
+    __occid_model_id__: ClassVar[int] = 263
     time_usec: builtins.int
     target_set_id: builtins.int
     target_set_name: builtins.str
@@ -182,7 +182,7 @@ class TargetBoxCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 260
+    __occid_model_id__: ClassVar[int] = 264
     time_usec: builtins.int
     target_set_id: builtins.int
     target_name: builtins.str
@@ -193,7 +193,7 @@ class TargetCoord(OCCIDModel):
     target_force: Faction
 
 class Fires(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 261
+    __occid_model_id__: ClassVar[int] = 265
     time_usec: builtins.int
     time_impact_usec: builtins.int
     target_position: GlobalPosition
@@ -202,7 +202,7 @@ class Fires(OCCIDModel):
     cep_expected_m: builtins.float
 
 class SplashCorrection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 262
+    __occid_model_id__: ClassVar[int] = 266
     time_usec: builtins.int
     splash_position: GlobalPosition
     sequence: builtins.int
@@ -210,7 +210,7 @@ class SplashCorrection(OCCIDModel):
     cep_expected_m: builtins.float
 
 class TargetHandover(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 263
+    __occid_model_id__: ClassVar[int] = 267
     time_usec: builtins.int
     detected_first_usec: builtins.int
     valid_until_usec: builtins.int
@@ -225,7 +225,7 @@ class TargetHandover(OCCIDModel):
     match_media_type: SensorDataFormat
 
 class BattleDamageAssessment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 264
+    __occid_model_id__: ClassVar[int] = 268
     time_usec: builtins.int
     kinematics: TargetKinematics
     target_set_id: builtins.int
@@ -237,7 +237,7 @@ class BattleDamageAssessment(OCCIDModel):
     target_force: Faction
 
 class EsadState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 265
+    __occid_model_id__: ClassVar[int] = 269
     time_usec: builtins.int
     arming_challenge_hash: builtins.int
     fault_flags: EsadFaultFlag
@@ -250,13 +250,13 @@ class EsadState(OCCIDModel):
     munition_type: builtins.int
 
 class EsadArming(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 266
+    __occid_model_id__: ClassVar[int] = 270
     time_usec: builtins.int
     arming_challenge_hash: builtins.int
     arming_request: EsadArmingRequest
 
 class RwsPose(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 267
+    __occid_model_id__: ClassVar[int] = 271
     time_usec: builtins.int
     kinematics: TargetKinematics
     offset_x_m: builtins.float
@@ -269,7 +269,7 @@ class RwsPose(OCCIDModel):
     coordinate_frame: builtins.int
 
 class RwsState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 268
+    __occid_model_id__: ClassVar[int] = 272
     time_usec: builtins.int
     weapon_string: builtins.str
     arming_state: RwsArmingState

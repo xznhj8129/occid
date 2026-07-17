@@ -47,16 +47,16 @@ class NATORadioBands(IntEnum):
 
 class Radio(Link):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 173
+    __occid_model_id__: ClassVar[int] = 176
 
 class FrequencyRange(Radio):
-    __occid_model_id__: ClassVar[int] = 174
+    __occid_model_id__: ClassVar[int] = 177
     low_mhz: builtins.float | None = None
     high_mhz: builtins.float | None = None
     center_mhz: builtins.float | None = None
 
 class ChannelSpec(Radio):
-    __occid_model_id__: ClassVar[int] = 175
+    __occid_model_id__: ClassVar[int] = 178
     channel_id: StringID | None = None
     label: builtins.str | None = None
     frequency: FrequencyRange | None = None
@@ -64,7 +64,7 @@ class ChannelSpec(Radio):
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(Radio):
-    __occid_model_id__: ClassVar[int] = 176
+    __occid_model_id__: ClassVar[int] = 179
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None

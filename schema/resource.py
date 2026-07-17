@@ -9,34 +9,34 @@ from .state import State
 
 class Resource(State):
     'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
-    __occid_model_id__: ClassVar[int] = 180
+    __occid_model_id__: ClassVar[int] = 183
 
 class FuelState(Resource):
-    __occid_model_id__: ClassVar[int] = 181
+    __occid_model_id__: ClassVar[int] = 184
     fuel_type: FuelType
     capacity: builtins.float | None = None
     remaining: builtins.float | None = None
 
 class SuppliesSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 182
+    __occid_model_id__: ClassVar[int] = 185
     fuel: FuelState | None = None
     stores: list[ItemCount]
 
 class PowerSourceSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 183
+    __occid_model_id__: ClassVar[int] = 186
     source_id: StringID
     power_type: PowerType
     status: PowerStatus
     remaining_pct: builtins.float | None = None
 
 class PowerStateSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 184
+    __occid_model_id__: ClassVar[int] = 187
     status: PowerStatus
     sources: list[PowerSourceSchema]
     electrical_sources: list[ElectricalResourceState]
 
 class ElectricalResourceState(Resource):
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 188
     source_id: StringID | None = None
     battery_id: builtins.int | None = None
     voltage_v: builtins.float | None = None

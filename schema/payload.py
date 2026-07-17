@@ -54,10 +54,10 @@ class SensorFrustumShape(IntEnum):
 
 class Payload(Item):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 229
+    __occid_model_id__: ClassVar[int] = 232
 
 class SensorPayload(Payload):
-    __occid_model_id__: ClassVar[int] = 230
+    __occid_model_id__: ClassVar[int] = 233
     name: builtins.str
     model: builtins.str
     type: SensorType
@@ -76,23 +76,23 @@ class SensorPayload(Payload):
     zoom_range: NumericRange | None = None
 
 class MeasurementQuality(MetadataValue):
-    __occid_model_id__: ClassVar[int] = 231
+    __occid_model_id__: ClassVar[int] = 234
     lat_err_m: builtins.float | None = None
     az_err_deg: builtins.float | None = None
     range_err_m: builtins.float | None = None
 
 class ImageSensor(SensorPayload):
-    __occid_model_id__: ClassVar[int] = 232
+    __occid_model_id__: ClassVar[int] = 235
     fov: SensorFieldOfView | None = None
     night_vision: builtins.bool
 
 class RFSensor(SensorPayload):
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 236
     frustum_shape: SensorFrustumShape | None = None
     freq_span: NumericRange | None = None
     chan_bw: builtins.float | None = None
 
 class SensorFieldOfView(Attribute):
-    __occid_model_id__: ClassVar[int] = 234
+    __occid_model_id__: ClassVar[int] = 237
     horizontal: NumericRange | None = None
     vertical: NumericRange | None = None

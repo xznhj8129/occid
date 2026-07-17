@@ -9,15 +9,15 @@ from .property import Property
 
 class Attribute(Property):
     'Fundamental characteristics, type, form'
-    __occid_model_id__: ClassVar[int] = 130
+    __occid_model_id__: ClassVar[int] = 133
 
 class SymbologySchema(Attribute):
-    __occid_model_id__: ClassVar[int] = 131
+    __occid_model_id__: ClassVar[int] = 134
     sidc: builtins.str | None = None
     cot: builtins.str | None = None
 
 class DisplayMeta(Attribute):
-    __occid_model_id__: ClassVar[int] = 132
+    __occid_model_id__: ClassVar[int] = 135
     icon_code: builtins.str | None = None
     tint: builtins.str | None = None
     short_label: builtins.str | None = None

@@ -283,25 +283,25 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 163
+    __occid_model_id__: ClassVar[int] = 166
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(Organization):
-    __occid_model_id__: ClassVar[int] = 164
+    __occid_model_id__: ClassVar[int] = 167
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
 class FlyingOrg(MilitaryOrg):
-    __occid_model_id__: ClassVar[int] = 165
+    __occid_model_id__: ClassVar[int] = 168
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.AIR
     air_units: list[ItemCount]
 
 class OrbatOrg(MilitaryOrg):
-    __occid_model_id__: ClassVar[int] = 166
+    __occid_model_id__: ClassVar[int] = 169
     org_layout: OrgLayout = OrgLayout.ORBAT
     topology: OrgTopology = OrgTopology.HIERARCHICAL
     category: NATOUnitCategory
@@ -319,7 +319,7 @@ class OrbatOrg(MilitaryOrg):
     spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OrbatOrg):
-    __occid_model_id__: ClassVar[int] = 167
+    __occid_model_id__: ClassVar[int] = 170
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.LAND
     combat_domain: OperationalDomain

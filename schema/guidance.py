@@ -50,10 +50,10 @@ class GnssFixType(IntEnum):
 
 class Guidance(State):
     'Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state'
-    __occid_model_id__: ClassVar[int] = 135
+    __occid_model_id__: ClassVar[int] = 138
 
 class TelemetryState(Guidance):
-    __occid_model_id__: ClassVar[int] = 136
+    __occid_model_id__: ClassVar[int] = 139
     flight_mode: FlightMode | None = None
     flight_phase: FlightPhase | None = None
     plan_phase: FlightPlanPhase | None = None
@@ -63,13 +63,13 @@ class TelemetryState(Guidance):
     link_rssi: builtins.float | None = None
 
 class NavigationValidity(Guidance):
-    __occid_model_id__: ClassVar[int] = 137
+    __occid_model_id__: ClassVar[int] = 140
     local_position_ok: builtins.bool | None = None
     global_position_ok: builtins.bool | None = None
     home_position_ok: builtins.bool | None = None
 
 class GnssSolution(Guidance):
-    __occid_model_id__: ClassVar[int] = 138
+    __occid_model_id__: ClassVar[int] = 141
     fix_type: GnssFixType | None = None
     fix_code: builtins.int | None = None
     satellites_used: builtins.int | None = None

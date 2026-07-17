@@ -29,10 +29,10 @@ class GimbalState(IntEnum):
 
 class SensorState(State):
     'Onboard sensor readings, readiness, calibration, and availability'
-    __occid_model_id__: ClassVar[int] = 186
+    __occid_model_id__: ClassVar[int] = 189
 
 class TrackerState(SensorState):
-    __occid_model_id__: ClassVar[int] = 187
+    __occid_model_id__: ClassVar[int] = 190
     locked: builtins.bool | None = None
     target_id: StringID | None = None
     angular_error: LocalDirection | None = None

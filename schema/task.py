@@ -88,7 +88,7 @@ class Mission(Task):
     'Tactical, intent-based task that may contain other tasks'
     __occid_model_id__: ClassVar[int] = 125
     task_level: TaskLevel = Field(default=TaskLevel.MISSION, frozen=True)
-    tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask]]
+    tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]]
 
 class IsrTask(Task):
     __occid_model_id__: ClassVar[int] = 126
@@ -97,3 +97,27 @@ class IsrTask(Task):
     dwell_seconds: builtins.float | None = None
     isr_params: IsrParameters | None = None
     isr_result: IsrResult | None = None
+
+class MoveTask(Task):
+    'Reposition to a destination; the entity resolves how'
+    __occid_model_id__: ClassVar[int] = 127
+    task_type: TaskType = Field(default=TaskType.MOVE, frozen=True)
+    destination: GlobalPosition
+    route: GeoPath | None = None
+    speed_ms: builtins.float | None = None
+    altitude_m: builtins.float | None = None
+    hold_seconds: builtins.float | None = None
+
+class HoldTask(Task):
+    'Hold position within a radius of a location'
+    __occid_model_id__: ClassVar[int] = 128
+    task_type: TaskType = Field(default=TaskType.HOLD, frozen=True)
+    location: GlobalPosition
+    radius_m: builtins.float
+
+class ResupplyTask(Task):
+    'Deliver a payload to a destination'
+    __occid_model_id__: ClassVar[int] = 129
+    task_type: TaskType = Field(default=TaskType.RESUPPLY, frozen=True)
+    destination: GlobalPosition
+    payload: dict[builtins.str, builtins.int]

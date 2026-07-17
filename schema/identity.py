@@ -20,20 +20,20 @@ class IdentifierType(IntEnum):
 
 class Identity(Property):
     'Fundamental identity, name, ID'
-    __occid_model_id__: ClassVar[int] = 145
+    __occid_model_id__: ClassVar[int] = 148
 
 class StringID(Identity):
-    __occid_model_id__: ClassVar[int] = 146
+    __occid_model_id__: ClassVar[int] = 149
     id_type: IdentifierType
     value: builtins.str
 
 class IntID(Identity):
-    __occid_model_id__: ClassVar[int] = 147
+    __occid_model_id__: ClassVar[int] = 150
     id_type: IdentifierType
     value: builtins.int
 
 class HardwareIdentity(Identity):
-    __occid_model_id__: ClassVar[int] = 148
+    __occid_model_id__: ClassVar[int] = 151
     hardware_uid: StringID | None = None
     vendor_id: StringID | None = None
     product_id: StringID | None = None

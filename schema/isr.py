@@ -9,11 +9,11 @@ from .message import Message
 
 class ObservationMessage(Message):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 157
+    __occid_model_id__: ClassVar[int] = 160
     observation: SerializeAsAny[Observation | Detection | VisionBox | VisionDetection | VisionDetectionFrame | Classification | Track | TrackUpdate | IntelTrackSchema | Assessment | IsrResult | IsrObservation]
 
 class ProtocolEventMessage(ObservationMessage):
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 161
     uid: StringID
     event_type: builtins.str
     event_method: builtins.str | None = None

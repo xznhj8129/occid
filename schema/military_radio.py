@@ -8,5 +8,5 @@ from .radio import RadioProfile
 ### Models
 
 class MilitaryRadioProfile(RadioProfile):
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 231
     bands: list[NATORadioBands]

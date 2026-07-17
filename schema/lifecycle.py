@@ -10,10 +10,10 @@ from .state import State
 
 class Lifecycle(State):
     'Current stage in existence or execution.'
-    __occid_model_id__: ClassVar[int] = 161
+    __occid_model_id__: ClassVar[int] = 164
 
 class TaskAssignment(Lifecycle):
-    __occid_model_id__: ClassVar[int] = 162
+    __occid_model_id__: ClassVar[int] = 165
     task_id: StringID
     ts: builtins.float
     status: TaskStatus
