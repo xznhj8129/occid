@@ -16,7 +16,6 @@ class SuccessCriterion(Struct):
     statement: builtins.str
     metric: builtins.str | None = None
     target_value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
-    satisfied: builtins.bool | None = None
 
 class Objective(Control):
     'Desired end state with intent, success rule, target, priority, and deadline'
