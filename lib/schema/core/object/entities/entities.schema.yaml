@@ -90,20 +90,16 @@ models:
       - Actor
       - Machine
     fields:
+      record: RecordMeta
       entity_id: StringID
-      node: Node
+      node_ids: list[StringID]
       short_id: optional StringID
       name: optional string
       entity_type: optional EntityType
-      lifecycle_status: optional EntityLifecycleStatus
-      created_ts: optional float
-      updated_ts: optional float
-      origin_system: optional string
       alt_ids: list[StringID]
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[RelationSchema]
-      location_state: optional LocationState
       symbology: optional SymbologySchema
       display_meta: optional DisplayMeta
 
@@ -137,13 +133,11 @@ models:
       propulsion: PropulsionType
       navigation: NavigationMode
       navaids: list[NavAids]
-      fuel: optional FuelState
       max_range: float
       max_flight_t: float
       max_spd: float
       cruise_spd: float
       max_alt: float
-      start_flight_time: float
 
   Person:
     parent: Actor
@@ -156,7 +150,6 @@ models:
       propulsion: PropulsionType = FOOT
       navigation: NavigationMode
       navaids: list[NavAids]
-      health: HumanHealthStatus
       sensors: map[string, SensorPayload]
 
   Machine:
@@ -170,14 +163,7 @@ models:
       sys_id: StringID
       propulsion: PropulsionType
       machine_type: optional MachineType
-      status: EntityOperationalState
-      health_snapshot: optional HealthSnapshot
-      power_state: optional PowerStateSchema
-      supplies: optional SuppliesSchema
-      link_condition: optional LinkCondition
-      control_level: optional ControlLevel
       components: list[EntityComponentRef]
-      maint_status: optional MaintenanceStatus
 
   Vehicle:
     parent: Machine
@@ -206,4 +192,3 @@ models:
       serial_uid: StringID
       sensors: map[string, SensorPayload]
       navigation: AirNavigationSchema
-      maint_status: optional MaintenanceStatus

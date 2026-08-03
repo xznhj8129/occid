@@ -92,6 +92,7 @@ class VisionDetection(Detection):
 
 class VisionDetectionFrame(Detection):
     __occid_model_id__: ClassVar[int] = 92
+    record: RecordMeta
     frame_id: StringID | None = None
     sensor_id: StringID | None = None
     timestamp_us: builtins.int | None = None
@@ -99,6 +100,7 @@ class VisionDetectionFrame(Detection):
 
 class IsrObservation(Observation):
     __occid_model_id__: ClassVar[int] = 93
+    record: RecordMeta
     obs_id: StringID
     track_id: StringID | None = None
     sensor_id: StringID | None = None
@@ -123,6 +125,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(Track):
     __occid_model_id__: ClassVar[int] = 95
+    record: RecordMeta
     track_id: StringID
     track_state: TrackState | None = None
     updated_ts: builtins.float
@@ -138,11 +141,9 @@ class IsrResult(Assessment):
 
 class IntelTrackSchema(Track):
     __occid_model_id__: ClassVar[int] = 97
+    record: RecordMeta
     schema_id: StringID
     schema_type: builtins.str = 'INTEL_TRACK'
-    created_ts: builtins.float | None = None
-    updated_ts: builtins.float | None = None
-    origin_system: builtins.str | None = None
     trust_score: ConfidenceLevel | None = None
     alt_ids: list[StringID]
     entity_flags: list[builtins.str]

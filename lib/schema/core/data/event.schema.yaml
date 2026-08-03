@@ -33,6 +33,8 @@ models:
     variants:
       - FlightEvent
       - MissionEvent
+    fields:
+      record: RecordMeta
 
   FlightEvent:
     parent: Event

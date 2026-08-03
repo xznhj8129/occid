@@ -29,13 +29,11 @@ models:
       - Group
       - Unit
     fields:
+      record: RecordMeta
       org_uid: StringID
       orglevel: OrgLevel = GROUP
       org_type: optional OrgType
       topology: optional OrgTopology
-      position: optional GlobalPosition
-      control_level: optional ControlLevel
-      link_condition: optional LinkCondition
 
   Group:
     parent: Organization

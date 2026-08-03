@@ -15,6 +15,15 @@ from occid.schema import *
 def main() -> None:
     EXAMPLE_PAYLOAD_VERSION = (1, 0, 0)
     EXAMPLE_ID_TYPE = IdentifierType.DB_ID
+
+    def record_meta(uid: str, timestamp: float = 0.0) -> RecordMeta:
+        return RecordMeta(
+            uid=StringID(id_type=EXAMPLE_ID_TYPE, value=uid),
+            created_ts=timestamp,
+            updated_ts=timestamp,
+            origin_system="occid.example",
+            provenance=[],
+        )
     rc_link = Link(
         schema_id=StringID(id_type=EXAMPLE_ID_TYPE, value="ELRS_915"),
         name="ELRS_915",
@@ -69,8 +78,9 @@ def main() -> None:
     )
 
     ground_robot = GroundRobot(
+        record=record_meta("record.robot.ugv.01"),
         entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="robot.ugv.01"),
-        node=ground_node,
+        node_ids=[ground_node.node_id],
         sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UGV_01"),
         propulsion=PropulsionType.TRACKED,
         alt_ids=[],
@@ -82,7 +92,6 @@ def main() -> None:
         sensors={},
         model="Tracked Mule",
         role="Ammo carrier",
-        status=EntityOperationalState.READY,
         navigation=GroundNavigationSchema(
             propulsion=PropulsionType.TRACKED,
             navigation=NavigationMode.GNSS,
@@ -93,8 +102,9 @@ def main() -> None:
     )
 
     air_robot = Drone(
+        record=record_meta("record.air.uav01"),
         entity_id=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01"),
-        node=uav_node,
+        node_ids=[uav_node.node_id],
         sys_id=StringID(id_type=EXAMPLE_ID_TYPE, value="UAV01"),
         propulsion=PropulsionType.ROTARY_WING,
         alt_ids=[],
@@ -104,7 +114,6 @@ def main() -> None:
         components=[],
         serial_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="air.uav01.serial"),
         model="MK4V2-10",
-        status=EntityOperationalState.READY,
         machine_type=MachineType.ROBOT,
         navigation=AirNavigationSchema(
             flight_type=AirframeType.COPTER,
@@ -118,13 +127,11 @@ def main() -> None:
             propulsion=PropulsionType.ROTARY_WING,
             navigation=NavigationMode.GNSS,
             navaids=[NavAids.GNSS, NavAids.INS],
-            fuel=FuelState(fuel_type=FuelType.BATTERY, capacity=9000.0, remaining=9000.0),
             max_range=10000.0,
             max_flight_t=1200.0,
             max_spd=50.0,
             cruise_spd=35.0,
             max_alt=2000.0,
-            start_flight_time=0.0,
         ),
         controller=RobotController(
             control_modes=RobotControlMode.ASSISTED,
@@ -143,10 +150,10 @@ def main() -> None:
             ),
         ),
         sensors={"NOSE_CAM": camera},
-        maint_status=MaintenanceStatus(state=MaintenanceState.READY),
     )
 
     ground_org = GroundOrbatOrg(
+        record=record_meta("record.org.uav.platoon"),
         org_uid=StringID(id_type=EXAMPLE_ID_TYPE, value="org.uav.platoon"),
         combat_domain=EffectDomain.AIR,
         category=NATOUnitCategory.UAV,
@@ -222,26 +229,26 @@ def main() -> None:
     )
 
     uav_home = GlobalPosition(
-        lat=45.50170,
-        lon=-73.56730,
+        lat=36.530440,
+        lon=-83.216383,
         alt=80.0,
         alt_frame=AltitudeDatum.RELATIVE,
     )
     uav_wp1 = GlobalPosition(
-        lat=45.50220,
-        lon=-73.56660,
+        lat=36.531040,
+        lon=-83.215683,
         alt=120.0,
         alt_frame=AltitudeDatum.RELATIVE,
     )
     uav_wp2 = GlobalPosition(
-        lat=45.50290,
-        lon=-73.56580,
+        lat=36.531640,
+        lon=-83.214983,
         alt=120.0,
         alt_frame=AltitudeDatum.RELATIVE,
     )
     uav_land = GlobalPosition(
-        lat=45.50190,
-        lon=-73.56700,
+        lat=36.530640,
+        lon=-83.216083,
         alt=80.0,
         alt_frame=AltitudeDatum.RELATIVE,
     )
@@ -252,16 +259,27 @@ def main() -> None:
         AutopilotMissionWaypoint(waypoint_index=3, position=uav_land),
     ]
     uav_flight_plan = AutopilotFlightPlan(
-        task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.plan.uav-01.flight"),
+        record=record_meta("record.plan.uav-01.flight"),
+        plan_id=StringID(id_type=EXAMPLE_ID_TYPE, value="plan.uav-01.flight"),
+        objective_ids=[],
+        task_ids=[StringID(id_type=EXAMPLE_ID_TYPE, value="task.mission.uav-demo")],
+        actor_ids=[air_robot.entity_id],
+        resource_ids=[],
+        assignments=[],
+        steps=[],
+        routes=[],
+        constraints=[],
+        contingencies=[],
         waypoints=uav_waypoints,
     )
     uav_mission = Mission(
+        record=record_meta("record.task.mission.uav-demo"),
         task_id=StringID(id_type=EXAMPLE_ID_TYPE, value="task.mission.uav-demo"),
-        tasks=[uav_flight_plan],
+        tasks=[],
     )
 
-    upload_mission_command = TaskCommand(
-        task=uav_flight_plan,
+    upload_mission_command = ApplyPlanCommand(
+        plan=uav_flight_plan,
     )
 
     arm_command = ArmCommand()
@@ -321,7 +339,7 @@ def main() -> None:
     print("SEQ:", upload_mission_decoded.seq)
     print("TARGET:", upload_mission_decoded.dst.target_id.value)
     print("SIZE:", len(upload_mission_encoded))
-    for waypoint in upload_mission_decoded.command.task.waypoints:
+    for waypoint in upload_mission_decoded.command.plan.waypoints:
         print(
             "WAYPOINT:",
             waypoint.waypoint_index,

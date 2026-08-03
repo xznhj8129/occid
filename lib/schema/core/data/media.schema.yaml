@@ -13,10 +13,10 @@ models:
   MediaItemSchema:
     parent: Media
     fields:
+      record: RecordMeta
       media_id: StringID
       media_type: MediaType
       uri: string
       label: optional string
-      created_ts: optional float
       size_bytes: optional int
       content_type: optional string

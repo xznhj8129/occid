@@ -5,15 +5,61 @@ root: Assignment
 tags:
   - core
 
+enums:
+  AssignmentStatus:
+    - PROPOSED = 0
+    - ASSIGNED
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - REJECTED
+    - CANCELLED
+
+  ExecutionPhase:
+    - CREATED = 0
+    - QUEUED
+    - RUNNING
+    - SUCCEEDED
+    - FAILED
+    - CANCELLED
+
 models:
   Assignment:
-    description: Current task, owner, control lease, objective binding, dispatch state, phase, and status log.
+    description: Explicit binding of a task to an assignee under stated authority and constraints
     parent: State
+    fields:
+      record: RecordMeta
+      assignment_id: StringID
+      task_id: StringID
+      assignee_id: StringID
+      plan_id: optional StringID
+      authority: string
+      assigned_by: StringID
+      assigned_at: float
+      accepted_at: optional float
+      status: AssignmentStatus = PROPOSED
+      constraints: list[Constraint]
+
+  Execution:
+    description: One execution attempt for an assignment, independently tracked across local and external executors
+    parent: State
+    fields:
+      record: RecordMeta
+      execution_id: StringID
+      assignment_id: StringID
+      executor_id: StringID
+      attempt: int = 0
+      phase: ExecutionPhase = CREATED
+      progress: optional float
+      started_at: optional float
+      completed_at: optional float
+      result: optional MetadataValue
+      failure: optional string
+      external_job_refs: list[StringID]
 
   TaskDelta:
     parent: Assignment
     fields:
-      task_id: StringID
       task_rev: int = 0
       phase: TaskPhase
       progress: optional float

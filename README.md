@@ -21,3 +21,20 @@ OCCID is designed to map cleanly to:
 and more
 
 OCCID does not replace these protocols. It provides a common information model that translations between them are written against.
+
+## Operational contract
+
+OCCID separates durable identity and specification from time-indexed operational state:
+
+- `Objective` describes the intended outcome and typed success criteria.
+- `Task` describes work to accomplish; `Mission` is a task that can contain subordinate tasks.
+- `Plan` is a separate control record describing how objectives and tasks use actors, resources, steps, routes, constraints, and contingencies.
+- `Assignment` binds one task to an assignee; `Execution` records each attempt by an executor.
+- `Entity` holds identity, classification, capabilities, relations, node references, and stable specification. `EntityState` carries reported position, motion, status, health, resources, links, and control state.
+- Durable records compose `RecordMeta`; embedded value structs do not acquire persistent identity.
+
+## Persistence and serialization
+
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(2, 0, 0)`.
+
+`encode()` produces a named-field, versioned MsgPack envelope for compact transient interchange. It is not a wire-protocol compatibility promise. Positional field-order encoding is no longer used. Polymorphic model IDs are allocated permanently in `lib/model_ids.yaml`; existing IDs must not be changed or reused. Schema-version migration or negotiation must be defined before encoded payloads are treated as durable storage.

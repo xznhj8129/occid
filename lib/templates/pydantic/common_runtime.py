@@ -16,25 +16,30 @@ class OCCIDModel(BaseModel):
             OCCID_MODEL_ID_BY_CLASS[cls] = model_id
 
     def encode(self) -> bytes:
-        return msgpack.packb(self._wire_value(self), use_bin_type=True)
+        envelope = {
+            "schema_version": list(OCCID_SCHEMA_VERSION),
+            "model_id": OCCID_MODEL_ID_BY_CLASS[type(self)],
+            "fields": self._wire_model_fields(self),
+        }
+        return msgpack.packb(envelope, use_bin_type=True)
 
     @classmethod
     def decode(cls, payload: bytes):
-        return cls._from_wire(msgpack.unpackb(payload, raw=False))
+        envelope = msgpack.unpackb(payload, raw=False)
+        version = tuple(envelope["schema_version"])
+        if version != OCCID_SCHEMA_VERSION:
+            raise ValueError(f"unsupported OCCID schema version {version}; expected {OCCID_SCHEMA_VERSION}")
+        model_id = envelope["model_id"]
+        if model_id != OCCID_MODEL_ID_BY_CLASS[cls]:
+            raise ValueError(f"payload model ID {model_id} does not identify {cls.__name__}")
+        return cls._from_wire_fields(envelope["fields"])
 
     @classmethod
-    def _from_wire(cls, data):
-        if type(data) == dict:
-            return cls.model_validate(data)
-
-        field_items = list(cls.model_fields.items())
-        if len(data) > len(field_items):
-            raise ValueError(f"{cls.__name__} wire data has too many fields")
-
-        values = {}
-        for index, item in enumerate(data):
-            field_name, field_info = field_items[index]
-            values[field_name] = cls._wire_to_value(field_info.annotation, item)
+    def _from_wire_fields(cls, data):
+        values = {
+            field_name: cls._wire_to_value(cls.model_fields[field_name].annotation, value)
+            for field_name, value in data.items()
+        }
         return cls(**values)
 
     @classmethod
@@ -44,6 +49,9 @@ class OCCIDModel(BaseModel):
 
         origin = get_origin(annotation)
         args = get_args(annotation)
+
+        if type(data) == dict and set(data) == {"model_id", "fields"}:
+            return OCCID_MODEL_BY_ID[data["model_id"]]._from_wire_fields(data["fields"])
 
         if origin is Annotated:
             return cls._wire_to_value(args[0], data)
@@ -58,8 +66,6 @@ class OCCIDModel(BaseModel):
             return tuple(cls._wire_to_value(arg, item) for arg, item in zip(args, data))
 
         if origin in (Union, UnionType):
-            if type(data) == list and len(data) == 2 and type(data[0]) == int and data[0] in OCCID_MODEL_BY_ID:
-                return OCCID_MODEL_BY_ID[data[0]]._from_wire(data[1])
             for arg in args:
                 try:
                     return cls._wire_to_value(arg, data)
@@ -69,7 +75,7 @@ class OCCIDModel(BaseModel):
 
         try:
             if issubclass(annotation, OCCIDModel):
-                return annotation._from_wire(data)
+                return annotation._from_wire_fields(data)
         except TypeError:
             pass
 
@@ -90,8 +96,10 @@ class OCCIDModel(BaseModel):
     @classmethod
     def _wire_value(cls, value):
         if issubclass(type(value), OCCIDModel):
-            values = cls._wire_model_payload(value)
-            return values
+            return {
+                "model_id": OCCID_MODEL_ID_BY_CLASS[type(value)],
+                "fields": cls._wire_model_fields(value),
+            }
         if type(value) == dict:
             return {key: cls._wire_value(item) for key, item in value.items()}
         if type(value) in (list, tuple):
@@ -103,52 +111,11 @@ class OCCIDModel(BaseModel):
         return value
 
     @classmethod
-    def _wire_model_payload(cls, value):
-        values = [
-            cls._wire_field_value(field_info.annotation, getattr(value, field_name))
-            for field_name, field_info in type(value).model_fields.items()
-        ]
-        while values and values[-1] is None:
-            values.pop()
-        return values
-
-    @classmethod
-    def _wire_field_value(cls, annotation, value):
-        if value is None:
-            return None
-
-        origin = get_origin(annotation)
-        args = get_args(annotation)
-
-        if origin is Annotated:
-            return cls._wire_field_value(args[0], value)
-
-        if origin is list:
-            return [cls._wire_field_value(args[0], item) for item in value]
-
-        if origin is dict:
-            return {key: cls._wire_field_value(args[1], item) for key, item in value.items()}
-
-        if origin is tuple:
-            return [cls._wire_field_value(arg, item) for arg, item in zip(args, value)]
-
-        if origin in (Union, UnionType) and issubclass(type(value), OCCIDModel):
-            return [OCCID_MODEL_ID_BY_CLASS[type(value)], cls._wire_model_payload(value)]
-
-        if issubclass(type(value), OCCIDModel):
-            values = cls._wire_model_payload(value)
-            while values and values[-1] is None:
-                values.pop()
-            return values
-        if type(value) == dict:
-            return {key: cls._wire_value(item) for key, item in value.items()}
-        if type(value) in (list, tuple):
-            return [cls._wire_value(item) for item in value]
-        if issubclass(type(value), IntEnum):
-            return value.value
-        if issubclass(type(value), Enum):
-            return value.value
-        return value
+    def _wire_model_fields(cls, value):
+        return {
+            field_name: cls._wire_value(getattr(value, field_name))
+            for field_name in type(value).model_fields
+        }
 
     def model_dump(self, *, mode="python", **kwargs):
         def encode(value):

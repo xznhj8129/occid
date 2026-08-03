@@ -64,6 +64,7 @@ models:
     variants:
       - Objective
       - Task
+      - Plan
       - Command
       - Reference
       - Constraint

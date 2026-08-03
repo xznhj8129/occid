@@ -65,7 +65,12 @@ class StopOffboardCommand(FlightCommand):
 
 class TaskCommand(Command):
     __occid_model_id__: ClassVar[int] = 58
-    task: SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]
+    task: SerializeAsAny[Task | Mission | IsrTask | MoveTask | HoldTask | ResupplyTask]
+
+class ApplyPlanCommand(Command):
+    'Direct an executor to apply an approved plan'
+    __occid_model_id__: ClassVar[int] = 286
+    plan: SerializeAsAny[Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan]
 
 class TrackerCommand(Command):
     __occid_model_id__: ClassVar[int] = 59

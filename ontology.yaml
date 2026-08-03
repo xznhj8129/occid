@@ -99,7 +99,14 @@ Root:
           description: Desired end state conveying intent, success rule, target, constraints
 
         Task:
-          description: A directive to accomplish an objective; TaskLevel distinguishes mission-level and plan-level task structure.
+          description: Work that must be accomplished in support of an objective.
+          children:
+
+            Mission:
+              description: Tactical, intent-based task that may contain subordinate tasks.
+
+        Plan:
+          description: Proposed or approved method for accomplishing tasks with actors, resources, sequencing, routes, constraints, and contingencies.
 
         Command:
           description: An immediate imperative requiring execution without interpretation
@@ -188,7 +195,13 @@ Root:
               description: Firmware, hardware identity, software build, load, counters, storage, diagnostics, and internal process state.
 
             Assignment:
-              description: Current task, owner, control lease, objective binding, dispatch state, phase, and status log.
+              description: Explicit binding of a task to an assignee under stated authority and constraints.
+
+            Execution:
+              description: One execution attempt for an assignment, including progress, result, failure, and external job references.
+
+            EntityState:
+              description: Time-indexed mutable state reported for an entity without altering its identity or specification.
 
         Event:
           description: Discrete occurrence with subject, source, time, type, and event data.

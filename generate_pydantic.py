@@ -23,6 +23,7 @@ SCHEMA_DIR = SCRIPT_DIR / "lib" / "schema" / "core"
 MODULE_DIR = SCRIPT_DIR / "lib" / "schema" / "modules"
 DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "schema"
 TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
+MODEL_ID_REGISTRY = SCRIPT_DIR / "lib" / "model_ids.yaml"
 CORE_SCHEMA_MAX_PARTS = 3
 
 PRIMITIVE_TYPES = {
@@ -136,7 +137,22 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--module-tag", action="append", default=[])
     parser.add_argument("--all-modules", action="store_true")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--model-id-registry", type=Path, default=MODEL_ID_REGISTRY)
     return parser.parse_args()
+
+
+def load_model_ids(path: Path, model_names: set[str]) -> dict[str, int]:
+    registry = yaml.safe_load(path.read_text())
+    if set(registry) != {"version", "model_ids"}:
+        raise SchemaError(f"model ID registry must contain only version and model_ids: {path}")
+    model_ids = registry["model_ids"]
+    missing = sorted(model_names - set(model_ids))
+    if missing:
+        raise SchemaError(f"models missing permanent IDs in {path}: {', '.join(missing)}")
+    ids = list(model_ids.values())
+    if len(ids) != len(set(ids)):
+        raise SchemaError(f"duplicate permanent model IDs in {path}")
+    return {name: model_ids[name] for name in model_names}
 
 
 def load_template(name: str) -> str:
@@ -1039,16 +1055,17 @@ def render_init(module_names: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def write_package(output_dir: Path, modules: list[ModuleDef], symbol_index: dict[str, str], enum_members: dict[str, set[str]]) -> None:
+def write_package(
+    output_dir: Path,
+    modules: list[ModuleDef],
+    symbol_index: dict[str, str],
+    enum_members: dict[str, set[str]],
+    model_ids: dict[str, int],
+) -> None:
     graph = module_dependency_graph(modules, symbol_index, enum_members)
     ordered_names = topo_sort_modules(modules, graph)
     module_map = {module.name: module for module in modules}
     variant_type_members = build_variant_type_members(modules, symbol_index)
-    model_ids: dict[str, int] = {}
-    for module_name in ordered_names:
-        for model_def in module_map[module_name].models:
-            model_ids[model_def.name] = len(model_ids)
-
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
@@ -1074,10 +1091,12 @@ def main() -> None:
     symbol_index = build_symbol_index(modules)
     enum_members = build_enum_members(modules)
     validate_schema(modules, symbol_index, enum_members)
-    write_package(args.output_dir, modules, symbol_index, enum_members)
+    model_ids = load_model_ids(args.model_id_registry, {model.name for module in modules for model in module.models})
+    write_package(args.output_dir, modules, symbol_index, enum_members, model_ids)
     print(f"schema_dir={args.schema_dir}")
     print(f"module_dir={args.module_dir}")
     print(f"output_dir={args.output_dir}")
+    print(f"model_id_registry={args.model_id_registry}")
     print(f"module_count={len(modules)}")
 
 

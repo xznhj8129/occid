@@ -24,10 +24,6 @@ class TaskType(IntEnum):
     MOVE = auto()
     RESUPPLY = auto()
 
-class TaskLevel(IntEnum):
-    MISSION = 0
-    PLAN = auto()
-
 class TaskPhase(IntEnum):
     CREATED = 0
     DISPATCHED = auto()
@@ -74,10 +70,10 @@ class AirMoveTask(IntEnum):
 ### Models
 
 class Task(Control):
-    'A directive to accomplish an objective'
+    'Work that must be accomplished in support of an objective'
     __occid_model_id__: ClassVar[int] = 124
+    record: RecordMeta
     task_id: StringID
-    task_level: TaskLevel
     task_type: TaskType | None = None
     status: TaskStatus = TaskStatus.NEW
     start_time: builtins.float | None = None
@@ -87,8 +83,7 @@ class Task(Control):
 class Mission(Task):
     'Tactical, intent-based task that may contain other tasks'
     __occid_model_id__: ClassVar[int] = 125
-    task_level: TaskLevel = Field(default=TaskLevel.MISSION, frozen=True)
-    tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]]
+    tasks: list[SerializeAsAny[Task | Mission | IsrTask | MoveTask | HoldTask | ResupplyTask]]
 
 class IsrTask(Task):
     __occid_model_id__: ClassVar[int] = 126

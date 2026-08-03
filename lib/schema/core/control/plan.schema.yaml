@@ -6,6 +6,21 @@ tags:
   - core
 
 enums:
+  PlanApprovalState:
+    - DRAFT = 0
+    - PROPOSED
+    - APPROVED
+    - REJECTED
+    - SUPERSEDED
+
+  PlanStepStatus:
+    - PENDING = 0
+    - READY
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - SKIPPED
+
   FlightType:
     - SURVEY_POINT = 0
     - SURVEY_AREA
@@ -28,10 +43,45 @@ enums:
 
 models:
   Plan:
-    description: Plan-level task with structured execution data and no task subdivision
-    parent: Task
+    description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
+    parent: Control
+    variants:
+      - AutopilotFlightPlan
+      - GroupFlightPlan
+      - UnitFlightPlan
+      - MissionPlan
     fields:
-      task_level: const TaskLevel = PLAN
+      record: RecordMeta
+      plan_id: StringID
+      name: optional string
+      objective_ids: list[StringID]
+      task_ids: list[StringID]
+      actor_ids: list[StringID]
+      resource_ids: list[StringID]
+      assignments: list[StringID]
+      steps: list[PlanStep]
+      routes: list[GeoPath]
+      constraints: list[Constraint]
+      contingencies: list[PlanContingency]
+      approval_state: PlanApprovalState = DRAFT
+
+  PlanStep:
+    parent: Struct
+    fields:
+      step_id: StringID
+      task_id: optional StringID
+      actor_ids: list[StringID]
+      depends_on: list[StringID]
+      sequence: int
+      status: PlanStepStatus = PENDING
+
+  PlanContingency:
+    parent: Struct
+    fields:
+      contingency_id: StringID
+      condition: string
+      response: string
+      task_ids: list[StringID]
 
   AutopilotFlightPlan:
     parent: Plan
@@ -70,7 +120,6 @@ models:
     parent: Plan
     description: Saved operator mission plan - the planner inputs, restorable for editing
     fields:
-      name: string
       flight_type: FlightType = SURVEY_POINT
       air_task: TaskAir = FLY
       manual: bool = false

@@ -1,0 +1,19 @@
+version: 1
+type: schema
+package: record
+root: RecordMeta
+tags:
+  - core
+
+models:
+  RecordMeta:
+    description: Persistent-record identity, revision, timestamps, origin, classification, and provenance metadata
+    parent: Struct
+    fields:
+      uid: StringID
+      revision: int = 0
+      created_ts: float
+      updated_ts: float
+      origin_system: string
+      classification: optional string
+      provenance: list[string]

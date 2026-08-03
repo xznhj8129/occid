@@ -104,6 +104,7 @@ models:
   VisionDetectionFrame:
     parent: Detection
     fields:
+      record: RecordMeta
       frame_id: optional StringID
       sensor_id: optional StringID
       timestamp_us: optional int
@@ -112,6 +113,7 @@ models:
   IsrObservation:
     parent: Observation
     fields:
+      record: RecordMeta
       obs_id: StringID
       track_id: optional StringID
       sensor_id: optional StringID
@@ -137,6 +139,7 @@ models:
   TrackUpdate:
     parent: Track
     fields:
+      record: RecordMeta
       track_id: StringID
       track_state: optional TrackState
       updated_ts: float
@@ -154,11 +157,9 @@ models:
   IntelTrackSchema:
     parent: Track
     fields:
+      record: RecordMeta
       schema_id: StringID
       schema_type: string = "INTEL_TRACK"
-      created_ts: optional float
-      updated_ts: optional float
-      origin_system: optional string
       trust_score: optional ConfidenceLevel
       alt_ids: list[StringID]
       entity_flags: list[string]

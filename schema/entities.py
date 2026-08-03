@@ -90,20 +90,16 @@ class PropulsionType(IntEnum):
 class Entity(Object):
     'One discrete "atom" capable of actions'
     __occid_model_id__: ClassVar[int] = 214
+    record: RecordMeta
     entity_id: StringID
-    node: SerializeAsAny[Node | MeshNode]
+    node_ids: list[StringID]
     short_id: StringID | None = None
     name: builtins.str | None = None
     entity_type: EntityType | None = None
-    lifecycle_status: EntityLifecycleStatus | None = None
-    created_ts: builtins.float | None = None
-    updated_ts: builtins.float | None = None
-    origin_system: builtins.str | None = None
     alt_ids: list[StringID]
     tags: list[builtins.str]
     metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[RelationSchema]
-    location_state: LocationState | None = None
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 
@@ -131,13 +127,11 @@ class AirNavigationSchema(Attribute):
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
-    fuel: FuelState | None = None
     max_range: builtins.float
     max_flight_t: builtins.float
     max_spd: builtins.float
     cruise_spd: builtins.float
     max_alt: builtins.float
-    start_flight_time: builtins.float
 
 class Person(Actor):
     __occid_model_id__: ClassVar[int] = 219
@@ -148,7 +142,6 @@ class Person(Actor):
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
     navaids: list[NavAids]
-    health: HumanHealthStatus
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
 
 class Machine(Entity):
@@ -157,14 +150,7 @@ class Machine(Entity):
     sys_id: StringID
     propulsion: PropulsionType
     machine_type: MachineType | None = None
-    status: EntityOperationalState
-    health_snapshot: HealthSnapshot | None = None
-    power_state: PowerStateSchema | None = None
-    supplies: SuppliesSchema | None = None
-    link_condition: LinkCondition | None = None
-    control_level: ControlLevel | None = None
     components: list[EntityComponentRef]
-    maint_status: MaintenanceStatus | None = None
 
 class Vehicle(Machine):
     __occid_model_id__: ClassVar[int] = 221
@@ -191,4 +177,3 @@ class AirMachine(Machine):
     serial_uid: StringID
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: AirNavigationSchema
-    maint_status: MaintenanceStatus | None = None

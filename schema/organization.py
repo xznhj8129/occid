@@ -27,13 +27,11 @@ class OrgTopology(IntEnum):
 class Organization(Set):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
     __occid_model_id__: ClassVar[int] = 98
+    record: RecordMeta
     org_uid: StringID
     orglevel: OrgLevel = OrgLevel.GROUP
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    position: GlobalPosition | None = None
-    control_level: ControlLevel | None = None
-    link_condition: LinkCondition | None = None
 
 class Group(Organization):
     __occid_model_id__: ClassVar[int] = 99

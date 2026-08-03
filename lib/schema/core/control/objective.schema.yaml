@@ -6,6 +6,30 @@ tags:
   - core
 
 models:
+  SuccessCriterion:
+    description: Typed, human-readable condition used to determine whether an objective succeeded
+    parent: Struct
+    fields:
+      criterion_id: StringID
+      statement: string
+      metric: optional string
+      target_value: optional MetadataValue
+      satisfied: optional bool
+
   Objective:
     description: Desired end state with intent, success rule, target, priority, and deadline
     parent: Control
+    fields:
+      record: RecordMeta
+      objective_id: StringID
+      name: string
+      intent: string
+      desired_state: string
+      success_criteria: list[SuccessCriterion]
+      target_refs: list[StringID]
+      constraints: list[Constraint]
+      priority: TaskPriority = ROUTINE
+      status: TaskStatus = NEW
+      owner_id: optional StringID
+      start_time: optional float
+      deadline: optional float

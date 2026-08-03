@@ -10,7 +10,7 @@ from .message import Message
 class CommandMessage(Message):
     'Message whose payload directs action'
     __occid_model_id__: ClassVar[int] = 136
-    command: SerializeAsAny[Command | FlightCommand | ArmCommand | DisarmCommand | TakeoffCommand | LandCommand | ReturnToLaunchCommand | SetModeCommand | GoToCommand | SetTakeoffAltitudeCommand | SelectMissionCommand | StartOffboardCommand | StopOffboardCommand | TaskCommand | TrackerCommand]
+    command: SerializeAsAny[Command | FlightCommand | ArmCommand | DisarmCommand | TakeoffCommand | LandCommand | ReturnToLaunchCommand | SetModeCommand | GoToCommand | SetTakeoffAltitudeCommand | SelectMissionCommand | StartOffboardCommand | StopOffboardCommand | TaskCommand | ApplyPlanCommand | TrackerCommand]
 
 class HumanTextMessage(Message):
     __occid_model_id__: ClassVar[int] = 137

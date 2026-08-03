@@ -3,9 +3,26 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .task import Task, TaskAir, TaskLevel
+from .control import Control
+from .struct import Struct
+from .task import TaskAir
 
 ### Enums
+
+class PlanApprovalState(IntEnum):
+    DRAFT = 0
+    PROPOSED = auto()
+    APPROVED = auto()
+    REJECTED = auto()
+    SUPERSEDED = auto()
+
+class PlanStepStatus(IntEnum):
+    PENDING = 0
+    READY = auto()
+    ACTIVE = auto()
+    COMPLETE = auto()
+    FAILED = auto()
+    SKIPPED = auto()
 
 class FlightType(IntEnum):
     SURVEY_POINT = 0
@@ -29,10 +46,38 @@ class FlightPlanPhase(IntEnum):
 
 ### Models
 
-class Plan(Task):
-    'Plan-level task with structured execution data and no task subdivision'
+class Plan(Control):
+    'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
     __occid_model_id__: ClassVar[int] = 172
-    task_level: TaskLevel = Field(default=TaskLevel.PLAN, frozen=True)
+    record: RecordMeta
+    plan_id: StringID
+    name: builtins.str | None = None
+    objective_ids: list[StringID]
+    task_ids: list[StringID]
+    actor_ids: list[StringID]
+    resource_ids: list[StringID]
+    assignments: list[StringID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
+
+class PlanStep(Struct):
+    __occid_model_id__: ClassVar[int] = 283
+    step_id: StringID
+    task_id: StringID | None = None
+    actor_ids: list[StringID]
+    depends_on: list[StringID]
+    sequence: builtins.int
+    status: PlanStepStatus = PlanStepStatus.PENDING
+
+class PlanContingency(Struct):
+    __occid_model_id__: ClassVar[int] = 282
+    contingency_id: StringID
+    condition: builtins.str
+    response: builtins.str
+    task_ids: list[StringID]
 
 class AutopilotFlightPlan(Plan):
     __occid_model_id__: ClassVar[int] = 173
@@ -66,7 +111,6 @@ class UnitFlightPlan(Plan):
 class MissionPlan(Plan):
     'Saved operator mission plan - the planner inputs, restorable for editing'
     __occid_model_id__: ClassVar[int] = 176
-    name: builtins.str
     flight_type: FlightType = FlightType.SURVEY_POINT
     air_task: TaskAir = TaskAir.FLY
     manual: builtins.bool = False

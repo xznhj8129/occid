@@ -557,3 +557,14 @@ Module selection is independent of tag filtering but compatible with it:
 - A module tagged `military` is excluded when the profile excludes `military`
 - A module with no conflicting tags is included by default when explicitly selected
 - Modules are never auto-included — they must be explicitly selected by name or by matching tag inclusion rules
+
+**19. Generated schema identity and serialization**
+
+- Every generated model has a permanent numeric ID allocated in `lib/model_ids.yaml`.
+- Existing model IDs may not be changed or reused. Removed model IDs remain reserved.
+- Generation fails when a selected model has no allocated ID or two names share an ID.
+- The generated package publishes `OCCID_SCHEMA_VERSION` independently of the YAML IDL document-format version.
+- Durable persistence uses ordinary named-field JSON.
+- Compact MsgPack uses named fields in an envelope containing `schema_version`, `model_id`, and `fields`.
+- Positional field-order encoding is not a stable contract.
+- A decoder rejects unsupported schema versions and a top-level model ID that does not identify the requested class.

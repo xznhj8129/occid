@@ -20,3 +20,21 @@ models:
       - Condition
       - Lifecycle
       - Assignment
+      - Execution
+      - EntityState
+
+  EntityState:
+    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
+    parent: State
+    fields:
+      record: RecordMeta
+      subject_id: StringID
+      timestamp: float
+      position: optional LocationState
+      motion: optional VelocityVector
+      operational_status: optional EntityOperationalState
+      lifecycle_status: optional EntityLifecycleStatus
+      health: optional HealthSnapshot
+      resources: optional SuppliesSchema
+      links: map[string, LinkCondition]
+      control_state: optional ControlLevel

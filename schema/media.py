@@ -13,10 +13,10 @@ class Media(Data):
 
 class MediaItemSchema(Media):
     __occid_model_id__: ClassVar[int] = 75
+    record: RecordMeta
     media_id: StringID
     media_type: MediaType
     uri: builtins.str
     label: builtins.str | None = None
-    created_ts: builtins.float | None = None
     size_bytes: builtins.int | None = None
     content_type: builtins.str | None = None

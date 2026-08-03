@@ -4,9 +4,33 @@ import builtins
 from .common import *
 
 from .control import Control
+from .struct import Struct
+from .task import TaskPriority, TaskStatus
 
 ### Models
+
+class SuccessCriterion(Struct):
+    'Typed, human-readable condition used to determine whether an objective succeeded'
+    __occid_model_id__: ClassVar[int] = 285
+    criterion_id: StringID
+    statement: builtins.str
+    metric: builtins.str | None = None
+    target_value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    satisfied: builtins.bool | None = None
 
 class Objective(Control):
     'Desired end state with intent, success rule, target, priority, and deadline'
     __occid_model_id__: ClassVar[int] = 84
+    record: RecordMeta
+    objective_id: StringID
+    name: builtins.str
+    intent: builtins.str
+    desired_state: builtins.str
+    success_criteria: list[SuccessCriterion]
+    target_refs: list[StringID]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
+    owner_id: StringID | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None

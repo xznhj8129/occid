@@ -32,6 +32,7 @@ class AirMissionEvent(IntEnum):
 class Event(Data):
     'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
     __occid_model_id__: ClassVar[int] = 66
+    record: RecordMeta
 
 class FlightEvent(Event):
     __occid_model_id__: ClassVar[int] = 67

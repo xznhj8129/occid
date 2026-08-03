@@ -21,6 +21,7 @@ models:
     description: An immediate imperative requiring execution without interpretation
     parent: Control
 
+  # These are extremely WIP and under-developped to have a minimal-working interface for testing, should NOT become the temporary-permanent solution
   FlightCommand:
     parent: Command
 
@@ -70,6 +71,12 @@ models:
     parent: Command
     fields:
       task: Task
+
+  ApplyPlanCommand:
+    description: Direct an executor to apply an approved plan
+    parent: Command
+    fields:
+      plan: Plan
 
   TrackerCommand:
     parent: Command

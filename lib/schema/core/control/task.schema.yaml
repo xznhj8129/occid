@@ -23,10 +23,6 @@ enums:
     - MOVE
     - RESUPPLY
 
-  TaskLevel:
-    - MISSION = 0
-    - PLAN
-
   TaskPhase:
     - CREATED = 0
     - DISPATCHED
@@ -72,15 +68,14 @@ enums:
 
 models:
   Task:
-    description: A directive to accomplish an objective
+    description: Work that must be accomplished in support of an objective
     parent: Control
     variants:
       - Mission
-      - Plan
 
     fields:
+      record: RecordMeta
       task_id: StringID
-      task_level: TaskLevel
       task_type: optional TaskType
       status: TaskStatus = NEW
       start_time: optional float
@@ -91,7 +86,6 @@ models:
     description: Tactical, intent-based task that may contain other tasks
     parent: Task
     fields:
-      task_level: const TaskLevel = MISSION
       tasks: list[Task]
 
   IsrTask:
