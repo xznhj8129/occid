@@ -21,6 +21,7 @@ models:
       - Lifecycle
       - Assignment
       - Execution
+      - TaskDelta
       - EntityState
 
   EntityState:

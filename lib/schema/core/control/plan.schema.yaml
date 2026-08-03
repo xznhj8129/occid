@@ -66,6 +66,7 @@ models:
       approval_state: PlanApprovalState = DRAFT
 
   PlanStep:
+    description: Immutable planned step definition; runtime status belongs to execution state
     parent: Struct
     fields:
       step_id: StringID
@@ -73,7 +74,6 @@ models:
       actor_ids: list[StringID]
       depends_on: list[StringID]
       sequence: int
-      status: PlanStepStatus = PENDING
 
   PlanContingency:
     parent: Struct

@@ -26,12 +26,16 @@ OCCID does not replace these protocols. It provides a common information model t
 
 OCCID separates durable identity and specification from time-indexed operational state:
 
-- `Objective` describes the intended outcome and typed success criteria.
+- `Objective` describes the intended outcome and typed success criteria. Whether a criterion is currently satisfied belongs to assessment or execution state, not the criterion definition.
 - `Task` describes work to accomplish; `Mission` is a task that can contain subordinate tasks.
-- `Plan` is a separate control record describing how objectives and tasks use actors, resources, steps, routes, constraints, and contingencies.
-- `Assignment` binds one task to an assignee; `Execution` records each attempt by an executor.
+- `Plan` is a separate control record describing how objectives and tasks use actors, resources, steps, routes, constraints, and contingencies. `PlanStep` describes the intended sequence and does not carry runtime status.
+- `Assignment` binds one task to an assignee; `Execution` records each attempt by an executor. `TaskDelta` is an independent task-state update, not a subtype of assignment.
 - `Entity` holds identity, classification, capabilities, relations, node references, and stable specification. `EntityState` carries reported position, motion, status, health, resources, links, and control state.
 - Durable records compose `RecordMeta`; embedded value structs do not acquire persistent identity.
+
+### Record identity
+
+`RecordMeta.record_id` identifies one persisted record instance or revision. Model-specific identifiers such as `task_id`, `plan_id`, `entity_id`, and `assignment_id` identify the stable logical operational object across record revisions. They are intentionally distinct and must not be treated as interchangeable aliases.
 
 ## Persistence and serialization
 

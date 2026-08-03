@@ -7,10 +7,12 @@ tags:
 
 models:
   RecordMeta:
-    description: Persistent-record identity, revision, timestamps, origin, classification, and provenance metadata
+    description: Persistent-record instance identity, revision, timestamps, origin, classification, and provenance metadata
     parent: Struct
     fields:
-      uid: StringID
+      # Identifies this persisted record instance or revision. Model-specific IDs
+      # identify the stable logical operational object across record revisions.
+      record_id: StringID
       revision: int = 0
       created_ts: float
       updated_ts: float

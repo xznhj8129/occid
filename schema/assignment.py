@@ -57,12 +57,15 @@ class Execution(State):
     failure: builtins.str | None = None
     external_job_refs: list[StringID]
 
-class TaskDelta(Assignment):
+class TaskDelta(State):
+    'Time-indexed task-state update; not an assignment definition'
     __occid_model_id__: ClassVar[int] = 131
+    record: RecordMeta
+    task_id: StringID
     task_rev: builtins.int = 0
     phase: TaskPhase
     progress: builtins.float | None = None
-    owner: builtins.str | None = None
+    owner_id: StringID | None = None
     updated_ts: builtins.float
 
 class FlightAssignment(Assignment):

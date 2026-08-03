@@ -58,12 +58,15 @@ models:
       external_job_refs: list[StringID]
 
   TaskDelta:
-    parent: Assignment
+    description: Time-indexed task-state update; not an assignment definition
+    parent: State
     fields:
+      record: RecordMeta
+      task_id: StringID
       task_rev: int = 0
       phase: TaskPhase
       progress: optional float
-      owner: optional string
+      owner_id: optional StringID
       updated_ts: float
 
   FlightAssignment:

@@ -16,9 +16,9 @@ def main() -> None:
     EXAMPLE_PAYLOAD_VERSION = (1, 0, 0)
     EXAMPLE_ID_TYPE = IdentifierType.DB_ID
 
-    def record_meta(uid: str, timestamp: float = 0.0) -> RecordMeta:
+    def record_meta(record_id: str, timestamp: float = 0.0) -> RecordMeta:
         return RecordMeta(
-            uid=StringID(id_type=EXAMPLE_ID_TYPE, value=uid),
+            record_id=StringID(id_type=EXAMPLE_ID_TYPE, value=record_id),
             created_ts=timestamp,
             updated_ts=timestamp,
             origin_system="occid.example",
