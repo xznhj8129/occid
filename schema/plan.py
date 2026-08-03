@@ -64,13 +64,13 @@ class Plan(Control):
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class PlanStep(Struct):
+    'Immutable planned step definition; runtime status belongs to execution state'
     __occid_model_id__: ClassVar[int] = 283
     step_id: StringID
     task_id: StringID | None = None
     actor_ids: list[StringID]
     depends_on: list[StringID]
     sequence: builtins.int
-    status: PlanStepStatus = PlanStepStatus.PENDING
 
 class PlanContingency(Struct):
     __occid_model_id__: ClassVar[int] = 282
