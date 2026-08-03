@@ -14,7 +14,6 @@ models:
       statement: string
       metric: optional string
       target_value: optional MetadataValue
-      satisfied: optional bool
 
   Objective:
     description: Desired end state with intent, success rule, target, priority, and deadline
