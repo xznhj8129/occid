@@ -8,9 +8,9 @@ from .struct import Struct
 ### Models
 
 class RecordMeta(Struct):
-    'Persistent-record identity, revision, timestamps, origin, classification, and provenance metadata'
+    'Persistent-record instance identity, revision, timestamps, origin, classification, and provenance metadata'
     __occid_model_id__: ClassVar[int] = 284
-    uid: StringID
+    record_id: StringID
     revision: builtins.int = 0
     created_ts: builtins.float
     updated_ts: builtins.float
