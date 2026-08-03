@@ -81,31 +81,31 @@ class WaypointType(IntEnum):
 
 class SpatialStruct(Struct):
     'Spatial struct support models'
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 192
 
 class EulerAngles(Pose):
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 193
     pitch: builtins.float
     heading: builtins.float
     roll: builtins.float
     frame: BodyReferenceFrame
 
 class LocalDirection(Bearing):
-    __occid_model_id__: ClassVar[int] = 193
+    __occid_model_id__: ClassVar[int] = 194
     bearing: builtins.float
     azimuth: builtins.float
     elevation: builtins.float
     slant_range: builtins.float
 
 class LocalVector(Vector):
-    __occid_model_id__: ClassVar[int] = 194
+    __occid_model_id__: ClassVar[int] = 195
     x: builtins.float
     y: builtins.float
     z: builtins.float
     frame: InertialReferenceFrame
 
 class GlobalPosition(GeoPos):
-    __occid_model_id__: ClassVar[int] = 195
+    __occid_model_id__: ClassVar[int] = 196
     lat: builtins.float
     lon: builtins.float
     alt: builtins.float
@@ -114,15 +114,15 @@ class GlobalPosition(GeoPos):
     alt_frame: AltitudeDatum
 
 class GeoPath(StructPath):
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 197
     points: list[GlobalPosition]
 
 class GeoArea(Shape):
-    __occid_model_id__: ClassVar[int] = 197
+    __occid_model_id__: ClassVar[int] = 198
     vertices: list[GlobalPosition]
 
 class BoundingBox(Bounding):
-    __occid_model_id__: ClassVar[int] = 198
+    __occid_model_id__: ClassVar[int] = 199
     x1: builtins.float
     y1: builtins.float
     z1: builtins.float
@@ -131,26 +131,26 @@ class BoundingBox(Bounding):
     z2: builtins.float
 
 class VelocityVector(Vector):
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 200
     x: builtins.float
     y: builtins.float
     z: builtins.float
 
 class AngularVelocityVector(Vector):
-    __occid_model_id__: ClassVar[int] = 200
+    __occid_model_id__: ClassVar[int] = 201
     x_rad_s: builtins.float
     y_rad_s: builtins.float
     z_rad_s: builtins.float
     frame: BodyReferenceFrame
 
 class AltitudeState(Measurement):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 202
     absolute_m: builtins.float | None = None
     relative_m: builtins.float | None = None
     datum: AltitudeDatum
 
 class LocationUncertainty(Uncertainty):
-    __occid_model_id__: ClassVar[int] = 202
+    __occid_model_id__: ClassVar[int] = 203
     horiz_err_m: builtins.float | None = None
     vert_err_m: builtins.float | None = None
     ellipse_major_m: builtins.float | None = None
@@ -158,7 +158,7 @@ class LocationUncertainty(Uncertainty):
     ellipse_bearing_deg: builtins.float | None = None
 
 class GeoJsonGeometry(Shape):
-    __occid_model_id__: ClassVar[int] = 203
+    __occid_model_id__: ClassVar[int] = 204
     type: GeoJsonGeometryTypes
     coordinates: Any | None = None
     geometries: list[GeoJsonGeometry] | None = None
@@ -166,10 +166,10 @@ class GeoJsonGeometry(Shape):
 
 class Position(State):
     'Position in space, address or placement'
-    __occid_model_id__: ClassVar[int] = 204
+    __occid_model_id__: ClassVar[int] = 205
 
 class LocationState(Position):
-    __occid_model_id__: ClassVar[int] = 205
+    __occid_model_id__: ClassVar[int] = 206
     inertial_frame: InertialReferenceFrame | None = None
     body_frame: BodyReferenceFrame | None = None
     position: GlobalPosition | None = None
@@ -181,7 +181,7 @@ class LocationState(Position):
     gnss: GnssSolution | None = None
 
 class SpotterOrigin(Position):
-    __occid_model_id__: ClassVar[int] = 206
+    __occid_model_id__: ClassVar[int] = 207
     position: GlobalPosition
     attitude: EulerAngles | None = None
     look_vector: LocalDirection | None = None

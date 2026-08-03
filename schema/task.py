@@ -88,7 +88,7 @@ class Mission(Task):
     'Tactical, intent-based task that may contain other tasks'
     __occid_model_id__: ClassVar[int] = 125
     task_level: TaskLevel = Field(default=TaskLevel.MISSION, frozen=True)
-    tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]]
+    tasks: list[SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]]
 
 class IsrTask(Task):
     __occid_model_id__: ClassVar[int] = 126

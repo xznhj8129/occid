@@ -3,9 +3,14 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .task import Task, TaskLevel
+from .task import Task, TaskAir, TaskLevel
 
 ### Enums
+
+class FlightType(IntEnum):
+    SURVEY_POINT = 0
+    SURVEY_AREA = auto()
+    ONE_WAY = auto()
 
 class FlightPlanPhase(IntEnum):
     ONLINE = 0
@@ -57,3 +62,14 @@ class UnitFlightPlan(Plan):
     land_pos: GlobalPosition
     ip_wait_delay: builtins.float = 0.0
     wp: GeoPath
+
+class MissionPlan(Plan):
+    'Saved operator mission plan - the planner inputs, restorable for editing'
+    __occid_model_id__: ClassVar[int] = 176
+    name: builtins.str
+    flight_type: FlightType = FlightType.SURVEY_POINT
+    air_task: TaskAir = TaskAir.FLY
+    manual: builtins.bool = False
+    points: PlannedRoutePoints
+    config: dict[builtins.str, builtins.float]
+    saved_ts: builtins.float | None = None

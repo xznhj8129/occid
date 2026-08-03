@@ -65,7 +65,7 @@ class StopOffboardCommand(FlightCommand):
 
 class TaskCommand(Command):
     __occid_model_id__: ClassVar[int] = 58
-    task: SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]
+    task: SerializeAsAny[Task | Mission | Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan | IsrTask | MoveTask | HoldTask | ResupplyTask]
 
 class TrackerCommand(Command):
     __occid_model_id__: ClassVar[int] = 59

@@ -19,6 +19,7 @@ enums:
     - MSP = 0
     - MAVLINK
     - CRSF
+    - MANUAL_ENTRY
 
   RCType:
     - PWM = 0
@@ -55,6 +56,11 @@ enums:
     - YAW
     - THROTTLE
     - AUX
+
+  GimbalAxis:
+    - ROLL = 0
+    - PITCH
+    - YAW
 
 models:
   Robot:
@@ -130,13 +136,13 @@ models:
     description: Remote imagery/video observation source with camera geometry and telemetry links
     fields:
       name: string
-      objtype: string = "uav"
+      objtype: EntitySubtype = AIR_ROBOT
       active: bool = true
       dbid: optional StringID
       pos: GlobalPosition
       attitude: EulerAngles
       gimbal_ang: optional EulerAngles
-      gimbal_axes: list[ControlAxis]
+      gimbal_axes: list[GimbalAxis]
       fov_h_deg: optional float
       fov_v_deg: optional float
       media_kind: SensorDataFormat = VIDEO

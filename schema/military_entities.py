@@ -8,21 +8,21 @@ from .entities import AirMachine, GroundMachine, Machine, Person
 ### Models
 
 class MilitaryPerson(Person):
-    __occid_model_id__: ClassVar[int] = 273
+    __occid_model_id__: ClassVar[int] = 274
     attack_modes: list[AttackMode]
     weapons: list[ItemCount]
     ammo: list[ItemCount]
 
 class MilitaryMachine(Machine):
-    __occid_model_id__: ClassVar[int] = 274
+    __occid_model_id__: ClassVar[int] = 275
     category: NATOUnitCategory | None = None
 
 class MilitaryGroundMachine(GroundMachine):
-    __occid_model_id__: ClassVar[int] = 275
+    __occid_model_id__: ClassVar[int] = 276
     payload: PayloadSchema
     effects: GroundEffectsSchema
 
 class MilitaryAirMachine(AirMachine):
-    __occid_model_id__: ClassVar[int] = 276
+    __occid_model_id__: ClassVar[int] = 277
     payload: PayloadSchema
     effects: AirEffectsSchema

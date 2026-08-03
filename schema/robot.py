@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .entities import GroundMachine, Machine, MachineType
+from .entities import EntitySubtype, GroundMachine, Machine, MachineType
 from .guidance import Guidance
 from .interface import Interface
 from .parameter import Parameter
@@ -24,6 +24,7 @@ class TelemetryType(IntEnum):
     MSP = 0
     MAVLINK = auto()
     CRSF = auto()
+    MANUAL_ENTRY = auto()
 
 class RCType(IntEnum):
     PWM = 0
@@ -61,20 +62,25 @@ class ControlAxis(IntEnum):
     THROTTLE = auto()
     AUX = auto()
 
+class GimbalAxis(IntEnum):
+    ROLL = 0
+    PITCH = auto()
+    YAW = auto()
+
 ### Models
 
 class Robot(Machine):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 242
     robot_control: RobotController | None = None
     remote_control: RemoteControlSchema
 
 class GroundRobot(GroundMachine):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 243
     machine_type: MachineType = MachineType.ROBOT
 
 class VideoConfigSchema(Parameter):
-    __occid_model_id__: ClassVar[int] = 243
+    __occid_model_id__: ClassVar[int] = 244
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -84,33 +90,33 @@ class VideoConfigSchema(Parameter):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(Parameter):
-    __occid_model_id__: ClassVar[int] = 244
+    __occid_model_id__: ClassVar[int] = 245
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
 
 class ChannelMapEntry(Parameter):
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 246
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
     label: builtins.str | None = None
 
 class ModeRange(Parameter):
-    __occid_model_id__: ClassVar[int] = 246
+    __occid_model_id__: ClassVar[int] = 247
     mode_id: builtins.int | None = None
     mode_name: builtins.str | None = None
     channel: builtins.int
     range: NumericRange
 
 class RobotController(Parameter):
-    __occid_model_id__: ClassVar[int] = 247
+    __occid_model_id__: ClassVar[int] = 248
     control_modes: RobotControlMode | None = None
     autopilot_type: AutopilotType
     autopilot_firmware: FirmwareInfo
 
 class RemoteControlSchema(Interface):
-    __occid_model_id__: ClassVar[int] = 248
+    __occid_model_id__: ClassVar[int] = 249
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
@@ -125,15 +131,15 @@ class RemoteControlSchema(Interface):
 
 class ObserverSource(Interface):
     'Remote imagery/video observation source with camera geometry and telemetry links'
-    __occid_model_id__: ClassVar[int] = 249
+    __occid_model_id__: ClassVar[int] = 250
     name: builtins.str
-    objtype: builtins.str = 'uav'
+    objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
     active: builtins.bool = True
     dbid: StringID | None = None
     pos: GlobalPosition
     attitude: EulerAngles
     gimbal_ang: EulerAngles | None = None
-    gimbal_axes: list[ControlAxis]
+    gimbal_axes: list[GimbalAxis]
     fov_h_deg: builtins.float | None = None
     fov_v_deg: builtins.float | None = None
     media_kind: SensorDataFormat = SensorDataFormat.VIDEO
@@ -146,7 +152,7 @@ class ObserverSource(Interface):
     can_zoom: builtins.bool = False
 
 class FlightControlState(Guidance):
-    __occid_model_id__: ClassVar[int] = 250
+    __occid_model_id__: ClassVar[int] = 251
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None

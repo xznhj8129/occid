@@ -6,6 +6,11 @@ tags:
   - core
 
 enums:
+  FlightType:
+    - SURVEY_POINT = 0
+    - SURVEY_AREA
+    - ONE_WAY
+
   FlightPlanPhase:
     - ONLINE = 0
     - PREPARING
@@ -60,3 +65,15 @@ models:
       land_pos: GlobalPosition
       ip_wait_delay: float = 0.0
       wp: GeoPath
+
+  MissionPlan:
+    parent: Plan
+    description: Saved operator mission plan - the planner inputs, restorable for editing
+    fields:
+      name: string
+      flight_type: FlightType = SURVEY_POINT
+      air_task: TaskAir = FLY
+      manual: bool = false
+      points: PlannedRoutePoints
+      config: map[string, float]
+      saved_ts: optional float

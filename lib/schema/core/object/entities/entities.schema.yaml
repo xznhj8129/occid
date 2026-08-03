@@ -11,6 +11,14 @@ enums:
     - MACHINE
     - SYSTEM
 
+  EntitySubtype:
+    - PERSON = 0
+    - PLATFORM
+    - VEHICLE
+    - GROUND_ROBOT
+    - AIR_ROBOT
+    - SURFACE_ROBOT
+
   MachineType:
     - VEHICLE = 0
     - ROBOT
