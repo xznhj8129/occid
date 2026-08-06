@@ -42,3 +42,17 @@ OCCID separates durable identity and specification from time-indexed operational
 Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(2, 0, 0)`.
 
 `encode()` produces a named-field, versioned MsgPack envelope for compact transient interchange. It is not a wire-protocol compatibility promise. Positional field-order encoding is no longer used. Polymorphic model IDs are allocated permanently in `lib/model_ids.yaml`; existing IDs must not be changed or reused. Schema-version migration or negotiation must be defined before encoded payloads are treated as durable storage.
+
+## Executable closed-loop demonstration
+
+`end_to_end_ooda.py` demonstrates one complete OCCID-only command, control, telemetry, and OODA cycle. A deterministic decision agent consumes entity identity, capability, mutable state, and flight telemetry; creates an `Objective`, `IsrTask`, approved `Plan`, `Assignment`, `Execution`, and command; receives semantic acceptance, progress, telemetry, an ISR observation, and completion evidence; then closes the objective.
+
+Every participant boundary performs a real OCCID encode/decode round trip. Sigma, HiveLink, MPFC, MAVLink, MSP, flight-control simulation, brokers, and network services are not required.
+
+```bash
+python end_to_end_ooda.py
+python end_to_end_ooda.py --json
+python -m unittest discover -s tests -p 'test_end_to_end_ooda.py'
+```
+
+See [`docs/end_to_end_ooda.md`](docs/end_to_end_ooda.md) for the scenario, invariants, scope, and machine-readable trace output.
