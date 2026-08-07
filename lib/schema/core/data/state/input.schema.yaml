@@ -11,7 +11,7 @@ models:
     parent: State
 
   ControlAxisSet:
-    description: Normalized control-axis values independent of the native receiver or flight-controller representation
+    description: Normalized control-axis values in the signed range -1.0 to +1.0, independent of the native receiver or flight-controller representation
     parent: Input
     fields:
       roll: optional float
@@ -21,13 +21,14 @@ models:
       aux: list[float]
 
   ControlChannelValue:
+    description: One normalized auxiliary/control channel value in the signed range -1.0 to +1.0 when present
     parent: Input
     fields:
       channel_index: int
       value: optional float
 
   ControlOverride:
-    description: Normalized direct control override; endpoint adapters define the exact native mapping and reject unsupported axes
+    description: Normalized direct control override in the signed range -1.0 to +1.0; endpoint adapters define the exact native mapping and reject unsupported axes
     parent: Input
     fields:
       roll: optional float
