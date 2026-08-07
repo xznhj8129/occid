@@ -20,7 +20,7 @@ The experiment isolates the claim being evaluated:
 
 ## Scenario
 
-A deterministic AI-CNC/OODA stand-in receives OCCID records describing:
+A deterministic AIC2/OODA stand-in receives OCCID records describing:
 
 - its own controller identity;
 - an autonomous UAV identity;
