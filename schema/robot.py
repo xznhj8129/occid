@@ -152,15 +152,18 @@ class ObserverSource(Interface):
     can_zoom: builtins.bool = False
 
 class FlightControlState(Guidance):
+    'Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers'
     __occid_model_id__: ClassVar[int] = 251
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None
     failsafe: builtins.bool | None = None
-    active_modes: list[builtins.int]
-    active_mode_names: list[builtins.str]
-    nav_state_code: builtins.int | None = None
-    flight_mode: builtins.str | None = None
+    standard_mode: StandardFlightMode | None = None
+    native_mode_name: builtins.str | None = None
+    native_mode_code: builtins.int | None = None
+    native_active_mode_codes: list[builtins.int]
+    native_active_mode_names: list[builtins.str]
+    native_nav_state_code: builtins.int | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
     navigation_validity: NavigationValidity | None = None
     readiness: NavReadinessState | None = None

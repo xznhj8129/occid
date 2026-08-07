@@ -23,45 +23,63 @@ class Command(Control):
     __occid_model_id__: ClassVar[int] = 45
 
 class FlightCommand(Command):
+    'Immediate flight-domain command; distinct from Task and Plan lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 46
 
-class ArmCommand(FlightCommand):
+class LowLevelFlightCommand(FlightCommand):
+    'Direct flight-control imperative mapped by an endpoint adapter to MAVLink, MSP, or another native flight-controller protocol'
+    __occid_model_id__: ClassVar[int] = 287
+
+class ArmCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 47
 
-class DisarmCommand(FlightCommand):
+class DisarmCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 48
 
-class TakeoffCommand(FlightCommand):
+class TakeoffCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 49
 
-class LandCommand(FlightCommand):
+class LandCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 50
 
-class ReturnToLaunchCommand(FlightCommand):
+class ReturnToLaunchCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 51
 
-class SetModeCommand(FlightCommand):
+class SetModeCommand(LowLevelFlightCommand):
+    'Select a portable standard mode or an endpoint-native mode; at least one selector must be provided and adapters must reject unsupported or ambiguous selections'
     __occid_model_id__: ClassVar[int] = 52
-    mode: FlightMode
+    standard_mode: StandardFlightMode | None = None
+    native_mode_name: builtins.str | None = None
+    native_mode_code: builtins.int | None = None
 
-class GoToCommand(FlightCommand):
+class GoToCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 53
     position: GlobalPosition
-    yaw_deg: builtins.float
+    yaw_rad: builtins.float | None = None
 
-class SetTakeoffAltitudeCommand(FlightCommand):
+class SetTakeoffAltitudeCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 54
-    altitude_m: builtins.float
+    relative_altitude_m: builtins.float
 
-class SelectMissionCommand(FlightCommand):
+class SelectMissionCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 55
     sequence: builtins.int
 
-class StartOffboardCommand(FlightCommand):
+class StartOffboardCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 56
 
-class StopOffboardCommand(FlightCommand):
+class StopOffboardCommand(LowLevelFlightCommand):
     __occid_model_id__: ClassVar[int] = 57
+
+class SetControlAttitudeCommand(LowLevelFlightCommand):
+    'Apply an attitude and thrust setpoint; endpoint adapters map the semantic setpoint to the native flight-controller mechanism'
+    __occid_model_id__: ClassVar[int] = 288
+    setpoint: ControlAttitudeSetpoint
+
+class SetControlOverrideCommand(LowLevelFlightCommand):
+    'Apply normalized direct control-axis overrides through the endpoint adapter'
+    __occid_model_id__: ClassVar[int] = 289
+    override: ControlOverride
 
 class TaskCommand(Command):
     __occid_model_id__: ClassVar[int] = 58

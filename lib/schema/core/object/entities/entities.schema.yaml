@@ -126,7 +126,7 @@ models:
     variants: null
     fields:
       flight_type: AirframeType
-      control_modes: list[FlightMode]
+      control_modes: list[StandardFlightMode]
       failsafe_mode: optional AirFailsafeMode
       weather_limits: WeatherLimits
       ifr: optional bool

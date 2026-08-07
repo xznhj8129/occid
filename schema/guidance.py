@@ -14,17 +14,17 @@ class AirFailsafeMode(IntEnum):
     LOITER = auto()
     CONTINUE_LAST = auto()
 
-class FlightMode(IntEnum):
-    ACRO = 0
-    ANGLE = auto()
-    POSHOLD = auto()
-    GUIDED = auto()
-    NAV_WP = auto()
-    LOITER = auto()
-    CRUSE = auto()
-    RTH = auto()
-    LANDING = auto()
-    DISARMED = auto()
+class StandardFlightMode(IntEnum):
+    NON_STANDARD = 0
+    POSITION_HOLD = auto()
+    ORBIT = auto()
+    CRUISE = auto()
+    ALTITUDE_HOLD = auto()
+    SAFE_RECOVERY = auto()
+    MISSION = auto()
+    LAND = auto()
+    TAKEOFF = auto()
+    EXTERNAL_CONTROL = auto()
 
 class FlightPhase(IntEnum):
     PREFLIGHT = 0
@@ -54,7 +54,9 @@ class Guidance(State):
 
 class TelemetryState(Guidance):
     __occid_model_id__: ClassVar[int] = 139
-    flight_mode: FlightMode | None = None
+    standard_mode: StandardFlightMode | None = None
+    native_mode_name: builtins.str | None = None
+    native_mode_code: builtins.int | None = None
     flight_phase: FlightPhase | None = None
     plan_phase: FlightPlanPhase | None = None
     attitude: EulerAngles | None = None

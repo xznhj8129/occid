@@ -287,3 +287,6 @@ model_ids:
   RecordMeta: 284
   SuccessCriterion: 285
   ApplyPlanCommand: 286
+  LowLevelFlightCommand: 287
+  SetControlAttitudeCommand: 288
+  SetControlOverrideCommand: 289

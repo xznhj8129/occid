@@ -81,20 +81,23 @@ models:
     parent: Struct
 
   EulerAngles:
+    description: Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on
     parent: Pose
     fields:
-      pitch: float
-      heading: float
-      roll: float
-      frame: BodyReferenceFrame
+      roll_rad: float
+      pitch_rad: float
+      yaw_rad: float
+      body_frame: optional BodyReferenceFrame
+      reference_frame: optional InertialReferenceFrame
 
   LocalDirection:
+    description: Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known
     parent: Bearing
     fields:
       bearing: float
       azimuth: float
       elevation: float
-      slant_range: float
+      slant_range: optional float
 
   LocalVector:
     parent: Vector
@@ -135,19 +138,22 @@ models:
       z2: float
 
   VelocityVector:
+    description: Linear velocity with optional explicit inertial reference frame
     parent: Vector
     fields:
       x: float
       y: float
       z: float
+      frame: optional InertialReferenceFrame
 
   AngularVelocityVector:
+    description: Body angular velocity in radians per second with optional explicit body frame
     parent: Vector
     fields:
       x_rad_s: float
       y_rad_s: float
       z_rad_s: float
-      frame: BodyReferenceFrame
+      frame: optional BodyReferenceFrame
 
   AltitudeState:
     parent: Measurement

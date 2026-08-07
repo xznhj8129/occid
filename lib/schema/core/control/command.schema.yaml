@@ -21,51 +21,70 @@ models:
     description: An immediate imperative requiring execution without interpretation
     parent: Control
 
-  # These are extremely WIP and under-developped to have a minimal-working interface for testing, should NOT become the temporary-permanent solution
   FlightCommand:
+    description: Immediate flight-domain command; distinct from Task and Plan lifecycle semantics
     parent: Command
 
-  ArmCommand:
+  LowLevelFlightCommand:
+    description: Direct flight-control imperative mapped by an endpoint adapter to MAVLink, MSP, or another native flight-controller protocol
     parent: FlightCommand
+
+  ArmCommand:
+    parent: LowLevelFlightCommand
 
   DisarmCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
 
   TakeoffCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
 
   LandCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
 
   ReturnToLaunchCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
 
   SetModeCommand:
-    parent: FlightCommand
+    description: Select a portable standard mode or an endpoint-native mode; at least one selector must be provided and adapters must reject unsupported or ambiguous selections
+    parent: LowLevelFlightCommand
     fields:
-      mode: FlightMode
+      standard_mode: optional StandardFlightMode
+      native_mode_name: optional string
+      native_mode_code: optional int
 
   GoToCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
     fields:
       position: GlobalPosition
-      yaw_deg: float
+      yaw_rad: optional float
 
   SetTakeoffAltitudeCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
     fields:
-      altitude_m: float
+      relative_altitude_m: float
 
   SelectMissionCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
     fields:
       sequence: int
 
   StartOffboardCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
 
   StopOffboardCommand:
-    parent: FlightCommand
+    parent: LowLevelFlightCommand
+
+  SetControlAttitudeCommand:
+    description: Apply an attitude and thrust setpoint; endpoint adapters map the semantic setpoint to the native flight-controller mechanism
+    parent: LowLevelFlightCommand
+    fields:
+      setpoint: ControlAttitudeSetpoint
+
+  SetControlOverrideCommand:
+    description: Apply normalized direct control-axis overrides through the endpoint adapter
+    parent: LowLevelFlightCommand
+    fields:
+      override: ControlOverride
 
   TaskCommand:
     parent: Command
