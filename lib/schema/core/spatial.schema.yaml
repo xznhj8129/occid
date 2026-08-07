@@ -34,12 +34,12 @@ enums:
 
   GeoJsonGeometryTypes:
     - POINT = "Point"
-    - MULTI_POINT
-    - LINE_STRING
-    - MULTI_LINE_STRING
-    - POLYGON
-    - MULTI_POLYGON
-    - GEOMETRY_COLLECTION
+    - MULTI_POINT = "MultiPoint"
+    - LINE_STRING = "LineString"
+    - MULTI_LINE_STRING = "MultiLineString"
+    - POLYGON = "Polygon"
+    - MULTI_POLYGON = "MultiPolygon"
+    - GEOMETRY_COLLECTION = "GeometryCollection"
 
   SurfaceFormationShapes:
     - COLUMN = 0
