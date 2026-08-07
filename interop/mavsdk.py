@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 from schema import (
     AltitudeDatum,
+    AltitudeState,
     AngularVelocityVector,
     BodyReferenceFrame,
     ControlAttitudeSetpoint,
@@ -108,20 +109,22 @@ def position_to_location_state(
     *,
     navigation_validity: NavigationValidity | None = None,
 ) -> LocationState:
+    absolute_altitude = require_finite(fields.absolute_altitude_m, "absolute_altitude_m")
+    relative_altitude = require_finite(fields.relative_altitude_m, "relative_altitude_m")
     return LocationState(
         inertial_frame=InertialReferenceFrame.NED,
         body_frame=BodyReferenceFrame.FRD,
         position=GlobalPosition(
             lat=require_finite(fields.latitude_deg, "latitude_deg"),
             lon=require_finite(fields.longitude_deg, "longitude_deg"),
-            alt=require_finite(fields.absolute_altitude_m, "absolute_altitude_m"),
+            alt=absolute_altitude,
             alt_frame=AltitudeDatum.SEA_LEVEL,
         ),
-        altitude={
-            "absolute_m": require_finite(fields.absolute_altitude_m, "absolute_altitude_m"),
-            "relative_m": require_finite(fields.relative_altitude_m, "relative_altitude_m"),
-            "datum": AltitudeDatum.RELATIVE,
-        },
+        altitude=AltitudeState(
+            absolute_m=absolute_altitude,
+            relative_m=relative_altitude,
+            datum=AltitudeDatum.RELATIVE,
+        ),
         navigation_validity=navigation_validity,
     )
 
