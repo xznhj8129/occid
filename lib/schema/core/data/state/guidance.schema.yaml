@@ -13,17 +13,17 @@ enums:
     - LOITER
     - CONTINUE_LAST
 
-  FlightMode:
-    - ACRO = 0
-    - ANGLE
-    - POSHOLD
-    - GUIDED
-    - NAV_WP
-    - LOITER
-    - CRUSE
-    - RTH
-    - LANDING
-    - DISARMED
+  StandardFlightMode:
+    - NON_STANDARD = 0
+    - POSITION_HOLD
+    - ORBIT
+    - CRUISE
+    - ALTITUDE_HOLD
+    - SAFE_RECOVERY
+    - MISSION
+    - LAND
+    - TAKEOFF
+    - EXTERNAL_CONTROL
 
   FlightPhase:
     - PREFLIGHT = 0
@@ -53,7 +53,9 @@ models:
   TelemetryState:
     parent: Guidance
     fields:
-      flight_mode: optional FlightMode
+      standard_mode: optional StandardFlightMode
+      native_mode_name: optional string
+      native_mode_code: optional int
       flight_phase: optional FlightPhase
       plan_phase: optional FlightPlanPhase
       attitude: optional EulerAngles
