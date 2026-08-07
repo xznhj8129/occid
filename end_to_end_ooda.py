@@ -214,7 +214,7 @@ class SemanticBoundary:
 
 
 class DeterministicDecisionAgent:
-    """Minimal AI-CNC/OODA stand-in that reasons only over OCCID records."""
+    """Minimal AIC2/OODA stand-in that reasons only over OCCID records."""
 
     def select_executor(
         self,
@@ -288,7 +288,7 @@ class DeterministicDecisionAgent:
             task_id=task_id,
             assignee_id=executor.entity_id,
             plan_id=plan_id,
-            authority="AI-CNC delegated mission authority",
+            authority="AIC2 delegated mission authority",
             assigned_by=controller.entity_id,
             assigned_at=2.0,
             status=AssignmentStatus.ASSIGNED,
@@ -566,10 +566,10 @@ class SimulatedAutonomousExecutor:
 
 def build_initial_operational_picture() -> dict[str, OCCIDModel]:
     controller = Agent(
-        record=record("record.entity.ai-cnc.r0", 0.0),
-        entity_id=sid("entity.ai-cnc"),
-        node_ids=[sid("node.ai-cnc")],
-        name="AI-CNC decision agent",
+        record=record("record.entity.aic2.r0", 0.0),
+        entity_id=sid("entity.aic2"),
+        node_ids=[sid("node.aic2")],
+        name="AIC2 decision agent",
         alt_ids=[],
         tags=["controller", "reasoning", "c2"],
         metadata={},
