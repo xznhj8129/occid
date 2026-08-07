@@ -117,7 +117,12 @@ def main() -> None:
         machine_type=MachineType.ROBOT,
         navigation=AirNavigationSchema(
             flight_type=AirframeType.COPTER,
-            control_modes=[FlightMode.ANGLE, FlightMode.GUIDED],
+            control_modes=[
+                StandardFlightMode.NON_STANDARD,
+                StandardFlightMode.POSITION_HOLD,
+                StandardFlightMode.MISSION,
+                StandardFlightMode.EXTERNAL_CONTROL,
+            ],
             failsafe_mode=AirFailsafeMode.RTB,
             weather_limits=WeatherLimits(
                 ifr=False,
@@ -145,7 +150,8 @@ def main() -> None:
             channel_map=[],
             mode_ranges=[],
             telemetry=TelemetryState(
-                flight_mode=FlightMode.GUIDED,
+                standard_mode=StandardFlightMode.EXTERNAL_CONTROL,
+                native_mode_name="GUIDED",
                 battery_pct=100.0,
             ),
         ),
@@ -315,7 +321,8 @@ def main() -> None:
         priority=MessagePriority.ROUTINE,
         seq=4,
         state=TelemetryState(
-            flight_mode=FlightMode.GUIDED,
+            standard_mode=StandardFlightMode.EXTERNAL_CONTROL,
+            native_mode_name="GUIDED",
             battery_pct=99.0,
         ),
     )
@@ -326,7 +333,8 @@ def main() -> None:
         priority=MessagePriority.ROUTINE,
         seq=5,
         state=TelemetryState(
-            flight_mode=FlightMode.NAV_WP,
+            standard_mode=StandardFlightMode.MISSION,
+            native_mode_name="NAV_WP",
             flight_phase=FlightPhase.CRUISE,
             battery_pct=98.0,
         ),
@@ -369,7 +377,8 @@ def main() -> None:
     telemetry_armed_encoded = telemetry_armed_message.encode()
     telemetry_armed_decoded = UAVTelemetryMessage.decode(telemetry_armed_encoded)
     print("SEQ:", telemetry_armed_decoded.seq)
-    print("MODE:", telemetry_armed_decoded.state.flight_mode.name)
+    print("MODE:", telemetry_armed_decoded.state.standard_mode.name)
+    print("NATIVE MODE:", telemetry_armed_decoded.state.native_mode_name)
     print("BATTERY:", telemetry_armed_decoded.state.battery_pct)
     print("SIZE:", len(telemetry_armed_encoded))
 
@@ -377,7 +386,8 @@ def main() -> None:
     telemetry_airborne_encoded = telemetry_airborne_message.encode()
     telemetry_airborne_decoded = UAVTelemetryMessage.decode(telemetry_airborne_encoded)
     print("SEQ:", telemetry_airborne_decoded.seq)
-    print("MODE:", telemetry_airborne_decoded.state.flight_mode.name)
+    print("MODE:", telemetry_airborne_decoded.state.standard_mode.name)
+    print("NATIVE MODE:", telemetry_airborne_decoded.state.native_mode_name)
     print("PHASE:", telemetry_airborne_decoded.state.flight_phase.name)
     print("BATTERY:", telemetry_airborne_decoded.state.battery_pct)
     print("SIZE:", len(telemetry_airborne_encoded))
