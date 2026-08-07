@@ -31,14 +31,18 @@ from schema import (
 
 class InteropSdkTests(unittest.TestCase):
     def test_pwm_normalization_round_trip(self) -> None:
-        self.assertEqual(pwm_to_normalized(1000, 1000, 2000), 0.0)
-        self.assertEqual(pwm_to_normalized(1500, 1000, 2000), 0.5)
+        self.assertEqual(pwm_to_normalized(1000, 1000, 2000), -1.0)
+        self.assertEqual(pwm_to_normalized(1500, 1000, 2000), 0.0)
         self.assertEqual(pwm_to_normalized(2000, 1000, 2000), 1.0)
-        self.assertEqual(normalized_to_pwm(0.5, 1000, 2000), 1500)
+        self.assertEqual(normalized_to_pwm(-1.0, 1000, 2000), 1000)
+        self.assertEqual(normalized_to_pwm(0.0, 1000, 2000), 1500)
+        self.assertEqual(normalized_to_pwm(1.0, 1000, 2000), 2000)
         with self.assertRaises(ValueError):
             pwm_to_normalized(999, 1000, 2000)
         with self.assertRaises(ValueError):
             normalized_to_pwm(1.01, 1000, 2000)
+        with self.assertRaises(ValueError):
+            normalized_to_pwm(-1.01, 1000, 2000)
 
     def test_cot_point_round_trip_preserves_hae_and_uncertainty(self) -> None:
         point = CotPointFields(
