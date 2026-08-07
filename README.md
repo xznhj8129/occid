@@ -33,13 +33,21 @@ OCCID separates durable identity and specification from time-indexed operational
 - `Entity` holds identity, classification, capabilities, relations, node references, and stable specification. `EntityState` carries reported position, motion, status, health, resources, links, and control state.
 - Durable records compose `RecordMeta`; embedded value structs do not acquire persistent identity.
 
+### Immediate flight control
+
+Low-level flight control is represented as a distinct immediate command family under `LowLevelFlightCommand`. These commands do not acquire Task, Assignment, or Execution lifecycle semantics merely because they use OCCID. Endpoint adapters map them directly to MAVLink, MSP, or another native flight-controller mechanism.
+
+Portable flight-mode meaning is represented by `StandardFlightMode`. Endpoint-native mode names and numeric codes may accompany the standard mode when required, but remain opaque adapter-facing metadata rather than becoming OCCID enum constants.
+
+Attitude and attitude-control values use radians. Body and inertial reference frames may be omitted when context is genuinely sufficient, but control and transform code that depends on frame semantics must explicitly require and validate the relevant frame metadata.
+
 ### Record identity
 
 `RecordMeta.record_id` identifies one persisted record instance or revision. Model-specific identifiers such as `task_id`, `plan_id`, `entity_id`, and `assignment_id` identify the stable logical operational object across record revisions. They are intentionally distinct and must not be treated as interchangeable aliases.
 
 ## Persistence and serialization
 
-Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(2, 0, 0)`.
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(3, 0, 0)`.
 
 `encode()` produces a named-field, versioned MsgPack envelope for compact transient interchange. It is not a wire-protocol compatibility promise. Positional field-order encoding is no longer used. Polymorphic model IDs are allocated permanently in `lib/model_ids.yaml`; existing IDs must not be changed or reused. Schema-version migration or negotiation must be defined before encoded payloads are treated as durable storage.
 
