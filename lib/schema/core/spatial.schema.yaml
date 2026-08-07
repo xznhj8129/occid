@@ -34,12 +34,12 @@ enums:
 
   GeoJsonGeometryTypes:
     - POINT = "Point"
-    - MULTI_POINT = "MultiPoint"
-    - LINE_STRING = "LineString"
-    - MULTI_LINE_STRING = "MultiLineString"
-    - POLYGON = "Polygon"
-    - MULTI_POLYGON = "MultiPolygon"
-    - GEOMETRY_COLLECTION = "GeometryCollection"
+    - MULTI_POINT
+    - LINE_STRING
+    - MULTI_LINE_STRING
+    - POLYGON
+    - MULTI_POLYGON
+    - GEOMETRY_COLLECTION
 
   SurfaceFormationShapes:
     - COLUMN = 0
@@ -91,12 +91,13 @@ models:
       reference_frame: optional InertialReferenceFrame
 
   LocalDirection:
+    description: Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known
     parent: Bearing
     fields:
       bearing: float
       azimuth: float
       elevation: float
-      slant_range: float
+      slant_range: optional float
 
   LocalVector:
     parent: Vector
