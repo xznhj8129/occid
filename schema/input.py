@@ -12,7 +12,7 @@ class Input(State):
     __occid_model_id__: ClassVar[int] = 152
 
 class ControlAxisSet(Input):
-    'Normalized control-axis values independent of the native receiver or flight-controller representation'
+    'Normalized control-axis values in the signed range -1.0 to +1.0, independent of the native receiver or flight-controller representation'
     __occid_model_id__: ClassVar[int] = 153
     roll: builtins.float | None = None
     pitch: builtins.float | None = None
@@ -21,12 +21,13 @@ class ControlAxisSet(Input):
     aux: list[builtins.float]
 
 class ControlChannelValue(Input):
+    'One normalized auxiliary/control channel value in the signed range -1.0 to +1.0 when present'
     __occid_model_id__: ClassVar[int] = 154
     channel_index: builtins.int
     value: builtins.float | None = None
 
 class ControlOverride(Input):
-    'Normalized direct control override; endpoint adapters define the exact native mapping and reject unsupported axes'
+    'Normalized direct control override in the signed range -1.0 to +1.0; endpoint adapters define the exact native mapping and reject unsupported axes'
     __occid_model_id__: ClassVar[int] = 155
     roll: builtins.float | None = None
     pitch: builtins.float | None = None
