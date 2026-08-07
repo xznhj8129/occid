@@ -120,7 +120,7 @@ class GroundNavigationSchema(Attribute):
 class AirNavigationSchema(Attribute):
     __occid_model_id__: ClassVar[int] = 218
     flight_type: AirframeType
-    control_modes: list[FlightMode]
+    control_modes: list[StandardFlightMode]
     failsafe_mode: AirFailsafeMode | None = None
     weather_limits: WeatherLimits
     ifr: builtins.bool | None = None
