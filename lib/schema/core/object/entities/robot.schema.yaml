@@ -155,16 +155,19 @@ models:
       can_zoom: bool = false
 
   FlightControlState:
+    description: Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers
     parent: Guidance
     fields:
       armed: optional bool
       in_air: optional bool
       override_active: optional bool
       failsafe: optional bool
-      active_modes: list[int]
-      active_mode_names: list[string]
-      nav_state_code: optional int
-      flight_mode: optional string
+      standard_mode: optional StandardFlightMode
+      native_mode_name: optional string
+      native_mode_code: optional int
+      native_active_mode_codes: list[int]
+      native_active_mode_names: list[string]
+      native_nav_state_code: optional int
       attitude_setpoint: optional ControlAttitudeSetpoint
       navigation_validity: optional NavigationValidity
       readiness: optional NavReadinessState
