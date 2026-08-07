@@ -43,7 +43,7 @@ from schema import (
     EntityType,
     Execution,
     ExecutionPhase,
-    FlightMode,
+    StandardFlightMode,
     FlightPhase,
     GeoArea,
     GeoPath,
@@ -467,7 +467,8 @@ class SimulatedAutonomousExecutor:
             links={},
         )
         active_flight_state = TelemetryState(
-            flight_mode=FlightMode.NAV_WP,
+            standard_mode=StandardFlightMode.MISSION,
+            native_mode_name="NAV_WP",
             flight_phase=FlightPhase.PLAN_OPERATION,
             battery_pct=82.0,
         )
@@ -614,7 +615,8 @@ def build_initial_operational_picture() -> dict[str, OCCIDModel]:
         links={},
     )
     initial_flight_state = TelemetryState(
-        flight_mode=FlightMode.GUIDED,
+        standard_mode=StandardFlightMode.EXTERNAL_CONTROL,
+        native_mode_name="GUIDED",
         flight_phase=FlightPhase.PREFLIGHT,
         battery_pct=94.0,
     )
