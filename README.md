@@ -18,9 +18,30 @@ OCCID is designed to map cleanly to:
 - Meshtastic (mesh transport)
 - DDS (pub/sub middleware)
 - ROS2 (robotics framework)
-and more
+- and more
 
 OCCID does not replace these protocols. It provides a common information model that translations between them are written against.
+
+## Specification and SDK layers
+
+The repository currently contains both the protocol-neutral OCCID specification and its reference Python SDK/runtime. They are separate architectural layers even though they live in one repository.
+
+```text
+OCCID specification and schema sources
+        -> generated runtime models
+        -> serialization and validation
+        -> deterministic interoperability mappings
+```
+
+The specification layer must remain independent of applications and endpoint libraries.
+
+`interop/` is the reference interoperability layer. It converts **types and structures**, not operational intent. Appropriate responsibilities include field mappings, enums, units, scaling, sentinel values, radians/degrees, reference frames, and validation required to translate between an external representation and OCCID.
+
+Interop functions should normally be deterministic transformations: the same input structure produces the same output structure without network access, endpoint state, or hidden runtime policy.
+
+The SDK does **not** choose which endpoint operation should satisfy an OCCID command. It does not generate or upload missions, arm vehicles, sequence takeoff/landing, choose modes, start offboard control, retry commands, manage sockets or serial links, or implement autonomy/recovery. Those are responsibilities of consuming runtimes such as MPFC or Sigma.
+
+Current reference modules include CoT spatial mappings, MAVSDK representation mappings, and MSP/INAV normalization. Raw MAVLink message mappings can coexist with MAVSDK mappings without conflating the two representations.
 
 ## Operational contract
 
@@ -35,7 +56,7 @@ OCCID separates durable identity and specification from time-indexed operational
 
 ### Immediate flight control
 
-Low-level flight control is represented as a distinct immediate command family under `LowLevelFlightCommand`. These commands do not acquire Task, Assignment, or Execution lifecycle semantics merely because they use OCCID. Endpoint adapters map them directly to MAVLink, MSP, or another native flight-controller mechanism.
+Low-level flight control is represented as a distinct immediate command family under `LowLevelFlightCommand`. These commands do not acquire Task, Assignment, or Execution lifecycle semantics merely because they use OCCID. Endpoint runtimes choose the native operation; the OCCID SDK may convert the selected operation's structures.
 
 Portable flight-mode meaning is represented by `StandardFlightMode`. Endpoint-native mode names and numeric codes may accompany the standard mode when required, but remain opaque adapter-facing metadata rather than becoming OCCID enum constants.
 
@@ -61,6 +82,7 @@ Every participant boundary performs a real OCCID encode/decode round trip. Sigma
 python end_to_end_ooda.py
 python end_to_end_ooda.py --json
 python -m unittest discover -s tests -p 'test_end_to_end_ooda.py'
+python -m unittest tests.test_interop_sdk
 ```
 
 See [`docs/end_to_end_ooda.md`](docs/end_to_end_ooda.md) for the scenario, invariants, scope, and machine-readable trace output.
