@@ -1,7 +1,4 @@
 from .common import *
-from .military import *
-from .military_communication import *
-from .military_definition import *
 from .root import *
 from .communication import *
 from .control import *
@@ -37,7 +34,6 @@ from .internal import *
 from .isr import *
 from .kinematic import *
 from .lifecycle import *
-from .military_organization import *
 from .objective import *
 from .parameter import *
 from .plan import *
@@ -49,14 +45,9 @@ from .spatial import *
 from .telemetry import *
 from .entities import *
 from .mesh import *
-from .military_radio import *
 from .payload import *
-from .military_aerial import *
 from .robot import *
 from .uav import *
-from .military_effects import *
-from .military_entities import *
-from .military_tasks import *
 
 for _model in [obj for obj in list(globals().values()) if OCCIDModel in getattr(obj, "__mro__", ()) and obj is not OCCIDModel]:
     _model.model_rebuild(_types_namespace=globals())
