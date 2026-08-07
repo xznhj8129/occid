@@ -84,11 +84,13 @@ class SpatialStruct(Struct):
     __occid_model_id__: ClassVar[int] = 192
 
 class EulerAngles(Pose):
+    'Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on'
     __occid_model_id__: ClassVar[int] = 193
-    pitch: builtins.float
-    heading: builtins.float
-    roll: builtins.float
-    frame: BodyReferenceFrame
+    roll_rad: builtins.float
+    pitch_rad: builtins.float
+    yaw_rad: builtins.float
+    body_frame: BodyReferenceFrame | None = None
+    reference_frame: InertialReferenceFrame | None = None
 
 class LocalDirection(Bearing):
     __occid_model_id__: ClassVar[int] = 194
@@ -131,17 +133,20 @@ class BoundingBox(Bounding):
     z2: builtins.float
 
 class VelocityVector(Vector):
+    'Linear velocity with optional explicit inertial reference frame'
     __occid_model_id__: ClassVar[int] = 200
     x: builtins.float
     y: builtins.float
     z: builtins.float
+    frame: InertialReferenceFrame | None = None
 
 class AngularVelocityVector(Vector):
+    'Body angular velocity in radians per second with optional explicit body frame'
     __occid_model_id__: ClassVar[int] = 201
     x_rad_s: builtins.float
     y_rad_s: builtins.float
     z_rad_s: builtins.float
-    frame: BodyReferenceFrame
+    frame: BodyReferenceFrame | None = None
 
 class AltitudeState(Measurement):
     __occid_model_id__: ClassVar[int] = 202
