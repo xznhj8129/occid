@@ -93,11 +93,12 @@ class EulerAngles(Pose):
     reference_frame: InertialReferenceFrame | None = None
 
 class LocalDirection(Bearing):
+    'Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known'
     __occid_model_id__: ClassVar[int] = 194
     bearing: builtins.float
     azimuth: builtins.float
     elevation: builtins.float
-    slant_range: builtins.float
+    slant_range: builtins.float | None = None
 
 class LocalVector(Vector):
     __occid_model_id__: ClassVar[int] = 195
