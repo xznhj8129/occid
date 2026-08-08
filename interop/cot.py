@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from schema import AltitudeDatum, GlobalPosition, LocationState, LocationUncertainty
+from occid import AltitudeDatum, GlobalPosition, LocationState, LocationUncertainty
 
 from .common import require_finite
 

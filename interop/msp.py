@@ -11,7 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping, Sequence
 
-from schema import (
+from occid import (
     AltitudeDatum,
     AltitudeState,
     AngularVelocityVector,
@@ -129,8 +129,9 @@ def gps_to_occid(
     )
     altitude = AltitudeState(
         absolute_m=absolute_altitude,
+        absolute_datum=None if absolute_altitude is None else AltitudeDatum.SEA_LEVEL,
         relative_m=relative_altitude,
-        datum=AltitudeDatum.RELATIVE,
+        relative_datum=None if relative_altitude is None else AltitudeDatum.RELATIVE,
     )
     location = LocationState(
         inertial_frame=InertialReferenceFrame.NED,
@@ -179,8 +180,8 @@ def rc_pwm_mapping_to_control_axes(
 def rc_sequence_to_control_axes(
     values: Sequence[float],
     *,
-    pwm_min_us: float = 1000.0,
-    pwm_max_us: float = 2000.0,
+    pwm_min_us: float,
+    pwm_max_us: float,
 ) -> ControlAxisSet:
     """Convert a raw PWM AETR sequence [roll, pitch, throttle, yaw, ...aux]."""
     if len(values) < 4:

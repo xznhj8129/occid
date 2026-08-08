@@ -87,3 +87,12 @@ class GnssSolution(Guidance):
     last_message_dt: builtins.float | None = None
     errors: builtins.float | None = None
     timeouts: builtins.float | None = None
+
+class AutopilotMissionState(Guidance):
+    'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'
+    __occid_model_id__: ClassVar[int] = 296
+    valid: builtins.bool | None = None
+    current_waypoint_index: builtins.int | None = None
+    waypoint_count: builtins.int | None = None
+    max_waypoints: builtins.int | None = None
+    waypoints_remaining: builtins.int | None = None

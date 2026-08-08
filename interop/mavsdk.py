@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from schema import (
+from occid import (
     AltitudeDatum,
     AltitudeState,
     AngularVelocityVector,
@@ -122,8 +122,9 @@ def position_to_location_state(
         ),
         altitude=AltitudeState(
             absolute_m=absolute_altitude,
+            absolute_datum=AltitudeDatum.SEA_LEVEL,
             relative_m=relative_altitude,
-            datum=AltitudeDatum.RELATIVE,
+            relative_datum=AltitudeDatum.RELATIVE,
         ),
         navigation_validity=navigation_validity,
     )

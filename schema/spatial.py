@@ -151,10 +151,12 @@ class AngularVelocityVector(Vector):
     frame: BodyReferenceFrame | None = None
 
 class AltitudeState(Measurement):
+    'Simultaneous altitude observations must carry their own vertical reference; absolute and relative values never share one ambiguous datum'
     __occid_model_id__: ClassVar[int] = 202
     absolute_m: builtins.float | None = None
+    absolute_datum: AltitudeDatum | None = None
     relative_m: builtins.float | None = None
-    datum: AltitudeDatum
+    relative_datum: AltitudeDatum | None = None
 
 class LocationUncertainty(Uncertainty):
     __occid_model_id__: ClassVar[int] = 203

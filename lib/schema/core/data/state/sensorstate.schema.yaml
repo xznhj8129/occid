@@ -38,3 +38,14 @@ models:
       angular_error: optional LocalDirection
       search_box_size: optional int
       detections: optional VisionDetectionFrame
+
+  FlightSensorConfiguration:
+    description: Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers
+    parent: SensorState
+    fields:
+      accelerometer: optional string
+      barometer: optional string
+      magnetometer: optional string
+      airspeed: optional string
+      rangefinder: optional string
+      optical_flow: optional string

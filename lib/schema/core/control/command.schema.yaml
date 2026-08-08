@@ -15,6 +15,10 @@ enums:
     - IN_PROGRESS
     - CANCELLED
 
+  DirectControlMode:
+    - MANUAL_AXIS = 0
+    - ATTITUDE_THRUST
+
 models:
 
   Command:
@@ -22,69 +26,77 @@ models:
     parent: Control
 
   FlightCommand:
-    description: Immediate flight-domain command; distinct from Task and Plan lifecycle semantics
+    description: Immediate aircraft operation such as arming, takeoff, landing, or recovery; distinct from navigation, mode selection, direct control, and Task/Plan lifecycle semantics
     parent: Command
 
-  LowLevelFlightCommand:
-    description: Direct flight-control imperative mapped by an endpoint adapter to MAVLink, MSP, or another native flight-controller protocol
+  ArmCommand:
     parent: FlightCommand
 
-  ArmCommand:
-    parent: LowLevelFlightCommand
-
   DisarmCommand:
-    parent: LowLevelFlightCommand
+    parent: FlightCommand
 
   TakeoffCommand:
-    parent: LowLevelFlightCommand
+    parent: FlightCommand
 
   LandCommand:
-    parent: LowLevelFlightCommand
+    parent: FlightCommand
 
   ReturnToLaunchCommand:
-    parent: LowLevelFlightCommand
+    parent: FlightCommand
 
-  SetModeCommand:
-    description: Select a portable standard mode or an endpoint-native mode; at least one selector must be provided and adapters must reject unsupported or ambiguous selections
-    parent: LowLevelFlightCommand
+  SetTakeoffAltitudeCommand:
+    parent: FlightCommand
     fields:
-      standard_mode: optional StandardFlightMode
-      native_mode_name: optional string
-      native_mode_code: optional int
+      relative_altitude_m: float
+
+  NavigationCommand:
+    description: Immediate navigation operation that changes a destination, waypoint, or selected onboard mission without implying a higher-level Task or Plan lifecycle
+    parent: Command
 
   GoToCommand:
-    parent: LowLevelFlightCommand
+    parent: NavigationCommand
     fields:
       position: GlobalPosition
       yaw_rad: optional float
 
-  SetTakeoffAltitudeCommand:
-    parent: LowLevelFlightCommand
+  SetWaypointCommand:
+    description: Write one endpoint mission waypoint while preserving its explicit OCCID waypoint representation
+    parent: NavigationCommand
     fields:
-      relative_altitude_m: float
+      waypoint: AutopilotMissionWaypoint
 
   SelectMissionCommand:
-    parent: LowLevelFlightCommand
+    description: Select an already-present onboard mission sequence; mission upload/generation remains runtime policy outside the OCCID SDK
+    parent: NavigationCommand
     fields:
       sequence: int
 
-  StartOffboardCommand:
-    parent: LowLevelFlightCommand
+  ModeCommand:
+    description: Immediate activation or deactivation of a flight-controller mode; imperative actions such as takeoff, land, and return use their own command families
+    parent: Command
 
-  StopOffboardCommand:
-    parent: LowLevelFlightCommand
-
-  SetControlAttitudeCommand:
-    description: Apply an attitude and thrust setpoint; endpoint adapters map the semantic setpoint to the native flight-controller mechanism
-    parent: LowLevelFlightCommand
+  SetModeCommand:
+    description: Select a portable standard mode or an endpoint-native mode; exactly one semantic/native selector must be usable by the endpoint and enabled controls activation versus deactivation
+    parent: ModeCommand
     fields:
-      setpoint: ControlAttitudeSetpoint
+      standard_mode: optional StandardFlightMode
+      native_mode_name: optional string
+      native_mode_code: optional int
+      enabled: bool = true
 
-  SetControlOverrideCommand:
-    description: Apply normalized direct control-axis overrides through the endpoint adapter
-    parent: LowLevelFlightCommand
+  DirectControlCommand:
+    description: Lifecycle command for a direct-control session; high-rate control samples themselves are Input models and are not Commands
+    parent: Command
+
+  BeginDirectControlCommand:
+    description: Begin delivery of a declared direct-control input form; endpoint runtimes own native offboard/manual-control/override lifecycle
+    parent: DirectControlCommand
     fields:
-      override: ControlOverride
+      mode: DirectControlMode
+
+  EndDirectControlCommand:
+    description: End the active direct-control session and relinquish its endpoint-specific control mechanism
+    parent: DirectControlCommand
 
   TaskCommand:
     parent: Command

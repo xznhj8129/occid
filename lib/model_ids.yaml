@@ -290,3 +290,11 @@ model_ids:
   LowLevelFlightCommand: 287
   SetControlAttitudeCommand: 288
   SetControlOverrideCommand: 289
+  NavigationCommand: 290
+  SetWaypointCommand: 291
+  ModeCommand: 292
+  DirectControlCommand: 293
+  BeginDirectControlCommand: 294
+  EndDirectControlCommand: 295
+  AutopilotMissionState: 296
+  FlightSensorConfiguration: 297

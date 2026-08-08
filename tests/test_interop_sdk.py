@@ -9,6 +9,8 @@ from interop.mavsdk import (
     attitude_from_euler_degrees,
     attitude_setpoint_to_fields,
     gnss_fix_type_from_native_value,
+    position_to_location_state,
+    MavsdkPositionFields,
     standard_mode_from_native_name,
 )
 from interop.msp import (
@@ -19,7 +21,7 @@ from interop.msp import (
     rc_sequence_to_control_axes,
     standard_mode_from_native_names,
 )
-from schema import (
+from occid import (
     AltitudeDatum,
     BodyReferenceFrame,
     ControlAttitudeSetpoint,
@@ -60,6 +62,20 @@ class InteropSdkTests(unittest.TestCase):
         self.assertEqual(location.uncertainty.vert_err_m, 11.0)
         self.assertEqual(location_state_to_cot_point(location), point)
 
+    def test_mavsdk_position_keeps_absolute_and_relative_datums_distinct(self) -> None:
+        location = position_to_location_state(
+            MavsdkPositionFields(
+                latitude_deg=45.5,
+                longitude_deg=-73.5,
+                absolute_altitude_m=135.0,
+                relative_altitude_m=15.0,
+            )
+        )
+        self.assertEqual(location.altitude.absolute_m, 135.0)
+        self.assertEqual(location.altitude.absolute_datum, AltitudeDatum.SEA_LEVEL)
+        self.assertEqual(location.altitude.relative_m, 15.0)
+        self.assertEqual(location.altitude.relative_datum, AltitudeDatum.RELATIVE)
+
     def test_mavsdk_euler_and_attitude_setpoint_conversion(self) -> None:
         attitude = attitude_from_euler_degrees(12.0, -8.0, 95.0)
         self.assertAlmostEqual(attitude.roll_rad, math.radians(12.0))
@@ -98,11 +114,11 @@ class InteropSdkTests(unittest.TestCase):
         self.assertAlmostEqual(rates.z_rad_s, -math.radians(30.0))
         self.assertEqual(rates.frame, BodyReferenceFrame.FRD)
 
-    def test_msp_raw_rc_sequence_is_normalized(self) -> None:
+    def test_msp_raw_rc_sequence_is_normalized_using_endpoint_bounds(self) -> None:
         controls = rc_sequence_to_control_axes(
-            [1000, 1500, 2000, 1250, 1750],
-            pwm_min_us=1000,
-            pwm_max_us=2000,
+            [900, 1500, 2100, 1200, 1800],
+            pwm_min_us=900,
+            pwm_max_us=2100,
         )
         self.assertEqual(controls.roll, -1.0)
         self.assertEqual(controls.pitch, 0.0)
@@ -128,7 +144,9 @@ class InteropSdkTests(unittest.TestCase):
             navigation_validity=validity,
         )
         self.assertEqual(location.position.alt_frame, AltitudeDatum.SEA_LEVEL)
+        self.assertEqual(location.altitude.absolute_datum, AltitudeDatum.SEA_LEVEL)
         self.assertEqual(location.altitude.relative_m, 15.0)
+        self.assertEqual(location.altitude.relative_datum, AltitudeDatum.RELATIVE)
         self.assertEqual(gnss.fix_type, GnssFixType.FIX_3D)
         self.assertEqual(gnss.satellites_used, 12)
         self.assertEqual(location.navigation_validity, validity)

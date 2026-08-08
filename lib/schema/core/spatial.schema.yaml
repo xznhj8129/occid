@@ -157,11 +157,13 @@ models:
       frame: optional BodyReferenceFrame
 
   AltitudeState:
+    description: Simultaneous altitude observations must carry their own vertical reference; absolute and relative values never share one ambiguous datum
     parent: Measurement
     fields:
       absolute_m: optional float
+      absolute_datum: optional AltitudeDatum
       relative_m: optional float
-      datum: AltitudeDatum
+      relative_datum: optional AltitudeDatum
 
   LocationUncertainty:
     parent: Uncertainty
