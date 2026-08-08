@@ -24,6 +24,7 @@ class AltitudeDatum(IntEnum):
     POI_RELATIVE = auto()
     BAROMETRIC = auto()
     INVALID = auto()
+    WGS84_ELLIPSOID = auto()
 
 class GeometryTypes(IntEnum):
     POINT = 0

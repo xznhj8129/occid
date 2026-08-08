@@ -22,6 +22,7 @@ enums:
     - POI_RELATIVE
     - BAROMETRIC
     - INVALID
+    - WGS84_ELLIPSOID
 
   GeometryTypes:
     - POINT = 0

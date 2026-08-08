@@ -16,6 +16,7 @@ from interop.msp import (
     angular_velocity_from_fru_degrees_s,
     attitude_from_degrees,
     gps_to_occid,
+    rc_sequence_to_control_axes,
     standard_mode_from_native_names,
 )
 from schema import (
@@ -53,7 +54,7 @@ class InteropSdkTests(unittest.TestCase):
             le_m=11.0,
         )
         location = cot_point_to_location_state(point)
-        self.assertEqual(location.position.alt_frame, AltitudeDatum.SEA_LEVEL)
+        self.assertEqual(location.position.alt_frame, AltitudeDatum.WGS84_ELLIPSOID)
         self.assertEqual(location.position.alt, 124.5)
         self.assertEqual(location.uncertainty.horiz_err_m, 7.0)
         self.assertEqual(location.uncertainty.vert_err_m, 11.0)
@@ -96,6 +97,18 @@ class InteropSdkTests(unittest.TestCase):
         self.assertAlmostEqual(rates.y_rad_s, math.radians(-45.0))
         self.assertAlmostEqual(rates.z_rad_s, -math.radians(30.0))
         self.assertEqual(rates.frame, BodyReferenceFrame.FRD)
+
+    def test_msp_raw_rc_sequence_is_normalized(self) -> None:
+        controls = rc_sequence_to_control_axes(
+            [1000, 1500, 2000, 1250, 1750],
+            pwm_min_us=1000,
+            pwm_max_us=2000,
+        )
+        self.assertEqual(controls.roll, -1.0)
+        self.assertEqual(controls.pitch, 0.0)
+        self.assertEqual(controls.throttle, 1.0)
+        self.assertEqual(controls.yaw, -0.5)
+        self.assertEqual(controls.aux, [0.5])
 
     def test_msp_gps_struct_conversion(self) -> None:
         validity = NavigationValidity(local_position_ok=True, global_position_ok=True, home_position_ok=True)

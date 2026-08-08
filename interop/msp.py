@@ -176,14 +176,22 @@ def rc_pwm_mapping_to_control_axes(
     )
 
 
-def rc_sequence_to_control_axes(values: Sequence[float]) -> ControlAxisSet:
-    """Convert an AETR sequence [roll, pitch, throttle, yaw, ...aux]."""
+def rc_sequence_to_control_axes(
+    values: Sequence[float],
+    *,
+    pwm_min_us: float = 1000.0,
+    pwm_max_us: float = 2000.0,
+) -> ControlAxisSet:
+    """Convert a raw PWM AETR sequence [roll, pitch, throttle, yaw, ...aux]."""
     if len(values) < 4:
         raise ValueError("RC sequence requires at least four AETR values")
     return ControlAxisSet(
-        roll=require_finite(values[0], "roll"),
-        pitch=require_finite(values[1], "pitch"),
-        yaw=require_finite(values[3], "yaw"),
-        throttle=require_finite(values[2], "throttle"),
-        aux=[require_finite(value, f"aux[{index}]") for index, value in enumerate(values[4:])],
+        roll=pwm_to_normalized(values[0], pwm_min_us, pwm_max_us),
+        pitch=pwm_to_normalized(values[1], pwm_min_us, pwm_max_us),
+        yaw=pwm_to_normalized(values[3], pwm_min_us, pwm_max_us),
+        throttle=pwm_to_normalized(values[2], pwm_min_us, pwm_max_us),
+        aux=[
+            pwm_to_normalized(value, pwm_min_us, pwm_max_us)
+            for value in values[4:]
+        ],
     )
