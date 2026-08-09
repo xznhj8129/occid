@@ -18,6 +18,7 @@ from occid import (
     EulerAngles,
     GlobalPosition,
     GnssFixType,
+    GoToCommand,
     InertialReferenceFrame,
     LocationState,
     NavigationValidity,
@@ -41,6 +42,14 @@ class MavsdkPositionFields:
     longitude_deg: float
     absolute_altitude_m: float
     relative_altitude_m: float
+
+
+@dataclass(frozen=True)
+class MavsdkGotoFields:
+    latitude_deg: float
+    longitude_deg: float
+    absolute_altitude_m: float
+    yaw_deg: float
 
 
 def standard_mode_from_native_name(native_name: str) -> StandardFlightMode:
@@ -127,6 +136,59 @@ def position_to_location_state(
             relative_datum=AltitudeDatum.RELATIVE,
         ),
         navigation_validity=navigation_validity,
+    )
+
+
+def goto_command_to_fields(
+    command: GoToCommand,
+    *,
+    current_absolute_altitude_m: float | None = None,
+    current_relative_altitude_m: float | None = None,
+    current_yaw_rad: float | None = None,
+) -> MavsdkGotoFields:
+    """Convert a selected OCCID GoToCommand to MAVSDK goto_location fields.
+
+    MAVSDK's ``goto_location`` accepts absolute sea-level altitude. OCCID can
+    express either sea-level or relative altitude, so conversion of a relative
+    target requires the caller's current absolute and relative altitude samples.
+    The caller still owns connection state, operation selection, retries, and
+    execution policy; this helper owns only the deterministic representation
+    conversion.
+    """
+    position = command.position
+    latitude_deg = require_finite(position.lat, "position.lat")
+    longitude_deg = require_finite(position.lon, "position.lon")
+    target_altitude_m = require_finite(position.alt, "position.alt")
+
+    if position.alt_frame == AltitudeDatum.SEA_LEVEL:
+        absolute_altitude_m = target_altitude_m
+    elif position.alt_frame == AltitudeDatum.RELATIVE:
+        if current_absolute_altitude_m is None or current_relative_altitude_m is None:
+            raise ValueError(
+                "relative MAVSDK goto requires current absolute and relative altitude"
+            )
+        current_absolute = require_finite(
+            current_absolute_altitude_m, "current_absolute_altitude_m"
+        )
+        current_relative = require_finite(
+            current_relative_altitude_m, "current_relative_altitude_m"
+        )
+        absolute_altitude_m = current_absolute + (target_altitude_m - current_relative)
+    else:
+        raise ValueError(f"unsupported MAVSDK goto altitude datum {position.alt_frame}")
+
+    if command.yaw_rad is not None:
+        yaw_rad = command.yaw_rad
+    elif current_yaw_rad is not None:
+        yaw_rad = current_yaw_rad
+    else:
+        yaw_rad = 0.0
+
+    return MavsdkGotoFields(
+        latitude_deg=latitude_deg,
+        longitude_deg=longitude_deg,
+        absolute_altitude_m=require_finite(absolute_altitude_m, "absolute_altitude_m"),
+        yaw_deg=radians_to_degrees(yaw_rad, "yaw_rad"),
     )
 
 
