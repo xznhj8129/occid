@@ -25,14 +25,11 @@ class OCCIDModel(BaseModel):
 
     @classmethod
     def decode(cls, payload: bytes):
-        envelope = msgpack.unpackb(payload, raw=False)
-        version = tuple(envelope["schema_version"])
-        if version != OCCID_SCHEMA_VERSION:
-            raise ValueError(f"unsupported OCCID schema version {version}; expected {OCCID_SCHEMA_VERSION}")
-        model_id = envelope["model_id"]
-        if model_id != OCCID_MODEL_ID_BY_CLASS[cls]:
+        model = decode_model(payload)
+        if type(model) is not cls:
+            model_id = OCCID_MODEL_ID_BY_CLASS[type(model)]
             raise ValueError(f"payload model ID {model_id} does not identify {cls.__name__}")
-        return cls._from_wire_fields(envelope["fields"])
+        return model
 
     @classmethod
     def _from_wire_fields(cls, data):
@@ -51,7 +48,11 @@ class OCCIDModel(BaseModel):
         args = get_args(annotation)
 
         if type(data) == dict and set(data) == {"model_id", "fields"}:
-            return OCCID_MODEL_BY_ID[data["model_id"]]._from_wire_fields(data["fields"])
+            model_id = data["model_id"]
+            model_cls = OCCID_MODEL_BY_ID.get(model_id)
+            if model_cls is None:
+                raise ValueError(f"unknown OCCID model ID {model_id}")
+            return model_cls._from_wire_fields(data["fields"])
 
         if origin is Annotated:
             return cls._wire_to_value(args[0], data)
@@ -134,3 +135,34 @@ class OCCIDModel(BaseModel):
             return encode(data)
         data = super().model_dump(mode=mode, **kwargs)
         return data
+
+
+def decode_model(payload: bytes) -> OCCIDModel:
+    """Decode a heterogeneous OCCID transient envelope by its permanent model ID.
+
+    This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
+    know the concrete model class before inspecting the envelope. It validates
+    the schema version and model ID, then delegates field reconstruction to the
+    registered generated model. Runtime routing or behavioral policy does not
+    belong here.
+    """
+    envelope = msgpack.unpackb(payload, raw=False)
+    if type(envelope) is not dict:
+        raise ValueError("OCCID payload envelope must be a map")
+    required = {"schema_version", "model_id", "fields"}
+    if set(envelope) != required:
+        raise ValueError(
+            f"OCCID payload envelope fields must be {sorted(required)}; "
+            f"got {sorted(envelope) if all(type(key) is str for key in envelope) else list(envelope)}"
+        )
+    version = tuple(envelope["schema_version"])
+    if version != OCCID_SCHEMA_VERSION:
+        raise ValueError(f"unsupported OCCID schema version {version}; expected {OCCID_SCHEMA_VERSION}")
+    model_id = envelope["model_id"]
+    model_cls = OCCID_MODEL_BY_ID.get(model_id)
+    if model_cls is None:
+        raise ValueError(f"unknown OCCID model ID {model_id}")
+    fields = envelope["fields"]
+    if type(fields) is not dict:
+        raise ValueError("OCCID payload fields must be a map")
+    return model_cls._from_wire_fields(fields)
