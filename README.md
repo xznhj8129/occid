@@ -61,6 +61,8 @@ OCCID separates durable identity and specification from time-indexed operational
 - `Task` describes work to accomplish; `Mission` is a task that can contain subordinate tasks.
 - `Plan` is a separate control record describing how objectives and tasks use actors, resources, steps, routes, constraints, and contingencies. `PlanStep` describes the intended sequence and does not carry runtime status.
 - `Assignment` binds one task to an assignee; `Execution` records each attempt by an executor. `TaskDelta` is an independent task-state update, not a subtype of assignment.
+- `ExecutionAcceptance` reports whether an executor admitted or rejected one exact dispatch and whether a rejection is retryable. It is semantic executor evidence, not transport delivery evidence.
+- `ExecutionStatusRequest` asks for the latest retained state of one exact execution dispatch without redispatching it; `ExecutionStatusReport` carries the corresponding execution phase, progress, task delta, entity state, or a truthful `found=false` result.
 - `Entity` holds identity, classification, capabilities, relations, node references, and stable specification. `EntityState` carries reported position, motion, status, health, resources, links, and control state.
 - Durable records compose `RecordMeta`; embedded value structs do not acquire persistent identity.
 
@@ -88,7 +90,7 @@ Altitude observations keep their vertical reference attached to each value. `Alt
 
 ## Persistence and serialization
 
-Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(4, 0, 0)`.
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(4, 1, 0)`.
 
 `encode()` produces a named-field, versioned MsgPack envelope for compact transient interchange. It is not a wire-protocol compatibility promise. Positional field-order encoding is no longer used. Polymorphic model IDs are allocated permanently in `lib/model_ids.yaml`; retired IDs remain reserved and must never be reused. Schema-version migration or negotiation must be defined before encoded payloads are treated as durable storage.
 
