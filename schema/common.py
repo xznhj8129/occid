@@ -8,7 +8,7 @@ import msgpack
 from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 SchemaVersion = tuple[int, int, int]
-OCCID_SCHEMA_VERSION: SchemaVersion = (4, 0, 0)
+OCCID_SCHEMA_VERSION: SchemaVersion = (4, 1, 0)
 
 ### Enums
 
@@ -68,122 +68,105 @@ class OCCIDModel(BaseModel):
         origin = get_origin(annotation)
         args = get_args(annotation)
 
-        if type(data) == dict and set(data) == {"model_id", "fields"}:
-            model_id = data["model_id"]
-            model_cls = OCCID_MODEL_BY_ID.get(model_id)
-            if model_cls is None:
-                raise ValueError(f"unknown OCCID model ID {model_id}")
-            return model_cls._from_wire_fields(data["fields"])
+        if origin in (Union, UnionType):
+            for option in args:
+                if option is type(None):
+                    continue
+                try:
+                    return cls._wire_to_value(option, data)
+                except Exception:
+                    continue
+            return data
 
-        if origin is Annotated:
+        if origin is Annotated and args:
             return cls._wire_to_value(args[0], data)
 
         if origin is list:
-            return [cls._wire_to_value(args[0], item) for item in data]
+            item_type = args[0] if args else Any
+            return [cls._wire_to_value(item_type, value) for value in data]
 
         if origin is dict:
-            return {key: cls._wire_to_value(args[1], value) for key, value in data.items()}
+            value_type = args[1] if len(args) > 1 else Any
+            return {key: cls._wire_to_value(value_type, value) for key, value in data.items()}
 
-        if origin is tuple:
-            return tuple(cls._wire_to_value(arg, item) for arg, item in zip(args, data))
-
-        if origin in (Union, UnionType):
-            for arg in args:
-                try:
-                    return cls._wire_to_value(arg, data)
-                except (TypeError, ValueError, KeyError, IndexError):
-                    pass
+        if origin is Literal:
             return data
 
-        try:
-            if issubclass(annotation, OCCIDModel):
-                return annotation._from_wire_fields(data)
-        except TypeError:
-            pass
+        if isinstance(annotation, type) and issubclass(annotation, OCCIDModel):
+            if not isinstance(data, dict) or "model_id" not in data or "fields" not in data:
+                return annotation.model_validate(data)
+            model_id = data["model_id"]
+            model_type = OCCID_MODEL_BY_ID.get(model_id)
+            if model_type is None:
+                raise ValueError(f"unknown OCCID model ID {model_id}")
+            if not issubclass(model_type, annotation):
+                raise ValueError(
+                    f"model ID {model_id} identifies {model_type.__name__}, "
+                    f"not a {annotation.__name__}"
+                )
+            return model_type._from_wire_fields(data["fields"])
 
-        try:
-            if issubclass(annotation, IntEnum):
-                return annotation(data)
-        except TypeError:
-            pass
-
-        try:
-            if issubclass(annotation, Enum):
-                return annotation(data)
-        except TypeError:
-            pass
+        if isinstance(annotation, type) and issubclass(annotation, Enum):
+            return annotation(data)
 
         return data
 
     @classmethod
     def _wire_value(cls, value):
-        if issubclass(type(value), OCCIDModel):
+        if isinstance(value, OCCIDModel):
             return {
                 "model_id": OCCID_MODEL_ID_BY_CLASS[type(value)],
                 "fields": cls._wire_model_fields(value),
             }
-        if type(value) == dict:
+        if isinstance(value, Enum):
+            return value.value
+        if isinstance(value, dict):
             return {key: cls._wire_value(item) for key, item in value.items()}
-        if type(value) in (list, tuple):
+        if isinstance(value, (list, tuple)):
             return [cls._wire_value(item) for item in value]
-        if issubclass(type(value), IntEnum):
-            return value.value
-        if issubclass(type(value), Enum):
-            return value.value
         return value
 
     @classmethod
-    def _wire_model_fields(cls, value):
+    def _wire_model_fields(cls, model):
         return {
-            field_name: cls._wire_value(getattr(value, field_name))
-            for field_name in type(value).model_fields
+            name: cls._wire_value(getattr(model, name))
+            for name in model.__class__.model_fields
         }
 
     def model_dump(self, *, mode="python", **kwargs):
         def encode(value):
-            if type(value) == dict:
+            if isinstance(value, Enum):
+                return value.name
+            if isinstance(value, OCCIDModel):
+                return {
+                    name: encode(getattr(value, name))
+                    for name in value.__class__.model_fields
+                }
+            if isinstance(value, dict):
                 return {key: encode(item) for key, item in value.items()}
-            if type(value) in (list, tuple):
+            if isinstance(value, (list, tuple)):
                 return [encode(item) for item in value]
-            if issubclass(type(value), IntEnum):
-                return value.value
-            if issubclass(type(value), Enum):
-                return value.value
             return value
 
         if mode == "json":
-            data = super().model_dump(mode="python", **kwargs)
-            return encode(data)
-        data = super().model_dump(mode=mode, **kwargs)
-        return data
+            return {
+                name: encode(getattr(self, name))
+                for name in self.__class__.model_fields
+                if not kwargs.get("exclude_none") or getattr(self, name) is not None
+            }
+        return super().model_dump(mode=mode, **kwargs)
 
 
-def decode_model(payload: bytes) -> OCCIDModel:
-    """Decode a heterogeneous OCCID transient envelope by its permanent model ID.
-
-    This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
-    know the concrete model class before inspecting the envelope. It validates
-    the schema version and model ID, then delegates field reconstruction to the
-    registered generated model. Runtime routing or behavioral policy does not
-    belong here.
-    """
+def decode_model(payload: bytes):
     envelope = msgpack.unpackb(payload, raw=False)
-    if type(envelope) is not dict:
-        raise ValueError("OCCID payload envelope must be a map")
-    required = {"schema_version", "model_id", "fields"}
-    if set(envelope) != required:
+    schema_version = tuple(envelope["schema_version"])
+    if schema_version != OCCID_SCHEMA_VERSION:
         raise ValueError(
-            f"OCCID payload envelope fields must be {sorted(required)}; "
-            f"got {sorted(envelope) if all(type(key) is str for key in envelope) else list(envelope)}"
+            f"unsupported OCCID schema version {schema_version}; "
+            f"expected {OCCID_SCHEMA_VERSION}"
         )
-    version = tuple(envelope["schema_version"])
-    if version != OCCID_SCHEMA_VERSION:
-        raise ValueError(f"unsupported OCCID schema version {version}; expected {OCCID_SCHEMA_VERSION}")
     model_id = envelope["model_id"]
-    model_cls = OCCID_MODEL_BY_ID.get(model_id)
-    if model_cls is None:
+    model_type = OCCID_MODEL_BY_ID.get(model_id)
+    if model_type is None:
         raise ValueError(f"unknown OCCID model ID {model_id}")
-    fields = envelope["fields"]
-    if type(fields) is not dict:
-        raise ValueError("OCCID payload fields must be a map")
-    return model_cls._from_wire_fields(fields)
+    return model_type._from_wire_fields(envelope["fields"])
