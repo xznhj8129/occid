@@ -79,13 +79,14 @@ models:
       requested_at: float
 
   ExecutionStatusReport:
-    description: Executor report for one exact execution dispatch; may carry canonical task and entity state evidence and is distinct from transport delivery evidence
+    description: Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence
     parent: State
     fields:
       execution_id: StringID
       dispatch_id: StringID
       executor_id: StringID
-      phase: ExecutionPhase
+      found: bool = true
+      phase: optional ExecutionPhase
       progress: optional float
       task_delta: optional TaskDelta
       entity_state: optional EntityState
