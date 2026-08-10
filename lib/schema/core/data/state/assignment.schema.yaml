@@ -69,6 +69,29 @@ models:
       reason: optional string
       reported_at: float
 
+  ExecutionStatusRequest:
+    description: Request the latest retained semantic status for one exact execution dispatch without redispatching or re-executing it
+    parent: Control
+    fields:
+      execution_id: StringID
+      dispatch_id: StringID
+      requester_id: StringID
+      requested_at: float
+
+  ExecutionStatusReport:
+    description: Executor report for one exact execution dispatch; may carry canonical task and entity state evidence and is distinct from transport delivery evidence
+    parent: State
+    fields:
+      execution_id: StringID
+      dispatch_id: StringID
+      executor_id: StringID
+      phase: ExecutionPhase
+      progress: optional float
+      task_delta: optional TaskDelta
+      entity_state: optional EntityState
+      failure: optional string
+      reported_at: float
+
   TaskDelta:
     description: Time-indexed task-state update; not an assignment definition
     parent: State
