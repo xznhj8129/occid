@@ -299,3 +299,5 @@ model_ids:
   AutopilotMissionState: 296
   FlightSensorConfiguration: 297
   ExecutionAcceptance: 298
+  ExecutionStatusRequest: 299
+  ExecutionStatusReport: 300
