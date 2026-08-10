@@ -3,7 +3,8 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
+from .control import Control
+from .state import State, EntityState
 
 ### Enums
 
@@ -66,6 +67,27 @@ class ExecutionAcceptance(State):
     accepted: builtins.bool
     retryable: builtins.bool = False
     reason: builtins.str | None = None
+    reported_at: builtins.float
+
+class ExecutionStatusRequest(Control):
+    'Request the latest retained semantic status for one exact execution dispatch without redispatching or re-executing it'
+    __occid_model_id__: ClassVar[int] = 299
+    execution_id: StringID
+    dispatch_id: StringID
+    requester_id: StringID
+    requested_at: builtins.float
+
+class ExecutionStatusReport(State):
+    'Executor report for one exact execution dispatch; may carry canonical task and entity state evidence and is distinct from transport delivery evidence'
+    __occid_model_id__: ClassVar[int] = 300
+    execution_id: StringID
+    dispatch_id: StringID
+    executor_id: StringID
+    phase: ExecutionPhase
+    progress: builtins.float | None = None
+    task_delta: SerializeAsAny[TaskDelta] | None = None
+    entity_state: SerializeAsAny[EntityState] | None = None
+    failure: builtins.str | None = None
     reported_at: builtins.float
 
 class TaskDelta(State):
