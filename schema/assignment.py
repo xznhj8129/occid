@@ -57,6 +57,17 @@ class Execution(State):
     failure: builtins.str | None = None
     external_job_refs: list[StringID]
 
+class ExecutionAcceptance(State):
+    'Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion'
+    __occid_model_id__: ClassVar[int] = 298
+    execution_id: StringID
+    dispatch_id: StringID
+    executor_id: StringID
+    accepted: builtins.bool
+    retryable: builtins.bool = False
+    reason: builtins.str | None = None
+    reported_at: builtins.float
+
 class TaskDelta(State):
     'Time-indexed task-state update; not an assignment definition'
     __occid_model_id__: ClassVar[int] = 131
