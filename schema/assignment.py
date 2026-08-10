@@ -78,12 +78,13 @@ class ExecutionStatusRequest(Control):
     requested_at: builtins.float
 
 class ExecutionStatusReport(State):
-    'Executor report for one exact execution dispatch; may carry canonical task and entity state evidence and is distinct from transport delivery evidence'
+    'Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence'
     __occid_model_id__: ClassVar[int] = 300
     execution_id: StringID
     dispatch_id: StringID
     executor_id: StringID
-    phase: ExecutionPhase
+    found: builtins.bool = True
+    phase: ExecutionPhase | None = None
     progress: builtins.float | None = None
     task_delta: SerializeAsAny[TaskDelta] | None = None
     entity_state: SerializeAsAny[EntityState] | None = None
