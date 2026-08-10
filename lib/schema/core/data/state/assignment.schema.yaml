@@ -57,6 +57,18 @@ models:
       failure: optional string
       external_job_refs: list[StringID]
 
+  ExecutionAcceptance:
+    description: Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion
+    parent: State
+    fields:
+      execution_id: StringID
+      dispatch_id: StringID
+      executor_id: StringID
+      accepted: bool
+      retryable: bool = false
+      reason: optional string
+      reported_at: float
+
   TaskDelta:
     description: Time-indexed task-state update; not an assignment definition
     parent: State
