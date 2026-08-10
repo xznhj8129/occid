@@ -21,6 +21,8 @@ models:
       - Lifecycle
       - Assignment
       - Execution
+      - ExecutionAcceptance
+      - ExecutionStatusReport
       - TaskDelta
       - EntityState
 
