@@ -298,3 +298,4 @@ model_ids:
   EndDirectControlCommand: 295
   AutopilotMissionState: 296
   FlightSensorConfiguration: 297
+  ExecutionAcceptance: 298
