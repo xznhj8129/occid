@@ -19,7 +19,6 @@ models:
       - Resource
       - Condition
       - Lifecycle
-      - Assignment
       - Execution
       - ExecutionAcceptance
       - ExecutionStatusReport

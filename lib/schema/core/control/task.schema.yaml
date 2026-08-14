@@ -6,24 +6,36 @@ tags:
   - core
 
 enums:
-
   TaskType:
-    - POSITIONING = 0
-    - ISR
-    - CARGO
+    - MANEUVER = 0
+    - EFFECT
+    - INFORMATION
+    - TRANSPORT
+
+  TaskIntent:
+    - MOVE = 0
     - HOLD
-    - SUPPORT
-    - MOVE
-    - RESUPPLY
-    
-  TaskISR:
-    - OBSERVE = 0
+    - FOLLOW
+    - TRANSIT
+    - POSITION
+    - CREATE
+    - REMOVE
+    - MODIFY
+    - RESTORE
+    - PROTECT
+    - DENY
     - SEARCH
-    - FIND
-    - SURVEY
-    - INVESTIGATE
-    - IMPROVE_TRACK
-    - IMAGERY
+    - OBSERVE
+    - IDENTIFY
+    - CLASSIFY
+    - MEASURE
+    - ASSESS
+    - MONITOR
+    - CARGO
+    - PERSONNEL
+    - SUPPLY
+    - EVACUATE
+    - RECOVER
 
   TaskPhase:
     - CREATED = 0
@@ -47,81 +59,49 @@ enums:
     - FAILED
     - CANCELLED
 
-  TaskAssignFail:
-    - FAIL = 0
-    - FAIL_NO_ASSETS
-    - FAIL_BAD_REQUEST_CANTPRO
-    - FAIL_DENIED
-    - FAIL_INSUFFICIENT_INFO
-    - FAIL_REJECTED
-    - FAIL_C2_ELEMENT
-    - FAIL_PLATFORM_CANTCO
-    - FAIL_STALE
-    - FAIL_CANCELLED
-
-  TaskAir:
-    - FLY = 0
-    - AIR_DROP
-    - RECOVERY
-
-  AirMoveTask:
-    - FLY = 0
-    - RELOCATION
+maps:
+  VALID_TASK_INTENT_TYPES:
+    type: map[TaskIntent, TaskType]
+    value:
+      MOVE: MANEUVER
+      HOLD: MANEUVER
+      FOLLOW: MANEUVER
+      TRANSIT: MANEUVER
+      POSITION: MANEUVER
+      CREATE: EFFECT
+      REMOVE: EFFECT
+      MODIFY: EFFECT
+      RESTORE: EFFECT
+      PROTECT: EFFECT
+      DENY: EFFECT
+      SEARCH: INFORMATION
+      OBSERVE: INFORMATION
+      IDENTIFY: INFORMATION
+      CLASSIFY: INFORMATION
+      MEASURE: INFORMATION
+      ASSESS: INFORMATION
+      MONITOR: INFORMATION
+      CARGO: TRANSPORT
+      PERSONNEL: TRANSPORT
+      SUPPLY: TRANSPORT
+      EVACUATE: TRANSPORT
+      RECOVER: TRANSPORT
 
 models:
   Task:
-    description: Work that must be accomplished in support of an objective
-    parent: Control
-    variants:
-      - Mission
-
+    description: Generic instruction-bearing work that must be accomplished in support of an optional objective
+    parent: Directive
     fields:
       record: RecordMeta
       task_id: StringID
-      task_type: optional TaskType
-      status: TaskStatus = NEW
+      instruction: string
+      task_type: TaskType
+      task_intent: optional TaskIntent
+      target_refs: list[StringID]
+      location_refs: list[StringID]
+      objective_id: optional StringID
+      constraints: list[Constraint]
       start_time: optional float
       deadline: optional float
       priority: TaskPriority = ROUTINE
-
-  Mission:
-    description: Tactical, intent-based task that may contain other tasks
-    parent: Task
-    fields:
-      tasks: list[Task]
-
-  IsrTask:
-    parent: Task
-    fields:
-      isr_task: optional TaskISR
-      area: GeoArea
-      dwell_seconds: optional float
-      isr_params: optional IsrParameters
-      isr_result: optional IsrResult
-
-  MoveTask:
-    description: Reposition to a destination; the entity resolves how
-    parent: Task
-    fields:
-      task_type: const TaskType = MOVE
-      destination: GlobalPosition
-      route: optional GeoPath
-      speed_ms: optional float
-      altitude_m: optional float
-      hold_seconds: optional float
-
-  HoldTask:
-    description: Hold position within a radius of a location
-    parent: Task
-    fields:
-      task_type: const TaskType = HOLD
-      location: GlobalPosition
-      radius_m: float
-
-  ResupplyTask:
-    description: Deliver a payload to a destination
-    parent: Task
-    fields:
-      task_type: const TaskType = RESUPPLY
-      destination: GlobalPosition
-      payload: map[string, int]
+      status: TaskStatus = NEW

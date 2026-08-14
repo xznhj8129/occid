@@ -4,8 +4,8 @@ import builtins
 from .common import *
 
 from .entities import AirNavigationSchema
+from .object import MissionPoi
 from .plan import UnitFlightPlan
-from .reference import MissionPoi
 
 ### Enums
 

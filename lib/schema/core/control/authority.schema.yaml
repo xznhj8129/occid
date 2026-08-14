@@ -1,0 +1,35 @@
+version: 1
+type: schema
+package: authority
+root: Authority
+tags:
+  - core
+
+enums:
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
+models:
+  Authority:
+    description: Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised
+    parent: Control
+    fields:
+      record: RecordMeta
+      authority_id: StringID
+      holder_id: StringID
+      granted_by: optional StringID
+      scope_refs: list[StringID]
+      constraints: list[Constraint]
+
+  ControlLease:
+    description: Time-bounded control right issued under an Authority record
+    parent: Authority
+    fields:
+      asset_id: StringID
+      control_level: ControlLevel
+      lease_start: float
+      lease_end: float
+      lease_rev: int = 0

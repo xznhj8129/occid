@@ -51,22 +51,14 @@ enums:
     - STAGG_TRAIL_LEFT
     - STAGG_TRAIL_RIGHT
 
-  ControlLevel:
-    - NONE = 0
-    - MONITOR
-    - GUIDE
-    - FULL
-
 models:
   Control:
     description: Desired outcomes and directed work
     parent: Root
     variants:
       - Objective
-      - Task
+      - Directive
       - Plan
-      - Command
-      - Reference
       - Constraint
-      - Interface
-      - ExecutionStatusRequest
+      - Authority
+      - Assignment

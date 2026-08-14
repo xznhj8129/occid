@@ -1,15 +1,12 @@
 version: 1
 type: module
 package: military_tasks
-description: "Military tasking extensions for combat, fires, and munition allocation."
+description: "Military tasking vocabulary and profiles attached to generic OCCID Tasks."
 tags:
   - military
 requires:
   - core
   - military_effects
-extend_variants:
-  Task:
-    - CombatTask
 
 enums:
   TaskCombat:
@@ -25,10 +22,10 @@ models:
       munition_type: string
       qty: int = 0
 
-
-  CombatTask:
-    parent: Task
+  CombatTaskProfile:
+    description: Military domain detail associated with a generic Task without creating a Task subtype
     fields:
+      task_id: StringID
       combat_task: optional TaskCombat
       target_category: optional TargetCategory
       target_point: optional GlobalPosition

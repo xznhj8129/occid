@@ -2,110 +2,95 @@
 
 **Open Command, Control and Information Data model**
 
-OCCID is a domain-agnostic data model for C5ISR systems. It defines what can be known, said, commanded, and reported across entities, organizations, platforms, and networks.
+OCCID is a domain-agnostic semantic model for command, control, information, state, observations, entities, organizations, platforms, and networks. It is not a wire protocol and it is not an application database schema. Protocol and application adapters map to OCCID rather than defining OCCID around one endpoint API.
 
-It is not a wire protocol. It is not an application schema. It is the semantic layer that protocols and applications build on. A UAV patrol mission and a search-and-rescue coordination use the same structural bones: entities with identities, directives with intent, messages with envelopes, state separate from identity. The domain-specific part is only which variants exist at the leaves.
-
-OCCID is intentionally developed as a **minimal but semantically deep** model. A concept enters the active model only when a demonstrated consumer needs it, but concepts that do enter must retain the distinctions required to represent them without ambiguity. Historical work in `deep_ontology` is a semantic reference quarry, not a specification to restore wholesale.
-
-## Interoperability Targets
-
-OCCID is designed to map cleanly to:
-
-- MAVLink (drone control)
-- Cursor on Target / CoT / ATAK
-- Anduril Lattice (entity management)
-- Constellation Overwatch (ISR)
-- STANAG 4586 (unmanned systems interop)
-- Meshtastic (mesh transport)
-- DDS (pub/sub middleware)
-- ROS2 (robotics framework)
-- and more
-
-OCCID does not replace these protocols. It provides a common information model that translations between them are written against.
-
-## Specification and SDK layers
-
-The repository currently contains both the protocol-neutral OCCID specification and its reference Python SDK/runtime. They are separate architectural layers even though they live in one repository.
-
-```text
-OCCID specification and schema sources
-        -> generated runtime models
-        -> serialization and validation
-        -> deterministic interoperability mappings
-```
-
-The canonical Python SDK namespace is `occid`:
+The canonical Python namespace is:
 
 ```python
-from occid import EntityState, GlobalPosition, ArmCommand
+from occid import Task, Assignment, MotionCommand
 ```
 
-The generated models physically remain in `schema/`, but consumers should not import the generic top-level package name `schema`; it collides with an unrelated and common Python package. `occid` loads the generated runtime as `occid.schema` and re-exports its public models.
+Generated runtime models live physically in `schema/`, but consumers should import through `occid`.
 
-The specification layer must remain independent of applications and endpoint libraries.
+## Control contract
 
-`interop/` is the reference interoperability layer. It converts **types and structures**, not operational intent. Appropriate responsibilities include field mappings, enums, units, scaling, sentinel values, radians/degrees, reference frames, and validation required to translate between an external representation and OCCID.
+The Control ontology is deliberately small:
 
-Interop functions should normally be deterministic transformations: the same input structure produces the same output structure without network access, endpoint state, or hidden runtime policy.
+```text
+Control
+├── Objective
+├── Directive
+│   ├── Task
+│   └── Command
+│       ├── StateChangeCommand
+│       ├── ProcessControlCommand
+│       ├── ConfigurationCommand
+│       ├── MotionCommand
+│       ├── ResourceCommand
+│       └── ExecutionCommand
+├── Plan
+├── Constraint
+├── Authority
+└── Assignment
+```
 
-The SDK does **not** choose which endpoint operation should satisfy an OCCID command. It does not generate or upload missions, arm vehicles, sequence takeoff/landing, choose modes, start endpoint-native offboard/manual-control sessions, retry commands, manage sockets or serial links, or implement autonomy/recovery. Those are responsibilities of consuming runtimes such as MPFC or Sigma.
+The central distinction is:
 
-Current reference modules include CoT spatial mappings, MAVSDK representation mappings, and MSP/INAV normalization. Raw MAVLink message mappings can coexist with MAVSDK mappings without conflating the two representations.
+> **Task preserves intent. Command prescribes operation.**
 
-## Operational contract
+`Task` is one generic instruction-bearing record. Its machine-readable classification is deliberately coarse: `TaskType` selects `MANEUVER`, `EFFECT`, `INFORMATION`, or `TRANSPORT`, and optional `TaskIntent` adds a controlled second-level vocabulary. Invalid type/intent combinations are declared by the typed `VALID_TASK_INTENT_TYPES` map and rejected by the generated runtime. The free-text `instruction` remains the authoritative human meaning.
 
-OCCID separates durable identity and specification from time-indexed operational state:
+Task does not contain an assignee. `Assignment` binds a Task to an assignee under an optional first-class `Authority` reference. Reassignment therefore does not mutate the Task itself.
 
-- `Objective` describes the intended outcome and typed success criteria. Whether a criterion is currently satisfied belongs to assessment or execution state, not the criterion definition.
-- `Task` describes work to accomplish; `Mission` is a task that can contain subordinate tasks.
-- `Plan` is a separate control record describing how objectives and tasks use actors, resources, steps, routes, constraints, and contingencies. `PlanStep` describes the intended sequence and does not carry runtime status.
-- `Assignment` binds one task to an assignee; `Execution` records each attempt by an executor. `TaskDelta` is an independent task-state update, not a subtype of assignment.
-- `ExecutionAcceptance` reports whether an executor admitted or rejected one exact dispatch and whether a rejection is retryable. It is semantic executor evidence, not transport delivery evidence.
-- `ExecutionStatusRequest` asks for the latest retained state of one exact execution dispatch without redispatching it; `ExecutionStatusReport` carries the corresponding execution phase, progress, task delta, entity state, or a truthful `found=false` result.
-- `Entity` holds identity, classification, capabilities, relations, node references, and stable specification. `EntityState` carries reported position, motion, status, health, resources, links, and control state.
-- Durable records compose `RecordMeta`; embedded value structs do not acquire persistent identity.
+`Execution` remains runtime `State`. One Assignment may have multiple Execution attempts, while `TaskDelta`, `ExecutionAcceptance`, and `ExecutionStatusReport` report changing runtime condition and executor evidence.
 
-### Immediate flight and direct control
+`Mission` is not a Task subtype. The old Task subclass tree and endpoint-shaped command classes are retired rather than preserved as compatibility aliases.
 
-Immediate aircraft operations are intentionally decomposed by meaning rather than by their proximity to a flight controller:
+## Command families
 
-- `FlightCommand` covers immediate aircraft operations such as arm, disarm, takeoff, land, return-to-launch, and takeoff-altitude configuration.
-- `NavigationCommand` covers destination, waypoint, and onboard-mission selection operations.
-- `ModeCommand` covers activation/deactivation of controller modes. A landing or RTL state may be observed as a standard flight mode, but the imperative to land or return is represented by its dedicated flight command rather than smuggled through `SetModeCommand`.
-- `DirectControlCommand` covers the lifecycle of a direct-control session. `BeginDirectControlCommand` and `EndDirectControlCommand` are portable session intent; endpoint runtimes own MAVSDK/PX4 offboard, manual-control, MSP override, or equivalent mechanics.
-- High-rate `ControlAttitudeSetpoint` and `ControlOverride` values are `Input` models, not `Command` wrappers. They may be carried by a latest-value/streaming path without inventing request/reply semantics for every sample.
+Core Commands describe semantic operation families, not UAV or API method names:
 
-Portable flight-mode meaning is represented by `StandardFlightMode`. Endpoint-native mode names and numeric codes may accompany a mode request when required, but remain opaque adapter-facing metadata rather than becoming OCCID enum constants.
+- `StateChangeCommand`: set, enable, or disable state.
+- `ProcessControlCommand`: start, stop, pause, resume, or cancel a process.
+- `ConfigurationCommand`: set a parameter or load configuration.
+- `MotionCommand`: move to, follow a path, maintain, or stop motion.
+- `ResourceCommand`: acquire, release, allocate, or transfer resources.
+- `ExecutionCommand`: execute, abort, or reset an executable target.
 
-Attitude and attitude-control values use radians. Body and inertial reference frames may be omitted when context is genuinely sufficient, but control and transform code that depends on frame semantics must explicitly require and validate the relevant frame metadata.
+Endpoint adapters may still expose convenient functions such as `arm()`, `goto_location()`, or `start_offboard()`. Those function names do not become OCCID ontology classes.
 
-Normalized pilot/control axes use the signed range `-1..+1` as semantic control position. Mapping PWM, MAVLink fields, MAVSDK's unidirectional throttle representation, reversible thrust, or another native representation is an adapter concern.
+High-rate setpoints and control samples remain `Input` models rather than Commands.
 
-Altitude observations keep their vertical reference attached to each value. `AltitudeState.absolute_m` and `relative_m` have independent `absolute_datum` and `relative_datum`; one datum must never ambiguously describe two different altitude values. CoT `hae` maps to `WGS84_ELLIPSOID`, not mean sea level.
+## Other structural boundaries
 
-### Record identity
+- `Interface` is under `Communication` and represents a real system/protocol interface.
+- `ControlLease` is under `Authority` because it represents delegated control rights.
+- named operational places are `Object/Location` records.
+- embedded waypoints, route points, flight-level bands, and similar planning values are `Struct` values inside Plan-related schemas.
+- the military module may attach doctrine/profile data to a generic Task but does not create `CombatTask : Task`.
 
-`RecordMeta.record_id` identifies one persisted record instance or revision. Model-specific identifiers such as `task_id`, `plan_id`, `entity_id`, and `assignment_id` identify the stable logical operational object across record revisions. They are intentionally distinct and must not be treated as interchangeable aliases. External protocol identities such as CoT/TAK UIDs likewise require an explicit correlation/mapping boundary rather than being copied into an OCCID logical identifier by convenience.
+## Specification, generation, and serialization
 
-## Persistence and serialization
+Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema.
 
-Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable Sigma persistence. Generated models expose `OCCID_SCHEMA_VERSION`, currently `(4, 1, 0)`.
+Permanent polymorphic model IDs live in `lib/model_ids.yaml`. Retired IDs remain reserved and are never reused. The Control refactor is schema version `5.0.0`.
 
-`encode()` produces a named-field, versioned MsgPack envelope for compact transient interchange. It is not a wire-protocol compatibility promise. Positional field-order encoding is no longer used. Polymorphic model IDs are allocated permanently in `lib/model_ids.yaml`; retired IDs remain reserved and must never be reused. Schema-version migration or negotiation must be defined before encoded payloads are treated as durable storage.
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a versioned named-field MsgPack envelope for compact interchange. A schema-version migration boundary is required before old durable payloads are interpreted as a newer schema.
 
-## Executable closed-loop demonstration
+## Interoperability layer
 
-`end_to_end_ooda.py` demonstrates one complete OCCID-only command, control, telemetry, and OODA cycle. A deterministic decision agent consumes entity identity, capability, mutable state, and flight telemetry; creates an `Objective`, `IsrTask`, approved `Plan`, `Assignment`, `Execution`, and command; receives semantic acceptance, progress, telemetry, an ISR observation, and completion evidence; then closes the objective.
+`interop/` contains deterministic representation conversions. It may convert fields, units, enums, reference frames, and endpoint-native representations, but it does not choose operational intent or own endpoint sessions.
 
-Every participant boundary performs a real OCCID encode/decode round trip. Sigma, HiveLink, MPFC, MAVLink, MSP, flight-control simulation, brokers, and network services are not required.
+For example, the MAVSDK helper accepts `MotionCommand(MOVE_TO)` and converts its destination into MAVSDK `goto_location` fields. It does not restore the removed `GoToCommand` ontology class.
+
+## Demonstration and tests
+
+`end_to_end_ooda.py` demonstrates a complete OCCID-only Task -> Authority -> Assignment -> Plan -> Execution -> Command -> acceptance/progress/completion loop with real OCCID encode/decode boundaries.
 
 ```bash
 python end_to_end_ooda.py
 python end_to_end_ooda.py --json
-python -m unittest discover -s tests -p 'test_end_to_end_ooda.py'
-python -m unittest tests.test_interop_sdk
-python -m unittest tests.test_flight_control_contract
+python -m unittest discover -s tests
 ```
 
-See [`docs/end_to_end_ooda.md`](docs/end_to_end_ooda.md) for the scenario, invariants, scope, and machine-readable trace output.
+See `docs/end_to_end_ooda.md` for the scenario invariants.

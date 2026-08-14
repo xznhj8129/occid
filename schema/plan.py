@@ -5,7 +5,6 @@ from .common import *
 
 from .control import Control
 from .struct import Struct
-from .task import TaskAir
 
 ### Enums
 
@@ -44,6 +43,11 @@ class FlightPlanPhase(IntEnum):
     LANDING = auto()
     SHUTDOWN = auto()
 
+class AirPlanAction(IntEnum):
+    FLY = 0
+    AIR_DROP = auto()
+    RECOVERY = auto()
+
 ### Models
 
 class Plan(Control):
@@ -79,6 +83,56 @@ class PlanContingency(Struct):
     response: builtins.str
     task_ids: list[StringID]
 
+class FlightLevelBand(Struct):
+    'Embedded flight-level band value used by plans rather than an independently identified control reference'
+    __occid_model_id__: ClassVar[int] = 116
+    altitude_range_m: NumericRange
+    alt_sep_m: builtins.float
+
+class AutopilotMissionWaypoint(Struct):
+    'Embedded autopilot waypoint value used by a plan or protocol mapping'
+    __occid_model_id__: ClassVar[int] = 118
+    waypoint_index: builtins.int
+    action_code: builtins.int | None = None
+    position: GlobalPosition
+    param1: builtins.int | None = None
+    param2: builtins.int | None = None
+    param3: builtins.int | None = None
+    flag: builtins.int | None = None
+
+class PlannerMissionPoint(Struct):
+    'Embedded planner point value used while constructing a plan'
+    __occid_model_id__: ClassVar[int] = 119
+    num: builtins.int
+    point_type: PlannerPointType
+    category: PlannerPointCategory
+    pos: GlobalPosition
+
+class LoiterOrbit(Struct):
+    'Embedded orbit geometry and timing value'
+    __occid_model_id__: ClassVar[int] = 120
+    orbit_direction: builtins.int
+    orbit_radius: builtins.int
+    loiter_time: builtins.int
+
+class MissionRouteGeometry(Struct):
+    'Embedded route geometry used by a mission plan'
+    __occid_model_id__: ClassVar[int] = 121
+    route_in: GeoPath
+    survey: GeoPath
+    survey_area: GeoArea
+    route_out: GeoPath
+
+class PlannedRoutePoints(Struct):
+    'Embedded set of planner points defining mission-plan route segments'
+    __occid_model_id__: ClassVar[int] = 122
+    start: PlannerMissionPoint
+    route_in: list[PlannerMissionPoint]
+    survey: list[PlannerMissionPoint]
+    survey_area: list[PlannerMissionPoint]
+    route_out: list[PlannerMissionPoint]
+    end: PlannerMissionPoint
+
 class AutopilotFlightPlan(Plan):
     __occid_model_id__: ClassVar[int] = 173
     waypoints: list[AutopilotMissionWaypoint]
@@ -112,7 +166,7 @@ class MissionPlan(Plan):
     'Saved operator mission plan - the planner inputs, restorable for editing'
     __occid_model_id__: ClassVar[int] = 176
     flight_type: FlightType = FlightType.SURVEY_POINT
-    air_task: TaskAir = TaskAir.FLY
+    air_action: AirPlanAction = AirPlanAction.FLY
     manual: builtins.bool = False
     points: PlannedRoutePoints
     config: dict[builtins.str, builtins.float]

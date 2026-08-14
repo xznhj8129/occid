@@ -1,0 +1,11 @@
+version: 1
+type: schema
+package: interface
+root: Interface
+tags:
+  - core
+
+models:
+  Interface:
+    description: System or protocol interface through which a component communicates with another endpoint
+    parent: Communication

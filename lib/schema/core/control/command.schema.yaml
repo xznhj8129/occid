@@ -15,105 +15,101 @@ enums:
     - IN_PROGRESS
     - CANCELLED
 
-  DirectControlMode:
-    - MANUAL_AXIS = 0
-    - ATTITUDE_THRUST
+  StateChangeOperation:
+    - SET = 0
+    - ENABLE
+    - DISABLE
+
+  ProcessControlOperation:
+    - START = 0
+    - STOP
+    - PAUSE
+    - RESUME
+    - CANCEL
+
+  ConfigurationOperation:
+    - SET_PARAMETER = 0
+    - LOAD_CONFIGURATION
+
+  MotionOperation:
+    - MOVE_TO = 0
+    - FOLLOW_PATH
+    - MAINTAIN
+    - STOP
+
+  ResourceOperation:
+    - ACQUIRE = 0
+    - RELEASE
+    - ALLOCATE
+    - TRANSFER
+
+  ExecutionOperation:
+    - EXECUTE = 0
+    - ABORT
+    - RESET
 
 models:
-
   Command:
-    description: An immediate imperative requiring execution without interpretation
-    parent: Control
-
-  FlightCommand:
-    description: Immediate aircraft operation such as arming, takeoff, landing, or recovery; distinct from navigation, mode selection, direct control, and Task/Plan lifecycle semantics
-    parent: Command
-
-  ArmCommand:
-    parent: FlightCommand
-
-  DisarmCommand:
-    parent: FlightCommand
-
-  TakeoffCommand:
-    parent: FlightCommand
-
-  LandCommand:
-    parent: FlightCommand
-
-  ReturnToLaunchCommand:
-    parent: FlightCommand
-
-  SetTakeoffAltitudeCommand:
-    parent: FlightCommand
+    description: Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics
+    parent: Directive
+    variants:
+      - StateChangeCommand
+      - ProcessControlCommand
+      - ConfigurationCommand
+      - MotionCommand
+      - ResourceCommand
+      - ExecutionCommand
     fields:
-      relative_altitude_m: float
+      target_ref: StringID
+      constraints: list[Constraint]
 
-  NavigationCommand:
-    description: Immediate navigation operation that changes a destination, waypoint, or selected onboard mission without implying a higher-level Task or Plan lifecycle
+  StateChangeCommand:
+    description: Change, enable, or disable one declared state property on the target
     parent: Command
-
-  GoToCommand:
-    parent: NavigationCommand
     fields:
-      position: GlobalPosition
+      operation: StateChangeOperation
+      property_name: optional string
+      value: optional MetadataValue
+
+  ProcessControlCommand:
+    description: Start, stop, pause, resume, or cancel a named process on the target
+    parent: Command
+    fields:
+      operation: ProcessControlOperation
+      process_name: optional string
+
+  ConfigurationCommand:
+    description: Set a configuration parameter or load a referenced configuration on the target
+    parent: Command
+    fields:
+      operation: ConfigurationOperation
+      parameter_name: optional string
+      value: optional MetadataValue
+      configuration_ref: optional StringID
+
+  MotionCommand:
+    description: Direct immediate target motion using a destination, path, or maintained spatial condition
+    parent: Command
+    fields:
+      operation: MotionOperation
+      destination: optional GlobalPosition
+      path: optional GeoPath
+      radius_m: optional float
+      speed_ms: optional float
       yaw_rad: optional float
 
-  SetWaypointCommand:
-    description: Write one endpoint mission waypoint while preserving its explicit OCCID waypoint representation
-    parent: NavigationCommand
-    fields:
-      waypoint: AutopilotMissionWaypoint
-
-  SelectMissionCommand:
-    description: Select an already-present onboard mission sequence; mission upload/generation remains runtime policy outside the OCCID SDK
-    parent: NavigationCommand
-    fields:
-      sequence: int
-
-  ModeCommand:
-    description: Immediate activation or deactivation of a flight-controller mode; imperative actions such as takeoff, land, and return use their own command families
-    parent: Command
-
-  SetModeCommand:
-    description: Select a portable standard mode or an endpoint-native mode; exactly one semantic/native selector must be usable by the endpoint and enabled controls activation versus deactivation
-    parent: ModeCommand
-    fields:
-      standard_mode: optional StandardFlightMode
-      native_mode_name: optional string
-      native_mode_code: optional int
-      enabled: bool = true
-
-  DirectControlCommand:
-    description: Lifecycle command for a direct-control session; high-rate control samples themselves are Input models and are not Commands
-    parent: Command
-
-  BeginDirectControlCommand:
-    description: Begin delivery of a declared direct-control input form; endpoint runtimes own native offboard/manual-control/override lifecycle
-    parent: DirectControlCommand
-    fields:
-      mode: DirectControlMode
-
-  EndDirectControlCommand:
-    description: End the active direct-control session and relinquish its endpoint-specific control mechanism
-    parent: DirectControlCommand
-
-  TaskCommand:
+  ResourceCommand:
+    description: Acquire, release, allocate, or transfer a referenced resource
     parent: Command
     fields:
-      task: Task
+      operation: ResourceOperation
+      resource_ref: optional StringID
+      quantity: optional float
+      destination_ref: optional StringID
 
-  ApplyPlanCommand:
-    description: Direct an executor to apply an approved plan
+  ExecutionCommand:
+    description: Execute, abort, or reset a referenced plan, execution, or executable object
     parent: Command
     fields:
-      plan: Plan
-
-  TrackerCommand:
-    parent: Command
-    fields:
-      lock: optional bool
-      reset: optional bool
-      slew: optional LocalDirection
-      search_box_size: optional int
-      shutdown: optional bool
+      operation: ExecutionOperation
+      dispatch_id: optional StringID

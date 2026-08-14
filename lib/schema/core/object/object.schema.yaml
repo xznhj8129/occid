@@ -29,7 +29,6 @@ models:
     description: A set of objects united only by criterion
     parent: Set
 
-
   Item:
     description: A discrete bounded non-agent object
     parent: Object
@@ -62,3 +61,16 @@ models:
     fields:
       features: list[GeoJsonFeature]
       bbox: optional BoundingBox
+
+  MissionPoi:
+    description: Named operational point of interest with stable identity and a concrete global position
+    parent: Location
+    fields:
+      uid: StringID
+      name: string
+      pos: GlobalPosition
+      origin: string
+      cot: optional string
+      added_ts: optional float
+      stale_after_s: optional float
+      url: optional string

@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .task import Task
-
 ### Enums
 
 class TaskCombat(IntEnum):
@@ -21,8 +19,10 @@ class MunitionAllocation(OCCIDModel):
     munition_type: builtins.str
     qty: builtins.int = 0
 
-class CombatTask(Task):
-    __occid_model_id__: ClassVar[int] = 279
+class CombatTaskProfile(OCCIDModel):
+    'Military domain detail associated with a generic Task without creating a Task subtype'
+    __occid_model_id__: ClassVar[int] = 309
+    task_id: StringID
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None

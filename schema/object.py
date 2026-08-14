@@ -48,3 +48,15 @@ class GeoJsonFeatureCollection(Collection):
     __occid_model_id__: ClassVar[int] = 24
     features: list[GeoJsonFeature]
     bbox: BoundingBox | None = None
+
+class MissionPoi(Location):
+    'Named operational point of interest with stable identity and a concrete global position'
+    __occid_model_id__: ClassVar[int] = 117
+    uid: StringID
+    name: builtins.str
+    pos: GlobalPosition
+    origin: builtins.str
+    cot: builtins.str | None = None
+    added_ts: builtins.float | None = None
+    stale_after_s: builtins.float | None = None
+    url: builtins.str | None = None

@@ -12,7 +12,7 @@
 # Examples:
 # - a CoT type code is Definition/SemanticCode data, not a new ontology branch
 # - a MAVLink/MSP/Hivelink message id is Communication/Protocol mapping data
-# - a waypoint, route, target area, or geofence is Control/Reference data
+# - an embedded waypoint or route is Struct data; a named physical place is Object/Location data
 
 Root:
   description: Top-level OCCID record families.
@@ -74,14 +74,14 @@ Root:
 
         Set:
           description: An object that represents many objects
-          children: 
+          children:
 
             Organization:
               description: Structured group with membership, command, ownership, or parent-child organization links.
 
             Collection:
               description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
-                  
+
             Cluster:
               description: A set of objects united only by criterion
 
@@ -92,33 +92,52 @@ Root:
           description: Physical-world feature, named location, site, or bounded place.
 
     Control:
-      description: Desired outcomes and directed work.
+      description: Desired outcomes, directed work, authority, assignment, and bounded execution intent.
       children:
 
         Objective:
-          description: Desired end state conveying intent, success rule, target, constraints
+          description: Desired end state conveying intent, success rule, target, and constraints.
 
-        Task:
-          description: Work that must be accomplished in support of an objective.
+        Directive:
+          description: Directed work or an immediate imperative issued under control authority.
           children:
 
-            Mission:
-              description: Tactical, intent-based task that may contain subordinate tasks.
+            Task:
+              description: Generic instruction-bearing work to be accomplished, classified by controlled type and intent vocabularies.
+
+            Command:
+              description: Immediate bounded imperative requiring execution without redefining task lifecycle semantics.
+              children:
+
+                StateChange:
+                  description: Set, enable, or disable a declared state property.
+
+                ProcessControl:
+                  description: Start, stop, pause, resume, or cancel a process.
+
+                Configuration:
+                  description: Change parameterization or load configuration.
+
+                Motion:
+                  description: Immediate movement, path-following, hold, or stop operation.
+
+                Resource:
+                  description: Acquire, release, allocate, or transfer a resource.
+
+                Execution:
+                  description: Execute, abort, or reset a plan, execution, or executable object.
 
         Plan:
           description: Proposed or approved method for accomplishing tasks with actors, resources, sequencing, routes, constraints, and contingencies.
 
-        Command:
-          description: An immediate imperative requiring execution without interpretation
-
-        Reference:
-          description: Control-side referent such as mark, path, region, boundary, target, waypoint, route, or area.
-
         Constraint:
           description: Limit, rule, condition, or time/resource bound applied to directed work.
 
-        Interface:
-          description: Control surface, lease, operator input, remote-control mapping, or executor-facing command interface.
+        Authority:
+          description: Command relationship, permission, delegation, authorization context, or control right.
+
+        Assignment:
+          description: Explicit binding of a task to an assignee under stated authority and constraints.
 
     Communication:
       description: Movement of information between endpoints.
@@ -135,6 +154,9 @@ Root:
 
         Protocol:
           description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata.
+
+        Interface:
+          description: System or protocol interface through which a component communicates with another endpoint.
 
         Message:
           description: Transmitted envelope plus payload.
@@ -162,13 +184,13 @@ Root:
 
             Identity:
               description: Fundamental identity, name, ID
-              
+
             Attribute:
               description: Fundamental characteristics, type, form
-              
+
             Parameter:
               description: Current operating configuration or control regime
-              
+
             Relationship:
               description: Nature of relations, ownership, provenance, link
 
@@ -194,9 +216,6 @@ Root:
             Runtime:
               description: Firmware, hardware identity, software build, load, counters, storage, diagnostics, and internal process state.
 
-            Assignment:
-              description: Explicit binding of a task to an assignee under stated authority and constraints.
-
             Execution:
               description: One execution attempt for an assignment, including progress, result, failure, and external job references.
 
@@ -211,13 +230,13 @@ Root:
 
           Detection:
             description: Assessment that something exists or occurred
-            
+
           Classification:
             description: Assessment assigning type or identity to an object
-            
+
           Track:
             description: Assessment of the state of an external object over time
-            
+
           Assessment:
             description: Evaluation of effect, damage, outcome, or threat
 

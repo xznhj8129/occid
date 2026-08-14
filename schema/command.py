@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
+from .directive import Directive
 
 ### Enums
 
@@ -16,96 +16,88 @@ class CommandResult(IntEnum):
     IN_PROGRESS = auto()
     CANCELLED = auto()
 
-class DirectControlMode(IntEnum):
-    MANUAL_AXIS = 0
-    ATTITUDE_THRUST = auto()
+class StateChangeOperation(IntEnum):
+    SET = 0
+    ENABLE = auto()
+    DISABLE = auto()
+
+class ProcessControlOperation(IntEnum):
+    START = 0
+    STOP = auto()
+    PAUSE = auto()
+    RESUME = auto()
+    CANCEL = auto()
+
+class ConfigurationOperation(IntEnum):
+    SET_PARAMETER = 0
+    LOAD_CONFIGURATION = auto()
+
+class MotionOperation(IntEnum):
+    MOVE_TO = 0
+    FOLLOW_PATH = auto()
+    MAINTAIN = auto()
+    STOP = auto()
+
+class ResourceOperation(IntEnum):
+    ACQUIRE = 0
+    RELEASE = auto()
+    ALLOCATE = auto()
+    TRANSFER = auto()
+
+class ExecutionOperation(IntEnum):
+    EXECUTE = 0
+    ABORT = auto()
+    RESET = auto()
 
 ### Models
 
-class Command(Control):
-    'An immediate imperative requiring execution without interpretation'
+class Command(Directive):
+    'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 45
+    target_ref: StringID
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
 
-class FlightCommand(Command):
-    'Immediate aircraft operation such as arming, takeoff, landing, or recovery; distinct from navigation, mode selection, direct control, and Task/Plan lifecycle semantics'
-    __occid_model_id__: ClassVar[int] = 46
+class StateChangeCommand(Command):
+    'Change, enable, or disable one declared state property on the target'
+    __occid_model_id__: ClassVar[int] = 303
+    operation: StateChangeOperation
+    property_name: builtins.str | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
 
-class ArmCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 47
+class ProcessControlCommand(Command):
+    'Start, stop, pause, resume, or cancel a named process on the target'
+    __occid_model_id__: ClassVar[int] = 304
+    operation: ProcessControlOperation
+    process_name: builtins.str | None = None
 
-class DisarmCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 48
+class ConfigurationCommand(Command):
+    'Set a configuration parameter or load a referenced configuration on the target'
+    __occid_model_id__: ClassVar[int] = 305
+    operation: ConfigurationOperation
+    parameter_name: builtins.str | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    configuration_ref: StringID | None = None
 
-class TakeoffCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 49
-
-class LandCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 50
-
-class ReturnToLaunchCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 51
-
-class SetTakeoffAltitudeCommand(FlightCommand):
-    __occid_model_id__: ClassVar[int] = 54
-    relative_altitude_m: builtins.float
-
-class NavigationCommand(Command):
-    'Immediate navigation operation that changes a destination, waypoint, or selected onboard mission without implying a higher-level Task or Plan lifecycle'
-    __occid_model_id__: ClassVar[int] = 290
-
-class GoToCommand(NavigationCommand):
-    __occid_model_id__: ClassVar[int] = 53
-    position: GlobalPosition
+class MotionCommand(Command):
+    'Direct immediate target motion using a destination, path, or maintained spatial condition'
+    __occid_model_id__: ClassVar[int] = 306
+    operation: MotionOperation
+    destination: GlobalPosition | None = None
+    path: GeoPath | None = None
+    radius_m: builtins.float | None = None
+    speed_ms: builtins.float | None = None
     yaw_rad: builtins.float | None = None
 
-class SetWaypointCommand(NavigationCommand):
-    'Write one endpoint mission waypoint while preserving its explicit OCCID waypoint representation'
-    __occid_model_id__: ClassVar[int] = 291
-    waypoint: AutopilotMissionWaypoint
+class ResourceCommand(Command):
+    'Acquire, release, allocate, or transfer a referenced resource'
+    __occid_model_id__: ClassVar[int] = 307
+    operation: ResourceOperation
+    resource_ref: StringID | None = None
+    quantity: builtins.float | None = None
+    destination_ref: StringID | None = None
 
-class SelectMissionCommand(NavigationCommand):
-    'Select an already-present onboard mission sequence; mission upload/generation remains runtime policy outside the OCCID SDK'
-    __occid_model_id__: ClassVar[int] = 55
-    sequence: builtins.int
-
-class ModeCommand(Command):
-    'Immediate activation or deactivation of a flight-controller mode; imperative actions such as takeoff, land, and return use their own command families'
-    __occid_model_id__: ClassVar[int] = 292
-
-class SetModeCommand(ModeCommand):
-    'Select a portable standard mode or an endpoint-native mode; exactly one semantic/native selector must be usable by the endpoint and enabled controls activation versus deactivation'
-    __occid_model_id__: ClassVar[int] = 52
-    standard_mode: StandardFlightMode | None = None
-    native_mode_name: builtins.str | None = None
-    native_mode_code: builtins.int | None = None
-    enabled: builtins.bool = True
-
-class DirectControlCommand(Command):
-    'Lifecycle command for a direct-control session; high-rate control samples themselves are Input models and are not Commands'
-    __occid_model_id__: ClassVar[int] = 293
-
-class BeginDirectControlCommand(DirectControlCommand):
-    'Begin delivery of a declared direct-control input form; endpoint runtimes own native offboard/manual-control/override lifecycle'
-    __occid_model_id__: ClassVar[int] = 294
-    mode: DirectControlMode
-
-class EndDirectControlCommand(DirectControlCommand):
-    'End the active direct-control session and relinquish its endpoint-specific control mechanism'
-    __occid_model_id__: ClassVar[int] = 295
-
-class TaskCommand(Command):
-    __occid_model_id__: ClassVar[int] = 58
-    task: SerializeAsAny[Task | Mission | IsrTask | MoveTask | HoldTask | ResupplyTask]
-
-class ApplyPlanCommand(Command):
-    'Direct an executor to apply an approved plan'
-    __occid_model_id__: ClassVar[int] = 286
-    plan: SerializeAsAny[Plan | AutopilotFlightPlan | GroupFlightPlan | UnitFlightPlan | MissionPlan]
-
-class TrackerCommand(Command):
-    __occid_model_id__: ClassVar[int] = 59
-    lock: builtins.bool | None = None
-    reset: builtins.bool | None = None
-    slew: LocalDirection | None = None
-    search_box_size: builtins.int | None = None
-    shutdown: builtins.bool | None = None
+class ExecutionCommand(Command):
+    'Execute, abort, or reset a referenced plan, execution, or executable object'
+    __occid_model_id__: ClassVar[int] = 308
+    operation: ExecutionOperation
+    dispatch_id: StringID | None = None

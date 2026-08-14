@@ -9,33 +9,3 @@ models:
   Lifecycle:
     description: Current stage in existence or execution.
     parent: State
-
-  TaskAssignment:
-    parent: Lifecycle
-    fields:
-      task_id: StringID
-      ts: float
-      status: TaskStatus
-      unit_code: optional string
-      capability: optional Capability
-      command_result: optional CommandResult
-      reply_ack: optional ReplyAck
-      assign_fail: optional TaskAssignFail
-      phase: optional TaskPhase
-      geometry_id: optional StringID
-      remarks: optional string
-      last_update: optional float
-      issued_by: optional string
-      accepted_by: optional string
-      assigned_assets: list[string]
-      attempt_idx: int = 0
-      dispatch_state: DeliveryState = QUEUED
-      dispatch_error: optional string
-      time_window: optional TaskTimeWindow
-      qos: QosTier = ROUTINE
-      ack_mode: AckMode = RECEIPT
-      route_mode: RouteMode = DIRECT
-      conflict_policy: ConflictPolicy = VECTOR_CLOCK
-      objective: optional Objective
-      detail: optional string
-      source: optional string

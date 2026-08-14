@@ -52,12 +52,6 @@ class AirGroupFormation2DType(IntEnum):
     STAGG_TRAIL_LEFT = auto()
     STAGG_TRAIL_RIGHT = auto()
 
-class ControlLevel(IntEnum):
-    NONE = 0
-    MONITOR = auto()
-    GUIDE = auto()
-    FULL = auto()
-
 ### Models
 
 class Control(Root):

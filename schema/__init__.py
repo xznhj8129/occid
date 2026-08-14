@@ -9,6 +9,8 @@ from .data import *
 from .definition import *
 from .object import *
 from .struct import *
+from .directive import *
+from .authority import *
 from .command import *
 from .constraint import *
 from .event import *
@@ -23,10 +25,10 @@ from .organization import *
 from .property import *
 from .protocol import *
 from .record import *
-from .reference import *
 from .state import *
 from .task import *
 from .assignment import *
+from .execution import *
 from .attribute import *
 from .c3 import *
 from .guidance import *

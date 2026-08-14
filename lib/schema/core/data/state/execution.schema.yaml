@@ -1,20 +1,11 @@
 version: 1
 type: schema
-package: assignment
-root: Assignment
+package: execution
+root: Execution
 tags:
   - core
 
 enums:
-  AssignmentStatus:
-    - PROPOSED = 0
-    - ASSIGNED
-    - ACCEPTED
-    - ACTIVE
-    - COMPLETE
-    - REJECTED
-    - CANCELLED
-
   ExecutionPhase:
     - CREATED = 0
     - QUEUED
@@ -24,22 +15,6 @@ enums:
     - CANCELLED
 
 models:
-  Assignment:
-    description: Explicit binding of a task to an assignee under stated authority and constraints
-    parent: State
-    fields:
-      record: RecordMeta
-      assignment_id: StringID
-      task_id: StringID
-      assignee_id: StringID
-      plan_id: optional StringID
-      authority: string
-      assigned_by: StringID
-      assigned_at: float
-      accepted_at: optional float
-      status: AssignmentStatus = PROPOSED
-      constraints: list[Constraint]
-
   Execution:
     description: One execution attempt for an assignment, independently tracked across local and external executors
     parent: State
@@ -69,15 +44,6 @@ models:
       reason: optional string
       reported_at: float
 
-  ExecutionStatusRequest:
-    description: Request the latest retained semantic status for one exact execution dispatch without redispatching or re-executing it
-    parent: Control
-    fields:
-      execution_id: StringID
-      dispatch_id: StringID
-      requester_id: StringID
-      requested_at: float
-
   ExecutionStatusReport:
     description: Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence
     parent: State
@@ -104,14 +70,3 @@ models:
       progress: optional float
       owner_id: optional StringID
       updated_ts: float
-
-  FlightAssignment:
-    parent: Assignment
-    fields:
-      num: int
-      unit_id: optional StringID
-      callsign: optional string
-      objective_assign: optional int
-      wave_n: int = 0
-      formation_n: int = 0
-      takeoff_time: float = 0.0

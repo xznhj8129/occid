@@ -3,19 +3,10 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
+from .communication import Communication
 
 ### Models
 
-class Interface(Control):
-    'Control surface, lease, operator input, remote-control mapping, or executor-facing command interface'
+class Interface(Communication):
+    'System or protocol interface through which a component communicates with another endpoint'
     __occid_model_id__: ClassVar[int] = 69
-
-class ControlLease(Interface):
-    __occid_model_id__: ClassVar[int] = 70
-    asset_id: StringID
-    holder_id: StringID
-    control_level: ControlLevel
-    lease_start: builtins.float
-    lease_end: builtins.float
-    lease_rev: builtins.int = 0

@@ -41,6 +41,11 @@ enums:
     - LANDING
     - SHUTDOWN
 
+  AirPlanAction:
+    - FLY = 0
+    - AIR_DROP
+    - RECOVERY
+
 models:
   Plan:
     description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
@@ -83,6 +88,62 @@ models:
       response: string
       task_ids: list[StringID]
 
+  FlightLevelBand:
+    description: Embedded flight-level band value used by plans rather than an independently identified control reference
+    parent: Struct
+    fields:
+      altitude_range_m: NumericRange
+      alt_sep_m: float
+
+  AutopilotMissionWaypoint:
+    description: Embedded autopilot waypoint value used by a plan or protocol mapping
+    parent: Struct
+    fields:
+      waypoint_index: int
+      action_code: optional int
+      position: GlobalPosition
+      param1: optional int
+      param2: optional int
+      param3: optional int
+      flag: optional int
+
+  PlannerMissionPoint:
+    description: Embedded planner point value used while constructing a plan
+    parent: Struct
+    fields:
+      num: int
+      point_type: PlannerPointType
+      category: PlannerPointCategory
+      pos: GlobalPosition
+
+  LoiterOrbit:
+    description: Embedded orbit geometry and timing value
+    parent: Struct
+    fields:
+      orbit_direction: int
+      orbit_radius: int
+      loiter_time: int
+
+  MissionRouteGeometry:
+    description: Embedded route geometry used by a mission plan
+    parent: Struct
+    fields:
+      route_in: GeoPath
+      survey: GeoPath
+      survey_area: GeoArea
+      route_out: GeoPath
+
+  PlannedRoutePoints:
+    description: Embedded set of planner points defining mission-plan route segments
+    parent: Struct
+    fields:
+      start: PlannerMissionPoint
+      route_in: list[PlannerMissionPoint]
+      survey: list[PlannerMissionPoint]
+      survey_area: list[PlannerMissionPoint]
+      route_out: list[PlannerMissionPoint]
+      end: PlannerMissionPoint
+
   AutopilotFlightPlan:
     parent: Plan
     fields:
@@ -121,7 +182,7 @@ models:
     description: Saved operator mission plan - the planner inputs, restorable for editing
     fields:
       flight_type: FlightType = SURVEY_POINT
-      air_task: TaskAir = FLY
+      air_action: AirPlanAction = FLY
       manual: bool = false
       points: PlannedRoutePoints
       config: map[string, float]

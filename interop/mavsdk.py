@@ -18,9 +18,10 @@ from occid import (
     EulerAngles,
     GlobalPosition,
     GnssFixType,
-    GoToCommand,
     InertialReferenceFrame,
     LocationState,
+    MotionCommand,
+    MotionOperation,
     NavigationValidity,
     StandardFlightMode,
 )
@@ -140,25 +141,29 @@ def position_to_location_state(
 
 
 def goto_command_to_fields(
-    command: GoToCommand,
+    command: MotionCommand,
     *,
     current_absolute_altitude_m: float | None = None,
     current_relative_altitude_m: float | None = None,
     current_yaw_rad: float | None = None,
 ) -> MavsdkGotoFields:
-    """Convert a selected OCCID GoToCommand to MAVSDK goto_location fields.
+    """Convert an OCCID MOVE_TO MotionCommand to MAVSDK goto_location fields.
 
     MAVSDK's ``goto_location`` accepts absolute sea-level altitude. OCCID can
     express either sea-level or relative altitude, so conversion of a relative
     target requires the caller's current absolute and relative altitude samples.
-    The caller still owns connection state, operation selection, retries, and
-    execution policy; this helper owns only the deterministic representation
-    conversion.
+    The caller still owns connection state, retries, and execution policy; this
+    helper owns only the deterministic representation conversion.
     """
-    position = command.position
-    latitude_deg = require_finite(position.lat, "position.lat")
-    longitude_deg = require_finite(position.lon, "position.lon")
-    target_altitude_m = require_finite(position.alt, "position.alt")
+    if command.operation != MotionOperation.MOVE_TO:
+        raise ValueError(f"MAVSDK goto requires MotionOperation.MOVE_TO, got {command.operation}")
+    if command.destination is None:
+        raise ValueError("MAVSDK goto requires MotionCommand.destination")
+
+    position = command.destination
+    latitude_deg = require_finite(position.lat, "destination.lat")
+    longitude_deg = require_finite(position.lon, "destination.lon")
+    target_altitude_m = require_finite(position.alt, "destination.alt")
 
     if position.alt_frame == AltitudeDatum.SEA_LEVEL:
         absolute_altitude_m = target_altitude_m

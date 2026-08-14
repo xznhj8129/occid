@@ -301,3 +301,12 @@ model_ids:
   ExecutionAcceptance: 298
   ExecutionStatusRequest: 299
   ExecutionStatusReport: 300
+  Directive: 301
+  Authority: 302
+  StateChangeCommand: 303
+  ProcessControlCommand: 304
+  ConfigurationCommand: 305
+  MotionCommand: 306
+  ResourceCommand: 307
+  ExecutionCommand: 308
+  CombatTaskProfile: 309

@@ -3,19 +3,28 @@ from __future__ import annotations
 import math
 import unittest
 
-from occid import AltitudeDatum, GlobalPosition, GoToCommand
+from occid import AltitudeDatum, GlobalPosition, IdentifierType, MotionCommand, MotionOperation, StringID
 from interop.mavsdk import goto_command_to_fields
+
+
+def sid(value: str) -> StringID:
+    return StringID(id_type=IdentifierType.DB_ID, value=value)
+
+
+def move_to(position: GlobalPosition, yaw_rad: float | None = None) -> MotionCommand:
+    return MotionCommand(
+        target_ref=sid("entity.uav.1"),
+        constraints=[],
+        operation=MotionOperation.MOVE_TO,
+        destination=position,
+        yaw_rad=yaw_rad,
+    )
 
 
 class MavsdkGotoMappingTests(unittest.TestCase):
     def test_sea_level_target_maps_directly(self) -> None:
-        command = GoToCommand(
-            position=GlobalPosition(
-                lat=45.5017,
-                lon=-73.5673,
-                alt=123.4,
-                alt_frame=AltitudeDatum.SEA_LEVEL,
-            ),
+        command = move_to(
+            GlobalPosition(lat=45.5017, lon=-73.5673, alt=123.4, alt_frame=AltitudeDatum.SEA_LEVEL),
             yaw_rad=math.pi / 2.0,
         )
         fields = goto_command_to_fields(command)
@@ -25,13 +34,8 @@ class MavsdkGotoMappingTests(unittest.TestCase):
         self.assertAlmostEqual(fields.yaw_deg, 90.0)
 
     def test_relative_target_uses_current_altitude_pair(self) -> None:
-        command = GoToCommand(
-            position=GlobalPosition(
-                lat=47.0,
-                lon=8.0,
-                alt=40.0,
-                alt_frame=AltitudeDatum.RELATIVE,
-            )
+        command = move_to(
+            GlobalPosition(lat=47.0, lon=8.0, alt=40.0, alt_frame=AltitudeDatum.RELATIVE)
         )
         fields = goto_command_to_fields(
             command,
@@ -43,27 +47,26 @@ class MavsdkGotoMappingTests(unittest.TestCase):
         self.assertAlmostEqual(fields.yaw_deg, 180.0)
 
     def test_relative_target_requires_reference_altitudes(self) -> None:
-        command = GoToCommand(
-            position=GlobalPosition(
-                lat=47.0,
-                lon=8.0,
-                alt=40.0,
-                alt_frame=AltitudeDatum.RELATIVE,
-            )
+        command = move_to(
+            GlobalPosition(lat=47.0, lon=8.0, alt=40.0, alt_frame=AltitudeDatum.RELATIVE)
         )
         with self.assertRaisesRegex(ValueError, "current absolute and relative altitude"):
             goto_command_to_fields(command)
 
     def test_unspecified_yaw_defaults_to_zero(self) -> None:
-        command = GoToCommand(
-            position=GlobalPosition(
-                lat=47.0,
-                lon=8.0,
-                alt=500.0,
-                alt_frame=AltitudeDatum.SEA_LEVEL,
-            )
+        command = move_to(
+            GlobalPosition(lat=47.0, lon=8.0, alt=500.0, alt_frame=AltitudeDatum.SEA_LEVEL)
         )
         self.assertEqual(goto_command_to_fields(command).yaw_deg, 0.0)
+
+    def test_non_move_to_operation_is_rejected(self) -> None:
+        command = MotionCommand(
+            target_ref=sid("entity.uav.1"),
+            constraints=[],
+            operation=MotionOperation.STOP,
+        )
+        with self.assertRaisesRegex(ValueError, "MOVE_TO"):
+            goto_command_to_fields(command)
 
 
 if __name__ == "__main__":
