@@ -6,6 +6,16 @@ tags:
   - core
 
 enums:
+
+  TaskType:
+    - POSITIONING = 0
+    - ISR
+    - CARGO
+    - HOLD
+    - SUPPORT
+    - MOVE
+    - RESUPPLY
+    
   TaskISR:
     - OBSERVE = 0
     - SEARCH
@@ -14,14 +24,6 @@ enums:
     - INVESTIGATE
     - IMPROVE_TRACK
     - IMAGERY
-
-  TaskType:
-    - POSITIONING = 0
-    - CARGO
-    - HOLD
-    - SUPPORT
-    - MOVE
-    - RESUPPLY
 
   TaskPhase:
     - CREATED = 0
