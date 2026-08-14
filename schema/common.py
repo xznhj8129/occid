@@ -1,13 +1,11 @@
 """Generated from core/schemav2."""
 from __future__ import annotations
 import builtins
-import re
-import sys
 from types import UnionType
 from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
 from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
 import msgpack
-from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny, model_validator
+from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 SchemaVersion = tuple[int, int, int]
 OCCID_SCHEMA_VERSION: SchemaVersion = (5, 0, 0)
@@ -26,50 +24,16 @@ OCCID_MODEL_ID_BY_CLASS = {}
 class OCCIDModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
     __occid_model_id__: ClassVar[int | None] = None
+    __occid_semantic_role__: ClassVar[str | None] = None
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
+        if "__occid_semantic_role__" not in cls.__dict__:
+            cls.__occid_semantic_role__ = None
         model_id = getattr(cls, "__occid_model_id__", None)
         if model_id is not None:
             OCCID_MODEL_BY_ID[model_id] = cls
             OCCID_MODEL_ID_BY_CLASS[cls] = model_id
-
-    @model_validator(mode="after")
-    def _validate_enum_relation_maps(self):
-        module = sys.modules.get(type(self).__module__)
-        if module is None:
-            return self
-
-        def field_name(enum_type):
-            name = enum_type.__name__
-            name = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
-            return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", name).lower()
-
-        for mapping_name, mapping in vars(module).items():
-            if not mapping_name.startswith("VALID_"):
-                continue
-            if type(mapping) is not dict or not mapping:
-                continue
-            key = next(iter(mapping))
-            value = mapping[key]
-            if not isinstance(key, Enum) or not isinstance(value, Enum):
-                continue
-            key_field = field_name(type(key))
-            value_field = field_name(type(value))
-            if key_field not in type(self).model_fields or value_field not in type(self).model_fields:
-                continue
-            key_value = getattr(self, key_field)
-            if key_value is None:
-                continue
-            expected = mapping.get(key_value)
-            actual = getattr(self, value_field)
-            if expected != actual:
-                key_name = getattr(key_value, "name", str(key_value))
-                value_name = getattr(actual, "name", str(actual))
-                raise ValueError(
-                    f"{key_field}={key_name} is not valid for {value_field}={value_name}"
-                )
-        return self
 
     def encode(self) -> bytes:
         envelope = {

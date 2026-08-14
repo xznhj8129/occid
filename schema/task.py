@@ -7,36 +7,40 @@ from .directive import Directive
 
 ### Enums
 
-class TaskType(IntEnum):
-    MANEUVER = 0
-    EFFECT = auto()
-    INFORMATION = auto()
-    TRANSPORT = auto()
+class ManeuverIntent(str, Enum):
+    __occid_semantic_role__ = 'vocabulary'
+    MOVE = 'MOVE'
+    HOLD = 'HOLD'
+    FOLLOW = 'FOLLOW'
+    TRANSIT = 'TRANSIT'
+    POSITION = 'POSITION'
 
-class TaskIntent(IntEnum):
-    MOVE = 0
-    HOLD = auto()
-    FOLLOW = auto()
-    TRANSIT = auto()
-    POSITION = auto()
-    CREATE = auto()
-    REMOVE = auto()
-    MODIFY = auto()
-    RESTORE = auto()
-    PROTECT = auto()
-    DENY = auto()
-    SEARCH = auto()
-    OBSERVE = auto()
-    IDENTIFY = auto()
-    CLASSIFY = auto()
-    MEASURE = auto()
-    ASSESS = auto()
-    MONITOR = auto()
-    CARGO = auto()
-    PERSONNEL = auto()
-    SUPPLY = auto()
-    EVACUATE = auto()
-    RECOVER = auto()
+class EffectIntent(str, Enum):
+    __occid_semantic_role__ = 'vocabulary'
+    CREATE = 'CREATE'
+    REMOVE = 'REMOVE'
+    MODIFY = 'MODIFY'
+    RESTORE = 'RESTORE'
+    PROTECT = 'PROTECT'
+    DENY = 'DENY'
+
+class InformationIntent(str, Enum):
+    __occid_semantic_role__ = 'vocabulary'
+    SEARCH = 'SEARCH'
+    OBSERVE = 'OBSERVE'
+    IDENTIFY = 'IDENTIFY'
+    CLASSIFY = 'CLASSIFY'
+    MEASURE = 'MEASURE'
+    ASSESS = 'ASSESS'
+    MONITOR = 'MONITOR'
+
+class TransportIntent(str, Enum):
+    __occid_semantic_role__ = 'vocabulary'
+    CARGO = 'CARGO'
+    PERSONNEL = 'PERSONNEL'
+    SUPPLY = 'SUPPLY'
+    EVACUATE = 'EVACUATE'
+    RECOVER = 'RECOVER'
 
 class TaskPhase(IntEnum):
     CREATED = 0
@@ -60,44 +64,15 @@ class TaskStatus(IntEnum):
     FAILED = auto()
     CANCELLED = auto()
 
-### Mappings
-
-VALID_TASK_INTENT_TYPES: dict[TaskIntent, TaskType] = {
-    TaskIntent.MOVE: TaskType.MANEUVER,
-    TaskIntent.HOLD: TaskType.MANEUVER,
-    TaskIntent.FOLLOW: TaskType.MANEUVER,
-    TaskIntent.TRANSIT: TaskType.MANEUVER,
-    TaskIntent.POSITION: TaskType.MANEUVER,
-    TaskIntent.CREATE: TaskType.EFFECT,
-    TaskIntent.REMOVE: TaskType.EFFECT,
-    TaskIntent.MODIFY: TaskType.EFFECT,
-    TaskIntent.RESTORE: TaskType.EFFECT,
-    TaskIntent.PROTECT: TaskType.EFFECT,
-    TaskIntent.DENY: TaskType.EFFECT,
-    TaskIntent.SEARCH: TaskType.INFORMATION,
-    TaskIntent.OBSERVE: TaskType.INFORMATION,
-    TaskIntent.IDENTIFY: TaskType.INFORMATION,
-    TaskIntent.CLASSIFY: TaskType.INFORMATION,
-    TaskIntent.MEASURE: TaskType.INFORMATION,
-    TaskIntent.ASSESS: TaskType.INFORMATION,
-    TaskIntent.MONITOR: TaskType.INFORMATION,
-    TaskIntent.CARGO: TaskType.TRANSPORT,
-    TaskIntent.PERSONNEL: TaskType.TRANSPORT,
-    TaskIntent.SUPPLY: TaskType.TRANSPORT,
-    TaskIntent.EVACUATE: TaskType.TRANSPORT,
-    TaskIntent.RECOVER: TaskType.TRANSPORT,
-}
-
 ### Models
 
 class Task(Directive):
-    'Generic instruction-bearing work that must be accomplished in support of an optional objective'
+    'Directed work that must be accomplished in support of an optional objective'
     __occid_model_id__: ClassVar[int] = 124
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     task_id: StringID
     instruction: builtins.str
-    task_type: TaskType
-    task_intent: TaskIntent | None = None
     target_refs: list[StringID]
     location_refs: list[StringID]
     objective_id: StringID | None = None
@@ -106,3 +81,27 @@ class Task(Directive):
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
+
+class TaskManeuver(Task):
+    'Practical Task schema for desired movement, position, or spatial persistence'
+    __occid_model_id__: ClassVar[int] = 310
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    intent: ManeuverIntent
+
+class TaskEffect(Task):
+    'Practical Task schema for desired creation, removal, modification, restoration, protection, or denial'
+    __occid_model_id__: ClassVar[int] = 311
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    intent: EffectIntent
+
+class TaskInformation(Task):
+    'Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring'
+    __occid_model_id__: ClassVar[int] = 312
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    intent: InformationIntent
+
+class TaskTransport(Task):
+    'Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets'
+    __occid_model_id__: ClassVar[int] = 313
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    intent: TransportIntent

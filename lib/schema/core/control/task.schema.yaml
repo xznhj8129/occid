@@ -6,36 +6,44 @@ tags:
   - core
 
 enums:
-  TaskType:
-    - MANEUVER = 0
-    - EFFECT
-    - INFORMATION
-    - TRANSPORT
+  ManeuverIntent:
+    semantic_role: vocabulary
+    values:
+      - MOVE = "MOVE"
+      - HOLD = "HOLD"
+      - FOLLOW = "FOLLOW"
+      - TRANSIT = "TRANSIT"
+      - POSITION = "POSITION"
 
-  TaskIntent:
-    - MOVE = 0
-    - HOLD
-    - FOLLOW
-    - TRANSIT
-    - POSITION
-    - CREATE
-    - REMOVE
-    - MODIFY
-    - RESTORE
-    - PROTECT
-    - DENY
-    - SEARCH
-    - OBSERVE
-    - IDENTIFY
-    - CLASSIFY
-    - MEASURE
-    - ASSESS
-    - MONITOR
-    - CARGO
-    - PERSONNEL
-    - SUPPLY
-    - EVACUATE
-    - RECOVER
+  EffectIntent:
+    semantic_role: vocabulary
+    values:
+      - CREATE = "CREATE"
+      - REMOVE = "REMOVE"
+      - MODIFY = "MODIFY"
+      - RESTORE = "RESTORE"
+      - PROTECT = "PROTECT"
+      - DENY = "DENY"
+
+  InformationIntent:
+    semantic_role: vocabulary
+    values:
+      - SEARCH = "SEARCH"
+      - OBSERVE = "OBSERVE"
+      - IDENTIFY = "IDENTIFY"
+      - CLASSIFY = "CLASSIFY"
+      - MEASURE = "MEASURE"
+      - ASSESS = "ASSESS"
+      - MONITOR = "MONITOR"
+
+  TransportIntent:
+    semantic_role: vocabulary
+    values:
+      - CARGO = "CARGO"
+      - PERSONNEL = "PERSONNEL"
+      - SUPPLY = "SUPPLY"
+      - EVACUATE = "EVACUATE"
+      - RECOVER = "RECOVER"
 
   TaskPhase:
     - CREATED = 0
@@ -59,44 +67,15 @@ enums:
     - FAILED
     - CANCELLED
 
-maps:
-  VALID_TASK_INTENT_TYPES:
-    type: map[TaskIntent, TaskType]
-    value:
-      MOVE: MANEUVER
-      HOLD: MANEUVER
-      FOLLOW: MANEUVER
-      TRANSIT: MANEUVER
-      POSITION: MANEUVER
-      CREATE: EFFECT
-      REMOVE: EFFECT
-      MODIFY: EFFECT
-      RESTORE: EFFECT
-      PROTECT: EFFECT
-      DENY: EFFECT
-      SEARCH: INFORMATION
-      OBSERVE: INFORMATION
-      IDENTIFY: INFORMATION
-      CLASSIFY: INFORMATION
-      MEASURE: INFORMATION
-      ASSESS: INFORMATION
-      MONITOR: INFORMATION
-      CARGO: TRANSPORT
-      PERSONNEL: TRANSPORT
-      SUPPLY: TRANSPORT
-      EVACUATE: TRANSPORT
-      RECOVER: TRANSPORT
-
 models:
   Task:
-    description: Generic instruction-bearing work that must be accomplished in support of an optional objective
+    description: Directed work that must be accomplished in support of an optional objective
+    semantic_role: ontology
     parent: Directive
     fields:
       record: RecordMeta
       task_id: StringID
       instruction: string
-      task_type: TaskType
-      task_intent: optional TaskIntent
       target_refs: list[StringID]
       location_refs: list[StringID]
       objective_id: optional StringID
@@ -105,3 +84,31 @@ models:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+
+  TaskManeuver:
+    description: Practical Task schema for desired movement, position, or spatial persistence
+    semantic_role: specialization
+    parent: Task
+    fields:
+      intent: ManeuverIntent
+
+  TaskEffect:
+    description: Practical Task schema for desired creation, removal, modification, restoration, protection, or denial
+    semantic_role: specialization
+    parent: Task
+    fields:
+      intent: EffectIntent
+
+  TaskInformation:
+    description: Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring
+    semantic_role: specialization
+    parent: Task
+    fields:
+      intent: InformationIntent
+
+  TaskTransport:
+    description: Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets
+    semantic_role: specialization
+    parent: Task
+    fields:
+      intent: TransportIntent

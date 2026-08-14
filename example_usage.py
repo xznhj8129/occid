@@ -12,13 +12,12 @@ from occid import (
     ExecutionOperation,
     GlobalPosition,
     IdentifierType,
+    InformationIntent,
     MotionCommand,
     MotionOperation,
     RecordMeta,
     StringID,
-    Task,
-    TaskIntent,
-    TaskType,
+    TaskInformation,
 )
 
 
@@ -40,12 +39,11 @@ def main() -> None:
     operator_id = sid("entity.operator.1")
     uav_id = sid("entity.uav.7")
 
-    task = Task(
+    task = TaskInformation(
         record=meta("record.task.1"),
         task_id=sid("task.bridge.observe"),
         instruction="Move to the north side of the bridge and observe westbound traffic.",
-        task_type=TaskType.INFORMATION,
-        task_intent=TaskIntent.OBSERVE,
+        intent=InformationIntent.OBSERVE,
         target_refs=[],
         location_refs=[sid("location.bridge.north")],
         constraints=[],

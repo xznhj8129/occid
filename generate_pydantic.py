@@ -57,8 +57,11 @@ TOP_LEVEL_KEYS = {
     "maps",
     "models",
 }
+ENUM_KEYS = {"semantic_role", "values"}
 MAP_KEYS = {"type", "value"}
-MODEL_KEYS = {"description", "parent", "fields", "variants"}
+MODEL_KEYS = {"description", "semantic_role", "parent", "fields", "variants"}
+MODEL_SEMANTIC_ROLES = {"ontology", "specialization"}
+ENUM_SEMANTIC_ROLES = {"vocabulary"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 
@@ -84,6 +87,7 @@ class EnumValue:
 class EnumDef:
     name: str
     values: list[EnumValue]
+    semantic_role: str | None
 
 
 @dataclass
@@ -100,6 +104,7 @@ class FieldDef:
 class ModelDef:
     name: str
     description: str | None
+    semantic_role: str | None
     parent: str | None
     fields: list[FieldDef]
     variants: list[str]
@@ -209,6 +214,14 @@ def strip_prefix(text: str, prefix: str) -> tuple[bool, str]:
     return False, text
 
 
+def parse_semantic_role(name: str, value: object, allowed: set[str]) -> str | None:
+    if value is None:
+        return None
+    if type(value) != str or value not in allowed:
+        raise SchemaError(f"invalid semantic_role {value!r} on {name}; expected one of {sorted(allowed)}")
+    return value
+
+
 class TypeParser:
     def __init__(self, text: str):
         self.text = text
@@ -293,8 +306,27 @@ def parse_enum_value(raw_entry: str) -> EnumValue:
     return EnumValue(name=name, value=int(value_text))
 
 
-def parse_enum(name: str, entries: list[str]) -> EnumDef:
-    return EnumDef(name=name, values=[parse_enum_value(entry) for entry in entries])
+def parse_enum(name: str, spec: list[str] | dict) -> EnumDef:
+    semantic_role = None
+    entries = spec
+    if type(spec) == dict:
+        unknown_keys = sorted(set(spec) - ENUM_KEYS)
+        if unknown_keys:
+            raise SchemaError(f"unknown enum keys {unknown_keys} on {name}")
+        if "values" not in spec:
+            raise SchemaError(f"expanded enum {name} must define values")
+        semantic_role = parse_semantic_role(name, spec.get("semantic_role"), ENUM_SEMANTIC_ROLES)
+        entries = spec["values"]
+    if type(entries) != list:
+        raise SchemaError(f"enum {name} values must be a list")
+    for entry in entries:
+        if type(entry) != str:
+            raise SchemaError(f"enum {name} values must be strings")
+    return EnumDef(
+        name=name,
+        values=[parse_enum_value(entry) for entry in entries],
+        semantic_role=semantic_role,
+    )
 
 
 def parse_field(name: str, spec: str | dict) -> FieldDef:
@@ -336,6 +368,7 @@ def parse_model(name: str, spec: dict) -> ModelDef:
         raise SchemaError(f"unknown model keys {unknown_keys} on {name}")
     if "description" in spec and type(spec["description"]) != str:
         raise SchemaError(f"description must be a string on {name}")
+    semantic_role = parse_semantic_role(name, spec.get("semantic_role"), MODEL_SEMANTIC_ROLES)
     has_variants = "variants" in spec
     variants = spec.get("variants") or []
     if type(variants) != list:
@@ -346,6 +379,7 @@ def parse_model(name: str, spec: dict) -> ModelDef:
     return ModelDef(
         name=name,
         description=spec.get("description"),
+        semantic_role=semantic_role,
         parent=spec.get("parent"),
         fields=[parse_field(field_name, field_spec) for field_name, field_spec in (spec.get("fields") or {}).items()],
         variants=variants,
@@ -659,6 +693,8 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
         for model_def in module.models:
             if model_def.parent and model_def.parent not in symbol_index:
                 raise SchemaError(f"unknown parent {model_def.parent} in {module.path}")
+            if model_def.semantic_role == "specialization" and not model_def.parent:
+                raise SchemaError(f"specialization model {model_def.name} must declare a parent in {module.path}")
             for variant_name in model_def.variants:
                 if variant_name not in symbol_index:
                     raise SchemaError(f"unknown variant {variant_name} in {module.path}:{model_def.name}")
@@ -805,6 +841,8 @@ def enum_base(enum_def: EnumDef) -> str:
 
 def render_enum_block(enum_def: EnumDef) -> str:
     lines = [f"class {enum_def.name}({enum_base(enum_def)}):"]
+    if enum_def.semantic_role:
+        lines.append(f"    __occid_semantic_role__ = {enum_def.semantic_role!r}")
     next_value: int | None = None
     for index, value in enumerate(enum_def.values):
         if type(value.value) == str:
@@ -828,6 +866,7 @@ def render_variant_enum_block(model_def: ModelDef) -> str:
             EnumValue(name=variant_member_name(model_def.name, variant_name), value=0 if index == 0 else None)
             for index, variant_name in enumerate(model_def.variants)
         ],
+        semantic_role=None,
     )
     return render_enum_block(enum_def)
 
@@ -889,6 +928,8 @@ def render_model_block(
     if model_def.description:
         lines.append(f"    {model_def.description!r}")
     lines.append(f"    __occid_model_id__: ClassVar[int] = {model_ids[model_def.name]}")
+    if model_def.semantic_role:
+        lines.append(f"    __occid_semantic_role__: ClassVar[str] = {model_def.semantic_role!r}")
     for field_def in model_def.fields:
         lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, variant_type_members)}")
     return "\n".join(lines)

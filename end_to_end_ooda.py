@@ -25,6 +25,7 @@ from occid import (
     ExecutionPhase,
     ExecutionStatusReport,
     IdentifierType,
+    InformationIntent,
     MessagePriority,
     MessageTarget,
     OCCID_MODEL_ID_BY_CLASS,
@@ -33,12 +34,10 @@ from occid import (
     PlanApprovalState,
     RecordMeta,
     StringID,
-    Task,
     TaskDelta,
-    TaskIntent,
+    TaskInformation,
     TaskPhase,
     TaskStatus,
-    TaskType,
     Timestamp,
     decode_model,
 )
@@ -138,12 +137,11 @@ def run_scenario() -> ScenarioResult:
 
     task = cross(
         "task.created",
-        Task(
+        TaskInformation(
             record=record_meta("record.task.route6.1", 2.0),
             task_id=sid("task.route6.search"),
             instruction="Search Route 6 and establish what vehicle traffic is using it.",
-            task_type=TaskType.INFORMATION,
-            task_intent=TaskIntent.SEARCH,
+            intent=InformationIntent.SEARCH,
             target_refs=[],
             location_refs=[location_id],
             objective_id=objective.objective_id,

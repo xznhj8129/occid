@@ -310,3 +310,7 @@ model_ids:
   ResourceCommand: 307
   ExecutionCommand: 308
   CombatTaskProfile: 309
+  TaskManeuver: 310
+  TaskEffect: 311
+  TaskInformation: 312
+  TaskTransport: 313
