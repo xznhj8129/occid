@@ -1,5 +1,7 @@
 # OCCID
 
+> **VERSION INVARIANT: 0.0.1.** OCCID is version **0.0.1** and remains **0.0.1** until the Conqueror Frog project owner explicitly authorizes a version change. Schema breaks, refactors, regeneration, milestones, and internal compatibility changes do **not** increment it.
+
 **Open Command, Control and Information Data model**
 
 OCCID is a domain-agnostic semantic model for command, control, information, state, observations, entities, organizations, platforms, and networks. It is not a wire protocol and it is not an application database schema. Protocol and application adapters map to OCCID rather than defining OCCID around one endpoint API.
@@ -102,9 +104,9 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 
 Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema. `idl_spec.md` defines the schema language, including the explicit semantic-role distinction between ontology, practical specialization, and controlled vocabulary.
 
-Polymorphic model IDs live in `lib/model_ids.yaml` and identify the live models in the current schema. Removed models are removed from the registry; their numeric slots are ordinary free space and may be reused. Schema version `5.2.0` contains the APEX-driven primitive refinements.
+Polymorphic model IDs live in `lib/model_ids.yaml` and identify the live models in the current schema. Removed models are removed from the registry; their numeric slots are ordinary free space and may be reused. `OCCID_SCHEMA_VERSION` is **0.0.1** and stays **0.0.1** until the project owner explicitly says otherwise; pre-release schema churn is not represented by pretending the project has advanced through release versions.
 
-Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a versioned named-field MsgPack envelope for compact interchange. The schema version identifies the current contract; pre-release OCCID does not maintain legacy model compatibility inside the active schema.
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a named-field MsgPack envelope for compact interchange. The schema-version field currently carries `0.0.1`; incompatible pre-release development payloads are migrated explicitly or discarded/reset rather than manufacturing release-number progression.
 
 ## Interoperability layer
 
