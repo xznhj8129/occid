@@ -48,11 +48,11 @@ class GnssFixType(IntEnum):
 
 ### Models
 
-class Guidance(State):
-    'Navigation, arming, mode, plan progress, readiness, failsafe, estimator, and control state'
+class GNC(State):
+    'Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state'
     __occid_model_id__: ClassVar[int] = 138
 
-class TelemetryState(Guidance):
+class TelemetryState(GNC):
     __occid_model_id__: ClassVar[int] = 139
     standard_mode: StandardFlightMode | None = None
     native_mode_name: builtins.str | None = None
@@ -64,13 +64,13 @@ class TelemetryState(Guidance):
     battery_pct: builtins.float | None = None
     link_rssi: builtins.float | None = None
 
-class NavigationValidity(Guidance):
+class NavigationValidity(GNC):
     __occid_model_id__: ClassVar[int] = 140
     local_position_ok: builtins.bool | None = None
     global_position_ok: builtins.bool | None = None
     home_position_ok: builtins.bool | None = None
 
-class GnssSolution(Guidance):
+class GnssSolution(GNC):
     __occid_model_id__: ClassVar[int] = 141
     fix_type: GnssFixType | None = None
     fix_code: builtins.int | None = None
@@ -88,7 +88,7 @@ class GnssSolution(Guidance):
     errors: builtins.float | None = None
     timeouts: builtins.float | None = None
 
-class AutopilotMissionState(Guidance):
+class AutopilotMissionState(GNC):
     'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'
     __occid_model_id__: ClassVar[int] = 296
     valid: builtins.bool | None = None

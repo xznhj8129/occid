@@ -10,6 +10,7 @@ from .root import Root
 class Object(Root):
     'Atoms'
     __occid_model_id__: ClassVar[int] = 15
+    capabilities: list[Capability] | None = None
 
 class Set(Object):
     __occid_model_id__: ClassVar[int] = 16

@@ -80,6 +80,7 @@ models:
       location_refs: list[StringID]
       objective_id: optional StringID
       constraints: list[Constraint]
+      preconditions: optional list[Condition]
       start_time: optional float
       deadline: optional float
       priority: TaskPriority = ROUTINE

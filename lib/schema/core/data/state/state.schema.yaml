@@ -13,11 +13,14 @@ models:
       - Kinematic
       - Internal
       - Position
-      - Guidance
+      - GNC
       - SensorState
       - Input
       - Resource
-      - Condition
+      - Health
+      - Activation
+      - Validation
+      - Cue
       - Lifecycle
       - Execution
       - ExecutionAcceptance

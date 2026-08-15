@@ -63,7 +63,7 @@ class Plan(Control):
     assignments: list[StringID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
@@ -79,7 +79,7 @@ class PlanStep(Struct):
 class PlanContingency(Struct):
     __occid_model_id__: ClassVar[int] = 282
     contingency_id: StringID
-    condition: builtins.str
+    condition: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]
     response: builtins.str
     task_ids: list[StringID]
 

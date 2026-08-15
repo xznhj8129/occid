@@ -4,7 +4,7 @@ import builtins
 from .common import *
 
 from .entities import EntitySubtype, GroundMachine, Machine, MachineType
-from .guidance import Guidance
+from .gnc import GNC
 from .interface import Interface
 from .parameter import Parameter
 from .payload import SensorDataFormat
@@ -151,7 +151,7 @@ class ObserverSource(Interface):
     commands_allowed: builtins.bool = False
     can_zoom: builtins.bool = False
 
-class FlightControlState(Guidance):
+class FlightControlState(GNC):
     'Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers'
     __occid_model_id__: ClassVar[int] = 251
     armed: builtins.bool | None = None

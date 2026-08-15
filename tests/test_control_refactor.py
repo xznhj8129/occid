@@ -228,6 +228,7 @@ class ControlRefactorTests(unittest.TestCase):
         self.assertEqual(registry["Reference"], 111)
         self.assertEqual(registry["ArmCommand"], 47)
         self.assertEqual(registry["CombatTask"], 279)
+        self.assertEqual(registry["ConstraintCondition"], 63)
         self.assertEqual(registry["Directive"], 301)
         self.assertEqual(registry["Authority"], 302)
         self.assertEqual(registry["MotionCommand"], 306)
@@ -241,7 +242,7 @@ class ControlRefactorTests(unittest.TestCase):
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskEffect], 311)
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskInformation], 312)
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskTransport], 313)
-        self.assertEqual(occid.OCCID_SCHEMA_VERSION, (5, 0, 0))
+        self.assertEqual(occid.OCCID_SCHEMA_VERSION, (5, 1, 0))
 
 
 if __name__ == "__main__":

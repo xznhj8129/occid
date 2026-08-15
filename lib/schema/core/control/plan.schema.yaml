@@ -84,7 +84,7 @@ models:
     parent: Struct
     fields:
       contingency_id: StringID
-      condition: string
+      condition: Condition
       response: string
       task_ids: list[StringID]
 

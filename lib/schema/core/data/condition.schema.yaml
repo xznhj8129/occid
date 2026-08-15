@@ -1,0 +1,40 @@
+version: 1
+type: schema
+package: condition
+root: Condition
+tags:
+  - core
+
+models:
+  Condition:
+    description: Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic
+    parent: Data
+    variants:
+      - Predicate
+      - Conjunction
+      - Disjunction
+      - Negation
+
+  Predicate:
+    description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions
+    parent: Condition
+    fields:
+      subject_ref: optional StringID
+
+  Conjunction:
+    description: Condition that is true when every term is true
+    parent: Condition
+    fields:
+      terms: list[Condition]
+
+  Disjunction:
+    description: Condition that is true when any term is true
+    parent: Condition
+    fields:
+      terms: list[Condition]
+
+  Negation:
+    description: Condition that is true when its term is false
+    parent: Condition
+    fields:
+      term: Condition

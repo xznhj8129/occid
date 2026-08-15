@@ -8,17 +8,15 @@ from .control import Control
 ### Models
 
 class Constraint(Control):
-    'Limit, rule, condition, or time/resource bound applied to directed work'
+    'Limit, rule, or time/resource bound applied to directed work'
     __occid_model_id__: ClassVar[int] = 60
+    condition: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation] | None = None
 
 class Restriction(Constraint):
     __occid_model_id__: ClassVar[int] = 61
 
 class Limitation(Constraint):
     __occid_model_id__: ClassVar[int] = 62
-
-class ConstraintCondition(Constraint):
-    __occid_model_id__: ClassVar[int] = 63
 
 class TaskTimeWindow(Constraint):
     __occid_model_id__: ClassVar[int] = 64

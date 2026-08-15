@@ -8,7 +8,7 @@ import msgpack
 from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 SchemaVersion = tuple[int, int, int]
-OCCID_SCHEMA_VERSION: SchemaVersion = (5, 0, 0)
+OCCID_SCHEMA_VERSION: SchemaVersion = (5, 1, 0)
 class IntEnum(_StdIntEnum):
     @classmethod
     def _missing_(cls, value):

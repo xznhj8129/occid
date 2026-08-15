@@ -31,7 +31,7 @@ class Assignment(Control):
     assigned_at: builtins.float
     accepted_at: builtins.float | None = None
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class FlightAssignment(Assignment):
     __occid_model_id__: ClassVar[int] = 132

@@ -1,0 +1,22 @@
+version: 1
+type: schema
+package: validation
+root: Validation
+tags:
+  - core
+
+enums:
+  ValidationStatus:
+    - NOT_STARTED = 0
+    - RUNNING
+    - VALID
+    - FAILED
+
+models:
+  Validation:
+    description: Mutable state of evaluating a Condition, kept separate from the predicate itself
+    parent: State
+    fields:
+      condition: Condition
+      status: ValidationStatus
+      updated_ts: optional float

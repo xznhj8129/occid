@@ -27,7 +27,7 @@ class Objective(Control):
     desired_state: builtins.str
     success_criteria: list[SuccessCriterion]
     target_refs: list[StringID]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
     owner_id: StringID | None = None

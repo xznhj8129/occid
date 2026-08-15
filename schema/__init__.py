@@ -23,6 +23,8 @@ from .node import *
 from .observation import *
 from .organization import *
 from .property import *
+from .capability import *
+from .condition import *
 from .protocol import *
 from .record import *
 from .state import *
@@ -31,8 +33,11 @@ from .assignment import *
 from .execution import *
 from .attribute import *
 from .c3 import *
-from .guidance import *
+from .gnc import *
 from .health import *
+from .activation import *
+from .validation import *
+from .cue import *
 from .identity import *
 from .input import *
 from .internal import *

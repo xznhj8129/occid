@@ -12,6 +12,8 @@ from occid import TaskInformation, Assignment, MotionCommand
 
 Generated runtime models live physically in `schema/`, but consumers should import through `occid`.
 
+APEX Payload is an interoperability target and, as of schema 5.1.0, an explicit external stress test of OCCID's payload, capability, condition, and state model. APEX wire/session concepts remain adapter concerns; only protocol-neutral semantic primitives exposed by the mapping belong in OCCID core.
+
 ## Control contract
 
 The Control ontology is deliberately small:
@@ -60,7 +62,7 @@ TaskTransport   -> TransportIntent
 
 These levels are first-class IDL metadata, not documentation convention. Models may declare `semantic_role: ontology` or `semantic_role: specialization`; controlled enums may declare `semantic_role: vocabulary`. The generator validates those roles and emits `__occid_semantic_role__` on generated declarations that define them.
 
-`Task` is the ontological class and owns the fields common to directed work: identity, instruction, references, objective, constraints, timing, priority, and status. The four child records are practical schema specializations, not claims that four new ontological primitives have been discovered. They inherit the complete Task record and add only a family-specific `intent` vocabulary.
+`Task` is the ontological class and owns the fields common to directed work: identity, instruction, references, objective, constraints, optional preconditions, timing, priority, and status. The four child records are practical schema specializations, not claims that four new ontological primitives have been discovered. They inherit the complete Task record and add only a family-specific `intent` vocabulary.
 
 Individual verbs such as `MOVE`, `HOLD`, `SEARCH`, `OBSERVE`, `PROTECT`, or `EVACUATE` remain enum values. There is no `MoveTask`, `SearchTask`, or similar ontology tree. There is also no monolithic `TaskIntent`, `TaskType`, or cross-field validity map: an information intent cannot be supplied to a maneuver task because the schema types are different.
 
@@ -89,6 +91,9 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 
 - `Interface` is under `Communication` and represents a real system/protocol interface.
 - `ControlLease` is under `Authority` because it represents delegated control rights.
+- `Object` may carry `Capability` properties describing what the object can do without turning each capability into an Object subtype.
+- `Condition` is reusable predicate logic, not mutable state. `Validation` records the changing state of evaluating a Condition; Tasks, Constraints, and plan contingencies may compose Conditions.
+- `GNC` is vehicle guidance, navigation, and control state. `Cue` is separate directional cueing state toward a target or point of interest.
 - named operational places are `Object/Location` records.
 - embedded waypoints, route points, flight-level bands, and similar planning values are `Struct` values inside Plan-related schemas.
 - the military module may attach doctrine/profile data to a Task but does not create `CombatTask : Task`.
@@ -97,7 +102,7 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 
 Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema. `idl_spec.md` defines the schema language, including the explicit semantic-role distinction between ontology, practical specialization, and controlled vocabulary.
 
-Permanent polymorphic model IDs live in `lib/model_ids.yaml`. Retired IDs remain reserved and are never reused. The Control refactor remains schema version `5.0.0` while it is under pre-integration review; the four new practical Task schemas use new permanent model IDs.
+Permanent polymorphic model IDs live in `lib/model_ids.yaml`. Retired IDs remain reserved and are never reused. The APEX-driven primitive additions are schema version `5.1.0`; renamed active concepts retain their permanent IDs where the semantic record remains the same, while new primitives receive new IDs.
 
 Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a versioned named-field MsgPack envelope for compact interchange. A schema-version migration boundary is required before old durable payloads are interpreted as a newer schema.
 

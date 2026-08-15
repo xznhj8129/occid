@@ -1,0 +1,23 @@
+version: 1
+type: schema
+package: activation
+root: Activation
+tags:
+  - core
+
+enums:
+  ActivationPhase:
+    - STANDBY = 0
+    - VALIDATING
+    - READY
+    - ENABLED
+    - EXECUTING
+    - EXHAUSTED
+
+models:
+  Activation:
+    description: Mutable lifecycle of an activatable object or capability; faults remain orthogonal Health state
+    parent: State
+    fields:
+      phase: ActivationPhase
+      remaining_uses: optional int

@@ -13,6 +13,8 @@ models:
       - Set
       - Item
       - Location
+    fields:
+      capabilities: optional list[Capability]
 
   Set:
     parent: Object

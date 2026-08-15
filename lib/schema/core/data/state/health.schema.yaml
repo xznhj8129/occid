@@ -1,7 +1,7 @@
 version: 1
 type: schema
 package: health
-root: Condition
+root: Health
 tags:
   - core
 
@@ -53,12 +53,12 @@ enums:
     - FAILED
 
 models:
-  Condition:
-    description: Integrity, damage, faults, readiness
+  Health:
+    description: Integrity, damage, faults, and readiness state
     parent: State
 
   HealthAlert:
-    parent: Condition
+    parent: Health
     fields:
       alert_id: optional StringID
       level: AlertLevel
@@ -66,7 +66,7 @@ models:
       acknowledged: bool = false
 
   SubsystemHealth:
-    parent: Condition
+    parent: Health
     fields:
       subsystem_id: StringID
       state: HealthStatus
@@ -74,7 +74,7 @@ models:
       note: optional string
 
   HealthSnapshot:
-    parent: Condition
+    parent: Health
     fields:
       overall_state: HealthStatus
       link_state: optional LinkCondition
@@ -86,7 +86,7 @@ models:
       alerts: list[HealthAlert]
 
   MaintenanceStatus:
-    parent: Condition
+    parent: Health
     fields:
       state: MaintenanceState
       last_service_ts: optional float
@@ -94,7 +94,7 @@ models:
       note: optional string
 
   NavReadinessState:
-    parent: Condition
+    parent: Health
     fields:
       gyro_ok: optional bool
       accel_ok: optional bool

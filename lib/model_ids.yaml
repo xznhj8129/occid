@@ -138,11 +138,11 @@ model_ids:
   DisplayMeta: 135
   CommandMessage: 136
   HumanTextMessage: 137
-  Guidance: 138
+  GNC: 138
   TelemetryState: 139
   NavigationValidity: 140
   GnssSolution: 141
-  Condition: 142
+  Health: 142
   HealthAlert: 143
   SubsystemHealth: 144
   HealthSnapshot: 145
@@ -314,3 +314,12 @@ model_ids:
   TaskEffect: 311
   TaskInformation: 312
   TaskTransport: 313
+  Capability: 314
+  Condition: 315
+  Predicate: 316
+  Conjunction: 317
+  Disjunction: 318
+  Negation: 319
+  Activation: 320
+  Validation: 321
+  Cue: 322

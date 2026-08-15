@@ -131,7 +131,7 @@ Root:
           description: Proposed or approved method for accomplishing tasks with actors, resources, sequencing, routes, constraints, and contingencies.
 
         Constraint:
-          description: Limit, rule, condition, or time/resource bound applied to directed work.
+          description: Limit, rule, or time/resource bound applied to directed work. Constraints may reference reusable Conditions.
 
         Authority:
           description: Command relationship, permission, delegation, authorization context, or control right.
@@ -194,6 +194,25 @@ Root:
             Relationship:
               description: Nature of relations, ownership, provenance, link
 
+            Capability:
+              description: Ability an Object possesses or can provide; concrete capability schemas carry the specific semantics.
+
+        Condition:
+          description: Reusable predicate logic evaluated against object, system, or process facts; not the mutable state of evaluating that logic.
+          children:
+
+            Predicate:
+              description: Atomic condition leaf with typed operands and comparison semantics supplied by concrete schemas.
+
+            Conjunction:
+              description: Condition true when every term is true.
+
+            Disjunction:
+              description: Condition true when any term is true.
+
+            Negation:
+              description: Condition true when its term is false.
+
         State:
           description: Changing condition of an object, node, link, task, system, or process.
           children:
@@ -201,11 +220,20 @@ Root:
             Position:
               description: Position, attitude, motion, altitude, navigation validity, and location uncertainty.
 
-            Guidance:
-              description: Navigation, arming, mode, mission progress, readiness, failsafe, estimator, and control state.
+            GNC:
+              description: Guidance, navigation, and control state including arming, mode, mission progress, readiness, failsafe, and estimator state.
 
             Health:
               description: Fault, readiness, maintenance, damage, alert, subsystem, and resource health state.
+
+            Activation:
+              description: Mutable lifecycle of an activatable object or capability, separate from faults and health.
+
+            Validation:
+              description: Mutable state of evaluating reusable Condition logic.
+
+            Cue:
+              description: Directional cue toward a target or point of interest, distinct from vehicle GNC state.
 
             Resource:
               description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.

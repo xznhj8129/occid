@@ -14,6 +14,7 @@ models:
       - Attribute
       - Parameter
       - Relationship
+      - Capability
 
   MetadataValue:
     parent: Property

@@ -55,7 +55,7 @@ class Command(Directive):
     'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 45
     target_ref: StringID
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class StateChangeCommand(Command):
     'Change, enable, or disable one declared state property on the target'

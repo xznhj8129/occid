@@ -55,25 +55,25 @@ class MaintenanceState(IntEnum):
 
 ### Models
 
-class Condition(State):
-    'Integrity, damage, faults, readiness'
+class Health(State):
+    'Integrity, damage, faults, and readiness state'
     __occid_model_id__: ClassVar[int] = 142
 
-class HealthAlert(Condition):
+class HealthAlert(Health):
     __occid_model_id__: ClassVar[int] = 143
     alert_id: StringID | None = None
     level: AlertLevel
     condition: builtins.str
     acknowledged: builtins.bool = False
 
-class SubsystemHealth(Condition):
+class SubsystemHealth(Health):
     __occid_model_id__: ClassVar[int] = 144
     subsystem_id: StringID
     state: HealthStatus
     fault_count: builtins.int = 0
     note: builtins.str | None = None
 
-class HealthSnapshot(Condition):
+class HealthSnapshot(Health):
     __occid_model_id__: ClassVar[int] = 145
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
@@ -84,14 +84,14 @@ class HealthSnapshot(Condition):
     subsystems: list[SubsystemHealth]
     alerts: list[HealthAlert]
 
-class MaintenanceStatus(Condition):
+class MaintenanceStatus(Health):
     __occid_model_id__: ClassVar[int] = 146
     state: MaintenanceState
     last_service_ts: builtins.float | None = None
     next_service_ts: builtins.float | None = None
     note: builtins.str | None = None
 
-class NavReadinessState(Condition):
+class NavReadinessState(Health):
     __occid_model_id__: ClassVar[int] = 147
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None

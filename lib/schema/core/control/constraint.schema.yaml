@@ -7,20 +7,18 @@ tags:
 
 models:
   Constraint:
-    description: Limit, rule, condition, or time/resource bound applied to directed work
+    description: Limit, rule, or time/resource bound applied to directed work
     parent: Control
     variants:
       - Restriction
       - Limitation
-      - ConstraintCondition
+    fields:
+      condition: optional Condition
 
   Restriction:
     parent: Constraint
 
   Limitation:
-    parent: Constraint
-
-  ConstraintCondition:
     parent: Constraint
 
   TaskTimeWindow:

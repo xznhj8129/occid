@@ -1,5 +1,14 @@
 # Development log
 
+## 2026-08-15 - APEX payload mapping primitives
+
+- Mapped the APEX Payload specification against OCCID and used the fit as an external stress test of the core ontology rather than adding APEX-shaped classes.
+- Added `Capability` as an Object-carried `Property`, keeping generic `Payload` intentionally open while allowing any Object to declare what it can do.
+- Reclaimed `Condition` for reusable predicate logic with composition, renamed the former health/readiness `Condition` state root to `Health`, removed `ConstraintCondition` from the active schema while retaining its permanent ID as reserved, added Task preconditions, and made plan contingencies use typed Conditions.
+- Renamed the GNC state branch from `Guidance` to `GNC`, then added distinct `Cue`, `Activation`, and `Validation` state primitives needed by APEX wayfinding and activation semantics.
+- Kept APEX session addressing, device classes, and protocol-specific fields out of the ontology; the changes are protocol-neutral primitives exposed by the APEX mapping.
+- Bumped generated schema version to 5.1.0, preserved retired model IDs, and updated generated models and focused tests.
+
 ## 2026-08-14 - Task semantic levels correction
 
 - Corrected the reviewed Task design before MPFC/Sigma integration.

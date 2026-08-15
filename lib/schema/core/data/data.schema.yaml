@@ -11,6 +11,7 @@ models:
     parent: Root
     variants:
       - Property
+      - Condition
       - State
       - Event
       - Observation

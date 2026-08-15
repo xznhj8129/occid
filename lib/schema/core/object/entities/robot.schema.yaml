@@ -156,7 +156,7 @@ models:
 
   FlightControlState:
     description: Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers
-    parent: Guidance
+    parent: GNC
     fields:
       armed: optional bool
       in_air: optional bool

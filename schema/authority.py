@@ -23,7 +23,7 @@ class Authority(Control):
     holder_id: StringID
     granted_by: StringID | None = None
     scope_refs: list[StringID]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class ControlLease(Authority):
     'Time-bounded control right issued under an Authority record'

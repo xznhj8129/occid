@@ -76,7 +76,8 @@ class Task(Directive):
     target_refs: list[StringID]
     location_refs: list[StringID]
     objective_id: StringID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | ConstraintCondition | TaskTimeWindow | WeatherLimits]]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
+    preconditions: list[SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
