@@ -6,13 +6,6 @@ tags:
   - core
 
 enums:
-  Capability:
-    - NONE = 0
-    - LOGISTICS_SUPPLY
-    - COMMUNICATIONS
-    - FUEL
-    - RESCUE
-
   PlannerPointType:
     - HOME = 0
     - TAKEOFF
