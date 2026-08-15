@@ -10,7 +10,7 @@ from .message import Message
 class TelemetryMessage(Message):
     'Message whose payload reports sender or asset state'
     __occid_model_id__: ClassVar[int] = 208
-    state: SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | TelemetryState | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]
+    state: SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | TelemetryState | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | FlightSensorConfiguration | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]
 
 class UAVTelemetryMessage(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 209
@@ -27,7 +27,7 @@ class CapabilityAdvert(TelemetryMessage):
 class StateDelta(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 211
     entity_id: StringID
-    changed_fields: dict[builtins.str, SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | TelemetryState | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]]
+    changed_fields: dict[builtins.str, SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | TelemetryState | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | FlightSensorConfiguration | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]]
 
 class TransportCounters(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 212

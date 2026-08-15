@@ -7,13 +7,6 @@ from .root import Root
 
 ### Enums
 
-class Capability(IntEnum):
-    NONE = 0
-    LOGISTICS_SUPPLY = auto()
-    COMMUNICATIONS = auto()
-    FUEL = auto()
-    RESCUE = auto()
-
 class PlannerPointType(IntEnum):
     HOME = 0
     TAKEOFF = auto()

@@ -9,12 +9,14 @@ from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 SchemaVersion = tuple[int, int, int]
 OCCID_SCHEMA_VERSION: SchemaVersion = (5, 2, 0)
+
 class IntEnum(_StdIntEnum):
     @classmethod
     def _missing_(cls, value):
         if type(value) == str:
             return cls[value]
         return super()._missing_(value)
+
 ### Models
 
 OCCID_MODEL_BY_ID = {}
