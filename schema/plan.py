@@ -79,7 +79,7 @@ class PlanStep(Struct):
 class PlanContingency(Struct):
     __occid_model_id__: ClassVar[int] = 282
     contingency_id: StringID
-    condition: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]
+    condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
     response: builtins.str
     task_ids: list[StringID]
 

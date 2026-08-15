@@ -8,7 +8,7 @@ import msgpack
 from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
 
 SchemaVersion = tuple[int, int, int]
-OCCID_SCHEMA_VERSION: SchemaVersion = (5, 1, 0)
+OCCID_SCHEMA_VERSION: SchemaVersion = (5, 2, 0)
 class IntEnum(_StdIntEnum):
     @classmethod
     def _missing_(cls, value):
@@ -158,7 +158,7 @@ class OCCIDModel(BaseModel):
 
 
 def decode_model(payload: bytes) -> OCCIDModel:
-    """Decode a heterogeneous OCCID transient envelope by its permanent model ID.
+    """Decode a heterogeneous OCCID transient envelope by its model ID.
 
     This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
     know the concrete model class before inspecting the envelope. It validates

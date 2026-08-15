@@ -10,7 +10,7 @@ from .control import Control
 class Constraint(Control):
     'Limit, rule, or time/resource bound applied to directed work'
     __occid_model_id__: ClassVar[int] = 60
-    condition: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation] | None = None
+    condition: SerializeAsAny[Condition | Predicate | BooleanLogic] | None = None
 
 class Restriction(Constraint):
     __occid_model_id__: ClassVar[int] = 61

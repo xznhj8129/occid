@@ -12,7 +12,7 @@ from occid import TaskInformation, Assignment, MotionCommand
 
 Generated runtime models live physically in `schema/`, but consumers should import through `occid`.
 
-APEX Payload is an interoperability target and, as of schema 5.1.0, an explicit external stress test of OCCID's payload, capability, condition, and state model. APEX wire/session concepts remain adapter concerns; only protocol-neutral semantic primitives exposed by the mapping belong in OCCID core.
+APEX Payload is an interoperability target and an explicit external stress test of OCCID's payload, capability, condition, and state model. APEX wire/session concepts remain adapter concerns; only protocol-neutral semantic primitives exposed by the mapping belong in OCCID core.
 
 ## Control contract
 
@@ -70,7 +70,7 @@ Task does not contain an assignee. `Assignment` binds a Task to an assignee unde
 
 `Execution` remains runtime `State`. One Assignment may have multiple Execution attempts, while `TaskDelta`, `ExecutionAcceptance`, and `ExecutionStatusReport` report changing runtime condition and executor evidence.
 
-`Mission` is not a Task subtype. The old verb-per-class Task tree and endpoint-shaped command classes are retired rather than preserved as compatibility aliases.
+`Mission` is not a Task subtype. The old verb-per-class Task tree and endpoint-shaped command classes are removed rather than preserved as compatibility aliases.
 
 ## Command families
 
@@ -92,8 +92,8 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 - `Interface` is under `Communication` and represents a real system/protocol interface.
 - `ControlLease` is under `Authority` because it represents delegated control rights.
 - `Object` may carry `Capability` properties describing what the object can do without turning each capability into an Object subtype.
-- `Condition` is reusable predicate logic, not mutable state. `Validation` records the changing state of evaluating a Condition; Tasks, Constraints, and plan contingencies may compose Conditions.
-- `GNC` is vehicle guidance, navigation, and control state. `Cue` is separate directional cueing state toward a target or point of interest.
+- `Condition` is reusable predicate logic, not mutable state. Atomic `Predicate` values compose through one `BooleanLogic` structure with a closed `BooleanOperator` enum; `Validation` records the changing state of evaluating a Condition.
+- `GNC` is vehicle guidance, navigation, and control state. `Cue` is separate spatial cueing state; bearing, elevation, and distance are independent optional measurements rather than assuming a bearing is always known.
 - named operational places are `Object/Location` records.
 - embedded waypoints, route points, flight-level bands, and similar planning values are `Struct` values inside Plan-related schemas.
 - the military module may attach doctrine/profile data to a Task but does not create `CombatTask : Task`.
@@ -102,9 +102,9 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 
 Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema. `idl_spec.md` defines the schema language, including the explicit semantic-role distinction between ontology, practical specialization, and controlled vocabulary.
 
-Permanent polymorphic model IDs live in `lib/model_ids.yaml`. Retired IDs remain reserved and are never reused. The APEX-driven primitive additions are schema version `5.1.0`; renamed active concepts retain their permanent IDs where the semantic record remains the same, while new primitives receive new IDs.
+Polymorphic model IDs live in `lib/model_ids.yaml` and identify the live models in the current schema. Removed models are removed from the registry; their numeric slots are ordinary free space and may be reused. Schema version `5.2.0` contains the APEX-driven primitive refinements.
 
-Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a versioned named-field MsgPack envelope for compact interchange. A schema-version migration boundary is required before old durable payloads are interpreted as a newer schema.
+Use named-field JSON (`model_dump(mode="json")` or `model_dump_json()`) for durable application persistence. `encode()` uses a versioned named-field MsgPack envelope for compact interchange. The schema version identifies the current contract; pre-release OCCID does not maintain legacy model compatibility inside the active schema.
 
 ## Interoperability layer
 

@@ -7,12 +7,12 @@ tags:
 
 models:
   Cue:
-    description: Directional cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state
+    description: Spatial cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state
     parent: State
     fields:
       source_id: optional StringID
       target_id: optional StringID
-      bearing_rad: float
+      bearing_rad: optional float
       elevation_rad: optional float
       distance_m: optional float
       label: optional string

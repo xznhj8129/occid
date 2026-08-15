@@ -18,6 +18,6 @@ class ValidationStatus(IntEnum):
 class Validation(State):
     'Mutable state of evaluating a Condition, kept separate from the predicate itself'
     __occid_model_id__: ClassVar[int] = 321
-    condition: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]
+    condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
     status: ValidationStatus
     updated_ts: builtins.float | None = None

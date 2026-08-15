@@ -6,6 +6,8 @@ import occid
 from occid import (
     Activation,
     ActivationPhase,
+    BooleanLogic,
+    BooleanOperator,
     Capability,
     Condition,
     Constraint,
@@ -15,7 +17,6 @@ from occid import (
     GNC,
     Health,
     IdentifierType,
-    Negation,
     Object,
     OCCID_SCHEMA_VERSION,
     Payload,
@@ -46,10 +47,31 @@ class ApexPrimitiveTests(unittest.TestCase):
         self.assertFalse(issubclass(Condition, State))
         self.assertTrue(issubclass(Health, State))
         predicate = Predicate(subject_ref=sid("payload.1"))
-        condition = Negation(term=predicate)
+        condition = BooleanLogic(operator=BooleanOperator.NOT, terms=[predicate])
         constraint = Constraint(condition=condition)
         self.assertEqual(constraint.condition, condition)
         self.assertNotIn("ConstraintCondition", occid.__all__)
+        for old_name in ("Conjunction", "Disjunction", "Negation"):
+            self.assertNotIn(old_name, occid.__all__)
+
+    def test_boolean_logic_uses_one_closed_operator_axis(self) -> None:
+        first = Predicate(subject_ref=sid("payload.1"))
+        second = Predicate(subject_ref=sid("payload.2"))
+        condition = BooleanLogic(operator=BooleanOperator.NOR, terms=[first, second])
+        self.assertEqual(BooleanLogic.decode(condition.encode()), condition)
+        self.assertEqual(
+            set(BooleanOperator),
+            {
+                BooleanOperator.NONE,
+                BooleanOperator.NOT,
+                BooleanOperator.AND,
+                BooleanOperator.OR,
+                BooleanOperator.XOR,
+                BooleanOperator.NAND,
+                BooleanOperator.NOR,
+                BooleanOperator.XNOR,
+            },
+        )
 
     def test_condition_validation_is_separate_runtime_state(self) -> None:
         predicate = Predicate(subject_ref=sid("payload.1"))
@@ -72,13 +94,13 @@ class ApexPrimitiveTests(unittest.TestCase):
         cue = Cue(
             source_id=sid("payload.1"),
             target_id=sid("target.1"),
-            bearing_rad=0.5,
-            elevation_rad=0.1,
             distance_m=25.0,
             label="target",
         )
         self.assertTrue(issubclass(Activation, State))
         self.assertTrue(issubclass(Cue, State))
+        self.assertIsNone(cue.bearing_rad)
+        self.assertIsNone(cue.elevation_rad)
         self.assertEqual(Activation.decode(activation.encode()), activation)
         self.assertEqual(Cue.decode(cue.encode()), cue)
 
@@ -87,7 +109,7 @@ class ApexPrimitiveTests(unittest.TestCase):
         self.assertTrue(issubclass(FlightControlState, GNC))
         self.assertFalse(issubclass(Cue, GNC))
         self.assertNotIn("Guidance", occid.__all__)
-        self.assertEqual(OCCID_SCHEMA_VERSION, (5, 1, 0))
+        self.assertEqual(OCCID_SCHEMA_VERSION, (5, 2, 0))
 
 
 if __name__ == "__main__":

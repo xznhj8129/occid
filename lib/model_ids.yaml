@@ -46,24 +46,9 @@ model_ids:
   ItemCount: 43
   NumericRange: 44
   Command: 45
-  FlightCommand: 46
-  ArmCommand: 47
-  DisarmCommand: 48
-  TakeoffCommand: 49
-  LandCommand: 50
-  ReturnToLaunchCommand: 51
-  SetModeCommand: 52
-  GoToCommand: 53
-  SetTakeoffAltitudeCommand: 54
-  SelectMissionCommand: 55
-  StartOffboardCommand: 56
-  StopOffboardCommand: 57
-  TaskCommand: 58
-  TrackerCommand: 59
   Constraint: 60
   Restriction: 61
   Limitation: 62
-  ConstraintCondition: 63
   TaskTimeWindow: 64
   WeatherLimits: 65
   Event: 66
@@ -111,11 +96,6 @@ model_ids:
   AprsProfile: 108
   ElrsProfile: 109
   FpvProfile: 110
-  Reference: 111
-  Mark: 112
-  ReferencePath: 113
-  Region: 114
-  Boundary: 115
   FlightLevelBand: 116
   MissionPoi: 117
   AutopilotMissionWaypoint: 118
@@ -125,11 +105,6 @@ model_ids:
   PlannedRoutePoints: 122
   State: 123
   Task: 124
-  Mission: 125
-  IsrTask: 126
-  MoveTask: 127
-  HoldTask: 128
-  ResupplyTask: 129
   Assignment: 130
   TaskDelta: 131
   FlightAssignment: 132
@@ -165,7 +140,6 @@ model_ids:
   Kinematic: 162
   ImuSample: 163
   Lifecycle: 164
-  TaskAssignment: 165
   OrgComposition: 166
   MilitaryOrg: 167
   FlyingOrg: 168
@@ -279,27 +253,15 @@ model_ids:
   MilitaryGroundMachine: 276
   MilitaryAirMachine: 277
   MunitionAllocation: 278
-  CombatTask: 279
   EntityState: 280
   Execution: 281
   PlanContingency: 282
   PlanStep: 283
   RecordMeta: 284
   SuccessCriterion: 285
-  ApplyPlanCommand: 286
-  LowLevelFlightCommand: 287
-  SetControlAttitudeCommand: 288
-  SetControlOverrideCommand: 289
-  NavigationCommand: 290
-  SetWaypointCommand: 291
-  ModeCommand: 292
-  DirectControlCommand: 293
-  BeginDirectControlCommand: 294
-  EndDirectControlCommand: 295
   AutopilotMissionState: 296
   FlightSensorConfiguration: 297
   ExecutionAcceptance: 298
-  ExecutionStatusRequest: 299
   ExecutionStatusReport: 300
   Directive: 301
   Authority: 302
@@ -317,9 +279,7 @@ model_ids:
   Capability: 314
   Condition: 315
   Predicate: 316
-  Conjunction: 317
-  Disjunction: 318
-  Negation: 319
+  BooleanLogic: 317
   Activation: 320
   Validation: 321
   Cue: 322

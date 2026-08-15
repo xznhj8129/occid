@@ -204,14 +204,8 @@ Root:
             Predicate:
               description: Atomic condition leaf with typed operands and comparison semantics supplied by concrete schemas.
 
-            Conjunction:
-              description: Condition true when every term is true.
-
-            Disjunction:
-              description: Condition true when any term is true.
-
-            Negation:
-              description: Condition true when its term is false.
+            BooleanLogic:
+              description: Boolean composition of Conditions using a closed operator vocabulary such as NONE, NOT, AND, OR, XOR, NAND, NOR, and XNOR.
 
         State:
           description: Changing condition of an object, node, link, task, system, or process.
@@ -233,7 +227,7 @@ Root:
               description: Mutable state of evaluating reusable Condition logic.
 
             Cue:
-              description: Directional cue toward a target or point of interest, distinct from vehicle GNC state.
+              description: Spatial cue toward a target or point of interest with independently optional bearing, elevation, and distance measurements, distinct from vehicle GNC state.
 
             Resource:
               description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.

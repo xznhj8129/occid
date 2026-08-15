@@ -5,6 +5,18 @@ from .common import *
 
 from .data import Data
 
+### Enums
+
+class BooleanOperator(IntEnum):
+    NONE = 0
+    NOT = auto()
+    AND = auto()
+    OR = auto()
+    XOR = auto()
+    NAND = auto()
+    NOR = auto()
+    XNOR = auto()
+
 ### Models
 
 class Condition(Data):
@@ -16,17 +28,8 @@ class Predicate(Condition):
     __occid_model_id__: ClassVar[int] = 316
     subject_ref: StringID | None = None
 
-class Conjunction(Condition):
-    'Condition that is true when every term is true'
+class BooleanLogic(Condition):
+    'Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set'
     __occid_model_id__: ClassVar[int] = 317
-    terms: list[SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]]
-
-class Disjunction(Condition):
-    'Condition that is true when any term is true'
-    __occid_model_id__: ClassVar[int] = 318
-    terms: list[SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]]
-
-class Negation(Condition):
-    'Condition that is true when its term is false'
-    __occid_model_id__: ClassVar[int] = 319
-    term: SerializeAsAny[Condition | Predicate | Conjunction | Disjunction | Negation]
+    operator: BooleanOperator
+    terms: list[SerializeAsAny[Condition | Predicate | BooleanLogic]]

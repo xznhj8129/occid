@@ -141,7 +141,7 @@ class OCCIDModel(BaseModel):
 
 
 def decode_model(payload: bytes) -> OCCIDModel:
-    """Decode a heterogeneous OCCID transient envelope by its permanent model ID.
+    """Decode a heterogeneous OCCID transient envelope by its model ID.
 
     This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
     know the concrete model class before inspecting the envelope. It validates

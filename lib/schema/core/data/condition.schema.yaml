@@ -5,15 +5,24 @@ root: Condition
 tags:
   - core
 
+enums:
+  BooleanOperator:
+    - NONE = 0
+    - NOT
+    - AND
+    - OR
+    - XOR
+    - NAND
+    - NOR
+    - XNOR
+
 models:
   Condition:
     description: Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic
     parent: Data
     variants:
       - Predicate
-      - Conjunction
-      - Disjunction
-      - Negation
+      - BooleanLogic
 
   Predicate:
     description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions
@@ -21,20 +30,9 @@ models:
     fields:
       subject_ref: optional StringID
 
-  Conjunction:
-    description: Condition that is true when every term is true
+  BooleanLogic:
+    description: Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set
     parent: Condition
     fields:
+      operator: BooleanOperator
       terms: list[Condition]
-
-  Disjunction:
-    description: Condition that is true when any term is true
-    parent: Condition
-    fields:
-      terms: list[Condition]
-
-  Negation:
-    description: Condition that is true when its term is false
-    parent: Condition
-    fields:
-      term: Condition

@@ -595,9 +595,9 @@ Module selection is independent of tag filtering but compatible with it:
 
 **19. Generated schema identity and serialization**
 
-- Every generated model has a permanent numeric ID allocated in `lib/model_ids.yaml`.
-- Existing model IDs may not be changed or reused. Removed model IDs remain reserved.
-- Generation fails when a selected model has no allocated ID or two names share an ID.
+- Every generated model has a numeric ID allocated in `lib/model_ids.yaml` for the current schema.
+- The registry contains live models only. Removing a model removes its registry entry; freed numeric IDs may be reused.
+- Generation fails when a selected model has no allocated ID or two live names share an ID.
 - Declarations with explicit `semantic_role` publish it in generated Python as `__occid_semantic_role__`.
 - A declaration without `semantic_role` has generated/runtime semantic role `None`; it does not inherit its parent's semantic role.
 - The generated package publishes `OCCID_SCHEMA_VERSION` independently of the YAML IDL document-format version.

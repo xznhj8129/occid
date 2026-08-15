@@ -180,7 +180,7 @@ class ControlRefactorTests(unittest.TestCase):
         self.assertEqual(MotionCommand.decode(command.encode()), command)
         self.assertEqual(command.operation, MotionOperation.MOVE_TO)
 
-    def test_removed_ontology_and_compatibility_classes_are_not_runtime_aliases(self) -> None:
+    def test_removed_classes_are_absent(self) -> None:
         removed = (
             "Mission",
             "IsrTask",
@@ -199,10 +199,28 @@ class ControlRefactorTests(unittest.TestCase):
             "FlightCommand",
             "ArmCommand",
             "DisarmCommand",
-            "GoToCommand",
+            "TakeoffCommand",
+            "LandCommand",
+            "ReturnToLaunchCommand",
             "SetModeCommand",
+            "GoToCommand",
+            "SetTakeoffAltitudeCommand",
+            "SelectMissionCommand",
+            "StartOffboardCommand",
+            "StopOffboardCommand",
             "TaskCommand",
+            "TrackerCommand",
+            "ConstraintCondition",
             "ApplyPlanCommand",
+            "LowLevelFlightCommand",
+            "SetControlAttitudeCommand",
+            "SetControlOverrideCommand",
+            "NavigationCommand",
+            "SetWaypointCommand",
+            "ModeCommand",
+            "DirectControlCommand",
+            "BeginDirectControlCommand",
+            "EndDirectControlCommand",
             "CombatTask",
             "TaskAssignment",
             "ExecutionStatusRequest",
@@ -221,14 +239,11 @@ class ControlRefactorTests(unittest.TestCase):
         self.assertFalse((REPO_ROOT / "lib/schema/core/control/interface.schema.yaml").exists())
         self.assertFalse((REPO_ROOT / "lib/schema/core/data/state/assignment.schema.yaml").exists())
 
-    def test_new_ids_are_new_and_removed_ids_remain_reserved(self) -> None:
+    def test_model_id_registry_contains_only_live_models(self) -> None:
         registry = yaml.safe_load((REPO_ROOT / "lib/model_ids.yaml").read_text())["model_ids"]
+        live_names = {model.__name__ for model in OCCID_MODEL_ID_BY_CLASS}
+        self.assertEqual(set(registry), live_names)
         self.assertEqual(len(registry.values()), len(set(registry.values())))
-        self.assertEqual(registry["Mission"], 125)
-        self.assertEqual(registry["Reference"], 111)
-        self.assertEqual(registry["ArmCommand"], 47)
-        self.assertEqual(registry["CombatTask"], 279)
-        self.assertEqual(registry["ConstraintCondition"], 63)
         self.assertEqual(registry["Directive"], 301)
         self.assertEqual(registry["Authority"], 302)
         self.assertEqual(registry["MotionCommand"], 306)
@@ -242,7 +257,7 @@ class ControlRefactorTests(unittest.TestCase):
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskEffect], 311)
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskInformation], 312)
         self.assertEqual(OCCID_MODEL_ID_BY_CLASS[TaskTransport], 313)
-        self.assertEqual(occid.OCCID_SCHEMA_VERSION, (5, 1, 0))
+        self.assertEqual(occid.OCCID_SCHEMA_VERSION, (5, 2, 0))
 
 
 if __name__ == "__main__":
