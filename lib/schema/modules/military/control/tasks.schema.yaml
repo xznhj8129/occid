@@ -18,12 +18,16 @@ enums:
 
 models:
   MunitionAllocation:
+    semantic_role: specialization
+    parent: Struct
     fields:
       munition_type: string
       qty: int = 0
 
   CombatTaskProfile:
     description: Military domain detail associated with a generic Task without creating a Task subtype
+    semantic_role: specialization
+    parent: Struct
     fields:
       task_id: StringID
       combat_task: optional TaskCombat

@@ -75,18 +75,21 @@ maps:
 
 models:
   MilitaryAirNavigation:
+    semantic_role: specialization
     parent: AirNavigationSchema
     fields:
       roles: list[AirRole]
 
 
   MilitaryMissionPoi:
+    semantic_role: specialization
     parent: MissionPoi
     fields:
       sidc: optional int
 
 
   MilitaryUnitFlightPlan:
+    semantic_role: specialization
     parent: UnitFlightPlan
     fields:
       target: PlannerMissionPoint
