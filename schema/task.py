@@ -72,7 +72,7 @@ class Task(Directive):
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     task_id: StringID
-    instruction: builtins.str | None = None
+    instruction: builtins.str
     target_refs: list[StringID]
     location_refs: list[StringID]
     objective_id: StringID | None = None
