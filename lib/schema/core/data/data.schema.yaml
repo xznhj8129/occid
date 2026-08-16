@@ -8,6 +8,7 @@ tags:
 models:
   Data:
     description: Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects
+    semantic_role: ontology
     parent: Root
     variants:
       - Property
@@ -18,6 +19,7 @@ models:
       - Media
 
   Version:
+    semantic_role: specialization
     parent: Data
     fields:
       major: int

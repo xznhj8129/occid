@@ -19,6 +19,7 @@ enums:
 models:
   Condition:
     description: Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic
+    semantic_role: ontology
     parent: Data
     variants:
       - Predicate
@@ -26,12 +27,14 @@ models:
 
   Predicate:
     description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions
+    semantic_role: ontology
     parent: Condition
     fields:
       subject_ref: optional StringID
 
   BooleanLogic:
     description: Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set
+    semantic_role: ontology
     parent: Condition
     fields:
       operator: BooleanOperator

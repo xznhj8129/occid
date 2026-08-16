@@ -18,21 +18,25 @@ enums:
 models:
   Identity:
     description: Fundamental identity, name, ID
+    semantic_role: ontology
     parent: Property
 
   StringID:
+    semantic_role: specialization
     parent: Identity
     fields:
       id_type: IdentifierType
       value: string
 
   IntID:
+    semantic_role: specialization
     parent: Identity
     fields:
       id_type: IdentifierType
       value: int
 
   HardwareIdentity:
+    semantic_role: specialization
     parent: Identity
     fields:
       hardware_uid: optional StringID
