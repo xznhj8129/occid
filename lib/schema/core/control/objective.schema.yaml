@@ -8,6 +8,7 @@ tags:
 models:
   SuccessCriterion:
     description: Typed, human-readable condition used to determine whether an objective succeeded
+    semantic_role: specialization
     parent: Struct
     fields:
       criterion_id: StringID
@@ -17,6 +18,7 @@ models:
 
   Objective:
     description: Desired end state with intent, success rule, target, priority, and deadline
+    semantic_role: ontology
     parent: Control
     fields:
       record: RecordMeta

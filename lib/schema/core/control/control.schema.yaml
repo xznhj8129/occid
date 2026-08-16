@@ -47,6 +47,7 @@ enums:
 models:
   Control:
     description: Desired outcomes and directed work
+    semantic_role: ontology
     parent: Root
     variants:
       - Objective

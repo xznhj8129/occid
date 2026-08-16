@@ -18,6 +18,7 @@ enums:
 models:
   Assignment:
     description: Explicit binding of a task to an assignee under stated authority and constraints
+    semantic_role: ontology
     parent: Control
     fields:
       record: RecordMeta
@@ -33,6 +34,7 @@ models:
       constraints: list[Constraint]
 
   FlightAssignment:
+    semantic_role: specialization
     parent: Assignment
     fields:
       num: int
