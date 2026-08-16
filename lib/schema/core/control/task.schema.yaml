@@ -75,7 +75,7 @@ models:
     fields:
       record: RecordMeta
       task_id: StringID
-      instruction: string
+      instruction: optional string
       target_refs: list[StringID]
       location_refs: list[StringID]
       objective_id: optional StringID

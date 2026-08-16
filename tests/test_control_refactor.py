@@ -136,6 +136,12 @@ class ControlRefactorTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             TaskTransport(**values, intent=ManeuverIntent.HOLD)
 
+    def test_task_instruction_is_optional(self) -> None:
+        values = common_task_values()
+        values.pop("instruction")
+        task = TaskManeuver(**values, intent=ManeuverIntent.MOVE)
+        self.assertIsNone(task.instruction)
+
     def test_task_schema_explicitly_encodes_three_semantic_levels(self) -> None:
         source = yaml.safe_load((REPO_ROOT / "lib/schema/core/control/task.schema.yaml").read_text())
         task = source["models"]["Task"]
