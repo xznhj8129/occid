@@ -10,3 +10,4 @@ from .state import State
 class Lifecycle(State):
     'Current stage in existence or execution.'
     __occid_model_id__: ClassVar[int] = 164
+    __occid_semantic_role__: ClassVar[str] = 'specialization'

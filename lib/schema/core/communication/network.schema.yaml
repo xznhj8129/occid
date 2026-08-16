@@ -20,9 +20,11 @@ enums:
 models:
   Network:
     description: Connectivity topology and routing state
+    semantic_role: ontology
     parent: Communication
 
   NetworkAddress:
+    semantic_role: specialization
     parent: Network
     fields:
       kind: AddressKind

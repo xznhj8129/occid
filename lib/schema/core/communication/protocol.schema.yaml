@@ -22,9 +22,11 @@ enums:
 models:
   Protocol:
     description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata
+    semantic_role: ontology
     parent: Communication
 
   ProtocolPayload:
+    semantic_role: specialization
     parent: Protocol
     fields:
       format: ProtocolPayloadFormat
@@ -33,6 +35,7 @@ models:
       data: optional bytes
 
   CryptoKey:
+    semantic_role: specialization
     parent: Protocol
     fields:
       key_id: StringID
@@ -42,6 +45,7 @@ models:
       fill_ts: optional float
 
   CryptoProfile:
+    semantic_role: specialization
     parent: Protocol
     fields:
       active_crypto: optional CryptoType
@@ -49,6 +53,7 @@ models:
       keys: list[CryptoKey]
 
   LoRaProfile:
+    semantic_role: specialization
     parent: Protocol
     fields:
       spreading_factor: optional int
@@ -56,18 +61,21 @@ models:
       coding_rate: optional string
 
   AprsProfile:
+    semantic_role: specialization
     parent: Protocol
     fields:
       callsign: optional string
       path: optional string
 
   ElrsProfile:
+    semantic_role: specialization
     parent: Protocol
     fields:
       packet_rate_hz: optional int
       telemetry_ratio: optional string
 
   FpvProfile:
+    semantic_role: specialization
     parent: Protocol
     fields:
       video_standard: optional string

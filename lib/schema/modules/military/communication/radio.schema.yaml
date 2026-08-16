@@ -12,6 +12,7 @@ extend_variants:
 
 models:
   MilitaryRadioProfile:
+    semantic_role: specialization
     parent: RadioProfile
     fields:
       bands: list[NATORadioBands]

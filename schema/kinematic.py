@@ -10,9 +10,11 @@ from .state import State
 class Kinematic(State):
     'Motion and derived movement state.'
     __occid_model_id__: ClassVar[int] = 162
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class ImuSample(Kinematic):
     __occid_model_id__: ClassVar[int] = 163
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     acceleration: LocalVector | None = None
     angular_velocity: AngularVelocityVector | None = None
     magnetic_field: LocalVector | None = None

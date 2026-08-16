@@ -17,6 +17,7 @@ enums:
 models:
   Activation:
     description: Mutable lifecycle of an activatable object or capability; faults remain orthogonal Health state
+    semantic_role: ontology
     parent: State
     fields:
       phase: ActivationPhase

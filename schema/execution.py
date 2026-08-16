@@ -20,6 +20,7 @@ class ExecutionPhase(IntEnum):
 class Execution(State):
     'One execution attempt for an assignment, independently tracked across local and external executors'
     __occid_model_id__: ClassVar[int] = 281
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     execution_id: StringID
     assignment_id: StringID
@@ -36,6 +37,7 @@ class Execution(State):
 class ExecutionAcceptance(State):
     'Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion'
     __occid_model_id__: ClassVar[int] = 298
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     execution_id: StringID
     dispatch_id: StringID
     executor_id: StringID
@@ -47,6 +49,7 @@ class ExecutionAcceptance(State):
 class ExecutionStatusReport(State):
     'Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence'
     __occid_model_id__: ClassVar[int] = 300
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     execution_id: StringID
     dispatch_id: StringID
     executor_id: StringID
@@ -61,6 +64,7 @@ class ExecutionStatusReport(State):
 class TaskDelta(State):
     'Time-indexed task-state update; not an assignment definition'
     __occid_model_id__: ClassVar[int] = 131
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     task_id: StringID
     task_rev: builtins.int = 0

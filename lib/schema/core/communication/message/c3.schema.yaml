@@ -8,11 +8,13 @@ tags:
 models:
   CommandMessage:
     description: Message whose payload directs action
+    semantic_role: ontology
     parent: Message
     fields:
       command: Command
 
   HumanTextMessage:
+    semantic_role: specialization
     parent: Message
     fields:
       sender_id: optional StringID

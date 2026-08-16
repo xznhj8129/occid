@@ -20,6 +20,7 @@ class CapabilityRole(IntFlag):
 class Node(Communication):
     'Communication identity of an entity, including addresses and available links'
     __occid_model_id__: ClassVar[int] = 83
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     node_id: StringID
     entity_id: StringID | None = None
     roles: list[CapabilityRole]

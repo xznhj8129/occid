@@ -15,6 +15,7 @@ enums:
 models:
   Authority:
     description: Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised
+    semantic_role: ontology
     parent: Control
     fields:
       record: RecordMeta
@@ -26,6 +27,7 @@ models:
 
   ControlLease:
     description: Time-bounded control right issued under an Authority record
+    semantic_role: specialization
     parent: Authority
     fields:
       asset_id: StringID

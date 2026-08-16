@@ -52,6 +52,7 @@ class NetType(IntEnum):
 class Link(Communication):
     'Communication capability or connection kind a node can use'
     __occid_model_id__: ClassVar[int] = 71
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     schema_id: StringID | None = None
     name: builtins.str | None = None
     uuid: StringID | None = None
@@ -71,12 +72,14 @@ class Link(Communication):
 
 class DataRateSpec(Communication):
     __occid_model_id__: ClassVar[int] = 72
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     nominal_bps: builtins.float | None = None
     sustained_bps: builtins.float | None = None
     burst_bps: builtins.float | None = None
 
 class LinkCapacity(Communication):
     __occid_model_id__: ClassVar[int] = 73
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     max_nodes: builtins.int | None = None
     max_users: builtins.int | None = None
     max_streams: builtins.int | None = None

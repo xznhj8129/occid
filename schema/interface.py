@@ -10,3 +10,4 @@ from .communication import Communication
 class Interface(Communication):
     'System or protocol interface through which a component communicates with another endpoint'
     __occid_model_id__: ClassVar[int] = 69
+    __occid_semantic_role__: ClassVar[str] = 'ontology'

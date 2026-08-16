@@ -8,9 +8,11 @@ tags:
 models:
   Relationship:
     description: Nature of relations, ownership, provenance, link
+    semantic_role: ontology
     parent: Property
 
   RelationSchema:
+    semantic_role: specialization
     parent: Relationship
     fields:
       src_id: StringID
@@ -22,6 +24,7 @@ models:
       source: optional string
 
   EntityComponentRef:
+    semantic_role: specialization
     parent: Relationship
     fields:
       component_id: StringID

@@ -56,6 +56,7 @@ enums:
 models:
   Observation:
     description: External detection, classification, track, signal, spot report, threat, or assessment data
+    semantic_role: ontology
     parent: Data
     variants:
       - Detection
@@ -65,30 +66,36 @@ models:
       - IsrObservation
 
   Classification:
+    semantic_role: ontology
     parent: Observation
 
   Track:
+    semantic_role: ontology
     parent: Observation
     variants:
       - TrackUpdate
       - IntelTrackSchema
 
   Assessment:
+    semantic_role: ontology
     parent: Observation
     variants:
       - IsrResult
 
   Detection:
     description: Assessment that something exists or occurred
+    semantic_role: ontology
     parent: Observation
 
   VisionBox:
+    semantic_role: specialization
     parent: Detection
     fields:
       space: DetectionBoxSpace
       bounds: BoundingBox
 
   VisionDetection:
+    semantic_role: specialization
     parent: Detection
     fields:
       detection_id: optional StringID
@@ -102,6 +109,7 @@ models:
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
+    semantic_role: specialization
     parent: Detection
     fields:
       record: RecordMeta
@@ -111,6 +119,7 @@ models:
       detections: list[VisionDetection]
 
   IsrObservation:
+    semantic_role: specialization
     parent: Observation
     fields:
       record: RecordMeta
@@ -126,6 +135,8 @@ models:
       confidence: optional ConfidenceLevel
 
   IsrParameters:
+    semantic_role: specialization
+    parent: Struct
     fields:
       focus_type: optional IsrFocusType
       focus_point: optional GlobalPosition
@@ -137,6 +148,7 @@ models:
       evidence_level: optional EvidenceLevel
 
   TrackUpdate:
+    semantic_role: specialization
     parent: Track
     fields:
       record: RecordMeta
@@ -146,6 +158,7 @@ models:
       confidence: optional ConfidenceLevel
 
   IsrResult:
+    semantic_role: specialization
     parent: Assessment
     fields:
       detections: list[IsrObservation]
@@ -155,6 +168,7 @@ models:
       observations: list[IsrObservation]
 
   IntelTrackSchema:
+    semantic_role: specialization
     parent: Track
     fields:
       record: RecordMeta

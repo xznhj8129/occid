@@ -17,6 +17,7 @@ enums:
 models:
   Execution:
     description: One execution attempt for an assignment, independently tracked across local and external executors
+    semantic_role: ontology
     parent: State
     fields:
       record: RecordMeta
@@ -34,6 +35,7 @@ models:
 
   ExecutionAcceptance:
     description: Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion
+    semantic_role: specialization
     parent: State
     fields:
       execution_id: StringID
@@ -46,6 +48,7 @@ models:
 
   ExecutionStatusReport:
     description: Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence
+    semantic_role: specialization
     parent: State
     fields:
       execution_id: StringID
@@ -61,6 +64,7 @@ models:
 
   TaskDelta:
     description: Time-indexed task-state update; not an assignment definition
+    semantic_role: specialization
     parent: State
     fields:
       record: RecordMeta

@@ -103,12 +103,16 @@ enums:
 
 models:
   PayloadAllocation:
+    semantic_role: specialization
+    parent: Struct
     fields:
       payload_type: PayloadType
       qty: int = 0
 
 
   PayloadPlanSchema:
+    semantic_role: specialization
+    parent: Struct
     fields:
       requested: list[PayloadAllocation]
       approved: list[PayloadAllocation]
@@ -117,6 +121,8 @@ models:
 
 
   PayloadMountSchema:
+    semantic_role: specialization
+    parent: Struct
     fields:
       mount_id: StringID
       item_id: StringID
@@ -128,6 +134,8 @@ models:
 
 
   PayloadSchema:
+    semantic_role: specialization
+    parent: Struct
     fields:
       item_type: PayloadType
       state: optional PayloadState
@@ -139,6 +147,8 @@ models:
 
 
   EffectsSchema:
+    semantic_role: specialization
+    parent: Struct
     variants:
       - GroundEffectsSchema
       - AirEffectsSchema
@@ -154,12 +164,14 @@ models:
 
 
   GroundEffectsSchema:
+    semantic_role: specialization
     parent: EffectsSchema
     fields:
       attack_modes: list[AttackMode]
 
 
   AirEffectsSchema:
+    semantic_role: specialization
     parent: EffectsSchema
     fields:
       reusable: optional bool
@@ -167,6 +179,8 @@ models:
 
 
   TargetPrioritySchema:
+    semantic_role: specialization
+    parent: Struct
     fields:
       threat: optional ThreatLevel
       is_high_value: bool = false
@@ -174,6 +188,8 @@ models:
 
 
   TargetKinematics:
+    semantic_role: specialization
+    parent: Struct
     fields:
       location_state: LocationState
       velocity: optional VelocityVector
@@ -181,6 +197,8 @@ models:
 
 
   TargetSetCoord:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       target_set_id: int
@@ -192,6 +210,8 @@ models:
 
 
   TargetBoxCoord:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       target_set_id: int
@@ -202,6 +222,8 @@ models:
 
 
   TargetCoord:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       target_set_id: int
@@ -214,6 +236,8 @@ models:
 
 
   Fires:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       time_impact_usec: int
@@ -224,6 +248,8 @@ models:
 
 
   SplashCorrection:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       splash_position: GlobalPosition
@@ -233,6 +259,8 @@ models:
 
 
   TargetHandover:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       detected_first_usec: int
@@ -249,6 +277,8 @@ models:
 
 
   BattleDamageAssessment:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       kinematics: TargetKinematics
@@ -262,6 +292,8 @@ models:
 
 
   EsadState:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       arming_challenge_hash: int
@@ -276,6 +308,8 @@ models:
 
 
   EsadArming:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       arming_challenge_hash: int
@@ -283,6 +317,8 @@ models:
 
 
   RwsPose:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       kinematics: TargetKinematics
@@ -297,8 +333,9 @@ models:
 
 
   RwsState:
+    semantic_role: specialization
+    parent: Struct
     fields:
       time_usec: int
       weapon_string: string
       arming_state: RwsArmingState
-      weapon_type: int

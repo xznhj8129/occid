@@ -8,6 +8,7 @@ tags:
 models:
   Struct:
     description: Primitive reusable low-level struct families.
+    semantic_role: ontology
     parent: Root
     variants:
       - Vector
@@ -27,53 +28,69 @@ models:
       - SpatialStruct
 
   Vector:
+    semantic_role: ontology
     parent: Struct
 
   Measurement:
+    semantic_role: ontology
     parent: Struct
 
   Bearing:
+    semantic_role: specialization
     parent: Struct
 
   GeoPos:
+    semantic_role: specialization
     parent: Struct
 
   LocalPos:
+    semantic_role: specialization
     parent: Struct
 
   Line:
+    semantic_role: specialization
     parent: Struct
 
   StructPath:
+    semantic_role: specialization
     parent: Struct
 
   Shape:
+    semantic_role: specialization
     parent: Struct
 
   Bounding:
+    semantic_role: specialization
     parent: Struct
 
   Uncertainty:
+    semantic_role: ontology
     parent: Struct
 
   Pose:
+    semantic_role: specialization
     parent: Struct
 
   Range:
+    semantic_role: specialization
     parent: Struct
 
   Transform:
+    semantic_role: specialization
     parent: Struct
 
   Orbital:
+    semantic_role: specialization
     parent: Struct
 
   Time:
+    semantic_role: ontology
     parent: Measurement
     fields:
       utime: int
 
   Duration:
+    semantic_role: specialization
     parent: Measurement
     fields:
       seconds: optional float
@@ -85,6 +102,7 @@ models:
       years: optional int
 
   Timestamp:
+    semantic_role: specialization
     parent: Measurement
     fields:
       seconds: float
@@ -96,12 +114,14 @@ models:
       tz: int
 
   ItemCount:
+    semantic_role: specialization
     parent: Measurement
     fields:
       item_type: string
       qty: int = 0
 
   NumericRange:
+    semantic_role: specialization
     parent: Range
     fields:
       min_value: optional float

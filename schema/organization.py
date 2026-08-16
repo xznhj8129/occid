@@ -27,6 +27,7 @@ class OrgTopology(IntEnum):
 class Organization(Set):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
     __occid_model_id__: ClassVar[int] = 98
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     org_uid: StringID
     orglevel: OrgLevel = OrgLevel.GROUP
@@ -35,8 +36,10 @@ class Organization(Set):
 
 class Group(Organization):
     __occid_model_id__: ClassVar[int] = 99
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     orglevel: OrgLevel = OrgLevel.GROUP
 
 class Unit(Organization):
     __occid_model_id__: ClassVar[int] = 100
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     orglevel: OrgLevel = OrgLevel.UNIT

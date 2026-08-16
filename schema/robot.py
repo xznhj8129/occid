@@ -72,15 +72,18 @@ class GimbalAxis(IntEnum):
 class Robot(Machine):
     'Robot entities and control surfaces'
     __occid_model_id__: ClassVar[int] = 242
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     robot_control: RobotController | None = None
     remote_control: RemoteControlSchema
 
 class GroundRobot(GroundMachine):
     __occid_model_id__: ClassVar[int] = 243
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     machine_type: MachineType = MachineType.ROBOT
 
 class VideoConfigSchema(Parameter):
     __occid_model_id__: ClassVar[int] = 244
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -91,12 +94,14 @@ class VideoConfigSchema(Parameter):
 
 class ReceiverConfig(Parameter):
     __occid_model_id__: ClassVar[int] = 245
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
 
 class ChannelMapEntry(Parameter):
     __occid_model_id__: ClassVar[int] = 246
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
@@ -104,6 +109,7 @@ class ChannelMapEntry(Parameter):
 
 class ModeRange(Parameter):
     __occid_model_id__: ClassVar[int] = 247
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     mode_id: builtins.int | None = None
     mode_name: builtins.str | None = None
     channel: builtins.int
@@ -111,12 +117,14 @@ class ModeRange(Parameter):
 
 class RobotController(Parameter):
     __occid_model_id__: ClassVar[int] = 248
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     control_modes: RobotControlMode | None = None
     autopilot_type: AutopilotType
     autopilot_firmware: FirmwareInfo
 
 class RemoteControlSchema(Interface):
     __occid_model_id__: ClassVar[int] = 249
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
@@ -132,6 +140,7 @@ class RemoteControlSchema(Interface):
 class ObserverSource(Interface):
     'Remote imagery/video observation source with camera geometry and telemetry links'
     __occid_model_id__: ClassVar[int] = 250
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     name: builtins.str
     objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
     active: builtins.bool = True
@@ -154,6 +163,7 @@ class ObserverSource(Interface):
 class FlightControlState(GNC):
     'Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers'
     __occid_model_id__: ClassVar[int] = 251
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None

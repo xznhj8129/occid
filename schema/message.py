@@ -4,6 +4,7 @@ import builtins
 from .common import *
 
 from .communication import Communication
+from .struct import Struct
 
 ### Enums
 
@@ -16,6 +17,11 @@ class DeliveryState(IntEnum):
     EXECUTED = auto()
     EXPIRED = auto()
     DROPPED = auto()
+
+class MessageType(IntEnum):
+    BROADCAST = 0
+    REQUEST = auto()
+    REPLY = auto()
 
 class ReplyAck(IntEnum):
     ACK = 0
@@ -57,23 +63,27 @@ class ConflictPolicy(IntEnum):
 class Message(Communication):
     'Transmitted envelope plus payload'
     __occid_model_id__: ClassVar[int] = 76
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     src: MessageTarget
     dst: MessageTarget
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
 
-class MessageTarget(OCCIDModel):
+class MessageTarget(Struct):
     __occid_model_id__: ClassVar[int] = 77
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     target_id: StringID
 
 class ResponseMessage(Message):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
     __occid_model_id__: ClassVar[int] = 78
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     seq_reply: builtins.int
 
 class DeliveryReceipt(ResponseMessage):
     __occid_model_id__: ClassVar[int] = 79
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     node_id: StringID
     delivery_state: DeliveryState
     seen_ts: builtins.float | None = None
@@ -82,6 +92,7 @@ class DeliveryReceipt(ResponseMessage):
 
 class MessageTransferResult(ResponseMessage):
     __occid_model_id__: ClassVar[int] = 80
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     target_count: builtins.int = 0
     bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None

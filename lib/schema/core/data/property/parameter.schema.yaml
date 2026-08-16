@@ -8,6 +8,7 @@ tags:
 models:
   Parameter:
     description: Current operating configuration or control regime
+    semantic_role: ontology
     parent: Property
     fields:
       key: optional string

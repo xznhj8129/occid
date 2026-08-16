@@ -13,8 +13,18 @@ class SyncState(IntEnum):
     STALE = auto()
     DIVERGED = auto()
 
+class AddressingMode(IntEnum):
+    UNICAST = 0
+    MULTICAST = auto()
+    BROADCAST = auto()
+
+class ExchangePattern(IntEnum):
+    PUSH = 0
+    REQUEST_RESPONSE = auto()
+
 ### Models
 
 class Communication(Root):
     'Movement of information between endpoints'
     __occid_model_id__: ClassVar[int] = 1
+    __occid_semantic_role__: ClassVar[str] = 'ontology'

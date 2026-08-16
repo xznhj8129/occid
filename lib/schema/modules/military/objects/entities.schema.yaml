@@ -21,6 +21,7 @@ extend_variants:
 
 models:
   MilitaryPerson:
+    semantic_role: specialization
     parent: Person
     fields:
       attack_modes: list[AttackMode]
@@ -29,12 +30,14 @@ models:
 
 
   MilitaryMachine:
+    semantic_role: specialization
     parent: Machine
     fields:
       category: optional NATOUnitCategory
 
 
   MilitaryGroundMachine:
+    semantic_role: specialization
     parent: GroundMachine
     fields:
       payload: PayloadSchema
@@ -42,6 +45,7 @@ models:
 
 
   MilitaryAirMachine:
+    semantic_role: specialization
     parent: AirMachine
     fields:
       payload: PayloadSchema

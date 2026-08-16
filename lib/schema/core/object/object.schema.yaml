@@ -7,6 +7,7 @@ tags:
 models:
   Object:
     description: Atoms
+    semantic_role: ontology
     parent: Root
     variants:
       - Entity
@@ -17,6 +18,7 @@ models:
       capabilities: optional list[Capability]
 
   Set:
+    semantic_role: ontology
     parent: Object
     variants:
       - Organization
@@ -25,14 +27,17 @@ models:
 
   Collection:
     description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
+    semantic_role: ontology
     parent: Set
 
   Cluster:
     description: A set of objects united only by criterion
+    semantic_role: ontology
     parent: Set
 
   Item:
     description: A discrete bounded non-agent object
+    semantic_role: ontology
     parent: Object
     variants:
       - Equipment
@@ -40,16 +45,20 @@ models:
       - Payload
 
   Equipment:
+    semantic_role: specialization
     parent: Item
 
   Component:
+    semantic_role: specialization
     parent: Item
 
   Location:
     description: Physical-world feature, named location, site, or bounded place.
+    semantic_role: ontology
     parent: Object
 
   GeoJsonFeature:
+    semantic_role: specialization
     parent: Location
     fields:
       id: StringID
@@ -59,6 +68,7 @@ models:
       bbox: optional BoundingBox
 
   GeoJsonFeatureCollection:
+    semantic_role: specialization
     parent: Collection
     fields:
       features: list[GeoJsonFeature]
@@ -66,6 +76,7 @@ models:
 
   MissionPoi:
     description: Named operational point of interest with stable identity and a concrete global position
+    semantic_role: specialization
     parent: Location
     fields:
       uid: StringID

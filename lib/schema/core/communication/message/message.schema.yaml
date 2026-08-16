@@ -17,7 +17,7 @@ enums:
     - DROPPED
 
   MessageType:
-    - BROADCAST
+    - BROADCAST = 0
     - REQUEST
     - REPLY
 
@@ -59,6 +59,7 @@ enums:
 models:
   Message:
     description: Transmitted envelope plus payload
+    semantic_role: ontology
     parent: Communication
     variants:
       - CommandMessage
@@ -73,11 +74,14 @@ models:
       seq: int
 
   MessageTarget:
+    semantic_role: specialization
+    parent: Struct
     fields:
       target_id: StringID
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
+    semantic_role: ontology
     parent: Message
     variants:
       - DeliveryReceipt
@@ -86,6 +90,7 @@ models:
       seq_reply: int
 
   DeliveryReceipt:
+    semantic_role: specialization
     parent: ResponseMessage
     fields:
       node_id: StringID
@@ -95,6 +100,7 @@ models:
       error_code: optional string
 
   MessageTransferResult:
+    semantic_role: specialization
     parent: ResponseMessage
     fields:
       target_count: int = 0

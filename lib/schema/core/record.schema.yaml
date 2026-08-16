@@ -8,6 +8,7 @@ tags:
 models:
   RecordMeta:
     description: Persistent-record instance identity, revision, timestamps, origin, classification, and provenance metadata
+    semantic_role: specialization
     parent: Struct
     fields:
       # Identifies this persisted record instance or revision. Model-specific IDs

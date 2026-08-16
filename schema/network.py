@@ -23,9 +23,11 @@ class NetworkError(IntEnum):
 class Network(Communication):
     'Connectivity topology and routing state'
     __occid_model_id__: ClassVar[int] = 81
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class NetworkAddress(Network):
     __occid_model_id__: ClassVar[int] = 82
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     kind: AddressKind
     value: builtins.str
     port: builtins.int | None = None

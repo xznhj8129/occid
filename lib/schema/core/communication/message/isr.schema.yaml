@@ -8,11 +8,13 @@ tags:
 models:
   ObservationMessage:
     description: Message whose payload reports external objects, events, environment, or intelligence
+    semantic_role: ontology
     parent: Message
     fields:
       observation: Observation
 
   ProtocolEventMessage:
+    semantic_role: specialization
     parent: ObservationMessage
     fields:
       uid: StringID

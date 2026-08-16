@@ -10,10 +10,12 @@ from .data import Data
 class State(Data):
     'Changing condition of an object, node, link, task, system, or process'
     __occid_model_id__: ClassVar[int] = 123
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class EntityState(State):
     'Time-indexed mutable condition reported for an entity independently of its identity and specification'
     __occid_model_id__: ClassVar[int] = 280
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     subject_id: StringID
     timestamp: builtins.float

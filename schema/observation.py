@@ -4,6 +4,7 @@ import builtins
 from .common import *
 
 from .data import Data
+from .struct import Struct
 
 ### Enums
 
@@ -59,27 +60,34 @@ class DetectionBoxSpace(IntEnum):
 class Observation(Data):
     'External detection, classification, track, signal, spot report, threat, or assessment data'
     __occid_model_id__: ClassVar[int] = 85
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Classification(Observation):
     __occid_model_id__: ClassVar[int] = 86
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Track(Observation):
     __occid_model_id__: ClassVar[int] = 87
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Assessment(Observation):
     __occid_model_id__: ClassVar[int] = 88
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Detection(Observation):
     'Assessment that something exists or occurred'
     __occid_model_id__: ClassVar[int] = 89
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class VisionBox(Detection):
     __occid_model_id__: ClassVar[int] = 90
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     space: DetectionBoxSpace
     bounds: BoundingBox
 
 class VisionDetection(Detection):
     __occid_model_id__: ClassVar[int] = 91
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     detection_id: StringID | None = None
     label: builtins.str | None = None
     class_id: builtins.int | None = None
@@ -92,6 +100,7 @@ class VisionDetection(Detection):
 
 class VisionDetectionFrame(Detection):
     __occid_model_id__: ClassVar[int] = 92
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     frame_id: StringID | None = None
     sensor_id: StringID | None = None
@@ -100,6 +109,7 @@ class VisionDetectionFrame(Detection):
 
 class IsrObservation(Observation):
     __occid_model_id__: ClassVar[int] = 93
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     obs_id: StringID
     track_id: StringID | None = None
@@ -112,8 +122,9 @@ class IsrObservation(Observation):
     uncertainty: LocationUncertainty | None = None
     confidence: ConfidenceLevel | None = None
 
-class IsrParameters(OCCIDModel):
+class IsrParameters(Struct):
     __occid_model_id__: ClassVar[int] = 94
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
     dwell_s: builtins.float | None = None
@@ -125,6 +136,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(Track):
     __occid_model_id__: ClassVar[int] = 95
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     track_id: StringID
     track_state: TrackState | None = None
@@ -133,6 +145,7 @@ class TrackUpdate(Track):
 
 class IsrResult(Assessment):
     __occid_model_id__: ClassVar[int] = 96
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     detections: list[IsrObservation]
     track_updates: list[TrackUpdate]
     media: list[MediaItemSchema] | None = None
@@ -141,6 +154,7 @@ class IsrResult(Assessment):
 
 class IntelTrackSchema(Track):
     __occid_model_id__: ClassVar[int] = 97
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     schema_id: StringID
     schema_type: builtins.str = 'INTEL_TRACK'

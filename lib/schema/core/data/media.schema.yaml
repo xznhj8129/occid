@@ -8,9 +8,11 @@ tags:
 models:
   Media:
     description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference
+    semantic_role: ontology
     parent: Data
 
   MediaItemSchema:
+    semantic_role: specialization
     parent: Media
     fields:
       record: RecordMeta

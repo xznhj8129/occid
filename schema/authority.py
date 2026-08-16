@@ -18,6 +18,7 @@ class ControlLevel(IntEnum):
 class Authority(Control):
     'Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised'
     __occid_model_id__: ClassVar[int] = 302
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     authority_id: StringID
     holder_id: StringID
@@ -28,6 +29,7 @@ class Authority(Control):
 class ControlLease(Authority):
     'Time-bounded control right issued under an Authority record'
     __occid_model_id__: ClassVar[int] = 70
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     asset_id: StringID
     control_level: ControlLevel
     lease_start: builtins.float

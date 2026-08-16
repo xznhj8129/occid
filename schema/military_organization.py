@@ -5,6 +5,7 @@ from .common import *
 
 from .definition import OperationalDomain
 from .organization import OrgTopology, Organization
+from .struct import Struct
 
 ### Enums
 
@@ -282,26 +283,30 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 
 ### Models
 
-class OrgComposition(OCCIDModel):
+class OrgComposition(Struct):
     __occid_model_id__: ClassVar[int] = 166
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(Organization):
     __occid_model_id__: ClassVar[int] = 167
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
 class FlyingOrg(MilitaryOrg):
     __occid_model_id__: ClassVar[int] = 168
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.AIR
     air_units: list[ItemCount]
 
 class OrbatOrg(MilitaryOrg):
     __occid_model_id__: ClassVar[int] = 169
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     org_layout: OrgLayout = OrgLayout.ORBAT
     topology: OrgTopology = OrgTopology.HIERARCHICAL
     category: NATOUnitCategory
@@ -320,6 +325,7 @@ class OrbatOrg(MilitaryOrg):
 
 class GroundOrbatOrg(OrbatOrg):
     __occid_model_id__: ClassVar[int] = 170
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     category: NATOUnitCategory
     op_domain: OperationalDomain = OperationalDomain.LAND
     combat_domain: OperationalDomain

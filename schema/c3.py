@@ -10,10 +10,12 @@ from .message import Message
 class CommandMessage(Message):
     'Message whose payload directs action'
     __occid_model_id__: ClassVar[int] = 136
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     command: SerializeAsAny[Command | StateChangeCommand | ProcessControlCommand | ConfigurationCommand | MotionCommand | ResourceCommand | ExecutionCommand]
 
 class HumanTextMessage(Message):
     __occid_model_id__: ClassVar[int] = 137
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     sender_id: StringID | None = None
     sender_name: builtins.str | None = None
     destination_id: StringID | None = None

@@ -51,9 +51,11 @@ class GnssFixType(IntEnum):
 class GNC(State):
     'Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state'
     __occid_model_id__: ClassVar[int] = 138
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class TelemetryState(GNC):
     __occid_model_id__: ClassVar[int] = 139
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     standard_mode: StandardFlightMode | None = None
     native_mode_name: builtins.str | None = None
     native_mode_code: builtins.int | None = None
@@ -66,12 +68,14 @@ class TelemetryState(GNC):
 
 class NavigationValidity(GNC):
     __occid_model_id__: ClassVar[int] = 140
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     local_position_ok: builtins.bool | None = None
     global_position_ok: builtins.bool | None = None
     home_position_ok: builtins.bool | None = None
 
 class GnssSolution(GNC):
     __occid_model_id__: ClassVar[int] = 141
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     fix_type: GnssFixType | None = None
     fix_code: builtins.int | None = None
     satellites_used: builtins.int | None = None
@@ -91,6 +95,7 @@ class GnssSolution(GNC):
 class AutopilotMissionState(GNC):
     'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'
     __occid_model_id__: ClassVar[int] = 296
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     valid: builtins.bool | None = None
     current_waypoint_index: builtins.int | None = None
     waypoint_count: builtins.int | None = None

@@ -28,9 +28,11 @@ models:
 
   SensorState:
     description: Onboard sensor readings, readiness, calibration, and availability
+    semantic_role: ontology
     parent: State
 
   TrackerState:
+    semantic_role: specialization
     parent: SensorState
     fields:
       locked: optional bool
@@ -41,6 +43,7 @@ models:
 
   FlightSensorConfiguration:
     description: Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers
+    semantic_role: specialization
     parent: SensorState
     fields:
       accelerometer: optional string

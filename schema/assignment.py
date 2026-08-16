@@ -21,6 +21,7 @@ class AssignmentStatus(IntEnum):
 class Assignment(Control):
     'Explicit binding of a task to an assignee under stated authority and constraints'
     __occid_model_id__: ClassVar[int] = 130
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     assignment_id: StringID
     task_id: StringID
@@ -35,6 +36,7 @@ class Assignment(Control):
 
 class FlightAssignment(Assignment):
     __occid_model_id__: ClassVar[int] = 132
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     num: builtins.int
     unit_id: StringID | None = None
     callsign: builtins.str | None = None

@@ -70,12 +70,15 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 
 class MilitaryAirNavigation(AirNavigationSchema):
     __occid_model_id__: ClassVar[int] = 239
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     roles: list[AirRole]
 
 class MilitaryMissionPoi(MissionPoi):
     __occid_model_id__: ClassVar[int] = 240
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     sidc: builtins.int | None = None
 
 class MilitaryUnitFlightPlan(UnitFlightPlan):
     __occid_model_id__: ClassVar[int] = 241
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     target: PlannerMissionPoint

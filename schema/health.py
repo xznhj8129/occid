@@ -58,9 +58,11 @@ class MaintenanceState(IntEnum):
 class Health(State):
     'Integrity, damage, faults, and readiness state'
     __occid_model_id__: ClassVar[int] = 142
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class HealthAlert(Health):
     __occid_model_id__: ClassVar[int] = 143
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     alert_id: StringID | None = None
     level: AlertLevel
     condition: builtins.str
@@ -68,6 +70,7 @@ class HealthAlert(Health):
 
 class SubsystemHealth(Health):
     __occid_model_id__: ClassVar[int] = 144
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     subsystem_id: StringID
     state: HealthStatus
     fault_count: builtins.int = 0
@@ -75,6 +78,7 @@ class SubsystemHealth(Health):
 
 class HealthSnapshot(Health):
     __occid_model_id__: ClassVar[int] = 145
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
@@ -86,6 +90,7 @@ class HealthSnapshot(Health):
 
 class MaintenanceStatus(Health):
     __occid_model_id__: ClassVar[int] = 146
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     state: MaintenanceState
     last_service_ts: builtins.float | None = None
     next_service_ts: builtins.float | None = None
@@ -93,6 +98,7 @@ class MaintenanceStatus(Health):
 
 class NavReadinessState(Health):
     __occid_model_id__: ClassVar[int] = 147
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None
     mag_ok: builtins.bool | None = None

@@ -20,5 +20,6 @@ class ActivationPhase(IntEnum):
 class Activation(State):
     'Mutable lifecycle of an activatable object or capability; faults remain orthogonal Health state'
     __occid_model_id__: ClassVar[int] = 320
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     phase: ActivationPhase
     remaining_uses: builtins.int | None = None

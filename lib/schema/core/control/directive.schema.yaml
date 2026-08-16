@@ -8,6 +8,7 @@ tags:
 models:
   Directive:
     description: Directed work or an immediate imperative issued under control authority
+    semantic_role: ontology
     parent: Control
     variants:
       - Task

@@ -8,9 +8,11 @@ tags:
 models:
   Resource:
     description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
+    semantic_role: ontology
     parent: State
 
   FuelState:
+    semantic_role: specialization
     parent: Resource
     fields:
       fuel_type: FuelType
@@ -18,12 +20,14 @@ models:
       remaining: optional float
 
   SuppliesSchema:
+    semantic_role: specialization
     parent: Resource
     fields:
       fuel: optional FuelState
       stores: list[ItemCount]
 
   PowerSourceSchema:
+    semantic_role: specialization
     parent: Resource
     fields:
       source_id: StringID
@@ -32,6 +36,7 @@ models:
       remaining_pct: optional float
 
   PowerStateSchema:
+    semantic_role: specialization
     parent: Resource
     fields:
       status: PowerStatus
@@ -39,6 +44,7 @@ models:
       electrical_sources: list[ElectricalResourceState]
 
   ElectricalResourceState:
+    semantic_role: specialization
     parent: Resource
     fields:
       source_id: optional StringID

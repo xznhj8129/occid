@@ -10,9 +10,11 @@ from .data import Data
 class Media(Data):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
     __occid_model_id__: ClassVar[int] = 74
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class MediaItemSchema(Media):
     __occid_model_id__: ClassVar[int] = 75
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
     media_id: StringID
     media_type: MediaType

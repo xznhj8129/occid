@@ -55,9 +55,11 @@ enums:
 models:
   Health:
     description: Integrity, damage, faults, and readiness state
+    semantic_role: ontology
     parent: State
 
   HealthAlert:
+    semantic_role: specialization
     parent: Health
     fields:
       alert_id: optional StringID
@@ -66,6 +68,7 @@ models:
       acknowledged: bool = false
 
   SubsystemHealth:
+    semantic_role: specialization
     parent: Health
     fields:
       subsystem_id: StringID
@@ -74,6 +77,7 @@ models:
       note: optional string
 
   HealthSnapshot:
+    semantic_role: specialization
     parent: Health
     fields:
       overall_state: HealthStatus
@@ -86,6 +90,7 @@ models:
       alerts: list[HealthAlert]
 
   MaintenanceStatus:
+    semantic_role: specialization
     parent: Health
     fields:
       state: MaintenanceState
@@ -94,6 +99,7 @@ models:
       note: optional string
 
   NavReadinessState:
+    semantic_role: specialization
     parent: Health
     fields:
       gyro_ok: optional bool

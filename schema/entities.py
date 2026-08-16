@@ -90,6 +90,7 @@ class PropulsionType(IntEnum):
 class Entity(Object):
     'One discrete "atom" capable of actions'
     __occid_model_id__: ClassVar[int] = 214
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     entity_id: StringID
     node_ids: list[StringID]
@@ -105,12 +106,15 @@ class Entity(Object):
 
 class Actor(Entity):
     __occid_model_id__: ClassVar[int] = 215
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Agent(Actor):
     __occid_model_id__: ClassVar[int] = 216
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class GroundNavigationSchema(Attribute):
     __occid_model_id__: ClassVar[int] = 217
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
@@ -119,6 +123,7 @@ class GroundNavigationSchema(Attribute):
 
 class AirNavigationSchema(Attribute):
     __occid_model_id__: ClassVar[int] = 218
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     flight_type: AirframeType
     control_modes: list[StandardFlightMode]
     failsafe_mode: AirFailsafeMode | None = None
@@ -135,6 +140,7 @@ class AirNavigationSchema(Attribute):
 
 class Person(Actor):
     __occid_model_id__: ClassVar[int] = 219
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     entity_type: EntityType = EntityType.PERSON
     role: builtins.str
     serial_uid: StringID
@@ -146,6 +152,7 @@ class Person(Actor):
 
 class Machine(Entity):
     __occid_model_id__: ClassVar[int] = 220
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     entity_type: EntityType = EntityType.MACHINE
     sys_id: StringID
     propulsion: PropulsionType
@@ -154,12 +161,15 @@ class Machine(Entity):
 
 class Vehicle(Machine):
     __occid_model_id__: ClassVar[int] = 221
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Platform(Machine):
     __occid_model_id__: ClassVar[int] = 222
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class GroundMachine(Machine):
     __occid_model_id__: ClassVar[int] = 223
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     machine_type: MachineType
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
@@ -170,6 +180,7 @@ class GroundMachine(Machine):
 
 class AirMachine(Machine):
     __occid_model_id__: ClassVar[int] = 224
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     airframe: AirframeType
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR

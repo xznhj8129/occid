@@ -98,30 +98,40 @@ class Faction(IntEnum):
 class Definition(Root):
     'Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.'
     __occid_model_id__: ClassVar[int] = 5
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Frame(Definition):
     __occid_model_id__: ClassVar[int] = 6
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Coordinate(Definition):
     __occid_model_id__: ClassVar[int] = 7
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Geometry(Definition):
     __occid_model_id__: ClassVar[int] = 8
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class DefinitionRelationship(Definition):
     __occid_model_id__: ClassVar[int] = 9
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class SemanticType(Definition):
     __occid_model_id__: ClassVar[int] = 10
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Category(SemanticType):
     __occid_model_id__: ClassVar[int] = 11
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Role(SemanticType):
     __occid_model_id__: ClassVar[int] = 12
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Function(SemanticType):
     __occid_model_id__: ClassVar[int] = 13
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Domain(SemanticType):
     __occid_model_id__: ClassVar[int] = 14
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
