@@ -85,6 +85,7 @@ enums:
 models:
   Entity:
     description: One discrete "atom" capable of actions
+    semantic_role: ontology
     parent: Object
     variants:
       - Actor
@@ -104,15 +105,18 @@ models:
       display_meta: optional DisplayMeta
 
   Actor:
+    semantic_role: specialization
     parent: Entity
     variants:
       - Person
       - Agent
 
   Agent:
+    semantic_role: specialization
     parent: Actor
 
   GroundNavigationSchema:
+    semantic_role: specialization
     parent: Attribute
     fields:
       propulsion: PropulsionType
@@ -122,6 +126,7 @@ models:
       max_spd: float
 
   AirNavigationSchema:
+    semantic_role: specialization
     parent: Attribute
     variants: null
     fields:
@@ -140,6 +145,7 @@ models:
       max_alt: float
 
   Person:
+    semantic_role: specialization
     parent: Actor
     variants: null
     fields:
@@ -153,6 +159,7 @@ models:
       sensors: map[string, SensorPayload]
 
   Machine:
+    semantic_role: specialization
     parent: Entity
     variants:
       - Vehicle
@@ -166,12 +173,15 @@ models:
       components: list[EntityComponentRef]
 
   Vehicle:
+    semantic_role: specialization
     parent: Machine
 
   Platform:
+    semantic_role: specialization
     parent: Machine
 
   GroundMachine:
+    semantic_role: specialization
     parent: Machine
     fields:
       machine_type: MachineType
@@ -183,6 +193,7 @@ models:
       navigation: GroundNavigationSchema
 
   AirMachine:
+    semantic_role: specialization
     parent: Machine
     fields:
       airframe: AirframeType

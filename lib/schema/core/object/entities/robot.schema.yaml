@@ -64,6 +64,7 @@ enums:
 
 models:
   Robot:
+    semantic_role: specialization
     parent: Machine
     description: Robot entities and control surfaces
     fields:
@@ -71,11 +72,13 @@ models:
       remote_control: RemoteControlSchema
 
   GroundRobot:
+    semantic_role: specialization
     parent: GroundMachine
     fields:
       machine_type: MachineType = ROBOT
 
   VideoConfigSchema:
+    semantic_role: specialization
     parent: Parameter
     fields:
       protocol: optional VideoProtocol
@@ -87,6 +90,7 @@ models:
       hls_url: optional string
 
   ReceiverConfig:
+    semantic_role: specialization
     parent: Parameter
     fields:
       rx_min_usec: int
@@ -94,6 +98,7 @@ models:
       rx_center_usec: int
 
   ChannelMapEntry:
+    semantic_role: specialization
     parent: Parameter
     fields:
       axis: ControlAxis
@@ -102,6 +107,7 @@ models:
       label: optional string
 
   ModeRange:
+    semantic_role: specialization
     parent: Parameter
     fields:
       mode_id: optional int
@@ -110,6 +116,7 @@ models:
       range: NumericRange
 
   RobotController:
+    semantic_role: specialization
     parent: Parameter
     fields:
       control_modes: optional RobotControlMode
@@ -117,6 +124,7 @@ models:
       autopilot_firmware: FirmwareInfo
 
   RemoteControlSchema:
+    semantic_role: specialization
     parent: Interface
     fields:
       rc_link: string = ""
@@ -132,6 +140,7 @@ models:
       mode_ranges: list[ModeRange]
 
   ObserverSource:
+    semantic_role: specialization
     parent: Interface
     description: Remote imagery/video observation source with camera geometry and telemetry links
     fields:
@@ -156,6 +165,7 @@ models:
 
   FlightControlState:
     description: Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers
+    semantic_role: specialization
     parent: GNC
     fields:
       armed: optional bool
