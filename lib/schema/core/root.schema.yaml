@@ -13,6 +13,7 @@ enums:
 models:
   Root:
     description: Any distinct part of the overall framework that can be identified, described, or referenced
+    semantic_role: ontology
     variants:
       - Definition
       - Struct
