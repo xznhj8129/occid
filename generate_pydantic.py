@@ -57,11 +57,9 @@ TOP_LEVEL_KEYS = {
     "maps",
     "models",
 }
-ENUM_KEYS = {"semantic_role", "values"}
 MAP_KEYS = {"type", "value"}
 MODEL_KEYS = {"description", "semantic_role", "parent", "fields", "variants"}
 MODEL_SEMANTIC_ROLES = {"ontology", "specialization"}
-ENUM_SEMANTIC_ROLES = {"vocabulary"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 
@@ -87,7 +85,6 @@ class EnumValue:
 class EnumDef:
     name: str
     values: list[EnumValue]
-    semantic_role: str | None
 
 
 @dataclass
@@ -306,17 +303,7 @@ def parse_enum_value(raw_entry: str) -> EnumValue:
     return EnumValue(name=name, value=int(value_text))
 
 
-def parse_enum(name: str, spec: list[str] | dict) -> EnumDef:
-    semantic_role = None
-    entries = spec
-    if type(spec) == dict:
-        unknown_keys = sorted(set(spec) - ENUM_KEYS)
-        if unknown_keys:
-            raise SchemaError(f"unknown enum keys {unknown_keys} on {name}")
-        if "values" not in spec:
-            raise SchemaError(f"expanded enum {name} must define values")
-        semantic_role = parse_semantic_role(name, spec.get("semantic_role"), ENUM_SEMANTIC_ROLES)
-        entries = spec["values"]
+def parse_enum(name: str, entries: list[str]) -> EnumDef:
     if type(entries) != list:
         raise SchemaError(f"enum {name} values must be a list")
     for entry in entries:
@@ -325,7 +312,6 @@ def parse_enum(name: str, spec: list[str] | dict) -> EnumDef:
     return EnumDef(
         name=name,
         values=[parse_enum_value(entry) for entry in entries],
-        semantic_role=semantic_role,
     )
 
 
@@ -841,8 +827,6 @@ def enum_base(enum_def: EnumDef) -> str:
 
 def render_enum_block(enum_def: EnumDef) -> str:
     lines = [f"class {enum_def.name}({enum_base(enum_def)}):"]
-    if enum_def.semantic_role:
-        lines.append(f"    __occid_semantic_role__ = {enum_def.semantic_role!r}")
     next_value: int | None = None
     for index, value in enumerate(enum_def.values):
         if type(value.value) == str:
@@ -866,7 +850,6 @@ def render_variant_enum_block(model_def: ModelDef) -> str:
             EnumValue(name=variant_member_name(model_def.name, variant_name), value=0 if index == 0 else None)
             for index, variant_name in enumerate(model_def.variants)
         ],
-        semantic_role=None,
     )
     return render_enum_block(enum_def)
 

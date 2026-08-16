@@ -84,7 +84,7 @@ requires:
 - Field names use the same identifier regex
 - All model and enum names are globally unique and imported flat
 - `parent` and `variants` encode the structural inheritance/type graph; they do not by themselves claim that every child is a distinct ontological primitive
-- `semantic_role` explicitly records whether a declaration is ontological, a practical schema specialization, or controlled vocabulary where that distinction matters
+- `semantic_role` explicitly records whether a model is ontological or a practical schema specialization where that distinction matters
 - For schema files, `package` must match the schema file basename without `.schema.yaml`
 - For module files, `package` must be globally unique across loaded packages
 
@@ -146,16 +146,6 @@ enums:
     - FLAG_B = 1 << 2
 ```
 
-Expanded syntax for an enum carrying semantic metadata:
-```yaml
-enums:
-  InformationIntent:
-    semantic_role: vocabulary
-    values:
-      - SEARCH = "SEARCH"
-      - OBSERVE = "OBSERVE"
-```
-
 Rules:
 - Each value item is `NAME`, `NAME = INT`, `NAME = "string"`, or `NAME = 1 << INT`
 - First unassigned integer item gets `0`
@@ -163,9 +153,7 @@ Rules:
 - Any enum using `1 << INT` values is generated as a bitflag enum
 - Enum numeric values must be unique
 - Enum names must be unique within the enum
-- The compact list form remains valid when no enum metadata is required
-- The expanded form accepts only `semantic_role` and `values`
-- The only enum semantic role is `vocabulary`
+- Every enum uses the list form; enums are inherently controlled vocabularies and carry no `semantic_role`
 
 **8. Constant Maps**
 Syntax:
@@ -216,20 +204,19 @@ Rules:
 
 **9.1. Semantic roles**
 
-OCCID distinguishes three semantic levels where a declaration would otherwise be ambiguous:
+OCCID distinguishes two model semantic roles where a declaration would otherwise be ambiguous:
 
 1. `ontology` on a model: the model states what semantic kind of thing a record is.
 2. `specialization` on a model: the model is a practical typed schema specialization and does not, by its existence alone, claim a new ontological primitive.
-3. `vocabulary` on an enum: the values are controlled labels used for classification, routing, filtering, UI grouping, or interoperability rather than model classes.
+
+Enums are inherently controlled vocabularies used for classification, routing, filtering, UI grouping, or interoperability rather than model classes, so they require no semantic-role annotation.
 
 Task is the canonical example:
 ```yaml
 enums:
   InformationIntent:
-    semantic_role: vocabulary
-    values:
-      - SEARCH = "SEARCH"
-      - OBSERVE = "OBSERVE"
+    - SEARCH = 0
+    - OBSERVE
 
 models:
   Task:
@@ -253,9 +240,9 @@ vocabulary:      SEARCH / OBSERVE / ...
 
 Rules:
 - `parent` always means structural inheritance. Do not infer ontology merely from inheritance.
-- `ontology` and `specialization` are model roles; `vocabulary` is an enum role.
+- `ontology` and `specialization` are model roles; enums have no semantic role.
 - A model marked `specialization` must have a parent.
-- Semantic role metadata is declarative and is emitted into generated Python as `__occid_semantic_role__` on declarations that define it.
+- Semantic role metadata is declarative and is emitted into generated Python as `__occid_semantic_role__` on models that define it.
 - Omission means the declaration has not been classified with this metadata. It must not be interpreted as inherited semantic-role metadata.
 - Use specialization when software needs a stable typed shape or restricted field vocabulary without promoting every useful software subtype into the ontology.
 - Do not turn individual vocabulary values into child models merely to obtain type safety.
@@ -392,8 +379,7 @@ These are always errors:
 - redefining inherited fields
 - invalid `semantic_role` for the declaration kind
 - a `specialization` model without a parent
-- an expanded enum without `values`
-- unknown keys in an expanded enum
+- an enum declaration that is not a list
 - `optional const ...`
 - list/map/object inline defaults in shorthand form
 - `required: true/false`
@@ -525,11 +511,9 @@ requires:
 
 enums:
   SpectrumObservationKind:
-    semantic_role: vocabulary
-    values:
-      - DETECTION = "DETECTION"
-      - IDENTIFICATION = "IDENTIFICATION"
-      - DIRECTION_FINDING = "DIRECTION_FINDING"
+    - DETECTION = 0
+    - IDENTIFICATION
+    - DIRECTION_FINDING
 
 models:
   SpectrumObservation:
@@ -560,7 +544,7 @@ Header fields, in addition to the common fields in section 3:
 - A module cannot redefine, remove, or alter existing models, enums, or fields
 - Modules are optional; the core schema is complete and valid without any modules loaded
 - A module's `requires` list must be satisfied before the module is loaded; unsatisfied dependencies are an error
-- Module models and enums may use `semantic_role` under the same rules as core declarations
+- Module models may use `semantic_role` under the same rules as core models
 
 **18.4. Extending variants**
 When a module adds a new child to an existing parent that explicitly defines a `variants` block, it uses `extend_variants` to graft new members onto that parent's discriminator:
@@ -598,8 +582,8 @@ Module selection is independent of tag filtering but compatible with it:
 - Every generated model has a numeric ID allocated in `lib/model_ids.yaml` for the current schema.
 - The registry contains live models only. Removing a model removes its registry entry; freed numeric IDs may be reused.
 - Generation fails when a selected model has no allocated ID or two live names share an ID.
-- Declarations with explicit `semantic_role` publish it in generated Python as `__occid_semantic_role__`.
-- A declaration without `semantic_role` has generated/runtime semantic role `None`; it does not inherit its parent's semantic role.
+- Models with explicit `semantic_role` publish it in generated Python as `__occid_semantic_role__`.
+- A model without `semantic_role` has generated/runtime semantic role `None`; it does not inherit its parent's semantic role.
 - The generated package publishes `OCCID_SCHEMA_VERSION` independently of the YAML IDL document-format version.
 - Durable persistence uses ordinary named-field JSON.
 - Compact MsgPack uses named fields in an envelope containing `schema_version`, `model_id`, and `fields`.

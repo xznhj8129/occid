@@ -7,43 +7,35 @@ tags:
 
 enums:
   ManeuverIntent:
-    semantic_role: vocabulary
-    values:
-      - MOVE = "MOVE"
-      - HOLD = "HOLD"
-      - FOLLOW = "FOLLOW"
-      - TRANSIT = "TRANSIT"
-      - POSITION = "POSITION"
+    - MOVE = 0
+    - HOLD
+    - FOLLOW
+    - TRANSIT
+    - POSITION
 
   EffectIntent:
-    semantic_role: vocabulary
-    values:
-      - CREATE = "CREATE"
-      - REMOVE = "REMOVE"
-      - MODIFY = "MODIFY"
-      - RESTORE = "RESTORE"
-      - PROTECT = "PROTECT"
-      - DENY = "DENY"
+    - CREATE = 0
+    - REMOVE
+    - MODIFY
+    - RESTORE
+    - PROTECT
+    - DENY
 
   InformationIntent:
-    semantic_role: vocabulary
-    values:
-      - SEARCH = "SEARCH"
-      - OBSERVE = "OBSERVE"
-      - IDENTIFY = "IDENTIFY"
-      - CLASSIFY = "CLASSIFY"
-      - MEASURE = "MEASURE"
-      - ASSESS = "ASSESS"
-      - MONITOR = "MONITOR"
+    - SEARCH = 0
+    - OBSERVE
+    - IDENTIFY
+    - CLASSIFY
+    - MEASURE
+    - ASSESS
+    - MONITOR
 
   TransportIntent:
-    semantic_role: vocabulary
-    values:
-      - CARGO = "CARGO"
-      - PERSONNEL = "PERSONNEL"
-      - SUPPLY = "SUPPLY"
-      - EVACUATE = "EVACUATE"
-      - RECOVER = "RECOVER"
+    - CARGO = 0
+    - PERSONNEL
+    - SUPPLY
+    - EVACUATE
+    - RECOVER
 
   TaskPhase:
     - CREATED = 0

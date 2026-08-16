@@ -7,40 +7,36 @@ from .directive import Directive
 
 ### Enums
 
-class ManeuverIntent(str, Enum):
-    __occid_semantic_role__ = 'vocabulary'
-    MOVE = 'MOVE'
-    HOLD = 'HOLD'
-    FOLLOW = 'FOLLOW'
-    TRANSIT = 'TRANSIT'
-    POSITION = 'POSITION'
+class ManeuverIntent(IntEnum):
+    MOVE = 0
+    HOLD = auto()
+    FOLLOW = auto()
+    TRANSIT = auto()
+    POSITION = auto()
 
-class EffectIntent(str, Enum):
-    __occid_semantic_role__ = 'vocabulary'
-    CREATE = 'CREATE'
-    REMOVE = 'REMOVE'
-    MODIFY = 'MODIFY'
-    RESTORE = 'RESTORE'
-    PROTECT = 'PROTECT'
-    DENY = 'DENY'
+class EffectIntent(IntEnum):
+    CREATE = 0
+    REMOVE = auto()
+    MODIFY = auto()
+    RESTORE = auto()
+    PROTECT = auto()
+    DENY = auto()
 
-class InformationIntent(str, Enum):
-    __occid_semantic_role__ = 'vocabulary'
-    SEARCH = 'SEARCH'
-    OBSERVE = 'OBSERVE'
-    IDENTIFY = 'IDENTIFY'
-    CLASSIFY = 'CLASSIFY'
-    MEASURE = 'MEASURE'
-    ASSESS = 'ASSESS'
-    MONITOR = 'MONITOR'
+class InformationIntent(IntEnum):
+    SEARCH = 0
+    OBSERVE = auto()
+    IDENTIFY = auto()
+    CLASSIFY = auto()
+    MEASURE = auto()
+    ASSESS = auto()
+    MONITOR = auto()
 
-class TransportIntent(str, Enum):
-    __occid_semantic_role__ = 'vocabulary'
-    CARGO = 'CARGO'
-    PERSONNEL = 'PERSONNEL'
-    SUPPLY = 'SUPPLY'
-    EVACUATE = 'EVACUATE'
-    RECOVER = 'RECOVER'
+class TransportIntent(IntEnum):
+    CARGO = 0
+    PERSONNEL = auto()
+    SUPPLY = auto()
+    EVACUATE = auto()
+    RECOVER = auto()
 
 class TaskPhase(IntEnum):
     CREATED = 0

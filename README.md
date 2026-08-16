@@ -62,7 +62,7 @@ TaskInformation -> InformationIntent
 TaskTransport   -> TransportIntent
 ```
 
-These levels are first-class IDL metadata, not documentation convention. Models may declare `semantic_role: ontology` or `semantic_role: specialization`; controlled enums may declare `semantic_role: vocabulary`. The generator validates those roles and emits `__occid_semantic_role__` on generated declarations that define them.
+The distinction between ontology models and practical schema specializations is first-class IDL metadata, not documentation convention. Models may declare `semantic_role: ontology` or `semantic_role: specialization`; enums are inherently controlled vocabularies and do not carry a redundant semantic role. The generator validates model roles and emits `__occid_semantic_role__` on generated models that define one.
 
 `Task` is the ontological class and owns the fields common to directed work: identity, instruction, references, objective, constraints, optional preconditions, timing, priority, and status. The four child records are practical schema specializations, not claims that four new ontological primitives have been discovered. They inherit the complete Task record and add only a family-specific `intent` vocabulary.
 
@@ -102,7 +102,7 @@ High-rate setpoints and control samples remain `Input` models rather than Comman
 
 ## Specification, generation, and serialization
 
-Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema. `idl_spec.md` defines the schema language, including the explicit semantic-role distinction between ontology, practical specialization, and controlled vocabulary.
+Authoritative schema sources live under `lib/schema/`. `generate_pydantic.py` generates the reference Python runtime into `schema/`. Generated files must not be hand-maintained as an independent schema. `idl_spec.md` defines the schema language, including the explicit semantic-role distinction between ontology models and practical specializations.
 
 Polymorphic model IDs live in `lib/model_ids.yaml` and identify the live models in the current schema. Removed models are removed from the registry; their numeric slots are ordinary free space and may be reused. `OCCID_SCHEMA_VERSION` is **0.0.1** and stays **0.0.1** until the project owner explicitly says otherwise; pre-release schema churn is not represented by pretending the project has advanced through release versions.
 
