@@ -51,6 +51,7 @@ enums:
 models:
   Link:
     description: Communication capability or connection kind a node can use
+    semantic_role: ontology
     parent: Communication
     fields:
       schema_id: optional StringID
@@ -71,6 +72,7 @@ models:
       connection_status: optional ConnectionStatus
 
   DataRateSpec:
+    semantic_role: specialization
     parent: Communication
     fields:
       nominal_bps: optional float
@@ -78,6 +80,7 @@ models:
       burst_bps: optional float
 
   LinkCapacity:
+    semantic_role: specialization
     parent: Communication
     fields:
       max_nodes: optional int

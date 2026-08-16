@@ -18,6 +18,7 @@ enums:
 models:
   Node:
     description: Communication identity of an entity, including addresses and available links
+    semantic_role: ontology
     parent: Communication
     fields:
       node_id: StringID

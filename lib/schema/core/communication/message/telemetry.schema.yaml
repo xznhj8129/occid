@@ -8,16 +8,19 @@ tags:
 models:
   TelemetryMessage:
     description: Message whose payload reports sender or asset state
+    semantic_role: ontology
     parent: Message
     fields:
       state: State
 
   UAVTelemetryMessage:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       state: TelemetryState
 
   CapabilityAdvert:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       node_id: StringID
@@ -27,12 +30,14 @@ models:
       payload_ids: list[string]
 
   StateDelta:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       entity_id: StringID
       changed_fields: map[string, State]
 
   TransportCounters:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       rx_count: int = 0
@@ -41,6 +46,7 @@ models:
       dropped_count: int = 0
 
   TransportError:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       error: NetworkError

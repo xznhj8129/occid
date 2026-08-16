@@ -97,6 +97,7 @@ models:
   Definition:
     description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic
       descriptors.
+    semantic_role: ontology
     parent: Root
     variants:
       - Frame
@@ -106,18 +107,23 @@ models:
       - DefinitionRelationship
 
   Frame:
+    semantic_role: ontology
     parent: Definition
 
   Coordinate:
+    semantic_role: specialization
     parent: Definition
 
   Geometry:
+    semantic_role: specialization
     parent: Definition
 
   DefinitionRelationship:
+    semantic_role: ontology
     parent: Definition
 
   SemanticType:
+    semantic_role: ontology
     parent: Definition
     variants:
       - Category
@@ -126,14 +132,18 @@ models:
       - Domain
 
   Category:
+    semantic_role: specialization
     parent: SemanticType
 
   Role:
+    semantic_role: specialization
     parent: SemanticType
 
   Function:
+    semantic_role: specialization
     parent: SemanticType
 
   Domain:
+    semantic_role: specialization
     parent: SemanticType
 

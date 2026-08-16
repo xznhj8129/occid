@@ -19,6 +19,7 @@ enums:
 
 models:
   MeshLink:
+    semantic_role: specialization
     parent: Link
     fields:
       src_id: StringID
@@ -30,6 +31,7 @@ models:
       updated_ts: optional float
 
   MeshNode:
+    semantic_role: specialization
     parent: Node
     fields:
       node_id: StringID
@@ -45,6 +47,7 @@ models:
 
   MeshView:
     description: Current observed mesh topology and node/link state
+    semantic_role: specialization
     parent: Network
     fields:
       epoch: int = 0
@@ -53,6 +56,7 @@ models:
       partition_id: optional StringID
 
   MeshtasticMessage:
+    semantic_role: specialization
     parent: Message
     fields:
       sender_id: StringID
@@ -66,6 +70,7 @@ models:
       metrics: optional MeshReceiveMetrics
 
   MeshReceiveMetrics:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       snr: optional float
@@ -74,6 +79,7 @@ models:
       rx_time: optional float
 
   MeshPositionSample:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       position: GlobalPosition
@@ -84,6 +90,7 @@ models:
       sats_in_view: optional int
 
   NodeHeartbeat:
+    semantic_role: specialization
     parent: TelemetryMessage
     fields:
       node_id: StringID

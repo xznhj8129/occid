@@ -24,6 +24,7 @@ enums:
 models:
   Communication:
     description: Movement of information between endpoints
+    semantic_role: ontology
     parent: Root
     variants:
       - Node
