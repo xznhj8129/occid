@@ -12,6 +12,15 @@ enums:
     - STALE
     - DIVERGED
 
+  AddressingMode:
+    - UNICAST
+    - MULTICAST
+    - BROADCAST
+
+  ExchangePattern:
+    - PUSH
+    - REQUEST_RESPONSE
+
 models:
   Communication:
     description: Movement of information between endpoints

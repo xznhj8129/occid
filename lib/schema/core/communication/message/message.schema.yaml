@@ -16,6 +16,11 @@ enums:
     - EXPIRED
     - DROPPED
 
+  MessageType:
+    - BROADCAST
+    - REQUEST
+    - REPLY
+
   ReplyAck:
     - ACK = 0
     - RECEIVED
