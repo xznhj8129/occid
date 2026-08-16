@@ -53,6 +53,7 @@ class AirPlanAction(IntEnum):
 class Plan(Control):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
     __occid_model_id__: ClassVar[int] = 172
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     plan_id: StringID
     name: builtins.str | None = None
@@ -70,6 +71,7 @@ class Plan(Control):
 class PlanStep(Struct):
     'Immutable planned step definition; runtime status belongs to execution state'
     __occid_model_id__: ClassVar[int] = 283
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     step_id: StringID
     task_id: StringID | None = None
     actor_ids: list[StringID]
@@ -78,6 +80,7 @@ class PlanStep(Struct):
 
 class PlanContingency(Struct):
     __occid_model_id__: ClassVar[int] = 282
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     contingency_id: StringID
     condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
     response: builtins.str
@@ -86,12 +89,14 @@ class PlanContingency(Struct):
 class FlightLevelBand(Struct):
     'Embedded flight-level band value used by plans rather than an independently identified control reference'
     __occid_model_id__: ClassVar[int] = 116
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     altitude_range_m: NumericRange
     alt_sep_m: builtins.float
 
 class AutopilotMissionWaypoint(Struct):
     'Embedded autopilot waypoint value used by a plan or protocol mapping'
     __occid_model_id__: ClassVar[int] = 118
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     waypoint_index: builtins.int
     action_code: builtins.int | None = None
     position: GlobalPosition
@@ -103,6 +108,7 @@ class AutopilotMissionWaypoint(Struct):
 class PlannerMissionPoint(Struct):
     'Embedded planner point value used while constructing a plan'
     __occid_model_id__: ClassVar[int] = 119
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     num: builtins.int
     point_type: PlannerPointType
     category: PlannerPointCategory
@@ -111,6 +117,7 @@ class PlannerMissionPoint(Struct):
 class LoiterOrbit(Struct):
     'Embedded orbit geometry and timing value'
     __occid_model_id__: ClassVar[int] = 120
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     orbit_direction: builtins.int
     orbit_radius: builtins.int
     loiter_time: builtins.int
@@ -118,6 +125,7 @@ class LoiterOrbit(Struct):
 class MissionRouteGeometry(Struct):
     'Embedded route geometry used by a mission plan'
     __occid_model_id__: ClassVar[int] = 121
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     route_in: GeoPath
     survey: GeoPath
     survey_area: GeoArea
@@ -126,6 +134,7 @@ class MissionRouteGeometry(Struct):
 class PlannedRoutePoints(Struct):
     'Embedded set of planner points defining mission-plan route segments'
     __occid_model_id__: ClassVar[int] = 122
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     start: PlannerMissionPoint
     route_in: list[PlannerMissionPoint]
     survey: list[PlannerMissionPoint]
@@ -135,10 +144,12 @@ class PlannedRoutePoints(Struct):
 
 class AutopilotFlightPlan(Plan):
     __occid_model_id__: ClassVar[int] = 173
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     waypoints: list[AutopilotMissionWaypoint]
 
 class GroupFlightPlan(Plan):
     __occid_model_id__: ClassVar[int] = 174
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     plan_phase: FlightPlanPhase
     flight_level: FlightLevelBand | None = None
     alt_frame: AltitudeDatum | None = None
@@ -151,6 +162,7 @@ class GroupFlightPlan(Plan):
 
 class UnitFlightPlan(Plan):
     __occid_model_id__: ClassVar[int] = 175
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float
@@ -165,6 +177,7 @@ class UnitFlightPlan(Plan):
 class MissionPlan(Plan):
     'Saved operator mission plan - the planner inputs, restorable for editing'
     __occid_model_id__: ClassVar[int] = 176
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     flight_type: FlightType = FlightType.SURVEY_POINT
     air_action: AirPlanAction = AirPlanAction.FLY
     manual: builtins.bool = False

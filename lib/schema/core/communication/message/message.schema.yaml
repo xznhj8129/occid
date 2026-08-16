@@ -17,7 +17,7 @@ enums:
     - DROPPED
 
   MessageType:
-    - BROADCAST
+    - BROADCAST = 0
     - REQUEST
     - REPLY
 

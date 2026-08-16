@@ -13,12 +13,12 @@ enums:
     - DIVERGED
 
   AddressingMode:
-    - UNICAST
+    - UNICAST = 0
     - MULTICAST
     - BROADCAST
 
   ExchangePattern:
-    - PUSH
+    - PUSH = 0
     - REQUEST_RESPONSE
 
 models:

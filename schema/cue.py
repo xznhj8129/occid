@@ -10,6 +10,7 @@ from .state import State
 class Cue(State):
     'Spatial cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state'
     __occid_model_id__: ClassVar[int] = 322
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     source_id: StringID | None = None
     target_id: StringID | None = None
     bearing_rad: builtins.float | None = None

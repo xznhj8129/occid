@@ -30,9 +30,11 @@ class GimbalState(IntEnum):
 class SensorState(State):
     'Onboard sensor readings, readiness, calibration, and availability'
     __occid_model_id__: ClassVar[int] = 190
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class TrackerState(SensorState):
     __occid_model_id__: ClassVar[int] = 191
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     locked: builtins.bool | None = None
     target_id: StringID | None = None
     angular_error: LocalDirection | None = None
@@ -42,6 +44,7 @@ class TrackerState(SensorState):
 class FlightSensorConfiguration(SensorState):
     'Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers'
     __occid_model_id__: ClassVar[int] = 297
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     accelerometer: builtins.str | None = None
     barometer: builtins.str | None = None
     magnetometer: builtins.str | None = None

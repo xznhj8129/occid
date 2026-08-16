@@ -83,10 +83,12 @@ class WaypointType(IntEnum):
 class SpatialStruct(Struct):
     'Spatial struct support models'
     __occid_model_id__: ClassVar[int] = 192
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class EulerAngles(Pose):
     'Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on'
     __occid_model_id__: ClassVar[int] = 193
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     roll_rad: builtins.float
     pitch_rad: builtins.float
     yaw_rad: builtins.float
@@ -96,6 +98,7 @@ class EulerAngles(Pose):
 class LocalDirection(Bearing):
     'Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known'
     __occid_model_id__: ClassVar[int] = 194
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     bearing: builtins.float
     azimuth: builtins.float
     elevation: builtins.float
@@ -103,6 +106,7 @@ class LocalDirection(Bearing):
 
 class LocalVector(Vector):
     __occid_model_id__: ClassVar[int] = 195
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     x: builtins.float
     y: builtins.float
     z: builtins.float
@@ -110,6 +114,7 @@ class LocalVector(Vector):
 
 class GlobalPosition(GeoPos):
     __occid_model_id__: ClassVar[int] = 196
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     lat: builtins.float
     lon: builtins.float
     alt: builtins.float
@@ -119,14 +124,17 @@ class GlobalPosition(GeoPos):
 
 class GeoPath(StructPath):
     __occid_model_id__: ClassVar[int] = 197
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     points: list[GlobalPosition]
 
 class GeoArea(Shape):
     __occid_model_id__: ClassVar[int] = 198
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     vertices: list[GlobalPosition]
 
 class BoundingBox(Bounding):
     __occid_model_id__: ClassVar[int] = 199
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     x1: builtins.float
     y1: builtins.float
     z1: builtins.float
@@ -137,6 +145,7 @@ class BoundingBox(Bounding):
 class VelocityVector(Vector):
     'Linear velocity with optional explicit inertial reference frame'
     __occid_model_id__: ClassVar[int] = 200
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     x: builtins.float
     y: builtins.float
     z: builtins.float
@@ -145,6 +154,7 @@ class VelocityVector(Vector):
 class AngularVelocityVector(Vector):
     'Body angular velocity in radians per second with optional explicit body frame'
     __occid_model_id__: ClassVar[int] = 201
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     x_rad_s: builtins.float
     y_rad_s: builtins.float
     z_rad_s: builtins.float
@@ -153,6 +163,7 @@ class AngularVelocityVector(Vector):
 class AltitudeState(Measurement):
     'Simultaneous altitude observations must carry their own vertical reference; absolute and relative values never share one ambiguous datum'
     __occid_model_id__: ClassVar[int] = 202
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     absolute_m: builtins.float | None = None
     absolute_datum: AltitudeDatum | None = None
     relative_m: builtins.float | None = None
@@ -160,6 +171,7 @@ class AltitudeState(Measurement):
 
 class LocationUncertainty(Uncertainty):
     __occid_model_id__: ClassVar[int] = 203
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     horiz_err_m: builtins.float | None = None
     vert_err_m: builtins.float | None = None
     ellipse_major_m: builtins.float | None = None
@@ -168,6 +180,7 @@ class LocationUncertainty(Uncertainty):
 
 class GeoJsonGeometry(Shape):
     __occid_model_id__: ClassVar[int] = 204
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     type: GeoJsonGeometryTypes
     coordinates: Any | None = None
     geometries: list[GeoJsonGeometry] | None = None
@@ -176,9 +189,11 @@ class GeoJsonGeometry(Shape):
 class Position(State):
     'Position in space, address or placement'
     __occid_model_id__: ClassVar[int] = 205
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class LocationState(Position):
     __occid_model_id__: ClassVar[int] = 206
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     inertial_frame: InertialReferenceFrame | None = None
     body_frame: BodyReferenceFrame | None = None
     position: GlobalPosition | None = None
@@ -191,6 +206,7 @@ class LocationState(Position):
 
 class SpotterOrigin(Position):
     __occid_model_id__: ClassVar[int] = 207
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     position: GlobalPosition
     attitude: EulerAngles | None = None
     look_vector: LocalDirection | None = None

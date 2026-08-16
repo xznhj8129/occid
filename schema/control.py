@@ -50,3 +50,4 @@ class AirGroupFormation2DType(IntEnum):
 class Control(Root):
     'Desired outcomes and directed work'
     __occid_model_id__: ClassVar[int] = 2
+    __occid_semantic_role__: ClassVar[str] = 'ontology'

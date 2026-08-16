@@ -54,12 +54,14 @@ class ExecutionOperation(IntEnum):
 class Command(Directive):
     'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 45
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     target_ref: StringID
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class StateChangeCommand(Command):
     'Change, enable, or disable one declared state property on the target'
     __occid_model_id__: ClassVar[int] = 303
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: StateChangeOperation
     property_name: builtins.str | None = None
     value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
@@ -67,12 +69,14 @@ class StateChangeCommand(Command):
 class ProcessControlCommand(Command):
     'Start, stop, pause, resume, or cancel a named process on the target'
     __occid_model_id__: ClassVar[int] = 304
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ProcessControlOperation
     process_name: builtins.str | None = None
 
 class ConfigurationCommand(Command):
     'Set a configuration parameter or load a referenced configuration on the target'
     __occid_model_id__: ClassVar[int] = 305
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
     value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
@@ -81,6 +85,7 @@ class ConfigurationCommand(Command):
 class MotionCommand(Command):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
     __occid_model_id__: ClassVar[int] = 306
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: MotionOperation
     destination: GlobalPosition | None = None
     path: GeoPath | None = None
@@ -91,6 +96,7 @@ class MotionCommand(Command):
 class ResourceCommand(Command):
     'Acquire, release, allocate, or transfer a referenced resource'
     __occid_model_id__: ClassVar[int] = 307
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ResourceOperation
     resource_ref: StringID | None = None
     quantity: builtins.float | None = None
@@ -99,5 +105,6 @@ class ResourceCommand(Command):
 class ExecutionCommand(Command):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
     __occid_model_id__: ClassVar[int] = 308
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ExecutionOperation
     dispatch_id: StringID | None = None

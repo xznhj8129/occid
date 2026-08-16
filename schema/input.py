@@ -10,10 +10,12 @@ from .state import State
 class Input(State):
     'Current operator or receiver input state and control mapping.'
     __occid_model_id__: ClassVar[int] = 152
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class ControlAxisSet(Input):
     'Normalized control-axis values in the signed range -1.0 to +1.0, independent of the native receiver or flight-controller representation'
     __occid_model_id__: ClassVar[int] = 153
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     roll: builtins.float | None = None
     pitch: builtins.float | None = None
     yaw: builtins.float | None = None
@@ -23,12 +25,14 @@ class ControlAxisSet(Input):
 class ControlChannelValue(Input):
     'One normalized auxiliary/control channel value in the signed range -1.0 to +1.0 when present'
     __occid_model_id__: ClassVar[int] = 154
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     channel_index: builtins.int
     value: builtins.float | None = None
 
 class ControlOverride(Input):
     'Normalized direct control override in the signed range -1.0 to +1.0; endpoint adapters define the exact native mapping and reject unsupported axes'
     __occid_model_id__: ClassVar[int] = 155
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     roll: builtins.float | None = None
     pitch: builtins.float | None = None
     yaw: builtins.float | None = None
@@ -38,6 +42,7 @@ class ControlOverride(Input):
 class ControlAttitudeSetpoint(Input):
     'Attitude and normalized thrust setpoint using radians; frame metadata is optional in the record but control code that depends on frame semantics must require it explicitly'
     __occid_model_id__: ClassVar[int] = 156
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     roll_rad: builtins.float
     pitch_rad: builtins.float
     yaw_rad: builtins.float

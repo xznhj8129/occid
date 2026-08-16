@@ -12,6 +12,7 @@ from .task import TaskPriority, TaskStatus
 class SuccessCriterion(Struct):
     'Typed, human-readable condition used to determine whether an objective succeeded'
     __occid_model_id__: ClassVar[int] = 285
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
     criterion_id: StringID
     statement: builtins.str
     metric: builtins.str | None = None
@@ -20,6 +21,7 @@ class SuccessCriterion(Struct):
 class Objective(Control):
     'Desired end state with intent, success rule, target, priority, and deadline'
     __occid_model_id__: ClassVar[int] = 84
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
     objective_id: StringID
     name: builtins.str

@@ -10,3 +10,4 @@ from .property import Property
 class Capability(Property):
     'An ability an Object possesses or can provide; concrete capability schemas define the specific semantics and parameters'
     __occid_model_id__: ClassVar[int] = 314
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
