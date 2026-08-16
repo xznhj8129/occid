@@ -383,7 +383,7 @@ Unknown model keys are errors.
 
 ### 9.1 Semantic roles
 
-A model may declare:
+Every model must declare exactly one of:
 
 ```text
 semantic_role: ontology
@@ -394,7 +394,10 @@ The roles correspond to two model levels:
 
 ```text
 Level 1 — ontology
-    The model asserts a distinct semantic kind of thing.
+    The model represents a semantic node present in ontology.yaml. Schema naming
+    may differ where the global model namespace requires a distinct spelling,
+    but the model must correspond to that ontology node rather than merely being
+    a useful software subtype.
 
 Level 2 — specialization
     The model is a practical typed shape required by software, without claiming
@@ -404,9 +407,7 @@ Level 3 — vocabulary
     Represented by enums, not by semantic_role metadata.
 ```
 
-`semantic_role` applies only to models.
-
-Omission means the model is semantically unclassified by this metadata. Semantic roles never inherit through `parent`.
+`semantic_role` applies only to models. Omission is invalid. Semantic roles never inherit through `parent`.
 
 A `specialization` model must declare a `parent`.
 
@@ -772,6 +773,7 @@ A conforming implementation must reject at least the following:
 ### Model errors
 
 - unknown model keys;
+- missing `semantic_role`;
 - invalid `semantic_role`;
 - `specialization` without a parent;
 - redefining an inherited field;
@@ -832,11 +834,9 @@ Generation must fail if:
 
 ### 16.2 Semantic-role metadata
 
-A generated model with explicit `semantic_role` should expose that role to schema reflection/runtime tooling.
+Every generated model exposes its explicitly declared `semantic_role` to schema reflection/runtime tooling.
 
-An unclassified model exposes no inherited semantic role. Semantic role never propagates from a parent.
-
-Enums need no semantic-role metadata because their declaration kind already identifies them as vocabulary.
+Semantic role never propagates from a parent. Enums need no semantic-role metadata because their declaration kind already identifies them as vocabulary.
 
 ### 16.3 Enum representation
 
