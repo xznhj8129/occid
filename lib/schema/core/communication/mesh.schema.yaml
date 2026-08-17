@@ -19,15 +19,12 @@ enums:
 
 models:
   MeshLink:
+    description: Observed state of a link between two mesh nodes
     semantic_role: specialization
-    parent: Link
+    parent: LinkState
     fields:
       src_id: StringID
       dst_id: StringID
-      condition: LinkCondition
-      connection_status: optional ConnectionStatus
-      latency_ms: optional float
-      packet_loss: optional float
       updated_ts: optional float
 
   MeshNode:
@@ -38,11 +35,7 @@ models:
       state: optional MeshNodeState
       last_seen_ts: optional float
       position: optional GlobalPosition
-      rssi: optional float
-      snr: optional float
-      hop_limit: optional int
-      link_condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
+      link_state: optional LinkState
       roles: list[CapabilityRole]
 
   MeshView:
@@ -73,21 +66,13 @@ models:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      snr: optional float
-      rssi: optional float
-      hop_limit: optional int
-      rx_time: optional float
+      state: LinkState
 
   MeshPositionSample:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      position: GlobalPosition
-      position_ts: optional float
-      pdop: optional float
-      ground_speed: optional float
-      ground_track: optional float
-      sats_in_view: optional int
+      state: LocationState
 
   NodeHeartbeat:
     semantic_role: specialization
@@ -96,8 +81,4 @@ models:
       node_id: StringID
       last_seen_ts: float
       node_state: optional MeshNodeState
-      rssi: optional float
-      snr: optional float
-      hop_limit: optional int
-      link_condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
+      state: LinkState

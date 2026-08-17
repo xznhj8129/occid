@@ -47,10 +47,9 @@ enums:
     - WIFI
     - WIRED
 
-
 models:
   Link:
-    description: Communication capability or connection kind a node can use
+    description: Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState
     semantic_role: ontology
     parent: Communication
     fields:
@@ -68,8 +67,6 @@ models:
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
       network_id: optional StringID
-      condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
 
   DataRateSpec:
     semantic_role: specialization
@@ -86,3 +83,42 @@ models:
       max_nodes: optional int
       max_users: optional int
       max_streams: optional int
+
+  SignalQuality:
+    description: Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning
+    semantic_role: specialization
+    parent: Measurement
+    fields:
+      strength_dbm: optional float
+      snr_db: optional float
+      quality_ratio: optional float
+
+  DeliveryQuality:
+    description: Protocol-neutral observed communication delivery quality over an observation interval
+    semantic_role: specialization
+    parent: Measurement
+    fields:
+      latency_s: optional float
+      packet_loss_ratio: optional float
+      error_ratio: optional float
+
+  LinkCounters:
+    description: Monotonic observed communication-link event counters
+    semantic_role: specialization
+    parent: Measurement
+    fields:
+      error_count: optional int
+      receive_error_count: optional int
+      corrected_receive_count: optional int
+
+  LinkState:
+    description: Time-varying condition and observed quality of a communication link
+    semantic_role: ontology
+    parent: State
+    fields:
+      link_id: optional StringID
+      condition: optional LinkCondition
+      connection_status: optional ConnectionStatus
+      signal: optional SignalQuality
+      delivery: optional DeliveryQuality
+      counters: optional LinkCounters

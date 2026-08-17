@@ -128,7 +128,6 @@ class RemoteControlSchema(Interface):
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
-    telemetry: TelemetryState | None = None
     rc_telemetry: ControlAxisSet | None = None
     control_input: ControlAxisSet | None = None
     control_output: ControlAxisSet | None = None
@@ -165,7 +164,7 @@ class ObserverSource(Interface):
     can_zoom: builtins.bool = False
 
 class FlightControlState(GNC):
-    'Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers'
+    'Portable flight-controller operational state independent of endpoint-specific mode identifiers'
     __occid_model_id__: ClassVar[int] = 251
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     armed: builtins.bool | None = None
@@ -173,12 +172,6 @@ class FlightControlState(GNC):
     override_active: builtins.bool | None = None
     failsafe: builtins.bool | None = None
     standard_mode: StandardFlightMode | None = None
-    native_mode_name: builtins.str | None = None
-    native_mode_code: builtins.int | None = None
-    native_active_mode_codes: list[builtins.int]
-    native_active_mode_names: list[builtins.str]
-    native_nav_state_code: builtins.int | None = None
-    native_system_state_code: builtins.int | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
     navigation_validity: NavigationValidity | None = None
     readiness: NavReadinessState | None = None

@@ -114,7 +114,6 @@ model_ids:
   CommandMessage: 136
   HumanTextMessage: 137
   GNC: 138
-  TelemetryState: 139
   NavigationValidity: 140
   GnssSolution: 141
   Health: 142
@@ -283,3 +282,8 @@ model_ids:
   Activation: 320
   Validation: 321
   Cue: 322
+  Airspeed: 323
+  SignalQuality: 324
+  DeliveryQuality: 325
+  LinkCounters: 326
+  LinkState: 327

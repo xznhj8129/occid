@@ -5,6 +5,14 @@ root: Kinematic
 tags:
   - core
 
+enums:
+  AirspeedReference:
+    - UNSPECIFIED = 0
+    - INDICATED
+    - CALIBRATED
+    - TRUE
+    - EQUIVALENT
+
 models:
   Kinematic:
     description: Motion and derived movement state.
@@ -21,3 +29,11 @@ models:
       temperature_deg_c: optional float
       timestamp_us: optional int
       frame: optional BodyReferenceFrame
+
+  Airspeed:
+    description: Air-relative vehicle speed with explicit interpretation when known
+    semantic_role: specialization
+    parent: Measurement
+    fields:
+      speed_ms: float
+      reference: AirspeedReference = UNSPECIFIED

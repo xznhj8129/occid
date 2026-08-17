@@ -130,7 +130,6 @@ models:
       rc_link: string = ""
       vid_link: string = ""
       ctrl_video_sep: optional bool
-      telemetry: optional TelemetryState
       rc_telemetry: optional ControlAxisSet
       control_input: optional ControlAxisSet
       control_output: optional ControlAxisSet
@@ -168,7 +167,7 @@ models:
       can_zoom: bool = false
 
   FlightControlState:
-    description: Flight-controller state with portable standard mode semantics plus opaque endpoint-native mode identifiers
+    description: Portable flight-controller operational state independent of endpoint-specific mode identifiers
     semantic_role: specialization
     parent: GNC
     fields:
@@ -177,12 +176,6 @@ models:
       override_active: optional bool
       failsafe: optional bool
       standard_mode: optional StandardFlightMode
-      native_mode_name: optional string
-      native_mode_code: optional int
-      native_active_mode_codes: list[int]
-      native_active_mode_names: list[string]
-      native_nav_state_code: optional int
-      native_system_state_code: optional int
       attitude_setpoint: optional ControlAttitudeSetpoint
       navigation_validity: optional NavigationValidity
       readiness: optional NavReadinessState

@@ -51,29 +51,6 @@ models:
     semantic_role: ontology
     parent: State
 
-  TelemetryState:
-    semantic_role: specialization
-    parent: GNC
-    fields:
-      standard_mode: optional StandardFlightMode
-      native_mode_name: optional string
-      native_mode_code: optional int
-      flight_phase: optional FlightPhase
-      plan_phase: optional FlightPlanPhase
-      attitude: optional EulerAngles
-      velocity: optional VelocityVector
-      angular_velocity: optional AngularVelocityVector
-      battery_pct: optional float
-      airspeed_ms: optional float
-      groundspeed_ms: optional float
-      heading_deg: optional float
-      climb_rate_ms: optional float
-      link_rssi: optional float
-      link_remote_rssi: optional float
-      link_drop_rate_pct: optional float
-      link_rx_errors: optional int
-      link_fixed_errors: optional int
-
   NavigationValidity:
     semantic_role: specialization
     parent: GNC
@@ -87,7 +64,6 @@ models:
     parent: GNC
     fields:
       fix_type: optional GnssFixType
-      fix_code: optional int
       satellites_used: optional int
       position: optional GlobalPosition
       altitude: optional AltitudeState
@@ -95,12 +71,7 @@ models:
       ground_course_deg: optional float
       hdop: optional float
       vdop: optional float
-      eph: optional float
-      epv: optional float
       yaw_deg: optional float
-      last_message_dt: optional float
-      errors: optional float
-      timeouts: optional float
 
   AutopilotMissionState:
     description: State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state

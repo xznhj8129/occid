@@ -3,7 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .link import Link
+from .link import LinkState
 from .message import Message
 from .network import Network
 from .node import Node
@@ -24,15 +24,12 @@ class MeshtasticPort(IntEnum):
 
 ### Models
 
-class MeshLink(Link):
+class MeshLink(LinkState):
+    'Observed state of a link between two mesh nodes'
     __occid_model_id__: ClassVar[int] = 225
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     src_id: StringID
     dst_id: StringID
-    condition: LinkCondition
-    connection_status: ConnectionStatus | None = None
-    latency_ms: builtins.float | None = None
-    packet_loss: builtins.float | None = None
     updated_ts: builtins.float | None = None
 
 class MeshNode(Node):
@@ -42,11 +39,7 @@ class MeshNode(Node):
     state: MeshNodeState | None = None
     last_seen_ts: builtins.float | None = None
     position: GlobalPosition | None = None
-    rssi: builtins.float | None = None
-    snr: builtins.float | None = None
-    hop_limit: builtins.int | None = None
-    link_condition: LinkCondition | None = None
-    connection_status: ConnectionStatus | None = None
+    link_state: LinkState | None = None
     roles: list[CapabilityRole]
 
 class MeshView(Network):
@@ -74,20 +67,12 @@ class MeshtasticMessage(Message):
 class MeshReceiveMetrics(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    snr: builtins.float | None = None
-    rssi: builtins.float | None = None
-    hop_limit: builtins.int | None = None
-    rx_time: builtins.float | None = None
+    state: LinkState
 
 class MeshPositionSample(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    position: GlobalPosition
-    position_ts: builtins.float | None = None
-    pdop: builtins.float | None = None
-    ground_speed: builtins.float | None = None
-    ground_track: builtins.float | None = None
-    sats_in_view: builtins.int | None = None
+    state: LocationState
 
 class NodeHeartbeat(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 231
@@ -95,8 +80,4 @@ class NodeHeartbeat(TelemetryMessage):
     node_id: StringID
     last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None
-    rssi: builtins.float | None = None
-    snr: builtins.float | None = None
-    hop_limit: builtins.int | None = None
-    link_condition: LinkCondition | None = None
-    connection_status: ConnectionStatus | None = None
+    state: LinkState

@@ -4,6 +4,16 @@ import builtins
 from .common import *
 
 from .state import State
+from .struct import Measurement
+
+### Enums
+
+class AirspeedReference(IntEnum):
+    UNSPECIFIED = 0
+    INDICATED = auto()
+    CALIBRATED = auto()
+    TRUE = auto()
+    EQUIVALENT = auto()
 
 ### Models
 
@@ -21,3 +31,10 @@ class ImuSample(Kinematic):
     temperature_deg_c: builtins.float | None = None
     timestamp_us: builtins.int | None = None
     frame: BodyReferenceFrame | None = None
+
+class Airspeed(Measurement):
+    'Air-relative vehicle speed with explicit interpretation when known'
+    __occid_model_id__: ClassVar[int] = 323
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    speed_ms: builtins.float
+    reference: AirspeedReference = AirspeedReference.UNSPECIFIED

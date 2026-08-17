@@ -48,7 +48,6 @@ models:
     parent: Resource
     fields:
       source_id: optional StringID
-      battery_id: optional int
       voltage_v: optional float
       current_a: optional float
       power_w: optional float
@@ -58,4 +57,3 @@ models:
       remaining_pct: optional float
       remaining_capacity: optional float
       temperature_deg_c: optional float
-      rssi: optional float

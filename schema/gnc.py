@@ -53,28 +53,6 @@ class GNC(State):
     __occid_model_id__: ClassVar[int] = 138
     __occid_semantic_role__: ClassVar[str] = 'ontology'
 
-class TelemetryState(GNC):
-    __occid_model_id__: ClassVar[int] = 139
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    standard_mode: StandardFlightMode | None = None
-    native_mode_name: builtins.str | None = None
-    native_mode_code: builtins.int | None = None
-    flight_phase: FlightPhase | None = None
-    plan_phase: FlightPlanPhase | None = None
-    attitude: EulerAngles | None = None
-    velocity: VelocityVector | None = None
-    angular_velocity: AngularVelocityVector | None = None
-    battery_pct: builtins.float | None = None
-    airspeed_ms: builtins.float | None = None
-    groundspeed_ms: builtins.float | None = None
-    heading_deg: builtins.float | None = None
-    climb_rate_ms: builtins.float | None = None
-    link_rssi: builtins.float | None = None
-    link_remote_rssi: builtins.float | None = None
-    link_drop_rate_pct: builtins.float | None = None
-    link_rx_errors: builtins.int | None = None
-    link_fixed_errors: builtins.int | None = None
-
 class NavigationValidity(GNC):
     __occid_model_id__: ClassVar[int] = 140
     __occid_semantic_role__: ClassVar[str] = 'specialization'
@@ -86,7 +64,6 @@ class GnssSolution(GNC):
     __occid_model_id__: ClassVar[int] = 141
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     fix_type: GnssFixType | None = None
-    fix_code: builtins.int | None = None
     satellites_used: builtins.int | None = None
     position: GlobalPosition | None = None
     altitude: AltitudeState | None = None
@@ -94,12 +71,7 @@ class GnssSolution(GNC):
     ground_course_deg: builtins.float | None = None
     hdop: builtins.float | None = None
     vdop: builtins.float | None = None
-    eph: builtins.float | None = None
-    epv: builtins.float | None = None
     yaw_deg: builtins.float | None = None
-    last_message_dt: builtins.float | None = None
-    errors: builtins.float | None = None
-    timeouts: builtins.float | None = None
 
 class AutopilotMissionState(GNC):
     'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'

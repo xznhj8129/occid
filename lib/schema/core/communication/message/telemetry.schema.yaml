@@ -17,7 +17,7 @@ models:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      state: TelemetryState
+      state: EntityState
 
   CapabilityAdvert:
     semantic_role: specialization

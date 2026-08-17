@@ -44,7 +44,6 @@ class ElectricalResourceState(Resource):
     __occid_model_id__: ClassVar[int] = 189
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     source_id: StringID | None = None
-    battery_id: builtins.int | None = None
     voltage_v: builtins.float | None = None
     current_a: builtins.float | None = None
     power_w: builtins.float | None = None
@@ -54,4 +53,3 @@ class ElectricalResourceState(Resource):
     remaining_pct: builtins.float | None = None
     remaining_capacity: builtins.float | None = None
     temperature_deg_c: builtins.float | None = None
-    rssi: builtins.float | None = None

@@ -29,16 +29,16 @@ class EntityState(State):
     position: LocationState | None = None
     motion: VelocityVector | None = None
     angular_velocity: AngularVelocityVector | None = None
-    telemetry: TelemetryState | None = None
+    airspeed: Airspeed | None = None
     flight_control: FlightControlState | None = None
     power: PowerStateSchema | None = None
     operational_status: EntityOperationalState | None = None
     lifecycle_status: EntityLifecycleStatus | None = None
     health: HealthSnapshot | None = None
     resources: SuppliesSchema | None = None
-    links: dict[builtins.str, LinkCondition]
+    link_states: dict[builtins.str, LinkState]
     control_state: ControlLevel | None = None
     source_observation_ts: builtins.float | None = None
     source_time_basis: ObservationTimeBasis | None = None
-    telemetry_received_ts: builtins.float | None = None
+    received_ts: builtins.float | None = None
     published_ts: builtins.float | None = None
