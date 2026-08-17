@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import re
 import shutil
 import subprocess
 import sys
@@ -71,7 +70,6 @@ def _build(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, 
 
 
 def write_manifest(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
-    """Regenerate the tiny checked-in OCCID integrity marker."""
     root = Path(repo_root).resolve()
     manifest = _build(root, include_modules=include_modules)
     manifest_path(root).write_text(
@@ -85,7 +83,6 @@ def write_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
 
 
 def load_manifest(repo_root: str | Path | None = None) -> dict[str, Any]:
-    """Return the current full contract calculated from canonical OCCID YAML."""
     root = Path(repo_root).resolve() if repo_root is not None else Path(__file__).resolve().parents[1]
     manifest = _build(root)
     if _read_marker(root) != _marker(manifest):
@@ -149,21 +146,14 @@ def lock_path(source_root: str | Path) -> Path:
     return Path(source_root).resolve() / LOCK_NAME
 
 
-def _read_lock(source_root: str | Path) -> dict[str, Any]:
+def read_lock(source_root: str | Path) -> dict[str, Any]:
     path = lock_path(source_root)
     if not path.is_file():
         raise ContractError(
             f"missing OCCID consumer lock: {path}; run `python -m occid.contract lock {Path(source_root).resolve()}`"
         )
-    text = path.read_text(encoding="utf-8").strip()
-
-    # One-time bootstrap for the first structural-contract cut. A raw hash is
-    # only accepted while it exactly matches current OCCID. Future locks are JSON.
-    if re.fullmatch(r"[0-9a-f]{64}", text):
-        return {"format": 0, "global_hash": text, "symbols": {}}
-
     try:
-        lock = json.loads(text)
+        lock = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ContractError(f"invalid OCCID consumer lock: {path}: {exc}") from exc
     if (
@@ -193,7 +183,7 @@ def write_lock(source_root: str | Path, occid_root: str | Path | None = None) ->
 
 def check_consumer(source_root: str | Path, occid_root: str | Path | None = None) -> ContractCheck:
     current = load_manifest(occid_root)
-    lock = _read_lock(source_root)
+    lock = read_lock(source_root)
     baseline_hash = str(lock["global_hash"])
     expected = {str(name): str(value) for name, value in lock["symbols"].items()}
 
@@ -201,17 +191,11 @@ def check_consumer(source_root: str | Path, occid_root: str | Path | None = None
     used = tuple(sorted(scan_used_symbols(source_root, scan_manifest)))
 
     if baseline_hash == current["global_hash"]:
-        if lock.get("format") == FORMAT_VERSION:
-            missing = tuple(name for name in used if name not in expected)
-            if missing:
-                raise ContractError(
-                    f"{lock_path(source_root)} is stale; run `python -m occid.contract lock {Path(source_root).resolve()}`"
-                )
         return ContractCheck(True, True, used, (), {}, baseline_hash, current["global_hash"])
 
     if not expected:
         raise ContractError(
-            f"{lock_path(source_root)} is the old raw-hash form and OCCID has changed; regenerate the consumer lock after validating the consumer"
+            f"{lock_path(source_root)} only records an exact global baseline; validate the consumer against current OCCID and run `python -m occid.contract lock {Path(source_root).resolve()}`"
         )
 
     changed = [
