@@ -20,7 +20,6 @@ class OCCIDModel(BaseModel):
 
     def encode(self) -> bytes:
         envelope = {
-            "schema_version": list(OCCID_SCHEMA_VERSION),
             "model_id": OCCID_MODEL_ID_BY_CLASS[type(self)],
             "fields": self._wire_model_fields(self),
         }
@@ -144,23 +143,20 @@ def decode_model(payload: bytes) -> OCCIDModel:
     """Decode a heterogeneous OCCID transient envelope by its model ID.
 
     This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
-    know the concrete model class before inspecting the envelope. It validates
-    the schema version and model ID, then delegates field reconstruction to the
-    registered generated model. Runtime routing or behavioral policy does not
-    belong here.
+    know the concrete model class before inspecting the envelope. The transient
+    envelope identifies the concrete model and carries its fields; schema change
+    detection belongs to the OCCID contract manifest/build check, not every wire
+    payload.
     """
     envelope = msgpack.unpackb(payload, raw=False)
     if type(envelope) is not dict:
         raise ValueError("OCCID payload envelope must be a map")
-    required = {"schema_version", "model_id", "fields"}
+    required = {"model_id", "fields"}
     if set(envelope) != required:
         raise ValueError(
             f"OCCID payload envelope fields must be {sorted(required)}; "
             f"got {sorted(envelope) if all(type(key) is str for key in envelope) else list(envelope)}"
         )
-    version = tuple(envelope["schema_version"])
-    if version != OCCID_SCHEMA_VERSION:
-        raise ValueError(f"unsupported OCCID schema version {version}; expected {OCCID_SCHEMA_VERSION}")
     model_id = envelope["model_id"]
     model_cls = OCCID_MODEL_BY_ID.get(model_id)
     if model_cls is None:
