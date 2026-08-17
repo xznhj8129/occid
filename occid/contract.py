@@ -71,11 +71,7 @@ def _build(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, 
 
 
 def write_manifest(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
-    """Regenerate the tiny checked-in OCCID integrity marker.
-
-    Per-symbol hashes are calculated directly from the canonical YAML whenever
-    they are needed. They are not duplicated into a generated shard tree.
-    """
+    """Regenerate the tiny checked-in OCCID integrity marker."""
     root = Path(repo_root).resolve()
     manifest = _build(root, include_modules=include_modules)
     manifest_path(root).write_text(
@@ -161,9 +157,8 @@ def _read_lock(source_root: str | Path) -> dict[str, Any]:
         )
     text = path.read_text(encoding="utf-8").strip()
 
-    # Temporary bootstrap for the already-committed first-generation locks.
-    # It remains safe while the global hash still matches. Once OCCID changes,
-    # the consumer must have a normal JSON lock with its expected symbol hashes.
+    # One-time bootstrap for the first structural-contract cut. A raw hash is
+    # only accepted while it exactly matches current OCCID. Future locks are JSON.
     if re.fullmatch(r"[0-9a-f]{64}", text):
         return {"format": 0, "global_hash": text, "symbols": {}}
 
@@ -200,25 +195,30 @@ def check_consumer(source_root: str | Path, occid_root: str | Path | None = None
     current = load_manifest(occid_root)
     lock = _read_lock(source_root)
     baseline_hash = str(lock["global_hash"])
-
-    if baseline_hash == current["global_hash"]:
-        used = tuple(sorted(scan_used_symbols(source_root, current)))
-        return ContractCheck(True, True, used, (), {}, baseline_hash, current["global_hash"])
-
     expected = {str(name): str(value) for name, value in lock["symbols"].items()}
-    if not expected:
-        raise ContractError(
-            f"{lock_path(source_root)} predates per-symbol locks; regenerate it against the last known-good OCCID before changing OCCID"
-        )
 
     scan_manifest = {"symbols": {name: {} for name in set(current["symbols"]) | set(expected)}}
     used = tuple(sorted(scan_used_symbols(source_root, scan_manifest)))
-    changed: list[str] = []
-    for name in used:
-        current_entry = current["symbols"].get(name)
-        if current_entry is None or expected.get(name) != current_entry.get("hash"):
-            changed.append(name)
 
+    if baseline_hash == current["global_hash"]:
+        if lock.get("format") == FORMAT_VERSION:
+            missing = tuple(name for name in used if name not in expected)
+            if missing:
+                raise ContractError(
+                    f"{lock_path(source_root)} is stale; run `python -m occid.contract lock {Path(source_root).resolve()}`"
+                )
+        return ContractCheck(True, True, used, (), {}, baseline_hash, current["global_hash"])
+
+    if not expected:
+        raise ContractError(
+            f"{lock_path(source_root)} is the old raw-hash form and OCCID has changed; regenerate the consumer lock after validating the consumer"
+        )
+
+    changed = [
+        name
+        for name in used
+        if current["symbols"].get(name, {}).get("hash") != expected.get(name)
+    ]
     causes = {name: (name,) for name in changed}
     return ContractCheck(
         not changed,
