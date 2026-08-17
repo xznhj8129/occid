@@ -1,1 +1,0 @@
-from occid.schema import *
