@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=66.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "occid"
+dynamic = ["version"]
+description = "Open Command, Control, Intelligence Data"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "msgpack>=1.0",
+    "pydantic>=2.0",
+    "PyYAML>=6.0",
+]
+
+[tool.setuptools]
+packages = ["occid"]
+
+[tool.setuptools.dynamic]
+version = {file = ["VERSION"]}
