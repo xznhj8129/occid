@@ -36,9 +36,36 @@ The parser or adapter-local snapshot **may and usually should remain protocol-sh
 For every external value, apply this rule:
 
 1. **OCCID already expresses the meaning:** map into that semantic model, enum, measurement, identity, relationship, or State.
-2. **OCCID lacks the meaning, but the concept is protocol-independent and operationally useful:** improve OCCID by adding the missing semantic primitive.
+2. **OCCID lacks the meaning, but the concept is protocol-independent and operationally useful:** treat the mismatch as a possible semantic-depth defect and refine OCCID before reaching for an escape hatch.
 3. **The value is useful only for decoding, interoperability bookkeeping, diagnostics, or source-specific debugging:** keep it in the adapter/interop layer or explicit provenance/mapping data.
-4. **The meaning or units are not known strongly enough:** do not publish it as semantic data.
+4. **The meaning or units are not known strongly enough:** do not publish it as semantic data yet; investigate the source semantics before deciding that OCCID does not need the concept.
+
+### Semantic-depth refinement principle
+
+> **When external data cannot be cleanly represented by OCCID's existing semantic primitives, compositions, or controlled vocabularies, first treat that as evidence that OCCID may be too shallow in that area, not as evidence that the data is irrelevant.**
+
+Interoperability work is therefore an ontology-discovery mechanism. A foreign protocol, API, sensor, database, or operational system can expose a distinction that OCCID has not yet modeled. The correct response is to determine what fact about reality the datum carries and whether that fact can be reduced to existing semantic primitives, composed from them, or represented by controlled vocabulary.
+
+Use this investigation order:
+
+1. Determine what the source datum actually means, including units, reference frame, scale, time basis, identity scope, and any source-specific interpretation rules.
+2. Restate it without relying on the source protocol's field name or encoding.
+3. Try to render that meaning using existing OCCID primitives, relationships, measurements, State, composition, and controlled vocabulary.
+4. If the meaning is protocol-independent but OCCID still cannot represent it cleanly, treat the mismatch as evidence for a missing primitive, relation, structure, or vocabulary and refine the model at the appropriate semantic level.
+5. Only after the meaning is understood should a value be classified as genuinely protocol-local bookkeeping, provenance, decoding state, or diagnostic data that belongs outside OCCID core.
+
+Two easy ways out are specifically wrong:
+
+- copying an unmodeled datum into `native_*`, arbitrary metadata, or a generic telemetry bag because modeling it properly is inconvenient;
+- discarding a useful datum merely because the current ontology has nowhere clean to put it.
+
+The first avoids semantic normalization. The second hides a possible hole in the ontology. Both prevent OCCID from becoming deeper through contact with real systems.
+
+A useful design smell test is:
+
+> **If a proposed field cannot be rendered as a semantic primitive, a lawful composition of primitives, or controlled vocabulary, investigate whether the surrounding part of OCCID is shallow before adding the field or throwing the datum away.**
+
+This does not imply that every source field belongs in OCCID. It means that exclusion is a conclusion reached after semantic investigation, not the default response to a modeling mismatch.
 
 There is intentionally no escape hatch of the form:
 
