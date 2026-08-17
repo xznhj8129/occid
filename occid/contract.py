@@ -86,10 +86,39 @@ def current_manifest() -> dict[str, Any]:
     return manifest
 
 
+def load_manifest() -> dict[str, Any]:
+    """Return the current structural contract for the imported OCCID module."""
+    return current_manifest()
+
+
+def model_hashes_for_ids(
+    manifest: dict[str, Any],
+    model_ids: Iterable[int],
+) -> dict[int, str]:
+    """Return structural hashes for permanent OCCID model IDs."""
+    wanted = {int(value) for value in model_ids}
+    result: dict[int, str] = {}
+    for entry in manifest["symbols"].values():
+        model_id = entry.get("model_id")
+        if model_id in wanted:
+            result[int(model_id)] = str(entry["hash"])
+    missing = sorted(wanted - set(result))
+    if missing:
+        raise ContractError(f"current OCCID does not define model IDs: {missing}")
+    return result
+
+
 def _python_files(root: Path) -> Iterable[Path]:
     for path in root.rglob("*.py"):
         if not any(part in IGNORED_DIRS for part in path.relative_to(root).parts):
             yield path
+
+
+def _attribute_root(node: ast.AST) -> str | None:
+    current = node
+    while isinstance(current, ast.Attribute):
+        current = current.value
+    return current.id if isinstance(current, ast.Name) else None
 
 
 def scan_used_symbols(
@@ -114,12 +143,18 @@ def scan_used_symbols(
                 for alias in node.names:
                     if alias.name == "occid":
                         occid_aliases.add(alias.asname or "occid")
+                    elif alias.name.startswith("occid.schema"):
+                        # ``import occid.schema`` binds ``occid``; an ``as``
+                        # form binds the explicit alias instead.
+                        occid_aliases.add(alias.asname or "occid")
             elif isinstance(node, ast.ImportFrom):
                 module = node.module or ""
                 if module == "occid" or module.startswith("occid.schema"):
                     for alias in node.names:
                         if alias.name == "*":
                             used.update(known)
+                        elif module == "occid" and alias.name == "schema":
+                            occid_aliases.add(alias.asname or "schema")
                         elif alias.name in known:
                             used.add(alias.name)
                 else:
@@ -132,8 +167,7 @@ def scan_used_symbols(
         for node in ast.walk(tree):
             if (
                 isinstance(node, ast.Attribute)
-                and isinstance(node.value, ast.Name)
-                and node.value.id in occid_aliases
+                and _attribute_root(node) in occid_aliases
                 and node.attr in known
             ):
                 used.add(node.attr)
@@ -181,14 +215,34 @@ def generate_consumer_manifest(source_root: str | Path = ".") -> dict[str, Any]:
 
 
 def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
-    """Compare a saved consumer manifest with the OCCID module imported now."""
+    """Compare a saved consumer manifest with the imported OCCID module."""
     expected = _read_consumer_manifest(source_root)
     current = current_manifest()
+    saved = expected["symbols"]
+
+    # Include saved names while scanning so a model removed from current OCCID
+    # is still recognized as a dependency if the consumer still imports it.
+    scan_manifest = {
+        "symbols": {
+            name: current["symbols"].get(name, {})
+            for name in set(current["symbols"]) | set(saved)
+        }
+    }
+    used = scan_used_symbols(source_root, scan_manifest)
+
+    untracked = sorted(used - set(saved))
+    if untracked:
+        path = consumer_manifest_path(source_root)
+        names = ", ".join(untracked)
+        raise ContractError(
+            f"{path} is stale; untracked OCCID symbols: {names}; "
+            f"run `python -m occid.contract generate {Path(source_root).resolve()}`"
+        )
 
     if expected["global_hash"] == current["global_hash"]:
         return ()
 
-    if not expected["symbols"]:
+    if not saved and used:
         path = consumer_manifest_path(source_root)
         raise ContractError(
             f"{path} has no model fingerprints; "
@@ -197,8 +251,8 @@ def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
 
     changed = [
         name
-        for name, expected_hash in expected["symbols"].items()
-        if current["symbols"].get(name, {}).get("hash") != expected_hash
+        for name in used
+        if current["symbols"].get(name, {}).get("hash") != saved[name]
     ]
     return tuple(sorted(changed))
 
