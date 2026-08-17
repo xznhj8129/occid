@@ -1,6 +1,6 @@
 # OCCID
 
-> **VERSION INVARIANT: 0.0.1.** OCCID is version **0.0.1** and remains **0.0.1** until the Conqueror Frog project owner explicitly authorizes a version change. Schema breaks, refactors, regeneration, milestones, and internal compatibility changes do **not** increment it.
+> **VERSION INVARIANT: 0.0.1.** OCCID is version **0.0.1** and remains **0.0.1** until the project owner explicitly authorizes a version change. Schema breaks, refactors, regeneration, milestones, and internal compatibility changes do **not** increment it.
 
 **Open Command, Control and Information Data model**
 
@@ -201,3 +201,7 @@ python -m unittest discover -s tests
 ```
 
 See `docs/end_to_end_ooda.md` for the scenario invariants.
+
+## License
+
+OCCID is licensed under the GNU General Public License version 3.0. See `LICENSE`.

@@ -38,7 +38,7 @@
 
 ## 2026-08-14 - Control ontology refactor
 
-- Implemented the Control refactor from `AI_SHARED/projects/software/skynet/occid/ControlRefactor.md`, subject to repository review before downstream integration.
+- Implemented the Control ontology refactor, subject to repository review before downstream integration.
 - Added `Directive` and `Authority`; established Task as instruction-bearing directed work.
 - Replaced endpoint-shaped core command classes with semantic StateChange, ProcessControl, Configuration, Motion, Resource, and Execution command families.
 - Moved Assignment into Control while retaining Execution, ExecutionAcceptance, ExecutionStatusReport, and TaskDelta as runtime State records.
