@@ -1,5 +1,21 @@
 # Development log
 
+## 2026-08-17 - Protocol-neutral observation-state correction
+
+- Traced flat telemetry and endpoint-native state fields back to the pre-ontological HiveLink protocol, where MAVLink-derived flight mode, speed, heading, altitude, RSSI/SNR, network quality, and endpoint-shaped commands were carried directly in transport payloads.
+- Established the durable semantic-normalization invariant: no protocol-native scalar enters OCCID merely because the source protocol exposes it. Adapter-local parser/snapshot structures may remain protocol-shaped; the adapter -> OCCID boundary must normalize to protocol-independent semantics.
+- Removed `TelemetryState` rather than retaining a generic bag for protocol telemetry.
+- Removed `native_mode_name`, `native_mode_code`, active native mode lists, native navigation-state code, and native system-state code from `FlightControlState`. Endpoint mode values may be used to derive `StandardFlightMode` and other semantic state, then stop at the adapter boundary.
+- Removed raw `fix_code`, generic source age/error/timeout fields, and duplicate EPH/EPV aliases from `GnssSolution`.
+- Removed protocol battery IDs and stray RSSI from `ElectricalResourceState`; distinct electrical resources use semantic source identity.
+- Separated static communication definition from mutable observation: `Link` no longer owns connection condition/status; new `LinkState` contains changing condition plus `SignalQuality`, `DeliveryQuality`, and `LinkCounters`.
+- Defined signal quality only for measurements whose physical or normalized meaning is actually known. Device-dependent values such as generic MAVLink `RADIO_STATUS.rssi/remrssi` must not be relabeled as dBm or another semantic unit.
+- Added typed `Airspeed : Measurement` with an explicit reference vocabulary instead of carrying airspeed in a generic telemetry structure.
+- Updated mesh link/node state to reuse the same generic `LinkState` semantics instead of maintaining a parallel flat RSSI/SNR/loss/status mini-model.
+- Changed `EntityState` into the semantic observation aggregate and made `UAVTelemetryMessage` carry `EntityState` rather than the removed `TelemetryState`.
+- Added regression coverage specifically asserting that protocol-native escape hatches do not return.
+- Documented the historical lesson explicitly: an existing protocol-shaped OCCID field is not precedent for another field; it may be legacy residue that should be removed.
+
 ## 2026-08-15 - APEX payload mapping primitives
 
 - Mapped the APEX Payload specification against OCCID and used the fit as an external stress test of the core ontology rather than adding APEX-shaped classes.

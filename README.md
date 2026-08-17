@@ -16,6 +16,55 @@ Generated runtime models live physically in `schema/`, but consumers should impo
 
 APEX Payload is an interoperability target and an explicit external stress test of OCCID's payload, capability, condition, and state model. APEX wire/session concepts remain adapter concerns; only protocol-neutral semantic primitives exposed by the mapping belong in OCCID core.
 
+## Semantic normalization invariant
+
+> **No protocol-native scalar enters OCCID merely because a protocol exposes it.**
+
+OCCID represents facts and concepts about the world, systems, work, and operational condition. It does not preserve endpoint packet layouts, message fields, numeric codes, names, masks, IDs, or convenience aggregates unless those values have a protocol-independent semantic meaning in the OCCID model.
+
+Protocol adapters are expected to have a deliberately asymmetric boundary:
+
+```text
+external protocol
+    -> protocol-shaped parser/snapshot
+    -> semantic interpretation
+    -> OCCID
+```
+
+The parser or adapter-local snapshot **may and usually should remain protocol-shaped**. MAVLink `custom_mode`, CoT attributes, ROS message fields, proprietary status masks, protocol component IDs, and similar values belong there when needed to decode the source. The normalization boundary is the point where protocol vocabulary stops and OCCID semantics begin.
+
+For every external value, apply this rule:
+
+1. **OCCID already expresses the meaning:** map into that semantic model, enum, measurement, identity, relationship, or State.
+2. **OCCID lacks the meaning, but the concept is protocol-independent and operationally useful:** improve OCCID by adding the missing semantic primitive.
+3. **The value is useful only for decoding, interoperability bookkeeping, diagnostics, or source-specific debugging:** keep it in the adapter/interop layer or explicit provenance/mapping data.
+4. **The meaning or units are not known strongly enough:** do not publish it as semantic data.
+
+There is intentionally no escape hatch of the form:
+
+```text
+native_mode_code: int
+native_mode_name: string
+native_status: int
+protocol_whatever: float
+```
+
+A `native_*` field is especially suspect because it makes the common model depend on the foreign protocol it is supposed to normalize. If a protocol has a useful state distinction that OCCID cannot express, model the distinction itself rather than carrying the source code beside the ontology.
+
+The same rule applies to physical measurements. A source field called `rssi` is not automatically dBm; a speed is not automatically airspeed; heading is not ground course; a protocol timestamp is not automatically wall-clock time. Values may enter `Measurement`, `State`, or other semantic structures only with the units, reference, direction, clock basis, or interpretation required to make the claim true.
+
+Likewise, stable description and mutable observation must not be conflated merely because a source packet contains both. For example, `Link` describes communication capability/configuration, while changing connection condition and quality belong in `LinkState`.
+
+Protocol identity is not automatically domain identity. Source addresses, MAVLink sysid/compid, protocol message IDs, endpoint-native object IDs, and similar values may be required for routing or provenance without becoming the OCCID identity of the represented Entity or Object.
+
+### Historical warning: the HiveLink lineage
+
+This rule is not theoretical. Early HiveLink, before OCCID matured into the semantic model, combined transport with an informal data protocol. Its payloads carried flat fields such as flight mode strings, airspeed, groundspeed, heading, altitude, RSSI, SNR, latency, and endpoint-shaped commands. Early MAVLink examples copied MAVLink-derived values directly into those HiveLink payload structures.
+
+Some of that design lineage survived later migrations as generic telemetry bags and `native_*` fields. The 2026 field-observation correction exposed the problem when a MAVLink adapter naturally began extending those fields with still more protocol-shaped values. OCCID then removed `TelemetryState`, removed native flight-mode/system-state escape hatches, separated `Link` from `LinkState`, removed protocol battery IDs and stray RSSI fields, and added real semantic primitives such as typed `Airspeed` and protocol-neutral link quality/counter models.
+
+That history is a design warning: **an existing protocol-shaped OCCID field is not precedent for adding another one. It may be residue that should be removed.**
+
 ## Control contract
 
 The Control ontology is deliberately small:
