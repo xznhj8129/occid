@@ -63,8 +63,17 @@ class TelemetryState(GNC):
     plan_phase: FlightPlanPhase | None = None
     attitude: EulerAngles | None = None
     velocity: VelocityVector | None = None
+    angular_velocity: AngularVelocityVector | None = None
     battery_pct: builtins.float | None = None
+    airspeed_ms: builtins.float | None = None
+    groundspeed_ms: builtins.float | None = None
+    heading_deg: builtins.float | None = None
+    climb_rate_ms: builtins.float | None = None
     link_rssi: builtins.float | None = None
+    link_remote_rssi: builtins.float | None = None
+    link_drop_rate_pct: builtins.float | None = None
+    link_rx_errors: builtins.int | None = None
+    link_fixed_errors: builtins.int | None = None
 
 class NavigationValidity(GNC):
     __occid_model_id__: ClassVar[int] = 140

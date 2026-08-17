@@ -197,6 +197,7 @@ class LocationState(Position):
     inertial_frame: InertialReferenceFrame | None = None
     body_frame: BodyReferenceFrame | None = None
     position: GlobalPosition | None = None
+    local_position: LocalVector | None = None
     uncertainty: LocationUncertainty | None = None
     attitude: EulerAngles | None = None
     altitude: AltitudeState | None = None

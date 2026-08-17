@@ -5,6 +5,12 @@ root: State
 tags:
   - core
 
+enums:
+  ObservationTimeBasis:
+    - UNKNOWN = 0
+    - UNIX
+    - BOOT
+
 models:
   State:
     description: Changing condition of an object, node, link, task, system, or process
@@ -39,9 +45,17 @@ models:
       timestamp: float
       position: optional LocationState
       motion: optional VelocityVector
+      angular_velocity: optional AngularVelocityVector
+      telemetry: optional TelemetryState
+      flight_control: optional FlightControlState
+      power: optional PowerStateSchema
       operational_status: optional EntityOperationalState
       lifecycle_status: optional EntityLifecycleStatus
       health: optional HealthSnapshot
       resources: optional SuppliesSchema
       links: map[string, LinkCondition]
       control_state: optional ControlLevel
+      source_observation_ts: optional float
+      source_time_basis: optional ObservationTimeBasis
+      telemetry_received_ts: optional float
+      published_ts: optional float

@@ -62,8 +62,17 @@ models:
       plan_phase: optional FlightPlanPhase
       attitude: optional EulerAngles
       velocity: optional VelocityVector
+      angular_velocity: optional AngularVelocityVector
       battery_pct: optional float
+      airspeed_ms: optional float
+      groundspeed_ms: optional float
+      heading_deg: optional float
+      climb_rate_ms: optional float
       link_rssi: optional float
+      link_remote_rssi: optional float
+      link_drop_rate_pct: optional float
+      link_rx_errors: optional int
+      link_fixed_errors: optional int
 
   NavigationValidity:
     semantic_role: specialization

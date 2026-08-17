@@ -207,6 +207,7 @@ models:
       inertial_frame: optional InertialReferenceFrame
       body_frame: optional BodyReferenceFrame
       position: optional GlobalPosition
+      local_position: optional LocalVector
       uncertainty: optional LocationUncertainty
       attitude: optional EulerAngles
       altitude: optional AltitudeState

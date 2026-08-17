@@ -142,14 +142,18 @@ models:
   ObserverSource:
     semantic_role: specialization
     parent: Interface
-    description: Remote imagery/video observation source with camera geometry and telemetry links
+    description: Entity-owned imagery/video observation source with stable source identity, local acquisition source, camera geometry, and telemetry links
     fields:
+      record: RecordMeta
+      source_id: StringID
+      entity_id: StringID
       name: string
+      local_source: string
       objtype: EntitySubtype = AIR_ROBOT
       active: bool = true
       dbid: optional StringID
-      pos: GlobalPosition
-      attitude: EulerAngles
+      pos: optional GlobalPosition
+      attitude: optional EulerAngles
       gimbal_ang: optional EulerAngles
       gimbal_axes: list[GimbalAxis]
       fov_h_deg: optional float
@@ -178,6 +182,7 @@ models:
       native_active_mode_codes: list[int]
       native_active_mode_names: list[string]
       native_nav_state_code: optional int
+      native_system_state_code: optional int
       attitude_setpoint: optional ControlAttitudeSetpoint
       navigation_validity: optional NavigationValidity
       readiness: optional NavReadinessState

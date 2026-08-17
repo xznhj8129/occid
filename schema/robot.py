@@ -138,15 +138,19 @@ class RemoteControlSchema(Interface):
     mode_ranges: list[ModeRange]
 
 class ObserverSource(Interface):
-    'Remote imagery/video observation source with camera geometry and telemetry links'
+    'Entity-owned imagery/video observation source with stable source identity, local acquisition source, camera geometry, and telemetry links'
     __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'specialization'
+    record: RecordMeta
+    source_id: StringID
+    entity_id: StringID
     name: builtins.str
+    local_source: builtins.str
     objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
     active: builtins.bool = True
     dbid: StringID | None = None
-    pos: GlobalPosition
-    attitude: EulerAngles
+    pos: GlobalPosition | None = None
+    attitude: EulerAngles | None = None
     gimbal_ang: EulerAngles | None = None
     gimbal_axes: list[GimbalAxis]
     fov_h_deg: builtins.float | None = None
@@ -174,6 +178,7 @@ class FlightControlState(GNC):
     native_active_mode_codes: list[builtins.int]
     native_active_mode_names: list[builtins.str]
     native_nav_state_code: builtins.int | None = None
+    native_system_state_code: builtins.int | None = None
     attitude_setpoint: ControlAttitudeSetpoint | None = None
     navigation_validity: NavigationValidity | None = None
     readiness: NavReadinessState | None = None
