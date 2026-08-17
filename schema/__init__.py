@@ -16,7 +16,6 @@ from .constraint import *
 from .directive import *
 from .event import *
 from .interface import *
-from .link import *
 from .media import *
 from .message import *
 from .network import *
@@ -43,9 +42,9 @@ from .internal import *
 from .isr import *
 from .kinematic import *
 from .lifecycle import *
+from .link import *
 from .military_organization import *
 from .parameter import *
-from .radio import *
 from .relationship import *
 from .resource import *
 from .sensorstate import *
@@ -55,10 +54,11 @@ from .telemetry import *
 from .validation import *
 from .entities import *
 from .mesh import *
-from .military_radio import *
 from .objective import *
 from .payload import *
+from .radio import *
 from .military_aerial import *
+from .military_radio import *
 from .robot import *
 from .uav import *
 from .military_effects import *

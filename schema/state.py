@@ -36,7 +36,7 @@ class EntityState(State):
     lifecycle_status: EntityLifecycleStatus | None = None
     health: HealthSnapshot | None = None
     resources: SuppliesSchema | None = None
-    link_states: dict[builtins.str, LinkState]
+    link_states: dict[builtins.str, SerializeAsAny[LinkState | MeshLink]]
     control_state: ControlLevel | None = None
     source_observation_ts: builtins.float | None = None
     source_time_basis: ObservationTimeBasis | None = None

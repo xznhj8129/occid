@@ -313,7 +313,7 @@ class OrbatOrg(MilitaryOrg):
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, SerializeAsAny[Link | MeshLink | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]

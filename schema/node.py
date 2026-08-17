@@ -25,6 +25,6 @@ class Node(Communication):
     entity_id: StringID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
-    links: dict[builtins.str, SerializeAsAny[Link | MeshLink | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
     radios: dict[builtins.str, RadioProfile]
     protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]

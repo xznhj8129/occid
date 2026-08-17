@@ -39,7 +39,7 @@ class MeshNode(Node):
     state: MeshNodeState | None = None
     last_seen_ts: builtins.float | None = None
     position: GlobalPosition | None = None
-    link_state: LinkState | None = None
+    link_state: SerializeAsAny[LinkState | MeshLink] | None = None
     roles: list[CapabilityRole]
 
 class MeshView(Network):
@@ -67,7 +67,7 @@ class MeshtasticMessage(Message):
 class MeshReceiveMetrics(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    state: LinkState
+    state: SerializeAsAny[LinkState | MeshLink]
 
 class MeshPositionSample(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 230
@@ -80,4 +80,4 @@ class NodeHeartbeat(TelemetryMessage):
     node_id: StringID
     last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None
-    state: LinkState
+    state: SerializeAsAny[LinkState | MeshLink]
