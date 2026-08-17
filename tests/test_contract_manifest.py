@@ -1,18 +1,28 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
 
-from occid.contract import build_manifest, scan_used_symbols, verify_manifest
+from occid.contract import (
+    ContractError,
+    build_manifest,
+    changed_symbols,
+    current_manifest,
+    generate_consumer_manifest,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContractManifestTests(unittest.TestCase):
-    def test_checked_in_manifest_matches_schema(self) -> None:
-        verify_manifest(REPO_ROOT)
+    def test_checked_in_occid_marker_matches_schema(self) -> None:
+        self.assertEqual(
+            current_manifest()["global_hash"],
+            build_manifest(REPO_ROOT)["global_hash"],
+        )
 
     def test_dependency_change_cascades_through_full_contract(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -101,20 +111,45 @@ models:
                 after["symbols"]["Thing"]["hash"],
             )
 
-    def test_scan_can_retain_a_symbol_removed_from_current_schema(self) -> None:
+    def test_generate_and_check_consumer_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "consumer.py").write_text(
-                "from occid import RemovedThing\nvalue = RemovedThing\n",
+                "from occid import Entity, EntityState\n",
                 encoding="utf-8",
             )
-            union_manifest = {
-                "symbols": {
-                    "RemovedThing": {"kind": "model", "hash": "old"},
-                    "CurrentThing": {"kind": "model", "hash": "new"},
-                }
-            }
-            self.assertEqual(scan_used_symbols(root, union_manifest), {"RemovedThing"})
+
+            receipt = generate_consumer_manifest(root)
+            self.assertEqual(set(receipt["symbols"]), {"Entity", "EntityState"})
+            self.assertEqual(changed_symbols(root), ())
+
+            path = root / "OCCID_CONTRACT"
+            broken = json.loads(path.read_text(encoding="utf-8"))
+            broken["global_hash"] = "different"
+            broken["symbols"]["EntityState"] = "different"
+            path.write_text(
+                json.dumps(broken, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            self.assertEqual(changed_symbols(root), ("EntityState",))
+
+    def test_check_rejects_legacy_empty_manifest_after_global_change(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            path = root / "OCCID_CONTRACT"
+            path.write_text(
+                json.dumps(
+                    {
+                        "format": 1,
+                        "global_hash": "old-global",
+                        "symbols": {},
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaises(ContractError):
+                changed_symbols(root)
 
 
 if __name__ == "__main__":

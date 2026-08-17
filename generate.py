@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate OCCID reference outputs and schema contract fingerprints."""
+"""Regenerate OCCID reference outputs and structural fingerprints."""
 from __future__ import annotations
 
 import subprocess
@@ -39,18 +39,17 @@ def validate_enum_scalars() -> None:
 def main() -> None:
     validate_enum_scalars()
 
-    # Preserve the checked-in runtime profile. The Python backend is one output
-    # of the schema compiler pipeline; the contract manifest is backend-neutral.
     subprocess.run(
         [sys.executable, str(REPO_ROOT / "generate_pydantic.py"), "--all-modules"],
         cwd=REPO_ROOT,
         check=True,
     )
-    subprocess.run(
-        [sys.executable, "-m", "occid.contract", "manifest", str(REPO_ROOT)],
-        cwd=REPO_ROOT,
-        check=True,
-    )
+
+    # This marker belongs to the OCCID module being generated. Consumer tools
+    # use it only through their actually imported OCCID module.
+    from occid.contract import write_occid_marker
+
+    write_occid_marker(REPO_ROOT)
 
 
 if __name__ == "__main__":

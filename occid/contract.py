@@ -3,38 +3,36 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import shutil
-import subprocess
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 
 from .contract_schema import SchemaContractError, build_manifest
 
-MANIFEST_NAME = "occid-contract.json"
-LOCK_NAME = "OCCID_CONTRACT"
+OCCID_MARKER = "occid-contract.json"
+CONSUMER_MANIFEST = "OCCID_CONTRACT"
 FORMAT_VERSION = 1
-IGNORED_DIRS = {".git", ".venv", "venv", "__pycache__", "node_modules", ".tox", ".mypy_cache", ".pytest_cache", "build", "dist"}
+IGNORED_DIRS = {
+    ".git",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "node_modules",
+    ".tox",
+    ".mypy_cache",
+    ".pytest_cache",
+    "build",
+    "dist",
+}
 
 
 class ContractError(RuntimeError):
     pass
 
 
-@dataclass(frozen=True)
-class ContractCheck:
-    compatible: bool
-    global_match: bool
-    used_symbols: tuple[str, ...]
-    changed_symbols: tuple[str, ...]
-    changed_dependencies: dict[str, tuple[str, ...]]
-    baseline_global_hash: str
-    current_global_hash: str
-
-
-def manifest_path(root: str | Path) -> Path:
-    return Path(root).resolve() / MANIFEST_NAME
+def _installed_occid_root() -> Path:
+    """Return the root belonging to the OCCID module imported by this Python."""
+    return Path(__file__).resolve().parents[1]
 
 
 def _marker(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -45,60 +43,47 @@ def _marker(manifest: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _read_marker(root: str | Path) -> dict[str, Any]:
-    path = manifest_path(root)
+def _read_json(path: Path, label: str) -> dict[str, Any]:
     if not path.is_file():
-        raise ContractError(f"missing checked-in OCCID contract marker: {path}")
+        raise ContractError(f"missing {label}: {path}")
     try:
-        marker = json.loads(path.read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
-        raise ContractError(f"invalid OCCID contract marker: {path}: {exc}") from exc
-    if (
-        not isinstance(marker, dict)
-        or marker.get("format") != FORMAT_VERSION
-        or not isinstance(marker.get("global_hash"), str)
-    ):
-        raise ContractError(f"invalid OCCID contract marker: {path}")
-    return marker
+        raise ContractError(f"invalid {label}: {path}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise ContractError(f"invalid {label}: {path}")
+    return value
 
 
-def _build(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
+def _build(root: Path) -> dict[str, Any]:
     try:
-        return build_manifest(repo_root, include_modules=include_modules)
+        return build_manifest(root)
     except SchemaContractError as exc:
         raise ContractError(str(exc)) from exc
 
 
-def write_manifest(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
+def write_occid_marker(repo_root: str | Path) -> dict[str, Any]:
+    """Regenerate OCCID's own checked-in structural marker."""
     root = Path(repo_root).resolve()
-    manifest = _build(root, include_modules=include_modules)
-    manifest_path(root).write_text(
+    manifest = _build(root)
+    (root / OCCID_MARKER).write_text(
         json.dumps(_marker(manifest), indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    legacy_shards = root / "occid-contract"
-    if legacy_shards.exists():
-        shutil.rmtree(legacy_shards)
     return manifest
 
 
-def load_manifest(repo_root: str | Path | None = None) -> dict[str, Any]:
-    root = Path(repo_root).resolve() if repo_root is not None else Path(__file__).resolve().parents[1]
+def current_manifest() -> dict[str, Any]:
+    """Return the contract of the OCCID module actually imported by this Python."""
+    root = _installed_occid_root()
     manifest = _build(root)
-    if _read_marker(root) != _marker(manifest):
+    marker = _read_json(root / OCCID_MARKER, "installed OCCID contract marker")
+    if marker != _marker(manifest):
         raise ContractError(
-            f"checked-in {MANIFEST_NAME} is stale; run the OCCID generators before committing"
+            f"installed OCCID contract marker is stale: {root / OCCID_MARKER}; "
+            "regenerate OCCID before using it"
         )
     return manifest
-
-
-def verify_manifest(repo_root: str | Path, *, include_modules: bool = True) -> None:
-    root = Path(repo_root).resolve()
-    manifest = _build(root, include_modules=include_modules)
-    if _read_marker(root) != _marker(manifest):
-        raise ContractError(
-            f"checked-in {MANIFEST_NAME} is stale; run the OCCID generators before committing"
-        )
 
 
 def _python_files(root: Path) -> Iterable[Path]:
@@ -107,177 +92,147 @@ def _python_files(root: Path) -> Iterable[Path]:
             yield path
 
 
-def scan_used_symbols(source_root: str | Path, manifest: dict[str, Any] | None = None) -> set[str]:
+def scan_used_symbols(
+    source_root: str | Path,
+    manifest: dict[str, Any] | None = None,
+) -> set[str]:
+    """Find OCCID schema symbols referenced by a Python source tree."""
     root = Path(source_root).resolve()
-    known = set((manifest or load_manifest())["symbols"])
+    current = manifest or current_manifest()
+    known = set(current["symbols"])
     used: set[str] = set()
+
     for path in _python_files(root):
         try:
             tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-        except (SyntaxError, UnicodeDecodeError) as exc:
+        except (OSError, UnicodeError, SyntaxError) as exc:
             raise ContractError(f"cannot scan {path}: {exc}") from exc
-        modules: set[str] = set()
-        direct: dict[str, str] = {}
+
+        occid_aliases: set[str] = set()
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
                     if alias.name == "occid":
-                        modules.add(alias.asname or "occid")
+                        occid_aliases.add(alias.asname or "occid")
             elif isinstance(node, ast.ImportFrom):
-                if node.module == "occid" or (node.module or "").startswith("occid.schema"):
+                module = node.module or ""
+                if module == "occid" or module.startswith("occid.schema"):
                     for alias in node.names:
-                        if alias.name != "*":
-                            direct[alias.asname or alias.name] = alias.name
-                            if alias.name in known:
-                                used.add(alias.name)
+                        if alias.name == "*":
+                            used.update(known)
+                        elif alias.name in known:
+                            used.add(alias.name)
                 else:
+                    # Some consumers deliberately re-export the imported SDK as
+                    # ``occid``. Follow that alias without knowing their layout.
                     for alias in node.names:
                         if alias.name == "occid":
-                            modules.add(alias.asname or "occid")
+                            occid_aliases.add(alias.asname or "occid")
+
         for node in ast.walk(tree):
-            if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id in modules and node.attr in known:
+            if (
+                isinstance(node, ast.Attribute)
+                and isinstance(node.value, ast.Name)
+                and node.value.id in occid_aliases
+                and node.attr in known
+            ):
                 used.add(node.attr)
-            elif isinstance(node, ast.Name) and direct.get(node.id) in known:
-                used.add(direct[node.id])
+
     return used
 
 
-def lock_path(source_root: str | Path) -> Path:
-    return Path(source_root).resolve() / LOCK_NAME
+def consumer_manifest_path(source_root: str | Path) -> Path:
+    return Path(source_root).resolve() / CONSUMER_MANIFEST
 
 
-def read_lock(source_root: str | Path) -> dict[str, Any]:
-    path = lock_path(source_root)
-    if not path.is_file():
-        raise ContractError(
-            f"missing OCCID consumer lock: {path}; run `python -m occid.contract lock {Path(source_root).resolve()}`"
-        )
-    try:
-        lock = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        raise ContractError(f"invalid OCCID consumer lock: {path}: {exc}") from exc
+def _read_consumer_manifest(source_root: str | Path) -> dict[str, Any]:
+    path = consumer_manifest_path(source_root)
+    value = _read_json(path, "OCCID consumer manifest")
     if (
-        not isinstance(lock, dict)
-        or lock.get("format") != FORMAT_VERSION
-        or not isinstance(lock.get("global_hash"), str)
-        or not isinstance(lock.get("symbols"), dict)
+        value.get("format") != FORMAT_VERSION
+        or not isinstance(value.get("global_hash"), str)
+        or not isinstance(value.get("symbols"), dict)
+        or not all(
+            isinstance(name, str) and isinstance(hash_value, str)
+            for name, hash_value in value["symbols"].items()
+        )
     ):
-        raise ContractError(f"invalid OCCID consumer lock: {path}")
-    return lock
+        raise ContractError(f"invalid OCCID consumer manifest: {path}")
+    return value
 
 
-def write_lock(source_root: str | Path, occid_root: str | Path | None = None) -> dict[str, Any]:
-    current = load_manifest(occid_root)
+def generate_consumer_manifest(source_root: str | Path = ".") -> dict[str, Any]:
+    """Write the current installed OCCID fingerprints used by a source tree."""
+    current = current_manifest()
     used = sorted(scan_used_symbols(source_root, current))
-    lock = {
+    receipt = {
         "format": FORMAT_VERSION,
         "global_hash": current["global_hash"],
-        "symbols": {name: current["symbols"][name]["hash"] for name in used},
+        "symbols": {
+            name: current["symbols"][name]["hash"]
+            for name in used
+        },
     }
-    lock_path(source_root).write_text(
-        json.dumps(lock, indent=2, sort_keys=True) + "\n",
+    consumer_manifest_path(source_root).write_text(
+        json.dumps(receipt, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    return lock
+    return receipt
 
 
-def check_consumer(source_root: str | Path, occid_root: str | Path | None = None) -> ContractCheck:
-    current = load_manifest(occid_root)
-    lock = read_lock(source_root)
-    baseline_hash = str(lock["global_hash"])
-    expected = {str(name): str(value) for name, value in lock["symbols"].items()}
+def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
+    """Compare a saved consumer manifest with the OCCID module imported now."""
+    expected = _read_consumer_manifest(source_root)
+    current = current_manifest()
 
-    scan_manifest = {"symbols": {name: {} for name in set(current["symbols"]) | set(expected)}}
-    used = tuple(sorted(scan_used_symbols(source_root, scan_manifest)))
+    if expected["global_hash"] == current["global_hash"]:
+        return ()
 
-    if baseline_hash == current["global_hash"]:
-        return ContractCheck(True, True, used, (), {}, baseline_hash, current["global_hash"])
-
-    if not expected:
+    if not expected["symbols"]:
+        path = consumer_manifest_path(source_root)
         raise ContractError(
-            f"{lock_path(source_root)} only records an exact global baseline; validate the consumer against current OCCID and run `python -m occid.contract lock {Path(source_root).resolve()}`"
+            f"{path} has no model fingerprints; "
+            f"run `python -m occid.contract generate {Path(source_root).resolve()}`"
         )
 
     changed = [
         name
-        for name in used
-        if current["symbols"].get(name, {}).get("hash") != expected.get(name)
+        for name, expected_hash in expected["symbols"].items()
+        if current["symbols"].get(name, {}).get("hash") != expected_hash
     ]
-    causes = {name: (name,) for name in changed}
-    return ContractCheck(
-        not changed,
-        False,
-        used,
-        tuple(changed),
-        causes,
-        baseline_hash,
-        current["global_hash"],
-    )
-
-
-def assert_consumer(source_root: str | Path, occid_root: str | Path | None = None) -> ContractCheck:
-    result = check_consumer(source_root, occid_root)
-    if result.compatible:
-        return result
-    lines = [
-        "OCCID contract mismatch:",
-        f"  baseline global: {result.baseline_global_hash}",
-        f"  current global:  {result.current_global_hash}",
-    ]
-    lines.extend(f"  {name}: changed" for name in result.changed_symbols)
-    raise ContractError("\n".join(lines))
-
-
-def model_hashes_for_ids(manifest: dict[str, Any], model_ids: Iterable[int]) -> dict[int, str]:
-    wanted = {int(value) for value in model_ids}
-    result: dict[int, str] = {}
-    for entry in manifest["symbols"].values():
-        model_id = entry.get("model_id")
-        if model_id in wanted:
-            result[int(model_id)] = str(entry["hash"])
-    missing = sorted(wanted - set(result))
-    if missing:
-        raise ContractError(f"current OCCID does not define model IDs: {missing}")
-    return result
+    return tuple(sorted(changed))
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="OCCID structural contract checks")
+    parser = argparse.ArgumentParser(
+        description="Generate or check a consumer against the installed OCCID module"
+    )
     sub = parser.add_subparsers(dest="command", required=True)
-    default = str(Path(__file__).resolve().parents[1])
-    for name in ("manifest", "verify"):
-        p = sub.add_parser(name)
-        p.add_argument("occid_root", nargs="?", default=default)
-    for name in ("scan", "lock", "check"):
-        p = sub.add_parser(name)
-        p.add_argument("consumer_root")
-        p.add_argument("--occid-root", default=default)
+
+    for name in ("generate", "check"):
+        command = sub.add_parser(name)
+        command.add_argument("consumer_root", nargs="?", default=".")
+
     args = parser.parse_args(argv)
+
     try:
-        if args.command == "manifest":
-            print(write_manifest(args.occid_root)["global_hash"])
-        elif args.command == "verify":
-            verify_manifest(args.occid_root)
-            print("OCCID contract marker: current")
-        elif args.command == "scan":
-            print("\n".join(sorted(scan_used_symbols(args.consumer_root, load_manifest(args.occid_root)))))
-        elif args.command == "lock":
-            lock = write_lock(args.consumer_root, args.occid_root)
-            print(lock["global_hash"])
-        else:
-            result = check_consumer(args.consumer_root, args.occid_root)
-            if result.global_match:
-                print(f"OCCID contract: OK (global {result.current_global_hash})")
-            elif result.compatible:
-                print("OCCID contract: OK (global changed; used symbols unchanged)")
-            else:
-                for symbol in result.changed_symbols:
-                    print(f"OCCID contract changed: {symbol}", file=sys.stderr)
-                return 1
-    except (ContractError, SchemaContractError, subprocess.CalledProcessError) as exc:
+        if args.command == "generate":
+            generate_consumer_manifest(args.consumer_root)
+            print(f"OCCID manifest: {consumer_manifest_path(args.consumer_root)}")
+            return 0
+
+        changed = changed_symbols(args.consumer_root)
+        if not changed:
+            print("OCCID contract: same")
+            return 0
+
+        print("OCCID contract: different", file=sys.stderr)
+        for name in changed:
+            print(f"  {name}", file=sys.stderr)
+        return 1
+    except ContractError as exc:
         print(str(exc), file=sys.stderr)
         return 2
-    return 0
 
 
 if __name__ == "__main__":
