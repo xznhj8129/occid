@@ -1,6 +1,7 @@
 .codex
 .qwen/
 __pycache__/
+*.egg-info/
 spec/.test/
 .env
 *.key
