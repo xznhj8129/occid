@@ -142,7 +142,6 @@ def gps_to_occid(
     )
     gnss = GnssSolution(
         fix_type=gnss_fix_type_from_native_name(fields.fix_name),
-        fix_code=int(fields.fix_code),
         satellites_used=int(fields.satellites_used),
         position=position,
         altitude=altitude,
