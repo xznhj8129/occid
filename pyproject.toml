@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["occid"]
+packages = ["occid", "interop"]
 
 [tool.setuptools.dynamic]
 version = {file = ["VERSION"]}
