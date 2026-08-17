@@ -10,7 +10,7 @@ enums:
     - UNSPECIFIED = 0
     - INDICATED
     - CALIBRATED
-    - TRUE
+    - TAS
     - EQUIVALENT
 
 models:

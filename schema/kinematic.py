@@ -12,7 +12,7 @@ class AirspeedReference(IntEnum):
     UNSPECIFIED = 0
     INDICATED = auto()
     CALIBRATED = auto()
-    TRUE = auto()
+    TAS = auto()
     EQUIVALENT = auto()
 
 ### Models
