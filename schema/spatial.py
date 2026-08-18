@@ -35,15 +35,6 @@ class GeometryTypes(IntEnum):
     MULTI_POLYGON = auto()
     GEOMETRY_COLLECTION = auto()
 
-class GeoJsonGeometryTypes(str, Enum):
-    POINT = 'Point'
-    MULTI_POINT = 'MultiPoint'
-    LINE_STRING = 'LineString'
-    MULTI_LINE_STRING = 'MultiLineString'
-    POLYGON = 'Polygon'
-    MULTI_POLYGON = 'MultiPolygon'
-    GEOMETRY_COLLECTION = 'GeometryCollection'
-
 class SurfaceFormationShapes(IntEnum):
     COLUMN = 0
     LINE = auto()
@@ -177,14 +168,6 @@ class LocationUncertainty(Uncertainty):
     ellipse_major_m: builtins.float | None = None
     ellipse_minor_m: builtins.float | None = None
     ellipse_bearing_deg: builtins.float | None = None
-
-class GeoJsonGeometry(Shape):
-    __occid_model_id__: ClassVar[int] = 204
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    type: GeoJsonGeometryTypes
-    coordinates: Any | None = None
-    geometries: list[GeoJsonGeometry] | None = None
-    bbox: BoundingBox | None = None
 
 class Position(State):
     'Position in space, address or placement'

@@ -5,6 +5,16 @@ root: Relationship
 tags:
   - core
 
+enums:
+  SpatialRelationKind:
+    - CONTAINS = 0
+    - WITHIN
+    - INTERSECTS
+    - OVERLAPS
+    - TOUCHES
+    - CROSSES
+    - CONNECTS
+
 models:
   Relationship:
     description: Nature of relations, ownership, provenance, link
@@ -30,3 +40,14 @@ models:
       component_id: StringID
       component_type: optional string
       label: optional string
+
+  SpatialRelationship:
+    description: Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation
+    semantic_role: specialization
+    parent: Relationship
+    fields:
+      record: RecordMeta
+      relationship_id: StringID
+      subject_id: StringID
+      reference_id: StringID
+      relation: SpatialRelationKind

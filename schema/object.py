@@ -41,34 +41,33 @@ class Component(Item):
     __occid_semantic_role__: ClassVar[str] = 'specialization'
 
 class Location(Object):
-    'Physical-world feature, named location, site, or bounded place.'
+    'Identified physical-world spatial reference, place, feature, site, course, area, or delimiter'
     __occid_model_id__: ClassVar[int] = 22
     __occid_semantic_role__: ClassVar[str] = 'ontology'
+    record: RecordMeta
+    location_id: StringID
+    name: builtins.str | None = None
 
-class GeoJsonFeature(Location):
-    __occid_model_id__: ClassVar[int] = 23
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    id: StringID
-    type: Literal['Feature'] = Field(default='Feature', frozen=True)
-    geometry: GeoJsonGeometry
-    properties: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
-    bbox: BoundingBox | None = None
+class Mark(Location):
+    'Identified point reference in physical space'
+    __occid_model_id__: ClassVar[int] = 328
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    position: GlobalPosition
 
-class GeoJsonFeatureCollection(Collection):
-    __occid_model_id__: ClassVar[int] = 24
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    features: list[GeoJsonFeature]
-    bbox: BoundingBox | None = None
+class Path(Location):
+    'Identified ordered spatial course or trace'
+    __occid_model_id__: ClassVar[int] = 329
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    path: GeoPath
 
-class MissionPoi(Location):
-    'Named operational point of interest with stable identity and a concrete global position'
-    __occid_model_id__: ClassVar[int] = 117
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    uid: StringID
-    name: builtins.str
-    pos: GlobalPosition
-    origin: builtins.str
-    cot: builtins.str | None = None
-    added_ts: builtins.float | None = None
-    stale_after_s: builtins.float | None = None
-    url: builtins.str | None = None
+class Region(Location):
+    'Identified bounded spatial area'
+    __occid_model_id__: ClassVar[int] = 330
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    area: GeoArea
+
+class Boundary(Location):
+    'Identified spatial line that delimits, separates, or gates space'
+    __occid_model_id__: ClassVar[int] = 331
+    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    path: GeoPath

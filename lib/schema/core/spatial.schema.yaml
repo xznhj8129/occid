@@ -33,15 +33,6 @@ enums:
     - MULTI_POLYGON
     - GEOMETRY_COLLECTION
 
-  GeoJsonGeometryTypes:
-    - POINT = "Point"
-    - MULTI_POINT = "MultiPoint"
-    - LINE_STRING = "LineString"
-    - MULTI_LINE_STRING = "MultiLineString"
-    - POLYGON = "Polygon"
-    - MULTI_POLYGON = "MultiPolygon"
-    - GEOMETRY_COLLECTION = "GeometryCollection"
-
   SurfaceFormationShapes:
     - COLUMN = 0
     - LINE
@@ -185,15 +176,6 @@ models:
       ellipse_major_m: optional float
       ellipse_minor_m: optional float
       ellipse_bearing_deg: optional float
-
-  GeoJsonGeometry:
-    semantic_role: specialization
-    parent: Shape
-    fields:
-      type: GeoJsonGeometryTypes
-      coordinates: optional any
-      geometries: optional list[GeoJsonGeometry]
-      bbox: optional BoundingBox
 
   Position:
     description: Position in space, address or placement

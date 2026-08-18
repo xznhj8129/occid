@@ -287,3 +287,8 @@ model_ids:
   DeliveryQuality: 325
   LinkCounters: 326
   LinkState: 327
+  Mark: 328
+  Path: 329
+  Region: 330
+  Boundary: 331
+  SpatialRelationship: 332

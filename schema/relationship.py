@@ -5,6 +5,17 @@ from .common import *
 
 from .property import Property
 
+### Enums
+
+class SpatialRelationKind(IntEnum):
+    CONTAINS = 0
+    WITHIN = auto()
+    INTERSECTS = auto()
+    OVERLAPS = auto()
+    TOUCHES = auto()
+    CROSSES = auto()
+    CONNECTS = auto()
+
 ### Models
 
 class Relationship(Property):
@@ -29,3 +40,13 @@ class EntityComponentRef(Relationship):
     component_id: StringID
     component_type: builtins.str | None = None
     label: builtins.str | None = None
+
+class SpatialRelationship(Relationship):
+    'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
+    __occid_model_id__: ClassVar[int] = 332
+    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    record: RecordMeta
+    relationship_id: StringID
+    subject_id: StringID
+    reference_id: StringID
+    relation: SpatialRelationKind

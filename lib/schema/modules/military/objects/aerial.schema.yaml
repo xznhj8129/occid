@@ -9,8 +9,6 @@ requires:
 extend_variants:
   AirNavigationSchema:
     - MilitaryAirNavigation
-  MissionPoi:
-    - MilitaryMissionPoi
   UnitFlightPlan:
     - MilitaryUnitFlightPlan
 
@@ -79,14 +77,6 @@ models:
     parent: AirNavigationSchema
     fields:
       roles: list[AirRole]
-
-
-  MilitaryMissionPoi:
-    semantic_role: specialization
-    parent: MissionPoi
-    fields:
-      sidc: optional int
-
 
   MilitaryUnitFlightPlan:
     semantic_role: specialization

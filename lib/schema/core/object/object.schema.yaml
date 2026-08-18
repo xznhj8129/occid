@@ -53,37 +53,43 @@ models:
     parent: Item
 
   Location:
-    description: Physical-world feature, named location, site, or bounded place.
+    description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
     semantic_role: ontology
     parent: Object
+    variants:
+      - Mark
+      - Path
+      - Region
+      - Boundary
+    fields:
+      record: RecordMeta
+      location_id: StringID
+      name: optional string
 
-  GeoJsonFeature:
-    semantic_role: specialization
+  Mark:
+    description: Identified point reference in physical space
+    semantic_role: ontology
     parent: Location
     fields:
-      id: StringID
-      type: const string = "Feature"
-      geometry: GeoJsonGeometry
-      properties: map[string, MetadataValue]
-      bbox: optional BoundingBox
+      position: GlobalPosition
 
-  GeoJsonFeatureCollection:
-    semantic_role: specialization
-    parent: Collection
-    fields:
-      features: list[GeoJsonFeature]
-      bbox: optional BoundingBox
-
-  MissionPoi:
-    description: Named operational point of interest with stable identity and a concrete global position
-    semantic_role: specialization
+  Path:
+    description: Identified ordered spatial course or trace
+    semantic_role: ontology
     parent: Location
     fields:
-      uid: StringID
-      name: string
-      pos: GlobalPosition
-      origin: string
-      cot: optional string
-      added_ts: optional float
-      stale_after_s: optional float
-      url: optional string
+      path: GeoPath
+
+  Region:
+    description: Identified bounded spatial area
+    semantic_role: ontology
+    parent: Location
+    fields:
+      area: GeoArea
+
+  Boundary:
+    description: Identified spatial line that delimits, separates, or gates space
+    semantic_role: ontology
+    parent: Location
+    fields:
+      path: GeoPath

@@ -54,7 +54,7 @@ Root:
           description: Bearing, azimuth, elevation, range, or look vector.
 
         Geometry:
-          description: Point, line, path, area, volume, bounds, or external geometry payload.
+          description: Point, line, path, area, volume, bounds, or embedded geometry value.
 
         Uncertainty:
           description: Error, covariance, quality, dilution, confidence, or estimate bounds.
@@ -89,7 +89,20 @@ Root:
           description: A discrete bounded non-agent object
 
         Location:
-          description: Physical-world feature, named location, site, or bounded place.
+          description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter.
+          children:
+
+            Mark:
+              description: Identified point reference in physical space.
+
+            Path:
+              description: Identified ordered spatial course or trace.
+
+            Region:
+              description: Identified bounded spatial area.
+
+            Boundary:
+              description: Identified spatial line that delimits, separates, or gates space.
 
     Control:
       description: Desired outcomes, directed work, authority, assignment, and bounded execution intent.
