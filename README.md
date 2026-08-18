@@ -117,6 +117,22 @@ python -m occid.contract generate .
 python -m occid.contract check .
 ```
 
+### Consumer update workflow
+
+**`OCCID_CONTRACT` is a checked-in generated receipt. Do not hand-edit its hashes.**
+
+When OCCID changes, or when a consumer starts/stops using OCCID symbols, the supported workflow is deliberately simple:
+
+```text
+install/use the intended OCCID revision
+    -> python -m occid.contract generate .
+    -> commit the resulting OCCID_CONTRACT with the consumer change
+    -> GitHub CI regenerates the contract independently
+    -> CI passes only if the committed receipt matches
+```
+
+The GitHub workflow is a verifier, not an updater: it runs the same generator and then `git diff --exit-code -- OCCID_CONTRACT`. Therefore a changed generated contract is expected repository content and must be committed. This design is intentional so developers and coding agents do not need to manually reproduce or reason about structural hashes; generate the receipt, commit it, and let CI verify it independently.
+
 The receipt contains:
 
 - one global structural hash for the current OCCID schema;
