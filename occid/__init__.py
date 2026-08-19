@@ -10,10 +10,10 @@ from __future__ import annotations
 
 import importlib.util
 import sys
-from pathlib import Path
+from pathlib import Path as _Path
 
 _SCHEMA_PACKAGE = f"{__name__}.schema"
-_SCHEMA_DIR = Path(__file__).resolve().parent.parent / "schema"
+_SCHEMA_DIR = _Path(__file__).resolve().parent.parent / "schema"
 
 _schema = sys.modules.get(_SCHEMA_PACKAGE)
 if _schema is None:
