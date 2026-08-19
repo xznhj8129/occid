@@ -15,6 +15,7 @@ enums:
     - EXECUTED
     - EXPIRED
     - DROPPED
+    - READ
 
   MessageType:
     - BROADCAST = 0
@@ -87,7 +88,8 @@ models:
       - DeliveryReceipt
       - MessageTransferResult
     fields:
-      seq_reply: int
+      seq_reply: optional int
+      response_to: optional StringID
 
   DeliveryReceipt:
     semantic_role: specialization

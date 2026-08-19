@@ -17,6 +17,7 @@ class DeliveryState(IntEnum):
     EXECUTED = auto()
     EXPIRED = auto()
     DROPPED = auto()
+    READ = auto()
 
 class MessageType(IntEnum):
     BROADCAST = 0
@@ -79,7 +80,8 @@ class ResponseMessage(Message):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
     __occid_model_id__: ClassVar[int] = 78
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    seq_reply: builtins.int
+    seq_reply: builtins.int | None = None
+    response_to: StringID | None = None
 
 class DeliveryReceipt(ResponseMessage):
     __occid_model_id__: ClassVar[int] = 79
