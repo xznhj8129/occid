@@ -47,6 +47,7 @@ class Location(Object):
     record: RecordMeta
     location_id: StringID
     name: builtins.str | None = None
+    symbology: SymbologySchema | None = None
 
 class Mark(Location):
     'Identified point reference in physical space'

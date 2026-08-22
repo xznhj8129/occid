@@ -65,6 +65,7 @@ models:
       record: RecordMeta
       location_id: StringID
       name: optional string
+      symbology: optional SymbologySchema
 
   Mark:
     description: Identified point reference in physical space
