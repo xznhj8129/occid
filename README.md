@@ -6,6 +6,8 @@ OCCID is a shared semantic model for operational systems.
 
 It gives different software, devices, protocols, and organizations a common way to describe the same operational world.
 
+It provides shared meaning for what operational systems can know, observe, communicate, request, command, and report.
+
 A vehicle can use MAVLink. A tactical application can use Cursor-on-Target. Another system can use MSP, a database schema, or its own API.
 
 OCCID lets those systems exchange meaning without making one external vocabulary the center of the whole system.
@@ -31,7 +33,13 @@ OCCID lets those systems exchange meaning without making one external vocabulary
 
 ## Why
 
-Interoperability is not only a field-conversion problem.
+Different operational domains often share the same structural bones.
+
+Things have identity. Their state changes. Intent can be expressed. Information can be observed and exchanged. Relationships connect these facts into an operational picture.
+
+The domain vocabulary can differ while the underlying meaning overlaps.
+
+Interoperability is therefore not only a field-conversion problem.
 
 The same numbers can have different meaning.
 
