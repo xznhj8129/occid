@@ -2,156 +2,230 @@
 
 **Open Command, Control, Intelligence Data**
 
-OCCID is a domain-agnostic semantic model for command, control, state, observations, entities, organizations, platforms, networks, and directed work. It is not a wire protocol, transport, application database schema, or service API. Protocol and application adapters map into OCCID rather than defining OCCID around one endpoint.
+OCCID is a shared semantic model for operational systems.
 
-The current release version is read from [`VERSION`](VERSION). Release version is provenance; structural consumer compatibility is handled by the OCCID contract mechanism described below.
+It gives different software, devices, protocols, and organizations a common way to describe the same operational world.
 
-## Install and import
+A vehicle can use MAVLink. A tactical application can use Cursor-on-Target. Another system can use MSP, a database schema, or its own API.
 
-OCCID is a normal Python package:
+OCCID lets those systems exchange meaning without making one external vocabulary the center of the whole system.
+
+```text
+     external systems and protocols
+
+  CoT / TAK   MAVLink   MSP   APIs   sensors   other data
+      \          |       |      |       |          /
+       \         |       |      |       |         /
+        +--------+-------+------+-------+--------+
+                         |
+                         v
+                       OCCID
+                         |
+             shared operational meaning
+                         |
+            +------------+------------+
+            |            |            |
+            v            v            v
+          humans       software      machines
+```
+
+## Why
+
+Interoperability is not only a field-conversion problem.
+
+The same numbers can have different meaning.
+
+A position can describe:
+
+- where a vehicle is;
+- where an observation occurred;
+- where something should move;
+- a route point;
+- an area reference.
+
+Different systems can also use very different structures for the same underlying idea.
+
+OCCID therefore treats interoperability as a semantic problem first.
+
+```text
+external representation
+        |
+        v
+operational meaning
+        |
+        v
+external representation
+```
+
+The goal is simple:
+
+> Different systems should be able to talk about the same operational reality without first becoming the same system.
+
+## How it works
+
+At a system boundary, protocol data is parsed in its native form.
+
+Useful protocol-independent meaning is then mapped into OCCID.
+
+Application logic can work with that semantic model.
+
+When data must leave through another boundary, the relevant OCCID meaning can be mapped into the destination representation.
+
+```text
+foreign data
+    |
+    v
+parser / adapter
+    |
+    v
+semantic mapping
+    |
+    v
+  OCCID
+    |
+    +-----------> application logic
+    |
+    v
+semantic mapping
+    |
+    v
+another external representation
+```
+
+OCCID is under active development. The exact model will continue to change as real integrations expose better abstractions.
+
+## Example
+
+[`example_usage.py`](example_usage.py) shows the basic idea with actual protocol-shaped input.
+
+It starts with:
+
+- a hardcoded Cursor-on-Target XML event;
+- a hardcoded MAVLink v2 `GLOBAL_POSITION_INT` frame.
+
+The example parsers decode both inputs.
+
+The CoT contact becomes an OCCID observation.
+
+The MAVLink telemetry becomes OCCID state for a vehicle.
+
+The example then uses those records in a small control flow and maps an OCCID movement operation toward a MAVSDK `goto_location` call.
+
+```text
+CoT XML
+   |
+   v
+contact observation ----+
+                        |
+                        +----> OCCID operational model
+                        |
+MAVLink telemetry ------+
+   |
+   v
+vehicle state
+
+        |
+        v
+
+intent / work / responsibility / execution
+
+        |
+        v
+
+vehicle operation
+```
+
+Run it with:
+
+```bash
+python example_usage.py
+```
+
+The parsers in the example are intentionally small. They demonstrate the boundary. They are not complete CoT or MAVLink implementations.
+
+## What OCCID models
+
+OCCID currently contains structures for operational concepts such as:
+
+- identity and objects;
+- changing state;
+- position and motion;
+- observations and information;
+- intent and directed work;
+- authority and responsibility;
+- execution and status;
+- relationships between operational records.
+
+These structures are not assumed to be the final decomposition.
+
+They are the current engineering model.
+
+The stable goal is the shared semantic layer.
+
+## Deep Ontology
+
+OCCID grew from a larger interoperability problem.
+
+Attempts to merge operational vocabularies directly produced duplicated concepts, mixed abstraction levels, and expanding taxonomies.
+
+That led to the **Deep Ontology** research direction: investigate how much of those vocabularies can be explained by smaller reusable semantic structures and legality rules.
+
+OCCID is the practical engineering side of that work.
+
+The deeper research does not need to be complete before OCCID can be useful. Real OCCID integrations also provide evidence about which abstractions work and which do not.
+
+## Current implementation
+
+This repository currently includes:
+
+- declarative schema sources;
+- generated Python models;
+- compact serialization and validation;
+- interoperability helpers;
+- structural consumer-contract tooling;
+- examples and tests.
+
+The current package version is stored in [`VERSION`](VERSION).
+
+Install the package locally with:
 
 ```bash
 python -m pip install -e .
 ```
 
-Consumers use the canonical namespace:
+Import models from the canonical package namespace:
 
 ```python
-from occid import Entity, EntityState, TaskManeuver, Assignment, Execution
+from occid import EntityState, IsrObservation, TaskInformation
 ```
 
-Generated runtime models remain under `schema/` internally and are re-exported through `occid`.
-
-## Semantic normalization invariant
-
-> **No protocol-native scalar enters OCCID merely because a protocol exposes it.**
-
-An adapter-local parser or snapshot may remain protocol-shaped. At the semantic boundary:
-
-1. If OCCID already expresses the protocol-independent meaning, map into that model, enum, measurement, identity, relationship, or State.
-2. If OCCID lacks the meaning but the concept is protocol-independent and operationally useful, treat the mismatch as evidence that OCCID may need refinement.
-3. If a value is useful only for decoding, interoperability bookkeeping, diagnostics, or source-specific debugging, keep it outside OCCID core.
-4. If meaning, units, reference, scale, identity scope, or clock basis are not known strongly enough, do not publish a false semantic claim.
-
-Do not use `native_*` fields, arbitrary metadata, generic telemetry bags, or protocol codes as escape hatches from modeling.
-
-Interoperability work should explicitly preserve identity, units, ranges, sign conventions, coordinate/reference frames, altitude datums, time bases, sentinels, optionality, and the distinction between stable definition and changing observed state.
-
-Protocol identity is not automatically domain identity. MAVLink sysid/compid, CoT UID, endpoint-native IDs, packet IDs, and similar values may be needed for routing/provenance without becoming the OCCID identity of the represented object.
-
-## Control
-
-The Control model separates desired work from immediate operation:
+## Repository structure
 
 ```text
-Objective
-Directive
-  Task
-    TaskManeuver
-    TaskEffect
-    TaskInformation
-    TaskTransport
-  Command
-    StateChangeCommand
-    ProcessControlCommand
-    ConfigurationCommand
-    MotionCommand
-    ResourceCommand
-    ExecutionCommand
-Plan
-Constraint
-Authority
-Assignment
-Execution
+lib/schema/             declarative schema sources
+schema/                 generated Python runtime models
+occid/                  canonical Python package namespace and tooling
+interop/                interoperability mappings
+tests/                  tests and regression coverage
+example_usage.py        end-to-end interoperability example
+idl_spec.md             schema language reference
+docs/                   developer and implementation documentation
 ```
 
-The central distinction is:
+For schema generation, serialization, model IDs, consumer contracts, and current adapter rules, see [`docs/development.md`](docs/development.md).
 
-> **Task preserves intent. Command prescribes operation.**
+## Status
 
-Task specializations describe what should be achieved. Endpoint/runtime code decides how to realize supported work. Command families express precise immediate operations without importing one protocol's vocabulary into the shared model.
+OCCID is experimental and under active development.
 
-## Interoperability package
+Its purpose is stable:
 
-The distribution includes the existing `interop` package for deterministic representation conversion such as MAVSDK, MSP, and CoT mappings.
+> provide a shared semantic foundation for heterogeneous operational systems.
 
-```python
-from interop.mavsdk import goto_command_to_fields
-```
+The exact structures used to achieve that purpose can evolve as the project is tested against more systems.
 
-Interop owns deterministic type/field/unit/frame conversion only. It does **not** own endpoint connections, operation selection, sequencing, retries, session lifecycle, recovery, or autonomy. Those remain consumer/runtime responsibilities.
+## License
 
-## Permanent model IDs
+OCCID is licensed under the GNU General Public License version 3 only.
 
-Generated OCCID models have permanent numeric model IDs. They are durable registry identity for transient encoding and persisted model identity.
-
-Model IDs are **not** semantic discovery and are not an ontology catalog. A numeric slot assigned to a model must not later be repurposed for an unrelated model merely because a class was removed.
-
-## Transient encoding
-
-`OCCIDModel.encode()` emits a compact MsgPack envelope:
-
-```text
-{
-  model_id,
-  fields
-}
-```
-
-Nested models use the same model-ID-plus-fields form. `decode_model()` resolves the concrete model from its permanent model ID.
-
-No global schema version is carried on every transient message. Schema-change detection belongs to the structural consumer contract.
-
-## Structural consumer contract
-
-A direct OCCID consumer keeps one generated root file:
-
-```text
-OCCID_CONTRACT
-```
-
-Generate or check it with the OCCID module actually installed in that Python environment:
-
-```bash
-python -m occid.contract generate .
-python -m occid.contract check .
-```
-
-### Consumer update workflow
-
-**`OCCID_CONTRACT` is a checked-in generated receipt. Do not hand-edit its hashes.**
-
-When OCCID changes, or when a consumer starts/stops using OCCID symbols, the supported workflow is deliberately simple:
-
-```text
-install/use the intended OCCID revision
-    -> python -m occid.contract generate .
-    -> commit the resulting OCCID_CONTRACT with the consumer change
-    -> GitHub CI regenerates the contract independently
-    -> CI passes only if the committed receipt matches
-```
-
-The GitHub workflow is a verifier, not an updater: it runs the same generator and then `git diff --exit-code -- OCCID_CONTRACT`. Therefore a changed generated contract is expected repository content and must be committed. This design is intentional so developers and coding agents do not need to manually reproduce or reason about structural hashes; generate the receipt, commit it, and let CI verify it independently.
-
-The receipt contains:
-
-- one global structural hash for the current OCCID schema;
-- recursive structural hashes for the OCCID symbols that consumer actually uses.
-
-If the global hash changes but the consumer's used symbols do not, the consumer can still be structurally compatible. If a used symbol changed or disappeared, `check` reports the specific model names.
-
-There is no compatibility-history database, schema archive, caller-supplied OCCID root, or version tag on every message. Git is history; the installed OCCID module is the contract source being checked.
-
-## Generation
-
-Canonical schema sources and the permanent model-ID registry generate the runtime Python models:
-
-```bash
-python generate.py
-```
-
-Generated output and the checked-in structural integrity marker must remain deterministic. Direct consumers should regenerate their own `OCCID_CONTRACT` whenever their OCCID usage changes.
-
-## Design rule
-
-OCCID should grow from demonstrated semantic requirements, not speculative taxonomy expansion. But "minimal" must not mean shallow: if a real consumer exposes a protocol-independent distinction that OCCID cannot truthfully represent, investigate the missing semantic depth instead of discarding the fact or copying the foreign protocol into the model.
+See [`LICENSE`](LICENSE).
