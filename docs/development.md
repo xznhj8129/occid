@@ -20,6 +20,10 @@ from occid import Entity, EntityState, TaskInformation, Assignment, Execution
 
 Generated runtime models live under `schema/` internally and are re-exported through `occid`.
 
+The repository `VERSION` identifies a release. It is provenance, not a consumer compatibility test.
+
+Structural compatibility is determined by the consumer contract described below.
+
 ## Semantic normalization
 
 A protocol-native scalar should not enter the OCCID semantic model only because an external protocol exposes it.
@@ -30,6 +34,8 @@ At the current semantic boundary:
 2. If OCCID lacks the meaning but the concept is protocol-independent and operationally useful, treat the mismatch as evidence that the model may need refinement.
 3. If a value is only useful for decoding, interoperability bookkeeping, diagnostics, or source-specific debugging, it can remain at the adapter boundary.
 4. If meaning, units, reference, scale, identity scope, or clock basis are not known strongly enough, do not publish a false semantic claim.
+
+Do not use `native_*` fields, arbitrary metadata, generic telemetry bags, or raw protocol codes as escape hatches from semantic modeling.
 
 Interop work should preserve the distinctions that matter to meaning. Examples include:
 
@@ -46,6 +52,18 @@ Interop work should preserve the distinctions that matter to meaning. Examples i
 Protocol identity is not automatically operational identity.
 
 MAVLink system/component IDs, CoT UIDs, endpoint-native IDs, and packet IDs can be useful for routing or provenance without automatically becoming the OCCID identity of the represented object.
+
+## Consumer semantic authority
+
+Consumers should not maintain independent copies of OCCID semantic vocabularies when the information can come from the installed OCCID model.
+
+Do not duplicate OCCID enum members, infer semantic names from enum ordinal positions, or maintain local copies of supported OCCID model lists as a second semantic authority.
+
+Presentation-local constants remain application concerns.
+
+A useful review rule is:
+
+> If changing one OCCID semantic fact requires manually changing the same semantic fact in a consumer, check whether the authority boundary is wrong.
 
 ## Interoperability helpers
 
@@ -96,7 +114,9 @@ Nested models use the same model-ID-plus-fields representation.
 
 `decode_model()` resolves the concrete model from its model ID.
 
-Schema-change detection is handled separately by the structural consumer contract.
+The transient envelope does not carry one global schema version on every message.
+
+Schema compatibility is a consumer/build concern, not a per-message field. Schema-change detection is handled separately by the structural consumer contract.
 
 ## Structural consumer contract
 
@@ -113,7 +133,7 @@ python -m occid.contract generate .
 python -m occid.contract check .
 ```
 
-`OCCID_CONTRACT` is generated output. Do not hand-edit its hashes.
+`OCCID_CONTRACT` is generated output. Do not hand-edit or manually calculate its hashes.
 
 The current workflow is:
 
@@ -133,16 +153,22 @@ CI regenerates it independently
 the committed receipt must match
 ```
 
+CI is a verifier, not an updater. It regenerates `OCCID_CONTRACT` and verifies that the checked-in receipt does not change. A changed generated receipt is expected repository content and must be committed with the consumer change.
+
 The receipt contains:
 
 - one global structural hash for the current OCCID schema;
 - recursive structural hashes for OCCID symbols used by the consumer.
 
-A global schema change does not automatically mean every consumer changed structurally.
+Compatibility is structural and consumer-specific.
+
+The global schema hash can change while the OCCID symbols used by one consumer remain structurally unchanged.
 
 `check` reports changes to symbols used by that consumer.
 
 Git remains the history of schema revisions. The installed OCCID module is the contract source being checked.
+
+There is no separate compatibility archive, lock directory, caller-supplied OCCID root, or schema-version ladder required by this mechanism.
 
 ## Generation
 
