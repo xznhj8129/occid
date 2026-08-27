@@ -4,6 +4,7 @@ import argparse
 import ast
 import json
 import sys
+from importlib.metadata import PackageNotFoundError, version as distribution_version
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -31,8 +32,11 @@ class ContractError(RuntimeError):
 
 
 def _installed_occid_root() -> Path:
-    """Return the root belonging to the OCCID module imported by this Python."""
-    return Path(__file__).resolve().parents[1]
+    """Return the contract root belonging to the OCCID module imported by this Python."""
+    package_root = Path(__file__).resolve().parent
+    if (package_root / "lib" / "schema").is_dir():
+        return package_root
+    return package_root.parent
 
 
 def _marker(manifest: dict[str, Any]) -> dict[str, Any]:
@@ -63,13 +67,14 @@ def _build(root: Path) -> dict[str, Any]:
 
 
 def write_occid_marker(repo_root: str | Path) -> dict[str, Any]:
-    """Regenerate OCCID's own checked-in structural marker."""
+    """Regenerate OCCID's checked-in source and package structural markers."""
     root = Path(repo_root).resolve()
     manifest = _build(root)
-    (root / OCCID_MARKER).write_text(
-        json.dumps(_marker(manifest), indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
+    marker_text = json.dumps(_marker(manifest), indent=2, sort_keys=True) + "\n"
+    (root / OCCID_MARKER).write_text(marker_text, encoding="utf-8")
+    package_marker = root / "occid" / OCCID_MARKER
+    if package_marker.parent.is_dir():
+        package_marker.write_text(marker_text, encoding="utf-8")
     return manifest
 
 
@@ -77,6 +82,11 @@ def current_manifest() -> dict[str, Any]:
     """Return the contract of the OCCID module actually imported by this Python."""
     root = _installed_occid_root()
     manifest = _build(root)
+    if manifest.get("release") is None:
+        try:
+            manifest["release"] = distribution_version("occid")
+        except PackageNotFoundError:
+            pass
     marker = _read_json(root / OCCID_MARKER, "installed OCCID contract marker")
     if marker != _marker(manifest):
         raise ContractError(
@@ -144,8 +154,6 @@ def scan_used_symbols(
                     if alias.name == "occid":
                         occid_aliases.add(alias.asname or "occid")
                     elif alias.name.startswith("occid.schema"):
-                        # ``import occid.schema`` binds ``occid``; an ``as``
-                        # form binds the explicit alias instead.
                         occid_aliases.add(alias.asname or "occid")
             elif isinstance(node, ast.ImportFrom):
                 module = node.module or ""
@@ -158,8 +166,6 @@ def scan_used_symbols(
                         elif alias.name in known:
                             used.add(alias.name)
                 else:
-                    # Some consumers deliberately re-export the imported SDK as
-                    # ``occid``. Follow that alias without knowing their layout.
                     for alias in node.names:
                         if alias.name == "occid":
                             occid_aliases.add(alias.asname or "occid")
@@ -220,8 +226,6 @@ def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
     current = current_manifest()
     saved = expected["symbols"]
 
-    # Include saved names while scanning so a model removed from current OCCID
-    # is still recognized as a dependency if the consumer still imports it.
     scan_manifest = {
         "symbols": {
             name: current["symbols"].get(name, {})

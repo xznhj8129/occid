@@ -46,7 +46,8 @@ def main() -> None:
     )
 
     # This marker belongs to the OCCID module being generated. Consumer tools
-    # use it only through their actually imported OCCID module.
+    # use it only through their actually imported OCCID module. The helper also
+    # refreshes the package-data copy installed by non-editable distributions.
     from occid.contract import write_occid_marker
 
     write_occid_marker(REPO_ROOT)

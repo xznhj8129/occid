@@ -15,10 +15,23 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["occid", "occid.schema", "interop"]
+packages = ["occid", "occid.schema", "occid.lib", "interop"]
 
 [tool.setuptools.package-dir]
 "occid.schema" = "schema"
+"occid.lib" = "lib"
+
+[tool.setuptools.package-data]
+occid = ["occid-contract.json"]
+"occid.lib" = [
+    "model_ids.yaml",
+    "schema/*.yaml",
+    "schema/*/*.yaml",
+    "schema/*/*/*.yaml",
+    "schema/*/*/*/*.yaml",
+    "schema/*/*/*/*/*.yaml",
+    "schema/*/*/*/*/*/*.yaml",
+]
 
 [tool.setuptools.dynamic]
 version = {file = ["VERSION"]}
