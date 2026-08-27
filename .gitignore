@@ -2,6 +2,7 @@
 .qwen/
 __pycache__/
 *.egg-info/
+build/
 spec/.test/
 .env
 *.key
