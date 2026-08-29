@@ -7,7 +7,16 @@ from types import UnionType
 from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
 from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
 import msgpack
-from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
+from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny, StringConstraints
+
+OCCIDID = Annotated[
+    builtins.str,
+    StringConstraints(
+        strict=True,
+        to_lower=True,
+        pattern=r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
+    ),
+]
 
 OCCIDVersion = tuple[int, int, int]
 try:
