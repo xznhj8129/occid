@@ -110,9 +110,11 @@ A mapping failure can expose a shallow part of OCCID. It is evidence to investig
 
 Persistent record identity and operational identity are different.
 
-`RecordMeta.record_id` identifies one persisted record instance or revision. Model-specific identifiers such as an entity, task, plan, assignment, or execution ID identify the logical operational thing represented across record revisions.
+`RecordMeta.uid` is the global UID of one persisted record instance or revision, and `RecordMeta.id` is its class-local Record ID. The logical object described by that record has its own `uid` and class-local `id`. Entity 38, Track 38, and Task 38 may all exist simultaneously: their integer IDs are scoped to their semantic classes, while their UIDs are globally unique.
 
-Do not treat those identities as interchangeable aliases.
+Durable cross-object references use UIDs. Class-local IDs are for class-scoped lookup and human/operator use; they must not be mixed with UIDs or treated as globally unique.
+
+Do not treat record identity, logical-object identity, class-local ID, external or protocol identifiers, or transport addresses as interchangeable aliases.
 
 Stable definition and changing observation or assessment are also different concerns.
 
@@ -177,30 +179,33 @@ External protocol or API method names do not automatically become OCCID model cl
 
 See [`../example_usage.py`](../example_usage.py) for a complete small example that begins with raw CoT and MAVLink data.
 
-## Permanent model IDs
+## Model IDs
 
-Generated OCCID models currently have permanent numeric model IDs.
+Generated OCCID models currently have numeric model IDs.
 
-They provide durable registry identity for transient encoding and persisted model identity.
+They provide registry identity for transient encoding and persisted model identity.
 
 The IDs are implementation registry identity. They are not a semantic discovery mechanism, an ontology catalog, inheritance, or variant-family membership.
 
-A numeric slot assigned to a model must not later be reused for an unrelated model only because the previous class was removed.
+During Year Zero, model IDs are part of the current generated contract, not compatibility promises. If a model is removed, its numeric slot may be reused immediately as part of the same schema change. Regenerate affected outputs and consumers together; do not preserve tombstones or compatibility reservations for removed internal models.
 
 ## Transient encoding
 
 `OCCIDModel.encode()` currently emits a compact MsgPack envelope:
 
 ```text
-{
+[
   model_id,
-  fields
-}
+  {
+    field_ordinal: value,
+    ...
+  }
+]
 ```
 
-Nested models use the same model-ID-plus-fields representation.
+Nested OCCID models use the same shape. UIDs are encoded as 16 raw bytes, enums and flags use numeric wire values, and unset fields are omitted. Field ordinals are the zero-based effective generated field order, including inherited fields; the compact wire carries no model names, field names, or UUID text.
 
-`decode_model()` resolves the concrete model from its model ID.
+`decode_model()` resolves the concrete model from its model ID. Peers using this encoding are expected to share the same structural contract.
 
 The transient envelope does not carry one global schema version on every message.
 
