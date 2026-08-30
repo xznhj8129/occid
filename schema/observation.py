@@ -67,8 +67,12 @@ class Classification(Observation):
     __occid_semantic_role__: ClassVar[str] = 'ontology'
 
 class Track(Observation):
+    'Persistent maintained identity for one correlated observed object or phenomenon'
     __occid_model_id__: ClassVar[int] = 87
     __occid_semantic_role__: ClassVar[str] = 'ontology'
+    record: RecordMeta
+    uid: UID
+    id: builtins.int
 
 class Assessment(Observation):
     __occid_model_id__: ClassVar[int] = 88
@@ -88,22 +92,22 @@ class VisionBox(Detection):
 class VisionDetection(Detection):
     __occid_model_id__: ClassVar[int] = 91
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    detection_id: builtins.str | None = None
+    detection_ref: builtins.str | None = None
     label: builtins.str | None = None
-    class_id: builtins.int | None = None
+    class_index: builtins.int | None = None
     confidence: builtins.float | None = None
     box: VisionBox | None = None
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
-    source_frame_id: builtins.str | None = None
+    source_frame_ref: builtins.str | None = None
     attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
 
 class VisionDetectionFrame(Detection):
     __occid_model_id__: ClassVar[int] = 92
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    frame_id: builtins.str | None = None
-    sensor_id: UID | None = None
+    frame_ref: builtins.str | None = None
+    sensor_uid: UID | None = None
     timestamp_us: builtins.int | None = None
     detections: list[VisionDetection]
 
@@ -111,9 +115,10 @@ class IsrObservation(Observation):
     __occid_model_id__: ClassVar[int] = 93
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    obs_id: UID
-    track_id: UID | None = None
-    sensor_id: UID | None = None
+    uid: UID
+    id: builtins.int
+    track_uid: UID | None = None
+    sensor_uid: UID | None = None
     obs_ts: builtins.float
     observation_kind: ObservationKind | None = None
     category: IntelCategory | None = None
@@ -134,11 +139,12 @@ class IsrParameters(Struct):
     effect_domains: list[EffectDomain]
     evidence_level: EvidenceLevel | None = None
 
-class TrackUpdate(Track):
+class TrackUpdate(Observation):
+    'State update about an existing Track; does not define Track identity'
     __occid_model_id__: ClassVar[int] = 95
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    track_id: UID
+    track_uid: UID
     track_state: TrackState | None = None
     updated_ts: builtins.float
     confidence: ConfidenceLevel | None = None

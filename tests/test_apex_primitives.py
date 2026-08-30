@@ -17,7 +17,6 @@ from occid import (
     GNC,
     Health,
     Object,
-    OCCID_SCHEMA_VERSION,
     Payload,
     PlanContingency,
     Predicate,
@@ -78,10 +77,10 @@ class ApexPrimitiveTests(unittest.TestCase):
         self.assertEqual(Validation.decode(validation.encode()), validation)
         self.assertIn("preconditions", Task.model_fields)
         contingency = PlanContingency(
-            contingency_id=1,
+            id=1,
             condition=predicate,
             response="continue",
-            task_ids=[],
+            task_uids=[],
         )
         self.assertEqual(contingency.condition, predicate)
 
@@ -91,8 +90,8 @@ class ApexPrimitiveTests(unittest.TestCase):
             remaining_uses=2,
         )
         cue = Cue(
-            source_id=PAYLOAD_UID_1,
-            target_id=TARGET_UID,
+            source_uid=PAYLOAD_UID_1,
+            target_uid=TARGET_UID,
             distance_m=25.0,
             label="target",
         )
@@ -108,7 +107,7 @@ class ApexPrimitiveTests(unittest.TestCase):
         self.assertTrue(issubclass(FlightControlState, GNC))
         self.assertFalse(issubclass(Cue, GNC))
         self.assertNotIn("Guidance", occid.__all__)
-        self.assertEqual(OCCID_SCHEMA_VERSION, (5, 2, 0))
+        self.assertNotIn("OCCID_SCHEMA_VERSION", occid.__all__)
 
 
 if __name__ == "__main__":

@@ -5,50 +5,13 @@ root: Identity
 tags:
   - core
 
-enums:
-  IdentifierType:
-    - UNIT_CODE = 0
-    - CALLSIGN
-    - SERIAL_NUMBER
-    - DB_ID
-    - TRACK_ID
-    - ASSET_ID
-    - REGISTRATION
-
 models:
   Identity:
-    description: Fundamental identity, name, ID
+    description: Identity bindings and identity-related properties
     semantic_role: ontology
     parent: Property
     variants:
-      - StringID
-      - IntID
-      - HardwareIdentity
       - IdentityBootstrap
-
-  StringID:
-    semantic_role: specialization
-    parent: Identity
-    fields:
-      id_type: IdentifierType
-      value: string
-
-  IntID:
-    semantic_role: specialization
-    parent: Identity
-    fields:
-      id_type: IdentifierType
-      value: int
-
-  HardwareIdentity:
-    semantic_role: specialization
-    parent: Identity
-    fields:
-      hardware_uid: optional StringID
-      vendor_id: optional StringID
-      product_id: optional StringID
-      product_name: optional string
-      board_info: optional StringID
 
   IdentityBootstrap:
     description: Stable Node-centered binding of one deployed Node to the Entity it serves and that Entity's Organization

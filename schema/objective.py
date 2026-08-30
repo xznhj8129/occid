@@ -23,15 +23,16 @@ class Objective(Control):
     __occid_model_id__: ClassVar[int] = 84
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    objective_id: UID
+    uid: UID
+    id: builtins.int
     name: builtins.str
     intent: builtins.str
     desired_state: builtins.str
     success_criteria: list[SuccessCriterion]
-    target_refs: list[UID]
+    target_uids: list[UID]
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
-    owner_id: UID | None = None
+    owner_uid: UID | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None

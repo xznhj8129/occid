@@ -25,9 +25,9 @@ models:
     fields:
       node_uid: UID
       roles: list[CapabilityRole]
-      link_ids: list[string]
-      sensor_ids: list[string]
-      payload_ids: list[string]
+      link_refs: list[string]
+      sensor_refs: list[string]
+      payload_refs: list[string]
 
   StateDelta:
     semantic_role: specialization

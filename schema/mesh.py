@@ -28,14 +28,13 @@ class MeshLink(LinkState):
     'Observed state of a link between two mesh nodes'
     __occid_model_id__: ClassVar[int] = 225
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    src_id: StringID
-    dst_id: StringID
+    src_uid: UID
+    dst_uid: UID
     updated_ts: builtins.float | None = None
 
 class MeshNode(Node):
     __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    node_id: StringID
     state: MeshNodeState | None = None
     last_seen_ts: builtins.float | None = None
     position: GlobalPosition | None = None
@@ -47,16 +46,16 @@ class MeshView(Network):
     __occid_model_id__: ClassVar[int] = 227
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     epoch: builtins.int = 0
-    nodes: dict[builtins.str, MeshNode]
+    nodes: list[MeshNode]
     links: list[MeshLink]
-    partition_id: StringID | None = None
+    partition_ref: builtins.str | None = None
 
 class MeshtasticMessage(Message):
     __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    sender_id: StringID
+    sender_node_num: builtins.int
     sender_name: builtins.str | None = None
-    destination_id: StringID
+    destination_node_num: builtins.int
     port: MeshtasticPort | None = None
     private_port_num: builtins.int | None = None
     text: builtins.str | None = None
@@ -77,7 +76,7 @@ class MeshPositionSample(TelemetryMessage):
 class NodeHeartbeat(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 231
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    node_id: StringID
+    node_uid: UID
     last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None
     state: SerializeAsAny[LinkState | MeshLink]

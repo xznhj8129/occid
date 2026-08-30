@@ -117,8 +117,8 @@ class PayloadPlanSchema(Struct):
 class PayloadMountSchema(Struct):
     __occid_model_id__: ClassVar[int] = 256
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    mount_id: StringID
-    item_id: StringID
+    mount_ref: builtins.str
+    item_ref: builtins.str
     qty: builtins.int = 0
     pylons: builtins.str = ''
     launcher: builtins.str = ''

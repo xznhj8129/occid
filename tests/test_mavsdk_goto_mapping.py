@@ -12,7 +12,7 @@ ENTITY_UID = "cbdf5f3e-0e87-4bd0-a50f-9422ac87b686"
 
 def move_to(position: GlobalPosition, yaw_rad: float | None = None) -> MotionCommand:
     return MotionCommand(
-        target_ref=ENTITY_UID,
+        target_uid=ENTITY_UID,
         constraints=[],
         operation=MotionOperation.MOVE_TO,
         destination=position,
@@ -60,7 +60,7 @@ class MavsdkGotoMappingTests(unittest.TestCase):
 
     def test_non_move_to_operation_is_rejected(self) -> None:
         command = MotionCommand(
-            target_ref=ENTITY_UID,
+            target_uid=ENTITY_UID,
             constraints=[],
             operation=MotionOperation.STOP,
         )

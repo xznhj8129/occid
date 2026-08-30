@@ -101,14 +101,14 @@ models:
     semantic_role: specialization
     parent: Detection
     fields:
-      detection_id: optional string
+      detection_ref: optional string
       label: optional string
-      class_id: optional int
+      class_index: optional int
       confidence: optional float
       box: optional VisionBox
       bearing: optional LocalDirection
       position: optional GlobalPosition
-      source_frame_id: optional string
+      source_frame_ref: optional string
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
@@ -116,7 +116,7 @@ models:
     parent: Detection
     fields:
       record: RecordMeta
-      frame_id: optional string
+      frame_ref: optional string
       sensor_uid: optional UID
       timestamp_us: optional int
       detections: list[VisionDetection]

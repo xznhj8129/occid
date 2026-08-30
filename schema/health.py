@@ -63,7 +63,7 @@ class Health(State):
 class HealthAlert(Health):
     __occid_model_id__: ClassVar[int] = 143
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    alert_id: builtins.str | None = None
+    alert_ref: builtins.str | None = None
     level: AlertLevel
     condition: builtins.str
     acknowledged: builtins.bool = False
@@ -71,7 +71,7 @@ class HealthAlert(Health):
 class SubsystemHealth(Health):
     __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    subsystem_id: builtins.str
+    subsystem_ref: builtins.str
     state: HealthStatus
     fault_count: builtins.int = 0
     note: builtins.str | None = None

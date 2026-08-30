@@ -32,7 +32,7 @@ models:
       completed_at: optional float
       result: optional MetadataValue
       failure: optional string
-      external_job_refs: list[StringID]
+      external_job_refs: list[string]
 
   ExecutionAcceptance:
     description: Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion

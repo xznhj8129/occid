@@ -36,7 +36,7 @@ class TrackerState(SensorState):
     __occid_model_id__: ClassVar[int] = 191
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     locked: builtins.bool | None = None
-    target_id: UID | None = None
+    target_uid: UID | None = None
     angular_error: LocalDirection | None = None
     search_box_size: builtins.int | None = None
     detections: VisionDetectionFrame | None = None

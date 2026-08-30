@@ -21,9 +21,9 @@ class Node(Communication):
     'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
     __occid_model_id__: ClassVar[int] = 83
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    node_id: UID
-    node_number: builtins.int | None = None
-    entity_id: UID | None = None
+    uid: UID
+    id: builtins.int
+    entity_uid: UID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
     links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]

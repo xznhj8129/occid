@@ -45,7 +45,7 @@ class DirectedRelationship(Relationship):
 class EntityComponentRef(Relationship):
     __occid_model_id__: ClassVar[int] = 183
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    component_id: StringID
+    component_ref: builtins.str
     component_type: builtins.str | None = None
     label: builtins.str | None = None
 

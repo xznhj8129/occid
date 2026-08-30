@@ -17,7 +17,7 @@ models:
     semantic_role: specialization
     parent: ObservationMessage
     fields:
-      uid: StringID
+      event_ref: string
       event_type: string
       event_method: optional string
       callsign: optional string

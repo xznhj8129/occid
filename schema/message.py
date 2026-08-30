@@ -74,7 +74,7 @@ class Message(Communication):
 class MessageTarget(Struct):
     __occid_model_id__: ClassVar[int] = 77
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    target_id: UID
+    target_uid: UID
 
 class ResponseMessage(Message):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
@@ -86,7 +86,7 @@ class ResponseMessage(Message):
 class DeliveryReceipt(ResponseMessage):
     __occid_model_id__: ClassVar[int] = 79
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    node_id: UID
+    node_uid: UID
     delivery_state: DeliveryState
     seen_ts: builtins.float | None = None
     exec_ts: builtins.float | None = None

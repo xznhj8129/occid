@@ -23,15 +23,14 @@ models:
     semantic_role: specialization
     parent: LinkState
     fields:
-      src_id: StringID
-      dst_id: StringID
+      src_uid: UID
+      dst_uid: UID
       updated_ts: optional float
 
   MeshNode:
     semantic_role: specialization
     parent: Node
     fields:
-      node_id: StringID
       state: optional MeshNodeState
       last_seen_ts: optional float
       position: optional GlobalPosition
@@ -44,17 +43,17 @@ models:
     parent: Network
     fields:
       epoch: int = 0
-      nodes: map[string, MeshNode]
+      nodes: list[MeshNode]
       links: list[MeshLink]
-      partition_id: optional StringID
+      partition_ref: optional string
 
   MeshtasticMessage:
     semantic_role: specialization
     parent: Message
     fields:
-      sender_id: StringID
+      sender_node_num: uint32
       sender_name: optional string
-      destination_id: StringID
+      destination_node_num: uint32
       port: optional MeshtasticPort
       private_port_num: optional int
       text: optional string
@@ -78,7 +77,7 @@ models:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      node_id: StringID
+      node_uid: UID
       last_seen_ts: float
       node_state: optional MeshNodeState
       state: LinkState

@@ -11,12 +11,12 @@ class ObservationMessage(Message):
     'Message whose payload reports external objects, events, environment, or intelligence'
     __occid_model_id__: ClassVar[int] = 160
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    observation: SerializeAsAny[Observation | Detection | VisionBox | VisionDetection | VisionDetectionFrame | Classification | Track | TrackUpdate | IntelTrackSchema | Assessment | IsrResult | IsrObservation]
+    observation: SerializeAsAny[Observation | Detection | VisionBox | VisionDetection | VisionDetectionFrame | Classification | Track | TrackUpdate | Assessment | IsrResult | IsrObservation]
 
 class ProtocolEventMessage(ObservationMessage):
     __occid_model_id__: ClassVar[int] = 161
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    uid: StringID
+    event_ref: builtins.str
     event_type: builtins.str
     event_method: builtins.str | None = None
     callsign: builtins.str | None = None

@@ -55,7 +55,7 @@ class Command(Directive):
     'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 45
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    target_ref: UID
+    target_uid: UID
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class StateChangeCommand(Command):
@@ -80,7 +80,7 @@ class ConfigurationCommand(Command):
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
     value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
-    configuration_ref: StringID | None = None
+    configuration_ref: builtins.str | None = None
 
 class MotionCommand(Command):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
@@ -98,13 +98,13 @@ class ResourceCommand(Command):
     __occid_model_id__: ClassVar[int] = 307
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ResourceOperation
-    resource_ref: StringID | None = None
+    resource_ref: builtins.str | None = None
     quantity: builtins.float | None = None
-    destination_ref: StringID | None = None
+    destination_ref: builtins.str | None = None
 
 class ExecutionCommand(Command):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
     __occid_model_id__: ClassVar[int] = 308
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ExecutionOperation
-    dispatch_id: builtins.str | None = None
+    dispatch_ref: builtins.str | None = None

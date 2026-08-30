@@ -30,7 +30,7 @@ models:
     semantic_role: specialization
     parent: Resource
     fields:
-      source_id: string
+      source_ref: string
       power_type: PowerType
       status: PowerStatus
       remaining_pct: optional float
@@ -47,7 +47,7 @@ models:
     semantic_role: specialization
     parent: Resource
     fields:
-      source_id: optional string
+      source_ref: optional string
       voltage_v: optional float
       current_a: optional float
       power_w: optional float

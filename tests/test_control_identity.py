@@ -16,7 +16,8 @@ EXECUTOR_UID = "f27d4d7e-263d-4a80-ada2-48e10fedb01d"
 
 def record() -> RecordMeta:
     return RecordMeta(
-        record_id=RECORD_UID,
+        uid=RECORD_UID,
+        id=1,
         created_ts=0.0,
         updated_ts=0.0,
         origin_system="test",
@@ -28,50 +29,51 @@ class ControlIdentityTests(unittest.TestCase):
     def test_task_uses_uid_and_human_number(self) -> None:
         task = Task(
             record=record(),
-            task_id=TASK_UID,
-            task_number=42,
+            uid=TASK_UID,
+            id=42,
             instruction="Search sector Bravo",
-            target_refs=[ACTOR_UID],
-            location_refs=[],
+            target_uids=[ACTOR_UID],
+            location_uids=[],
             constraints=[],
         )
-        self.assertEqual(task.task_id, TASK_UID)
-        self.assertEqual(task.task_number, 42)
-        self.assertEqual(task.target_refs, [ACTOR_UID])
+        self.assertEqual(str(task.uid), TASK_UID)
+        self.assertEqual(task.id, 42)
+        self.assertEqual([str(uid) for uid in task.target_uids], [ACTOR_UID])
 
         with self.assertRaises(ValidationError):
             Task(
                 record=record(),
-                task_id="task-42",
+                uid="task-42",
+                id=42,
                 instruction="Search sector Bravo",
-                target_refs=[],
-                location_refs=[],
+                target_uids=[],
+                location_uids=[],
                 constraints=[],
             )
 
     def test_embedded_plan_and_objective_ids_are_local(self) -> None:
         step = PlanStep(
-            step_id=2,
-            task_id=TASK_UID,
-            actor_ids=[ACTOR_UID],
+            id=2,
+            task_uid=TASK_UID,
+            actor_uids=[ACTOR_UID],
             depends_on=[1],
             sequence=2,
         )
         criterion = SuccessCriterion(criterion_id=1, statement="Sector searched")
-        self.assertEqual(step.step_id, 2)
+        self.assertEqual(step.id, 2)
         self.assertEqual(step.depends_on, [1])
         self.assertEqual(criterion.criterion_id, 1)
 
-    def test_dispatch_id_is_correlation_string(self) -> None:
+    def test_dispatch_ref_is_correlation_string(self) -> None:
         acceptance = ExecutionAcceptance(
-            execution_id=EXECUTION_UID,
-            dispatch_id="dispatch-7",
-            executor_id=EXECUTOR_UID,
+            execution_uid=EXECUTION_UID,
+            dispatch_ref="dispatch-7",
+            executor_uid=EXECUTOR_UID,
             accepted=True,
             reported_at=1.0,
         )
-        self.assertEqual(acceptance.execution_id, EXECUTION_UID)
-        self.assertEqual(acceptance.dispatch_id, "dispatch-7")
+        self.assertEqual(str(acceptance.execution_uid), EXECUTION_UID)
+        self.assertEqual(acceptance.dispatch_ref, "dispatch-7")
 
 
 if __name__ == "__main__":

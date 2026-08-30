@@ -11,8 +11,8 @@ models:
     semantic_role: ontology
     parent: State
     fields:
-      source_id: optional UID
-      target_id: optional UID
+      source_uid: optional UID
+      target_uid: optional UID
       bearing_rad: optional float
       elevation_rad: optional float
       distance_m: optional float

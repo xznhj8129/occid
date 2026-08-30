@@ -60,7 +60,7 @@ class FrequencyRange(Radio):
 class ChannelSpec(Radio):
     __occid_model_id__: ClassVar[int] = 179
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    channel_id: StringID | None = None
+    channel_ref: builtins.str | None = None
     label: builtins.str | None = None
     frequency: FrequencyRange | None = None
     bandwidth_mhz: builtins.float | None = None
@@ -73,7 +73,7 @@ class RadioProfile(Radio):
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None
     channel_plan: list[ChannelSpec]
-    active_channel_id: StringID | None = None
+    active_channel_ref: builtins.str | None = None
     crypto_types: list[CryptoType]
     crypto_profile: CryptoProfile | None = None
     lora: LoRaProfile | None = None

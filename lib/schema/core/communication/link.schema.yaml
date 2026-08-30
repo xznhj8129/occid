@@ -53,20 +53,19 @@ models:
     semantic_role: ontology
     parent: Communication
     fields:
-      schema_id: optional StringID
+      schema_ref: optional string
       name: optional string
-      uuid: optional StringID
-      endpoint_id: optional StringID
+      endpoint_ref: optional string
       interface_name: optional string
       address: optional NetworkAddress
-      radio_id: optional string
+      radio_ref: optional string
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_id: optional StringID
+      network_ref: optional string
 
   DataRateSpec:
     semantic_role: specialization
@@ -116,7 +115,7 @@ models:
     semantic_role: ontology
     parent: State
     fields:
-      link_id: optional StringID
+      link_ref: optional string
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
       signal: optional SignalQuality

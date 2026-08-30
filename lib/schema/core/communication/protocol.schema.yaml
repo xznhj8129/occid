@@ -38,7 +38,7 @@ models:
     semantic_role: specialization
     parent: Protocol
     fields:
-      key_id: StringID
+      key_ref: string
       label: optional string
       crypto_type: CryptoType
       version: optional string
@@ -49,7 +49,7 @@ models:
     parent: Protocol
     fields:
       active_crypto: optional CryptoType
-      keyset_id: optional StringID
+      keyset_ref: optional string
       keys: list[CryptoKey]
 
   LoRaProfile:

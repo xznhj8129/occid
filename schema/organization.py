@@ -29,8 +29,8 @@ class Organization(Set):
     __occid_model_id__: ClassVar[int] = 98
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    org_uid: UID
-    organization_number: builtins.int | None = None
+    uid: UID
+    id: builtins.int
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
     callsign: builtins.str | None = None

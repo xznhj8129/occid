@@ -16,7 +16,8 @@ RECORD_UID = "c1a7312e-46b7-4b9c-8ba7-8c457e23ab11"
 
 def record() -> RecordMeta:
     return RecordMeta(
-        record_id=RECORD_UID,
+        uid=RECORD_UID,
+        id=1,
         created_ts=0.0,
         updated_ts=0.0,
         origin_system="test",
@@ -28,9 +29,9 @@ class CoreIdentityTests(unittest.TestCase):
     def test_entity_node_and_organization_use_uid_identity(self) -> None:
         entity = Entity(
             record=record(),
-            entity_id=ENTITY_UID,
-            entity_number=17,
-            node_ids=[NODE_UID],
+            uid=ENTITY_UID,
+            id=17,
+            node_uids=[NODE_UID],
             name="Frog UAV 1",
             callsign="FROG-11",
             tags=[],
@@ -38,9 +39,9 @@ class CoreIdentityTests(unittest.TestCase):
             relations=[],
         )
         node = Node(
-            node_id=NODE_UID,
-            node_number=6,
-            entity_id=ENTITY_UID,
+            uid=NODE_UID,
+            id=6,
+            entity_uid=ENTITY_UID,
             roles=[],
             addresses=[],
             links={},
@@ -49,30 +50,31 @@ class CoreIdentityTests(unittest.TestCase):
         )
         organization = Organization(
             record=record(),
-            org_uid=ORG_UID,
-            organization_number=3,
+            uid=ORG_UID,
+            id=3,
             name="Example Unit",
             unit_code="EXAMPLE",
             callsign="EXAMPLE-3",
         )
 
-        self.assertEqual(entity.entity_id, ENTITY_UID)
-        self.assertEqual(entity.entity_number, 17)
-        self.assertEqual(entity.node_ids, [NODE_UID])
-        self.assertEqual(node.node_id, NODE_UID)
-        self.assertEqual(node.entity_id, ENTITY_UID)
-        self.assertEqual(organization.org_uid, ORG_UID)
-        self.assertEqual(organization.organization_number, 3)
+        self.assertEqual(str(entity.uid), ENTITY_UID)
+        self.assertEqual(entity.id, 17)
+        self.assertEqual([str(uid) for uid in entity.node_uids], [NODE_UID])
+        self.assertEqual(str(node.uid), NODE_UID)
+        self.assertEqual(str(node.entity_uid), ENTITY_UID)
+        self.assertEqual(str(organization.uid), ORG_UID)
+        self.assertEqual(organization.id, 3)
 
     def test_record_and_location_use_uid_identity(self) -> None:
         meta = record()
-        location = Location(record=meta, location_id=LOCATION_UID, name="Sector Bravo")
-        self.assertEqual(meta.record_id, RECORD_UID)
-        self.assertEqual(location.location_id, LOCATION_UID)
+        location = Location(record=meta, uid=LOCATION_UID, id=1, name="Sector Bravo")
+        self.assertEqual(str(meta.uid), RECORD_UID)
+        self.assertEqual(str(location.uid), LOCATION_UID)
 
         with self.assertRaises(ValidationError):
             RecordMeta(
-                record_id="database-row-1",
+                uid="database-row-1",
+                id=1,
                 created_ts=0.0,
                 updated_ts=0.0,
                 origin_system="test",
@@ -89,8 +91,9 @@ class CoreIdentityTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             Entity(
                 record=record(),
-                entity_id="uav1",
-                node_ids=[],
+                uid="uav1",
+                id=17,
+                node_uids=[],
                 tags=[],
                 metadata={},
                 relations=[],

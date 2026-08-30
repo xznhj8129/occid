@@ -24,7 +24,7 @@ class EntityState(State):
     __occid_model_id__: ClassVar[int] = 280
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    subject_id: UID
+    subject_uid: UID
     timestamp: builtins.float
     position: LocationState | None = None
     motion: VelocityVector | None = None

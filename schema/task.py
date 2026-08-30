@@ -67,12 +67,12 @@ class Task(Directive):
     __occid_model_id__: ClassVar[int] = 124
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    task_id: UID
-    task_number: builtins.int | None = None
+    uid: UID
+    id: builtins.int
     instruction: builtins.str
-    target_refs: list[UID]
-    location_refs: list[UID]
-    objective_id: UID | None = None
+    target_uids: list[UID]
+    location_uids: list[UID]
+    objective_uid: UID | None = None
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[SerializeAsAny[Condition | Predicate | BooleanLogic]] | None = None
     start_time: builtins.float | None = None

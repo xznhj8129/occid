@@ -114,6 +114,8 @@ Persistent record identity and operational identity are different.
 
 Durable cross-object references use UIDs. Class-local IDs are for class-scoped lookup and human/operator use; they must not be mixed with UIDs or treated as globally unique.
 
+Identity field names are type claims: `uid` and `*_uid` are OCCID UIDs; `id` and `*_id` are integer IDs with an explicit class or local scope. A string is never an OCCID ID. Protocol tokens, external identifiers, correlation values, addresses, names, codes, labels, and similar strings must be named for what they actually are, such as `*_ref`, `*_address`, `*_code`, or `*_name`.
+
 Do not treat record identity, logical-object identity, class-local ID, external or protocol identifiers, or transport addresses as interchangeable aliases.
 
 Stable definition and changing observation or assessment are also different concerns.

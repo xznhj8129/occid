@@ -137,12 +137,13 @@ class RemoteControlSchema(Interface):
     mode_ranges: list[ModeRange]
 
 class ObserverSource(Interface):
-    'Entity-owned imagery/video observation source with stable source identity, local acquisition source, camera geometry, and telemetry links'
+    'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
     __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    source_id: UID
-    entity_id: UID
+    uid: UID
+    id: builtins.int
+    entity_uid: UID
     name: builtins.str
     local_source: builtins.str
     objtype: EntitySubtype = EntitySubtype.AIR_ROBOT

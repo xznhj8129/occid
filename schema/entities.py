@@ -92,15 +92,15 @@ class Entity(Object):
     __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    entity_id: UID
-    entity_number: builtins.int | None = None
-    node_ids: list[UID]
+    uid: UID
+    id: builtins.int
+    node_uids: list[UID]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
     metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
-    relations: list[RelationSchema]
+    relations: list[DirectedRelationship]
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 

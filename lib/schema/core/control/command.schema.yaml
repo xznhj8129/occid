@@ -89,7 +89,7 @@ models:
       operation: ConfigurationOperation
       parameter_name: optional string
       value: optional MetadataValue
-      configuration_ref: optional StringID
+      configuration_ref: optional string
 
   MotionCommand:
     description: Direct immediate target motion using a destination, path, or maintained spatial condition
@@ -109,9 +109,9 @@ models:
     parent: Command
     fields:
       operation: ResourceOperation
-      resource_ref: optional StringID
+      resource_ref: optional string
       quantity: optional float
-      destination_ref: optional StringID
+      destination_ref: optional string
 
   ExecutionCommand:
     description: Execute, abort, or reset a referenced plan, execution, or executable object

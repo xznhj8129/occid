@@ -29,7 +29,7 @@ models:
     semantic_role: specialization
     parent: Struct
     fields:
-      task_id: StringID
+      task_uid: UID
       combat_task: optional TaskCombat
       target_category: optional TargetCategory
       target_point: optional GlobalPosition

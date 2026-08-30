@@ -38,7 +38,7 @@ class ProtocolPayload(Protocol):
 class CryptoKey(Protocol):
     __occid_model_id__: ClassVar[int] = 105
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    key_id: StringID
+    key_ref: builtins.str
     label: builtins.str | None = None
     crypto_type: CryptoType
     version: builtins.str | None = None
@@ -48,7 +48,7 @@ class CryptoProfile(Protocol):
     __occid_model_id__: ClassVar[int] = 106
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     active_crypto: CryptoType | None = None
-    keyset_id: StringID | None = None
+    keyset_ref: builtins.str | None = None
     keys: list[CryptoKey]
 
 class LoRaProfile(Protocol):

@@ -26,9 +26,10 @@ TASK_UID_2 = "fe8a7c3c-afde-41bb-8ec6-cde9a3af6b04"
 OWNER_UID = "922651f4-37bb-4aa1-bf58-12d6ade5f22d"
 
 
-def record_meta(record_id: str) -> RecordMeta:
+def record_meta(record_uid: str, record_id: int) -> RecordMeta:
     return RecordMeta(
-        record_id=record_id,
+        uid=record_uid,
+        id=record_id,
         created_ts=1.0,
         updated_ts=1.0,
         origin_system="occid.tests",
@@ -38,15 +39,15 @@ def record_meta(record_id: str) -> RecordMeta:
 
 class ContractStabilityTests(unittest.TestCase):
     def test_record_identity_is_distinct_from_domain_identity(self) -> None:
-        self.assertIn("record_id", RecordMeta.model_fields)
-        self.assertNotIn("uid", RecordMeta.model_fields)
+        self.assertIn("uid", RecordMeta.model_fields)
+        self.assertIn("id", RecordMeta.model_fields)
         delta = TaskDelta(
-            record=record_meta(RECORD_UID_1),
-            task_id=TASK_UID_1,
+            record=record_meta(RECORD_UID_1, 1),
+            task_uid=TASK_UID_1,
             phase=TaskPhase.RUNNING,
             updated_ts=2.0,
         )
-        self.assertNotEqual(delta.record.record_id, delta.task_id)
+        self.assertNotEqual(delta.record.uid, delta.task_uid)
 
     def test_definitions_do_not_embed_runtime_assessment(self) -> None:
         self.assertNotIn("satisfied", SuccessCriterion.model_fields)
@@ -60,12 +61,12 @@ class ContractStabilityTests(unittest.TestCase):
 
     def test_task_delta_msgpack_round_trip(self) -> None:
         delta = TaskDelta(
-            record=record_meta(RECORD_UID_2),
-            task_id=TASK_UID_2,
+            record=record_meta(RECORD_UID_2, 2),
+            task_uid=TASK_UID_2,
             task_rev=3,
             phase=TaskPhase.RUNNING,
             progress=0.5,
-            owner_id=OWNER_UID,
+            owner_uid=OWNER_UID,
             updated_ts=3.0,
         )
         self.assertEqual(TaskDelta.decode(delta.encode()), delta)
@@ -77,11 +78,12 @@ class ContractStabilityTests(unittest.TestCase):
         assignment_schema = yaml.safe_load((REPO_ROOT / "lib/schema/core/control/assignment.schema.yaml").read_text())
         execution_schema = yaml.safe_load((REPO_ROOT / "lib/schema/core/data/state/execution.schema.yaml").read_text())
 
-        self.assertEqual(record_schema["models"]["RecordMeta"]["fields"]["record_id"], "UID")
+        self.assertEqual(record_schema["models"]["RecordMeta"]["fields"]["uid"], "UID")
+        self.assertEqual(record_schema["models"]["RecordMeta"]["fields"]["id"], "int")
         self.assertNotIn("satisfied", objective_schema["models"]["SuccessCriterion"]["fields"])
         self.assertEqual(objective_schema["models"]["SuccessCriterion"]["fields"]["criterion_id"], "int")
         self.assertNotIn("status", plan_schema["models"]["PlanStep"]["fields"])
-        self.assertEqual(plan_schema["models"]["PlanStep"]["fields"]["step_id"], "int")
+        self.assertEqual(plan_schema["models"]["PlanStep"]["fields"]["id"], "int")
         self.assertEqual(assignment_schema["models"]["Assignment"]["parent"], "Control")
         self.assertEqual(execution_schema["models"]["Execution"]["parent"], "State")
         self.assertEqual(execution_schema["models"]["TaskDelta"]["parent"], "State")

@@ -16,7 +16,8 @@ models:
     parent: Media
     fields:
       record: RecordMeta
-      media_id: UID
+      uid: UID
+      id: int
       media_type: MediaType
       uri: string
       label: optional string

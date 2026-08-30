@@ -124,8 +124,8 @@ models:
     semantic_role: specialization
     parent: Struct
     fields:
-      mount_id: StringID
-      item_id: StringID
+      mount_ref: string
+      item_ref: string
       qty: int = 0
       pylons: string = ""
       launcher: string = ""

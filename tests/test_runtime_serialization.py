@@ -22,7 +22,7 @@ TARGET_UID = UID("93bf5775-604d-4e87-8f2b-ee3675b6e80c")
 
 def move_to(position: GlobalPosition) -> MotionCommand:
     return MotionCommand(
-        target_ref=TARGET_UID,
+        target_uid=TARGET_UID,
         constraints=[],
         operation=MotionOperation.MOVE_TO,
         destination=position,
@@ -63,7 +63,7 @@ class RuntimeSerializationTests(unittest.TestCase):
 
     def test_uid_is_bin16_on_wire(self) -> None:
         command = MotionCommand(
-            target_ref=TARGET_UID,
+            target_uid=TARGET_UID,
             constraints=[],
             operation=MotionOperation.STOP,
         )
@@ -72,13 +72,13 @@ class RuntimeSerializationTests(unittest.TestCase):
             raw=False,
             strict_map_key=False,
         )
-        target_field = tuple(MotionCommand.model_fields).index("target_ref")
+        target_field = tuple(MotionCommand.model_fields).index("target_uid")
         self.assertEqual(envelope[1][target_field], TARGET_UID.bytes)
         self.assertEqual(len(envelope[1][target_field]), 16)
 
     def test_compact_wire_contains_no_schema_field_names(self) -> None:
         command = MotionCommand(
-            target_ref=TARGET_UID,
+            target_uid=TARGET_UID,
             constraints=[],
             operation=MotionOperation.STOP,
         )
@@ -89,11 +89,11 @@ class RuntimeSerializationTests(unittest.TestCase):
         )
         self.assertNotIn("model_id", envelope)
         self.assertNotIn("fields", envelope)
-        self.assertNotIn("target_ref", envelope[1])
+        self.assertNotIn("target_uid", envelope[1])
 
     def test_typed_decoder_still_rejects_wrong_model(self) -> None:
         payload = StateChangeCommand(
-            target_ref=TARGET_UID,
+            target_uid=TARGET_UID,
             constraints=[],
             operation=StateChangeOperation.ENABLE,
             property_name="armed",

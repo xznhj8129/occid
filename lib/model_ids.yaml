@@ -123,9 +123,6 @@ model_ids:
   MaintenanceStatus: 146
   NavReadinessState: 147
   Identity: 148
-  StringID: 149
-  IntID: 150
-  HardwareIdentity: 151
   Input: 152
   ControlAxisSet: 153
   ControlChannelValue: 154

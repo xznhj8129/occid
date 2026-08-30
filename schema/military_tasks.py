@@ -26,7 +26,7 @@ class CombatTaskProfile(Struct):
     'Military domain detail associated with a generic Task without creating a Task subtype'
     __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    task_id: StringID
+    task_uid: UID
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
     target_point: GlobalPosition | None = None

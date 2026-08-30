@@ -22,9 +22,10 @@ class Execution(State):
     __occid_model_id__: ClassVar[int] = 281
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    execution_id: UID
-    assignment_id: UID
-    executor_id: UID
+    uid: UID
+    id: builtins.int
+    assignment_uid: UID
+    executor_uid: UID
     attempt: builtins.int = 0
     phase: ExecutionPhase = ExecutionPhase.CREATED
     progress: builtins.float | None = None
@@ -32,15 +33,15 @@ class Execution(State):
     completed_at: builtins.float | None = None
     result: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     failure: builtins.str | None = None
-    external_job_refs: list[StringID]
+    external_job_refs: list[builtins.str]
 
 class ExecutionAcceptance(State):
     'Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion'
     __occid_model_id__: ClassVar[int] = 298
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    execution_id: UID
-    dispatch_id: builtins.str
-    executor_id: UID
+    execution_uid: UID
+    dispatch_ref: builtins.str
+    executor_uid: UID
     accepted: builtins.bool
     retryable: builtins.bool = False
     reason: builtins.str | None = None
@@ -50,9 +51,9 @@ class ExecutionStatusReport(State):
     'Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence'
     __occid_model_id__: ClassVar[int] = 300
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    execution_id: UID
-    dispatch_id: builtins.str
-    executor_id: UID
+    execution_uid: UID
+    dispatch_ref: builtins.str
+    executor_uid: UID
     found: builtins.bool = True
     phase: ExecutionPhase | None = None
     progress: builtins.float | None = None
@@ -66,9 +67,9 @@ class TaskDelta(State):
     __occid_model_id__: ClassVar[int] = 131
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    task_id: UID
+    task_uid: UID
     task_rev: builtins.int = 0
     phase: TaskPhase
     progress: builtins.float | None = None
-    owner_id: UID | None = None
+    owner_uid: UID | None = None
     updated_ts: builtins.float
