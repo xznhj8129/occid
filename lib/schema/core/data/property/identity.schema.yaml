@@ -20,6 +20,11 @@ models:
     description: Fundamental identity, name, ID
     semantic_role: ontology
     parent: Property
+    variants:
+      - StringID
+      - IntID
+      - HardwareIdentity
+      - IdentityBootstrap
 
   StringID:
     semantic_role: specialization
@@ -45,3 +50,14 @@ models:
       product_name: optional string
       board_info: optional StringID
 
+  IdentityBootstrap:
+    description: Stable Node-centered binding of one deployed Node to the Entity it serves and that Entity's Organization
+    semantic_role: specialization
+    parent: Identity
+    fields:
+      node_uid: UID
+      node_id: int
+      entity_uid: UID
+      entity_id: int
+      organization_uid: UID
+      organization_id: int

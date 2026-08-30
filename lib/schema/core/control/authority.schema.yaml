@@ -19,10 +19,11 @@ models:
     parent: Control
     fields:
       record: RecordMeta
-      authority_id: StringID
-      holder_id: StringID
-      granted_by: optional StringID
-      scope_refs: list[StringID]
+      uid: UID
+      id: int
+      holder_uid: UID
+      granted_by_uid: optional UID
+      scope_uids: list[UID]
       constraints: list[Constraint]
 
   ControlLease:
@@ -30,7 +31,7 @@ models:
     semantic_role: specialization
     parent: Authority
     fields:
-      asset_id: StringID
+      asset_uid: UID
       control_level: ControlLevel
       lease_start: float
       lease_end: float

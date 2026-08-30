@@ -8,12 +8,10 @@ import yaml
 from occid import (
     Assignment,
     Control,
-    IdentifierType,
     OCCID_MODEL_ID_BY_CLASS,
     PlanStep,
     RecordMeta,
     State,
-    StringID,
     SuccessCriterion,
     TaskDelta,
     TaskPhase,
@@ -21,15 +19,16 @@ from occid import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+RECORD_UID_1 = "726b19e5-7214-4cef-99e6-c00a70c9320b"
+RECORD_UID_2 = "90ca3bc1-d944-42e9-8d11-c0faf4b9264b"
+TASK_UID_1 = "6ce34dc4-b352-4d75-a16a-96b505110458"
+TASK_UID_2 = "fe8a7c3c-afde-41bb-8ec6-cde9a3af6b04"
+OWNER_UID = "922651f4-37bb-4aa1-bf58-12d6ade5f22d"
 
 
-def sid(value: str) -> StringID:
-    return StringID(id_type=IdentifierType.DB_ID, value=value)
-
-
-def record_meta(value: str) -> RecordMeta:
+def record_meta(record_id: str) -> RecordMeta:
     return RecordMeta(
-        record_id=sid(value),
+        record_id=record_id,
         created_ts=1.0,
         updated_ts=1.0,
         origin_system="occid.tests",
@@ -42,8 +41,8 @@ class ContractStabilityTests(unittest.TestCase):
         self.assertIn("record_id", RecordMeta.model_fields)
         self.assertNotIn("uid", RecordMeta.model_fields)
         delta = TaskDelta(
-            record=record_meta("record.task.delta.1"),
-            task_id=sid("task.1"),
+            record=record_meta(RECORD_UID_1),
+            task_id=TASK_UID_1,
             phase=TaskPhase.RUNNING,
             updated_ts=2.0,
         )
@@ -61,12 +60,12 @@ class ContractStabilityTests(unittest.TestCase):
 
     def test_task_delta_msgpack_round_trip(self) -> None:
         delta = TaskDelta(
-            record=record_meta("record.task.delta.2"),
-            task_id=sid("task.2"),
+            record=record_meta(RECORD_UID_2),
+            task_id=TASK_UID_2,
             task_rev=3,
             phase=TaskPhase.RUNNING,
             progress=0.5,
-            owner_id=sid("entity.operator.1"),
+            owner_id=OWNER_UID,
             updated_ts=3.0,
         )
         self.assertEqual(TaskDelta.decode(delta.encode()), delta)
@@ -78,10 +77,11 @@ class ContractStabilityTests(unittest.TestCase):
         assignment_schema = yaml.safe_load((REPO_ROOT / "lib/schema/core/control/assignment.schema.yaml").read_text())
         execution_schema = yaml.safe_load((REPO_ROOT / "lib/schema/core/data/state/execution.schema.yaml").read_text())
 
-        self.assertIn("record_id", record_schema["models"]["RecordMeta"]["fields"])
-        self.assertNotIn("uid", record_schema["models"]["RecordMeta"]["fields"])
+        self.assertEqual(record_schema["models"]["RecordMeta"]["fields"]["record_id"], "UID")
         self.assertNotIn("satisfied", objective_schema["models"]["SuccessCriterion"]["fields"])
+        self.assertEqual(objective_schema["models"]["SuccessCriterion"]["fields"]["criterion_id"], "int")
         self.assertNotIn("status", plan_schema["models"]["PlanStep"]["fields"])
+        self.assertEqual(plan_schema["models"]["PlanStep"]["fields"]["step_id"], "int")
         self.assertEqual(assignment_schema["models"]["Assignment"]["parent"], "Control")
         self.assertEqual(execution_schema["models"]["Execution"]["parent"], "State")
         self.assertEqual(execution_schema["models"]["TaskDelta"]["parent"], "State")

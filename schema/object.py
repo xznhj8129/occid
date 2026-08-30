@@ -45,7 +45,7 @@ class Location(Object):
     __occid_model_id__: ClassVar[int] = 22
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    location_id: StringID
+    location_id: UID
     name: builtins.str | None = None
     symbology: SymbologySchema | None = None
 

@@ -92,12 +92,12 @@ class Entity(Object):
     __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    entity_id: StringID
-    node_ids: list[StringID]
-    short_id: StringID | None = None
+    entity_id: UID
+    entity_number: builtins.int | None = None
+    node_ids: list[UID]
     name: builtins.str | None = None
+    callsign: builtins.str | None = None
     entity_type: EntityType | None = None
-    alt_ids: list[StringID]
     tags: list[builtins.str]
     metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[RelationSchema]
@@ -143,7 +143,6 @@ class Person(Actor):
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     entity_type: EntityType = EntityType.PERSON
     role: builtins.str
-    serial_uid: StringID
     op_domain: OperationalDomain = OperationalDomain.LAND
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
@@ -154,7 +153,7 @@ class Machine(Entity):
     __occid_model_id__: ClassVar[int] = 220
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     entity_type: EntityType = EntityType.MACHINE
-    sys_id: StringID
+    serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[EntityComponentRef]
@@ -174,7 +173,6 @@ class GroundMachine(Machine):
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
     role: builtins.str
-    serial_uid: StringID
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: GroundNavigationSchema
 
@@ -185,6 +183,5 @@ class AirMachine(Machine):
     machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    serial_uid: StringID
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: AirNavigationSchema

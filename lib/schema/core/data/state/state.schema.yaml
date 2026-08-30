@@ -42,7 +42,7 @@ models:
     parent: State
     fields:
       record: RecordMeta
-      subject_id: StringID
+      subject_uid: UID
       timestamp: float
       position: optional LocationState
       motion: optional VelocityVector

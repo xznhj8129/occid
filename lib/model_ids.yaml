@@ -82,7 +82,7 @@ model_ids:
   IsrParameters: 94
   TrackUpdate: 95
   IsrResult: 96
-  IntelTrackSchema: 97
+  IdentityBootstrap: 97
   Organization: 98
   Group: 99
   Unit: 100
@@ -155,7 +155,7 @@ model_ids:
   ChannelSpec: 179
   RadioProfile: 180
   Relationship: 181
-  RelationSchema: 182
+  DirectedRelationship: 182
   EntityComponentRef: 183
   Resource: 184
   FuelState: 185

@@ -141,16 +141,16 @@ models:
   ObserverSource:
     semantic_role: specialization
     parent: Interface
-    description: Entity-owned imagery/video observation source with stable source identity, local acquisition source, camera geometry, and telemetry links
+    description: Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links
     fields:
       record: RecordMeta
-      source_id: StringID
-      entity_id: StringID
+      uid: UID
+      id: int
+      entity_uid: UID
       name: string
       local_source: string
       objtype: EntitySubtype = AIR_ROBOT
       active: bool = true
-      dbid: optional StringID
       pos: optional GlobalPosition
       attitude: optional EulerAngles
       gimbal_ang: optional EulerAngles

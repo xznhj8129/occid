@@ -9,20 +9,21 @@ tags:
 enums:
   CapabilityRole:
     - CONTROLLER = 1 << 0
-    - RELAY 
-    - SENSOR 
-    - EFFECTOR 
-    - GATEWAY 
-    - RECORDER 
+    - RELAY
+    - SENSOR
+    - EFFECTOR
+    - GATEWAY
+    - RECORDER
 
 models:
   Node:
-    description: Communication identity of an entity, including addresses and available links
+    description: Deployed compute and communications endpoint participating in OCCID on behalf of an Entity
     semantic_role: ontology
     parent: Communication
     fields:
-      node_id: StringID
-      entity_id: optional StringID
+      uid: UID
+      id: int
+      entity_uid: optional UID
       roles: list[CapabilityRole]
       addresses: list[NetworkAddress]
       links: map[string, Link]

@@ -66,11 +66,12 @@ models:
     parent: Directive
     fields:
       record: RecordMeta
-      task_id: StringID
+      uid: UID
+      id: int
       instruction: string
-      target_refs: list[StringID]
-      location_refs: list[StringID]
-      objective_id: optional StringID
+      target_uids: list[UID]
+      location_uids: list[UID]
+      objective_uid: optional UID
       constraints: list[Constraint]
       preconditions: optional list[Condition]
       start_time: optional float

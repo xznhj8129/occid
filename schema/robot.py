@@ -141,13 +141,12 @@ class ObserverSource(Interface):
     __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    source_id: StringID
-    entity_id: StringID
+    source_id: UID
+    entity_id: UID
     name: builtins.str
     local_source: builtins.str
     objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
     active: builtins.bool = True
-    dbid: StringID | None = None
     pos: GlobalPosition | None = None
     attitude: EulerAngles | None = None
     gimbal_ang: EulerAngles | None = None

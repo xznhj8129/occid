@@ -16,7 +16,6 @@ from occid import (
     FlightControlState,
     GNC,
     Health,
-    IdentifierType,
     Object,
     OCCID_SCHEMA_VERSION,
     Payload,
@@ -24,15 +23,15 @@ from occid import (
     Predicate,
     Property,
     State,
-    StringID,
     Task,
     Validation,
     ValidationStatus,
 )
 
 
-def sid(value: str) -> StringID:
-    return StringID(id_type=IdentifierType.DB_ID, value=value)
+PAYLOAD_UID_1 = "030ad7ef-905a-4ce7-a97b-8e0d44d3e138"
+PAYLOAD_UID_2 = "e512918a-26e0-4b23-9931-c5e4fe24da4e"
+TARGET_UID = "a55c2fe0-8e06-42f3-a50f-1324cc1f9266"
 
 
 class ApexPrimitiveTests(unittest.TestCase):
@@ -46,7 +45,7 @@ class ApexPrimitiveTests(unittest.TestCase):
         self.assertTrue(issubclass(Condition, Data))
         self.assertFalse(issubclass(Condition, State))
         self.assertTrue(issubclass(Health, State))
-        predicate = Predicate(subject_ref=sid("payload.1"))
+        predicate = Predicate(subject_ref=PAYLOAD_UID_1)
         condition = BooleanLogic(operator=BooleanOperator.NOT, terms=[predicate])
         constraint = Constraint(condition=condition)
         self.assertEqual(constraint.condition, condition)
@@ -55,8 +54,8 @@ class ApexPrimitiveTests(unittest.TestCase):
             self.assertNotIn(old_name, occid.__all__)
 
     def test_boolean_logic_uses_one_closed_operator_axis(self) -> None:
-        first = Predicate(subject_ref=sid("payload.1"))
-        second = Predicate(subject_ref=sid("payload.2"))
+        first = Predicate(subject_ref=PAYLOAD_UID_1)
+        second = Predicate(subject_ref=PAYLOAD_UID_2)
         condition = BooleanLogic(operator=BooleanOperator.NOR, terms=[first, second])
         self.assertEqual(BooleanLogic.decode(condition.encode()), condition)
         self.assertEqual(
@@ -74,12 +73,12 @@ class ApexPrimitiveTests(unittest.TestCase):
         )
 
     def test_condition_validation_is_separate_runtime_state(self) -> None:
-        predicate = Predicate(subject_ref=sid("payload.1"))
+        predicate = Predicate(subject_ref=PAYLOAD_UID_1)
         validation = Validation(condition=predicate, status=ValidationStatus.VALID, updated_ts=1.0)
         self.assertEqual(Validation.decode(validation.encode()), validation)
         self.assertIn("preconditions", Task.model_fields)
         contingency = PlanContingency(
-            contingency_id=sid("contingency.1"),
+            contingency_id=1,
             condition=predicate,
             response="continue",
             task_ids=[],
@@ -92,8 +91,8 @@ class ApexPrimitiveTests(unittest.TestCase):
             remaining_uses=2,
         )
         cue = Cue(
-            source_id=sid("payload.1"),
-            target_id=sid("target.1"),
+            source_id=PAYLOAD_UID_1,
+            target_id=TARGET_UID,
             distance_m=25.0,
             label="target",
         )

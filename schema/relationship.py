@@ -7,6 +7,13 @@ from .property import Property
 
 ### Enums
 
+class RelationshipKind(IntEnum):
+    MEMBER_OF = 0
+    COMMANDS = auto()
+    OPERATES = auto()
+    SUPPORTS = auto()
+    OWNS = auto()
+
 class SpatialRelationKind(IntEnum):
     CONTAINS = 0
     WITHIN = auto()
@@ -23,12 +30,13 @@ class Relationship(Property):
     __occid_model_id__: ClassVar[int] = 181
     __occid_semantic_role__: ClassVar[str] = 'ontology'
 
-class RelationSchema(Relationship):
+class DirectedRelationship(Relationship):
+    'Typed directed semantic relationship between two OCCID objects'
     __occid_model_id__: ClassVar[int] = 182
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    src_id: StringID
-    dst_id: StringID
-    rel_kind: builtins.str
+    subject_uid: UID
+    object_uid: UID
+    relation: RelationshipKind
     since_ts: builtins.float | None = None
     until_ts: builtins.float | None = None
     confidence: ConfidenceLevel | None = None
@@ -46,7 +54,8 @@ class SpatialRelationship(Relationship):
     __occid_model_id__: ClassVar[int] = 332
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    relationship_id: StringID
-    subject_id: StringID
-    reference_id: StringID
+    uid: UID
+    id: builtins.int
+    subject_uid: UID
+    reference_uid: UID
     relation: SpatialRelationKind

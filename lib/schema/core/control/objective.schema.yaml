@@ -11,7 +11,7 @@ models:
     semantic_role: specialization
     parent: Struct
     fields:
-      criterion_id: StringID
+      criterion_id: int
       statement: string
       metric: optional string
       target_value: optional MetadataValue
@@ -22,15 +22,16 @@ models:
     parent: Control
     fields:
       record: RecordMeta
-      objective_id: StringID
+      uid: UID
+      id: int
       name: string
       intent: string
       desired_state: string
       success_criteria: list[SuccessCriterion]
-      target_refs: list[StringID]
+      target_uids: list[UID]
       constraints: list[Constraint]
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
-      owner_id: optional StringID
+      owner_uid: optional UID
       start_time: optional float
       deadline: optional float

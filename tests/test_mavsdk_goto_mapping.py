@@ -3,17 +3,16 @@ from __future__ import annotations
 import math
 import unittest
 
-from occid import AltitudeDatum, GlobalPosition, IdentifierType, MotionCommand, MotionOperation, StringID
+from occid import AltitudeDatum, GlobalPosition, MotionCommand, MotionOperation
 from interop.mavsdk import goto_command_to_fields
 
 
-def sid(value: str) -> StringID:
-    return StringID(id_type=IdentifierType.DB_ID, value=value)
+ENTITY_UID = "cbdf5f3e-0e87-4bd0-a50f-9422ac87b686"
 
 
 def move_to(position: GlobalPosition, yaw_rad: float | None = None) -> MotionCommand:
     return MotionCommand(
-        target_ref=sid("entity.uav.1"),
+        target_ref=ENTITY_UID,
         constraints=[],
         operation=MotionOperation.MOVE_TO,
         destination=position,
@@ -61,7 +60,7 @@ class MavsdkGotoMappingTests(unittest.TestCase):
 
     def test_non_move_to_operation_is_rejected(self) -> None:
         command = MotionCommand(
-            target_ref=sid("entity.uav.1"),
+            target_ref=ENTITY_UID,
             constraints=[],
             operation=MotionOperation.STOP,
         )

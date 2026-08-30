@@ -23,12 +23,12 @@ class Assignment(Control):
     __occid_model_id__: ClassVar[int] = 130
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    assignment_id: StringID
-    task_id: StringID
-    assignee_id: StringID
-    plan_id: StringID | None = None
-    authority_id: StringID | None = None
-    assigned_by: StringID
+    assignment_id: UID
+    task_id: UID
+    assignee_id: UID
+    plan_id: UID | None = None
+    authority_id: UID | None = None
+    assigned_by: UID
     assigned_at: builtins.float
     accepted_at: builtins.float | None = None
     status: AssignmentStatus = AssignmentStatus.PROPOSED
@@ -38,7 +38,7 @@ class FlightAssignment(Assignment):
     __occid_model_id__: ClassVar[int] = 132
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     num: builtins.int
-    unit_id: StringID | None = None
+    unit_id: UID | None = None
     callsign: builtins.str | None = None
     objective_assign: builtins.int | None = None
     wave_n: builtins.int = 0

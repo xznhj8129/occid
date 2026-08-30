@@ -1,62 +1,109 @@
-"""OCCID interoperability example.
+"""OCCID end-to-end field manual.
 
-This example starts at real protocol boundaries:
+This is not a normal programming example or test fixture. It is the readable,
+executable answer to "how is OCCID supposed to work?": architecture expressed
+as code in one small operational scenario.
 
-- a hardcoded Cursor-on-Target XML event;
-- a hardcoded MAVLink v2 GLOBAL_POSITION_INT frame.
+Identity rule:
 
-Tiny example parsers decode those protocol representations. Existing OCCID
-interop helpers then normalize the useful protocol-independent meaning. The
-normalized data is used in a small control flow and converted back toward a
-vehicle-facing operation.
+    UID = UUIDv4, globally unique, immutable machine identity
+    ID  = sequential integer scoped to the semantic OCCID class
 
-The parsers in this file are deliberately small teaching examples. They are not
-complete CoT or MAVLink implementations.
+Entity 38, Track 38, and Task 38 are unrelated class-local IDs. Their UIDs are
+globally unambiguous. Durable cross-object references use UIDs, never IDs.
+
+The scenario walks through identity provisioning, organizations, relationships,
+communications, external protocol mapping, authority, tasking, execution,
+MAVLink telemetry, OCCID reporting, observation, tracking, and compact wire.
 """
 
 from __future__ import annotations
 
 import struct
+import time
+import uuid
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
-from datetime import datetime
-from typing import Any
+from datetime import datetime, timezone
 
 from interop.cot import CotPointFields, cot_point_to_location_state
 from interop.mavsdk import (
-    MavsdkGotoFields,
     MavsdkPositionFields,
     goto_command_to_fields,
     position_to_location_state,
 )
 from occid import (
+    AddressKind,
     AltitudeDatum,
     Assignment,
     AssignmentStatus,
-    Authority,
+    CapabilityRole,
+    CommandMessage,
+    ConfidenceLevel,
+    ControlLease,
+    ControlLevel,
+    DeliveryReceipt,
+    DeliveryState,
+    DirectedRelationship,
     Entity,
     EntityState,
     EntityType,
     Execution,
+    ExecutionAcceptance,
+    ExecutionCommand,
+    ExecutionOperation,
+    ExecutionPhase,
+    ExecutionStatusReport,
     GlobalPosition,
-    IdentifierType,
+    Group,
+    IdentityBootstrap,
     InformationIntent,
     InertialReferenceFrame,
+    IntelCategory,
     IsrObservation,
+    Link,
+    LinkDataType,
+    LinkDirection,
+    LinkType,
+    MessagePriority,
+    MessageTarget,
     MotionCommand,
     MotionOperation,
+    NetworkAddress,
+    Node,
     Objective,
     ObservationKind,
+    ObservationMessage,
     ObservationTimeBasis,
+    OrgTopology,
+    OrgType,
     Plan,
     PlanApprovalState,
+    PlanStep,
     RecordMeta,
-    StringID,
+    RelationshipKind,
+    SpotterOrigin,
+    TaskDelta,
     TaskInformation,
+    TaskPhase,
+    TaskPriority,
+    TelemetryMessage,
+    Timestamp,
+    Track,
+    TrackState,
+    TrackUpdate,
+    UID,
+    UAVTelemetryMessage,
+    Unit,
     VelocityVector,
-    decode_model,
 )
 
+
+# ---------------------------------------------------------------------------
+# External protocol fixtures
+# ---------------------------------------------------------------------------
+# These remain protocol-native. CoT UID and MAVLink sysid/compid are not OCCID
+# identity and are never substituted for OCCID UID or ID.
 
 COT_XML = """\
 <event version="2.0"
@@ -77,20 +124,71 @@ COT_XML = """\
 </event>
 """
 
-# MAVLink v2 GLOBAL_POSITION_INT.
-# sysid=7, compid=1, boot=123.456 s
-# lat=45.5017 deg, lon=-73.5673 deg
-# altitude=120 m MSL, relative altitude=40 m
-# velocity=(5.0, 0.0, -0.5) m/s NED, heading=90 deg
 MAVLINK_GLOBAL_POSITION_INT = bytes.fromhex(
     "fd1c00002a0701210000"
     "40e2010028021f1b588526d4c0d40100409c0000f4010000ceff2823"
     "665f"
 )
 
+MAVLINK_GLOBAL_POSITION_INT_MOVING = bytes.fromhex(
+    "fd1c00002b0701210000"
+    "10ea0100c8111f1be09826d448e80100c8af00002c01c800ecffa00f"
+    "5005"
+)
+
 MAVLINK_GLOBAL_POSITION_INT_ID = 33
 MAVLINK_GLOBAL_POSITION_INT_CRC_EXTRA = 104
-EXAMPLE_RECEIVED_TS = 1787677205.0
+
+
+# ---------------------------------------------------------------------------
+# UID globally, ID inside a semantic class
+# ---------------------------------------------------------------------------
+
+
+def new_uid() -> UID:
+    return UID(bytes=uuid.uuid4().bytes)
+
+
+@dataclass
+class ClassIDRegistry:
+    """Small human IDs have one independent sequence per semantic class."""
+
+    next_id: dict[str, int] = field(default_factory=dict)
+
+    def allocate(self, object_class: str) -> int:
+        value = self.next_id.get(object_class, 1)
+        self.next_id[object_class] = value + 1
+        return value
+
+
+# ---------------------------------------------------------------------------
+# Small mechanics used by the walkthrough
+# ---------------------------------------------------------------------------
+
+
+def record(registry: ClassIDRegistry, origin: str) -> RecordMeta:
+    now = time.time()
+    return RecordMeta(
+        uid=new_uid(),
+        id=registry.allocate("Record"),
+        created_ts=now,
+        updated_ts=now,
+        origin_system=origin,
+        provenance=[],
+    )
+
+
+def message_timestamp() -> Timestamp:
+    now = datetime.fromtimestamp(time.time(), timezone.utc)
+    return Timestamp(
+        seconds=now.second + now.microsecond / 1_000_000.0,
+        minutes=now.minute,
+        hours=now.hour,
+        day=now.day,
+        month=now.month,
+        year=now.year,
+        tz=0,
+    )
 
 
 @dataclass(frozen=True)
@@ -117,39 +215,7 @@ class ParsedMavlinkPosition:
     heading_deg: float | None
 
 
-@dataclass(frozen=True)
-class TraceEntry:
-    label: str
-    model: str
-    wire_bytes: int
-
-
-@dataclass
-class ExampleResult:
-    cot: ParsedCotEvent
-    mavlink: ParsedMavlinkPosition
-    records: dict[str, Any] = field(default_factory=dict)
-    trace: list[TraceEntry] = field(default_factory=list)
-    outbound_goto: MavsdkGotoFields | None = None
-    assertions: dict[str, bool] = field(default_factory=dict)
-
-
-def sid(value: str) -> StringID:
-    return StringID(id_type=IdentifierType.DB_ID, value=value)
-
-
-def record_meta(record_id: str, ts: float, origin: str) -> RecordMeta:
-    return RecordMeta(
-        record_id=sid(record_id),
-        created_ts=ts,
-        updated_ts=ts,
-        origin_system=origin,
-        provenance=[],
-    )
-
-
 def parse_cot_xml(xml_text: str) -> ParsedCotEvent:
-    """Parse only the small CoT subset used by this example."""
     event = ET.fromstring(xml_text)
     if event.tag != "event":
         raise ValueError("expected CoT <event> root")
@@ -158,11 +224,11 @@ def parse_cot_xml(xml_text: str) -> ParsedCotEvent:
     if point is None:
         raise ValueError("CoT event has no <point>")
 
-    contact = event.find("./detail/contact")
-    callsign = None if contact is None else contact.get("callsign")
     event_time = event.get("time")
     if event_time is None:
         raise ValueError("CoT event has no time")
+
+    contact = event.find("./detail/contact")
 
     def required_float(name: str) -> float:
         value = point.get(name)
@@ -177,7 +243,7 @@ def parse_cot_xml(xml_text: str) -> ParsedCotEvent:
     return ParsedCotEvent(
         uid=event.attrib["uid"],
         cot_type=event.attrib["type"],
-        callsign=callsign,
+        callsign=None if contact is None else contact.get("callsign"),
         event_ts=datetime.fromisoformat(event_time.replace("Z", "+00:00")).timestamp(),
         point=CotPointFields(
             lat_deg=required_float("lat"),
@@ -192,12 +258,7 @@ def parse_cot_xml(xml_text: str) -> ParsedCotEvent:
 def _x25_accumulate(byte: int, crc: int) -> int:
     tmp = byte ^ (crc & 0xFF)
     tmp = (tmp ^ (tmp << 4)) & 0xFF
-    return (
-        (crc >> 8)
-        ^ (tmp << 8)
-        ^ (tmp << 3)
-        ^ (tmp >> 4)
-    ) & 0xFFFF
+    return ((crc >> 8) ^ (tmp << 8) ^ (tmp << 3) ^ (tmp >> 4)) & 0xFFFF
 
 
 def _mavlink_crc(data: bytes, crc_extra: int) -> int:
@@ -208,14 +269,12 @@ def _mavlink_crc(data: bytes, crc_extra: int) -> int:
 
 
 def parse_mavlink_global_position(frame: bytes) -> ParsedMavlinkPosition:
-    """Parse one MAVLink v2 GLOBAL_POSITION_INT frame for the example."""
     if len(frame) < 12 or frame[0] != 0xFD:
         raise ValueError("expected MAVLink v2 frame")
 
     payload_len = frame[1]
-    incompat_flags = frame[2]
-    if incompat_flags & 0x01:
-        raise ValueError("signed MAVLink frames are outside this tiny example parser")
+    if frame[2] & 0x01:
+        raise ValueError("signed MAVLink frames are outside this tiny parser")
 
     frame_len = 10 + payload_len + 2
     if len(frame) != frame_len:
@@ -265,65 +324,225 @@ def parse_mavlink_global_position(frame: bytes) -> ParsedMavlinkPosition:
     )
 
 
-def run_example() -> ExampleResult:
-    cot = parse_cot_xml(COT_XML)
-    mavlink = parse_mavlink_global_position(MAVLINK_GLOBAL_POSITION_INT)
-    result = ExampleResult(cot=cot, mavlink=mavlink)
+# ---------------------------------------------------------------------------
+# Complete OCCID walkthrough
+# ---------------------------------------------------------------------------
 
-    def cross(label: str, value):
-        payload = value.encode()
-        decoded = decode_model(payload)
-        if type(decoded) is not type(value) or decoded != value:
-            raise AssertionError(f"{label}: OCCID encode/decode round trip changed value")
-        result.trace.append(
-            TraceEntry(
-                label=label,
-                model=type(value).__name__,
-                wire_bytes=len(payload),
-            )
-        )
-        return decoded
 
-    operator_id = sid("entity.operator.1")
-    uav_id = sid("entity.uav.7")
-    contact_track_id = sid(f"track.cot.{cot.uid}")
-
-    # CoT is parsed as CoT first, then normalized into OCCID observation semantics.
-    cot_location = cot_point_to_location_state(cot.point)
-    if cot_location.position is None:
-        raise AssertionError("CoT point conversion did not produce a global position")
-
-    contact_observation = cross(
-        "cot.contact.observation",
-        IsrObservation(
-            record=record_meta(
-                "record.observation.contact-route6-1",
-                cot.event_ts,
-                "example.cot",
-            ),
-            obs_id=sid("observation.contact-route6-1"),
-            track_id=contact_track_id,
-            obs_ts=cot.event_ts,
-            observation_kind=ObservationKind.TRACK,
-            position=cot_location.position,
-            uncertainty=cot_location.uncertainty,
-        ),
+def main() -> None:
+    # Independent class-local ID spaces. The deliberate overlap makes the rule
+    # impossible to miss: Entity 38, Track 38, and Task 38 are all valid.
+    registry = ClassIDRegistry(
+        next_id={
+            "Organization": 2,
+            "Entity": 37,
+            "Node": 5,
+            "Track": 38,
+            "Observation": 1,
+            "Authority": 1,
+            "Objective": 1,
+            "Task": 38,
+            "Assignment": 1,
+            "Plan": 1,
+            "Execution": 1,
+            "Record": 1,
+        }
     )
 
-    # The vehicle definition is stable identity. MAVLink supplies changing state.
-    uav = cross(
-        "uav.definition",
-        Entity(
-            record=record_meta("record.entity.uav.7", EXAMPLE_RECEIVED_TS, "example"),
-            entity_id=uav_id,
-            node_ids=[],
-            name="FROG-7",
-            entity_type=EntityType.MACHINE,
-            alt_ids=[],
-            tags=["UAV"],
-            metadata={},
-            relations=[],
+    # -----------------------------------------------------------------------
+    # 1. Identity provisioning
+    # -----------------------------------------------------------------------
+    # Organizations are real OCCID objects. A managed Node then receives one
+    # real OCCID IdentityBootstrap binding its Node, Entity, and Organization.
+    task_force = Group(
+        record=record(registry, "provisioning"),
+        uid=new_uid(),
+        id=registry.allocate("Organization"),
+        name="Task Force Frog",
+        unit_code="TFF",
+        callsign="FROG-HQ",
+        org_type=OrgType.GOVT,
+        topology=OrgTopology.HIERARCHICAL,
+    )
+
+    uas_unit = Unit(
+        record=record(registry, "provisioning"),
+        uid=new_uid(),
+        id=registry.allocate("Organization"),
+        name="UAS Section",
+        unit_code="UAS",
+        callsign="FROG-UAS",
+        org_type=OrgType.GOVT,
+        topology=OrgTopology.HIERARCHICAL,
+    )
+
+    hq_identity = IdentityBootstrap(
+        node_uid=new_uid(),
+        node_id=registry.allocate("Node"),
+        entity_uid=new_uid(),
+        entity_id=registry.allocate("Entity"),
+        organization_uid=uas_unit.uid,
+        organization_id=uas_unit.id,
+    )
+
+    uav_identity = IdentityBootstrap(
+        node_uid=new_uid(),
+        node_id=registry.allocate("Node"),
+        entity_uid=new_uid(),
+        entity_id=registry.allocate("Entity"),
+        organization_uid=uas_unit.uid,
+        organization_id=uas_unit.id,
+    )
+
+    operator = Entity(
+        record=record(registry, "provisioning"),
+        uid=hq_identity.entity_uid,
+        id=hq_identity.entity_id,
+        node_uids=[hq_identity.node_uid],
+        name="Mission Operator",
+        callsign="FROG-OPS",
+        entity_type=EntityType.PERSON,
+        tags=["OPERATOR"],
+        metadata={},
+        relations=[],
+    )
+
+    uav = Entity(
+        record=record(registry, "provisioning"),
+        uid=uav_identity.entity_uid,
+        id=uav_identity.entity_id,
+        node_uids=[uav_identity.node_uid],
+        name="Frog UAV 38",
+        callsign="FROG-38",
+        entity_type=EntityType.MACHINE,
+        tags=["UAV", "ISR"],
+        metadata={},
+        relations=[],
+    )
+
+    # -----------------------------------------------------------------------
+    # 2. Nodes and communications
+    # -----------------------------------------------------------------------
+    hq_address = NetworkAddress(kind=AddressKind.IPV4, value="10.42.0.1", port=7447)
+    uav_address = NetworkAddress(kind=AddressKind.IPV4, value="10.42.0.38", port=7447)
+
+    hq_node = Node(
+        uid=hq_identity.node_uid,
+        id=hq_identity.node_id,
+        entity_uid=operator.uid,
+        roles=[CapabilityRole.CONTROLLER, CapabilityRole.GATEWAY],
+        addresses=[hq_address],
+        links={
+            "hivelink": Link(
+                name="HiveLink bearer",
+                interface_name="hivelink0",
+                link_type=LinkType.MESH,
+                data_type=LinkDataType.PACKET,
+                direction=LinkDirection.FULL_DUPLEX,
+            )
+        },
+        radios={},
+        protocols={},
+    )
+
+    uav_node = Node(
+        uid=uav_identity.node_uid,
+        id=uav_identity.node_id,
+        entity_uid=uav.uid,
+        roles=[CapabilityRole.SENSOR, CapabilityRole.EFFECTOR, CapabilityRole.RELAY],
+        addresses=[uav_address],
+        links={
+            "hivelink": Link(
+                name="HiveLink bearer",
+                interface_name="hivelink0",
+                link_type=LinkType.MESH,
+                data_type=LinkDataType.PACKET,
+                direction=LinkDirection.FULL_DUPLEX,
+            )
+        },
+        radios={},
+        protocols={},
+    )
+
+    # -----------------------------------------------------------------------
+    # 3. Organization and chain of command
+    # -----------------------------------------------------------------------
+    # Structural relationships are typed ontology objects. They are not string
+    # labels and they are not command authority. ControlLease below answers the
+    # separate question "who may actually command this asset right now?"
+    relationships = [
+        DirectedRelationship(
+            subject_uid=uas_unit.uid,
+            object_uid=task_force.uid,
+            relation=RelationshipKind.MEMBER_OF,
+            since_ts=time.time(),
+            source="provisioning",
         ),
+        DirectedRelationship(
+            subject_uid=task_force.uid,
+            object_uid=uas_unit.uid,
+            relation=RelationshipKind.COMMANDS,
+            since_ts=time.time(),
+            source="provisioning",
+        ),
+        DirectedRelationship(
+            subject_uid=operator.uid,
+            object_uid=uas_unit.uid,
+            relation=RelationshipKind.MEMBER_OF,
+            since_ts=time.time(),
+            source="provisioning",
+        ),
+        DirectedRelationship(
+            subject_uid=uav.uid,
+            object_uid=uas_unit.uid,
+            relation=RelationshipKind.MEMBER_OF,
+            since_ts=time.time(),
+            source="provisioning",
+        ),
+        DirectedRelationship(
+            subject_uid=operator.uid,
+            object_uid=uav.uid,
+            relation=RelationshipKind.OPERATES,
+            since_ts=time.time(),
+            source="provisioning",
+        ),
+    ]
+
+    # -----------------------------------------------------------------------
+    # 4. External protocols become OCCID observations/state
+    # -----------------------------------------------------------------------
+    cot = parse_cot_xml(COT_XML)
+    mavlink = parse_mavlink_global_position(MAVLINK_GLOBAL_POSITION_INT)
+
+    cot_location = cot_point_to_location_state(cot.point)
+    if cot_location.position is None:
+        raise ValueError("CoT point conversion did not produce a global position")
+    reported_position = cot_location.position
+
+    track = Track(
+        record=record(registry, "sigma.track"),
+        uid=new_uid(),
+        id=registry.allocate("Track"),
+    )
+
+    source_observation = IsrObservation(
+        record=record(registry, "adapter.cot"),
+        uid=new_uid(),
+        id=registry.allocate("Observation"),
+        track_uid=track.uid,
+        obs_ts=cot.event_ts,
+        observation_kind=ObservationKind.TRACK,
+        position=reported_position,
+        uncertainty=cot_location.uncertainty,
+        confidence=ConfidenceLevel.LOW,
+    )
+
+    initial_track_update = TrackUpdate(
+        record=record(registry, "adapter.cot"),
+        track_uid=track.uid,
+        track_state=TrackState.NEW,
+        updated_ts=time.time(),
+        confidence=ConfidenceLevel.LOW,
     )
 
     mavlink_location = position_to_location_state(
@@ -334,233 +553,505 @@ def run_example() -> ExampleResult:
             relative_altitude_m=mavlink.relative_altitude_m,
         )
     )
-    uav_state = cross(
-        "mavlink.uav.state",
-        EntityState(
-            record=record_meta(
-                "record.state.uav.7.1",
-                EXAMPLE_RECEIVED_TS,
-                "example.mavlink",
-            ),
-            subject_id=uav.entity_id,
-            timestamp=EXAMPLE_RECEIVED_TS,
-            position=mavlink_location,
-            motion=VelocityVector(
-                x=mavlink.velocity_north_m_s,
-                y=mavlink.velocity_east_m_s,
-                z=mavlink.velocity_down_m_s,
-                frame=InertialReferenceFrame.NED,
-            ),
-            link_states={},
-            source_observation_ts=mavlink.time_boot_ms / 1000.0,
-            source_time_basis=ObservationTimeBasis.BOOT,
-            received_ts=EXAMPLE_RECEIVED_TS,
+
+    initial_uav_state = EntityState(
+        record=record(registry, "adapter.mavlink"),
+        subject_uid=uav.uid,
+        timestamp=time.time(),
+        position=mavlink_location,
+        motion=VelocityVector(
+            x=mavlink.velocity_north_m_s,
+            y=mavlink.velocity_east_m_s,
+            z=mavlink.velocity_down_m_s,
+            frame=InertialReferenceFrame.NED,
+        ),
+        link_states={},
+        source_observation_ts=mavlink.time_boot_ms / 1000.0,
+        source_time_basis=ObservationTimeBasis.BOOT,
+        received_ts=time.time(),
+    )
+
+    external_identity_map = {
+        f"cot.uid:{cot.uid}": track.uid,
+        f"mavlink:{mavlink.system_id}:{mavlink.component_id}": uav.uid,
+    }
+
+    # -----------------------------------------------------------------------
+    # 5. Authority
+    # -----------------------------------------------------------------------
+    control_lease = ControlLease(
+        record=record(registry, "sigma.authority"),
+        uid=new_uid(),
+        id=registry.allocate("Authority"),
+        holder_uid=operator.uid,
+        granted_by_uid=task_force.uid,
+        scope_uids=[uav.uid],
+        constraints=[],
+        asset_uid=uav.uid,
+        control_level=ControlLevel.FULL,
+        lease_start=time.time(),
+        lease_end=time.time() + 900.0,
+        lease_rev=1,
+    )
+
+    # -----------------------------------------------------------------------
+    # 6. Objective -> Task -> Assignment -> Plan -> Execution
+    # -----------------------------------------------------------------------
+    objective = Objective(
+        record=record(registry, "sigma.control"),
+        uid=new_uid(),
+        id=registry.allocate("Objective"),
+        name="Inspect reported contact",
+        intent="Determine the current status of the reported Route 6 contact.",
+        desired_state="The contact has been inspected and the track is updated.",
+        success_criteria=[],
+        target_uids=[track.uid],
+        constraints=[],
+        priority=TaskPriority.HIGH,
+        owner_uid=operator.uid,
+        start_time=time.time(),
+    )
+
+    task = TaskInformation(
+        record=record(registry, "sigma.control"),
+        uid=new_uid(),
+        id=registry.allocate("Task"),
+        instruction="Inspect the reported contact and update its status.",
+        intent=InformationIntent.OBSERVE,
+        target_uids=[track.uid],
+        location_uids=[],
+        objective_uid=objective.uid,
+        constraints=[],
+        start_time=time.time(),
+        priority=TaskPriority.HIGH,
+    )
+
+    # Assignment refers to Plan, and Plan refers to Assignment, so allocate the
+    # Plan identity before constructing either object. No wrapper object exists.
+    plan_uid = new_uid()
+    plan_id = registry.allocate("Plan")
+
+    assignment = Assignment(
+        record=record(registry, "sigma.control"),
+        uid=new_uid(),
+        id=registry.allocate("Assignment"),
+        task_uid=task.uid,
+        assignee_uid=uav.uid,
+        plan_uid=plan_uid,
+        authority_uid=control_lease.uid,
+        assigned_by_uid=operator.uid,
+        assigned_at=time.time(),
+        status=AssignmentStatus.ASSIGNED,
+        constraints=[],
+    )
+
+    plan = Plan(
+        record=record(registry, "sigma.control"),
+        uid=plan_uid,
+        id=plan_id,
+        name="Inspect Route 6 contact",
+        objective_uids=[objective.uid],
+        task_uids=[task.uid],
+        actor_uids=[uav.uid],
+        resource_uids=[],
+        assignment_uids=[assignment.uid],
+        steps=[
+            PlanStep(
+                id=1,
+                task_uid=task.uid,
+                actor_uids=[uav.uid],
+                depends_on=[],
+                sequence=1,
+            )
+        ],
+        routes=[],
+        constraints=[],
+        contingencies=[],
+        approval_state=PlanApprovalState.APPROVED,
+    )
+
+    execution = Execution(
+        record=record(registry, "sigma.execution"),
+        uid=new_uid(),
+        id=registry.allocate("Execution"),
+        assignment_uid=assignment.uid,
+        executor_uid=uav_node.uid,
+        attempt=1,
+        phase=ExecutionPhase.QUEUED,
+        external_job_refs=[],
+    )
+
+    # -----------------------------------------------------------------------
+    # 7. Dispatch over communications, then executor acceptance
+    # -----------------------------------------------------------------------
+    dispatch_ref = f"task-{task.id}-attempt-{execution.attempt}"
+
+    start_execution = ExecutionCommand(
+        target_uid=execution.uid,
+        constraints=[],
+        operation=ExecutionOperation.EXECUTE,
+        dispatch_ref=dispatch_ref,
+    )
+
+    start_message = CommandMessage(
+        src=MessageTarget(target_uid=hq_node.uid),
+        dst=MessageTarget(target_uid=uav_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.IMMEDIATE,
+        seq=1,
+        command=start_execution,
+    )
+
+    delivery_receipt = DeliveryReceipt(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.ROUTINE,
+        seq=2,
+        seq_reply=1,
+        response_to=dispatch_ref,
+        node_uid=uav_node.uid,
+        delivery_state=DeliveryState.RECEIVED,
+        seen_ts=time.time(),
+    )
+
+    acceptance = ExecutionAcceptance(
+        execution_uid=execution.uid,
+        dispatch_ref=dispatch_ref,
+        executor_uid=uav_node.uid,
+        accepted=True,
+        reported_at=time.time(),
+    )
+
+    acceptance_report = TelemetryMessage(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.ROUTINE,
+        seq=3,
+        state=acceptance,
+    )
+
+    # -----------------------------------------------------------------------
+    # 8. Concrete vehicle action, translated only at the edge to MAVSDK
+    # -----------------------------------------------------------------------
+    move = MotionCommand(
+        target_uid=uav.uid,
+        constraints=[],
+        operation=MotionOperation.MOVE_TO,
+        destination=GlobalPosition(
+            lat=reported_position.lat,
+            lon=reported_position.lon,
+            alt=60.0,
+            alt_frame=AltitudeDatum.RELATIVE,
         ),
     )
 
-    # The operational layer can now refer to the contact and the vehicle without
-    # carrying CoT XML fields or MAVLink packet fields through the control model.
-    objective = cross(
-        "objective.created",
-        Objective(
-            record=record_meta("record.objective.inspect.1", EXAMPLE_RECEIVED_TS, "example"),
-            objective_id=sid("objective.inspect.contact-route6-1"),
-            name="Inspect reported contact",
-            intent="Determine the current status of the reported Route 6 contact.",
-            desired_state="The reported contact has been inspected and updated.",
-            success_criteria=[],
-            target_refs=[contact_track_id],
-            constraints=[],
-            owner_id=operator_id,
-        ),
-    )
-
-    task = cross(
-        "task.created",
-        TaskInformation(
-            record=record_meta("record.task.inspect.1", EXAMPLE_RECEIVED_TS, "example"),
-            task_id=sid("task.inspect.contact-route6-1"),
-            instruction="Inspect the reported contact and update its status.",
-            intent=InformationIntent.OBSERVE,
-            target_refs=[contact_track_id],
-            location_refs=[],
-            objective_id=objective.objective_id,
-            constraints=[],
-        ),
-    )
-
-    authority = cross(
-        "authority.created",
-        Authority(
-            record=record_meta("record.authority.uav7.1", EXAMPLE_RECEIVED_TS, "example"),
-            authority_id=sid("authority.operator.uav7"),
-            holder_id=operator_id,
-            granted_by=operator_id,
-            scope_refs=[uav.entity_id, task.task_id],
-            constraints=[],
-        ),
-    )
-
-    assignment = cross(
-        "assignment.created",
-        Assignment(
-            record=record_meta("record.assignment.inspect.1", EXAMPLE_RECEIVED_TS, "example"),
-            assignment_id=sid("assignment.inspect.contact-route6-1.uav7"),
-            task_id=task.task_id,
-            assignee_id=uav.entity_id,
-            authority_id=authority.authority_id,
-            assigned_by=operator_id,
-            assigned_at=EXAMPLE_RECEIVED_TS,
-            status=AssignmentStatus.ASSIGNED,
-            constraints=[],
-        ),
-    )
-
-    plan = cross(
-        "plan.created",
-        Plan(
-            record=record_meta("record.plan.inspect.1", EXAMPLE_RECEIVED_TS, "example"),
-            plan_id=sid("plan.inspect.contact-route6-1"),
-            name="Inspect Route 6 contact",
-            objective_ids=[objective.objective_id],
-            task_ids=[task.task_id],
-            actor_ids=[uav.entity_id],
-            resource_ids=[],
-            assignments=[assignment.assignment_id],
-            steps=[],
-            routes=[],
-            constraints=[],
-            contingencies=[],
-            approval_state=PlanApprovalState.APPROVED,
-        ),
-    )
-
-    execution = cross(
-        "execution.created",
-        Execution(
-            record=record_meta("record.execution.inspect.1", EXAMPLE_RECEIVED_TS, "example"),
-            execution_id=sid("execution.inspect.contact-route6-1.1"),
-            assignment_id=assignment.assignment_id,
-            executor_id=uav.entity_id,
-            external_job_refs=[],
-        ),
-    )
-
-    # The CoT HAE altitude is not copied into a vehicle command. The planner
-    # selects a 60 m relative flight altitude for the inspection operation.
-    move = cross(
-        "executor.motion.command",
-        MotionCommand(
-            target_ref=uav.entity_id,
-            constraints=[],
-            operation=MotionOperation.MOVE_TO,
-            destination=GlobalPosition(
-                lat=contact_observation.position.lat,
-                lon=contact_observation.position.lon,
-                alt=60.0,
-                alt_frame=AltitudeDatum.RELATIVE,
-            ),
-        ),
-    )
-
-    result.outbound_goto = goto_command_to_fields(
+    outbound_goto = goto_command_to_fields(
         move,
         current_absolute_altitude_m=mavlink.absolute_altitude_m,
         current_relative_altitude_m=mavlink.relative_altitude_m,
     )
 
-    result.records.update(
-        contact_observation=contact_observation,
-        uav=uav,
-        uav_state=uav_state,
-        objective=objective,
-        task=task,
-        authority=authority,
-        assignment=assignment,
-        plan=plan,
-        execution=execution,
-        move=move,
+    # -----------------------------------------------------------------------
+    # 9. MAVLink telemetry -> OCCID telemetry
+    # -----------------------------------------------------------------------
+    mavlink_moving = parse_mavlink_global_position(MAVLINK_GLOBAL_POSITION_INT_MOVING)
+    moving_location = position_to_location_state(
+        MavsdkPositionFields(
+            latitude_deg=mavlink_moving.latitude_deg,
+            longitude_deg=mavlink_moving.longitude_deg,
+            absolute_altitude_m=mavlink_moving.absolute_altitude_m,
+            relative_altitude_m=mavlink_moving.relative_altitude_m,
+        )
     )
 
-    result.assertions.update(
-        cot_became_observation=(
-            contact_observation.observation_kind == ObservationKind.TRACK
-            and contact_observation.position.lat == cot.point.lat_deg
-            and contact_observation.position.alt_frame == AltitudeDatum.WGS84_ELLIPSOID
+    uav_state = EntityState(
+        record=record(registry, "adapter.mavlink"),
+        subject_uid=uav.uid,
+        timestamp=time.time(),
+        position=moving_location,
+        motion=VelocityVector(
+            x=mavlink_moving.velocity_north_m_s,
+            y=mavlink_moving.velocity_east_m_s,
+            z=mavlink_moving.velocity_down_m_s,
+            frame=InertialReferenceFrame.NED,
         ),
-        mavlink_became_entity_state=(
-            uav_state.subject_id == uav.entity_id
-            and uav_state.position is not None
-            and uav_state.position.position is not None
-            and uav_state.position.position.alt_frame == AltitudeDatum.SEA_LEVEL
-        ),
-        task_targets_cot_track=contact_track_id in task.target_refs,
-        assignment_targets_uav=assignment.assignee_id == uav.entity_id,
-        execution_references_assignment=execution.assignment_id == assignment.assignment_id,
-        plan_correlates_control=(
-            objective.objective_id in plan.objective_ids
-            and task.task_id in plan.task_ids
-            and assignment.assignment_id in plan.assignments
-        ),
-        outbound_uses_contact_horizontal_position=(
-            result.outbound_goto.latitude_deg == contact_observation.position.lat
-            and result.outbound_goto.longitude_deg == contact_observation.position.lon
-        ),
-        outbound_uses_planned_relative_altitude=(
-            move.destination.alt_frame == AltitudeDatum.RELATIVE
-            and move.destination.alt == 60.0
-            and result.outbound_goto.absolute_altitude_m == 140.0
-        ),
+        link_states={},
+        source_observation_ts=mavlink_moving.time_boot_ms / 1000.0,
+        source_time_basis=ObservationTimeBasis.BOOT,
+        received_ts=time.time(),
     )
-    return result
 
+    uav_telemetry = UAVTelemetryMessage(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.ROUTINE,
+        seq=4,
+        state=uav_state,
+    )
 
-def main() -> None:
-    result = run_example()
+    # -----------------------------------------------------------------------
+    # 10. OCCID-native task/execution reporting
+    # -----------------------------------------------------------------------
+    task_delta = TaskDelta(
+        record=record(registry, "mpfc.execution"),
+        task_uid=task.uid,
+        task_rev=1,
+        phase=TaskPhase.RUNNING,
+        progress=0.40,
+        owner_uid=uav.uid,
+        updated_ts=time.time(),
+    )
 
-    print("1. Raw inputs")
-    print(f"   CoT: {result.cot.uid} / {result.cot.callsign}")
+    status_report = ExecutionStatusReport(
+        execution_uid=execution.uid,
+        dispatch_ref=dispatch_ref,
+        executor_uid=uav_node.uid,
+        found=True,
+        phase=ExecutionPhase.RUNNING,
+        progress=0.40,
+        task_delta=task_delta,
+        entity_state=uav_state,
+        reported_at=time.time(),
+    )
+
+    execution_report = TelemetryMessage(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.ROUTINE,
+        seq=5,
+        state=status_report,
+    )
+
+    # -----------------------------------------------------------------------
+    # 11. Spotted: one new piece of evidence
+    # -----------------------------------------------------------------------
+    if uav_state.position is None or uav_state.position.position is None:
+        raise ValueError("ownship telemetry has no global position")
+
+    spotter_origin = SpotterOrigin(position=uav_state.position.position)
+
+    first_spot_position = GlobalPosition(
+        lat=reported_position.lat + 0.00003,
+        lon=reported_position.lon + 0.00002,
+        alt=reported_position.alt,
+        alt_frame=reported_position.alt_frame,
+    )
+
+    first_spot = IsrObservation(
+        record=record(registry, "mpfc.observation"),
+        uid=new_uid(),
+        id=registry.allocate("Observation"),
+        track_uid=track.uid,
+        obs_ts=time.time(),
+        observation_kind=ObservationKind.DETECTION,
+        category=IntelCategory.IMINT,
+        spotter_origin=spotter_origin,
+        position=first_spot_position,
+        confidence=ConfidenceLevel.MEDIUM,
+    )
+
+    spot_report = ObservationMessage(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.PRIORITY,
+        seq=6,
+        observation=first_spot,
+    )
+
+    # -----------------------------------------------------------------------
+    # 12. Tracking: later evidence correlates to the same Track 38
+    # -----------------------------------------------------------------------
+    tracked_position = GlobalPosition(
+        lat=first_spot_position.lat + 0.00005,
+        lon=first_spot_position.lon + 0.00004,
+        alt=first_spot_position.alt,
+        alt_frame=first_spot_position.alt_frame,
+    )
+
+    tracking_observation = IsrObservation(
+        record=record(registry, "mpfc.observation"),
+        uid=new_uid(),
+        id=registry.allocate("Observation"),
+        track_uid=track.uid,
+        obs_ts=time.time(),
+        observation_kind=ObservationKind.TRACK,
+        category=IntelCategory.IMINT,
+        spotter_origin=spotter_origin,
+        position=tracked_position,
+        confidence=ConfidenceLevel.HIGH,
+    )
+
+    track_update = TrackUpdate(
+        record=record(registry, "mpfc.tracker"),
+        track_uid=track.uid,
+        track_state=TrackState.ACTIVE,
+        updated_ts=time.time(),
+        confidence=ConfidenceLevel.HIGH,
+    )
+
+    track_report = ObservationMessage(
+        src=MessageTarget(target_uid=uav_node.uid),
+        dst=MessageTarget(target_uid=hq_node.uid),
+        ts=message_timestamp(),
+        priority=MessagePriority.PRIORITY,
+        seq=7,
+        observation=track_update,
+    )
+
+    # The maintained contact picture is a projection over evidence and current
+    # track state, not a second giant ontology record containing copies of both.
+    track_observations = [source_observation, first_spot, tracking_observation]
+
+    # -----------------------------------------------------------------------
+    # 13. Compact OCCID wire
+    # -----------------------------------------------------------------------
+    wire_payloads = {
+        "initial_track_update": initial_track_update.encode(),
+        "start_execution": start_message.encode(),
+        "delivery_receipt": delivery_receipt.encode(),
+        "acceptance_report": acceptance_report.encode(),
+        "motion_command": move.encode(),
+        "uav_telemetry": uav_telemetry.encode(),
+        "execution_report": execution_report.encode(),
+        "spot_report": spot_report.encode(),
+        "track_report": track_report.encode(),
+    }
+
+    # -----------------------------------------------------------------------
+    # Human-readable walkthrough summary
+    # -----------------------------------------------------------------------
+    print("1. UID and class-local ID")
+    print(f"   Entity {uav.id:>2}: UID {uav.uid}")
+    print(f"   Track  {track.id:>2}: UID {track.uid}")
+    print(f"   Task   {task.id:>2}: UID {task.uid}")
+    print("   Same integer ID is valid across different classes; UIDs never collide.")
+
+    print("\n2. Identity provisioning")
+    print(f"   Organization {task_force.id}: {task_force.uid}  {task_force.name}")
+    print(f"   Organization {uas_unit.id}: {uas_unit.uid}  {uas_unit.name}")
     print(
-        "   MAVLink: "
-        f"sys={result.mavlink.system_id} comp={result.mavlink.component_id} "
-        f"position=({result.mavlink.latitude_deg:.6f}, "
-        f"{result.mavlink.longitude_deg:.6f})"
-    )
-
-    observation = result.records["contact_observation"]
-    uav_state = result.records["uav_state"]
-    print("\n2. OCCID semantic model")
-    print(
-        "   CoT -> IsrObservation: "
-        f"track={observation.track_id.value} "
-        f"position=({observation.position.lat:.6f}, {observation.position.lon:.6f})"
+        f"   HQ bootstrap:  Node {hq_identity.node_id} -> "
+        f"Entity {hq_identity.entity_id} -> Organization {hq_identity.organization_id}"
     )
     print(
-        "   MAVLink -> EntityState: "
-        f"subject={uav_state.subject_id.value} "
-        f"position=({uav_state.position.position.lat:.6f}, "
-        f"{uav_state.position.position.lon:.6f})"
+        f"   UAV bootstrap: Node {uav_identity.node_id} -> "
+        f"Entity {uav_identity.entity_id} -> Organization {uav_identity.organization_id}"
     )
+    print(f"   Entity {operator.id}:       {operator.uid}  {operator.callsign}")
+    print(f"   Entity {uav.id}:       {uav.uid}  {uav.callsign}")
+    print(f"   Node {hq_node.id}:         {hq_node.uid}")
+    print(f"   Node {uav_node.id}:         {uav_node.uid}")
 
-    task = result.records["task"]
-    assignment = result.records["assignment"]
-    execution = result.records["execution"]
-    print("\n3. Shared operational flow")
-    print(f"   Task: {task.task_id.value}")
-    print(f"   Assignment: {assignment.assignment_id.value} -> {assignment.assignee_id.value}")
-    print(f"   Execution: {execution.execution_id.value}")
+    print("\n3. Organization and chain of command")
+    for relationship in relationships:
+        print(
+            f"   {relationship.subject_uid} "
+            f"--{relationship.relation.name.lower()}--> "
+            f"{relationship.object_uid}"
+        )
 
-    goto = result.outbound_goto
-    print("\n4. Vehicle-facing operation")
+    print("\n4. Communications")
+    print(f"   HQ Node {hq_node.id}:          {hq_node.uid} @ {hq_node.addresses[0].value}")
+    print(f"   UAV Node {uav_node.id}:         {uav_node.uid} @ {uav_node.addresses[0].value}")
     print(
-        "   OCCID MotionCommand -> MAVSDK goto_location: "
-        f"lat={goto.latitude_deg:.6f} lon={goto.longitude_deg:.6f} "
-        f"absolute_altitude_m={goto.absolute_altitude_m:.1f}"
+        "   Message route:        "
+        f"{start_message.src.target_uid} -> {start_message.dst.target_uid}"
     )
 
-    print("\n5. Checks")
-    for name, passed in result.assertions.items():
-        print(f"   {name}: {'PASS' if passed else 'FAIL'}")
+    print("\n5. External identity mapping")
+    print(
+        f"   CoT uid {cot.uid} -> Track {track.id} / "
+        f"{external_identity_map[f'cot.uid:{cot.uid}']}"
+    )
+    print(f"   Source callsign:       {cot.callsign}")
+    print(
+        f"   MAVLink {mavlink.system_id}:{mavlink.component_id} -> "
+        f"Entity {uav.id} / "
+        f"{external_identity_map[f'mavlink:{mavlink.system_id}:{mavlink.component_id}']}"
+    )
+
+    print("\n6. Initial operational picture")
+    print(f"   Track {track.id}: state {initial_track_update.track_state.name}")
+    print(
+        "   Reported position:    "
+        f"{source_observation.position.lat:.6f}, {source_observation.position.lon:.6f}"
+    )
+    print(f"   Initial UAV subject:   {initial_uav_state.subject_uid}")
+
+    print("\n7. Authority")
+    print(f"   Authority {control_lease.id}:         {control_lease.uid}")
+    print(f"   Holder UID:           {control_lease.holder_uid}")
+    print(f"   Granted-by UID:       {control_lease.granted_by_uid}")
+    print(f"   Asset UID:            {control_lease.asset_uid}")
+    print(f"   Control level:        {control_lease.control_level.name}")
+
+    print("\n8. Mission control graph")
+    print(f"   Objective {objective.id}:        {objective.uid}")
+    print(f"   Task {task.id}:             {task.uid}")
+    print(f"   Assignment {assignment.id}:       {assignment.uid}")
+    print(f"   Plan {plan.id}:             {plan.uid}")
+    print(f"   Assigned Entity UID:   {assignment.assignee_uid}")
+    print(f"   Executor Node UID:     {execution.executor_uid}")
+    print(f"   Execution {execution.id}:        {execution.uid}")
+
+    print("\n9. Dispatch and executor acceptance")
+    print(f"   Command target UID:    {start_message.command.target_uid}")
+    print(f"   Dispatch ref:          {start_message.command.dispatch_ref}")
+    print(f"   Delivery state:        {delivery_receipt.delivery_state.name}")
+    print(f"   Executor accepted:     {acceptance.accepted}")
+
+    print("\n10. Concrete vehicle action")
+    print(f"   Motion target UID:     {move.target_uid}")
+    print(
+        "   MAVSDK goto:          "
+        f"{outbound_goto.latitude_deg:.6f}, {outbound_goto.longitude_deg:.6f}, "
+        f"{outbound_goto.absolute_altitude_m:.1f} m MSL"
+    )
+
+    print("\n11. MAVLink telemetry -> OCCID telemetry")
+    print(
+        "   MAVLink ownship:      "
+        f"{mavlink_moving.latitude_deg:.6f}, {mavlink_moving.longitude_deg:.6f}"
+    )
+    print(f"   OCCID subject UID:     {uav_state.subject_uid}")
+    print(f"   OCCID telemetry route: Node {uav_node.id} -> Node {hq_node.id}")
+
+    print("\n12. OCCID execution/task report")
+    print(f"   Task {task.id}:             {task_delta.phase.name} {task_delta.progress:.0%}")
+    print(f"   Execution {execution.id}:        {status_report.phase.name} {status_report.progress:.0%}")
+
+    print("\n13. Spotted")
+    print(f"   Observation {first_spot.id}:     {first_spot.observation_kind.name}")
+    print(f"   Correlates to Track:  {track.id} / {first_spot.track_uid}")
+    print(f"   Confidence:           {first_spot.confidence.name}")
+
+    print("\n14. Tracking")
+    print(
+        f"   Observation {tracking_observation.id}:     "
+        f"{tracking_observation.observation_kind.name}"
+    )
+    print(f"   Same Track UID:       {tracking_observation.track_uid}")
+    print(f"   Confidence:           {tracking_observation.confidence.name}")
+
+    print("\n15. Maintained contact information")
+    print(f"   Track {track.id}:             {track.uid}")
+    print(f"   State:                {track_update.track_state.name}")
+    print(f"   Confidence:           {track_update.confidence.name}")
+    print(f"   Observations:         {len(track_observations)}")
+    print(
+        "   Current position:     "
+        f"{tracking_observation.position.lat:.6f}, "
+        f"{tracking_observation.position.lon:.6f}"
+    )
+
+    print("\n16. Compact OCCID wire")
+    for name, payload in wire_payloads.items():
+        print(f"   {name:20s} {len(payload):4d} bytes  {payload.hex()}")
 
 
 if __name__ == "__main__":

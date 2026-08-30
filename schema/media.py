@@ -16,7 +16,7 @@ class MediaItemSchema(Media):
     __occid_model_id__: ClassVar[int] = 75
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    media_id: StringID
+    media_id: UID
     media_type: MediaType
     uri: builtins.str
     label: builtins.str | None = None

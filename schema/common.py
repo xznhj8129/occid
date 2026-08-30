@@ -6,17 +6,59 @@ from pathlib import Path as _Path
 from types import UnionType
 from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
 from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
+from uuid import SafeUUID, UUID
 import msgpack
-from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny, StringConstraints
+from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
+from pydantic_core import core_schema
 
-OCCIDID = Annotated[
-    builtins.str,
-    StringConstraints(
-        strict=True,
-        to_lower=True,
-        pattern=r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$",
-    ),
-]
+
+class UID(UUID):
+    """Canonical OCCID identity.
+
+    UUIDv4 is the identity-v1 allocation scheme. UUID text is a human/API
+    representation only; compact OCCID serialization carries the 128-bit value
+    as exactly 16 payload bytes.
+    """
+
+    def __init__(
+        self,
+        hex=None,
+        bytes=None,
+        bytes_le=None,
+        fields=None,
+        int=None,
+        version=None,
+        *,
+        is_safe=SafeUUID.unknown,
+    ):
+        super().__init__(
+            hex=hex,
+            bytes=bytes,
+            bytes_le=bytes_le,
+            fields=fields,
+            int=int,
+            version=version,
+            is_safe=is_safe,
+        )
+        if self.version != 4:
+            raise ValueError("UID must be UUIDv4")
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type, handler):
+        def cast(value):
+            if isinstance(value, cls):
+                return value
+            return cls(str(value))
+
+        return core_schema.no_info_after_validator_function(
+            cast,
+            core_schema.uuid_schema(version=4),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                str,
+                when_used="json",
+            ),
+        )
+
 
 OCCIDVersion = tuple[int, int, int]
 try:
@@ -56,10 +98,15 @@ class OCCIDModel(BaseModel):
             OCCID_MODEL_ID_BY_CLASS[cls] = model_id
 
     def encode(self) -> bytes:
-        envelope = {
-            "model_id": OCCID_MODEL_ID_BY_CLASS[type(self)],
-            "fields": self._wire_model_fields(self),
-        }
+        """Encode one OCCID model into the compact binary wire form.
+
+        Wire shape: [model_id, {field_ordinal: value, ...}]. Field names and
+        model names never appear on the compact wire. UID values are bin16.
+        """
+        envelope = [
+            OCCID_MODEL_ID_BY_CLASS[type(self)],
+            self._wire_model_fields(self),
+        ]
         return msgpack.packb(envelope, use_bin_type=True)
 
     @classmethod
@@ -72,10 +119,19 @@ class OCCIDModel(BaseModel):
 
     @classmethod
     def _from_wire_fields(cls, data):
-        values = {
-            field_name: cls._wire_to_value(cls.model_fields[field_name].annotation, value)
-            for field_name, value in data.items()
-        }
+        if type(data) is not dict:
+            raise ValueError("OCCID wire fields must be a numeric map")
+
+        field_names = tuple(cls.model_fields)
+        values = {}
+        for field_id, raw_value in data.items():
+            if type(field_id) is not int or field_id < 0 or field_id >= len(field_names):
+                raise ValueError(f"invalid field ordinal {field_id!r} for {cls.__name__}")
+            field_name = field_names[field_id]
+            values[field_name] = cls._wire_to_value(
+                cls.model_fields[field_name].annotation,
+                raw_value,
+            )
         return cls(**values)
 
     @classmethod
@@ -86,36 +142,57 @@ class OCCIDModel(BaseModel):
         origin = get_origin(annotation)
         args = get_args(annotation)
 
-        if type(data) == dict and set(data) == {"model_id", "fields"}:
-            model_id = data["model_id"]
-            model_cls = OCCID_MODEL_BY_ID.get(model_id)
-            if model_cls is None:
-                raise ValueError(f"unknown OCCID model ID {model_id}")
-            return model_cls._from_wire_fields(data["fields"])
-
         if origin is Annotated:
             return cls._wire_to_value(args[0], data)
+
+        if origin in (Union, UnionType):
+            last_error = None
+            for arg in args:
+                if arg is type(None):
+                    continue
+                try:
+                    return cls._wire_to_value(arg, data)
+                except (TypeError, ValueError, KeyError, IndexError) as exc:
+                    last_error = exc
+            if last_error is not None:
+                raise last_error
+            return data
+
+        if annotation is UID:
+            if type(data) is not bytes or len(data) != 16:
+                raise ValueError("UID wire value must be exactly 16 bytes")
+            return UID(bytes=data)
 
         if origin is list:
             return [cls._wire_to_value(args[0], item) for item in data]
 
         if origin is dict:
-            return {key: cls._wire_to_value(args[1], value) for key, value in data.items()}
+            return {
+                key: cls._wire_to_value(args[1], value)
+                for key, value in data.items()
+            }
 
         if origin is tuple:
-            return tuple(cls._wire_to_value(arg, item) for arg, item in zip(args, data))
-
-        if origin in (Union, UnionType):
-            for arg in args:
-                try:
-                    return cls._wire_to_value(arg, data)
-                except (TypeError, ValueError, KeyError, IndexError):
-                    pass
-            return data
+            if len(data) != len(args):
+                raise ValueError("tuple wire value has incorrect length")
+            return tuple(
+                cls._wire_to_value(arg, item)
+                for arg, item in zip(args, data)
+            )
 
         try:
             if issubclass(annotation, OCCIDModel):
-                return annotation._from_wire_fields(data)
+                if type(data) is not list or len(data) != 2:
+                    raise ValueError("nested OCCID model must be [model_id, fields]")
+                model_id, fields = data
+                model_cls = OCCID_MODEL_BY_ID.get(model_id)
+                if model_cls is None:
+                    raise ValueError(f"unknown OCCID model ID {model_id}")
+                if not issubclass(model_cls, annotation):
+                    raise ValueError(
+                        f"model ID {model_id} is not compatible with {annotation.__name__}"
+                    )
+                return model_cls._from_wire_fields(fields)
         except TypeError:
             pass
 
@@ -135,70 +212,56 @@ class OCCIDModel(BaseModel):
 
     @classmethod
     def _wire_value(cls, value):
-        if issubclass(type(value), OCCIDModel):
+        if isinstance(value, OCCIDModel):
+            return [
+                OCCID_MODEL_ID_BY_CLASS[type(value)],
+                cls._wire_model_fields(value),
+            ]
+        if isinstance(value, UID):
+            return value.bytes
+        if type(value) is dict:
             return {
-                "model_id": OCCID_MODEL_ID_BY_CLASS[type(value)],
-                "fields": cls._wire_model_fields(value),
+                key: cls._wire_value(item)
+                for key, item in value.items()
             }
-        if type(value) == dict:
-            return {key: cls._wire_value(item) for key, item in value.items()}
         if type(value) in (list, tuple):
             return [cls._wire_value(item) for item in value]
-        if issubclass(type(value), IntEnum):
+        if isinstance(value, IntEnum):
             return value.value
-        if issubclass(type(value), Enum):
+        if isinstance(value, Enum):
             return value.value
         return value
 
     @classmethod
     def _wire_model_fields(cls, value):
+        """Encode explicitly present fields by numeric ordinal.
+
+        The ordinal is the field's index in the effective generated model field
+        order for this OCCID contract. Optional/default fields not explicitly
+        present are omitted. Peers are expected to share the same OCCID contract.
+        """
         return {
-            field_name: cls._wire_value(getattr(value, field_name))
-            for field_name in type(value).model_fields
+            field_id: cls._wire_value(getattr(value, field_name))
+            for field_id, field_name in enumerate(type(value).model_fields)
+            if field_name in value.model_fields_set
         }
-
-    def model_dump(self, *, mode="python", **kwargs):
-        def encode(value):
-            if type(value) == dict:
-                return {key: encode(item) for key, item in value.items()}
-            if type(value) in (list, tuple):
-                return [encode(item) for item in value]
-            if issubclass(type(value), IntEnum):
-                return value.value
-            if issubclass(type(value), Enum):
-                return value.value
-            return value
-
-        if mode == "json":
-            data = super().model_dump(mode="python", **kwargs)
-            return encode(data)
-        data = super().model_dump(mode=mode, **kwargs)
-        return data
 
 
 def decode_model(payload: bytes) -> OCCIDModel:
-    """Decode a heterogeneous OCCID transient envelope by its model ID.
+    """Decode a heterogeneous OCCID compact binary envelope."""
+    envelope = msgpack.unpackb(
+        payload,
+        raw=False,
+        strict_map_key=False,
+    )
+    if type(envelope) is not list or len(envelope) != 2:
+        raise ValueError("OCCID payload must be [model_id, fields]")
 
-    This is the counterpart to ``OCCIDModel.encode()`` for receivers that do not
-    know the concrete model class before inspecting the envelope. The transient
-    envelope identifies the concrete model and carries its fields; schema change
-    detection belongs to the OCCID contract manifest/build check, not every wire
-    payload.
-    """
-    envelope = msgpack.unpackb(payload, raw=False)
-    if type(envelope) is not dict:
-        raise ValueError("OCCID payload envelope must be a map")
-    required = {"model_id", "fields"}
-    if set(envelope) != required:
-        raise ValueError(
-            f"OCCID payload envelope fields must be {sorted(required)}; "
-            f"got {sorted(envelope) if all(type(key) is str for key in envelope) else list(envelope)}"
-        )
-    model_id = envelope["model_id"]
+    model_id, fields = envelope
+    if type(model_id) is not int:
+        raise ValueError("OCCID model ID must be an integer")
+
     model_cls = OCCID_MODEL_BY_ID.get(model_id)
     if model_cls is None:
         raise ValueError(f"unknown OCCID model ID {model_id}")
-    fields = envelope["fields"]
-    if type(fields) is not dict:
-        raise ValueError("OCCID payload fields must be a map")
     return model_cls._from_wire_fields(fields)

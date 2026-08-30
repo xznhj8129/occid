@@ -28,7 +28,7 @@ class Predicate(Condition):
     'Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions'
     __occid_model_id__: ClassVar[int] = 316
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    subject_ref: StringID | None = None
+    subject_ref: UID | None = None
 
 class BooleanLogic(Condition):
     'Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set'

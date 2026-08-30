@@ -21,9 +21,10 @@ models:
     parent: State
     fields:
       record: RecordMeta
-      execution_id: StringID
-      assignment_id: StringID
-      executor_id: StringID
+      uid: UID
+      id: int
+      assignment_uid: UID
+      executor_uid: UID
       attempt: int = 0
       phase: ExecutionPhase = CREATED
       progress: optional float
@@ -38,9 +39,9 @@ models:
     semantic_role: specialization
     parent: State
     fields:
-      execution_id: StringID
-      dispatch_id: StringID
-      executor_id: StringID
+      execution_uid: UID
+      dispatch_ref: string
+      executor_uid: UID
       accepted: bool
       retryable: bool = false
       reason: optional string
@@ -51,9 +52,9 @@ models:
     semantic_role: specialization
     parent: State
     fields:
-      execution_id: StringID
-      dispatch_id: StringID
-      executor_id: StringID
+      execution_uid: UID
+      dispatch_ref: string
+      executor_uid: UID
       found: bool = true
       phase: optional ExecutionPhase
       progress: optional float
@@ -68,9 +69,9 @@ models:
     parent: State
     fields:
       record: RecordMeta
-      task_id: StringID
+      task_uid: UID
       task_rev: int = 0
       phase: TaskPhase
       progress: optional float
-      owner_id: optional StringID
+      owner_uid: optional UID
       updated_ts: float

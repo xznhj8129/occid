@@ -22,12 +22,13 @@ models:
     parent: Control
     fields:
       record: RecordMeta
-      assignment_id: StringID
-      task_id: StringID
-      assignee_id: StringID
-      plan_id: optional StringID
-      authority_id: optional StringID
-      assigned_by: StringID
+      uid: UID
+      id: int
+      task_uid: UID
+      assignee_uid: UID
+      plan_uid: optional UID
+      authority_uid: optional UID
+      assigned_by_uid: UID
       assigned_at: float
       accepted_at: optional float
       status: AssignmentStatus = PROPOSED
@@ -38,7 +39,7 @@ models:
     parent: Assignment
     fields:
       num: int
-      unit_id: optional StringID
+      unit_uid: optional UID
       callsign: optional string
       objective_assign: optional int
       wave_n: int = 0

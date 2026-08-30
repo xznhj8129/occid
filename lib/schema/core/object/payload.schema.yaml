@@ -63,7 +63,7 @@ models:
       name: string
       model: string
       type: SensorType
-      serial_uid: StringID
+      serial_number: optional string
       effect_domain: EffectDomain
       max_range: float
       ptz: bool

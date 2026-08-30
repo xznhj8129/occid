@@ -62,7 +62,7 @@ models:
     semantic_role: specialization
     parent: Health
     fields:
-      alert_id: optional StringID
+      alert_id: optional string
       level: AlertLevel
       condition: string
       acknowledged: bool = false
@@ -71,7 +71,7 @@ models:
     semantic_role: specialization
     parent: Health
     fields:
-      subsystem_id: StringID
+      subsystem_id: string
       state: HealthStatus
       fault_count: int = 0
       note: optional string

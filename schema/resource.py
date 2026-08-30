@@ -28,7 +28,7 @@ class SuppliesSchema(Resource):
 class PowerSourceSchema(Resource):
     __occid_model_id__: ClassVar[int] = 187
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    source_id: StringID
+    source_id: builtins.str
     power_type: PowerType
     status: PowerStatus
     remaining_pct: builtins.float | None = None
@@ -43,7 +43,7 @@ class PowerStateSchema(Resource):
 class ElectricalResourceState(Resource):
     __occid_model_id__: ClassVar[int] = 189
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    source_id: StringID | None = None
+    source_id: builtins.str | None = None
     voltage_v: builtins.float | None = None
     current_a: builtins.float | None = None
     power_w: builtins.float | None = None

@@ -21,7 +21,7 @@ class UAVTelemetryMessage(TelemetryMessage):
 class CapabilityAdvert(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 210
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    node_id: StringID
+    node_id: UID
     roles: list[CapabilityRole]
     link_ids: list[builtins.str]
     sensor_ids: list[builtins.str]
@@ -30,7 +30,7 @@ class CapabilityAdvert(TelemetryMessage):
 class StateDelta(TelemetryMessage):
     __occid_model_id__: ClassVar[int] = 211
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    entity_id: StringID
+    entity_id: UID
     changed_fields: dict[builtins.str, SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | FlightSensorConfiguration | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | LinkState | MeshLink | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]]
 
 class TransportCounters(TelemetryMessage):

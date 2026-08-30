@@ -18,11 +18,12 @@ class CapabilityRole(IntFlag):
 ### Models
 
 class Node(Communication):
-    'Communication identity of an entity, including addresses and available links'
+    'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
     __occid_model_id__: ClassVar[int] = 83
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    node_id: StringID
-    entity_id: StringID | None = None
+    node_id: UID
+    node_number: builtins.int | None = None
+    entity_id: UID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
     links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]

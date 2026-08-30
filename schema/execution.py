@@ -22,9 +22,9 @@ class Execution(State):
     __occid_model_id__: ClassVar[int] = 281
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    execution_id: StringID
-    assignment_id: StringID
-    executor_id: StringID
+    execution_id: UID
+    assignment_id: UID
+    executor_id: UID
     attempt: builtins.int = 0
     phase: ExecutionPhase = ExecutionPhase.CREATED
     progress: builtins.float | None = None
@@ -38,9 +38,9 @@ class ExecutionAcceptance(State):
     'Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion'
     __occid_model_id__: ClassVar[int] = 298
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    execution_id: StringID
-    dispatch_id: StringID
-    executor_id: StringID
+    execution_id: UID
+    dispatch_id: builtins.str
+    executor_id: UID
     accepted: builtins.bool
     retryable: builtins.bool = False
     reason: builtins.str | None = None
@@ -50,9 +50,9 @@ class ExecutionStatusReport(State):
     'Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence'
     __occid_model_id__: ClassVar[int] = 300
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    execution_id: StringID
-    dispatch_id: StringID
-    executor_id: StringID
+    execution_id: UID
+    dispatch_id: builtins.str
+    executor_id: UID
     found: builtins.bool = True
     phase: ExecutionPhase | None = None
     progress: builtins.float | None = None
@@ -66,9 +66,9 @@ class TaskDelta(State):
     __occid_model_id__: ClassVar[int] = 131
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    task_id: StringID
+    task_id: UID
     task_rev: builtins.int = 0
     phase: TaskPhase
     progress: builtins.float | None = None
-    owner_id: StringID | None = None
+    owner_id: UID | None = None
     updated_ts: builtins.float

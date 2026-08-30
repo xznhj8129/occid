@@ -23,7 +23,7 @@ models:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      node_id: StringID
+      node_uid: UID
       roles: list[CapabilityRole]
       link_ids: list[string]
       sensor_ids: list[string]
@@ -33,7 +33,7 @@ models:
     semantic_role: specialization
     parent: TelemetryMessage
     fields:
-      entity_id: StringID
+      entity_uid: UID
       changed_fields: map[string, State]
 
   TransportCounters:

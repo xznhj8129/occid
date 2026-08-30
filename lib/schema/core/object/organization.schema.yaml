@@ -31,7 +31,11 @@ models:
       - Unit
     fields:
       record: RecordMeta
-      org_uid: StringID
+      uid: UID
+      id: int
+      name: optional string
+      unit_code: optional string
+      callsign: optional string
       orglevel: OrgLevel = GROUP
       org_type: optional OrgType
       topology: optional OrgTopology

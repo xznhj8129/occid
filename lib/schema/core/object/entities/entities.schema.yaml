@@ -92,15 +92,15 @@ models:
       - Machine
     fields:
       record: RecordMeta
-      entity_id: StringID
-      node_ids: list[StringID]
-      short_id: optional StringID
+      uid: UID
+      id: int
+      node_uids: list[UID]
       name: optional string
+      callsign: optional string
       entity_type: optional EntityType
-      alt_ids: list[StringID]
       tags: list[string]
       metadata: map[string, MetadataValue]
-      relations: list[RelationSchema]
+      relations: list[DirectedRelationship]
       symbology: optional SymbologySchema
       display_meta: optional DisplayMeta
 
@@ -151,7 +151,6 @@ models:
     fields:
       entity_type: EntityType = PERSON
       role: string
-      serial_uid: StringID
       op_domain: OperationalDomain = LAND
       propulsion: PropulsionType = FOOT
       navigation: NavigationMode
@@ -167,7 +166,7 @@ models:
       - Platform
     fields:
       entity_type: EntityType = MACHINE
-      sys_id: StringID
+      serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
       components: list[EntityComponentRef]
@@ -188,7 +187,6 @@ models:
       op_domain: OperationalDomain = LAND
       model: string
       role: string
-      serial_uid: StringID
       sensors: map[string, SensorPayload]
       navigation: GroundNavigationSchema
 
@@ -200,6 +198,5 @@ models:
       machine_type: optional MachineType
       op_domain: OperationalDomain = AIR
       model: string
-      serial_uid: StringID
       sensors: map[string, SensorPayload]
       navigation: AirNavigationSchema

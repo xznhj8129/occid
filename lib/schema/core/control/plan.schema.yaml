@@ -58,13 +58,14 @@ models:
       - MissionPlan
     fields:
       record: RecordMeta
-      plan_id: StringID
+      uid: UID
+      id: int
       name: optional string
-      objective_ids: list[StringID]
-      task_ids: list[StringID]
-      actor_ids: list[StringID]
-      resource_ids: list[StringID]
-      assignments: list[StringID]
+      objective_uids: list[UID]
+      task_uids: list[UID]
+      actor_uids: list[UID]
+      resource_uids: list[UID]
+      assignment_uids: list[UID]
       steps: list[PlanStep]
       routes: list[GeoPath]
       constraints: list[Constraint]
@@ -76,20 +77,20 @@ models:
     semantic_role: specialization
     parent: Struct
     fields:
-      step_id: StringID
-      task_id: optional StringID
-      actor_ids: list[StringID]
-      depends_on: list[StringID]
+      id: int
+      task_uid: optional UID
+      actor_uids: list[UID]
+      depends_on: list[int]
       sequence: int
 
   PlanContingency:
     semantic_role: specialization
     parent: Struct
     fields:
-      contingency_id: StringID
+      id: int
       condition: Condition
       response: string
-      task_ids: list[StringID]
+      task_uids: list[UID]
 
   FlightLevelBand:
     description: Embedded flight-level band value used by plans rather than an independently identified control reference

@@ -78,7 +78,7 @@ models:
     semantic_role: specialization
     parent: Struct
     fields:
-      target_id: StringID
+      target_uid: UID
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
@@ -89,13 +89,13 @@ models:
       - MessageTransferResult
     fields:
       seq_reply: optional int
-      response_to: optional StringID
+      response_to: optional string
 
   DeliveryReceipt:
     semantic_role: specialization
     parent: ResponseMessage
     fields:
-      node_id: StringID
+      node_uid: UID
       delivery_state: DeliveryState
       seen_ts: optional float
       exec_ts: optional float

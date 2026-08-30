@@ -7,13 +7,14 @@ tags:
 
 models:
   RecordMeta:
-    description: Persistent-record instance identity, revision, timestamps, origin, classification, and provenance metadata
+    description: Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance metadata
     semantic_role: specialization
     parent: Struct
     fields:
-      # Identifies this persisted record instance or revision. Model-specific IDs
-      # identify the stable logical operational object across record revisions.
-      record_id: StringID
+      # Record identity is separate from the logical Entity/Task/Track/etc.
+      # described by the record. UID is global; ID is local to the Record class.
+      uid: UID
+      id: int
       revision: int = 0
       created_ts: float
       updated_ts: float

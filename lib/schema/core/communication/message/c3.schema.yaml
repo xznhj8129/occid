@@ -17,12 +17,12 @@ models:
     semantic_role: specialization
     parent: Message
     fields:
-      message_id: optional StringID
-      conversation_id: optional StringID
-      reply_to_id: optional StringID
-      sender_id: optional StringID
+      message_id: optional string
+      conversation_id: optional string
+      reply_to_id: optional string
+      sender_uid: optional UID
       sender_name: optional string
-      destination_id: optional StringID
+      destination_uid: optional UID
       destination_group: optional string
       kind: optional string
       message: string

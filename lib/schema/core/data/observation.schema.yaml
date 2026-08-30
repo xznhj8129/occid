@@ -52,7 +52,7 @@ enums:
     - IMAGE_NORMALIZED
     - BODY_ANGULAR
     - WORLD
-    
+
 models:
   Observation:
     description: External detection, classification, track, signal, spot report, threat, or assessment data
@@ -62,6 +62,7 @@ models:
       - Detection
       - Classification
       - Track
+      - TrackUpdate
       - Assessment
       - IsrObservation
 
@@ -70,11 +71,13 @@ models:
     parent: Observation
 
   Track:
+    description: Persistent maintained identity for one correlated observed object or phenomenon
     semantic_role: ontology
     parent: Observation
-    variants:
-      - TrackUpdate
-      - IntelTrackSchema
+    fields:
+      record: RecordMeta
+      uid: UID
+      id: int
 
   Assessment:
     semantic_role: ontology
@@ -98,14 +101,14 @@ models:
     semantic_role: specialization
     parent: Detection
     fields:
-      detection_id: optional StringID
+      detection_id: optional string
       label: optional string
       class_id: optional int
       confidence: optional float
       box: optional VisionBox
       bearing: optional LocalDirection
       position: optional GlobalPosition
-      source_frame_id: optional StringID
+      source_frame_id: optional string
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
@@ -113,8 +116,8 @@ models:
     parent: Detection
     fields:
       record: RecordMeta
-      frame_id: optional StringID
-      sensor_id: optional StringID
+      frame_id: optional string
+      sensor_uid: optional UID
       timestamp_us: optional int
       detections: list[VisionDetection]
 
@@ -123,9 +126,10 @@ models:
     parent: Observation
     fields:
       record: RecordMeta
-      obs_id: StringID
-      track_id: optional StringID
-      sensor_id: optional StringID
+      uid: UID
+      id: int
+      track_uid: optional UID
+      sensor_uid: optional UID
       obs_ts: float
       observation_kind: optional ObservationKind
       category: optional IntelCategory
@@ -148,11 +152,12 @@ models:
       evidence_level: optional EvidenceLevel
 
   TrackUpdate:
+    description: State update about an existing Track; does not define Track identity
     semantic_role: specialization
-    parent: Track
+    parent: Observation
     fields:
       record: RecordMeta
-      track_id: StringID
+      track_uid: UID
       track_state: optional TrackState
       updated_ts: float
       confidence: optional ConfidenceLevel
@@ -165,28 +170,4 @@ models:
       track_updates: list[TrackUpdate]
       media: optional list[MediaItemSchema]
       confidence: optional ConfidenceLevel
-      observations: list[IsrObservation]
-
-  IntelTrackSchema:
-    semantic_role: specialization
-    parent: Track
-    fields:
-      record: RecordMeta
-      schema_id: StringID
-      schema_type: string = "INTEL_TRACK"
-      trust_score: optional ConfidenceLevel
-      alt_ids: list[StringID]
-      entity_flags: list[string]
-      faction: optional string
-      spotted_time: float
-      updated_time: float
-      stale_time: float
-      track_state: TrackState = NEW
-      category: optional IntelCategory
-      sensor_id: optional StringID
-      spotter_last: optional SpotterOrigin
-      position: optional GlobalPosition
-      uncertainty: optional LocationUncertainty
-      error_m: optional float
-      latest_observation: optional IsrObservation
       observations: list[IsrObservation]

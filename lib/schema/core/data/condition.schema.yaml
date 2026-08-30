@@ -30,7 +30,7 @@ models:
     semantic_role: ontology
     parent: Condition
     fields:
-      subject_ref: optional StringID
+      subject_ref: optional UID
 
   BooleanLogic:
     description: Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set

@@ -27,6 +27,7 @@ MODEL_ID_REGISTRY = SCRIPT_DIR / "lib" / "model_ids.yaml"
 CORE_SCHEMA_MAX_PARTS = 3
 
 PRIMITIVE_TYPES = {
+    "UID": "UID",
     "string": "builtins.str",
     "int": "builtins.int",
     "int8": "builtins.int",

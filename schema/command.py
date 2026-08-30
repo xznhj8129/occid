@@ -55,7 +55,7 @@ class Command(Directive):
     'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
     __occid_model_id__: ClassVar[int] = 45
     __occid_semantic_role__: ClassVar[str] = 'ontology'
-    target_ref: StringID
+    target_ref: UID
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class StateChangeCommand(Command):
@@ -107,4 +107,4 @@ class ExecutionCommand(Command):
     __occid_model_id__: ClassVar[int] = 308
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     operation: ExecutionOperation
-    dispatch_id: StringID | None = None
+    dispatch_id: builtins.str | None = None

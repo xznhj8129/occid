@@ -88,22 +88,22 @@ class VisionBox(Detection):
 class VisionDetection(Detection):
     __occid_model_id__: ClassVar[int] = 91
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    detection_id: StringID | None = None
+    detection_id: builtins.str | None = None
     label: builtins.str | None = None
     class_id: builtins.int | None = None
     confidence: builtins.float | None = None
     box: VisionBox | None = None
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
-    source_frame_id: StringID | None = None
+    source_frame_id: builtins.str | None = None
     attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
 
 class VisionDetectionFrame(Detection):
     __occid_model_id__: ClassVar[int] = 92
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    frame_id: StringID | None = None
-    sensor_id: StringID | None = None
+    frame_id: builtins.str | None = None
+    sensor_id: UID | None = None
     timestamp_us: builtins.int | None = None
     detections: list[VisionDetection]
 
@@ -111,9 +111,9 @@ class IsrObservation(Observation):
     __occid_model_id__: ClassVar[int] = 93
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    obs_id: StringID
-    track_id: StringID | None = None
-    sensor_id: StringID | None = None
+    obs_id: UID
+    track_id: UID | None = None
+    sensor_id: UID | None = None
     obs_ts: builtins.float
     observation_kind: ObservationKind | None = None
     category: IntelCategory | None = None
@@ -138,7 +138,7 @@ class TrackUpdate(Track):
     __occid_model_id__: ClassVar[int] = 95
     __occid_semantic_role__: ClassVar[str] = 'specialization'
     record: RecordMeta
-    track_id: StringID
+    track_id: UID
     track_state: TrackState | None = None
     updated_ts: builtins.float
     confidence: ConfidenceLevel | None = None
@@ -150,27 +150,4 @@ class IsrResult(Assessment):
     track_updates: list[TrackUpdate]
     media: list[MediaItemSchema] | None = None
     confidence: ConfidenceLevel | None = None
-    observations: list[IsrObservation]
-
-class IntelTrackSchema(Track):
-    __occid_model_id__: ClassVar[int] = 97
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
-    schema_id: StringID
-    schema_type: builtins.str = 'INTEL_TRACK'
-    trust_score: ConfidenceLevel | None = None
-    alt_ids: list[StringID]
-    entity_flags: list[builtins.str]
-    faction: builtins.str | None = None
-    spotted_time: builtins.float
-    updated_time: builtins.float
-    stale_time: builtins.float
-    track_state: TrackState = TrackState.NEW
-    category: IntelCategory | None = None
-    sensor_id: StringID | None = None
-    spotter_last: SpotterOrigin | None = None
-    position: GlobalPosition | None = None
-    uncertainty: LocationUncertainty | None = None
-    error_m: builtins.float | None = None
-    latest_observation: IsrObservation | None = None
     observations: list[IsrObservation]

@@ -55,13 +55,13 @@ class Plan(Control):
     __occid_model_id__: ClassVar[int] = 172
     __occid_semantic_role__: ClassVar[str] = 'ontology'
     record: RecordMeta
-    plan_id: StringID
+    plan_id: UID
     name: builtins.str | None = None
-    objective_ids: list[StringID]
-    task_ids: list[StringID]
-    actor_ids: list[StringID]
-    resource_ids: list[StringID]
-    assignments: list[StringID]
+    objective_ids: list[UID]
+    task_ids: list[UID]
+    actor_ids: list[UID]
+    resource_ids: list[UID]
+    assignments: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
     constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
@@ -72,19 +72,19 @@ class PlanStep(Struct):
     'Immutable planned step definition; runtime status belongs to execution state'
     __occid_model_id__: ClassVar[int] = 283
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    step_id: StringID
-    task_id: StringID | None = None
-    actor_ids: list[StringID]
-    depends_on: list[StringID]
+    step_id: builtins.int
+    task_id: UID | None = None
+    actor_ids: list[UID]
+    depends_on: list[builtins.int]
     sequence: builtins.int
 
 class PlanContingency(Struct):
     __occid_model_id__: ClassVar[int] = 282
     __occid_semantic_role__: ClassVar[str] = 'specialization'
-    contingency_id: StringID
+    contingency_id: builtins.int
     condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
     response: builtins.str
-    task_ids: list[StringID]
+    task_ids: list[UID]
 
 class FlightLevelBand(Struct):
     'Embedded flight-level band value used by plans rather than an independently identified control reference'

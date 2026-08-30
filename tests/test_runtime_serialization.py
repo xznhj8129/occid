@@ -7,41 +7,93 @@ import msgpack
 from occid import (
     AltitudeDatum,
     GlobalPosition,
-    IdentifierType,
     MotionCommand,
     MotionOperation,
+    OCCID_MODEL_ID_BY_CLASS,
     StateChangeCommand,
     StateChangeOperation,
-    StringID,
+    UID,
     decode_model,
 )
 
 
-def sid(value: str) -> StringID:
-    return StringID(id_type=IdentifierType.DB_ID, value=value)
+TARGET_UID = UID("93bf5775-604d-4e87-8f2b-ee3675b6e80c")
+
+
+def move_to(position: GlobalPosition) -> MotionCommand:
+    return MotionCommand(
+        target_ref=TARGET_UID,
+        constraints=[],
+        operation=MotionOperation.MOVE_TO,
+        destination=position,
+    )
 
 
 class RuntimeSerializationTests(unittest.TestCase):
     def test_generic_decoder_recovers_concrete_model(self) -> None:
-        command = MotionCommand(
-            target_ref=sid("entity.uav.1"),
-            constraints=[],
-            operation=MotionOperation.MOVE_TO,
-            destination=GlobalPosition(
+        command = move_to(
+            GlobalPosition(
                 lat=45.5017,
                 lon=-73.5673,
                 alt=120.0,
                 alt_frame=AltitudeDatum.RELATIVE,
-            ),
-            yaw_rad=1.25,
+            )
         )
         decoded = decode_model(command.encode())
         self.assertIs(type(decoded), MotionCommand)
         self.assertEqual(decoded, command)
 
+    def test_compact_wire_has_numeric_model_and_field_ids(self) -> None:
+        command = move_to(
+            GlobalPosition(
+                lat=45.5017,
+                lon=-73.5673,
+                alt=120.0,
+                alt_frame=AltitudeDatum.RELATIVE,
+            )
+        )
+        envelope = msgpack.unpackb(
+            command.encode(),
+            raw=False,
+            strict_map_key=False,
+        )
+        self.assertEqual(envelope[0], OCCID_MODEL_ID_BY_CLASS[MotionCommand])
+        self.assertIs(type(envelope[1]), dict)
+        self.assertTrue(all(type(field_id) is int for field_id in envelope[1]))
+
+    def test_uid_is_bin16_on_wire(self) -> None:
+        command = MotionCommand(
+            target_ref=TARGET_UID,
+            constraints=[],
+            operation=MotionOperation.STOP,
+        )
+        envelope = msgpack.unpackb(
+            command.encode(),
+            raw=False,
+            strict_map_key=False,
+        )
+        target_field = tuple(MotionCommand.model_fields).index("target_ref")
+        self.assertEqual(envelope[1][target_field], TARGET_UID.bytes)
+        self.assertEqual(len(envelope[1][target_field]), 16)
+
+    def test_compact_wire_contains_no_schema_field_names(self) -> None:
+        command = MotionCommand(
+            target_ref=TARGET_UID,
+            constraints=[],
+            operation=MotionOperation.STOP,
+        )
+        envelope = msgpack.unpackb(
+            command.encode(),
+            raw=False,
+            strict_map_key=False,
+        )
+        self.assertNotIn("model_id", envelope)
+        self.assertNotIn("fields", envelope)
+        self.assertNotIn("target_ref", envelope[1])
+
     def test_typed_decoder_still_rejects_wrong_model(self) -> None:
         payload = StateChangeCommand(
-            target_ref=sid("entity.uav.1"),
+            target_ref=TARGET_UID,
             constraints=[],
             operation=StateChangeOperation.ENABLE,
             property_name="armed",
@@ -50,27 +102,9 @@ class RuntimeSerializationTests(unittest.TestCase):
             MotionCommand.decode(payload)
 
     def test_generic_decoder_rejects_unknown_model_id(self) -> None:
-        payload = msgpack.packb(
-            {"model_id": 999999, "fields": {}},
-            use_bin_type=True,
-        )
+        payload = msgpack.packb([999999, {}], use_bin_type=True)
         with self.assertRaisesRegex(ValueError, "unknown OCCID model ID"):
             decode_model(payload)
-
-    def test_wire_envelope_has_no_global_schema_version(self) -> None:
-        payload = MotionCommand(
-            target_ref=sid("entity.uav.1"),
-            constraints=[],
-            operation=MotionOperation.MOVE_TO,
-            destination=GlobalPosition(
-                lat=45.5017,
-                lon=-73.5673,
-                alt=120.0,
-                alt_frame=AltitudeDatum.RELATIVE,
-            ),
-        ).encode()
-        envelope = msgpack.unpackb(payload, raw=False)
-        self.assertEqual(set(envelope), {"model_id", "fields"})
 
 
 if __name__ == "__main__":

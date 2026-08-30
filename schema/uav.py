@@ -22,6 +22,5 @@ class Drone(AirRobot):
     airframe: AirframeType = AirframeType.COPTER
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    serial_uid: StringID
     sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: AirNavigationSchema

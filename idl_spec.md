@@ -200,6 +200,7 @@ A module extends a loaded schema. It does not override or redefine existing decl
 Built-in primitive types are:
 
 ```text
+UID
 string
 bool
 bytes
@@ -215,6 +216,8 @@ uint32
 uint64
 any
 ```
+
+`UID` is OCCID's canonical unique-identity scalar. Identity v1 allocates UID values using UUIDv4, but UUID text is not the scalar's native representation. Semantically a UID is an opaque 128-bit value. Generated runtimes may accept and display canonical UUID text at human/API boundaries. Compact OCCID serialization carries a UID as exactly 16 payload bytes and never as UUID text. `UID` has no `model_id`.
 
 Integer-width types are semantic ranges, not aliases for an unrestricted integer:
 
@@ -242,9 +245,11 @@ Generated runtimes must enforce those ranges.
 Supported type expressions include:
 
 ```text
+UID
 string
 ExampleKind
 GlobalPosition
+list[UID]
 list[string]
 list[GlobalPosition]
 map[string, string]
@@ -541,7 +546,7 @@ models:
   Observation:
     parent: Data
     fields:
-      source_ref: StringID
+      source_ref: UID
 ```
 
 `Observation` contains both `timestamp` and `source_ref`.
@@ -750,7 +755,7 @@ A conforming implementation must reject at least the following:
 - `root` on a module document;
 - missing `root` on a schema document;
 - schema `root` not declared in that document;
-- schema root model missing `description`;
+- schema root model missing a `description`;
 - `requires` or `extend_variants` on a core schema document.
 
 ### Naming and reference errors
@@ -850,26 +855,46 @@ The IDL does not require redundant string-backed values such as:
 CARGO = "CARGO"
 ```
 
-### 16.4 Named-field serialization
+### 16.4 Compact binary serialization
 
-OCCID durable and compact serializations use named fields. Field declaration order is not a stable wire contract.
+The OCCID IDL is descriptive and human-readable. The compact OCCID wire representation is not.
 
-The reference compact MsgPack envelope is:
+The reference compact MessagePack representation of a model is:
 
 ```text
-schema_version
-model_id
-fields
+[
+    model_id,
+    {
+        field_ordinal: value,
+        ...
+    }
+]
 ```
 
-Nested heterogeneous OCCID models may likewise carry their concrete model ID alongside their named fields.
+Rules:
 
-A decoder must reject:
+- `model_id` is the permanent numeric model ID from the OCCID model-ID registry.
+- `field_ordinal` is the zero-based position of the field in the effective generated model field order for the active OCCID contract, including inherited fields.
+- Field names and model names are never serialized on the compact wire.
+- A nested OCCID model uses the same `[model_id, {field_ordinal: value}]` representation.
+- A `UID` is serialized as 16 binary bytes.
+- Enums and flags are serialized by numeric value.
+- Optional or defaulted fields that are not explicitly present are omitted from the numeric field map.
+- Actual semantic strings remain strings: names, callsigns, free text, protocol-native textual identifiers, URIs, and other fields whose declared type is `string`.
+- Compact serialization does not transmit literal schema keys such as `"model_id"`, `"fields"`, `"subject_id"`, or `"target_ref"`.
 
-- an unsupported schema version;
+Field ordinals are contract-local rather than a second permanent registry. Compact peers therefore must use the same OCCID structural contract. Schema/contract negotiation belongs outside individual model payloads; the payload does not repeat schema names or versions.
+
+Human/API representations are separate. JSON/YAML may use model and field names and canonical UUID text because readability is their purpose. That readable representation does not define the compact wire ABI.
+
+A compact decoder must reject:
+
 - an unknown model ID;
-- a top-level model ID inconsistent with a specifically requested concrete class;
-- malformed field payloads.
+- a malformed model envelope;
+- a nonnumeric or out-of-range field ordinal;
+- a UID wire value that is not exactly 16 bytes;
+- a nested model inconsistent with the field's declared model family;
+- a top-level model ID inconsistent with a specifically requested concrete class.
 
 `model_id` may be used to dispatch a concrete instance of an explicit variant family, but the presence of a model ID does not itself declare that family.
 

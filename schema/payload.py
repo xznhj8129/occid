@@ -63,7 +63,7 @@ class SensorPayload(Payload):
     name: builtins.str
     model: builtins.str
     type: SensorType
-    serial_uid: StringID
+    serial_number: builtins.str | None = None
     effect_domain: EffectDomain
     max_range: builtins.float
     ptz: builtins.bool

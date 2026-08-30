@@ -22,6 +22,5 @@ models:
       airframe: AirframeType = COPTER
       op_domain: OperationalDomain = AIR
       model: string
-      serial_uid: StringID
       sensors: map[string, SensorPayload]
       navigation: AirNavigationSchema

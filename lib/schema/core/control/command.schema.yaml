@@ -61,7 +61,7 @@ models:
       - ResourceCommand
       - ExecutionCommand
     fields:
-      target_ref: StringID
+      target_uid: UID
       constraints: list[Constraint]
 
   StateChangeCommand:
@@ -119,4 +119,4 @@ models:
     parent: Command
     fields:
       operation: ExecutionOperation
-      dispatch_id: optional StringID
+      dispatch_ref: optional string

@@ -63,7 +63,8 @@ models:
       - Boundary
     fields:
       record: RecordMeta
-      location_id: StringID
+      uid: UID
+      id: int
       name: optional string
       symbology: optional SymbologySchema
 

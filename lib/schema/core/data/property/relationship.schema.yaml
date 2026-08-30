@@ -6,6 +6,13 @@ tags:
   - core
 
 enums:
+  RelationshipKind:
+    - MEMBER_OF = 0
+    - COMMANDS
+    - OPERATES
+    - SUPPORTS
+    - OWNS
+
   SpatialRelationKind:
     - CONTAINS = 0
     - WITHIN
@@ -20,14 +27,19 @@ models:
     description: Nature of relations, ownership, provenance, link
     semantic_role: ontology
     parent: Property
+    variants:
+      - DirectedRelationship
+      - EntityComponentRef
+      - SpatialRelationship
 
-  RelationSchema:
+  DirectedRelationship:
+    description: Typed directed semantic relationship between two OCCID objects
     semantic_role: specialization
     parent: Relationship
     fields:
-      src_id: StringID
-      dst_id: StringID
-      rel_kind: string
+      subject_uid: UID
+      object_uid: UID
+      relation: RelationshipKind
       since_ts: optional float
       until_ts: optional float
       confidence: optional ConfidenceLevel
@@ -47,7 +59,8 @@ models:
     parent: Relationship
     fields:
       record: RecordMeta
-      relationship_id: StringID
-      subject_id: StringID
-      reference_id: StringID
+      uid: UID
+      id: int
+      subject_uid: UID
+      reference_uid: UID
       relation: SpatialRelationKind
