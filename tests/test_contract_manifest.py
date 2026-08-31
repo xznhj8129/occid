@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import io
 import json
 import tempfile
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
 
 from occid.contract import (
@@ -12,8 +14,10 @@ from occid.contract import (
     current_manifest,
     generate_consumer_manifest,
     load_manifest,
+    main,
     model_hashes_for_ids,
     scan_used_symbols,
+    symbol_statuses,
 )
 
 
@@ -160,6 +164,10 @@ D = schema2.Assignment
 
             receipt = generate_consumer_manifest(root)
             self.assertEqual(set(receipt["symbols"]), {"Entity", "EntityState"})
+            self.assertEqual(
+                symbol_statuses(root),
+                (("Entity", "OK"), ("EntityState", "OK")),
+            )
             self.assertEqual(changed_symbols(root), ())
 
             path = root / "OCCID_CONTRACT"
@@ -169,6 +177,10 @@ D = schema2.Assignment
             path.write_text(
                 json.dumps(broken, indent=2, sort_keys=True) + "\n",
                 encoding="utf-8",
+            )
+            self.assertEqual(
+                symbol_statuses(root),
+                (("Entity", "OK"), ("EntityState", "CHANGED")),
             )
             self.assertEqual(changed_symbols(root), ("EntityState",))
 
@@ -184,28 +196,53 @@ D = schema2.Assignment
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ContractError, "EntityState"):
-                changed_symbols(root)
+                symbol_statuses(root)
 
-    def test_check_reports_saved_symbol_removed_from_occid(self) -> None:
+    def test_check_reports_ok_changed_and_missing_symbols(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "consumer.py").write_text(
-                "from occid import GoneModel\n",
+                "from occid import Entity, EntityState, GoneModel\n",
                 encoding="utf-8",
             )
+            current = current_manifest()
             path = root / "OCCID_CONTRACT"
             path.write_text(
                 json.dumps(
                     {
                         "format": 1,
                         "global_hash": "old-global",
-                        "symbols": {"GoneModel": "old-hash"},
+                        "symbols": {
+                            "Entity": current["symbols"]["Entity"]["hash"],
+                            "EntityState": "old-hash",
+                            "GoneModel": "old-hash",
+                        },
                     }
                 )
                 + "\n",
                 encoding="utf-8",
             )
-            self.assertEqual(changed_symbols(root), ("GoneModel",))
+            self.assertEqual(
+                symbol_statuses(root),
+                (
+                    ("Entity", "OK"),
+                    ("EntityState", "CHANGED"),
+                    ("GoneModel", "MISSING"),
+                ),
+            )
+            self.assertEqual(changed_symbols(root), ("EntityState", "GoneModel"))
+
+            stderr = io.StringIO()
+            with redirect_stderr(stderr):
+                result = main(["check", str(root)])
+            output = stderr.getvalue()
+            self.assertEqual(result, 1)
+            self.assertIn("Entity", output)
+            self.assertIn("OK", output)
+            self.assertIn("EntityState", output)
+            self.assertIn("CHANGED", output)
+            self.assertIn("GoneModel", output)
+            self.assertIn("MISSING ***", output)
 
     def test_check_rejects_legacy_empty_manifest_after_global_change(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -227,7 +264,7 @@ D = schema2.Assignment
                 encoding="utf-8",
             )
             with self.assertRaises(ContractError):
-                changed_symbols(root)
+                symbol_statuses(root)
 
 
 if __name__ == "__main__":

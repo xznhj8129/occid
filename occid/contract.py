@@ -220,8 +220,8 @@ def generate_consumer_manifest(source_root: str | Path = ".") -> dict[str, Any]:
     return receipt
 
 
-def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
-    """Compare a saved consumer manifest with the imported OCCID module."""
+def symbol_statuses(source_root: str | Path = ".") -> tuple[tuple[str, str], ...]:
+    """Classify each used saved OCCID symbol as OK, CHANGED, or MISSING."""
     expected = _read_consumer_manifest(source_root)
     current = current_manifest()
     saved = expected["symbols"]
@@ -243,9 +243,6 @@ def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
             f"run `python -m occid.contract generate {Path(source_root).resolve()}`"
         )
 
-    if expected["global_hash"] == current["global_hash"]:
-        return ()
-
     if not saved and used:
         path = consumer_manifest_path(source_root)
         raise ContractError(
@@ -253,12 +250,26 @@ def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
             f"run `python -m occid.contract generate {Path(source_root).resolve()}`"
         )
 
-    changed = [
+    statuses: list[tuple[str, str]] = []
+    for name in sorted(used):
+        current_symbol = current["symbols"].get(name)
+        if current_symbol is None:
+            status = "MISSING"
+        elif current_symbol.get("hash") == saved[name]:
+            status = "OK"
+        else:
+            status = "CHANGED"
+        statuses.append((name, status))
+    return tuple(statuses)
+
+
+def changed_symbols(source_root: str | Path = ".") -> tuple[str, ...]:
+    """Return used OCCID symbols whose saved contract is not currently satisfied."""
+    return tuple(
         name
-        for name in used
-        if current["symbols"].get(name, {}).get("hash") != saved[name]
-    ]
-    return tuple(sorted(changed))
+        for name, status in symbol_statuses(source_root)
+        if status != "OK"
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -279,15 +290,18 @@ def main(argv: list[str] | None = None) -> int:
             print(f"OCCID manifest: {consumer_manifest_path(args.consumer_root)}")
             return 0
 
-        changed = changed_symbols(args.consumer_root)
-        if not changed:
-            print("OCCID contract: same")
-            return 0
+        statuses = symbol_statuses(args.consumer_root)
+        different = any(status != "OK" for _, status in statuses)
+        stream = sys.stderr if different else sys.stdout
+        print(f"OCCID contract: {'different' if different else 'same'}", file=stream)
 
-        print("OCCID contract: different", file=sys.stderr)
-        for name in changed:
-            print(f"  {name}", file=sys.stderr)
-        return 1
+        if statuses:
+            width = max(len(name) for name, _ in statuses)
+            for name, status in statuses:
+                marker = " ***" if status == "MISSING" else ""
+                print(f"  {name:<{width}}  {status}{marker}", file=stream)
+
+        return 1 if different else 0
     except ContractError as exc:
         print(str(exc), file=sys.stderr)
         return 2
