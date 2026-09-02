@@ -17,16 +17,31 @@ class Cluster(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
-class Item(OCCIDModel):
-    'A discrete bounded non-agent object'
-    __occid_model_id__: ClassVar[int] = 114
+class Equipment(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 62
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
+
+class Component(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 35
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+
+class Location(OCCIDModel):
+    'Identified physical-world spatial reference, place, feature, site, course, area, or delimiter'
+    __occid_model_id__: ClassVar[int] = 127
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Location')]
+    name: builtins.str | None = None
+    symbology: SymbologySchema | None = None
 
 class Mark(OCCIDModel):
     'Identified point reference in physical space'
     __occid_model_id__: ClassVar[int] = 133
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
@@ -38,7 +53,7 @@ class Mark(OCCIDModel):
 class Path(OCCIDModel):
     'Identified ordered spatial course or trace'
     __occid_model_id__: ClassVar[int] = 175
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
@@ -50,7 +65,7 @@ class Path(OCCIDModel):
 class Region(OCCIDModel):
     'Identified bounded spatial area'
     __occid_model_id__: ClassVar[int] = 203
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
@@ -62,7 +77,7 @@ class Region(OCCIDModel):
 class Boundary(OCCIDModel):
     'Identified spatial line that delimits, separates, or gates space'
     __occid_model_id__: ClassVar[int] = 22
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
@@ -70,13 +85,3 @@ class Boundary(OCCIDModel):
     name: builtins.str | None = None
     symbology: SymbologySchema | None = None
     path: GeoPath
-
-class Equipment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 62
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-
-class Component(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 35
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None

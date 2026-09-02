@@ -90,7 +90,7 @@ class EulerAngles(OCCIDModel):
 
 class LocalDirection(OCCIDModel):
     'Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known'
-    __occid_model_id__: ClassVar[int] = 125
+    __occid_model_id__: ClassVar[int] = 124
     __occid_semantic_role__: ClassVar[str] = 'representation'
     bearing: builtins.float
     azimuth: builtins.float
@@ -98,7 +98,7 @@ class LocalDirection(OCCIDModel):
     slant_range: builtins.float | None = None
 
 class LocalVector(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 127
+    __occid_model_id__: ClassVar[int] = 126
     __occid_semantic_role__: ClassVar[str] = 'representation'
     x: builtins.float
     y: builtins.float

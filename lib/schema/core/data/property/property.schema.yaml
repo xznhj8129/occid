@@ -17,6 +17,14 @@ models:
       - Relationship
       - Capability
 
+  Version:
+    semantic_role: representation
+    parent: Property
+    fields:
+      major: int
+      minor: int
+      patch: int
+
   MetadataValue:
     semantic_role: representation
     parent: Property

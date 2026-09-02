@@ -39,11 +39,11 @@ class GeoPos(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class LocalPos(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 126
+    __occid_model_id__: ClassVar[int] = 125
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Line(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 119
+    __occid_model_id__: ClassVar[int] = 118
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class StructPath(OCCIDModel):
@@ -97,7 +97,7 @@ class Timestamp(OCCIDModel):
     tz: builtins.int
 
 class ItemCount(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 115
+    __occid_model_id__: ClassVar[int] = 114
     __occid_semantic_role__: ClassVar[str] = 'representation'
     item_type: builtins.str
     qty: builtins.int = 0

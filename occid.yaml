@@ -1540,7 +1540,7 @@ types:
     description: System or protocol interface through which a component communicates with another endpoint
 
   Link:
-    model_id: 120
+    model_id: 119
     package: link
     description: Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState
     fields:
@@ -1559,7 +1559,7 @@ types:
       network_ref: optional string
 
   LinkState:
-    model_id: 123
+    model_id: 122
     package: link
     description: Time-varying condition and observed quality of a communication link
     fields:
@@ -2062,17 +2062,22 @@ types:
     fields:
       capabilities: optional list[Capability]
 
-  Item:
-    model_id: 114
+  Equipment:
+    model_id: 62
     package: object
-    description: A discrete bounded non-agent object
     fields:
       capabilities: optional list[Capability]
 
-  Mark:
-    model_id: 133
+  Component:
+    model_id: 35
     package: object
-    description: Identified point reference in physical space
+    fields:
+      capabilities: optional list[Capability]
+
+  Location:
+    model_id: 127
+    package: object
+    description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
     fields:
       capabilities: optional list[Capability]
       record: Record
@@ -2080,46 +2085,6 @@ types:
       id: IntID(Location)
       name: optional string
       symbology: optional SymbologySchema
-      position: GlobalPosition
-
-  Path:
-    model_id: 175
-    package: object
-    description: Identified ordered spatial course or trace
-    fields:
-      capabilities: optional list[Capability]
-      record: Record
-      uid: UID
-      id: IntID(Location)
-      name: optional string
-      symbology: optional SymbologySchema
-      path: GeoPath
-
-  Region:
-    model_id: 203
-    package: object
-    description: Identified bounded spatial area
-    fields:
-      capabilities: optional list[Capability]
-      record: Record
-      uid: UID
-      id: IntID(Location)
-      name: optional string
-      symbology: optional SymbologySchema
-      area: GeoArea
-
-  Boundary:
-    model_id: 22
-    package: object
-    description: Identified spatial line that delimits, separates, or gates space
-    fields:
-      capabilities: optional list[Capability]
-      record: Record
-      uid: UID
-      id: IntID(Location)
-      name: optional string
-      symbology: optional SymbologySchema
-      path: GeoPath
 
   Organization:
     model_id: 173
@@ -2136,6 +2101,13 @@ types:
       orglevel: OrgLevel = GROUP
       org_type: optional OrgType
       topology: optional OrgTopology
+
+  Payload:
+    model_id: 176
+    package: payload
+    description: Object-carried sensor, effector, cargo, or other mounted payload
+    fields:
+      capabilities: optional list[Capability]
 
   Position:
     model_id: 189
@@ -2170,7 +2142,7 @@ representations:
       burst_bps: optional float
 
   LinkCapacity:
-    model_id: 121
+    model_id: 120
     package: link
     fields:
       max_nodes: optional int
@@ -2197,7 +2169,7 @@ representations:
       error_ratio: optional float
 
   LinkCounters:
-    model_id: 122
+    model_id: 121
     package: link
     description: Monotonic observed communication-link event counters
     fields:
@@ -2516,7 +2488,7 @@ representations:
       keys: list[CryptoKey]
 
   LoRaProfile:
-    model_id: 124
+    model_id: 123
     package: protocol
     fields:
       spreading_factor: optional int
@@ -2685,7 +2657,7 @@ representations:
       condition: optional Predicate | BooleanLogic
 
   Limitation:
-    model_id: 118
+    model_id: 117
     package: constraint
     fields:
       condition: optional Predicate | BooleanLogic
@@ -2984,14 +2956,6 @@ representations:
       status: TaskStatus = NEW
       intent: TransportIntent
 
-  Version:
-    model_id: 266
-    package: data
-    fields:
-      major: int
-      minor: int
-      patch: int
-
   FlightEvent:
     model_id: 75
     package: event
@@ -3005,7 +2969,7 @@ representations:
       record: Record
 
   Lifecycle:
-    model_id: 117
+    model_id: 116
     package: lifecycle
     description: Current stage in existence or execution.
 
@@ -3136,6 +3100,14 @@ representations:
       entity_id: IntID(Entity)
       organization_uid: UID
       organization_id: IntID(Organization)
+
+  Version:
+    model_id: 266
+    package: property
+    fields:
+      major: int
+      minor: int
+      patch: int
 
   MetadataValue:
     model_id: 145
@@ -3383,7 +3355,7 @@ representations:
       cycle_time_us: optional int
 
   Kinematic:
-    model_id: 116
+    model_id: 115
     package: kinematic
     description: Motion and derived movement state.
 
@@ -3893,17 +3865,57 @@ representations:
       controller: RobotController
       remote_control: RemoteControlSchema
 
-  Equipment:
-    model_id: 62
+  Mark:
+    model_id: 133
     package: object
+    description: Identified point reference in physical space
     fields:
       capabilities: optional list[Capability]
+      record: Record
+      uid: UID
+      id: IntID(Location)
+      name: optional string
+      symbology: optional SymbologySchema
+      position: GlobalPosition
 
-  Component:
-    model_id: 35
+  Path:
+    model_id: 175
     package: object
+    description: Identified ordered spatial course or trace
     fields:
       capabilities: optional list[Capability]
+      record: Record
+      uid: UID
+      id: IntID(Location)
+      name: optional string
+      symbology: optional SymbologySchema
+      path: GeoPath
+
+  Region:
+    model_id: 203
+    package: object
+    description: Identified bounded spatial area
+    fields:
+      capabilities: optional list[Capability]
+      record: Record
+      uid: UID
+      id: IntID(Location)
+      name: optional string
+      symbology: optional SymbologySchema
+      area: GeoArea
+
+  Boundary:
+    model_id: 22
+    package: object
+    description: Identified spatial line that delimits, separates, or gates space
+    fields:
+      capabilities: optional list[Capability]
+      record: Record
+      uid: UID
+      id: IntID(Location)
+      name: optional string
+      symbology: optional SymbologySchema
+      path: GeoPath
 
   Group:
     model_id: 96
@@ -3934,13 +3946,6 @@ representations:
       orglevel: OrgLevel = UNIT
       org_type: optional OrgType
       topology: optional OrgTopology
-
-  Payload:
-    model_id: 176
-    package: payload
-    description: Object-carried sensor, effector, cargo, or other mounted payload
-    fields:
-      capabilities: optional list[Capability]
 
   SensorPayload:
     model_id: 218
@@ -4065,7 +4070,7 @@ representations:
       reference_frame: optional InertialReferenceFrame
 
   LocalDirection:
-    model_id: 125
+    model_id: 124
     package: spatial
     description: Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range
       is known
@@ -4076,7 +4081,7 @@ representations:
       slant_range: optional float
 
   LocalVector:
-    model_id: 127
+    model_id: 126
     package: spatial
     fields:
       x: float
@@ -4201,11 +4206,11 @@ representations:
     package: struct
 
   LocalPos:
-    model_id: 126
+    model_id: 125
     package: struct
 
   Line:
-    model_id: 119
+    model_id: 118
     package: struct
 
   StructPath:
@@ -4261,7 +4266,7 @@ representations:
       tz: int
 
   ItemCount:
-    model_id: 115
+    model_id: 114
     package: struct
     fields:
       item_type: string

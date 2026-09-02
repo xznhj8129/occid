@@ -16,7 +16,7 @@ class AirspeedReference(IntEnum):
 
 class Kinematic(OCCIDModel):
     'Motion and derived movement state.'
-    __occid_model_id__: ClassVar[int] = 116
+    __occid_model_id__: ClassVar[int] = 115
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class ImuSample(OCCIDModel):

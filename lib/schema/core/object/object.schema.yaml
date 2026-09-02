@@ -45,11 +45,11 @@ models:
       - Payload
 
   Equipment:
-    semantic_role: representation
+    semantic_role: concept
     parent: Item
 
   Component:
-    semantic_role: representation
+    semantic_role: concept
     parent: Item
 
   Location:
@@ -70,28 +70,28 @@ models:
 
   Mark:
     description: Identified point reference in physical space
-    semantic_role: concept
+    semantic_role: representation
     parent: Location
     fields:
       position: GlobalPosition
 
   Path:
     description: Identified ordered spatial course or trace
-    semantic_role: concept
+    semantic_role: representation
     parent: Location
     fields:
       path: GeoPath
 
   Region:
     description: Identified bounded spatial area
-    semantic_role: concept
+    semantic_role: representation
     parent: Location
     fields:
       area: GeoArea
 
   Boundary:
     description: Identified spatial line that delimits, separates, or gates space
-    semantic_role: concept
+    semantic_role: representation
     parent: Location
     fields:
       path: GeoPath

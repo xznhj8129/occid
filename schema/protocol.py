@@ -50,7 +50,7 @@ class CryptoProfile(OCCIDModel):
     keys: list[CryptoKey]
 
 class LoRaProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 124
+    __occid_model_id__: ClassVar[int] = 123
     __occid_semantic_role__: ClassVar[str] = 'representation'
     spreading_factor: builtins.int | None = None
     bandwidth_mhz: builtins.float | None = None

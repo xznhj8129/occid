@@ -17,7 +17,7 @@ class Restriction(OCCIDModel):
     condition: (Predicate | BooleanLogic) | None = None
 
 class Limitation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 118
+    __occid_model_id__: ClassVar[int] = 117
     __occid_semantic_role__: ClassVar[str] = 'representation'
     condition: (Predicate | BooleanLogic) | None = None
 

@@ -51,7 +51,7 @@ class SensorFrustumShape(IntEnum):
 class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
     __occid_model_id__: ClassVar[int] = 176
-    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
 class SensorPayload(OCCIDModel):

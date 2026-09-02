@@ -18,10 +18,3 @@ models:
       - Observation
       - Media
 
-  Version:
-    semantic_role: representation
-    parent: Data
-    fields:
-      major: int
-      minor: int
-      patch: int

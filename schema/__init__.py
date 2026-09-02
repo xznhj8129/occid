@@ -11,7 +11,6 @@ from .condition import *
 from .constraint import *
 from .control import *
 from .cue import *
-from .data import *
 from .definition import *
 from .event import *
 from .execution import *

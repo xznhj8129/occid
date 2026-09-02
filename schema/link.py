@@ -49,7 +49,7 @@ class NetType(IntEnum):
 
 class Link(OCCIDModel):
     'Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState'
-    __occid_model_id__: ClassVar[int] = 120
+    __occid_model_id__: ClassVar[int] = 119
     __occid_semantic_role__: ClassVar[str] = 'type'
     schema_ref: builtins.str | None = None
     name: builtins.str | None = None
@@ -67,7 +67,7 @@ class Link(OCCIDModel):
 
 class LinkState(OCCIDModel):
     'Time-varying condition and observed quality of a communication link'
-    __occid_model_id__: ClassVar[int] = 123
+    __occid_model_id__: ClassVar[int] = 122
     __occid_semantic_role__: ClassVar[str] = 'type'
     link_ref: builtins.str | None = None
     condition: LinkCondition | None = None
@@ -84,7 +84,7 @@ class DataRateSpec(OCCIDModel):
     burst_bps: builtins.float | None = None
 
 class LinkCapacity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 121
+    __occid_model_id__: ClassVar[int] = 120
     __occid_semantic_role__: ClassVar[str] = 'representation'
     max_nodes: builtins.int | None = None
     max_users: builtins.int | None = None
@@ -108,7 +108,7 @@ class DeliveryQuality(OCCIDModel):
 
 class LinkCounters(OCCIDModel):
     'Monotonic observed communication-link event counters'
-    __occid_model_id__: ClassVar[int] = 122
+    __occid_model_id__: ClassVar[int] = 121
     __occid_semantic_role__: ClassVar[str] = 'representation'
     error_count: builtins.int | None = None
     receive_error_count: builtins.int | None = None
