@@ -7,11 +7,11 @@ from pydantic import ValidationError
 from occid import ExecutionAcceptance, PlanStep, RecordMeta, SuccessCriterion, Task
 
 
-RECORD_UID = "0ea050c7-7b65-43f7-baaa-fcc0dc0f94ce"
-TASK_UID = "fe8823f2-a76b-4f92-a898-9d76d4f093de"
-ACTOR_UID = "9f33ea2a-8134-4f14-bdd4-d0d84169cebc"
-EXECUTION_UID = "f8524789-a7c6-4576-9ea1-cab788bdaed7"
-EXECUTOR_UID = "f27d4d7e-263d-4a80-ada2-48e10fedb01d"
+RECORD_UID = bytes.fromhex("0ea050c77b6543f7baaafcc0dc0f94ce")
+TASK_UID = bytes.fromhex("fe8823f2a76b4f92a8989d76d4f093de")
+ACTOR_UID = bytes.fromhex("9f33ea2a81344f14bdd4d0d84169cebc")
+EXECUTION_UID = bytes.fromhex("f8524789a7c645769ea1cab788bdaed7")
+EXECUTOR_UID = bytes.fromhex("f27d4d7e263d4a80ada248e10fedb01d")
 
 
 def record() -> RecordMeta:
@@ -36,9 +36,9 @@ class ControlIdentityTests(unittest.TestCase):
             location_uids=[],
             constraints=[],
         )
-        self.assertEqual(str(task.uid), TASK_UID)
+        self.assertEqual(task.uid.root, TASK_UID)
         self.assertEqual(task.id, 42)
-        self.assertEqual([str(uid) for uid in task.target_uids], [ACTOR_UID])
+        self.assertEqual([uid.root for uid in task.target_uids], [ACTOR_UID])
 
         with self.assertRaises(ValidationError):
             Task(
@@ -72,7 +72,7 @@ class ControlIdentityTests(unittest.TestCase):
             accepted=True,
             reported_at=1.0,
         )
-        self.assertEqual(str(acceptance.execution_uid), EXECUTION_UID)
+        self.assertEqual(acceptance.execution_uid.root, EXECUTION_UID)
         self.assertEqual(acceptance.dispatch_ref, "dispatch-7")
 
 

@@ -8,5 +8,5 @@ tags:
 models:
   Interface:
     description: System or protocol interface through which a component communicates with another endpoint
-    semantic_role: ontology
+    semantic_role: concept
     parent: Communication

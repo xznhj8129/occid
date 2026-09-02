@@ -186,8 +186,10 @@ The deeper research does not need to be complete before OCCID can be useful. Rea
 
 This repository currently includes:
 
-- declarative schema sources;
-- generated Python models;
+- authored Concept / Representation schemas and Vocabulary;
+- record-shaped and atomic Representations (`fields:` or model-level `type:`);
+- a compiler that resolves them into flat `occid.yaml`;
+- generated Python models produced only from `occid.yaml`;
 - compact serialization and validation;
 - interoperability helpers;
 - structural consumer-contract tooling;
@@ -210,8 +212,11 @@ from occid import EntityState, IsrObservation, TaskInformation
 ## Repository structure
 
 ```text
-lib/schema/             declarative schema sources
-schema/                 generated Python runtime models
+lib/schema/             authoritative authored semantic schemas
+compile_occid.py         compile Concept/Representation/Vocabulary to flat runtime schema
+occid.yaml               generated flat runtime schema
+generate_pydantic.py     generate record and atomic Python projections from occid.yaml
+schema/                  generated Python runtime models
 occid/                  canonical Python package namespace and tooling
 interop/                interoperability mappings
 tests/                  tests and regression coverage

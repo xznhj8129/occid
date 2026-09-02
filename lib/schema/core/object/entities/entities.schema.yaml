@@ -85,15 +85,15 @@ enums:
 models:
   Entity:
     description: One discrete "atom" capable of actions
-    semantic_role: ontology
+    semantic_role: concept
     parent: Object
     variants:
       - Actor
       - Machine
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Entity)
       node_uids: list[UID]
       name: optional string
       callsign: optional string
@@ -105,18 +105,53 @@ models:
       display_meta: optional DisplayMeta
 
   Actor:
-    semantic_role: specialization
+    semantic_role: concept
     parent: Entity
     variants:
       - Person
       - Agent
 
   Agent:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Actor
 
+  Person:
+    semantic_role: representation
+    parent: Actor
+    variants: null
+    fields:
+      entity_type: EntityType = PERSON
+      role: string
+      op_domain: OperationalDomain = LAND
+      propulsion: PropulsionType = FOOT
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      sensors: map[string, SensorPayload]
+
+  Machine:
+    semantic_role: concept
+    parent: Entity
+    variants:
+      - Vehicle
+      - Robot
+      - Platform
+    fields:
+      entity_type: EntityType = MACHINE
+      serial_number: optional string
+      propulsion: PropulsionType
+      machine_type: optional MachineType
+      components: list[EntityComponentRef]
+
+  Vehicle:
+    semantic_role: representation
+    parent: Machine
+
+  Platform:
+    semantic_role: representation
+    parent: Machine
+
   GroundNavigationSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Attribute
     fields:
       propulsion: PropulsionType
@@ -126,7 +161,7 @@ models:
       max_spd: float
 
   AirNavigationSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Attribute
     variants: null
     fields:
@@ -144,43 +179,8 @@ models:
       cruise_spd: float
       max_alt: float
 
-  Person:
-    semantic_role: specialization
-    parent: Actor
-    variants: null
-    fields:
-      entity_type: EntityType = PERSON
-      role: string
-      op_domain: OperationalDomain = LAND
-      propulsion: PropulsionType = FOOT
-      navigation: NavigationMode
-      navaids: list[NavAids]
-      sensors: map[string, SensorPayload]
-
-  Machine:
-    semantic_role: specialization
-    parent: Entity
-    variants:
-      - Vehicle
-      - Robot
-      - Platform
-    fields:
-      entity_type: EntityType = MACHINE
-      serial_number: optional string
-      propulsion: PropulsionType
-      machine_type: optional MachineType
-      components: list[EntityComponentRef]
-
-  Vehicle:
-    semantic_role: specialization
-    parent: Machine
-
-  Platform:
-    semantic_role: specialization
-    parent: Machine
-
   GroundMachine:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Machine
     fields:
       machine_type: MachineType
@@ -191,7 +191,7 @@ models:
       navigation: GroundNavigationSchema
 
   AirMachine:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Machine
     fields:
       airframe: AirframeType

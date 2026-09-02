@@ -3,21 +3,19 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .data import Data
-
 ### Models
 
-class Media(Data):
+class Media(OCCIDModel):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
-    __occid_model_id__: ClassVar[int] = 74
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 135
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class MediaItemSchema(Media):
-    __occid_model_id__: ClassVar[int] = 75
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+class MediaItem(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 136
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('MediaItem')]
     media_type: MediaType
     uri: builtins.str
     label: builtins.str | None = None

@@ -15,12 +15,12 @@ enums:
 models:
   Authority:
     description: Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised
-    semantic_role: ontology
+    semantic_role: concept
     parent: Control
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Authority)
       holder_uid: UID
       granted_by_uid: optional UID
       scope_uids: list[UID]
@@ -28,7 +28,7 @@ models:
 
   ControlLease:
     description: Time-bounded control right issued under an Authority record
-    semantic_role: specialization
+    semantic_role: representation
     parent: Authority
     fields:
       asset_uid: UID

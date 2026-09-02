@@ -3,22 +3,25 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .property import Property
-
 ### Models
 
-class Identity(Property):
+class Identity(OCCIDModel):
     'Identity bindings and identity-related properties'
-    __occid_model_id__: ClassVar[int] = 148
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 103
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class IdentityBootstrap(Identity):
+class StringName(OCCIDValue[builtins.str]):
+    'Human-readable reference for something'
+    __occid_model_id__: ClassVar[int] = 228
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class IdentityBootstrap(OCCIDModel):
     "Stable Node-centered binding of one deployed Node to the Entity it serves and that Entity's Organization"
-    __occid_model_id__: ClassVar[int] = 97
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 104
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     node_uid: UID
-    node_id: builtins.int
+    node_id: Annotated[IntID, IDNamespace('Node')]
     entity_uid: UID
-    entity_id: builtins.int
+    entity_id: Annotated[IntID, IDNamespace('Entity')]
     organization_uid: UID
-    organization_id: builtins.int
+    organization_id: Annotated[IntID, IDNamespace('Organization')]

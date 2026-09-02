@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Enums
 
 class ValidationStatus(IntEnum):
@@ -15,10 +13,10 @@ class ValidationStatus(IntEnum):
 
 ### Models
 
-class Validation(State):
+class Validation(OCCIDModel):
     'Mutable state of evaluating a Condition, kept separate from the predicate itself'
-    __occid_model_id__: ClassVar[int] = 321
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
+    __occid_model_id__: ClassVar[int] = 262
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    condition: Predicate | BooleanLogic
     status: ValidationStatus
     updated_ts: builtins.float | None = None

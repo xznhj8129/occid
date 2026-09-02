@@ -1,20 +1,20 @@
 version: 1
 type: schema
 package: record
-root: RecordMeta
+root: Record
 tags:
   - core
 
 models:
-  RecordMeta:
+  Record:
     description: Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance metadata
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       # Record identity is separate from the logical Entity/Task/Track/etc.
       # described by the record. UID is global; ID is local to the Record class.
       uid: UID
-      id: int
+      id: IntID(Record)
       revision: int = 0
       created_ts: float
       updated_ts: float

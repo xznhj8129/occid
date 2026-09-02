@@ -8,19 +8,26 @@ tags:
 models:
   Identity:
     description: Identity bindings and identity-related properties
-    semantic_role: ontology
+    semantic_role: concept
     parent: Property
     variants:
+      - StringName
       - IdentityBootstrap
+
+  StringName:
+    description: Human-readable reference for something
+    semantic_role: representation
+    parent: Identity
+    type: string
 
   IdentityBootstrap:
     description: Stable Node-centered binding of one deployed Node to the Entity it serves and that Entity's Organization
-    semantic_role: specialization
+    semantic_role: representation
     parent: Identity
     fields:
       node_uid: UID
-      node_id: int
+      node_id: IntID(Node)
       entity_uid: UID
-      entity_id: int
+      entity_id: IntID(Entity)
       organization_uid: UID
-      organization_id: int
+      organization_id: IntID(Organization)

@@ -3,46 +3,44 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Models
 
-class Resource(State):
+class Resource(OCCIDModel):
     'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
-    __occid_model_id__: ClassVar[int] = 184
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 206
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class FuelState(Resource):
-    __occid_model_id__: ClassVar[int] = 185
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FuelState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 82
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     fuel_type: FuelType
     capacity: builtins.float | None = None
     remaining: builtins.float | None = None
 
-class SuppliesSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 186
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SuppliesSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 232
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     fuel: FuelState | None = None
     stores: list[ItemCount]
 
-class PowerSourceSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 187
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class PowerSourceSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 190
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     source_ref: builtins.str
     power_type: PowerType
     status: PowerStatus
     remaining_pct: builtins.float | None = None
 
-class PowerStateSchema(Resource):
-    __occid_model_id__: ClassVar[int] = 188
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class PowerStateSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 191
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     status: PowerStatus
     sources: list[PowerSourceSchema]
     electrical_sources: list[ElectricalResourceState]
 
-class ElectricalResourceState(Resource):
-    __occid_model_id__: ClassVar[int] = 189
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ElectricalResourceState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 58
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     source_ref: builtins.str | None = None
     voltage_v: builtins.float | None = None
     current_a: builtins.float | None = None

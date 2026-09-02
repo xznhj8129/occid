@@ -1,9 +1,7 @@
-"""Generate a Pydantic schema package from `occid/lib/schema`.
+"""Generate the Pydantic runtime package from compiled ``occid.yaml``.
 
-Usage:
-    python generate_pydantic.py
-    python generate_pydantic.py --module-tag military
-    python generate_pydantic.py --output-dir schema
+The authored hierarchy under ``lib/schema`` is consumed by ``compile_occid.py``.
+This generator only sees the flat Type / Representation / Vocabulary contract.
 """
 
 from __future__ import annotations
@@ -21,13 +19,12 @@ from yaml.tokens import AliasToken, AnchorToken, FlowMappingStartToken, FlowSequ
 SCRIPT_DIR = Path(__file__).resolve().parent
 SCHEMA_DIR = SCRIPT_DIR / "lib" / "schema" / "core"
 MODULE_DIR = SCRIPT_DIR / "lib" / "schema" / "modules"
+COMPILED_SCHEMA = SCRIPT_DIR / "occid.yaml"
 DEFAULT_OUTPUT_DIR = SCRIPT_DIR / "schema"
 TEMPLATE_DIR = SCRIPT_DIR / "lib" / "templates" / "pydantic"
-MODEL_ID_REGISTRY = SCRIPT_DIR / "lib" / "model_ids.yaml"
 CORE_SCHEMA_MAX_PARTS = 3
 
 PRIMITIVE_TYPES = {
-    "UID": "UID",
     "string": "builtins.str",
     "int": "builtins.int",
     "int8": "builtins.int",
@@ -59,8 +56,12 @@ TOP_LEVEL_KEYS = {
     "models",
 }
 MAP_KEYS = {"type", "value"}
-MODEL_KEYS = {"description", "semantic_role", "parent", "fields", "variants"}
-MODEL_SEMANTIC_ROLES = {"ontology", "specialization"}
+COMPILED_TOP_LEVEL_KEYS = {"version", "type", "vocabulary", "types", "representations", "maps"}
+COMPILED_MODEL_KEYS = {"model_id", "package", "description", "type", "fields"}
+COMPILED_VOCABULARY_KEYS = {"package", "values"}
+COMPILED_MAP_KEYS = {"package", "type", "value"}
+MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields", "variants"}
+MODEL_SEMANTIC_ROLES = {"concept", "representation"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 
@@ -73,6 +74,8 @@ class TypeNode:
     kind: str
     name: str | None = None
     args: list["TypeNode"] = field(default_factory=list)
+    semantic_args: list[str] = field(default_factory=list)
+    size: int | None = None
 
 
 @dataclass
@@ -104,9 +107,11 @@ class ModelDef:
     description: str | None
     semantic_role: str | None
     parent: str | None
+    value_type: TypeNode | None
     fields: list[FieldDef]
     variants: list[str]
     has_variants: bool
+    model_id: int | None = None
 
 
 @dataclass
@@ -134,28 +139,10 @@ class ModuleDef:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--schema-dir", type=Path, default=SCHEMA_DIR)
-    parser.add_argument("--module-dir", type=Path, default=MODULE_DIR)
-    parser.add_argument("--module", action="append", default=[])
-    parser.add_argument("--module-tag", action="append", default=[])
-    parser.add_argument("--all-modules", action="store_true")
+    parser.add_argument("--input", type=Path, default=COMPILED_SCHEMA)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
-    parser.add_argument("--model-id-registry", type=Path, default=MODEL_ID_REGISTRY)
     return parser.parse_args()
 
-
-def load_model_ids(path: Path, model_names: set[str]) -> dict[str, int]:
-    registry = yaml.safe_load(path.read_text())
-    if set(registry) != {"version", "model_ids"}:
-        raise SchemaError(f"model ID registry must contain only version and model_ids: {path}")
-    model_ids = registry["model_ids"]
-    missing = sorted(model_names - set(model_ids))
-    if missing:
-        raise SchemaError(f"models missing permanent IDs in {path}: {', '.join(missing)}")
-    ids = list(model_ids.values())
-    if len(ids) != len(set(ids)):
-        raise SchemaError(f"duplicate permanent model IDs in {path}")
-    return {name: model_ids[name] for name in model_names}
 
 
 def load_template(name: str) -> str:
@@ -253,8 +240,36 @@ class TypeParser:
 
         name = self.parse_name()
         self.skip_ws()
+        if self.consume("("):
+            semantic_args = [self.parse_name()]
+            while True:
+                self.skip_ws()
+                if not self.consume(","):
+                    break
+                semantic_args.append(self.parse_name())
+            self.skip_ws()
+            self.expect(")")
+            return TypeNode(kind="semantic", name=name, semantic_args=semantic_args)
+
         if not self.consume("["):
             return TypeNode(kind="name", name=name)
+
+        if name == "bytes":
+            self.skip_ws()
+            start = self.pos
+            while self.pos < len(self.text) and self.text[self.pos].isdigit():
+                self.pos += 1
+            if start == self.pos:
+                raise SchemaError(f"bytes length must be a positive integer in {self.text!r}")
+            size = int(self.text[start:self.pos])
+            self.skip_ws()
+            self.expect("]")
+            if size <= 0:
+                raise SchemaError(f"fixed bytes length must be positive in {self.text!r}")
+            return TypeNode(kind="fixed_bytes", size=size)
+
+        if name not in TYPE_KEYWORDS:
+            raise SchemaError(f"type {name} does not take arguments in {self.text!r}")
 
         args = [self.parse_union()]
         while True:
@@ -264,6 +279,12 @@ class TypeParser:
             args.append(self.parse_union())
         self.skip_ws()
         self.expect("]")
+
+        expected = {"list": 1, "map": 2}
+        if name in expected and len(args) != expected[name]:
+            raise SchemaError(f"{name} requires exactly {expected[name]} type argument(s) in {self.text!r}")
+        if name == "tuple" and len(args) < 2:
+            raise SchemaError(f"tuple requires at least two type arguments in {self.text!r}")
         return TypeNode(kind=name, args=args)
 
     def parse_name(self) -> str:
@@ -356,6 +377,19 @@ def parse_model(name: str, spec: dict) -> ModelDef:
     if "description" in spec and type(spec["description"]) != str:
         raise SchemaError(f"description must be a string on {name}")
     semantic_role = parse_semantic_role(name, spec.get("semantic_role"), MODEL_SEMANTIC_ROLES)
+    fields_spec = spec.get("fields") or {}
+    if type(fields_spec) != dict:
+        raise SchemaError(f"fields must be a mapping on {name}")
+    if "type" in spec and "fields" in spec:
+        raise SchemaError(f"model {name} may declare type or fields, not both")
+    value_type = None
+    if "type" in spec:
+        if semantic_role != "representation":
+            raise SchemaError(f"model-level type is only valid on a representation: {name}")
+        type_text = spec["type"]
+        if type(type_text) != str or not type_text.strip():
+            raise SchemaError(f"model-level type must be a non-empty string on {name}")
+        value_type = TypeParser(type_text.strip()).parse()
     has_variants = "variants" in spec
     variants = spec.get("variants") or []
     if type(variants) != list:
@@ -368,7 +402,8 @@ def parse_model(name: str, spec: dict) -> ModelDef:
         description=spec.get("description"),
         semantic_role=semantic_role,
         parent=spec.get("parent"),
-        fields=[parse_field(field_name, field_spec) for field_name, field_spec in (spec.get("fields") or {}).items()],
+        value_type=value_type,
+        fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields_spec.items()],
         variants=variants,
         has_variants=has_variants,
     )
@@ -460,6 +495,123 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
         data,
     )
 
+
+
+def load_compiled_schema(path: Path) -> list[ModuleDef]:
+    """Load the flat runtime schema emitted by ``compile_occid.py``."""
+    text = path.read_text()
+    validate_yaml_subset(path, text)
+    data = yaml.safe_load(text) or {}
+
+    unknown_keys = sorted(set(data) - COMPILED_TOP_LEVEL_KEYS)
+    if unknown_keys:
+        raise SchemaError(f"unknown compiled-schema keys {unknown_keys} in {path}")
+    if data.get("version") != 1:
+        raise SchemaError(f"compiled OCCID schema version must be 1 in {path}")
+    if data.get("type") != "occid":
+        raise SchemaError(f"compiled schema type must be occid in {path}")
+
+    modules: dict[str, ModuleDef] = {}
+
+    def module_for(package: object) -> ModuleDef:
+        if type(package) != str or not package:
+            raise SchemaError(f"compiled entry has invalid package {package!r} in {path}")
+        module = modules.get(package)
+        if module is None:
+            module = ModuleDef(
+                doc_type="compiled",
+                name=package,
+                root=None,
+                description=None,
+                path=path,
+                tags=[],
+                requires=[],
+                extend_variants={},
+                enums=[],
+                models=[],
+                maps=[],
+            )
+            modules[package] = module
+        return module
+
+    vocabulary = data.get("vocabulary") or {}
+    if type(vocabulary) != dict:
+        raise SchemaError(f"vocabulary must be a mapping in {path}")
+    for name, spec in vocabulary.items():
+        if type(spec) != dict:
+            raise SchemaError(f"compiled vocabulary {name} must be a mapping in {path}")
+        unknown = sorted(set(spec) - COMPILED_VOCABULARY_KEYS)
+        if unknown:
+            raise SchemaError(f"unknown keys {unknown} on compiled vocabulary {name}")
+        if "package" not in spec or "values" not in spec:
+            raise SchemaError(f"compiled vocabulary {name} requires package and values")
+        module_for(spec["package"]).enums.append(parse_enum(name, spec["values"]))
+
+    compiled_model_ids: set[int] = set()
+
+    for section_name, semantic_role in (("types", "type"), ("representations", "representation")):
+        section = data.get(section_name) or {}
+        if type(section) != dict:
+            raise SchemaError(f"{section_name} must be a mapping in {path}")
+        for name, spec in section.items():
+            if type(spec) != dict:
+                raise SchemaError(f"compiled {semantic_role} {name} must be a mapping in {path}")
+            unknown = sorted(set(spec) - COMPILED_MODEL_KEYS)
+            if unknown:
+                raise SchemaError(f"unknown keys {unknown} on compiled {semantic_role} {name}")
+            if "model_id" not in spec or "package" not in spec:
+                raise SchemaError(f"compiled {semantic_role} {name} requires model_id and package")
+            model_id = spec["model_id"]
+            if type(model_id) is not int or model_id <= 0:
+                raise SchemaError(f"compiled {semantic_role} {name} has invalid model_id {model_id!r}")
+            if model_id in compiled_model_ids:
+                raise SchemaError(f"duplicate compiled model_id {model_id} on {name}")
+            compiled_model_ids.add(model_id)
+            if "description" in spec and type(spec["description"]) != str:
+                raise SchemaError(f"description must be a string on compiled {semantic_role} {name}")
+            if "type" in spec and "fields" in spec:
+                raise SchemaError(f"compiled {semantic_role} {name} may declare type or fields, not both")
+            if "type" in spec and semantic_role != "representation":
+                raise SchemaError(f"compiled Type {name} may not declare model-level type")
+            value_type = None
+            if "type" in spec:
+                type_text = spec["type"]
+                if type(type_text) != str or not type_text.strip():
+                    raise SchemaError(f"compiled representation {name} has invalid type")
+                value_type = TypeParser(type_text.strip()).parse()
+            fields = spec.get("fields") or {}
+            if type(fields) != dict:
+                raise SchemaError(f"fields must be a mapping on compiled {semantic_role} {name}")
+            module_for(spec["package"]).models.append(
+                ModelDef(
+                    name=name,
+                    description=spec.get("description"),
+                    semantic_role=semantic_role,
+                    parent=None,
+                    value_type=value_type,
+                    fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields.items()],
+                    variants=[],
+                    has_variants=False,
+                    model_id=model_id,
+                )
+            )
+
+    maps = data.get("maps") or {}
+    if type(maps) != dict:
+        raise SchemaError(f"maps must be a mapping in {path}")
+    for name, spec in maps.items():
+        if type(spec) != dict:
+            raise SchemaError(f"compiled map {name} must be a mapping in {path}")
+        unknown = sorted(set(spec) - COMPILED_MAP_KEYS)
+        if unknown:
+            raise SchemaError(f"unknown keys {unknown} on compiled map {name}")
+        if "package" not in spec or "type" not in spec or "value" not in spec:
+            raise SchemaError(f"compiled map {name} requires package, type, and value")
+        module_for(spec["package"]).maps.append(
+            parse_mapping(name, {"type": spec["type"], "value": spec["value"]})
+        )
+
+    return list(modules.values())
 
 def load_schema_documents(schema_dir: Path) -> list[ModuleDef]:
     modules: list[ModuleDef] = []
@@ -582,7 +734,7 @@ def load_modules(
 
 
 def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
-    symbols = {"OCCIDModel": "common", "IntEnum": "common"}
+    symbols = {"OCCIDModel": "common", "OCCIDValue": "common", "IntEnum": "common"}
     for module in modules:
         for enum_def in module.enums:
             if enum_def.name in symbols:
@@ -650,7 +802,9 @@ def variant_member_name(parent_name: str, child_name: str) -> str:
 
 
 def collect_type_refs(node: TypeNode) -> set[str]:
-    if node.kind == "name":
+    if node.kind == "fixed_bytes":
+        return set()
+    if node.kind in {"name", "semantic"}:
         if node.name in PRIMITIVE_TYPES or node.name in TYPE_KEYWORDS:
             return set()
         return {node.name}
@@ -658,6 +812,33 @@ def collect_type_refs(node: TypeNode) -> set[str]:
     for arg in node.args:
         refs.update(collect_type_refs(arg))
     return refs
+
+
+def validate_semantic_type_args(
+    node: TypeNode,
+    *,
+    models_by_name: dict[str, ModelDef],
+    path: Path,
+    location: str,
+    authored: bool,
+) -> None:
+    if node.kind == "semantic":
+        if node.name != "IntID":
+            raise SchemaError(f"type {node.name} does not take semantic arguments in {path}:{location}")
+        if len(node.semantic_args) != 1:
+            raise SchemaError(f"IntID requires exactly one namespace in {path}:{location}")
+        namespace = node.semantic_args[0]
+        if authored and namespace not in models_by_name:
+            raise SchemaError(f"unknown IntID namespace {namespace} in {path}:{location}")
+        return
+    for arg in node.args:
+        validate_semantic_type_args(
+            arg,
+            models_by_name=models_by_name,
+            path=path,
+            location=location,
+            authored=authored,
+        )
 
 
 def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum_members: dict[str, set[str]]) -> None:
@@ -678,14 +859,38 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     if key not in enum_members[mapping_def.key_type]:
                         raise SchemaError(f"invalid mapping key {mapping_def.key_type}.{key} in {module.path}:{mapping_def.name}")
         for model_def in module.models:
-            if model_def.parent and model_def.parent not in symbol_index:
-                raise SchemaError(f"unknown parent {model_def.parent} in {module.path}")
-            if model_def.semantic_role == "specialization" and not model_def.parent:
-                raise SchemaError(f"specialization model {model_def.name} must declare a parent in {module.path}")
+            if model_def.parent and model_def.parent not in models_by_name:
+                raise SchemaError(f"unknown model parent {model_def.parent} in {module.path}")
+            if model_def.parent and models_by_name[model_def.parent].value_type is not None:
+                raise SchemaError(
+                    f"atomic representation {model_def.parent} cannot be a parent in {module.path}:{model_def.name}"
+                )
+            if model_def.semantic_role == "representation" and not model_def.parent and module.doc_type != "compiled":
+                raise SchemaError(f"representation model {model_def.name} must declare a parent in {module.path}")
+            if model_def.value_type is not None:
+                validate_semantic_type_args(
+                    model_def.value_type,
+                    models_by_name=models_by_name,
+                    path=module.path,
+                    location=f"{model_def.name}.type",
+                    authored=module.doc_type != "compiled",
+                )
+                unknown_refs = sorted(ref for ref in collect_type_refs(model_def.value_type) if ref not in symbol_index)
+                if unknown_refs:
+                    raise SchemaError(f"unknown type refs {unknown_refs} in {module.path}:{model_def.name}.type")
+                if model_def.variants:
+                    raise SchemaError(f"atomic representation {model_def.name} may not declare variants in {module.path}")
             for variant_name in model_def.variants:
                 if variant_name not in symbol_index:
                     raise SchemaError(f"unknown variant {variant_name} in {module.path}:{model_def.name}")
             for field_def in model_def.fields:
+                validate_semantic_type_args(
+                    field_def.type_node,
+                    models_by_name=models_by_name,
+                    path=module.path,
+                    location=f"{model_def.name}.{field_def.name}",
+                    authored=module.doc_type != "compiled",
+                )
                 unknown_refs = sorted(ref for ref in collect_type_refs(field_def.type_node) if ref not in symbol_index)
                 if unknown_refs:
                     raise SchemaError(f"unknown type refs {unknown_refs} in {module.path}:{model_def.name}.{field_def.name}")
@@ -704,6 +909,13 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
 
 
 def python_type_expr(node: TypeNode, variant_type_members: dict[str, list[str]]) -> str:
+    if node.kind == "fixed_bytes":
+        assert node.size is not None
+        return f"Annotated[bytes, Field(strict=True, min_length={node.size}, max_length={node.size})]"
+    if node.kind == "semantic":
+        assert node.name == "IntID"
+        assert len(node.semantic_args) == 1
+        return f"Annotated[IntID, IDNamespace({node.semantic_args[0]!r})]"
     if node.kind == "name":
         if node.name in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[node.name]
@@ -859,6 +1071,8 @@ def model_type_refs(model_def: ModelDef) -> set[str]:
     refs: set[str] = set()
     if model_def.parent:
         refs.add(model_def.parent)
+    if model_def.value_type is not None:
+        refs.update(collect_type_refs(model_def.value_type))
     for field_def in model_def.fields:
         refs.update(collect_type_refs(field_def.type_node))
     return refs
@@ -868,6 +1082,8 @@ def runtime_type_refs(model_def: ModelDef, enum_members: dict[str, set[str]]) ->
     refs: set[str] = set()
     if model_def.parent:
         refs.add(model_def.parent)
+    if model_def.value_type is not None:
+        refs.update(collect_type_refs(model_def.value_type))
     for field_def in model_def.fields:
         if field_def.type_node.kind == "name" and field_def.type_node.name in enum_members and field_def.default is not None:
             refs.add(field_def.type_node.name)
@@ -905,13 +1121,17 @@ def render_model_block(
     model_def: ModelDef,
     enum_members: dict[str, set[str]],
     variant_type_members: dict[str, list[str]],
-    model_ids: dict[str, int],
 ) -> str:
-    parent = model_def.parent or "OCCIDModel"
+    if model_def.value_type is not None:
+        parent = f"OCCIDValue[{python_type_expr(model_def.value_type, variant_type_members)}]"
+    else:
+        parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
     if model_def.description:
         lines.append(f"    {model_def.description!r}")
-    lines.append(f"    __occid_model_id__: ClassVar[int] = {model_ids[model_def.name]}")
+    if model_def.model_id is None:
+        raise SchemaError(f"runtime model {model_def.name} is missing compiled model_id")
+    lines.append(f"    __occid_model_id__: ClassVar[int] = {model_def.model_id}")
     if model_def.semantic_role:
         lines.append(f"    __occid_semantic_role__: ClassVar[str] = {model_def.semantic_role!r}")
     for field_def in model_def.fields:
@@ -953,7 +1173,6 @@ def render_module(
     symbol_index: dict[str, str],
     enum_members: dict[str, set[str]],
     variant_type_members: dict[str, list[str]],
-    model_ids: dict[str, int],
 ) -> str:
     sections = [load_template("module_header.py")]
     imports = module_imports(module, symbol_index, enum_members)
@@ -971,7 +1190,7 @@ def render_module(
     if module.models:
         sections.append("### Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members, model_ids) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
@@ -980,7 +1199,6 @@ def render_common_schema_module(
     module: ModuleDef,
     enum_members: dict[str, set[str]],
     variant_type_members: dict[str, list[str]],
-    model_ids: dict[str, int],
 ) -> str:
     sections = []
     if module.enums:
@@ -995,7 +1213,7 @@ def render_common_schema_module(
     if module.models:
         sections.append("### Schema Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members, model_ids) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
 
@@ -1071,7 +1289,7 @@ def render_init(module_names: list[str]) -> str:
     lines.extend(
         [
             "",
-            "for _model in [obj for obj in list(globals().values()) if OCCIDModel in getattr(obj, \"__mro__\", ()) and obj is not OCCIDModel]:",
+            "for _model in [obj for obj in list(globals().values()) if (OCCIDModel in getattr(obj, \"__mro__\", ()) or OCCIDValue in getattr(obj, \"__mro__\", ())) and obj not in {OCCIDModel, OCCIDValue}]:",
             "    _model.model_rebuild(_types_namespace=globals())",
         ]
     )
@@ -1085,7 +1303,6 @@ def write_package(
     modules: list[ModuleDef],
     symbol_index: dict[str, str],
     enum_members: dict[str, set[str]],
-    model_ids: dict[str, int],
 ) -> None:
     graph = module_dependency_graph(modules, symbol_index, enum_members)
     ordered_names = topo_sort_modules(modules, graph)
@@ -1096,7 +1313,7 @@ def write_package(
     output_dir.mkdir(parents=True)
     common_sections = [render_common_runtime().rstrip()]
     if "common" in module_map:
-        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members, model_ids))
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members))
     (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
@@ -1104,7 +1321,7 @@ def write_package(
             continue
         module = module_map[module_name]
         (output_dir / f"{module_name}.py").write_text(
-            render_module(module, symbol_index, enum_members, variant_type_members, model_ids)
+            render_module(module, symbol_index, enum_members, variant_type_members)
         )
 
     (output_dir / "__init__.py").write_text(render_init(ordered_names))
@@ -1112,16 +1329,13 @@ def write_package(
 
 def main() -> None:
     args = parse_args()
-    modules = load_modules(args.schema_dir, args.module_dir, args.module, args.module_tag, args.all_modules)
+    modules = load_compiled_schema(args.input)
     symbol_index = build_symbol_index(modules)
     enum_members = build_enum_members(modules)
     validate_schema(modules, symbol_index, enum_members)
-    model_ids = load_model_ids(args.model_id_registry, {model.name for module in modules for model in module.models})
-    write_package(args.output_dir, modules, symbol_index, enum_members, model_ids)
-    print(f"schema_dir={args.schema_dir}")
-    print(f"module_dir={args.module_dir}")
+    write_package(args.output_dir, modules, symbol_index, enum_members)
+    print(f"input={args.input}")
     print(f"output_dir={args.output_dir}")
-    print(f"model_id_registry={args.model_id_registry}")
     print(f"module_count={len(modules)}")
 
 

@@ -45,7 +45,7 @@ enums:
 models:
   Radio:
     description: What messages are transmitted over
-    semantic_role: specialization
+    semantic_role: representation
     parent: Link
     variants:
       - FrequencyRange
@@ -53,7 +53,7 @@ models:
       - RadioProfile
 
   FrequencyRange:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Radio
     fields:
       low_mhz: optional float
@@ -61,7 +61,7 @@ models:
       center_mhz: optional float
 
   ChannelSpec:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Radio
     fields:
       channel_ref: optional string
@@ -71,7 +71,7 @@ models:
       spacing_mhz: optional float
 
   RadioProfile:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Radio
     variants: null
     fields:

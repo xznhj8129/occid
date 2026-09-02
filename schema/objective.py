@@ -3,36 +3,33 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
-from .struct import Struct
 from .task import TaskPriority, TaskStatus
 
 ### Models
 
-class SuccessCriterion(Struct):
-    'Typed, human-readable condition used to determine whether an objective succeeded'
-    __occid_model_id__: ClassVar[int] = 285
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    criterion_id: builtins.int
-    statement: builtins.str
-    metric: builtins.str | None = None
-    target_value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
-
-class Objective(Control):
+class Objective(OCCIDModel):
     'Desired end state with intent, success rule, target, priority, and deadline'
-    __occid_model_id__: ClassVar[int] = 84
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 167
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Objective')]
     name: builtins.str
     intent: builtins.str
     desired_state: builtins.str
     success_criteria: list[SuccessCriterion]
     target_uids: list[UID]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
+    constraints: list[Constraint]
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
     owner_uid: UID | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
+
+class SuccessCriterion(OCCIDModel):
+    'Typed, human-readable condition used to determine whether an objective succeeded'
+    __occid_model_id__: ClassVar[int] = 231
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    statement: builtins.str
+    metric: builtins.str | None = None
+    target_value: MetadataValue | None = None

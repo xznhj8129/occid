@@ -20,7 +20,7 @@ enums:
 models:
   MeshLink:
     description: Observed state of a link between two mesh nodes
-    semantic_role: specialization
+    semantic_role: representation
     parent: LinkState
     fields:
       src_uid: UID
@@ -28,7 +28,7 @@ models:
       updated_ts: optional float
 
   MeshNode:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Node
     fields:
       state: optional MeshNodeState
@@ -39,7 +39,7 @@ models:
 
   MeshView:
     description: Current observed mesh topology and node/link state
-    semantic_role: specialization
+    semantic_role: representation
     parent: Network
     fields:
       epoch: int = 0
@@ -48,7 +48,7 @@ models:
       partition_ref: optional string
 
   MeshtasticMessage:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Message
     fields:
       sender_node_num: uint32
@@ -62,19 +62,19 @@ models:
       metrics: optional MeshReceiveMetrics
 
   MeshReceiveMetrics:
-    semantic_role: specialization
+    semantic_role: representation
     parent: TelemetryMessage
     fields:
       state: LinkState
 
   MeshPositionSample:
-    semantic_role: specialization
+    semantic_role: representation
     parent: TelemetryMessage
     fields:
       state: LocationState
 
   NodeHeartbeat:
-    semantic_role: specialization
+    semantic_role: representation
     parent: TelemetryMessage
     fields:
       node_uid: UID

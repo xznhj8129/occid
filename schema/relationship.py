@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .property import Property
-
 ### Enums
 
 class RelationshipKind(IntEnum):
@@ -25,15 +23,15 @@ class SpatialRelationKind(IntEnum):
 
 ### Models
 
-class Relationship(Property):
+class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 181
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 204
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class DirectedRelationship(Relationship):
+class DirectedRelationship(OCCIDModel):
     'Typed directed semantic relationship between two OCCID objects'
-    __occid_model_id__: ClassVar[int] = 182
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 52
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     subject_uid: UID
     object_uid: UID
     relation: RelationshipKind
@@ -42,20 +40,20 @@ class DirectedRelationship(Relationship):
     confidence: ConfidenceLevel | None = None
     source: builtins.str | None = None
 
-class EntityComponentRef(Relationship):
-    __occid_model_id__: ClassVar[int] = 183
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class EntityComponentRef(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 60
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     component_ref: builtins.str
     component_type: builtins.str | None = None
     label: builtins.str | None = None
 
-class SpatialRelationship(Relationship):
+class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 332
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 222
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Relationship')]
     subject_uid: UID
     reference_uid: UID
     relation: SpatialRelationKind

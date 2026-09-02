@@ -292,7 +292,7 @@ maps:
 
 models:
   OrgComposition:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       category: optional NATOUnitCategory
@@ -301,7 +301,7 @@ models:
 
 
   MilitaryOrg:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Organization
     variants:
       - FlyingOrg
@@ -313,7 +313,7 @@ models:
 
 
   FlyingOrg:
-    semantic_role: specialization
+    semantic_role: representation
     parent: MilitaryOrg
     fields:
       category: NATOUnitCategory
@@ -322,7 +322,7 @@ models:
 
 
   OrbatOrg:
-    semantic_role: specialization
+    semantic_role: representation
     parent: MilitaryOrg
     variants:
       - GroundOrbatOrg
@@ -345,7 +345,7 @@ models:
 
 
   GroundOrbatOrg:
-    semantic_role: specialization
+    semantic_role: representation
     parent: OrbatOrg
     fields:
       category: NATOUnitCategory

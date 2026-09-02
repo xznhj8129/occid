@@ -8,11 +8,11 @@ tags:
 models:
   Internal:
     description: Diagnostic internals of a machine or system.
-    semantic_role: ontology
+    semantic_role: concept
     parent: State
 
   FirmwareInfo:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Internal
     fields:
       name: string
@@ -20,7 +20,7 @@ models:
       build: optional string
 
   RuntimeLoadState:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Internal
     fields:
       cpu_load: optional int

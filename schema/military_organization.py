@@ -4,8 +4,7 @@ import builtins
 from .common import *
 
 from .definition import OperationalDomain
-from .organization import OrgTopology, Organization
-from .struct import Struct
+from .organization import OrgLevel, OrgTopology
 
 ### Enums
 
@@ -283,37 +282,70 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 
 ### Models
 
-class OrgComposition(Struct):
-    __occid_model_id__: ClassVar[int] = 166
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class OrgComposition(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 172
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
-class MilitaryOrg(Organization):
-    __occid_model_id__: ClassVar[int] = 167
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MilitaryOrg(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 150
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Organization')]
+    name: builtins.str | None = None
+    unit_code: builtins.str | None = None
+    callsign: builtins.str | None = None
+    orglevel: OrgLevel = OrgLevel.GROUP
+    org_type: OrgType | None = None
+    topology: OrgTopology | None = None
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
-class FlyingOrg(MilitaryOrg):
-    __occid_model_id__: ClassVar[int] = 168
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FlyingOrg(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 78
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Organization')]
+    name: builtins.str | None = None
+    unit_code: builtins.str | None = None
+    callsign: builtins.str | None = None
+    orglevel: OrgLevel = OrgLevel.GROUP
+    org_type: OrgType | None = None
+    topology: OrgTopology | None = None
+    sidc: builtins.str | None = None
     category: NATOUnitCategory
+    link_loadout: list[ItemCount]
     op_domain: OperationalDomain = OperationalDomain.AIR
     air_units: list[ItemCount]
 
-class OrbatOrg(MilitaryOrg):
-    __occid_model_id__: ClassVar[int] = 169
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    org_layout: OrgLayout = OrgLayout.ORBAT
+class OrbatOrg(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 170
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Organization')]
+    name: builtins.str | None = None
+    unit_code: builtins.str | None = None
+    callsign: builtins.str | None = None
+    orglevel: OrgLevel = OrgLevel.GROUP
+    org_type: OrgType | None = None
     topology: OrgTopology = OrgTopology.HIERARCHICAL
+    sidc: builtins.str | None = None
     category: NATOUnitCategory
+    link_loadout: list[ItemCount]
+    org_layout: OrgLayout = OrgLayout.ORBAT
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
+    links: dict[builtins.str, Link]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]
@@ -323,11 +355,35 @@ class OrbatOrg(MilitaryOrg):
     equipment: list[ItemCount]
     spacing: builtins.float = 0.0
 
-class GroundOrbatOrg(OrbatOrg):
-    __occid_model_id__: ClassVar[int] = 170
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class GroundOrbatOrg(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 94
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Organization')]
+    name: builtins.str | None = None
+    unit_code: builtins.str | None = None
+    callsign: builtins.str | None = None
+    orglevel: OrgLevel = OrgLevel.GROUP
+    org_type: OrgType | None = None
+    topology: OrgTopology = OrgTopology.HIERARCHICAL
+    sidc: builtins.str | None = None
     category: NATOUnitCategory
+    link_loadout: list[ItemCount]
+    org_layout: OrgLayout = OrgLayout.ORBAT
+    size: OOBSize
     op_domain: OperationalDomain = OperationalDomain.LAND
+    taskforce: builtins.bool | None = None
+    links: dict[builtins.str, Link]
+    tac_elements: list[OrgComposition]
+    sup_elements: list[OrgComposition]
+    tac_e_comp: list[ItemCount]
+    sup_e_comp: list[ItemCount]
+    personnel: list[ItemCount]
+    vehicles: list[ItemCount]
+    equipment: list[ItemCount]
+    spacing: builtins.float = 0.0
     combat_domain: OperationalDomain
     ammo: list[ItemCount]
     weapons: list[ItemCount]

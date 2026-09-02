@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .struct import Struct
-
 ### Enums
 
 class TaskCombat(IntEnum):
@@ -16,16 +14,16 @@ class TaskCombat(IntEnum):
 
 ### Models
 
-class MunitionAllocation(Struct):
-    __occid_model_id__: ClassVar[int] = 278
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MunitionAllocation(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 159
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     munition_type: builtins.str
     qty: builtins.int = 0
 
-class CombatTaskProfile(Struct):
+class CombatTaskProfile(OCCIDModel):
     'Military domain detail associated with a generic Task without creating a Task subtype'
-    __occid_model_id__: ClassVar[int] = 309
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 33
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     task_uid: UID
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None

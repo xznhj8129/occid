@@ -3,9 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .attribute import Attribute
 from .definition import OperationalDomain
-from .object import Object
 
 ### Enums
 
@@ -87,43 +85,138 @@ class PropulsionType(IntEnum):
 
 ### Models
 
-class Entity(Object):
-    'One discrete "atom" capable of actions'
-    __occid_model_id__: ClassVar[int] = 214
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+class Actor(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 2
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[UID]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
-    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
+    metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
     symbology: SymbologySchema | None = None
     display_meta: DisplayMeta | None = None
 
-class Actor(Entity):
-    __occid_model_id__: ClassVar[int] = 215
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Machine(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 131
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
+    machine_type: MachineType | None = None
+    components: list[EntityComponentRef]
 
-class Agent(Actor):
-    __occid_model_id__: ClassVar[int] = 216
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Agent(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 3
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType | None = None
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
 
-class GroundNavigationSchema(Attribute):
-    __occid_model_id__: ClassVar[int] = 217
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Person(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 181
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.PERSON
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    role: builtins.str
+    op_domain: OperationalDomain = OperationalDomain.LAND
+    propulsion: PropulsionType = PropulsionType.FOOT
+    navigation: NavigationMode
+    navaids: list[NavAids]
+    sensors: dict[builtins.str, SensorPayload]
+
+class Vehicle(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 264
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
+    machine_type: MachineType | None = None
+    components: list[EntityComponentRef]
+
+class Platform(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 187
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
+    machine_type: MachineType | None = None
+    components: list[EntityComponentRef]
+
+class GroundNavigationSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 93
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     propulsion: PropulsionType
     navigation: NavigationMode
     navaids: list[NavAids]
     max_range: builtins.float
     max_spd: builtins.float
 
-class AirNavigationSchema(Attribute):
-    __occid_model_id__: ClassVar[int] = 218
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class AirNavigationSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 6
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     flight_type: AirframeType
     control_modes: list[StandardFlightMode]
     failsafe_mode: AirFailsafeMode | None = None
@@ -138,50 +231,54 @@ class AirNavigationSchema(Attribute):
     cruise_spd: builtins.float
     max_alt: builtins.float
 
-class Person(Actor):
-    __occid_model_id__: ClassVar[int] = 219
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    entity_type: EntityType = EntityType.PERSON
-    role: builtins.str
-    op_domain: OperationalDomain = OperationalDomain.LAND
-    propulsion: PropulsionType = PropulsionType.FOOT
-    navigation: NavigationMode
-    navaids: list[NavAids]
-    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
-
-class Machine(Entity):
-    __occid_model_id__: ClassVar[int] = 220
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class GroundMachine(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 92
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
+    machine_type: MachineType
+    components: list[EntityComponentRef]
+    op_domain: OperationalDomain = OperationalDomain.LAND
+    model: builtins.str
+    role: builtins.str
+    sensors: dict[builtins.str, SensorPayload]
+    navigation: GroundNavigationSchema
+
+class AirMachine(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 5
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[EntityComponentRef]
-
-class Vehicle(Machine):
-    __occid_model_id__: ClassVar[int] = 221
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Platform(Machine):
-    __occid_model_id__: ClassVar[int] = 222
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class GroundMachine(Machine):
-    __occid_model_id__: ClassVar[int] = 223
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    machine_type: MachineType
-    op_domain: OperationalDomain = OperationalDomain.LAND
-    model: builtins.str
-    role: builtins.str
-    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
-    navigation: GroundNavigationSchema
-
-class AirMachine(Machine):
-    __occid_model_id__: ClassVar[int] = 224
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
     airframe: AirframeType
-    machine_type: MachineType | None = None
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    sensors: dict[builtins.str, SensorPayload]
     navigation: AirNavigationSchema

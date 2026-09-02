@@ -22,9 +22,8 @@ packages = ["occid", "occid.schema", "occid.lib", "interop"]
 "occid.lib" = "lib"
 
 [tool.setuptools.package-data]
-occid = ["occid-contract.json"]
+occid = ["occid-contract.json", "../occid.yaml"]
 "occid.lib" = [
-    "model_ids.yaml",
     "schema/*.yaml",
     "schema/*/*.yaml",
     "schema/*/*/*.yaml",

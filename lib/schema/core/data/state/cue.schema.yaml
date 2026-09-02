@@ -8,7 +8,7 @@ tags:
 models:
   Cue:
     description: Spatial cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state
-    semantic_role: ontology
+    semantic_role: concept
     parent: State
     fields:
       source_uid: optional UID

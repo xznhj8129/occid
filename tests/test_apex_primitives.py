@@ -9,41 +9,39 @@ from occid import (
     BooleanLogic,
     BooleanOperator,
     Capability,
-    Condition,
     Constraint,
     Cue,
-    Data,
     FlightControlState,
     GNC,
     Health,
-    Object,
     Payload,
     PlanContingency,
     Predicate,
-    Property,
-    State,
     Task,
     Validation,
     ValidationStatus,
 )
 
 
-PAYLOAD_UID_1 = "030ad7ef-905a-4ce7-a97b-8e0d44d3e138"
-PAYLOAD_UID_2 = "e512918a-26e0-4b23-9931-c5e4fe24da4e"
-TARGET_UID = "a55c2fe0-8e06-42f3-a50f-1324cc1f9266"
+PAYLOAD_UID_1 = bytes.fromhex("030ad7ef905a4ce7a97b8e0d44d3e138")
+PAYLOAD_UID_2 = bytes.fromhex("e512918a26e04b239931c5e4fe24da4e")
+TARGET_UID = bytes.fromhex("a55c2fe08e0642f3a50f1324cc1f9266")
 
 
 class ApexPrimitiveTests(unittest.TestCase):
-    def test_capability_is_an_object_property(self) -> None:
-        self.assertTrue(issubclass(Capability, Property))
-        self.assertIn("capabilities", Object.model_fields)
+    def test_capability_is_a_runtime_type_and_payload_representation(self) -> None:
+        self.assertEqual(Capability.__occid_semantic_role__, "type")
+        self.assertEqual(Payload.__occid_semantic_role__, "representation")
+        self.assertNotIn("Object", occid.__all__)
+        self.assertNotIn("Property", occid.__all__)
+        self.assertIn("capabilities", Payload.model_fields)
         payload = Payload(capabilities=[Capability()])
         self.assertEqual(Payload.decode(payload.encode()), payload)
 
-    def test_condition_is_predicate_logic_not_state(self) -> None:
-        self.assertTrue(issubclass(Condition, Data))
-        self.assertFalse(issubclass(Condition, State))
-        self.assertTrue(issubclass(Health, State))
+    def test_condition_logic_compiles_into_constraint_without_runtime_ontology(self) -> None:
+        for concept in ("Condition", "Data", "State"):
+            self.assertNotIn(concept, occid.__all__)
+        self.assertEqual(Health.__occid_semantic_role__, "type")
         predicate = Predicate(subject_ref=PAYLOAD_UID_1)
         condition = BooleanLogic(operator=BooleanOperator.NOT, terms=[predicate])
         constraint = Constraint(condition=condition)
@@ -84,7 +82,7 @@ class ApexPrimitiveTests(unittest.TestCase):
         )
         self.assertEqual(contingency.condition, predicate)
 
-    def test_activation_and_cue_are_protocol_neutral_state(self) -> None:
+    def test_activation_and_cue_are_protocol_neutral_types(self) -> None:
         activation = Activation(
             phase=ActivationPhase.READY,
             remaining_uses=2,
@@ -95,17 +93,17 @@ class ApexPrimitiveTests(unittest.TestCase):
             distance_m=25.0,
             label="target",
         )
-        self.assertTrue(issubclass(Activation, State))
-        self.assertTrue(issubclass(Cue, State))
+        self.assertEqual(Activation.__occid_semantic_role__, "type")
+        self.assertEqual(Cue.__occid_semantic_role__, "type")
         self.assertIsNone(cue.bearing_rad)
         self.assertIsNone(cue.elevation_rad)
         self.assertEqual(Activation.decode(activation.encode()), activation)
         self.assertEqual(Cue.decode(cue.encode()), cue)
 
-    def test_gnc_is_distinct_from_cueing(self) -> None:
-        self.assertTrue(issubclass(GNC, State))
-        self.assertTrue(issubclass(FlightControlState, GNC))
-        self.assertFalse(issubclass(Cue, GNC))
+    def test_gnc_representation_is_flat(self) -> None:
+        self.assertEqual(GNC.__occid_semantic_role__, "type")
+        self.assertEqual(FlightControlState.__occid_semantic_role__, "representation")
+        self.assertEqual(Cue.__occid_semantic_role__, "type")
         self.assertNotIn("Guidance", occid.__all__)
         self.assertNotIn("OCCID_SCHEMA_VERSION", occid.__all__)
 

@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .directive import Directive
-
 ### Enums
 
 class CommandResult(IntEnum):
@@ -51,41 +49,42 @@ class ExecutionOperation(IntEnum):
 
 ### Models
 
-class Command(Directive):
-    'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
-    __occid_model_id__: ClassVar[int] = 45
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    target_uid: UID
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-
-class StateChangeCommand(Command):
+class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 303
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 226
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: StateChangeOperation
     property_name: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: MetadataValue | None = None
 
-class ProcessControlCommand(Command):
+class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 304
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 193
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: ProcessControlOperation
     process_name: builtins.str | None = None
 
-class ConfigurationCommand(Command):
+class ConfigurationCommand(OCCIDModel):
     'Set a configuration parameter or load a referenced configuration on the target'
-    __occid_model_id__: ClassVar[int] = 305
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 36
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: MetadataValue | None = None
     configuration_ref: builtins.str | None = None
 
-class MotionCommand(Command):
+class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 306
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 158
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: MotionOperation
     destination: GlobalPosition | None = None
     path: GeoPath | None = None
@@ -93,18 +92,22 @@ class MotionCommand(Command):
     speed_ms: builtins.float | None = None
     yaw_rad: builtins.float | None = None
 
-class ResourceCommand(Command):
+class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 307
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 207
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: ResourceOperation
     resource_ref: builtins.str | None = None
     quantity: builtins.float | None = None
     destination_ref: builtins.str | None = None
 
-class ExecutionCommand(Command):
+class ExecutionCommand(OCCIDModel):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
-    __occid_model_id__: ClassVar[int] = 308
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 69
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    target_uid: UID
+    constraints: list[Constraint]
     operation: ExecutionOperation
     dispatch_ref: builtins.str | None = None

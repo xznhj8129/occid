@@ -8,22 +8,21 @@ tags:
 models:
   SuccessCriterion:
     description: Typed, human-readable condition used to determine whether an objective succeeded
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
-      criterion_id: int
       statement: string
       metric: optional string
       target_value: optional MetadataValue
 
   Objective:
     description: Desired end state with intent, success rule, target, priority, and deadline
-    semantic_role: ontology
+    semantic_role: concept
     parent: Control
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Objective)
       name: string
       intent: string
       desired_state: string

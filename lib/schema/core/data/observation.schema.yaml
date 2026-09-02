@@ -56,7 +56,7 @@ enums:
 models:
   Observation:
     description: External detection, classification, track, signal, spot report, threat, or assessment data
-    semantic_role: ontology
+    semantic_role: concept
     parent: Data
     variants:
       - Detection
@@ -67,41 +67,41 @@ models:
       - IsrObservation
 
   Classification:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Observation
 
   Track:
     description: Persistent maintained identity for one correlated observed object or phenomenon
-    semantic_role: ontology
+    semantic_role: concept
     parent: Observation
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Track)
 
   Assessment:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Observation
     variants:
       - IsrResult
 
   Detection:
     description: Assessment that something exists or occurred
-    semantic_role: ontology
+    semantic_role: concept
     parent: Observation
 
   VisionBox:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Detection
     fields:
       space: DetectionBoxSpace
       bounds: BoundingBox
 
   VisionDetection:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Detection
     fields:
-      detection_ref: optional string
+      detection_id: IntID(Detection)
       label: optional string
       class_index: optional int
       confidence: optional float
@@ -112,22 +112,22 @@ models:
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Detection
     fields:
-      record: RecordMeta
+      record: Record
       frame_ref: optional string
       sensor_uid: optional UID
       timestamp_us: optional int
       detections: list[VisionDetection]
 
   IsrObservation:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Observation
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Observation)
       track_uid: optional UID
       sensor_uid: optional UID
       obs_ts: float
@@ -139,7 +139,7 @@ models:
       confidence: optional ConfidenceLevel
 
   IsrParameters:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       focus_type: optional IsrFocusType
@@ -153,21 +153,21 @@ models:
 
   TrackUpdate:
     description: State update about an existing Track; does not define Track identity
-    semantic_role: specialization
+    semantic_role: representation
     parent: Observation
     fields:
-      record: RecordMeta
+      record: Record
       track_uid: UID
       track_state: optional TrackState
       updated_ts: float
       confidence: optional ConfidenceLevel
 
   IsrResult:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Assessment
     fields:
       detections: list[IsrObservation]
       track_updates: list[TrackUpdate]
-      media: optional list[MediaItemSchema]
+      media: optional list[MediaItem]
       confidence: optional ConfidenceLevel
       observations: list[IsrObservation]

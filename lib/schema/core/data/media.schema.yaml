@@ -8,16 +8,16 @@ tags:
 models:
   Media:
     description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference
-    semantic_role: ontology
+    semantic_role: concept
     parent: Data
 
-  MediaItemSchema:
-    semantic_role: specialization
+  MediaItem:
+    semantic_role: representation
     parent: Media
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(MediaItem)
       media_type: MediaType
       uri: string
       label: optional string

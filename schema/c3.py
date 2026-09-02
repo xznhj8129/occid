@@ -3,19 +3,27 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .message import Message
-
 ### Models
 
-class CommandMessage(Message):
+class CommandMessage(OCCIDModel):
     'Message whose payload directs action'
-    __occid_model_id__: ClassVar[int] = 136
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    command: SerializeAsAny[Command | StateChangeCommand | ProcessControlCommand | ConfigurationCommand | MotionCommand | ResourceCommand | ExecutionCommand]
+    __occid_model_id__: ClassVar[int] = 34
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    command: StateChangeCommand | ProcessControlCommand | ConfigurationCommand | MotionCommand | ResourceCommand | ExecutionCommand
 
-class HumanTextMessage(Message):
-    __occid_model_id__: ClassVar[int] = 137
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class HumanTextMessage(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 101
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
     message_ref: builtins.str | None = None
     conversation_ref: builtins.str | None = None
     reply_to_ref: builtins.str | None = None

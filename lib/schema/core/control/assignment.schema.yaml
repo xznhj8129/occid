@@ -18,12 +18,12 @@ enums:
 models:
   Assignment:
     description: Explicit binding of a task to an assignee under stated authority and constraints
-    semantic_role: ontology
+    semantic_role: concept
     parent: Control
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Assignment)
       task_uid: UID
       assignee_uid: UID
       plan_uid: optional UID
@@ -35,7 +35,7 @@ models:
       constraints: list[Constraint]
 
   FlightAssignment:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Assignment
     fields:
       num: int

@@ -49,7 +49,7 @@ enums:
 models:
   Plan:
     description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
-    semantic_role: ontology
+    semantic_role: concept
     parent: Control
     variants:
       - AutopilotFlightPlan
@@ -57,9 +57,9 @@ models:
       - UnitFlightPlan
       - MissionPlan
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Plan)
       name: optional string
       objective_uids: list[UID]
       task_uids: list[UID]
@@ -74,27 +74,24 @@ models:
 
   PlanStep:
     description: Immutable planned step definition; runtime status belongs to execution state
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
-      id: int
-      task_uid: optional UID
       actor_uids: list[UID]
       depends_on: list[int]
       sequence: int
 
   PlanContingency:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
-      id: int
       condition: Condition
       response: string
       task_uids: list[UID]
 
   FlightLevelBand:
     description: Embedded flight-level band value used by plans rather than an independently identified control reference
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       altitude_range_m: NumericRange
@@ -102,7 +99,7 @@ models:
 
   AutopilotMissionWaypoint:
     description: Embedded autopilot waypoint value used by a plan or protocol mapping
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       waypoint_index: int
@@ -115,7 +112,7 @@ models:
 
   PlannerMissionPoint:
     description: Embedded planner point value used while constructing a plan
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       num: int
@@ -125,7 +122,7 @@ models:
 
   LoiterOrbit:
     description: Embedded orbit geometry and timing value
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       orbit_direction: int
@@ -134,7 +131,7 @@ models:
 
   MissionRouteGeometry:
     description: Embedded route geometry used by a mission plan
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       route_in: GeoPath
@@ -144,7 +141,7 @@ models:
 
   PlannedRoutePoints:
     description: Embedded set of planner points defining mission-plan route segments
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       start: PlannerMissionPoint
@@ -155,13 +152,13 @@ models:
       end: PlannerMissionPoint
 
   AutopilotFlightPlan:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Plan
     fields:
       waypoints: list[AutopilotMissionWaypoint]
 
   GroupFlightPlan:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Plan
     fields:
       plan_phase: FlightPlanPhase
@@ -175,7 +172,7 @@ models:
       formation_3d: optional AirGroupFormation3DType
 
   UnitFlightPlan:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Plan
     variants: null
     fields:
@@ -191,7 +188,7 @@ models:
       wp: GeoPath
 
   MissionPlan:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Plan
     description: Saved operator mission plan - the planner inputs, restorable for editing
     fields:

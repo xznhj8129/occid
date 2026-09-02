@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .directive import Directive
-
 ### Enums
 
 class ManeuverIntent(IntEnum):
@@ -62,44 +60,96 @@ class TaskStatus(IntEnum):
 
 ### Models
 
-class Task(Directive):
+class Task(OCCIDModel):
     'Directed work that must be accomplished in support of an optional objective'
-    __occid_model_id__: ClassVar[int] = 124
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 241
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[SerializeAsAny[Condition | Predicate | BooleanLogic]] | None = None
+    constraints: list[Constraint]
+    preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
 
-class TaskManeuver(Task):
+class TaskManeuver(OCCIDModel):
     'Practical Task schema for desired movement, position, or spatial persistence'
-    __occid_model_id__: ClassVar[int] = 310
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 245
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Task')]
+    instruction: builtins.str
+    target_uids: list[UID]
+    location_uids: list[UID]
+    objective_uid: UID | None = None
+    constraints: list[Constraint]
+    preconditions: list[Predicate | BooleanLogic] | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
     intent: ManeuverIntent
 
-class TaskEffect(Task):
+class TaskEffect(OCCIDModel):
     'Practical Task schema for desired creation, removal, modification, restoration, protection, or denial'
-    __occid_model_id__: ClassVar[int] = 311
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 243
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Task')]
+    instruction: builtins.str
+    target_uids: list[UID]
+    location_uids: list[UID]
+    objective_uid: UID | None = None
+    constraints: list[Constraint]
+    preconditions: list[Predicate | BooleanLogic] | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
     intent: EffectIntent
 
-class TaskInformation(Task):
+class TaskInformation(OCCIDModel):
     'Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring'
-    __occid_model_id__: ClassVar[int] = 312
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 244
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Task')]
+    instruction: builtins.str
+    target_uids: list[UID]
+    location_uids: list[UID]
+    objective_uid: UID | None = None
+    constraints: list[Constraint]
+    preconditions: list[Predicate | BooleanLogic] | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
     intent: InformationIntent
 
-class TaskTransport(Task):
+class TaskTransport(OCCIDModel):
     'Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets'
-    __occid_model_id__: ClassVar[int] = 313
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 247
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Task')]
+    instruction: builtins.str
+    target_uids: list[UID]
+    location_uids: list[UID]
+    objective_uid: UID | None = None
+    constraints: list[Constraint]
+    preconditions: list[Predicate | BooleanLogic] | None = None
+    start_time: builtins.float | None = None
+    deadline: builtins.float | None = None
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
     intent: TransportIntent

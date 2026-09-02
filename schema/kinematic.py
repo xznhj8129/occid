@@ -3,9 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-from .struct import Measurement
-
 ### Enums
 
 class AirspeedReference(IntEnum):
@@ -17,14 +14,14 @@ class AirspeedReference(IntEnum):
 
 ### Models
 
-class Kinematic(State):
+class Kinematic(OCCIDModel):
     'Motion and derived movement state.'
-    __occid_model_id__: ClassVar[int] = 162
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 116
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class ImuSample(Kinematic):
-    __occid_model_id__: ClassVar[int] = 163
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ImuSample(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 106
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     acceleration: LocalVector | None = None
     angular_velocity: AngularVelocityVector | None = None
     magnetic_field: LocalVector | None = None
@@ -32,9 +29,9 @@ class ImuSample(Kinematic):
     timestamp_us: builtins.int | None = None
     frame: BodyReferenceFrame | None = None
 
-class Airspeed(Measurement):
+class Airspeed(OCCIDModel):
     'Air-relative vehicle speed with explicit interpretation when known'
-    __occid_model_id__: ClassVar[int] = 323
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 8
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     speed_ms: builtins.float
     reference: AirspeedReference = AirspeedReference.UNSPECIFIED

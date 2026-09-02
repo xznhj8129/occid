@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .data import Data
-
 ### Enums
 
 class BooleanOperator(IntEnum):
@@ -19,20 +17,15 @@ class BooleanOperator(IntEnum):
 
 ### Models
 
-class Condition(Data):
-    'Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic'
-    __occid_model_id__: ClassVar[int] = 315
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class Predicate(Condition):
+class Predicate(OCCIDModel):
     'Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions'
-    __occid_model_id__: ClassVar[int] = 316
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 192
+    __occid_semantic_role__: ClassVar[str] = 'type'
     subject_ref: UID | None = None
 
-class BooleanLogic(Condition):
+class BooleanLogic(OCCIDModel):
     'Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set'
-    __occid_model_id__: ClassVar[int] = 317
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 21
+    __occid_semantic_role__: ClassVar[str] = 'type'
     operator: BooleanOperator
-    terms: list[SerializeAsAny[Condition | Predicate | BooleanLogic]]
+    terms: list[Predicate | BooleanLogic]

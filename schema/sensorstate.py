@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Enums
 
 class SensorMode(IntEnum):
@@ -27,24 +25,24 @@ class GimbalState(IntEnum):
 
 ### Models
 
-class SensorState(State):
+class SensorState(OCCIDModel):
     'Onboard sensor readings, readiness, calibration, and availability'
-    __occid_model_id__: ClassVar[int] = 190
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 219
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class TrackerState(SensorState):
-    __occid_model_id__: ClassVar[int] = 191
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class TrackerState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 253
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     locked: builtins.bool | None = None
     target_uid: UID | None = None
     angular_error: LocalDirection | None = None
     search_box_size: builtins.int | None = None
     detections: VisionDetectionFrame | None = None
 
-class FlightSensorConfiguration(SensorState):
+class FlightSensorConfiguration(OCCIDModel):
     'Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers'
-    __occid_model_id__: ClassVar[int] = 297
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 77
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     accelerometer: builtins.str | None = None
     barometer: builtins.str | None = None
     magnetometer: builtins.str | None = None

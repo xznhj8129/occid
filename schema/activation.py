@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Enums
 
 class ActivationPhase(IntEnum):
@@ -17,9 +15,9 @@ class ActivationPhase(IntEnum):
 
 ### Models
 
-class Activation(State):
+class Activation(OCCIDModel):
     'Mutable lifecycle of an activatable object or capability; faults remain orthogonal Health state'
-    __occid_model_id__: ClassVar[int] = 320
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 1
+    __occid_semantic_role__: ClassVar[str] = 'type'
     phase: ActivationPhase
     remaining_uses: builtins.int | None = None

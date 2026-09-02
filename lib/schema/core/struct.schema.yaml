@@ -8,9 +8,10 @@ tags:
 models:
   Struct:
     description: Primitive reusable low-level struct families.
-    semantic_role: ontology
+    semantic_role: concept
     parent: Root
     variants:
+      - ID
       - Vector
       - Measurement
       - Bearing
@@ -27,70 +28,87 @@ models:
       - Orbital
       - SpatialStruct
 
+  ID:
+    semantic_role: concept
+    parent: Struct
+    variants:
+      - IntID
+      - UID
+  
+  IntID:
+    semantic_role: representation
+    parent: ID
+    type: int
+
+  UID:
+    semantic_role: representation
+    parent: ID
+    type: bytes[16]
+
   Vector:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Struct
 
   Measurement:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Struct
 
   Bearing:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   GeoPos:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   LocalPos:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Line:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   StructPath:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Shape:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Bounding:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Uncertainty:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Struct
 
   Pose:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Range:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Transform:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Orbital:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   Time:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Measurement
     fields:
       utime: int
 
   Duration:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       seconds: optional float
@@ -102,7 +120,7 @@ models:
       years: optional int
 
   Timestamp:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       seconds: float
@@ -114,14 +132,14 @@ models:
       tz: int
 
   ItemCount:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       item_type: string
       qty: int = 0
 
   NumericRange:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Range
     fields:
       min_value: optional float

@@ -50,7 +50,7 @@ enums:
 models:
   Link:
     description: Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState
-    semantic_role: ontology
+    semantic_role: concept
     parent: Communication
     fields:
       schema_ref: optional string
@@ -68,7 +68,7 @@ models:
       network_ref: optional string
 
   DataRateSpec:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Communication
     fields:
       nominal_bps: optional float
@@ -76,7 +76,7 @@ models:
       burst_bps: optional float
 
   LinkCapacity:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Communication
     fields:
       max_nodes: optional int
@@ -85,7 +85,7 @@ models:
 
   SignalQuality:
     description: Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       strength_dbm: optional float
@@ -94,7 +94,7 @@ models:
 
   DeliveryQuality:
     description: Protocol-neutral observed communication delivery quality over an observation interval
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       latency_s: optional float
@@ -103,7 +103,7 @@ models:
 
   LinkCounters:
     description: Monotonic observed communication-link event counters
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       error_count: optional int
@@ -112,7 +112,7 @@ models:
 
   LinkState:
     description: Time-varying condition and observed quality of a communication link
-    semantic_role: ontology
+    semantic_role: concept
     parent: State
     fields:
       link_ref: optional string

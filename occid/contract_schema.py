@@ -30,131 +30,85 @@ def _read_yaml(path: Path) -> dict[str, Any]:
     return data
 
 
-def _paths(root: Path, include_modules: bool) -> list[Path]:
-    paths = sorted((root / "lib/schema/core").rglob("*.schema.yaml"))
-    if include_modules and (root / "lib/schema/modules").exists():
-        paths += sorted((root / "lib/schema/modules").rglob("*.schema.yaml"))
-    return paths
-
-
-def _model_ids(root: Path) -> dict[str, int]:
-    ids = _read_yaml(root / "lib/model_ids.yaml").get("model_ids")
-    if not isinstance(ids, dict):
-        raise SchemaContractError("lib/model_ids.yaml lacks model_ids mapping")
-    return {str(name): int(value) for name, value in ids.items()}
-
 
 def _refs(text: str, known: set[str]) -> set[str]:
     return {name for name in _IDENTIFIER.findall(text) if name in known}
 
 
-def _variant_enum(name: str) -> str:
-    return f"{name}_type"
-
-
-def _snake(name: str) -> str:
-    parts: list[str] = []
-    current = ""
-    for char in name:
-        if char.isupper() and current:
-            parts.append(current)
-            current = char
-        else:
-            current += char
-    if current:
-        parts.append(current)
-    return "_".join(part.upper() for part in parts)
-
-
-def _variant_member(parent: str, child: str) -> str:
-    p = parent[4:] if parent.startswith("Base") else parent
-    c = child[4:] if child.startswith("Base") else child
-    if c.startswith(p) and c != p:
-        c = c[len(p):]
-    elif c.endswith(p) and c != p:
-        c = c[:-len(p)]
-    return _snake(c)
-
-
 def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
-    """Hash the complete canonical OCCID schema graph.
+    """Hash the compiled OCCID runtime contract.
 
-    Each symbol hash includes the full reachable definitions of its parents,
-    fields, enums, maps and variants. Any change in that closure cascades into
-    every dependent symbol hash.
+    ``occid.yaml`` is the runtime schema boundary. Authored Concept hierarchy is
+    compiler input and therefore does not enter consumer structural hashes unless
+    it changes the compiled Type/Representation/Vocabulary output.
+
+    ``include_modules`` is retained for API compatibility; the compiled schema
+    already includes all loaded modules.
     """
+    del include_modules
     root = Path(repo_root).resolve()
-    paths = _paths(root, include_modules)
-    if not paths:
-        raise SchemaContractError(f"no OCCID schema documents under {root / 'lib/schema'}")
-    documents = [(path, _read_yaml(path)) for path in paths]
-    model_ids = _model_ids(root)
+    compiled_path = root / "occid.yaml"
+    if not compiled_path.is_file():
+        compiled_path = root.parent / "occid.yaml"
+    if not compiled_path.is_file():
+        raise SchemaContractError(f"missing compiled OCCID schema near {root}")
+
+    document = _read_yaml(compiled_path)
+    if document.get("version") != 1 or document.get("type") != "occid":
+        raise SchemaContractError(f"invalid compiled OCCID schema: {compiled_path}")
+
     raw: dict[str, dict[str, Any]] = {}
-    variants: dict[str, list[str]] = {}
 
-    def add(name: str, kind: str, definition: Any, source: str) -> None:
+    def add(name: str, kind: str, definition: Any) -> None:
         if name in raw:
-            raise SchemaContractError(f"duplicate OCCID schema symbol {name}: {source}")
-        raw[name] = {"kind": kind, "definition": definition, "source": source}
+            raise SchemaContractError(f"duplicate OCCID runtime symbol {name}")
+        raw[name] = {"kind": kind, "definition": definition, "source": "occid.yaml"}
 
-    for path, doc in documents:
-        source = path.relative_to(root).as_posix()
-        for name, value in (doc.get("enums") or {}).items():
-            add(str(name), "enum", value, source)
-        for name, value in (doc.get("maps") or {}).items():
-            add(str(name), "map", value, source)
-        for name, value in (doc.get("models") or {}).items():
+    for name, spec in (document.get("vocabulary") or {}).items():
+        add(str(name), "enum", dict(spec or {}))
+
+    runtime_model_ids: dict[int, str] = {}
+    for section, role in (("types", "type"), ("representations", "representation")):
+        for name, spec in (document.get(section) or {}).items():
             name = str(name)
-            spec = dict(value or {})
-            if name not in model_ids:
-                raise SchemaContractError(f"model {name} has no permanent ID in lib/model_ids.yaml")
-            add(name, "model", {"model_id": model_ids[name], **spec}, source)
-            variants[name] = list(spec.get("variants") or [])
+            definition = dict(spec or {})
+            model_id = definition.get("model_id")
+            if type(model_id) is not int or model_id <= 0:
+                raise SchemaContractError(f"runtime model {name} has invalid model_id {model_id!r}")
+            previous = runtime_model_ids.get(model_id)
+            if previous is not None:
+                raise SchemaContractError(
+                    f"runtime models {previous} and {name} share model_id {model_id}"
+                )
+            runtime_model_ids[model_id] = name
+            add(name, role, definition)
 
-    for path, doc in documents:
-        for parent, children in (doc.get("extend_variants") or {}).items():
-            if parent not in raw or raw[parent]["kind"] != "model":
-                raise SchemaContractError(f"extend_variants references unknown model {parent} in {path}")
-            variants.setdefault(parent, []).extend(str(child) for child in children)
-
-    for name, children in list(variants.items()):
-        if not children:
-            continue
-        raw[name]["definition"] = {**raw[name]["definition"], "variants": children}
-        add(
-            _variant_enum(name),
-            "variant_enum",
-            [{"name": _variant_member(name, child), "model": child} for child in children],
-            raw[name]["source"],
-        )
+    for name, spec in (document.get("maps") or {}).items():
+        add(str(name), "map", dict(spec or {}))
 
     known = set(raw)
     deps: dict[str, set[str]] = {name: set() for name in raw}
     for name, entry in raw.items():
         definition = entry["definition"]
         current = deps[name]
-        if entry["kind"] == "model":
-            parent = definition.get("parent")
-            if parent in known:
-                current.add(parent)
-            children = definition.get("variants") or []
-            current.update(child for child in children if child in known)
-            enum_name = _variant_enum(name)
-            if children and enum_name in known:
-                current.add(enum_name)
+        if entry["kind"] in {"type", "representation"}:
+            model_type = definition.get("type")
+            if isinstance(model_type, str):
+                current.update(_refs(model_type, known))
             for field in (definition.get("fields") or {}).values():
                 text = field if isinstance(field, str) else field.get("type") if isinstance(field, dict) else None
                 if isinstance(text, str):
                     current.update(_refs(text, known))
-        elif entry["kind"] == "map" and isinstance(definition, dict):
+        elif entry["kind"] == "map":
             text = definition.get("type")
             if isinstance(text, str):
                 current.update(_refs(text, known))
-        elif entry["kind"] == "variant_enum":
-            current.update(member["model"] for member in definition if member.get("model") in known)
         current.discard(name)
 
-    local = {name: {"kind": item["kind"], "definition": item["definition"]} for name, item in raw.items()}
+    local = {
+        name: {"kind": item["kind"], "definition": item["definition"]}
+        for name, item in raw.items()
+    }
 
     def closure(root_name: str) -> list[str]:
         seen: set[str] = set()
@@ -174,17 +128,13 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
             "kind": raw[name]["kind"],
             "hash": _sha({"root": name, "symbols": {dep: local[dep] for dep in reachable}}),
             "dependencies": sorted(deps[name]),
-            "source": raw[name]["source"],
+            "source": "occid.yaml",
         }
-        if raw[name]["kind"] == "model":
+        if raw[name]["kind"] in {"type", "representation"}:
             item["model_id"] = raw[name]["definition"]["model_id"]
         symbols[name] = item
 
-    global_input = {
-        "documents": {path.relative_to(root).as_posix(): doc for path, doc in documents},
-        "model_ids": model_ids,
-        "include_modules": include_modules,
-    }
+    global_input = {"occid": document}
     version = root / "VERSION"
     release = version.read_text(encoding="utf-8").strip() if version.exists() else None
     return {"format": 1, "release": release, "global_hash": _sha(global_input), "symbols": symbols}

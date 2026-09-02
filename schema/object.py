@@ -3,73 +3,80 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .root import Root
-
 ### Models
 
-class Object(Root):
-    'Atoms'
-    __occid_model_id__: ClassVar[int] = 15
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Collection(OCCIDModel):
+    'Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal'
+    __occid_model_id__: ClassVar[int] = 32
+    __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
-class Set(Object):
-    __occid_model_id__: ClassVar[int] = 16
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class Collection(Set):
-    'Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal'
-    __occid_model_id__: ClassVar[int] = 17
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class Cluster(Set):
+class Cluster(OCCIDModel):
     'A set of objects united only by criterion'
-    __occid_model_id__: ClassVar[int] = 18
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 31
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
 
-class Item(Object):
+class Item(OCCIDModel):
     'A discrete bounded non-agent object'
-    __occid_model_id__: ClassVar[int] = 19
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 114
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
 
-class Equipment(Item):
-    __occid_model_id__: ClassVar[int] = 20
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Component(Item):
-    __occid_model_id__: ClassVar[int] = 21
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Location(Object):
-    'Identified physical-world spatial reference, place, feature, site, course, area, or delimiter'
-    __occid_model_id__: ClassVar[int] = 22
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+class Mark(OCCIDModel):
+    'Identified point reference in physical space'
+    __occid_model_id__: ClassVar[int] = 133
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
     symbology: SymbologySchema | None = None
-
-class Mark(Location):
-    'Identified point reference in physical space'
-    __occid_model_id__: ClassVar[int] = 328
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
     position: GlobalPosition
 
-class Path(Location):
+class Path(OCCIDModel):
     'Identified ordered spatial course or trace'
-    __occid_model_id__: ClassVar[int] = 329
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 175
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Location')]
+    name: builtins.str | None = None
+    symbology: SymbologySchema | None = None
     path: GeoPath
 
-class Region(Location):
+class Region(OCCIDModel):
     'Identified bounded spatial area'
-    __occid_model_id__: ClassVar[int] = 330
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 203
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Location')]
+    name: builtins.str | None = None
+    symbology: SymbologySchema | None = None
     area: GeoArea
 
-class Boundary(Location):
+class Boundary(OCCIDModel):
     'Identified spatial line that delimits, separates, or gates space'
-    __occid_model_id__: ClassVar[int] = 331
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 22
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Location')]
+    name: builtins.str | None = None
+    symbology: SymbologySchema | None = None
     path: GeoPath
+
+class Equipment(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 62
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+
+class Component(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 35
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None

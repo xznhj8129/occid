@@ -3,9 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .data import Data
-from .struct import Struct
-
 ### Enums
 
 class IntelCategory(IntEnum):
@@ -57,42 +54,37 @@ class DetectionBoxSpace(IntEnum):
 
 ### Models
 
-class Observation(Data):
-    'External detection, classification, track, signal, spot report, threat, or assessment data'
-    __occid_model_id__: ClassVar[int] = 85
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Classification(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 30
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Classification(Observation):
-    __occid_model_id__: ClassVar[int] = 86
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class Track(Observation):
+class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 87
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 251
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Track')]
 
-class Assessment(Observation):
-    __occid_model_id__: ClassVar[int] = 88
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Assessment(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 12
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Detection(Observation):
+class Detection(OCCIDModel):
     'Assessment that something exists or occurred'
-    __occid_model_id__: ClassVar[int] = 89
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 51
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class VisionBox(Detection):
-    __occid_model_id__: ClassVar[int] = 90
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class VisionBox(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 268
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     space: DetectionBoxSpace
     bounds: BoundingBox
 
-class VisionDetection(Detection):
-    __occid_model_id__: ClassVar[int] = 91
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    detection_ref: builtins.str | None = None
+class VisionDetection(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 269
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    detection_id: Annotated[IntID, IDNamespace('Detection')]
     label: builtins.str | None = None
     class_index: builtins.int | None = None
     confidence: builtins.float | None = None
@@ -100,23 +92,23 @@ class VisionDetection(Detection):
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
     source_frame_ref: builtins.str | None = None
-    attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
+    attributes: dict[builtins.str, MetadataValue]
 
-class VisionDetectionFrame(Detection):
-    __occid_model_id__: ClassVar[int] = 92
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+class VisionDetectionFrame(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 270
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     frame_ref: builtins.str | None = None
     sensor_uid: UID | None = None
     timestamp_us: builtins.int | None = None
     detections: list[VisionDetection]
 
-class IsrObservation(Observation):
-    __occid_model_id__: ClassVar[int] = 93
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+class IsrObservation(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 111
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Observation')]
     track_uid: UID | None = None
     sensor_uid: UID | None = None
     obs_ts: builtins.float
@@ -127,9 +119,9 @@ class IsrObservation(Observation):
     uncertainty: LocationUncertainty | None = None
     confidence: ConfidenceLevel | None = None
 
-class IsrParameters(Struct):
-    __occid_model_id__: ClassVar[int] = 94
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class IsrParameters(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 112
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
     dwell_s: builtins.float | None = None
@@ -139,21 +131,21 @@ class IsrParameters(Struct):
     effect_domains: list[EffectDomain]
     evidence_level: EvidenceLevel | None = None
 
-class TrackUpdate(Observation):
+class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 95
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 252
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     track_uid: UID
     track_state: TrackState | None = None
     updated_ts: builtins.float
     confidence: ConfidenceLevel | None = None
 
-class IsrResult(Assessment):
-    __occid_model_id__: ClassVar[int] = 96
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class IsrResult(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 113
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     detections: list[IsrObservation]
     track_updates: list[TrackUpdate]
-    media: list[MediaItemSchema] | None = None
+    media: list[MediaItem] | None = None
     confidence: ConfidenceLevel | None = None
     observations: list[IsrObservation]

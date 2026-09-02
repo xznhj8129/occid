@@ -103,7 +103,7 @@ enums:
 
 models:
   PayloadAllocation:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       payload_type: PayloadType
@@ -111,7 +111,7 @@ models:
 
 
   PayloadPlanSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       requested: list[PayloadAllocation]
@@ -121,7 +121,7 @@ models:
 
 
   PayloadMountSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       mount_ref: string
@@ -134,7 +134,7 @@ models:
 
 
   PayloadSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       item_type: PayloadType
@@ -147,7 +147,7 @@ models:
 
 
   EffectsSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     variants:
       - GroundEffectsSchema
@@ -164,14 +164,14 @@ models:
 
 
   GroundEffectsSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: EffectsSchema
     fields:
       attack_modes: list[AttackMode]
 
 
   AirEffectsSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: EffectsSchema
     fields:
       reusable: optional bool
@@ -179,7 +179,7 @@ models:
 
 
   TargetPrioritySchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       threat: optional ThreatLevel
@@ -188,21 +188,26 @@ models:
 
 
   TargetKinematics:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       location_state: LocationState
       velocity: optional VelocityVector
       velocity_covariance: optional VelocityVector
 
-
-  TargetSetCoord:
-    semantic_role: specialization
+  TargetSet:
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
-      target_set_id: int
-      target_set_name: string
+      id: IntID(TargetSet)
+      name: string
+
+
+  TargetSetCoord:
+    semantic_role: representation
+    parent: TargetSet
+    fields:
       center: GlobalPosition
       radius_m: float
       time_start_usec: int
@@ -210,24 +215,18 @@ models:
 
 
   TargetBoxCoord:
-    semantic_role: specialization
-    parent: Struct
+    semantic_role: representation
+    parent: TargetSet
     fields:
-      time_usec: int
-      target_set_id: int
-      target_set_name: string
       corners: list[GlobalPosition]
       time_start_usec: int
       time_end_usec: int
 
 
   TargetCoord:
-    semantic_role: specialization
-    parent: Struct
+    semantic_role: representation
+    parent: TargetSet
     fields:
-      time_usec: int
-      target_set_id: int
-      target_name: string
       kinematics: TargetKinematics
       cep_desired_m: float
       cep_max_m: float
@@ -236,19 +235,19 @@ models:
 
 
   Fires:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
       time_impact_usec: int
       target_position: GlobalPosition
-      effector_id: int
+      effector_id: IntID(Entity)
       sequence: int
       cep_expected_m: float
 
 
   SplashCorrection:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
@@ -259,14 +258,14 @@ models:
 
 
   TargetHandover:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
       detected_first_usec: int
       valid_until_usec: int
       kinematics: TargetKinematics
-      target_set_id: int
+      target_set_id: IntID(TargetSet)
       target_name: string
       match_media_url: string
       confidence_score: float
@@ -277,12 +276,12 @@ models:
 
 
   BattleDamageAssessment:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
       kinematics: TargetKinematics
-      target_set_id: int
+      target_set_id: IntID(TargetSet)
       target_name: string
       authorization: list[int]
       destruction_pct: int
@@ -292,7 +291,7 @@ models:
 
 
   EsadState:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
@@ -308,7 +307,7 @@ models:
 
 
   EsadArming:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
@@ -317,7 +316,7 @@ models:
 
 
   RwsPose:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int
@@ -333,7 +332,7 @@ models:
 
 
   RwsState:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       time_usec: int

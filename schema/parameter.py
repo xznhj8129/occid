@@ -3,13 +3,11 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .property import Property
-
 ### Models
 
-class Parameter(Property):
+class Parameter(OCCIDModel):
     'Current operating configuration or control regime'
-    __occid_model_id__: ClassVar[int] = 171
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 174
+    __occid_semantic_role__: ClassVar[str] = 'type'
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: MetadataValue | None = None

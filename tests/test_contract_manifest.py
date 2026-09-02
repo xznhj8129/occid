@@ -39,7 +39,7 @@ class ContractManifestTests(unittest.TestCase):
 
     def test_model_hashes_for_ids(self) -> None:
         manifest = current_manifest()
-        entity = manifest["symbols"]["Entity"]
+        entity = manifest["symbols"]["Drone"]
         model_id = entity["model_id"]
         self.assertEqual(
             model_hashes_for_ids(manifest, [model_id]),
@@ -49,35 +49,29 @@ class ContractManifestTests(unittest.TestCase):
     def test_dependency_change_cascades_through_full_contract(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "lib/schema/core").mkdir(parents=True)
-            (root / "lib/schema/modules").mkdir(parents=True)
             (root / "VERSION").write_text("0.0.2\n", encoding="utf-8")
-            (root / "lib/model_ids.yaml").write_text(
-                "version: 1\nmodel_ids:\n  Parent: 1\n  Child: 2\n",
-                encoding="utf-8",
-            )
-            schema = root / "lib/schema/core/test.schema.yaml"
+            schema = root / "occid.yaml"
             schema.write_text(
                 """version: 1
-type: schema
-package: test
-tags: [core]
-root: Parent
-enums:
+type: occid
+vocabulary:
   Mode:
-    - OFF = 0
-    - ON = 1
-models:
+    package: test
+    values:
+      - OFF = 0
+      - ON = 1
+types:
   Parent:
-    description: Parent model.
+    model_id: 1
+    package: test
     fields:
       mode: Mode
-    variants: [Child]
+representations:
   Child:
-    description: Child model.
-    parent: Parent
-    fields:
-      value: int
+    model_id: 2
+    package: test
+    type: Mode
+maps: {}
 """,
                 encoding="utf-8",
             )
@@ -87,40 +81,26 @@ models:
                 encoding="utf-8",
             )
             after = build_manifest(root)
-            self.assertNotEqual(
-                before["symbols"]["Mode"]["hash"],
-                after["symbols"]["Mode"]["hash"],
-            )
-            self.assertNotEqual(
-                before["symbols"]["Parent"]["hash"],
-                after["symbols"]["Parent"]["hash"],
-            )
-            self.assertNotEqual(
-                before["symbols"]["Child"]["hash"],
-                after["symbols"]["Child"]["hash"],
-            )
+            self.assertNotEqual(before["symbols"]["Mode"]["hash"], after["symbols"]["Mode"]["hash"])
+            self.assertNotEqual(before["symbols"]["Parent"]["hash"], after["symbols"]["Parent"]["hash"])
+            self.assertNotEqual(before["symbols"]["Child"]["hash"], after["symbols"]["Child"]["hash"])
 
     def test_release_label_does_not_change_schema_contract(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "lib/schema/core").mkdir(parents=True)
-            (root / "lib/schema/modules").mkdir(parents=True)
             (root / "VERSION").write_text("0.0.2\n", encoding="utf-8")
-            (root / "lib/model_ids.yaml").write_text(
-                "version: 1\nmodel_ids:\n  Thing: 1\n",
-                encoding="utf-8",
-            )
-            (root / "lib/schema/core/test.schema.yaml").write_text(
+            (root / "occid.yaml").write_text(
                 """version: 1
-type: schema
-package: test
-tags: [core]
-root: Thing
-models:
+type: occid
+vocabulary: {}
+types:
   Thing:
-    description: Thing.
+    model_id: 1
+    package: test
     fields:
       value: int
+representations: {}
+maps: {}
 """,
                 encoding="utf-8",
             )
@@ -128,10 +108,7 @@ models:
             (root / "VERSION").write_text("9.9.9\n", encoding="utf-8")
             after = build_manifest(root)
             self.assertEqual(before["global_hash"], after["global_hash"])
-            self.assertEqual(
-                before["symbols"]["Thing"]["hash"],
-                after["symbols"]["Thing"]["hash"],
-            )
+            self.assertEqual(before["symbols"]["Thing"]["hash"], after["symbols"]["Thing"]["hash"])
 
     def test_scan_common_occid_import_forms(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -142,7 +119,7 @@ import occid.schema as schema
 from occid import schema as schema2
 from occid.schema import EntityState
 
-A = o.Entity
+A = o.Drone
 B = o.schema.Task
 C = schema.Plan
 D = schema2.Assignment
@@ -151,22 +128,22 @@ D = schema2.Assignment
             )
             used = scan_used_symbols(root)
             self.assertTrue(
-                {"Entity", "Task", "Plan", "Assignment", "EntityState"} <= used
+                {"Drone", "Task", "Plan", "Assignment", "EntityState"} <= used
             )
 
     def test_generate_and_check_consumer_manifest(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "consumer.py").write_text(
-                "from occid import Entity, EntityState\n",
+                "from occid import Drone, EntityState\n",
                 encoding="utf-8",
             )
 
             receipt = generate_consumer_manifest(root)
-            self.assertEqual(set(receipt["symbols"]), {"Entity", "EntityState"})
+            self.assertEqual(set(receipt["symbols"]), {"Drone", "EntityState"})
             self.assertEqual(
                 symbol_statuses(root),
-                (("Entity", "OK"), ("EntityState", "OK")),
+                (("Drone", "OK"), ("EntityState", "OK")),
             )
             self.assertEqual(changed_symbols(root), ())
 
@@ -180,7 +157,7 @@ D = schema2.Assignment
             )
             self.assertEqual(
                 symbol_statuses(root),
-                (("Entity", "OK"), ("EntityState", "CHANGED")),
+                (("Drone", "OK"), ("EntityState", "CHANGED")),
             )
             self.assertEqual(changed_symbols(root), ("EntityState",))
 
@@ -188,11 +165,11 @@ D = schema2.Assignment
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             source = root / "consumer.py"
-            source.write_text("from occid import Entity\n", encoding="utf-8")
+            source.write_text("from occid import Drone\n", encoding="utf-8")
             generate_consumer_manifest(root)
 
             source.write_text(
-                "from occid import Entity, EntityState\n",
+                "from occid import Drone, EntityState\n",
                 encoding="utf-8",
             )
             with self.assertRaisesRegex(ContractError, "EntityState"):
@@ -202,7 +179,7 @@ D = schema2.Assignment
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "consumer.py").write_text(
-                "from occid import Entity, EntityState, GoneModel\n",
+                "from occid import Drone, EntityState, GoneModel\n",
                 encoding="utf-8",
             )
             current = current_manifest()
@@ -213,7 +190,7 @@ D = schema2.Assignment
                         "format": 1,
                         "global_hash": "old-global",
                         "symbols": {
-                            "Entity": current["symbols"]["Entity"]["hash"],
+                            "Drone": current["symbols"]["Drone"]["hash"],
                             "EntityState": "old-hash",
                             "GoneModel": "old-hash",
                         },
@@ -225,7 +202,7 @@ D = schema2.Assignment
             self.assertEqual(
                 symbol_statuses(root),
                 (
-                    ("Entity", "OK"),
+                    ("Drone", "OK"),
                     ("EntityState", "CHANGED"),
                     ("GoneModel", "MISSING"),
                 ),
@@ -237,7 +214,7 @@ D = schema2.Assignment
                 result = main(["check", str(root)])
             output = stderr.getvalue()
             self.assertEqual(result, 1)
-            self.assertIn("Entity", output)
+            self.assertIn("Drone", output)
             self.assertIn("OK", output)
             self.assertIn("EntityState", output)
             self.assertIn("CHANGED", output)
@@ -248,7 +225,7 @@ D = schema2.Assignment
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             (root / "consumer.py").write_text(
-                "from occid import Entity\n",
+                "from occid import Drone\n",
                 encoding="utf-8",
             )
             path = root / "OCCID_CONTRACT"

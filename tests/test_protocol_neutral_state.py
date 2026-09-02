@@ -11,9 +11,7 @@ from occid import (
     GnssSolution,
     Link,
     LinkState,
-    Measurement,
     MeshLink,
-    State,
 )
 
 
@@ -37,11 +35,14 @@ class ProtocolNeutralStateTests(unittest.TestCase):
         for field in ("battery_id", "rssi"):
             self.assertNotIn(field, ElectricalResourceState.model_fields)
 
-    def test_static_link_definition_is_separate_from_link_state(self) -> None:
+    def test_static_link_definition_is_separate_from_flat_link_state(self) -> None:
         self.assertNotIn("condition", Link.model_fields)
         self.assertNotIn("connection_status", Link.model_fields)
-        self.assertTrue(issubclass(LinkState, State))
-        self.assertTrue(issubclass(MeshLink, LinkState))
+        self.assertNotIn("State", occid.__all__)
+        self.assertEqual(LinkState.__occid_semantic_role__, "type")
+        self.assertEqual(MeshLink.__occid_semantic_role__, "representation")
+        for field in LinkState.model_fields:
+            self.assertIn(field, MeshLink.model_fields)
 
     def test_entity_state_is_a_semantic_aggregate(self) -> None:
         self.assertNotIn("telemetry", EntityState.model_fields)
@@ -50,7 +51,9 @@ class ProtocolNeutralStateTests(unittest.TestCase):
         self.assertIn("airspeed", EntityState.model_fields)
         self.assertIn("link_states", EntityState.model_fields)
         self.assertIn("received_ts", EntityState.model_fields)
-        self.assertTrue(issubclass(Airspeed, Measurement))
+        self.assertNotIn("Measurement", occid.__all__)
+        self.assertEqual(Airspeed.__occid_semantic_role__, "representation")
+        self.assertEqual(set(Airspeed.model_fields), {"speed_ms", "reference"})
 
 
 if __name__ == "__main__":

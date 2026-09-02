@@ -8,13 +8,13 @@ tags:
 models:
   CommandMessage:
     description: Message whose payload directs action
-    semantic_role: ontology
+    semantic_role: concept
     parent: Message
     fields:
       command: Command
 
   HumanTextMessage:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Message
     fields:
       message_ref: optional string

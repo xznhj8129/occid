@@ -11,41 +11,45 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SchemaGenerationTests(unittest.TestCase):
-    def test_checked_in_generated_files_match_sources(self) -> None:
+    def test_checked_in_compiled_and_generated_files_match_sources(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            output_dir = Path(tmpdir) / "schema"
+            tmp = Path(tmpdir)
+            compiled = tmp / "occid.yaml"
+            output_dir = tmp / "schema"
+
             subprocess.run(
-                [sys.executable, "generate_pydantic.py", "--output-dir", str(output_dir)],
+                [sys.executable, "compile_occid.py", "--output", str(compiled)],
                 cwd=REPO_ROOT,
                 check=True,
                 capture_output=True,
                 text=True,
             )
-            generated_contracts = (
-                "common.py",
-                "object.py",
-                "capability.py",
-                "condition.py",
-                "constraint.py",
-                "command.py",
-                "task.py",
-                "plan.py",
-                "assignment.py",
-                "authority.py",
-                "objective.py",
-                "gnc.py",
-                "health.py",
-                "activation.py",
-                "validation.py",
-                "cue.py",
-                "robot.py",
-                "telemetry.py",
+            self.assertEqual(compiled.read_text(), (REPO_ROOT / "occid.yaml").read_text())
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    "generate_pydantic.py",
+                    "--input",
+                    str(compiled),
+                    "--output-dir",
+                    str(output_dir),
+                ],
+                cwd=REPO_ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
             )
-            for relative in generated_contracts:
+
+            checked_in = REPO_ROOT / "schema"
+            generated_files = sorted(path.name for path in output_dir.glob("*.py"))
+            checked_in_files = sorted(path.name for path in checked_in.glob("*.py"))
+            self.assertEqual(generated_files, checked_in_files)
+            for relative in generated_files:
                 with self.subTest(relative=relative):
                     self.assertEqual(
                         (output_dir / relative).read_text(),
-                        (REPO_ROOT / "schema" / relative).read_text(),
+                        (checked_in / relative).read_text(),
                     )
 
 

@@ -8,5 +8,5 @@ tags:
 models:
   Lifecycle:
     description: Current stage in existence or execution.
-    semantic_role: specialization
+    semantic_role: representation
     parent: State

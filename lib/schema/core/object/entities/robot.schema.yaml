@@ -64,7 +64,7 @@ enums:
 
 models:
   Robot:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Machine
     description: Robot entities and control surfaces
     fields:
@@ -72,13 +72,13 @@ models:
       remote_control: RemoteControlSchema
 
   GroundRobot:
-    semantic_role: specialization
+    semantic_role: representation
     parent: GroundMachine
     fields:
       machine_type: MachineType = ROBOT
 
   VideoConfigSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Parameter
     fields:
       protocol: optional VideoProtocol
@@ -90,7 +90,7 @@ models:
       hls_url: optional string
 
   ReceiverConfig:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Parameter
     fields:
       rx_min_usec: int
@@ -98,7 +98,7 @@ models:
       rx_center_usec: int
 
   ChannelMapEntry:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Parameter
     fields:
       axis: ControlAxis
@@ -107,16 +107,16 @@ models:
       label: optional string
 
   ModeRange:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Parameter
     fields:
-      mode_id: optional int
+      mode_id: int
       mode_name: optional string
       channel: int
       range: NumericRange
 
   RobotController:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Parameter
     fields:
       control_modes: optional RobotControlMode
@@ -124,7 +124,7 @@ models:
       autopilot_firmware: FirmwareInfo
 
   RemoteControlSchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Interface
     fields:
       rc_link: string = ""
@@ -139,13 +139,13 @@ models:
       mode_ranges: list[ModeRange]
 
   ObserverSource:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Interface
     description: Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(ObserverSource)
       entity_uid: UID
       name: string
       local_source: string
@@ -155,8 +155,7 @@ models:
       attitude: optional EulerAngles
       gimbal_ang: optional EulerAngles
       gimbal_axes: list[GimbalAxis]
-      fov_h_deg: optional float
-      fov_v_deg: optional float
+      field_of_view: optional SensorFieldOfView
       media_kind: SensorDataFormat = VIDEO
       video: optional VideoConfigSchema
       video_res: optional tuple[int, int]
@@ -168,7 +167,7 @@ models:
 
   FlightControlState:
     description: Portable flight-controller operational state independent of endpoint-specific mode identifiers
-    semantic_role: specialization
+    semantic_role: representation
     parent: GNC
     fields:
       armed: optional bool

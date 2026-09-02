@@ -3,24 +3,22 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .property import Property
-
 ### Models
 
-class Attribute(Property):
+class Attribute(OCCIDModel):
     'Fundamental characteristics, type, form'
-    __occid_model_id__: ClassVar[int] = 133
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 14
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class SymbologySchema(Attribute):
-    __occid_model_id__: ClassVar[int] = 134
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SymbologySchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 233
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     sidc: builtins.str | None = None
     cot: builtins.str | None = None
 
-class DisplayMeta(Attribute):
-    __occid_model_id__: ClassVar[int] = 135
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class DisplayMeta(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 53
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     icon_code: builtins.str | None = None
     tint: builtins.str | None = None
     short_label: builtins.str | None = None

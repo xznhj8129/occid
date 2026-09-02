@@ -14,7 +14,7 @@ enums:
 models:
   State:
     description: Changing condition of an object, node, link, task, system, or process
-    semantic_role: ontology
+    semantic_role: concept
     parent: Data
     variants:
       - Kinematic
@@ -38,10 +38,10 @@ models:
 
   EntityState:
     description: Time-indexed mutable condition reported for an entity independently of its identity and specification
-    semantic_role: ontology
+    semantic_role: concept
     parent: State
     fields:
-      record: RecordMeta
+      record: Record
       subject_uid: UID
       timestamp: float
       position: optional LocationState

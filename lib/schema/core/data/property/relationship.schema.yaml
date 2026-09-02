@@ -25,7 +25,7 @@ enums:
 models:
   Relationship:
     description: Nature of relations, ownership, provenance, link
-    semantic_role: ontology
+    semantic_role: concept
     parent: Property
     variants:
       - DirectedRelationship
@@ -34,7 +34,7 @@ models:
 
   DirectedRelationship:
     description: Typed directed semantic relationship between two OCCID objects
-    semantic_role: specialization
+    semantic_role: representation
     parent: Relationship
     fields:
       subject_uid: UID
@@ -46,7 +46,7 @@ models:
       source: optional string
 
   EntityComponentRef:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Relationship
     fields:
       component_ref: string
@@ -55,12 +55,12 @@ models:
 
   SpatialRelationship:
     description: Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation
-    semantic_role: specialization
+    semantic_role: representation
     parent: Relationship
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Relationship)
       subject_uid: UID
       reference_uid: UID
       relation: SpatialRelationKind

@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
-
 ### Enums
 
 class ControlLevel(IntEnum):
@@ -15,22 +13,29 @@ class ControlLevel(IntEnum):
 
 ### Models
 
-class Authority(Control):
+class Authority(OCCIDModel):
     'Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised'
-    __occid_model_id__: ClassVar[int] = 302
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 15
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: UID
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
+    constraints: list[Constraint]
 
-class ControlLease(Authority):
+class ControlLease(OCCIDModel):
     'Time-bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 70
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 41
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Authority')]
+    holder_uid: UID
+    granted_by_uid: UID | None = None
+    scope_uids: list[UID]
+    constraints: list[Constraint]
     asset_uid: UID
     control_level: ControlLevel
     lease_start: builtins.float

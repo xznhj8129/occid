@@ -8,7 +8,7 @@ tags:
 models:
   Property:
     description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
-    semantic_role: ontology
+    semantic_role: concept
     parent: Data
     variants:
       - Identity
@@ -18,7 +18,7 @@ models:
       - Capability
 
   MetadataValue:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Property
     fields:
       str: optional string

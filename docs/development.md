@@ -28,32 +28,66 @@ Structural compatibility is determined by the consumer contract described below.
 
 [`../idl_spec.md`](../idl_spec.md) is the normative schema-language specification.
 
-Authoritative schema sources live under `lib/schema/`. Generated Python under `schema/` is derived runtime output. Do not maintain generated files as a second independent schema.
-
-The current IDL separates semantic meaning, schema structure, and runtime identity:
+Authoritative authored schemas live under `lib/schema/`. They use the four-level OCCID semantic model:
 
 ```text
-semantic meaning        schema structure        runtime identity
-----------------        ----------------        ----------------
-ontology                models / fields         model_id
-specialization          parent / variants       serialization
-vocabulary              enums                    wire values
+Concept          authored semantic category
+Type             derived childless Concept
+Representation   authored explicit data-bearing shape
+Vocabulary       enum / closed controlled values
 ```
 
-These are different concerns.
+Only Concept and Representation are authored model roles:
 
-Every model is currently classified as either:
+```yaml
+semantic_role: concept
+semantic_role: representation
+```
 
-- `ontology` - a semantic kind represented by the ontology;
-- `specialization` - a practical typed shape needed by software without claiming a new ontological primitive.
+A Type is derived when a Concept has no Concept children. Representation children do not make a Concept non-leaf. A Representation is introduced when software genuinely needs a distinct data shape; it does not claim a new Concept merely because code needs a struct. A Representation may be record-shaped with `fields:` or atomic with one model-level `type:`.
 
-Enums are the controlled-vocabulary level.
+Atomic Representations are the direct form for named single values:
 
-Structural inheritance does not by itself make an ontological claim. `parent` means field inheritance. `variants` means explicit typed-family membership. `model_id` identifies a concrete runtime model. None of those mechanisms should be treated as a substitute for semantic classification.
+```yaml
+IntID:
+  semantic_role: representation
+  parent: ID
+  type: int
 
-A practical specialization is justified when members of one semantic kind need materially different fields, constraints, or restricted vocabularies to be represented safely and usefully.
+UID:
+  semantic_role: representation
+  parent: ID
+  type: bytes[16]
+```
 
-Do not create a new ontology class only because software needs a convenient struct. Do not create a new model for every vocabulary word only to obtain type safety.
+Do not create a one-field wrapper merely to give a value semantic identity. `type:` and `fields:` are mutually exclusive. An atomic Representation cannot inherit fields and cannot be a parent because its value shape is complete. Fixed binary forms such as `bytes[16]` are exact binary values; text coercion is not part of the representation.
+
+The runtime generation path is deliberately one-way:
+
+```text
+lib/schema/**/*.schema.yaml
+        -> compile_occid.py
+        -> occid.yaml
+        -> generate_pydantic.py
+        -> schema/*.py
+```
+
+`compile_occid.py` consumes Concept ancestry, resolves effective inherited fields for record models, lowers atomic model `type` expressions and field references, and emits one flat `occid.yaml`. The compiled file contains Types, Representations, Vocabulary, and maps only. It contains no `parent`, `variants`, or authored `semantic_role`.
+
+`generate_pydantic.py` reads only `occid.yaml`. Record-shaped runtime models derive from `OCCIDModel`; atomic Representations derive from `OCCIDValue[T]` and dump as the underlying value rather than as a synthetic `{value: ...}` record. The Python class hierarchy is not the Concept hierarchy. Runtime model metadata is `type` or `representation`.
+
+Reference lowering follows the semantic level:
+
+```text
+non-leaf Concept -> union of emitted descendants
+Type             -> exact
+Representation   -> exact
+Vocabulary       -> exact
+```
+
+Consumer structural contracts also hash `occid.yaml`, not the authored Concept tree. A Concept-only reorganization that leaves compiled runtime structure unchanged therefore does not create an accidental consumer contract change.
+
+There is no separate authoritative `ontology.yaml`. The Concept tree is derived from the authored schemas so there is only one semantic source of truth.
 
 ## Semantic normalization
 
@@ -110,11 +144,13 @@ A mapping failure can expose a shallow part of OCCID. It is evidence to investig
 
 Persistent record identity and operational identity are different.
 
-`RecordMeta.uid` is the global UID of one persisted record instance or revision, and `RecordMeta.id` is its class-local Record ID. The logical object described by that record has its own `uid` and class-local `id`. Entity 38, Track 38, and Task 38 may all exist simultaneously: their integer IDs are scoped to their semantic classes, while their UIDs are globally unique.
+`Record.uid` is the global UID of one persisted record instance or revision, while the logical object described by that record has its own identity. A UID is globally self-contained. An integer ID is not: `IntID(Namespace)` makes its namespace explicit in the schema. `Entity.38`, `Track.38`, and `Task.38` are therefore distinct even though their integer values match.
 
-Durable cross-object references use UIDs. Class-local IDs are for class-scoped lookup and human/operator use; they must not be mixed with UIDs or treated as globally unique.
+The namespace is authored at each use, for example `id: IntID(Entity)`, `task_id: IntID(Task)`, or `assignee_id: IntID(Entity)`. It is not inferred from field names, the containing model, ancestry, or the Concept that first declares a field. An ID field does not necessarily identify the object containing it; it may reference an object in another namespace. The runtime `IntID` value remains only an integer, while generated type metadata preserves the schema-defined namespace.
 
-Identity field names are type claims: `uid` and `*_uid` are OCCID UIDs; `id` and `*_id` are integer IDs with an explicit class or local scope. A string is never an OCCID ID. Protocol tokens, external identifiers, correlation values, addresses, names, codes, labels, and similar strings must be named for what they actually are, such as `*_ref`, `*_address`, `*_code`, or `*_name`.
+Durable cross-object references generally use UIDs. Namespaced IntIDs are compact operational references for namespaces that need short stable handles; not every UID-bearing model requires an IntID. Plain integers may still be local ordinals or keys when they are not OCCID identities.
+
+Identity field names are type claims: `uid` and `*_uid` are OCCID `UID` values; OCCID namespaced integer identities use `IntID(Namespace)`. A string is never an OCCID ID. Protocol tokens, external identifiers, correlation values, addresses, names, codes, labels, and similar strings must be named for what they actually are, such as `*_ref`, `*_address`, `*_code`, or `*_name`.
 
 Do not treat record identity, logical-object identity, class-local ID, external or protocol identifiers, or transport addresses as interchangeable aliases.
 
@@ -183,13 +219,13 @@ See [`../example_usage.py`](../example_usage.py) for a complete small example th
 
 ## Model IDs
 
-Generated OCCID models currently have numeric model IDs.
+Every compiled Type and Representation has a numeric model ID used as a compact runtime/wire discriminator.
 
-They provide registry identity for transient encoding and persisted model identity.
+The compiler derives these IDs deterministically from the complete emitted model set: emitted model names are sorted canonically and numbered from 1. The generated `occid.yaml` is the sole source of truth for those IDs. There is no hand-maintained model-ID registry.
 
-The IDs are implementation registry identity. They are not a semantic discovery mechanism, an ontology catalog, inheritance, or variant-family membership.
+Model IDs are contract-local implementation identity. They are not semantic discovery, Concept ancestry, variant-family membership, or durable identity for the thing represented by a model. Adding, removing, or renaming an emitted model may renumber other models. That is acceptable because compact peers are already required to share the same OCCID structural contract.
 
-During Year Zero, model IDs are part of the current generated contract, not compatibility promises. If a model is removed, its numeric slot may be reused immediately as part of the same schema change. Regenerate affected outputs and consumers together; do not preserve tombstones or compatibility reservations for removed internal models.
+During Year Zero, model IDs are not compatibility promises and no tombstones or numeric reservations are preserved. Regenerate affected outputs and consumers together.
 
 ## Transient encoding
 
@@ -205,7 +241,7 @@ During Year Zero, model IDs are part of the current generated contract, not comp
 ]
 ```
 
-Nested OCCID models use the same shape. UIDs are encoded as 16 raw bytes, enums and flags use numeric wire values, and unset fields are omitted. Field ordinals are the zero-based effective generated field order, including inherited fields; the compact wire carries no model names, field names, or UUID text.
+Nested record-shaped OCCID models use the same model-ID-plus-field-map shape. Atomic Representations use their underlying value directly when the containing field has an exact atomic type; heterogeneous atomic values carry their model ID with the value. `UID` is consequently encoded as 16 raw bytes in an exact `UID` field because the schema declares `UID` as `bytes[16]`, not because the serializer knows anything special about UUIDs. Enums and flags use numeric wire values, and unset fields are omitted. Field ordinals are the zero-based effective generated field order, including inherited fields; the compact wire carries no model names or field names.
 
 `decode_model()` resolves the concrete model from its model ID. Peers using this encoding are expected to share the same structural contract.
 
@@ -269,7 +305,7 @@ There is no separate compatibility archive, lock directory, caller-supplied OCCI
 
 ## Generation
 
-Canonical schema sources and the model-ID registry generate the runtime Python models:
+Canonical schema sources generate the compiled contract and runtime Python models:
 
 ```bash
 python generate.py

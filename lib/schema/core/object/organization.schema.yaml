@@ -24,15 +24,15 @@ enums:
 models:
   Organization:
     description: A structured collection of organized entities and/or subordinate organizations with common command and control
-    semantic_role: ontology
+    semantic_role: concept
     parent: Set
     variants:
       - Group
       - Unit
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Organization)
       name: optional string
       unit_code: optional string
       callsign: optional string
@@ -41,13 +41,13 @@ models:
       topology: optional OrgTopology
 
   Group:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Organization
     fields:
       orglevel: OrgLevel = GROUP
 
   Unit:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Organization
     fields:
       orglevel: OrgLevel = UNIT

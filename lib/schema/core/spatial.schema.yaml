@@ -70,12 +70,12 @@ enums:
 models:
   SpatialStruct:
     description: Spatial struct support models
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
 
   EulerAngles:
     description: Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on
-    semantic_role: specialization
+    semantic_role: representation
     parent: Pose
     fields:
       roll_rad: float
@@ -86,7 +86,7 @@ models:
 
   LocalDirection:
     description: Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known
-    semantic_role: specialization
+    semantic_role: representation
     parent: Bearing
     fields:
       bearing: float
@@ -95,7 +95,7 @@ models:
       slant_range: optional float
 
   LocalVector:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Vector
     fields:
       x: float
@@ -104,7 +104,7 @@ models:
       frame: InertialReferenceFrame
 
   GlobalPosition:
-    semantic_role: specialization
+    semantic_role: representation
     parent: GeoPos
     fields:
       lat: float
@@ -115,19 +115,19 @@ models:
       alt_frame: AltitudeDatum
 
   GeoPath:
-    semantic_role: specialization
+    semantic_role: representation
     parent: StructPath
     fields:
       points: list[GlobalPosition]
 
   GeoArea:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Shape
     fields:
       vertices: list[GlobalPosition]
 
   BoundingBox:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Bounding
     fields:
       x1: float
@@ -139,7 +139,7 @@ models:
 
   VelocityVector:
     description: Linear velocity with optional explicit inertial reference frame
-    semantic_role: specialization
+    semantic_role: representation
     parent: Vector
     fields:
       x: float
@@ -149,7 +149,7 @@ models:
 
   AngularVelocityVector:
     description: Body angular velocity in radians per second with optional explicit body frame
-    semantic_role: specialization
+    semantic_role: representation
     parent: Vector
     fields:
       x_rad_s: float
@@ -159,7 +159,7 @@ models:
 
   AltitudeState:
     description: Simultaneous altitude observations must carry their own vertical reference; absolute and relative values never share one ambiguous datum
-    semantic_role: specialization
+    semantic_role: representation
     parent: Measurement
     fields:
       absolute_m: optional float
@@ -168,7 +168,7 @@ models:
       relative_datum: optional AltitudeDatum
 
   LocationUncertainty:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Uncertainty
     fields:
       horiz_err_m: optional float
@@ -179,11 +179,11 @@ models:
 
   Position:
     description: Position in space, address or placement
-    semantic_role: ontology
+    semantic_role: concept
     parent: State
 
   LocationState:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Position
     fields:
       inertial_frame: optional InertialReferenceFrame
@@ -198,7 +198,7 @@ models:
       gnss: optional GnssSolution
 
   SpotterOrigin:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Position
     fields:
       position: GlobalPosition

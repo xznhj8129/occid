@@ -53,11 +53,11 @@ models:
 
   Payload:
     description: Object-carried sensor, effector, cargo, or other mounted payload
-    semantic_role: specialization
+    semantic_role: representation
     parent: Item
 
   SensorPayload:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Payload
     fields:
       name: string
@@ -78,7 +78,7 @@ models:
       zoom_range: optional NumericRange
 
   MeasurementQuality:
-    semantic_role: specialization
+    semantic_role: representation
     parent: MetadataValue
     fields:
       lat_err_m: optional float
@@ -86,14 +86,14 @@ models:
       range_err_m: optional float
 
   ImageSensor:
-    semantic_role: specialization
+    semantic_role: representation
     parent: SensorPayload
     fields:
       fov: optional SensorFieldOfView
       night_vision: bool
   
   RFSensor:
-    semantic_role: specialization
+    semantic_role: representation
     parent: SensorPayload
     fields:
       frustum_shape: optional SensorFrustumShape
@@ -101,7 +101,7 @@ models:
       chan_bw: optional float
 
   SensorFieldOfView:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Attribute
     fields:
       horizontal: optional NumericRange

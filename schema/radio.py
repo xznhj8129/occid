@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .link import Link
-
 ### Enums
 
 class Waveform(IntEnum):
@@ -45,30 +43,82 @@ class NATORadioBands(IntEnum):
 
 ### Models
 
-class Radio(Link):
+class Radio(OCCIDModel):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 177
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 198
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    schema_ref: builtins.str | None = None
+    name: builtins.str | None = None
+    endpoint_ref: builtins.str | None = None
+    interface_name: builtins.str | None = None
+    address: NetworkAddress | None = None
+    radio_ref: builtins.str | None = None
+    link_type: LinkType | None = None
+    net_type: NetType | None = None
+    data_type: LinkDataType | None = None
+    direction: LinkDirection | None = None
+    rate_spec: DataRateSpec | None = None
+    user_capacity: LinkCapacity | None = None
+    network_ref: builtins.str | None = None
 
-class FrequencyRange(Radio):
-    __occid_model_id__: ClassVar[int] = 178
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FrequencyRange(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 81
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    schema_ref: builtins.str | None = None
+    name: builtins.str | None = None
+    endpoint_ref: builtins.str | None = None
+    interface_name: builtins.str | None = None
+    address: NetworkAddress | None = None
+    radio_ref: builtins.str | None = None
+    link_type: LinkType | None = None
+    net_type: NetType | None = None
+    data_type: LinkDataType | None = None
+    direction: LinkDirection | None = None
+    rate_spec: DataRateSpec | None = None
+    user_capacity: LinkCapacity | None = None
+    network_ref: builtins.str | None = None
     low_mhz: builtins.float | None = None
     high_mhz: builtins.float | None = None
     center_mhz: builtins.float | None = None
 
-class ChannelSpec(Radio):
-    __occid_model_id__: ClassVar[int] = 179
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ChannelSpec(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 29
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    schema_ref: builtins.str | None = None
+    name: builtins.str | None = None
+    endpoint_ref: builtins.str | None = None
+    interface_name: builtins.str | None = None
+    address: NetworkAddress | None = None
+    radio_ref: builtins.str | None = None
+    link_type: LinkType | None = None
+    net_type: NetType | None = None
+    data_type: LinkDataType | None = None
+    direction: LinkDirection | None = None
+    rate_spec: DataRateSpec | None = None
+    user_capacity: LinkCapacity | None = None
+    network_ref: builtins.str | None = None
     channel_ref: builtins.str | None = None
     label: builtins.str | None = None
     frequency: FrequencyRange | None = None
     bandwidth_mhz: builtins.float | None = None
     spacing_mhz: builtins.float | None = None
 
-class RadioProfile(Radio):
-    __occid_model_id__: ClassVar[int] = 180
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class RadioProfile(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 199
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    schema_ref: builtins.str | None = None
+    name: builtins.str | None = None
+    endpoint_ref: builtins.str | None = None
+    interface_name: builtins.str | None = None
+    address: NetworkAddress | None = None
+    radio_ref: builtins.str | None = None
+    link_type: LinkType | None = None
+    net_type: NetType | None = None
+    data_type: LinkDataType | None = None
+    direction: LinkDirection | None = None
+    rate_spec: DataRateSpec | None = None
+    user_capacity: LinkCapacity | None = None
+    network_ref: builtins.str | None = None
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: FrequencyRange | None = None

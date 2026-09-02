@@ -3,10 +3,8 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .entities import EntitySubtype, GroundMachine, Machine, MachineType
-from .gnc import GNC
-from .interface import Interface
-from .parameter import Parameter
+from .definition import OperationalDomain
+from .entities import EntitySubtype, EntityType, MachineType
 from .payload import SensorDataFormat
 
 ### Enums
@@ -69,21 +67,61 @@ class GimbalAxis(IntEnum):
 
 ### Models
 
-class Robot(Machine):
+class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 242
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 210
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
+    machine_type: MachineType | None = None
+    components: list[EntityComponentRef]
     robot_control: RobotController | None = None
     remote_control: RemoteControlSchema
 
-class GroundRobot(GroundMachine):
-    __occid_model_id__: ClassVar[int] = 243
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class GroundRobot(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 95
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Entity')]
+    node_uids: list[UID]
+    name: builtins.str | None = None
+    callsign: builtins.str | None = None
+    entity_type: EntityType = EntityType.MACHINE
+    tags: list[builtins.str]
+    metadata: dict[builtins.str, MetadataValue]
+    relations: list[DirectedRelationship]
+    symbology: SymbologySchema | None = None
+    display_meta: DisplayMeta | None = None
+    serial_number: builtins.str | None = None
+    propulsion: PropulsionType
     machine_type: MachineType = MachineType.ROBOT
+    components: list[EntityComponentRef]
+    op_domain: OperationalDomain = OperationalDomain.LAND
+    model: builtins.str
+    role: builtins.str
+    sensors: dict[builtins.str, SensorPayload]
+    navigation: GroundNavigationSchema
 
-class VideoConfigSchema(Parameter):
-    __occid_model_id__: ClassVar[int] = 244
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class VideoConfigSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 267
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    key: builtins.str | None = None
+    value: MetadataValue | None = None
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -92,39 +130,47 @@ class VideoConfigSchema(Parameter):
     overlay_webrtc_url: builtins.str | None = None
     hls_url: builtins.str | None = None
 
-class ReceiverConfig(Parameter):
-    __occid_model_id__: ClassVar[int] = 245
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ReceiverConfig(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 201
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    key: builtins.str | None = None
+    value: MetadataValue | None = None
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
 
-class ChannelMapEntry(Parameter):
-    __occid_model_id__: ClassVar[int] = 246
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ChannelMapEntry(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 28
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    key: builtins.str | None = None
+    value: MetadataValue | None = None
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
     label: builtins.str | None = None
 
-class ModeRange(Parameter):
-    __occid_model_id__: ClassVar[int] = 247
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    mode_id: builtins.int | None = None
+class ModeRange(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 157
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    key: builtins.str | None = None
+    value: MetadataValue | None = None
+    mode_id: builtins.int
     mode_name: builtins.str | None = None
     channel: builtins.int
     range: NumericRange
 
-class RobotController(Parameter):
-    __occid_model_id__: ClassVar[int] = 248
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class RobotController(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 211
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    key: builtins.str | None = None
+    value: MetadataValue | None = None
     control_modes: RobotControlMode | None = None
     autopilot_type: AutopilotType
     autopilot_firmware: FirmwareInfo
 
-class RemoteControlSchema(Interface):
-    __occid_model_id__: ClassVar[int] = 249
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class RemoteControlSchema(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 205
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
@@ -136,13 +182,13 @@ class RemoteControlSchema(Interface):
     channel_map: list[ChannelMapEntry]
     mode_ranges: list[ModeRange]
 
-class ObserverSource(Interface):
+class ObserverSource(OCCIDModel):
     'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 250
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 169
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('ObserverSource')]
     entity_uid: UID
     name: builtins.str
     local_source: builtins.str
@@ -152,8 +198,7 @@ class ObserverSource(Interface):
     attitude: EulerAngles | None = None
     gimbal_ang: EulerAngles | None = None
     gimbal_axes: list[GimbalAxis]
-    fov_h_deg: builtins.float | None = None
-    fov_v_deg: builtins.float | None = None
+    field_of_view: SensorFieldOfView | None = None
     media_kind: SensorDataFormat = SensorDataFormat.VIDEO
     video: VideoConfigSchema | None = None
     video_res: tuple[builtins.int, builtins.int] | None = None
@@ -163,10 +208,10 @@ class ObserverSource(Interface):
     commands_allowed: builtins.bool = False
     can_zoom: builtins.bool = False
 
-class FlightControlState(GNC):
+class FlightControlState(OCCIDModel):
     'Portable flight-controller operational state independent of endpoint-specific mode identifiers'
-    __occid_model_id__: ClassVar[int] = 251
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 74
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None

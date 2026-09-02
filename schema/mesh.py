@@ -3,12 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .link import LinkState
-from .message import Message
-from .network import Network
-from .node import Node
-from .telemetry import TelemetryMessage
-
 ### Enums
 
 class MeshNodeState(IntEnum):
@@ -24,35 +18,53 @@ class MeshtasticPort(IntEnum):
 
 ### Models
 
-class MeshLink(LinkState):
+class MeshLink(OCCIDModel):
     'Observed state of a link between two mesh nodes'
-    __occid_model_id__: ClassVar[int] = 225
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 137
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    link_ref: builtins.str | None = None
+    condition: LinkCondition | None = None
+    connection_status: ConnectionStatus | None = None
+    signal: SignalQuality | None = None
+    delivery: DeliveryQuality | None = None
+    counters: LinkCounters | None = None
     src_uid: UID
     dst_uid: UID
     updated_ts: builtins.float | None = None
 
-class MeshNode(Node):
-    __occid_model_id__: ClassVar[int] = 226
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MeshNode(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 138
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Node')]
+    entity_uid: UID | None = None
+    roles: list[CapabilityRole]
+    addresses: list[NetworkAddress]
+    links: dict[builtins.str, Link]
+    radios: dict[builtins.str, RadioProfile]
+    protocols: dict[builtins.str, Protocol]
     state: MeshNodeState | None = None
     last_seen_ts: builtins.float | None = None
     position: GlobalPosition | None = None
-    link_state: SerializeAsAny[LinkState | MeshLink] | None = None
-    roles: list[CapabilityRole]
+    link_state: LinkState | None = None
 
-class MeshView(Network):
+class MeshView(OCCIDModel):
     'Current observed mesh topology and node/link state'
-    __occid_model_id__: ClassVar[int] = 227
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 141
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     epoch: builtins.int = 0
     nodes: list[MeshNode]
     links: list[MeshLink]
     partition_ref: builtins.str | None = None
 
-class MeshtasticMessage(Message):
-    __occid_model_id__: ClassVar[int] = 228
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MeshtasticMessage(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 142
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
     sender_node_num: builtins.int
     sender_name: builtins.str | None = None
     destination_node_num: builtins.int
@@ -63,20 +75,35 @@ class MeshtasticMessage(Message):
     position: MeshPositionSample | None = None
     metrics: MeshReceiveMetrics | None = None
 
-class MeshReceiveMetrics(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 229
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    state: SerializeAsAny[LinkState | MeshLink]
+class MeshReceiveMetrics(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 140
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState
 
-class MeshPositionSample(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 230
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MeshPositionSample(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 139
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
     state: LocationState
 
-class NodeHeartbeat(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 231
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class NodeHeartbeat(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 165
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState
     node_uid: UID
     last_seen_ts: builtins.float
     node_state: MeshNodeState | None = None
-    state: SerializeAsAny[LinkState | MeshLink]

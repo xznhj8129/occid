@@ -105,7 +105,7 @@ def model_hashes_for_ids(
     manifest: dict[str, Any],
     model_ids: Iterable[int],
 ) -> dict[int, str]:
-    """Return structural hashes for permanent OCCID model IDs."""
+    """Return structural hashes for model IDs in this OCCID contract."""
     wanted = {int(value) for value in model_ids}
     result: dict[int, str] = {}
     for entry in manifest["symbols"].values():

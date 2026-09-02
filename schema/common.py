@@ -5,59 +5,9 @@ from importlib.metadata import PackageNotFoundError as _PackageNotFoundError, ve
 from pathlib import Path as _Path
 from types import UnionType
 from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
-from typing import Annotated, Any, ClassVar, Literal, Union, get_args, get_origin
-from uuid import SafeUUID, UUID
+from typing import Annotated, Any, ClassVar, Generic, Literal, TypeVar, Union, get_args, get_origin
 import msgpack
-from pydantic import BaseModel, ConfigDict, Field, SerializeAsAny
-from pydantic_core import core_schema
-
-
-class UID(UUID):
-    """Canonical OCCID identity.
-
-    UUIDv4 is the identity-v1 allocation scheme. UUID text is a human/API
-    representation only; compact OCCID serialization carries the 128-bit value
-    as exactly 16 payload bytes.
-    """
-
-    def __init__(
-        self,
-        hex=None,
-        bytes=None,
-        bytes_le=None,
-        fields=None,
-        int=None,
-        version=None,
-        *,
-        is_safe=SafeUUID.unknown,
-    ):
-        super().__init__(
-            hex=hex,
-            bytes=bytes,
-            bytes_le=bytes_le,
-            fields=fields,
-            int=int,
-            version=version,
-            is_safe=is_safe,
-        )
-        if self.version != 4:
-            raise ValueError("UID must be UUIDv4")
-
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler):
-        def cast(value):
-            if isinstance(value, cls):
-                return value
-            return cls(str(value))
-
-        return core_schema.no_info_after_validator_function(
-            cast,
-            core_schema.uuid_schema(version=4),
-            serialization=core_schema.plain_serializer_function_ser_schema(
-                str,
-                when_used="json",
-            ),
-        )
+from pydantic import BaseModel, ConfigDict, Field, RootModel, SerializeAsAny
 
 
 OCCIDVersion = tuple[int, int, int]
@@ -81,6 +31,11 @@ class IntEnum(_StdIntEnum):
 
 OCCID_MODEL_BY_ID = {}
 OCCID_MODEL_ID_BY_CLASS = {}
+_OCCIDValueT = TypeVar("_OCCIDValueT")
+
+
+class IDNamespace(str):
+    """Schema-defined namespace attached to an IntID type expression."""
 
 
 class OCCIDModel(BaseModel):
@@ -101,7 +56,8 @@ class OCCIDModel(BaseModel):
         """Encode one OCCID model into the compact binary wire form.
 
         Wire shape: [model_id, {field_ordinal: value, ...}]. Field names and
-        model names never appear on the compact wire. UID values are bin16.
+        model names never appear on the compact wire. Atomic values use their
+        declared underlying representation when the field type is exact.
         """
         envelope = [
             OCCID_MODEL_ID_BY_CLASS[type(self)],
@@ -146,6 +102,15 @@ class OCCIDModel(BaseModel):
             return cls._wire_to_value(args[0], data)
 
         if origin in (Union, UnionType):
+            if type(data) is list and len(data) == 2 and type(data[0]) is int:
+                model_cls = OCCID_MODEL_BY_ID.get(data[0])
+                if model_cls is not None and issubclass(model_cls, OCCIDValue):
+                    for arg in args:
+                        try:
+                            if arg is not type(None) and issubclass(model_cls, arg):
+                                return model_cls._from_wire_value(data[1])
+                        except TypeError:
+                            continue
             last_error = None
             for arg in args:
                 if arg is type(None):
@@ -157,11 +122,6 @@ class OCCIDModel(BaseModel):
             if last_error is not None:
                 raise last_error
             return data
-
-        if annotation is UID:
-            if type(data) is not bytes or len(data) != 16:
-                raise ValueError("UID wire value must be exactly 16 bytes")
-            return UID(bytes=data)
 
         if origin is list:
             return [cls._wire_to_value(args[0], item) for item in data]
@@ -179,6 +139,22 @@ class OCCIDModel(BaseModel):
                 cls._wire_to_value(arg, item)
                 for arg, item in zip(args, data)
             )
+
+        try:
+            if issubclass(annotation, OCCIDValue):
+                if type(data) is list and len(data) == 2 and type(data[0]) is int:
+                    model_id, raw_value = data
+                    model_cls = OCCID_MODEL_BY_ID.get(model_id)
+                    if model_cls is None:
+                        raise ValueError(f"unknown OCCID model ID {model_id}")
+                    if not issubclass(model_cls, annotation):
+                        raise ValueError(
+                            f"model ID {model_id} is not compatible with {annotation.__name__}"
+                        )
+                    return model_cls._from_wire_value(raw_value)
+                return annotation._from_wire_value(data)
+        except TypeError:
+            pass
 
         try:
             if issubclass(annotation, OCCIDModel):
@@ -211,20 +187,38 @@ class OCCIDModel(BaseModel):
         return data
 
     @classmethod
-    def _wire_value(cls, value):
+    def _wire_value(cls, value, annotation=None):
+        origin = get_origin(annotation)
+        args = get_args(annotation)
+        if origin is Annotated:
+            annotation = args[0]
+            origin = get_origin(annotation)
+            args = get_args(annotation)
+
+        if isinstance(value, OCCIDValue):
+            root_annotation = type(value).model_fields["root"].annotation
+            if annotation is type(value):
+                return cls._wire_value(value.root, root_annotation)
+            return [
+                OCCID_MODEL_ID_BY_CLASS[type(value)],
+                cls._wire_value(value.root, root_annotation),
+            ]
         if isinstance(value, OCCIDModel):
             return [
                 OCCID_MODEL_ID_BY_CLASS[type(value)],
                 cls._wire_model_fields(value),
             ]
-        if isinstance(value, UID):
-            return value.bytes
         if type(value) is dict:
+            value_annotation = args[1] if origin is dict and len(args) == 2 else None
             return {
-                key: cls._wire_value(item)
+                key: cls._wire_value(item, value_annotation)
                 for key, item in value.items()
             }
         if type(value) in (list, tuple):
+            if origin is list and args:
+                return [cls._wire_value(item, args[0]) for item in value]
+            if origin is tuple and args and len(args) == len(value):
+                return [cls._wire_value(item, arg) for item, arg in zip(value, args)]
             return [cls._wire_value(item) for item in value]
         if isinstance(value, IntEnum):
             return value.value
@@ -241,13 +235,54 @@ class OCCIDModel(BaseModel):
         present are omitted. Peers are expected to share the same OCCID contract.
         """
         return {
-            field_id: cls._wire_value(getattr(value, field_name))
+            field_id: cls._wire_value(
+                getattr(value, field_name),
+                type(value).model_fields[field_name].annotation,
+            )
             for field_id, field_name in enumerate(type(value).model_fields)
             if field_name in value.model_fields_set
         }
 
 
-def decode_model(payload: bytes) -> OCCIDModel:
+class OCCIDValue(RootModel[_OCCIDValueT], Generic[_OCCIDValueT]):
+    """Named atomic OCCID representation with one direct typed value."""
+
+    __occid_model_id__: ClassVar[int | None] = None
+    __occid_semantic_role__: ClassVar[str | None] = None
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if "__occid_semantic_role__" not in cls.__dict__:
+            cls.__occid_semantic_role__ = None
+        model_id = getattr(cls, "__occid_model_id__", None)
+        if model_id is not None:
+            OCCID_MODEL_BY_ID[model_id] = cls
+            OCCID_MODEL_ID_BY_CLASS[cls] = model_id
+
+    def encode(self) -> bytes:
+        root_annotation = type(self).model_fields["root"].annotation
+        envelope = [
+            OCCID_MODEL_ID_BY_CLASS[type(self)],
+            OCCIDModel._wire_value(self.root, root_annotation),
+        ]
+        return msgpack.packb(envelope, use_bin_type=True)
+
+    @classmethod
+    def decode(cls, payload: bytes):
+        model = decode_model(payload)
+        if type(model) is not cls:
+            model_id = OCCID_MODEL_ID_BY_CLASS[type(model)]
+            raise ValueError(f"payload model ID {model_id} does not identify {cls.__name__}")
+        return model
+
+    @classmethod
+    def _from_wire_value(cls, data):
+        annotation = cls.model_fields["root"].annotation
+        value = OCCIDModel._wire_to_value(annotation, data)
+        return cls(root=value)
+
+
+def decode_model(payload: bytes) -> OCCIDModel | OCCIDValue:
     """Decode a heterogeneous OCCID compact binary envelope."""
     envelope = msgpack.unpackb(
         payload,
@@ -255,13 +290,15 @@ def decode_model(payload: bytes) -> OCCIDModel:
         strict_map_key=False,
     )
     if type(envelope) is not list or len(envelope) != 2:
-        raise ValueError("OCCID payload must be [model_id, fields]")
+        raise ValueError("OCCID payload must be [model_id, payload]")
 
-    model_id, fields = envelope
+    model_id, model_payload = envelope
     if type(model_id) is not int:
         raise ValueError("OCCID model ID must be an integer")
 
     model_cls = OCCID_MODEL_BY_ID.get(model_id)
     if model_cls is None:
         raise ValueError(f"unknown OCCID model ID {model_id}")
-    return model_cls._from_wire_fields(fields)
+    if issubclass(model_cls, OCCIDValue):
+        return model_cls._from_wire_value(model_payload)
+    return model_cls._from_wire_fields(model_payload)

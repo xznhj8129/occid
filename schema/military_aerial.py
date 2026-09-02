@@ -3,8 +3,7 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .entities import AirNavigationSchema
-from .plan import UnitFlightPlan
+from .plan import PlanApprovalState
 
 ### Enums
 
@@ -67,12 +66,48 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 
 ### Models
 
-class MilitaryAirNavigation(AirNavigationSchema):
-    __occid_model_id__: ClassVar[int] = 239
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MilitaryAirNavigation(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 147
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    flight_type: AirframeType
+    control_modes: list[StandardFlightMode]
+    failsafe_mode: AirFailsafeMode | None = None
+    weather_limits: WeatherLimits
+    ifr: builtins.bool | None = None
+    propulsion: PropulsionType
+    navigation: NavigationMode
+    navaids: list[NavAids]
+    max_range: builtins.float
+    max_flight_t: builtins.float
+    max_spd: builtins.float
+    cruise_spd: builtins.float
+    max_alt: builtins.float
     roles: list[AirRole]
 
-class MilitaryUnitFlightPlan(UnitFlightPlan):
-    __occid_model_id__: ClassVar[int] = 241
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MilitaryUnitFlightPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 153
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Plan')]
+    name: builtins.str | None = None
+    objective_uids: list[UID]
+    task_uids: list[UID]
+    actor_uids: list[UID]
+    resource_uids: list[UID]
+    assignment_uids: list[UID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[Constraint]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
+    unit_num: builtins.int
+    callsign: builtins.str
+    fl: builtins.float
+    route_in: GeoPath
     target: PlannerMissionPoint
+    route_out: GeoPath
+    home: GlobalPosition
+    land_pos: GlobalPosition
+    ip_wait_delay: builtins.float = 0.0
+    wp: GeoPath

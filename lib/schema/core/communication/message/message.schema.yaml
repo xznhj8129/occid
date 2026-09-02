@@ -60,7 +60,7 @@ enums:
 models:
   Message:
     description: Transmitted envelope plus payload
-    semantic_role: ontology
+    semantic_role: concept
     parent: Communication
     variants:
       - CommandMessage
@@ -75,14 +75,14 @@ models:
       seq: int
 
   MessageTarget:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Struct
     fields:
       target_uid: UID
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
-    semantic_role: ontology
+    semantic_role: concept
     parent: Message
     variants:
       - DeliveryReceipt
@@ -92,7 +92,7 @@ models:
       response_to: optional string
 
   DeliveryReceipt:
-    semantic_role: specialization
+    semantic_role: representation
     parent: ResponseMessage
     fields:
       node_uid: UID
@@ -102,7 +102,7 @@ models:
       error_code: optional string
 
   MessageTransferResult:
-    semantic_role: specialization
+    semantic_role: representation
     parent: ResponseMessage
     fields:
       target_count: int = 0

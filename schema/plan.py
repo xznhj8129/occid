@@ -3,9 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
-from .struct import Struct
-
 ### Enums
 
 class PlanApprovalState(IntEnum):
@@ -50,13 +47,13 @@ class AirPlanAction(IntEnum):
 
 ### Models
 
-class Plan(Control):
+class Plan(OCCIDModel):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
-    __occid_model_id__: ClassVar[int] = 172
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 182
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
     objective_uids: list[UID]
     task_uids: list[UID]
@@ -65,39 +62,36 @@ class Plan(Control):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
+    constraints: list[Constraint]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
-class PlanStep(Struct):
+class PlanStep(OCCIDModel):
     'Immutable planned step definition; runtime status belongs to execution state'
-    __occid_model_id__: ClassVar[int] = 283
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    id: builtins.int
-    task_uid: UID | None = None
+    __occid_model_id__: ClassVar[int] = 184
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     actor_uids: list[UID]
     depends_on: list[builtins.int]
     sequence: builtins.int
 
-class PlanContingency(Struct):
-    __occid_model_id__: ClassVar[int] = 282
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    id: builtins.int
-    condition: SerializeAsAny[Condition | Predicate | BooleanLogic]
+class PlanContingency(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 183
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    condition: Predicate | BooleanLogic
     response: builtins.str
     task_uids: list[UID]
 
-class FlightLevelBand(Struct):
+class FlightLevelBand(OCCIDModel):
     'Embedded flight-level band value used by plans rather than an independently identified control reference'
-    __occid_model_id__: ClassVar[int] = 116
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 76
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     altitude_range_m: NumericRange
     alt_sep_m: builtins.float
 
-class AutopilotMissionWaypoint(Struct):
+class AutopilotMissionWaypoint(OCCIDModel):
     'Embedded autopilot waypoint value used by a plan or protocol mapping'
-    __occid_model_id__: ClassVar[int] = 118
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 18
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     waypoint_index: builtins.int
     action_code: builtins.int | None = None
     position: GlobalPosition
@@ -106,36 +100,36 @@ class AutopilotMissionWaypoint(Struct):
     param3: builtins.int | None = None
     flag: builtins.int | None = None
 
-class PlannerMissionPoint(Struct):
+class PlannerMissionPoint(OCCIDModel):
     'Embedded planner point value used while constructing a plan'
-    __occid_model_id__: ClassVar[int] = 119
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 186
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     num: builtins.int
     point_type: PlannerPointType
     category: PlannerPointCategory
     pos: GlobalPosition
 
-class LoiterOrbit(Struct):
+class LoiterOrbit(OCCIDModel):
     'Embedded orbit geometry and timing value'
-    __occid_model_id__: ClassVar[int] = 120
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 130
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     orbit_direction: builtins.int
     orbit_radius: builtins.int
     loiter_time: builtins.int
 
-class MissionRouteGeometry(Struct):
+class MissionRouteGeometry(OCCIDModel):
     'Embedded route geometry used by a mission plan'
-    __occid_model_id__: ClassVar[int] = 121
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 156
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     route_in: GeoPath
     survey: GeoPath
     survey_area: GeoArea
     route_out: GeoPath
 
-class PlannedRoutePoints(Struct):
+class PlannedRoutePoints(OCCIDModel):
     'Embedded set of planner points defining mission-plan route segments'
-    __occid_model_id__: ClassVar[int] = 122
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 185
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     start: PlannerMissionPoint
     route_in: list[PlannerMissionPoint]
     survey: list[PlannerMissionPoint]
@@ -143,14 +137,42 @@ class PlannedRoutePoints(Struct):
     route_out: list[PlannerMissionPoint]
     end: PlannerMissionPoint
 
-class AutopilotFlightPlan(Plan):
-    __occid_model_id__: ClassVar[int] = 173
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class AutopilotFlightPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 16
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Plan')]
+    name: builtins.str | None = None
+    objective_uids: list[UID]
+    task_uids: list[UID]
+    actor_uids: list[UID]
+    resource_uids: list[UID]
+    assignment_uids: list[UID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[Constraint]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     waypoints: list[AutopilotMissionWaypoint]
 
-class GroupFlightPlan(Plan):
-    __occid_model_id__: ClassVar[int] = 174
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class GroupFlightPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 97
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Plan')]
+    name: builtins.str | None = None
+    objective_uids: list[UID]
+    task_uids: list[UID]
+    actor_uids: list[UID]
+    resource_uids: list[UID]
+    assignment_uids: list[UID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[Constraint]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     plan_phase: FlightPlanPhase
     flight_level: FlightLevelBand | None = None
     alt_frame: AltitudeDatum | None = None
@@ -161,9 +183,23 @@ class GroupFlightPlan(Plan):
     formation_2d: AirGroupFormation2DType | None = None
     formation_3d: AirGroupFormation3DType | None = None
 
-class UnitFlightPlan(Plan):
-    __occid_model_id__: ClassVar[int] = 175
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class UnitFlightPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 261
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Plan')]
+    name: builtins.str | None = None
+    objective_uids: list[UID]
+    task_uids: list[UID]
+    actor_uids: list[UID]
+    resource_uids: list[UID]
+    assignment_uids: list[UID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[Constraint]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float
@@ -175,10 +211,24 @@ class UnitFlightPlan(Plan):
     ip_wait_delay: builtins.float = 0.0
     wp: GeoPath
 
-class MissionPlan(Plan):
+class MissionPlan(OCCIDModel):
     'Saved operator mission plan - the planner inputs, restorable for editing'
-    __occid_model_id__: ClassVar[int] = 176
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 155
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Plan')]
+    name: builtins.str | None = None
+    objective_uids: list[UID]
+    task_uids: list[UID]
+    actor_uids: list[UID]
+    resource_uids: list[UID]
+    assignment_uids: list[UID]
+    steps: list[PlanStep]
+    routes: list[GeoPath]
+    constraints: list[Constraint]
+    contingencies: list[PlanContingency]
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     flight_type: FlightType = FlightType.SURVEY_POINT
     air_action: AirPlanAction = AirPlanAction.FLY
     manual: builtins.bool = False

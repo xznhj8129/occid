@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .communication import Communication
-
 ### Enums
 
 class AddressKind(IntEnum):
@@ -20,14 +18,14 @@ class NetworkError(IntEnum):
 
 ### Models
 
-class Network(Communication):
+class Network(OCCIDModel):
     'Connectivity topology and routing state'
-    __occid_model_id__: ClassVar[int] = 81
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 162
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class NetworkAddress(Network):
-    __occid_model_id__: ClassVar[int] = 82
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class NetworkAddress(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 163
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     kind: AddressKind
     value: builtins.str
     port: builtins.int | None = None

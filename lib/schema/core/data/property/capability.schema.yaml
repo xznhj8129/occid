@@ -8,5 +8,5 @@ tags:
 models:
   Capability:
     description: An ability an Object possesses or can provide; concrete capability schemas define the specific semantics and parameters
-    semantic_role: ontology
+    semantic_role: concept
     parent: Property

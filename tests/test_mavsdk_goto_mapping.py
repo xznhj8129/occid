@@ -7,7 +7,7 @@ from occid import AltitudeDatum, GlobalPosition, MotionCommand, MotionOperation
 from interop.mavsdk import goto_command_to_fields
 
 
-ENTITY_UID = "cbdf5f3e-0e87-4bd0-a50f-9422ac87b686"
+ENTITY_UID = bytes.fromhex("cbdf5f3e0e874bd0a50f9422ac87b686")
 
 
 def move_to(position: GlobalPosition, yaw_rad: float | None = None) -> MotionCommand:

@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Enums
 
 class AlertLevel(IntEnum):
@@ -55,30 +53,30 @@ class MaintenanceState(IntEnum):
 
 ### Models
 
-class Health(State):
+class Health(OCCIDModel):
     'Integrity, damage, faults, and readiness state'
-    __occid_model_id__: ClassVar[int] = 142
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 98
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class HealthAlert(Health):
-    __occid_model_id__: ClassVar[int] = 143
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class HealthAlert(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 99
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     alert_ref: builtins.str | None = None
     level: AlertLevel
     condition: builtins.str
     acknowledged: builtins.bool = False
 
-class SubsystemHealth(Health):
-    __occid_model_id__: ClassVar[int] = 144
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SubsystemHealth(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 230
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     subsystem_ref: builtins.str
     state: HealthStatus
     fault_count: builtins.int = 0
     note: builtins.str | None = None
 
-class HealthSnapshot(Health):
-    __occid_model_id__: ClassVar[int] = 145
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class HealthSnapshot(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 100
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
@@ -88,17 +86,17 @@ class HealthSnapshot(Health):
     subsystems: list[SubsystemHealth]
     alerts: list[HealthAlert]
 
-class MaintenanceStatus(Health):
-    __occid_model_id__: ClassVar[int] = 146
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MaintenanceStatus(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 132
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     state: MaintenanceState
     last_service_ts: builtins.float | None = None
     next_service_ts: builtins.float | None = None
     note: builtins.str | None = None
 
-class NavReadinessState(Health):
-    __occid_model_id__: ClassVar[int] = 147
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class NavReadinessState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 160
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None
     mag_ok: builtins.bool | None = None

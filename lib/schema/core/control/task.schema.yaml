@@ -62,12 +62,12 @@ enums:
 models:
   Task:
     description: Directed work that must be accomplished in support of an optional objective
-    semantic_role: ontology
+    semantic_role: concept
     parent: Directive
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Task)
       instruction: string
       target_uids: list[UID]
       location_uids: list[UID]
@@ -81,28 +81,28 @@ models:
 
   TaskManeuver:
     description: Practical Task schema for desired movement, position, or spatial persistence
-    semantic_role: specialization
+    semantic_role: representation
     parent: Task
     fields:
       intent: ManeuverIntent
 
   TaskEffect:
     description: Practical Task schema for desired creation, removal, modification, restoration, protection, or denial
-    semantic_role: specialization
+    semantic_role: representation
     parent: Task
     fields:
       intent: EffectIntent
 
   TaskInformation:
     description: Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring
-    semantic_role: specialization
+    semantic_role: representation
     parent: Task
     fields:
       intent: InformationIntent
 
   TaskTransport:
     description: Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets
-    semantic_role: specialization
+    semantic_role: representation
     parent: Task
     fields:
       intent: TransportIntent

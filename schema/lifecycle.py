@@ -3,11 +3,9 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Models
 
-class Lifecycle(State):
+class Lifecycle(OCCIDModel):
     'Current stage in existence or execution.'
-    __occid_model_id__: ClassVar[int] = 164
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 117
+    __occid_semantic_role__: ClassVar[str] = 'representation'

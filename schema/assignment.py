@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .control import Control
-
 ### Enums
 
 class AssignmentStatus(IntEnum):
@@ -18,13 +16,13 @@ class AssignmentStatus(IntEnum):
 
 ### Models
 
-class Assignment(Control):
+class Assignment(OCCIDModel):
     'Explicit binding of a task to an assignee under stated authority and constraints'
-    __occid_model_id__: ClassVar[int] = 130
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 13
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Assignment')]
     task_uid: UID
     assignee_uid: UID
     plan_uid: UID | None = None
@@ -33,11 +31,23 @@ class Assignment(Control):
     assigned_at: builtins.float
     accepted_at: builtins.float | None = None
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
+    constraints: list[Constraint]
 
-class FlightAssignment(Assignment):
-    __occid_model_id__: ClassVar[int] = 132
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FlightAssignment(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 73
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Assignment')]
+    task_uid: UID
+    assignee_uid: UID
+    plan_uid: UID | None = None
+    authority_uid: UID | None = None
+    assigned_by_uid: UID
+    assigned_at: builtins.float
+    accepted_at: builtins.float | None = None
+    status: AssignmentStatus = AssignmentStatus.PROPOSED
+    constraints: list[Constraint]
     num: builtins.int
     unit_uid: UID | None = None
     callsign: builtins.str | None = None

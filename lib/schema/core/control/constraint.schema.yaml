@@ -8,7 +8,7 @@ tags:
 models:
   Constraint:
     description: Limit, rule, or time/resource bound applied to directed work
-    semantic_role: ontology
+    semantic_role: concept
     parent: Control
     variants:
       - Restriction
@@ -17,22 +17,22 @@ models:
       condition: optional Condition
 
   Restriction:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Constraint
 
   Limitation:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Constraint
 
   TaskTimeWindow:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Constraint
     fields:
       earliest_start: optional float
       latest_finish: optional float
 
   WeatherLimits:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Constraint
     fields:
       ifr: optional bool

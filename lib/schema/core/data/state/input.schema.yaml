@@ -8,12 +8,12 @@ tags:
 models:
   Input:
     description: Current operator or receiver input state and control mapping.
-    semantic_role: specialization
+    semantic_role: representation
     parent: State
 
   ControlAxisSet:
     description: Normalized control-axis values in the signed range -1.0 to +1.0, independent of the native receiver or flight-controller representation
-    semantic_role: specialization
+    semantic_role: representation
     parent: Input
     fields:
       roll: optional float
@@ -24,7 +24,7 @@ models:
 
   ControlChannelValue:
     description: One normalized auxiliary/control channel value in the signed range -1.0 to +1.0 when present
-    semantic_role: specialization
+    semantic_role: representation
     parent: Input
     fields:
       channel_index: int
@@ -32,7 +32,7 @@ models:
 
   ControlOverride:
     description: Normalized direct control override in the signed range -1.0 to +1.0; endpoint adapters define the exact native mapping and reject unsupported axes
-    semantic_role: specialization
+    semantic_role: representation
     parent: Input
     fields:
       roll: optional float
@@ -43,7 +43,7 @@ models:
 
   ControlAttitudeSetpoint:
     description: Attitude and normalized thrust setpoint using radians; frame metadata is optional in the record but control code that depends on frame semantics must require it explicitly
-    semantic_role: specialization
+    semantic_role: representation
     parent: Input
     fields:
       roll_rad: float

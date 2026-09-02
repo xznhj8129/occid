@@ -3,15 +3,15 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+import occid
+
 import yaml
 
 from occid import (
     Assignment,
-    Control,
     OCCID_MODEL_ID_BY_CLASS,
     PlanStep,
     RecordMeta,
-    State,
     SuccessCriterion,
     TaskDelta,
     TaskPhase,
@@ -19,14 +19,14 @@ from occid import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-RECORD_UID_1 = "726b19e5-7214-4cef-99e6-c00a70c9320b"
-RECORD_UID_2 = "90ca3bc1-d944-42e9-8d11-c0faf4b9264b"
-TASK_UID_1 = "6ce34dc4-b352-4d75-a16a-96b505110458"
-TASK_UID_2 = "fe8a7c3c-afde-41bb-8ec6-cde9a3af6b04"
-OWNER_UID = "922651f4-37bb-4aa1-bf58-12d6ade5f22d"
+RECORD_UID_1 = bytes.fromhex("726b19e572144cef99e6c00a70c9320b")
+RECORD_UID_2 = bytes.fromhex("90ca3bc1d94442e98d11c0faf4b9264b")
+TASK_UID_1 = bytes.fromhex("6ce34dc4b3524d75a16a96b505110458")
+TASK_UID_2 = bytes.fromhex("fe8a7c3cafde41bb8ec6cde9a3af6b04")
+OWNER_UID = bytes.fromhex("922651f437bb4aa1bf5812d6ade5f22d")
 
 
-def record_meta(record_uid: str, record_id: int) -> RecordMeta:
+def record_meta(record_uid: bytes, record_id: int) -> RecordMeta:
     return RecordMeta(
         uid=record_uid,
         id=record_id,
@@ -53,11 +53,15 @@ class ContractStabilityTests(unittest.TestCase):
         self.assertNotIn("satisfied", SuccessCriterion.model_fields)
         self.assertNotIn("status", PlanStep.model_fields)
 
-    def test_assignment_is_control_and_task_delta_is_state(self) -> None:
-        self.assertTrue(issubclass(Assignment, Control))
-        self.assertFalse(issubclass(Assignment, State))
-        self.assertTrue(issubclass(TaskDelta, State))
-        self.assertFalse(issubclass(TaskDelta, Assignment))
+    def test_assignment_and_task_delta_are_flat_runtime_models(self) -> None:
+        self.assertNotIn("Control", occid.__all__)
+        self.assertNotIn("State", occid.__all__)
+        self.assertEqual(Assignment.__occid_semantic_role__, "type")
+        self.assertEqual(TaskDelta.__occid_semantic_role__, "representation")
+        self.assertIn("record", Assignment.model_fields)
+        self.assertIn("uid", Assignment.model_fields)
+        self.assertIn("id", Assignment.model_fields)
+        self.assertIn("record", TaskDelta.model_fields)
 
     def test_task_delta_msgpack_round_trip(self) -> None:
         delta = TaskDelta(
@@ -88,10 +92,19 @@ class ContractStabilityTests(unittest.TestCase):
         self.assertEqual(execution_schema["models"]["Execution"]["parent"], "State")
         self.assertEqual(execution_schema["models"]["TaskDelta"]["parent"], "State")
 
-    def test_permanent_model_ids_match_generated_models(self) -> None:
-        registry = yaml.safe_load((REPO_ROOT / "lib/model_ids.yaml").read_text())
-        model_ids = registry["model_ids"]
+    def test_compiled_model_ids_match_generated_models(self) -> None:
+        compiled = yaml.safe_load((REPO_ROOT / "occid.yaml").read_text())
+        model_ids = {
+            name: spec["model_id"]
+            for section in ("types", "representations")
+            for name, spec in compiled[section].items()
+        }
         self.assertEqual(len(model_ids.values()), len(set(model_ids.values())))
+        self.assertEqual(set(model_ids.values()), set(range(1, len(model_ids) + 1)))
+        self.assertEqual(
+            [name for name, _ in sorted(model_ids.items(), key=lambda item: item[1])],
+            sorted(model_ids),
+        )
         for model, model_id in OCCID_MODEL_ID_BY_CLASS.items():
             self.assertEqual(model_ids[model.__name__], model_id)
 

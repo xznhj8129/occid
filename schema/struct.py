@@ -3,79 +3,80 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .root import Root
-
 ### Models
 
-class Struct(Root):
-    'Primitive reusable low-level struct families.'
-    __occid_model_id__: ClassVar[int] = 25
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class ID(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 102
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Vector(Struct):
-    __occid_model_id__: ClassVar[int] = 26
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Vector(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 263
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Measurement(Struct):
-    __occid_model_id__: ClassVar[int] = 27
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Uncertainty(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 259
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Bearing(Struct):
-    __occid_model_id__: ClassVar[int] = 28
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class GeoPos(Struct):
-    __occid_model_id__: ClassVar[int] = 29
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class LocalPos(Struct):
-    __occid_model_id__: ClassVar[int] = 30
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Line(Struct):
-    __occid_model_id__: ClassVar[int] = 31
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class StructPath(Struct):
-    __occid_model_id__: ClassVar[int] = 32
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Shape(Struct):
-    __occid_model_id__: ClassVar[int] = 33
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Bounding(Struct):
-    __occid_model_id__: ClassVar[int] = 34
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Uncertainty(Struct):
-    __occid_model_id__: ClassVar[int] = 35
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class Pose(Struct):
-    __occid_model_id__: ClassVar[int] = 36
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Range(Struct):
-    __occid_model_id__: ClassVar[int] = 37
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Transform(Struct):
-    __occid_model_id__: ClassVar[int] = 38
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Orbital(Struct):
-    __occid_model_id__: ClassVar[int] = 39
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Time(Measurement):
-    __occid_model_id__: ClassVar[int] = 40
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Time(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 249
+    __occid_semantic_role__: ClassVar[str] = 'type'
     utime: builtins.int
 
-class Duration(Measurement):
-    __occid_model_id__: ClassVar[int] = 41
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class IntID(OCCIDValue[builtins.int]):
+    __occid_model_id__: ClassVar[int] = 108
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class UID(OCCIDValue[Annotated[bytes, Field(strict=True, min_length=16, max_length=16)]]):
+    __occid_model_id__: ClassVar[int] = 258
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Bearing(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 20
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class GeoPos(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 87
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class LocalPos(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 126
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Line(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 119
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class StructPath(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 229
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Shape(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 220
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Bounding(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 23
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Pose(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 188
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Range(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 200
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Transform(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 254
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Orbital(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 171
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+
+class Duration(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 56
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     seconds: builtins.float | None = None
     minutes: builtins.int | None = None
     hours: builtins.int | None = None
@@ -84,9 +85,9 @@ class Duration(Measurement):
     months: builtins.int | None = None
     years: builtins.int | None = None
 
-class Timestamp(Measurement):
-    __occid_model_id__: ClassVar[int] = 42
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Timestamp(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 250
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     seconds: builtins.float
     minutes: builtins.int
     hours: builtins.int
@@ -95,14 +96,14 @@ class Timestamp(Measurement):
     year: builtins.int
     tz: builtins.int
 
-class ItemCount(Measurement):
-    __occid_model_id__: ClassVar[int] = 43
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ItemCount(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 115
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     item_type: builtins.str
     qty: builtins.int = 0
 
-class NumericRange(Range):
-    __occid_model_id__: ClassVar[int] = 44
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class NumericRange(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 166
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     min_value: builtins.float | None = None
     max_value: builtins.float | None = None

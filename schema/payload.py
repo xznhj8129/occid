@@ -3,10 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .attribute import Attribute
-from .object import Item
-from .property import MetadataValue
-
 ### Enums
 
 class SensorType(IntEnum):
@@ -52,14 +48,16 @@ class SensorFrustumShape(IntEnum):
 
 ### Models
 
-class Payload(Item):
+class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 233
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 176
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
 
-class SensorPayload(Payload):
-    __occid_model_id__: ClassVar[int] = 234
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SensorPayload(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 218
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
     name: builtins.str
     model: builtins.str
     type: SensorType
@@ -77,28 +75,66 @@ class SensorPayload(Payload):
     field_of_view: SensorFieldOfView | None = None
     zoom_range: NumericRange | None = None
 
-class MeasurementQuality(MetadataValue):
-    __occid_model_id__: ClassVar[int] = 235
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MeasurementQuality(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 134
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    str: builtins.str | None = None
+    int: builtins.int | None = None
+    float: builtins.float | None = None
+    bool: builtins.bool | None = None
     lat_err_m: builtins.float | None = None
     az_err_deg: builtins.float | None = None
     range_err_m: builtins.float | None = None
 
-class ImageSensor(SensorPayload):
-    __occid_model_id__: ClassVar[int] = 236
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ImageSensor(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 105
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    name: builtins.str
+    model: builtins.str
+    type: SensorType
+    serial_number: builtins.str | None = None
+    effect_domain: EffectDomain
+    max_range: builtins.float
+    ptz: builtins.bool
+    spectrum: SensorSpectrum
+    all_weather: builtins.bool
+    weather_limits: WeatherLimits
+    error_margin: builtins.float
+    error_type: SensorErrorType
+    data_formats: list[SensorDataFormat]
+    ai: list[SensorAICapability]
+    field_of_view: SensorFieldOfView | None = None
+    zoom_range: NumericRange | None = None
     fov: SensorFieldOfView | None = None
     night_vision: builtins.bool
 
-class RFSensor(SensorPayload):
-    __occid_model_id__: ClassVar[int] = 237
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class RFSensor(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 197
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
+    name: builtins.str
+    model: builtins.str
+    type: SensorType
+    serial_number: builtins.str | None = None
+    effect_domain: EffectDomain
+    max_range: builtins.float
+    ptz: builtins.bool
+    spectrum: SensorSpectrum
+    all_weather: builtins.bool
+    weather_limits: WeatherLimits
+    error_margin: builtins.float
+    error_type: SensorErrorType
+    data_formats: list[SensorDataFormat]
+    ai: list[SensorAICapability]
+    field_of_view: SensorFieldOfView | None = None
+    zoom_range: NumericRange | None = None
     frustum_shape: SensorFrustumShape | None = None
     freq_span: NumericRange | None = None
     chan_bw: builtins.float | None = None
 
-class SensorFieldOfView(Attribute):
-    __occid_model_id__: ClassVar[int] = 238
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SensorFieldOfView(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 217
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     horizontal: NumericRange | None = None
     vertical: NumericRange | None = None

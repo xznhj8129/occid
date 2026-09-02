@@ -3,47 +3,79 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .message import Message
-
 ### Models
 
-class TelemetryMessage(Message):
+class TelemetryMessage(OCCIDModel):
     'Message whose payload reports sender or asset state'
-    __occid_model_id__: ClassVar[int] = 208
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    state: SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | FlightSensorConfiguration | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | LinkState | MeshLink | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]
+    __occid_model_id__: ClassVar[int] = 248
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
 
-class UAVTelemetryMessage(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 209
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class UAVTelemetryMessage(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 257
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
     state: EntityState
 
-class CapabilityAdvert(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 210
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class CapabilityAdvert(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 26
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
     node_uid: UID
     roles: list[CapabilityRole]
     link_refs: list[builtins.str]
     sensor_refs: list[builtins.str]
     payload_refs: list[builtins.str]
 
-class StateDelta(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 211
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class StateDelta(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 227
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
     entity_uid: UID
-    changed_fields: dict[builtins.str, SerializeAsAny[State | Kinematic | ImuSample | Internal | FirmwareInfo | RuntimeLoadState | Position | LocationState | SpotterOrigin | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | SensorState | TrackerState | FlightSensorConfiguration | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | LinkState | MeshLink | Activation | Validation | Cue | Lifecycle | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | EntityState]]
+    changed_fields: dict[builtins.str, LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
 
-class TransportCounters(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 212
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class TransportCounters(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 255
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
     rx_count: builtins.int = 0
     tx_count: builtins.int = 0
     parse_error_count: builtins.int = 0
     dropped_count: builtins.int = 0
 
-class TransportError(TelemetryMessage):
-    __occid_model_id__: ClassVar[int] = 213
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class TransportError(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 256
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
     error: NetworkError
     source_address: NetworkAddress | None = None
     payload: ProtocolPayload | None = None

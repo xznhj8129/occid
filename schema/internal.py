@@ -3,24 +3,22 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Models
 
-class Internal(State):
+class Internal(OCCIDModel):
     'Diagnostic internals of a machine or system.'
-    __occid_model_id__: ClassVar[int] = 157
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 110
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class FirmwareInfo(Internal):
-    __occid_model_id__: ClassVar[int] = 158
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FirmwareInfo(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 72
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     name: builtins.str
     version: Version
     build: builtins.str | None = None
 
-class RuntimeLoadState(Internal):
-    __occid_model_id__: ClassVar[int] = 159
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class RuntimeLoadState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 213
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     cpu_load: builtins.int | None = None
     cycle_time_us: builtins.int | None = None

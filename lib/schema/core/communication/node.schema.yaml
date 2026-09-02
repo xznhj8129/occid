@@ -18,11 +18,11 @@ enums:
 models:
   Node:
     description: Deployed compute and communications endpoint participating in OCCID on behalf of an Entity
-    semantic_role: ontology
+    semantic_role: concept
     parent: Communication
     fields:
       uid: UID
-      id: int
+      id: IntID(Node)
       entity_uid: optional UID
       roles: list[CapabilityRole]
       addresses: list[NetworkAddress]

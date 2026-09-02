@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate OCCID reference outputs and structural fingerprints."""
+"""Regenerate OCCID compiled schema, Python runtime, and structural marker."""
 from __future__ import annotations
 
 import subprocess
@@ -21,6 +21,7 @@ INTEGER_ID_TYPES = {
     "uint16",
     "uint32",
     "uint64",
+    "IntID",
 }
 
 
@@ -58,9 +59,35 @@ def _declared_type(field_spec: object) -> str:
     return type_text
 
 
+def _is_integer_id_type(type_text: str) -> bool:
+    import generate_pydantic as idl
+
+    try:
+        node = idl.TypeParser(type_text).parse()
+    except idl.SchemaError:
+        return False
+    if node.kind == "name":
+        return node.name in INTEGER_ID_TYPES
+    return node.kind == "semantic" and node.name == "IntID" and len(node.semantic_args) == 1
+
+
+def _is_integer_id_list(type_text: str) -> bool:
+    import generate_pydantic as idl
+
+    try:
+        node = idl.TypeParser(type_text).parse()
+    except idl.SchemaError:
+        return False
+    if node.kind != "list" or len(node.args) != 1:
+        return False
+    item = node.args[0]
+    if item.kind == "name":
+        return item.name in INTEGER_ID_TYPES
+    return item.kind == "semantic" and item.name == "IntID" and len(item.semantic_args) == 1
+
+
 def validate_identity_field_types() -> None:
-    """Enforce OCCID's UID and class-local integer ID naming law."""
-    integer_lists = {f"list[{type_name}]" for type_name in INTEGER_ID_TYPES}
+    """Enforce OCCID's UID and integer ID naming law."""
     violations: list[str] = []
     for path in sorted(SCHEMA_ROOT.rglob("*.schema.yaml")):
         document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -84,14 +111,14 @@ def validate_identity_field_types() -> None:
                     continue
 
                 if field_name == "id" or field_name.endswith("_id"):
-                    if type_text not in INTEGER_ID_TYPES:
+                    if not _is_integer_id_type(type_text):
                         violations.append(
                             f"{path}: {model_name}.{field_name} must be an integer ID, not {type_text}; "
                             "rename strings and external identifiers as refs, codes, names, addresses, or other truthful values"
                         )
                     continue
 
-                if field_name.endswith("_ids") and type_text not in integer_lists:
+                if field_name.endswith("_ids") and not _is_integer_id_list(type_text):
                     violations.append(
                         f"{path}: {model_name}.{field_name} must be a list of integer IDs, not {type_text}; "
                         "use *_uids for UID references or rename non-identity values"
@@ -101,19 +128,21 @@ def validate_identity_field_types() -> None:
         raise SystemExit("OCCID identity field violations:\n" + "\n".join(violations))
 
 
-def main() -> None:
-    validate_enum_scalars()
-    validate_identity_field_types()
-
+def run(script: str, *args: str) -> None:
     subprocess.run(
-        [sys.executable, str(REPO_ROOT / "generate_pydantic.py"), "--all-modules"],
+        [sys.executable, str(REPO_ROOT / script), *args],
         cwd=REPO_ROOT,
         check=True,
     )
 
-    # This marker belongs to the OCCID module being generated. Consumer tools
-    # use it only through their actually imported OCCID module. The helper also
-    # refreshes the package-data copy installed by non-editable distributions.
+
+def main() -> None:
+    validate_enum_scalars()
+    validate_identity_field_types()
+
+    run("compile_occid.py")
+    run("generate_pydantic.py")
+
     from occid.contract import write_occid_marker
 
     write_occid_marker(REPO_ROOT)

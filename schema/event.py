@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .data import Data
-
 ### Enums
 
 class AirMissionEvent(IntEnum):
@@ -29,16 +27,18 @@ class AirMissionEvent(IntEnum):
 
 ### Models
 
-class Event(Data):
+class Event(OCCIDModel):
     'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
     __occid_model_id__: ClassVar[int] = 66
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
 
-class FlightEvent(Event):
-    __occid_model_id__: ClassVar[int] = 67
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class FlightEvent(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 75
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
 
-class MissionEvent(Event):
-    __occid_model_id__: ClassVar[int] = 68
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MissionEvent(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 154
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record

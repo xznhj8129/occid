@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .communication import Communication
-
 ### Enums
 
 class CapabilityRole(IntFlag):
@@ -17,15 +15,15 @@ class CapabilityRole(IntFlag):
 
 ### Models
 
-class Node(Communication):
+class Node(OCCIDModel):
     'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
-    __occid_model_id__: ClassVar[int] = 83
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+    __occid_model_id__: ClassVar[int] = 164
+    __occid_semantic_role__: ClassVar[str] = 'type'
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Node')]
     entity_uid: UID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
-    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile]]
+    links: dict[builtins.str, Link]
     radios: dict[builtins.str, RadioProfile]
-    protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]
+    protocols: dict[builtins.str, Protocol]

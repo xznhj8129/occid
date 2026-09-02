@@ -3,9 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .communication import Communication
-from .struct import Struct
-
 ### Enums
 
 class DeliveryState(IntEnum):
@@ -61,40 +58,49 @@ class ConflictPolicy(IntEnum):
 
 ### Models
 
-class Message(Communication):
-    'Transmitted envelope plus payload'
-    __occid_model_id__: ClassVar[int] = 76
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class ResponseMessage(OCCIDModel):
+    'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
+    __occid_model_id__: ClassVar[int] = 208
+    __occid_semantic_role__: ClassVar[str] = 'type'
     src: MessageTarget
     dst: MessageTarget
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
-
-class MessageTarget(Struct):
-    __occid_model_id__: ClassVar[int] = 77
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    target_uid: UID
-
-class ResponseMessage(Message):
-    'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 78
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
     seq_reply: builtins.int | None = None
     response_to: builtins.str | None = None
 
-class DeliveryReceipt(ResponseMessage):
-    __occid_model_id__: ClassVar[int] = 79
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MessageTarget(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 143
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    target_uid: UID
+
+class DeliveryReceipt(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 50
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    seq_reply: builtins.int | None = None
+    response_to: builtins.str | None = None
     node_uid: UID
     delivery_state: DeliveryState
     seen_ts: builtins.float | None = None
     exec_ts: builtins.float | None = None
     error_code: builtins.str | None = None
 
-class MessageTransferResult(ResponseMessage):
-    __occid_model_id__: ClassVar[int] = 80
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class MessageTransferResult(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 144
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    seq_reply: builtins.int | None = None
+    response_to: builtins.str | None = None
     target_count: builtins.int = 0
     bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None

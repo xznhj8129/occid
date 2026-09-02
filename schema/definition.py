@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .root import Root
-
 ### Enums
 
 class ConfidenceLevel(IntEnum):
@@ -95,43 +93,38 @@ class Faction(IntEnum):
 
 ### Models
 
-class Definition(Root):
-    'Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.'
-    __occid_model_id__: ClassVar[int] = 5
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Frame(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 80
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Frame(Definition):
-    __occid_model_id__: ClassVar[int] = 6
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class DefinitionRelationship(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 48
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Coordinate(Definition):
-    __occid_model_id__: ClassVar[int] = 7
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class SemanticType(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 216
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
-class Geometry(Definition):
-    __occid_model_id__: ClassVar[int] = 8
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Coordinate(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 43
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class DefinitionRelationship(Definition):
-    __occid_model_id__: ClassVar[int] = 9
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Geometry(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 88
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class SemanticType(Definition):
-    __occid_model_id__: ClassVar[int] = 10
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
+class Category(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 27
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class Category(SemanticType):
-    __occid_model_id__: ClassVar[int] = 11
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Role(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 212
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class Role(SemanticType):
-    __occid_model_id__: ClassVar[int] = 12
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Function(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 83
+    __occid_semantic_role__: ClassVar[str] = 'representation'
 
-class Function(SemanticType):
-    __occid_model_id__: ClassVar[int] = 13
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-
-class Domain(SemanticType):
-    __occid_model_id__: ClassVar[int] = 14
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class Domain(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 54
+    __occid_semantic_role__: ClassVar[str] = 'representation'

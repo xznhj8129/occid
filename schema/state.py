@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .data import Data
-
 ### Enums
 
 class ObservationTimeBasis(IntEnum):
@@ -14,16 +12,11 @@ class ObservationTimeBasis(IntEnum):
 
 ### Models
 
-class State(Data):
-    'Changing condition of an object, node, link, task, system, or process'
-    __occid_model_id__: ClassVar[int] = 123
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-
-class EntityState(State):
+class EntityState(OCCIDModel):
     'Time-indexed mutable condition reported for an entity independently of its identity and specification'
-    __occid_model_id__: ClassVar[int] = 280
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 61
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     subject_uid: UID
     timestamp: builtins.float
     position: LocationState | None = None
@@ -36,7 +29,7 @@ class EntityState(State):
     lifecycle_status: EntityLifecycleStatus | None = None
     health: HealthSnapshot | None = None
     resources: SuppliesSchema | None = None
-    link_states: dict[builtins.str, SerializeAsAny[LinkState | MeshLink]]
+    link_states: dict[builtins.str, LinkState]
     control_state: ControlLevel | None = None
     source_observation_ts: builtins.float | None = None
     source_time_basis: ObservationTimeBasis | None = None

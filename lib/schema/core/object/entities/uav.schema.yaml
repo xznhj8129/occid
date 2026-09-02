@@ -7,7 +7,7 @@ tags:
 
 models:
   AirRobot:
-    semantic_role: specialization
+    semantic_role: representation
     parent: AirMachine
     description: "Any type of flying drone"
     fields:
@@ -16,7 +16,7 @@ models:
       remote_control: RemoteControlSchema
 
   Drone:
-    semantic_role: specialization
+    semantic_role: representation
     parent: AirRobot
     fields:
       airframe: AirframeType = COPTER

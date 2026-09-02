@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .root import Root
-
 ### Enums
 
 class PlannerPointType(IntEnum):
@@ -44,10 +42,3 @@ class AirGroupFormation2DType(IntEnum):
     ECHELON_RIGHT = auto()
     STAGG_TRAIL_LEFT = auto()
     STAGG_TRAIL_RIGHT = auto()
-
-### Models
-
-class Control(Root):
-    'Desired outcomes and directed work'
-    __occid_model_id__: ClassVar[int] = 2
-    __occid_semantic_role__: ClassVar[str] = 'ontology'

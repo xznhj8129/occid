@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .state import State
-
 ### Enums
 
 class ExecutionPhase(IntEnum):
@@ -17,13 +15,13 @@ class ExecutionPhase(IntEnum):
 
 ### Models
 
-class Execution(State):
+class Execution(OCCIDModel):
     'One execution attempt for an assignment, independently tracked across local and external executors'
-    __occid_model_id__: ClassVar[int] = 281
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 67
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    record: Record
     uid: UID
-    id: builtins.int
+    id: Annotated[IntID, IDNamespace('Execution')]
     assignment_uid: UID
     executor_uid: UID
     attempt: builtins.int = 0
@@ -31,14 +29,14 @@ class Execution(State):
     progress: builtins.float | None = None
     started_at: builtins.float | None = None
     completed_at: builtins.float | None = None
-    result: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    result: MetadataValue | None = None
     failure: builtins.str | None = None
     external_job_refs: list[builtins.str]
 
-class ExecutionAcceptance(State):
+class ExecutionAcceptance(OCCIDModel):
     'Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery and from execution completion'
-    __occid_model_id__: ClassVar[int] = 298
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 68
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     execution_uid: UID
     dispatch_ref: builtins.str
     executor_uid: UID
@@ -47,10 +45,10 @@ class ExecutionAcceptance(State):
     reason: builtins.str | None = None
     reported_at: builtins.float
 
-class ExecutionStatusReport(State):
+class ExecutionStatusReport(OCCIDModel):
     'Executor report for one exact execution dispatch; may report that no retained status exists and is distinct from transport delivery evidence'
-    __occid_model_id__: ClassVar[int] = 300
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+    __occid_model_id__: ClassVar[int] = 70
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     execution_uid: UID
     dispatch_ref: builtins.str
     executor_uid: UID
@@ -62,11 +60,11 @@ class ExecutionStatusReport(State):
     failure: builtins.str | None = None
     reported_at: builtins.float
 
-class TaskDelta(State):
+class TaskDelta(OCCIDModel):
     'Time-indexed task-state update; not an assignment definition'
-    __occid_model_id__: ClassVar[int] = 131
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
-    record: RecordMeta
+    __occid_model_id__: ClassVar[int] = 242
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
     task_uid: UID
     task_rev: builtins.int = 0
     phase: TaskPhase

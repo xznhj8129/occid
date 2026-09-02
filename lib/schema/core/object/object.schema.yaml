@@ -7,7 +7,7 @@ tags:
 models:
   Object:
     description: Atoms
-    semantic_role: ontology
+    semantic_role: concept
     parent: Root
     variants:
       - Entity
@@ -18,7 +18,7 @@ models:
       capabilities: optional list[Capability]
 
   Set:
-    semantic_role: ontology
+    semantic_role: concept
     parent: Object
     variants:
       - Organization
@@ -27,17 +27,17 @@ models:
 
   Collection:
     description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
-    semantic_role: ontology
+    semantic_role: concept
     parent: Set
 
   Cluster:
     description: A set of objects united only by criterion
-    semantic_role: ontology
+    semantic_role: concept
     parent: Set
 
   Item:
     description: A discrete bounded non-agent object
-    semantic_role: ontology
+    semantic_role: concept
     parent: Object
     variants:
       - Equipment
@@ -45,16 +45,16 @@ models:
       - Payload
 
   Equipment:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Item
 
   Component:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Item
 
   Location:
     description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
-    semantic_role: ontology
+    semantic_role: concept
     parent: Object
     variants:
       - Mark
@@ -62,36 +62,36 @@ models:
       - Region
       - Boundary
     fields:
-      record: RecordMeta
+      record: Record
       uid: UID
-      id: int
+      id: IntID(Location)
       name: optional string
       symbology: optional SymbologySchema
 
   Mark:
     description: Identified point reference in physical space
-    semantic_role: ontology
+    semantic_role: concept
     parent: Location
     fields:
       position: GlobalPosition
 
   Path:
     description: Identified ordered spatial course or trace
-    semantic_role: ontology
+    semantic_role: concept
     parent: Location
     fields:
       path: GeoPath
 
   Region:
     description: Identified bounded spatial area
-    semantic_role: ontology
+    semantic_role: concept
     parent: Location
     fields:
       area: GeoArea
 
   Boundary:
     description: Identified spatial line that delimits, separates, or gates space
-    semantic_role: ontology
+    semantic_role: concept
     parent: Location
     fields:
       path: GeoPath

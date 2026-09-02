@@ -8,13 +8,13 @@ tags:
 models:
   ObservationMessage:
     description: Message whose payload reports external objects, events, environment, or intelligence
-    semantic_role: ontology
+    semantic_role: concept
     parent: Message
     fields:
       observation: Observation
 
   ProtocolEventMessage:
-    semantic_role: specialization
+    semantic_role: representation
     parent: ObservationMessage
     fields:
       event_ref: string

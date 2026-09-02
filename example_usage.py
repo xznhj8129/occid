@@ -6,7 +6,7 @@ as code in one small operational scenario.
 
 Identity rule:
 
-    UID = UUIDv4, globally unique, immutable machine identity
+    UID = exact 16-byte OCCID identity value; this example allocates it with UUIDv4
     ID  = sequential integer scoped to the semantic OCCID class
 
 Entity 38, Track 38, and Task 38 are unrelated class-local IDs. Their UIDs are
@@ -25,6 +25,7 @@ import uuid
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from uuid import UUID
 
 from interop.cot import CotPointFields, cot_point_to_location_state
 from interop.mavsdk import (
@@ -34,9 +35,12 @@ from interop.mavsdk import (
 )
 from occid import (
     AddressKind,
+    AirNavigationSchema,
+    AirframeType,
     AltitudeDatum,
     Assignment,
     AssignmentStatus,
+    AutopilotType,
     CapabilityRole,
     CommandMessage,
     ConfidenceLevel,
@@ -45,15 +49,15 @@ from occid import (
     DeliveryReceipt,
     DeliveryState,
     DirectedRelationship,
-    Entity,
+    Drone,
     EntityState,
-    EntityType,
     Execution,
     ExecutionAcceptance,
     ExecutionCommand,
     ExecutionOperation,
     ExecutionPhase,
     ExecutionStatusReport,
+    FirmwareInfo,
     GlobalPosition,
     Group,
     IdentityBootstrap,
@@ -69,6 +73,8 @@ from occid import (
     MessageTarget,
     MotionCommand,
     MotionOperation,
+    NavAids,
+    NavigationMode,
     NetworkAddress,
     Node,
     Objective,
@@ -79,9 +85,13 @@ from occid import (
     OrgType,
     Plan,
     PlanApprovalState,
+    Person,
     PlanStep,
+    PropulsionType,
     RecordMeta,
     RelationshipKind,
+    RemoteControlSchema,
+    RobotController,
     SpotterOrigin,
     TaskDelta,
     TaskInformation,
@@ -96,6 +106,8 @@ from occid import (
     UAVTelemetryMessage,
     Unit,
     VelocityVector,
+    Version,
+    WeatherLimits,
 )
 
 
@@ -146,8 +158,11 @@ MAVLINK_GLOBAL_POSITION_INT_CRC_EXTRA = 104
 
 
 def new_uid() -> UID:
-    return UID(bytes=uuid.uuid4().bytes)
+    return UID(uuid.uuid4().bytes)
 
+
+def uid_str(uid: UID) -> str:
+    return str(UUID(bytes=uid.root))
 
 @dataclass
 class ClassIDRegistry:
@@ -394,30 +409,60 @@ def main() -> None:
         organization_id=uas_unit.id,
     )
 
-    operator = Entity(
+    operator = Person(
         record=record(registry, "provisioning"),
         uid=hq_identity.entity_uid,
         id=hq_identity.entity_id,
         node_uids=[hq_identity.node_uid],
         name="Mission Operator",
         callsign="FROG-OPS",
-        entity_type=EntityType.PERSON,
         tags=["OPERATOR"],
         metadata={},
         relations=[],
+        role="operator",
+        navigation=NavigationMode.MANUAL,
+        navaids=[],
+        sensors={},
     )
 
-    uav = Entity(
+    uav = Drone(
         record=record(registry, "provisioning"),
         uid=uav_identity.entity_uid,
         id=uav_identity.entity_id,
         node_uids=[uav_identity.node_uid],
         name="Frog UAV 38",
         callsign="FROG-38",
-        entity_type=EntityType.MACHINE,
         tags=["UAV", "ISR"],
         metadata={},
         relations=[],
+        propulsion=PropulsionType.ROTARY_WING,
+        components=[],
+        model="Frog UAV",
+        sensors={},
+        navigation=AirNavigationSchema(
+            flight_type=AirframeType.COPTER,
+            control_modes=[],
+            weather_limits=WeatherLimits(),
+            propulsion=PropulsionType.ROTARY_WING,
+            navigation=NavigationMode.GNSS,
+            navaids=[NavAids.GNSS],
+            max_range=0.0,
+            max_flight_t=0.0,
+            max_spd=0.0,
+            cruise_spd=0.0,
+            max_alt=0.0,
+        ),
+        controller=RobotController(
+            autopilot_type=AutopilotType.PX4,
+            autopilot_firmware=FirmwareInfo(
+                name="PX4",
+                version=Version(major=1, minor=0, patch=0),
+            ),
+        ),
+        remote_control=RemoteControlSchema(
+            channel_map=[],
+            mode_ranges=[],
+        ),
     )
 
     # -----------------------------------------------------------------------
@@ -926,14 +971,14 @@ def main() -> None:
     # Human-readable walkthrough summary
     # -----------------------------------------------------------------------
     print("1. UID and class-local ID")
-    print(f"   Entity {uav.id:>2}: UID {uav.uid}")
-    print(f"   Track  {track.id:>2}: UID {track.uid}")
-    print(f"   Task   {task.id:>2}: UID {task.uid}")
+    print(f"   Entity {uav.id:>2}: UID {uid_str(uav.uid)}")
+    print(f"   Track  {track.id:>2}: UID {uid_str(track.uid)}")
+    print(f"   Task   {task.id:>2}: UID {uid_str(task.uid)}")
     print("   Same integer ID is valid across different classes; UIDs never collide.")
 
     print("\n2. Identity provisioning")
-    print(f"   Organization {task_force.id}: {task_force.uid}  {task_force.name}")
-    print(f"   Organization {uas_unit.id}: {uas_unit.uid}  {uas_unit.name}")
+    print(f"   Organization {task_force.id}: {uid_str(task_force.uid)}  {task_force.name}")
+    print(f"   Organization {uas_unit.id}: {uid_str(uas_unit.uid)}  {uas_unit.name}")
     print(
         f"   HQ bootstrap:  Node {hq_identity.node_id} -> "
         f"Entity {hq_identity.entity_id} -> Organization {hq_identity.organization_id}"
@@ -942,37 +987,37 @@ def main() -> None:
         f"   UAV bootstrap: Node {uav_identity.node_id} -> "
         f"Entity {uav_identity.entity_id} -> Organization {uav_identity.organization_id}"
     )
-    print(f"   Entity {operator.id}:       {operator.uid}  {operator.callsign}")
-    print(f"   Entity {uav.id}:       {uav.uid}  {uav.callsign}")
-    print(f"   Node {hq_node.id}:         {hq_node.uid}")
-    print(f"   Node {uav_node.id}:         {uav_node.uid}")
+    print(f"   Entity {operator.id}:       {uid_str(operator.uid)}  {operator.callsign}")
+    print(f"   Entity {uav.id}:       {uid_str(uav.uid)}  {uav.callsign}")
+    print(f"   Node {hq_node.id}:         {uid_str(hq_node.uid)}")
+    print(f"   Node {uav_node.id}:         {uid_str(uav_node.uid)}")
 
     print("\n3. Organization and chain of command")
     for relationship in relationships:
         print(
-            f"   {relationship.subject_uid} "
+            f"   {uid_str(relationship.subject_uid)} "
             f"--{relationship.relation.name.lower()}--> "
-            f"{relationship.object_uid}"
+            f"{uid_str(relationship.object_uid)}"
         )
 
     print("\n4. Communications")
-    print(f"   HQ Node {hq_node.id}:          {hq_node.uid} @ {hq_node.addresses[0].value}")
-    print(f"   UAV Node {uav_node.id}:         {uav_node.uid} @ {uav_node.addresses[0].value}")
+    print(f"   HQ Node {hq_node.id}:          {uid_str(hq_node.uid)} @ {hq_node.addresses[0].value}")
+    print(f"   UAV Node {uav_node.id}:         {uid_str(uav_node.uid)} @ {uav_node.addresses[0].value}")
     print(
         "   Message route:        "
-        f"{start_message.src.target_uid} -> {start_message.dst.target_uid}"
+        f"{uid_str(start_message.src.target_uid)} -> {uid_str(start_message.dst.target_uid)}"
     )
 
     print("\n5. External identity mapping")
     print(
         f"   CoT uid {cot.uid} -> Track {track.id} / "
-        f"{external_identity_map[f'cot.uid:{cot.uid}']}"
+        f"{uid_str(external_identity_map[f'cot.uid:{cot.uid}'])}"
     )
     print(f"   Source callsign:       {cot.callsign}")
     print(
         f"   MAVLink {mavlink.system_id}:{mavlink.component_id} -> "
         f"Entity {uav.id} / "
-        f"{external_identity_map[f'mavlink:{mavlink.system_id}:{mavlink.component_id}']}"
+        f"{uid_str(external_identity_map[f'mavlink:{mavlink.system_id}:{mavlink.component_id}'])}"
     )
 
     print("\n6. Initial operational picture")
@@ -981,32 +1026,32 @@ def main() -> None:
         "   Reported position:    "
         f"{source_observation.position.lat:.6f}, {source_observation.position.lon:.6f}"
     )
-    print(f"   Initial UAV subject:   {initial_uav_state.subject_uid}")
+    print(f"   Initial UAV subject:   {uid_str(initial_uav_state.subject_uid)}")
 
     print("\n7. Authority")
-    print(f"   Authority {control_lease.id}:         {control_lease.uid}")
-    print(f"   Holder UID:           {control_lease.holder_uid}")
-    print(f"   Granted-by UID:       {control_lease.granted_by_uid}")
-    print(f"   Asset UID:            {control_lease.asset_uid}")
+    print(f"   Authority {control_lease.id}:         {uid_str(control_lease.uid)}")
+    print(f"   Holder UID:           {uid_str(control_lease.holder_uid)}")
+    print(f"   Granted-by UID:       {uid_str(control_lease.granted_by_uid)}")
+    print(f"   Asset UID:            {uid_str(control_lease.asset_uid)}")
     print(f"   Control level:        {control_lease.control_level.name}")
 
     print("\n8. Mission control graph")
-    print(f"   Objective {objective.id}:        {objective.uid}")
-    print(f"   Task {task.id}:             {task.uid}")
-    print(f"   Assignment {assignment.id}:       {assignment.uid}")
-    print(f"   Plan {plan.id}:             {plan.uid}")
-    print(f"   Assigned Entity UID:   {assignment.assignee_uid}")
-    print(f"   Executor Node UID:     {execution.executor_uid}")
-    print(f"   Execution {execution.id}:        {execution.uid}")
+    print(f"   Objective {objective.id}:        {uid_str(objective.uid)}")
+    print(f"   Task {task.id}:             {uid_str(task.uid)}")
+    print(f"   Assignment {assignment.id}:       {uid_str(assignment.uid)}")
+    print(f"   Plan {plan.id}:             {uid_str(plan.uid)}")
+    print(f"   Assigned Entity UID:   {uid_str(assignment.assignee_uid)}")
+    print(f"   Executor Node UID:     {uid_str(execution.executor_uid)}")
+    print(f"   Execution {execution.id}:        {uid_str(execution.uid)}")
 
     print("\n9. Dispatch and executor acceptance")
-    print(f"   Command target UID:    {start_message.command.target_uid}")
+    print(f"   Command target UID:    {uid_str(start_message.command.target_uid)}")
     print(f"   Dispatch ref:          {start_message.command.dispatch_ref}")
     print(f"   Delivery state:        {delivery_receipt.delivery_state.name}")
     print(f"   Executor accepted:     {acceptance.accepted}")
 
     print("\n10. Concrete vehicle action")
-    print(f"   Motion target UID:     {move.target_uid}")
+    print(f"   Motion target UID:     {uid_str(move.target_uid)}")
     print(
         "   MAVSDK goto:          "
         f"{outbound_goto.latitude_deg:.6f}, {outbound_goto.longitude_deg:.6f}, "
@@ -1018,7 +1063,7 @@ def main() -> None:
         "   MAVLink ownship:      "
         f"{mavlink_moving.latitude_deg:.6f}, {mavlink_moving.longitude_deg:.6f}"
     )
-    print(f"   OCCID subject UID:     {uav_state.subject_uid}")
+    print(f"   OCCID subject UID:     {uid_str(uav_state.subject_uid)}")
     print(f"   OCCID telemetry route: Node {uav_node.id} -> Node {hq_node.id}")
 
     print("\n12. OCCID execution/task report")
@@ -1027,7 +1072,7 @@ def main() -> None:
 
     print("\n13. Spotted")
     print(f"   Observation {first_spot.id}:     {first_spot.observation_kind.name}")
-    print(f"   Correlates to Track:  {track.id} / {first_spot.track_uid}")
+    print(f"   Correlates to Track:  {track.id} / {uid_str(first_spot.track_uid)}")
     print(f"   Confidence:           {first_spot.confidence.name}")
 
     print("\n14. Tracking")
@@ -1035,11 +1080,11 @@ def main() -> None:
         f"   Observation {tracking_observation.id}:     "
         f"{tracking_observation.observation_kind.name}"
     )
-    print(f"   Same Track UID:       {tracking_observation.track_uid}")
+    print(f"   Same Track UID:       {uid_str(tracking_observation.track_uid)}")
     print(f"   Confidence:           {tracking_observation.confidence.name}")
 
     print("\n15. Maintained contact information")
-    print(f"   Track {track.id}:             {track.uid}")
+    print(f"   Track {track.id}:             {uid_str(track.uid)}")
     print(f"   State:                {track_update.track_state.name}")
     print(f"   Confidence:           {track_update.confidence.name}")
     print(f"   Observations:         {len(track_observations)}")

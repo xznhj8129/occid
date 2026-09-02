@@ -7,9 +7,9 @@ from pydantic import ValidationError
 from occid import IsrObservation, ObservationKind, RecordMeta, VisionDetection
 
 
-RECORD_UID = "371d676a-c17a-4f37-a8de-29b58465f8c8"
-OBSERVATION_UID = "fe21b7f4-8458-40be-a224-903044423afa"
-TRACK_UID = "00909d7d-8df8-4363-b45e-733ff63fc49f"
+RECORD_UID = bytes.fromhex("371d676ac17a4f37a8de29b58465f8c8")
+OBSERVATION_UID = bytes.fromhex("fe21b7f4845840bea224903044423afa")
+TRACK_UID = bytes.fromhex("00909d7d8df84363b45e733ff63fc49f")
 
 
 def record() -> RecordMeta:
@@ -33,8 +33,8 @@ class ObservationIdentityTests(unittest.TestCase):
             obs_ts=1.0,
             observation_kind=ObservationKind.TRACK,
         )
-        self.assertEqual(str(observation.uid), OBSERVATION_UID)
-        self.assertEqual(str(observation.track_uid), TRACK_UID)
+        self.assertEqual(observation.uid.root, OBSERVATION_UID)
+        self.assertEqual(observation.track_uid.root, TRACK_UID)
 
         with self.assertRaises(ValidationError):
             IsrObservation(

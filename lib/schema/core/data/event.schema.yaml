@@ -29,18 +29,18 @@ enums:
 models:
   Event:
     description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data
-    semantic_role: ontology
+    semantic_role: concept
     parent: Data
     variants:
       - FlightEvent
       - MissionEvent
     fields:
-      record: RecordMeta
+      record: Record
 
   FlightEvent:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Event
 
   MissionEvent:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Event

@@ -3,19 +3,28 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .message import Message
-
 ### Models
 
-class ObservationMessage(Message):
+class ObservationMessage(OCCIDModel):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 160
-    __occid_semantic_role__: ClassVar[str] = 'ontology'
-    observation: SerializeAsAny[Observation | Detection | VisionBox | VisionDetection | VisionDetectionFrame | Classification | Track | TrackUpdate | Assessment | IsrResult | IsrObservation]
+    __occid_model_id__: ClassVar[int] = 168
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    observation: Classification | Track | Assessment | IsrResult | Detection | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
 
-class ProtocolEventMessage(ObservationMessage):
-    __occid_model_id__: ClassVar[int] = 161
-    __occid_semantic_role__: ClassVar[str] = 'specialization'
+class ProtocolEventMessage(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 195
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    src: MessageTarget
+    dst: MessageTarget
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    observation: Classification | Track | Assessment | IsrResult | Detection | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
     event_ref: builtins.str
     event_type: builtins.str
     event_method: builtins.str | None = None

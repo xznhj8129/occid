@@ -9,18 +9,18 @@ models:
 
   Attribute:
     description: Fundamental characteristics, type, form
-    semantic_role: ontology
+    semantic_role: concept
     parent: Property
 
   SymbologySchema:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Attribute
     fields:
       sidc: optional string
       cot: optional string
 
   DisplayMeta:
-    semantic_role: specialization
+    semantic_role: representation
     parent: Attribute
     fields:
       icon_code: optional string

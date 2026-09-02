@@ -17,7 +17,7 @@ from occid import (
 )
 
 
-TARGET_UID = UID("93bf5775-604d-4e87-8f2b-ee3675b6e80c")
+TARGET_UID = UID(bytes.fromhex("93bf5775604d4e878f2bee3675b6e80c"))
 
 
 def move_to(position: GlobalPosition) -> MotionCommand:
@@ -73,7 +73,7 @@ class RuntimeSerializationTests(unittest.TestCase):
             strict_map_key=False,
         )
         target_field = tuple(MotionCommand.model_fields).index("target_uid")
-        self.assertEqual(envelope[1][target_field], TARGET_UID.bytes)
+        self.assertEqual(envelope[1][target_field], TARGET_UID.root)
         self.assertEqual(len(envelope[1][target_field]), 16)
 
     def test_compact_wire_contains_no_schema_field_names(self) -> None:
