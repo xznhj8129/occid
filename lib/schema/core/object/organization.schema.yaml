@@ -36,9 +36,13 @@ models:
       name: optional string
       unit_code: optional string
       callsign: optional string
-      orglevel: OrgLevel = GROUP
+      org_level: OrgLevel
+      org_rank: int
       org_type: optional OrgType
       topology: optional OrgTopology
+      elements: list
+      roster: Roster
+      leases: list[AttachmentLease]
 
   Group:
     semantic_role: representation
@@ -51,3 +55,18 @@ models:
     parent: Organization
     fields:
       orglevel: OrgLevel = UNIT
+
+  OrgRole:
+    semantic_role: representation
+    parent: Control
+    fields:
+      role: string # temporary
+      authority: Authority
+      assignment: Assignment
+      rank: int # temporary
+
+  Roster:
+    semantic_role: representation
+    parent: Control
+    fields:
+      roster: map[UID, OrgRole]

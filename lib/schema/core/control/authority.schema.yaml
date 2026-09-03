@@ -26,13 +26,28 @@ models:
       scope_uids: list[UID]
       constraints: list[Constraint]
 
-  ControlLease:
-    description: Time-bounded control right issued under an Authority record
+  Lease:
+    description: Bounded control right issued under an Authority record
     semantic_role: representation
     parent: Authority
     fields:
       asset_uid: UID
+      bound: Condition
+    variants:
+      - AttachmentLease
+      - Controllease
+
+  AttachmentLease:
+    description: Authority lease to an organization
+    semantic_role: representation
+    parent: Lease
+    fields:
+      attachment_uid: UID
+
+  ControlLease:
+    description: Temporary direct control access
+    semantic_role: representation
+    parent: Lease
+    fields:
+      controller: UID
       control_level: ControlLevel
-      lease_start: float
-      lease_end: float
-      lease_rev: int = 0

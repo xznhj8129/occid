@@ -347,6 +347,7 @@ def parse_mavlink_global_position(frame: bytes) -> ParsedMavlinkPosition:
 def main() -> None:
     # Independent class-local ID spaces. The deliberate overlap makes the rule
     # impossible to miss: Entity 38, Track 38, and Task 38 are all valid.
+    # ERRATA/TODO: This needs to go according to "family"
     registry = ClassIDRegistry(
         next_id={
             "Organization": 2,

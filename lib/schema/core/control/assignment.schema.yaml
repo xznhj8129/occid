@@ -17,6 +17,7 @@ enums:
 
 models:
   Assignment:
+    # TODO: wrong, this is a TaskAssignment
     description: Explicit binding of a task to an assignee under stated authority and constraints
     semantic_role: concept
     parent: Control
@@ -26,10 +27,9 @@ models:
       id: IntID(Assignment)
       task_uid: UID
       assignee_uid: UID
-      plan_uid: optional UID
       authority_uid: optional UID
       assigned_by_uid: UID
-      assigned_at: float
+      assigned_at: float #needs a model for assignment/acceptance/status/time
       accepted_at: optional float
       status: AssignmentStatus = PROPOSED
       constraints: list[Constraint]
@@ -42,6 +42,6 @@ models:
       unit_uid: optional UID
       callsign: optional string
       objective_assign: optional int
-      wave_n: int = 0
-      formation_n: int = 0
-      takeoff_time: float = 0.0
+      wave_n: int = 0 #?
+      formation_n: int = 0 #???
+      takeoff_time: float = 0.0 #???

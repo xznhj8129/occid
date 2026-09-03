@@ -111,7 +111,6 @@ models:
       operation: ResourceOperation
       resource_ref: optional string
       quantity: optional float
-      destination_ref: optional string
 
   ExecutionCommand:
     description: Execute, abort, or reset a referenced plan, execution, or executable object
@@ -119,4 +118,3 @@ models:
     parent: Command
     fields:
       operation: ExecutionOperation
-      dispatch_ref: optional string
