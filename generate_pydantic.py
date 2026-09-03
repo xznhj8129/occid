@@ -57,7 +57,9 @@ TOP_LEVEL_KEYS = {
 }
 MAP_KEYS = {"type", "value"}
 COMPILED_TOP_LEVEL_KEYS = {"version", "type", "vocabulary", "types", "representations", "maps"}
-COMPILED_MODEL_KEYS = {"model_id", "package", "description", "type", "fields"}
+# ``family`` is compiler-owned semantic metadata. The Pydantic generator accepts
+# it in the flat contract but deliberately does not expose it on runtime models.
+COMPILED_MODEL_KEYS = {"model_id", "package", "family", "description", "type", "fields"}
 COMPILED_VOCABULARY_KEYS = {"package", "values"}
 COMPILED_MAP_KEYS = {"package", "type", "value"}
 MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields", "variants"}

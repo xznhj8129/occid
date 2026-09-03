@@ -10,8 +10,9 @@ Derived level:
     Type            Concept with no Concept children
 
 The compiled runtime schema contains only Types, Representations, Vocabulary,
-and constant maps. Concept hierarchy, parentage, and variants are consumed by
-this compiler and do not survive into ``occid.yaml``.
+and constant maps. Runtime inheritance, full Concept ancestry, and variants are
+consumed by this compiler and do not survive into ``occid.yaml``. Each emitted
+model retains only its nearest ancestor Concept as ``family``.
 """
 
 from __future__ import annotations
@@ -190,6 +191,26 @@ class Compiler:
         self._effective_field_cache[model_name] = copy.deepcopy(fields)
         return fields
 
+    def model_family(self, model_name: str) -> str:
+        """Return the nearest ancestor Concept of an emitted runtime model."""
+        seen: set[str] = {model_name}
+        current = self.models[model_name].parent
+        while current is not None:
+            if current in seen:
+                raise CompileError(f"model parent cycle involving {current}")
+            seen.add(current)
+
+            parent = self.models.get(current)
+            if parent is None:
+                raise CompileError(f"model {model_name} has unknown parent {current}")
+            if parent.semantic_role == "concept":
+                return current
+            current = parent.parent
+
+        raise CompileError(
+            f"emitted runtime model {model_name} has no ancestor Concept to use as family"
+        )
+
     def lower_named_type(self, name: str) -> idl.TypeNode:
         if name in idl.PRIMITIVE_TYPES or name in self.enum_members:
             return idl.TypeNode(kind="name", name=name)
@@ -257,6 +278,7 @@ class Compiler:
         out: dict[str, object] = {
             "model_id": self.model_ids[model_name],
             "package": self.symbol_index[model_name],
+            "family": self.model_family(model_name),
         }
         if model.description:
             out["description"] = model.description
