@@ -14,7 +14,7 @@ class ObservationMessage(OCCIDModel):
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
-    observation: Classification | Track | Assessment | IsrResult | Detection | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
+    observation: Classification | Track | SerializeAsAny[Assessment | IsrResult] | IsrResult | SerializeAsAny[Detection | VisionBox | VisionDetection | VisionDetectionFrame] | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
 
 class ProtocolEventMessage(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 196
@@ -24,7 +24,7 @@ class ProtocolEventMessage(OCCIDModel):
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
-    observation: Classification | Track | Assessment | IsrResult | Detection | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
+    observation: Classification | Track | SerializeAsAny[Assessment | IsrResult] | IsrResult | SerializeAsAny[Detection | VisionBox | VisionDetection | VisionDetectionFrame] | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
     event_ref: builtins.str
     event_type: builtins.str
     event_method: builtins.str | None = None

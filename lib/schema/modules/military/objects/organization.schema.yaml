@@ -6,9 +6,6 @@ tags:
   - military
 requires:
   - core
-extend_variants:
-  Organization:
-    - MilitaryOrg
 
 enums:
   OOBSize:
@@ -299,18 +296,14 @@ models:
       label: optional string
       qty: int = 0
 
-
   MilitaryOrg:
     semantic_role: representation
     parent: Organization
-    variants:
-      - FlyingOrg
-      - OrbatOrg
+
     fields:
       sidc: optional string
       category: optional NATOUnitCategory
       link_loadout: list[ItemCount]
-
 
   FlyingOrg:
     semantic_role: representation
@@ -320,12 +313,10 @@ models:
       op_domain: OperationalDomain = AIR
       air_units: list[ItemCount]
 
-
   OrbatOrg:
     semantic_role: representation
     parent: MilitaryOrg
-    variants:
-      - GroundOrbatOrg
+
     fields:
       org_layout: OrgLayout = ORBAT
       topology: OrgTopology = HIERARCHICAL
@@ -342,7 +333,6 @@ models:
       vehicles: list[ItemCount]
       equipment: list[ItemCount]
       spacing: float = 0.0
-
 
   GroundOrbatOrg:
     semantic_role: representation

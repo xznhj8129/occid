@@ -10,12 +10,6 @@ models:
     description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
     semantic_role: concept
     parent: Data
-    variants:
-      - Identity
-      - Attribute
-      - Parameter
-      - Relationship
-      - Capability
 
   Version:
     semantic_role: representation

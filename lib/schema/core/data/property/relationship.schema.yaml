@@ -27,10 +27,6 @@ models:
     description: Nature of relations, ownership, provenance, link
     semantic_role: type
     parent: Property
-    variants:
-      - DirectedRelationship
-      - EntityComponentRef
-      - SpatialRelationship
 
   DirectedRelationship:
     description: Typed directed semantic relationship between two OCCID objects

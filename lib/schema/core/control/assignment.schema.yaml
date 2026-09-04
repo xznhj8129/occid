@@ -29,10 +29,6 @@ models:
       assigned_by_uid: UID
       status: AssignmentStatus = PROPOSED
       constraints: list[Constraint]
-    variants:
-      - TaskAssignment
-      - RoleAssignment
-      - FlightAssignment
 
   TaskAssignment:
     description: Assignment of a Task to an assignee

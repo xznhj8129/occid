@@ -99,12 +99,6 @@ models:
       descriptors.
     semantic_role: concept
     parent: Root
-    variants:
-      - Frame
-      - Coordinate
-      - Geometry
-      - SemanticType
-      - DefinitionRelationship
 
   Frame:
     semantic_role: type
@@ -125,11 +119,6 @@ models:
   SemanticType:
     semantic_role: type
     parent: Definition
-    variants:
-      - Category
-      - Role
-      - Function
-      - Domain
 
   Category:
     semantic_role: representation

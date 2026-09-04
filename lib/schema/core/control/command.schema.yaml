@@ -53,13 +53,7 @@ models:
     description: Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics
     semantic_role: concept
     parent: Directive
-    variants:
-      - StateChangeCommand
-      - ProcessControlCommand
-      - ConfigurationCommand
-      - MotionCommand
-      - ResourceCommand
-      - ExecutionCommand
+
     fields:
       target_uid: UID
       constraints: list[Constraint]

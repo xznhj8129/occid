@@ -50,7 +50,6 @@ TOP_LEVEL_KEYS = {
     "tags",
     "root",
     "requires",
-    "extend_variants",
     "enums",
     "maps",
     "models",
@@ -59,10 +58,10 @@ MAP_KEYS = {"type", "value"}
 COMPILED_TOP_LEVEL_KEYS = {"version", "type", "vocabulary", "types", "representations", "maps"}
 # ``family`` is compiler-owned semantic metadata. The Pydantic generator accepts
 # it in the flat contract but deliberately does not expose it on runtime models.
-COMPILED_MODEL_KEYS = {"model_id", "package", "family", "description", "type", "fields"}
+COMPILED_MODEL_KEYS = {"model_id", "package", "family", "children", "description", "type", "fields"}
 COMPILED_VOCABULARY_KEYS = {"package", "values"}
 COMPILED_MAP_KEYS = {"package", "type", "value"}
-MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields", "variants"}
+MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields"}
 MODEL_SEMANTIC_ROLES = {"concept", "type", "representation"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
@@ -111,8 +110,7 @@ class ModelDef:
     parent: str | None
     value_type: TypeNode | None
     fields: list[FieldDef]
-    variants: list[str]
-    has_variants: bool
+    children: list[str]
     model_id: int | None = None
 
 
@@ -133,7 +131,6 @@ class ModuleDef:
     path: Path
     tags: list[str]
     requires: list[str]
-    extend_variants: dict[str, list[str]]
     enums: list[EnumDef]
     models: list[ModelDef]
     maps: list[MappingDef]
@@ -392,13 +389,6 @@ def parse_model(name: str, spec: dict) -> ModelDef:
         if type(type_text) != str or not type_text.strip():
             raise SchemaError(f"model-level type must be a non-empty string on {name}")
         value_type = TypeParser(type_text.strip()).parse()
-    has_variants = "variants" in spec
-    variants = spec.get("variants") or []
-    if type(variants) != list:
-        raise SchemaError(f"variants must be a list on {name}")
-    for variant_name in variants:
-        if type(variant_name) != str:
-            raise SchemaError(f"variants must be a list of model names on {name}")
     return ModelDef(
         name=name,
         description=spec.get("description"),
@@ -406,8 +396,7 @@ def parse_model(name: str, spec: dict) -> ModelDef:
         parent=spec.get("parent"),
         value_type=value_type,
         fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields_spec.items()],
-        variants=variants,
-        has_variants=has_variants,
+        children=[],
     )
 
 
@@ -454,20 +443,9 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
         if type(requirement) != str:
             raise SchemaError(f"requires must be strings in {path}")
 
-    extend_variants = data.get("extend_variants") or {}
-    if type(extend_variants) != dict:
-        raise SchemaError(f"extend_variants must be a mapping in {path}")
-    for parent_name, variant_names in extend_variants.items():
-        if type(parent_name) != str or type(variant_names) != list:
-            raise SchemaError(f"extend_variants must map model names to lists in {path}")
-        for variant_name in variant_names:
-            if type(variant_name) != str:
-                raise SchemaError(f"extend_variants values must be model names in {path}")
-
     if data["type"] == "schema":
-        for module_key in ("requires", "extend_variants"):
-            if module_key in data:
-                raise SchemaError(f"{module_key} is only valid on module files in {path}")
+        if "requires" in data:
+            raise SchemaError(f"requires is only valid on module files in {path}")
         if "description" in data:
             raise SchemaError(f"description belongs on the root model in {path}")
         if "root" not in data:
@@ -489,7 +467,6 @@ def parse_document(path: Path) -> tuple[ModuleDef, dict]:
             path=path,
             tags=data["tags"],
             requires=requires,
-            extend_variants=extend_variants,
             enums=[parse_enum(name, entries) for name, entries in (data.get("enums") or {}).items()],
             models=[parse_model(name, spec) for name, spec in (data.get("models") or {}).items()],
             maps=[parse_mapping(name, spec) for name, spec in (data.get("maps") or {}).items()],
@@ -528,7 +505,6 @@ def load_compiled_schema(path: Path) -> list[ModuleDef]:
                 path=path,
                 tags=[],
                 requires=[],
-                extend_variants={},
                 enums=[],
                 models=[],
                 maps=[],
@@ -584,6 +560,11 @@ def load_compiled_schema(path: Path) -> list[ModuleDef]:
             fields = spec.get("fields") or {}
             if type(fields) != dict:
                 raise SchemaError(f"fields must be a mapping on compiled {semantic_role} {name}")
+            children = spec.get("children") or []
+            if type(children) != list or any(type(child) != str for child in children):
+                raise SchemaError(f"children must be a list of model names on compiled {semantic_role} {name}")
+            if len(children) != len(set(children)):
+                raise SchemaError(f"duplicate children on compiled {semantic_role} {name}")
             module_for(spec["package"]).models.append(
                 ModelDef(
                     name=name,
@@ -592,8 +573,7 @@ def load_compiled_schema(path: Path) -> list[ModuleDef]:
                     parent=None,
                     value_type=value_type,
                     fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields.items()],
-                    variants=[],
-                    has_variants=False,
+                    children=children,
                     model_id=model_id,
                 )
             )
@@ -694,45 +674,12 @@ def select_module_documents(
     return sorted(selected.values(), key=lambda module: module.name)
 
 
-def apply_extend_variants(modules: list[ModuleDef]) -> None:
-    models_by_name: dict[str, ModelDef] = {}
-    model_paths: dict[str, Path] = {}
-    for module in modules:
-        for model_def in module.models:
-            if model_def.name in models_by_name:
-                raise SchemaError(f"duplicate model {model_def.name} in {module.path} and {model_paths[model_def.name]}")
-            models_by_name[model_def.name] = model_def
-            model_paths[model_def.name] = module.path
-
-    for module in modules:
-        if module.doc_type != "module":
-            continue
-        for parent_name, variant_names in module.extend_variants.items():
-            if parent_name not in models_by_name:
-                raise SchemaError(f"extend_variants references unknown parent {parent_name} in {module.path}")
-            parent_model = models_by_name[parent_name]
-            parent_model.has_variants = True
-            existing_members = {variant_member_name(parent_name, variant_name) for variant_name in parent_model.variants}
-            for variant_name in variant_names:
-                if variant_name not in models_by_name:
-                    raise SchemaError(f"extend_variants references unknown child {variant_name} in {module.path}")
-                if models_by_name[variant_name].parent != parent_name:
-                    raise SchemaError(f"extend_variants child {variant_name} parent is not {parent_name} in {module.path}")
-                member_name = variant_member_name(parent_name, variant_name)
-                if member_name in existing_members:
-                    raise SchemaError(f"extend_variants member {parent_name}.{member_name} already exists in {module.path}")
-                existing_members.add(member_name)
-                parent_model.variants.append(variant_name)
-
-
 def load_modules(
     schema_dir: Path, module_dir: Path, selected_names: list[str], selected_tags: list[str], all_modules: bool
 ) -> list[ModuleDef]:
     schema_modules = load_schema_documents(schema_dir)
     selected_modules = select_module_documents(load_available_module_documents(module_dir), selected_names, selected_tags, all_modules)
-    modules = schema_modules + selected_modules
-    apply_extend_variants(modules)
-    return modules
+    return schema_modules + selected_modules
 
 
 def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
@@ -742,12 +689,6 @@ def build_symbol_index(modules: list[ModuleDef]) -> dict[str, str]:
             if enum_def.name in symbols:
                 raise SchemaError(f"duplicate symbol {enum_def.name} in {module.path}")
             symbols[enum_def.name] = module.name
-        for model_def in module.models:
-            if model_def.variants:
-                enum_name = variant_enum_name(model_def.name)
-                if enum_name in symbols:
-                    raise SchemaError(f"duplicate symbol {enum_name} in {module.path}")
-                symbols[enum_name] = module.name
         for model_def in module.models:
             if model_def.name in symbols:
                 raise SchemaError(f"duplicate symbol {model_def.name} in {module.path}")
@@ -765,42 +706,7 @@ def build_enum_members(modules: list[ModuleDef]) -> dict[str, set[str]]:
                     raise SchemaError(f"duplicate enum member {enum_def.name}.{value.name} in {module.path}")
                 members.add(value.name)
             enum_members[enum_def.name] = members
-        for model_def in module.models:
-            if model_def.variants:
-                enum_name = variant_enum_name(model_def.name)
-                members = set(variant_member_name(model_def.name, variant_name) for variant_name in model_def.variants)
-                if len(members) != len(model_def.variants):
-                    raise SchemaError(f"duplicate derived variant member in {module.path}:{model_def.name}")
-                enum_members[enum_name] = members
     return enum_members
-
-
-def variant_enum_name(model_name: str) -> str:
-    return f"{model_name}_type"
-
-
-def screaming_snake(name: str) -> str:
-    parts: list[str] = []
-    current = ""
-    for char in name:
-        if char.isupper() and current:
-            parts.append(current)
-            current = char
-        else:
-            current += char
-    if current:
-        parts.append(current)
-    return "_".join(part.upper() for part in parts)
-
-
-def variant_member_name(parent_name: str, child_name: str) -> str:
-    parent_root = parent_name[4:] if parent_name.startswith("Base") else parent_name
-    child_root = child_name[4:] if child_name.startswith("Base") else child_name
-    if child_root.startswith(parent_root) and child_root != parent_root:
-        child_root = child_root[len(parent_root) :]
-    elif child_root.endswith(parent_root) and child_root != parent_root:
-        child_root = child_root[: -len(parent_root)]
-    return screaming_snake(child_root)
 
 
 def collect_type_refs(node: TypeNode) -> set[str]:
@@ -880,11 +786,6 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                 unknown_refs = sorted(ref for ref in collect_type_refs(model_def.value_type) if ref not in symbol_index)
                 if unknown_refs:
                     raise SchemaError(f"unknown type refs {unknown_refs} in {module.path}:{model_def.name}.type")
-                if model_def.variants:
-                    raise SchemaError(f"atomic representation {model_def.name} may not declare variants in {module.path}")
-            for variant_name in model_def.variants:
-                if variant_name not in symbol_index:
-                    raise SchemaError(f"unknown variant {variant_name} in {module.path}:{model_def.name}")
             for field_def in model_def.fields:
                 validate_semantic_type_args(
                     field_def.type_node,
@@ -905,12 +806,14 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     )
     for module in modules:
         for model_def in module.models:
-            for variant_name in model_def.variants:
-                if models_by_name[variant_name].parent != model_def.name:
-                    raise SchemaError(f"variant {variant_name} parent is not {model_def.name} in {module.path}")
+            for child_name in model_def.children:
+                if child_name not in models_by_name:
+                    raise SchemaError(f"unknown compiled child {child_name} in {module.path}:{model_def.name}")
+                if child_name == model_def.name:
+                    raise SchemaError(f"compiled model {model_def.name} cannot be its own child in {module.path}")
 
 
-def python_type_expr(node: TypeNode, variant_type_members: dict[str, list[str]]) -> str:
+def python_type_expr(node: TypeNode, child_type_members: dict[str, list[str]]) -> str:
     if node.kind == "fixed_bytes":
         assert node.size is not None
         return f"Annotated[bytes, Field(strict=True, min_length={node.size}, max_length={node.size})]"
@@ -921,23 +824,23 @@ def python_type_expr(node: TypeNode, variant_type_members: dict[str, list[str]])
     if node.kind == "name":
         if node.name in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[node.name]
-        variant_names = variant_type_members.get(node.name) or []
-        if variant_names:
-            return f"SerializeAsAny[{' | '.join([node.name, *variant_names])}]"
+        child_names = child_type_members.get(node.name) or []
+        if child_names:
+            return f"SerializeAsAny[{' | '.join([node.name, *child_names])}]"
         return node.name
     if node.kind == "list":
-        return f"list[{python_type_expr(node.args[0], variant_type_members)}]"
+        return f"list[{python_type_expr(node.args[0], child_type_members)}]"
     if node.kind == "map":
-        return f"dict[{python_type_expr(node.args[0], variant_type_members)}, {python_type_expr(node.args[1], variant_type_members)}]"
+        return f"dict[{python_type_expr(node.args[0], child_type_members)}, {python_type_expr(node.args[1], child_type_members)}]"
     if node.kind == "tuple":
-        return f"tuple[{', '.join(python_type_expr(arg, variant_type_members) for arg in node.args)}]"
+        return f"tuple[{', '.join(python_type_expr(arg, child_type_members) for arg in node.args)}]"
     if node.kind == "union":
-        return " | ".join(python_type_expr(arg, variant_type_members) for arg in node.args)
+        return " | ".join(python_type_expr(arg, child_type_members) for arg in node.args)
     raise SchemaError(f"unsupported type node {node.kind}")
 
 
-def field_annotation(field_def: FieldDef, variant_type_members: dict[str, list[str]]) -> str:
-    python_type = python_type_expr(field_def.type_node, variant_type_members)
+def field_annotation(field_def: FieldDef, child_type_members: dict[str, list[str]]) -> str:
+    python_type = python_type_expr(field_def.type_node, child_type_members)
     if field_def.const and field_def.default is not None and field_def.type_node.kind == "name":
         if field_def.type_node.name in {"string", "int", "float", "bool"}:
             return f"Literal[{python_default_literal(field_def.default)}]"
@@ -974,8 +877,8 @@ def enum_default_expr(type_name: str, default: str, enum_members: dict[str, set[
     return f"{type_name}.{default}"
 
 
-def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
-    annotation = field_annotation(field_def, variant_type_members)
+def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], child_type_members: dict[str, list[str]]) -> str:
+    annotation = field_annotation(field_def, child_type_members)
 
     if field_def.const:
         type_name = field_def.type_node.name if field_def.type_node.kind == "name" else None
@@ -1058,17 +961,6 @@ def render_enum_block(enum_def: EnumDef) -> str:
     return "\n".join(lines)
 
 
-def render_variant_enum_block(model_def: ModelDef) -> str:
-    enum_def = EnumDef(
-        name=variant_enum_name(model_def.name),
-        values=[
-            EnumValue(name=variant_member_name(model_def.name, variant_name), value=0 if index == 0 else None)
-            for index, variant_name in enumerate(model_def.variants)
-        ],
-    )
-    return render_enum_block(enum_def)
-
-
 def model_type_refs(model_def: ModelDef) -> set[str]:
     refs: set[str] = set()
     if model_def.parent:
@@ -1122,10 +1014,10 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
 def render_model_block(
     model_def: ModelDef,
     enum_members: dict[str, set[str]],
-    variant_type_members: dict[str, list[str]],
+    child_type_members: dict[str, list[str]],
 ) -> str:
     if model_def.value_type is not None:
-        parent = f"OCCIDValue[{python_type_expr(model_def.value_type, variant_type_members)}]"
+        parent = f"OCCIDValue[{python_type_expr(model_def.value_type, child_type_members)}]"
     else:
         parent = model_def.parent or "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
@@ -1137,7 +1029,7 @@ def render_model_block(
     if model_def.semantic_role:
         lines.append(f"    __occid_semantic_role__: ClassVar[str] = {model_def.semantic_role!r}")
     for field_def in model_def.fields:
-        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, variant_type_members)}")
+        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, child_type_members)}")
     return "\n".join(lines)
 
 
@@ -1153,9 +1045,9 @@ def mapping_value_literal(value: object, value_type: str, enum_members: dict[str
     return repr(value)
 
 
-def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]], variant_type_members: dict[str, list[str]]) -> str:
+def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]], child_type_members: dict[str, list[str]]) -> str:
     lines = [
-        f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse(), variant_type_members)}, {python_type_expr(TypeParser(mapping_def.value_type).parse(), variant_type_members)}] = {{"
+        f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse(), child_type_members)}, {python_type_expr(TypeParser(mapping_def.value_type).parse(), child_type_members)}] = {{"
     ]
     for key, value in mapping_def.entries.items():
         key_expr = mapping_key_literal(key, mapping_def.key_type, enum_members)
@@ -1174,7 +1066,7 @@ def render_module(
     module: ModuleDef,
     symbol_index: dict[str, str],
     enum_members: dict[str, set[str]],
-    variant_type_members: dict[str, list[str]],
+    child_type_members: dict[str, list[str]],
 ) -> str:
     sections = [load_template("module_header.py")]
     imports = module_imports(module, symbol_index, enum_members)
@@ -1187,12 +1079,12 @@ def render_module(
     if module.maps:
         sections.append("### Mappings")
         sections.append(
-            "\n\n".join(render_mapping_block(mapping_def, enum_members, variant_type_members) for mapping_def in module.maps)
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, child_type_members) for mapping_def in module.maps)
         )
     if module.models:
         sections.append("### Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, child_type_members) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
@@ -1200,7 +1092,7 @@ def render_module(
 def render_common_schema_module(
     module: ModuleDef,
     enum_members: dict[str, set[str]],
-    variant_type_members: dict[str, list[str]],
+    child_type_members: dict[str, list[str]],
 ) -> str:
     sections = []
     if module.enums:
@@ -1210,43 +1102,35 @@ def render_common_schema_module(
     if module.maps:
         sections.append("### Schema Mappings")
         sections.append(
-            "\n\n".join(render_mapping_block(mapping_def, enum_members, variant_type_members) for mapping_def in module.maps)
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, child_type_members) for mapping_def in module.maps)
         )
     if module.models:
         sections.append("### Schema Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, variant_type_members) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, child_type_members) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
 
 
-def build_variant_type_members(modules: list[ModuleDef], symbol_index: dict[str, str]) -> dict[str, list[str]]:
-    schema_module_names = {module.name for module in modules if module.doc_type == "schema"}
+def build_child_type_members(modules: list[ModuleDef]) -> dict[str, list[str]]:
     models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
-    children_by_parent: dict[str, list[str]] = {}
+    child_type_members: dict[str, list[str]] = {}
+
+    def collect_children(model_name: str, seen: set[str]) -> list[str]:
+        child_names: list[str] = []
+        for child_name in models_by_name[model_name].children:
+            if child_name in seen:
+                continue
+            seen.add(child_name)
+            child_names.append(child_name)
+            child_names.extend(collect_children(child_name, seen))
+        return child_names
+
     for model_def in models_by_name.values():
-        if model_def.parent:
-            children_by_parent.setdefault(model_def.parent, []).append(model_def.name)
-    variant_type_members: dict[str, list[str]] = {}
-
-    def collect_schema_variants(model_name: str, seen: set[str]) -> list[str]:
-        variant_names: list[str] = []
-        for variant_name in [*models_by_name[model_name].variants, *children_by_parent.get(model_name, [])]:
-            if variant_name in seen:
-                continue
-            seen.add(variant_name)
-            if symbol_index[variant_name] not in schema_module_names:
-                continue
-            variant_names.append(variant_name)
-            variant_names.extend(collect_schema_variants(variant_name, seen))
-        return variant_names
-
-    for module in modules:
-        for model_def in module.models:
-            variant_names = collect_schema_variants(model_def.name, set())
-            if variant_names:
-                variant_type_members[model_def.name] = variant_names
-    return variant_type_members
+        child_names = collect_children(model_def.name, set())
+        if child_names:
+            child_type_members[model_def.name] = child_names
+    return child_type_members
 
 
 def module_dependency_graph(
@@ -1309,13 +1193,13 @@ def write_package(
     graph = module_dependency_graph(modules, symbol_index, enum_members)
     ordered_names = topo_sort_modules(modules, graph)
     module_map = {module.name: module for module in modules}
-    variant_type_members = build_variant_type_members(modules, symbol_index)
+    child_type_members = build_child_type_members(modules)
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
     common_sections = [render_common_runtime().rstrip()]
     if "common" in module_map:
-        common_sections.append(render_common_schema_module(module_map["common"], enum_members, variant_type_members))
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members, child_type_members))
     (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
@@ -1323,7 +1207,7 @@ def write_package(
             continue
         module = module_map[module_name]
         (output_dir / f"{module_name}.py").write_text(
-            render_module(module, symbol_index, enum_members, variant_type_members)
+            render_module(module, symbol_index, enum_members, child_type_members)
         )
 
     (output_dir / "__init__.py").write_text(render_init(ordered_names))

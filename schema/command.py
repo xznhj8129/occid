@@ -54,17 +54,17 @@ class StateChangeCommand(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: StateChangeOperation
     property_name: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
     __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: ProcessControlOperation
     process_name: builtins.str | None = None
 
@@ -73,10 +73,10 @@ class ConfigurationCommand(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 37
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     configuration_uid: UID | None = None
 
 class MotionCommand(OCCIDModel):
@@ -84,7 +84,7 @@ class MotionCommand(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 159
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: MotionOperation
     destination: GlobalPosition | None = None
     path: GeoPath | None = None
@@ -97,7 +97,7 @@ class ResourceCommand(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 208
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: ResourceOperation
     resource_uid: UID | None = None
     quantity: builtins.float | None = None
@@ -107,5 +107,5 @@ class ExecutionCommand(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 71
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     operation: ExecutionOperation

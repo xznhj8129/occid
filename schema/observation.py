@@ -92,7 +92,7 @@ class VisionDetection(OCCIDModel):
     bearing: LocalDirection | None = None
     position: GlobalPosition | None = None
     source_frame_uid: UID | None = None
-    attributes: dict[builtins.str, MetadataValue]
+    attributes: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
 
 class VisionDetectionFrame(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 273

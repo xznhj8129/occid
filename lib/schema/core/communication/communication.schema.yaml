@@ -26,10 +26,3 @@ models:
     description: Movement of information between endpoints
     semantic_role: concept
     parent: Root
-    variants:
-      - Node
-      - Network
-      - Link
-      - Protocol
-      - Message
-      - Interface

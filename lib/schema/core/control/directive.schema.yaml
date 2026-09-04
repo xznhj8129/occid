@@ -10,6 +10,3 @@ models:
     description: Directed work or an immediate imperative issued under control authority
     semantic_role: concept
     parent: Control
-    variants:
-      - Task
-      - Command

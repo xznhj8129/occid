@@ -10,9 +10,6 @@ models:
     description: Identity bindings and identity-related properties
     semantic_role: type
     parent: Property
-    variants:
-      - StringName
-      - IdentityBootstrap
 
   StringName:
     description: Human-readable reference for something

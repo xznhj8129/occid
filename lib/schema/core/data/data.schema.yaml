@@ -10,12 +10,3 @@ models:
     description: Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects
     semantic_role: concept
     parent: Root
-    variants:
-      - Property
-      - Condition
-      - State
-      - Event
-      - Observation
-      - Media
-      - Execution
-

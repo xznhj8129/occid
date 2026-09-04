@@ -49,10 +49,3 @@ models:
     description: Desired outcomes and directed work
     semantic_role: concept
     parent: Root
-    variants:
-      - Objective
-      - Directive
-      - Plan
-      - Constraint
-      - Authority
-      - Assignment

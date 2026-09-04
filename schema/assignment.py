@@ -27,7 +27,7 @@ class Assignment(OCCIDModel):
     authority_uid: UID
     assigned_by_uid: UID
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
 
 class TaskAssignment(OCCIDModel):
     'Assignment of a Task to an assignee'
@@ -40,7 +40,7 @@ class TaskAssignment(OCCIDModel):
     authority_uid: UID
     assigned_by_uid: UID
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     task_uid: UID
 
 class RoleAssignment(OCCIDModel):
@@ -54,7 +54,7 @@ class RoleAssignment(OCCIDModel):
     authority_uid: UID
     assigned_by_uid: UID
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     organization_uid: UID
     role: OrgRole
 
@@ -68,7 +68,7 @@ class FlightAssignment(OCCIDModel):
     authority_uid: UID
     assigned_by_uid: UID
     status: AssignmentStatus = AssignmentStatus.PROPOSED
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     num: builtins.int
     unit_uid: UID | None = None
     callsign: builtins.str | None = None

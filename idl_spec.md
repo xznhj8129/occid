@@ -13,13 +13,13 @@ The language separates authored semantic meaning from compiled runtime represent
 OCCID uses four semantic levels:
 
 ```text
-Concept          authored semantic category
-Type             derived childless Concept; concrete at the current semantic frontier
+Concept          authored ontology-only semantic category
+Type             authored semantic category usable as a runtime field type
 Representation   authored explicit data-bearing shape
 Vocabulary       authored closed controlled values (enums)
 ```
 
-`Type` is never authored as a `semantic_role`. It is derived by the compiler. A Concept is a Type when it has no Concept children; Representation children do not make a Concept non-leaf.
+`Concept`, `Type`, and `Representation` are explicit authored roles. A Type may have children and remains a valid field type. A Concept is classification-only and is consumed during compilation.
 
 The authored hierarchy is compiler input. Runtime model identity and serialization apply only to compiled Types and Representations.
 
@@ -31,7 +31,7 @@ An authored OCCID schema is built from three declaration kinds:
 
 ```text
 MODEL
-    A named Concept or Representation.
+    A named Concept, Type, or Representation.
 
 ENUM
     A closed controlled Vocabulary.
@@ -40,20 +40,11 @@ MAP
     A named typed constant mapping.
 ```
 
-Compilation derives Types from childless Concepts, resolves inherited fields and Concept references, and emits the flat runtime schema `occid.yaml`.
+`parent` is the single authoritative model-tree edge. If model `B` declares `parent: A`, then `B` is a child of `A`, belongs to the `A` type family, and inherits `A` fields where field inheritance is applicable. There is no second authored child list.
 
-Two model relationships are distinct:
+Compilation consumes Concept-only nodes, resolves inherited fields and Concept references, and emits the flat runtime schema `occid.yaml`. For every emitted Type or Representation, the compiler derives its compiled direct `children` from authored `parent` edges. This preserves runtime family information without duplicating the hierarchy in source.
 
-```text
-parent
-    Structural inheritance: the child inherits the parent's fields.
-
-variants
-    Explicit typed-family membership: the parent declares which structural
-    children belong to its polymorphic variant family.
-```
-
-Runtime `model_id` values identify compiled Types and Representations on the wire. A model ID does not establish Concept ancestry or variant-family membership.
+Runtime `model_id` values identify compiled Types and Representations on the wire. A model ID does not establish semantic ancestry; the compiled `children` graph does.
 
 Schema documents are either:
 
@@ -161,7 +152,7 @@ Rules:
 - The root model must have a `description`.
 - `package` identifies the generated package/module for the document.
 - In the OCCID repository, a schema document's `package` must match its filename without `.schema.yaml`.
-- `requires` and `extend_variants` are not valid on core schema documents.
+- `requires` is not valid on core schema documents.
 - Core schema documents are always part of the core schema; tags do not make core documents optional.
 
 ### 5.2 Module document
@@ -176,7 +167,6 @@ Allowed top-level keys:
 - `description` — optional
 - `tags` — required
 - `requires` — optional
-- `extend_variants` — optional
 - `enums` — optional
 - `maps` — optional
 - `models` — optional
@@ -379,10 +369,15 @@ Model syntax:
 
 ```yaml
 models:
-  RecordRepresentation:
-    description: "Human-readable purpose."
-    semantic_role: representation
+  SemanticType:
+    description: "Referenceable semantic kind."
+    semantic_role: type
     parent: ParentModel
+
+  RecordRepresentation:
+    description: "Concrete record shape."
+    semantic_role: representation
+    parent: SemanticType
     fields:
       field_a: string
       field_b: optional string
@@ -390,7 +385,7 @@ models:
   AtomicRepresentation:
     description: "One directly typed value."
     semantic_role: representation
-    parent: ParentModel
+    parent: SemanticType
     type: bytes[16]
 ```
 
@@ -401,7 +396,6 @@ Allowed model keys:
 - `parent`
 - `type`
 - `fields`
-- `variants`
 
 Unknown model keys are errors.
 
@@ -411,50 +405,43 @@ Every authored model must declare exactly one of:
 
 ```text
 semantic_role: concept
+semantic_role: type
 semantic_role: representation
 ```
 
 The four levels are:
 
 ```text
-Level 1 — Concept
-    An authored semantic category. Concept ancestry states what a thing is and
-    provides fields inherited by more specific Concepts and Representations.
+Level 1: Concept
+    Ontology-only classification. A Concept may organize the authored tree and
+    contribute inherited fields, but is not itself a runtime field type.
 
-Level 2 — Type
-    A derived Concept with no Concept children in the loaded schema. A Type is
-    the most specific semantic classification currently available at that branch
-    and is emitted as a flat runtime model. Type is not an authored semantic_role.
+Level 2: Type
+    A semantic category that is also a valid runtime field type. A Type may have
+    children and remains independently referenceable.
 
-Level 3 — Representation
-    An authored explicit data-bearing shape required by software. A Representation
-    may be record-shaped (`fields`) or atomic (`type`). It may attach anywhere in
-    the model graph without claiming a new Concept. It is always emitted as a flat
-    runtime model.
+Level 3: Representation
+    A concrete data-bearing shape required by software. A Representation may be
+    record-shaped (`fields`) or atomic (`type`) and is always emitted.
 
-Level 4 — Vocabulary
+Level 4: Vocabulary
     A closed controlled value set represented by an enum. Vocabulary is identified
-    by declaration kind and has no semantic_role.
+    by declaration kind and has no `semantic_role`.
 ```
 
-A Concept remains a Type even if it has Representation children. Only a Concept child makes its parent a non-leaf Concept. This lets a semantic branch be usable before it is subdivided further without inventing a meaningless wrapper Representation.
+The compiler never infers a model's role from whether it has children. Authors state the role directly. This prevents a semantic category from changing runtime identity merely because the ontology is refined beneath it.
 
 `semantic_role` applies only to authored models. Omission is invalid. A `representation` must declare a `parent`.
 
-The engineering criterion for introducing a Representation is that software needs an explicit data-bearing shape distinct from the Concept itself: materially different fields, one named atomic value, constraints, restricted vocabulary, or another concrete layout requirement.
-
-An atomic Representation declares `type` instead of `fields`. It says that the named Representation **is exactly one value of that type**, rather than a record containing a one-field wrapper. `type` and `fields` are mutually exclusive, and model-level `type` is valid only on `semantic_role: representation`.
+An atomic Representation declares `type` instead of `fields`. It says that the named Representation is exactly one value of that type rather than a record containing a one-field wrapper. `type` and `fields` are mutually exclusive, and model-level `type` is valid only on `semantic_role: representation`.
 
 Canonical atomic example:
 
 ```yaml
 models:
   ID:
-    semantic_role: concept
+    semantic_role: type
     parent: Struct
-    variants:
-      - IntID
-      - UID
 
   IntID:
     semantic_role: representation
@@ -469,9 +456,9 @@ models:
 
 `IntID` is an atomic integer Representation. A use of it supplies the namespace in the field type, for example `id: IntID(Entity)` or `task_id: IntID(Task)`. The namespace belongs to the schema declaration, not to each runtime `IntID` value.
 
-`UID` therefore has an exact 16-byte value shape. UUIDv4, UUIDv7, random allocation, deterministic allocation, or any other producer policy is outside the Representation definition unless explicitly modeled elsewhere.
+`UID` therefore has an exact 16-byte value shape. UUID allocation policy is outside the Representation definition unless explicitly modeled elsewhere.
 
-Canonical example:
+Canonical semantic-family example:
 
 ```yaml
 enums:
@@ -481,7 +468,7 @@ enums:
 
 models:
   Task:
-    semantic_role: concept
+    semantic_role: type
     parent: Directive
 
   TaskInformation:
@@ -491,15 +478,7 @@ models:
       intent: InformationIntent
 ```
 
-If `Task` has no Concept children, compilation emits both:
-
-```text
-Task                    Type (derived from childless Concept)
-TaskInformation         Representation
-SEARCH / OBSERVE        Vocabulary
-```
-
-If a Concept child is later added beneath `Task`, `Task` stops being a Type automatically while `TaskInformation` remains an emitted Representation.
+`TaskInformation` is a child of `Task` because it declares `parent: Task`. No second declaration is required at `Task`.
 
 ### 9.2 Compilation semantics
 
@@ -523,12 +502,27 @@ schema/*.py
 
 `occid.yaml` contains only:
 
-- `types` — derived childless Concepts;
-- `representations` — authored Representations;
-- `vocabulary` — enums;
-- `maps` — named constant maps.
+- `types`: authored Types;
+- `representations`: authored Representations;
+- `vocabulary`: enums;
+- `maps`: named constant maps.
 
-For record-shaped models, the compiler resolves inherited effective fields before emission. For atomic Representations, the compiler lowers the model-level `type` expression directly. `parent`, `variants`, and authored `semantic_role` do not survive into `occid.yaml`. Generated target-language classes are flat projections of the compiled models, not an executable copy of the Concept hierarchy.
+For record-shaped models, the compiler resolves inherited effective fields before emission. For atomic Representations, the compiler lowers the model-level `type` expression directly. Authored `parent` and authored `semantic_role` do not survive as runtime inheritance. Generated target-language classes are flat projections of the compiled models, not an executable copy of the full Concept tree.
+
+Each emitted model may contain a compiler-derived `children` list. It names the direct emitted children after non-emitted Concept-only nodes are contracted out of the authored tree. `children` is derived output, never authored source.
+
+Example:
+
+```yaml
+types:
+  State:
+    package: state
+    children:
+      - Internal
+      - Health
+```
+
+A generated runtime uses the compiled child graph when a field is typed as a Type or Representation, so concrete descendants remain admissible without expanding the field declaration itself into a giant union in `occid.yaml`.
 
 Each compiled Representation contains either `fields` or `type`, never both. A compiled atomic Representation therefore remains visibly atomic in `occid.yaml`:
 
@@ -542,13 +536,11 @@ representations:
 Field references compile according to the referenced level:
 
 ```text
-non-leaf Concept reference   -> union of emitted descendants
-Type reference               -> exact Type
-Representation reference     -> exact Representation
-Vocabulary / primitive       -> exact
+Concept reference          -> union of emitted descendants, because the Concept is absent at runtime
+Type reference             -> exact named Type; child admissibility comes from compiled `children`
+Representation reference   -> exact named Representation; child admissibility comes from compiled `children`
+Vocabulary / primitive     -> exact
 ```
-
-A Representation reference is never widened merely because another Representation descends from it.
 
 ---
 
@@ -635,29 +627,27 @@ A const field may be omitted, in which case its fixed value is supplied. Supplyi
 
 ---
 
-## 11. Authored inheritance: `parent`
+## 11. Authored ancestry: `parent`
 
-`parent` defines the single authored ancestry used to inherit fields before compilation.
+`parent` defines the single authoritative model-tree edge.
 
-For a Concept child, `parent` is semantic `is-a` ancestry as well as field inheritance. For a record-shaped Representation, `parent` identifies the Concept or Representation whose effective fields form the base of that data shape. For an atomic Representation, `parent` attaches the value shape to its semantic ancestry, but that ancestry must contribute no fields. Representation parentage does not create a new Concept.
-
-Example:
+If `Child` declares:
 
 ```yaml
-models:
-  Data:
-    semantic_role: concept
-    fields:
-      timestamp: float
-
-  Observation:
-    semantic_role: concept
-    parent: Data
-    fields:
-      source_ref: UID
+Child:
+  semantic_role: type
+  parent: Parent
 ```
 
-Every emitted descendant of `Observation` receives both `timestamp` and `source_ref` after flattening. No generated runtime class needs to inherit from `Data` or `Observation`.
+then all of the following are true:
+
+```text
+Child is a child of Parent.
+Child belongs to the Parent semantic/type family.
+Child inherits Parent fields where field inheritance is applicable.
+```
+
+There is no reverse child declaration in authored schema. The compiler discovers children by reading every model's `parent`. This makes the relationship impossible to omit on one side or contradict on the other.
 
 Rules:
 
@@ -665,80 +655,15 @@ Rules:
 - The parent must resolve to a model.
 - Ancestry cycles are errors.
 - A child inherits all parent fields into its effective compiled shape.
+- Concept, Type, and Representation children all belong to the parent's family.
+- A Type may have children and remains a valid runtime field type.
 - An atomic Representation may not declare or inherit fields.
 - An atomic Representation may not be used as a parent; its value shape is complete.
-- Concept parentage expresses semantic ancestry.
-- Representation parentage is representational attachment and does not by itself create a Concept.
-- `parent` does not by itself add the child to an explicit `variants` family.
+- The compiler derives compiled `children` metadata from these edges after removing non-emitted Concept-only nodes.
 
 ---
 
-## 12. Explicit typed families: `variants`
-
-`variants` explicitly declares which structural children belong to a model's typed polymorphic family.
-
-Example:
-
-```yaml
-models:
-  Result:
-    variants:
-      - SuccessResult
-      - FailureResult
-
-  SuccessResult:
-    parent: Result
-    fields:
-      value: string
-
-  FailureResult:
-    parent: Result
-    fields:
-      reason: string
-```
-
-This states two independent facts:
-
-```text
-SuccessResult parent Result
-    -> SuccessResult inherits Result structure.
-
-Result variants SuccessResult
-    -> SuccessResult is an explicit member of Result's typed family.
-```
-
-Both declarations are intentional. The duplication makes the family explicit and validates both ends of the relationship.
-
-Rules:
-
-- `variants` is a list of model names.
-- `variants: []` is valid and declares an empty family/extension point.
-- Every listed variant must exist.
-- Every listed variant must declare `parent` equal to the declaring parent.
-- A structural child not listed in `variants` is not implicitly a member of the variant family.
-- A model may itself be a variant and also declare its own variants.
-- Derived family cycles are errors.
-- Duplicate variant membership is an error.
-
-For a field typed as a model with an explicit variant family, polymorphic schema handling may admit the parent model and models reachable through that explicit variant relation. Structural descendants that are not members of the explicit family are not implicitly admitted by the IDL contract.
-
-### 12.1 No implicit discriminator enum
-
-`variants` does not create a second semantic vocabulary and does not require a generated `{Model}_type` enum.
-
-A target runtime may use its ordinary concrete-model mechanism, including OCCID `model_id`, to encode which concrete variant instance is present. That runtime mechanism does not replace or define the schema-level `variants` relationship.
-
-In short:
-
-```text
-parent      = field inheritance
-variants    = explicit family membership
-model_id    = concrete runtime/wire identity
-```
-
----
-
-## 13. Constant maps
+## 12. Constant maps
 
 A named constant map is declared under `maps`:
 
@@ -769,7 +694,7 @@ Constant maps are schema constants. They are not models and have no runtime mode
 
 ---
 
-## 14. Modules
+## 13. Modules
 
 Modules are optional schema extensions.
 
@@ -778,7 +703,6 @@ A module may add:
 - models
 - enums
 - maps
-- variant-family members through `extend_variants`
 
 A module may not:
 
@@ -788,9 +712,9 @@ A module may not:
 - override an enum member;
 - change the parent of an existing model.
 
-### 14.1 Module model attachment
+### 13.1 Module model attachment
 
-Every model declared by a module must attach to the loaded structural model graph through `parent`.
+Every model declared by a module must attach to the loaded model graph through `parent`.
 
 The parent may be:
 
@@ -801,7 +725,7 @@ A module must not introduce floating parentless models.
 
 A module may introduce a new local branch by attaching its first model to an existing loaded parent and then deriving additional module-local models beneath it.
 
-### 14.2 Tags
+### 13.2 Tags
 
 `tags` are labels used to classify and select modules and to satisfy tag-based dependencies.
 
@@ -811,7 +735,7 @@ Core schema documents may carry tags for classification, but core schema loading
 
 A reference implementation may select optional modules by package name, tag, or an "all modules" mode.
 
-### 14.3 Dependencies: `requires`
+### 13.3 Dependencies: `requires`
 
 A module's `requires` list contains package names or tags.
 
@@ -825,31 +749,28 @@ Resolution rules:
 
 A module may reference declarations only from core, itself, or dependencies that are resolved before it.
 
-### 14.4 Extending explicit variant families
+### 13.4 Extending an existing family
 
-A module may add children to an existing model's variant family:
+A module extends an existing family by declaring an ordinary model whose `parent` is already available:
 
 ```yaml
-extend_variants:
-  ExistingParent:
-    - NewChild
+models:
+  NewChild:
+    semantic_role: representation
+    parent: ExistingParent
 ```
+
+No separate extension declaration exists. `NewChild` is a child of `ExistingParent` by definition. The compiler discovers that edge exactly as it discovers core children and includes it in the compiled child graph.
 
 Rules:
 
-- The parent must resolve to a loaded model.
-- The child must be declared by the module or one of its resolved dependencies.
-- The child must declare `parent: ExistingParent`.
-- `extend_variants` may create the parent's explicit variant family if the parent did not previously declare one.
-- If the parent already has a family, the new members are appended to it.
-- Adding an already-present member is an error.
-- A variant extension must not alter the parent's structural fields or semantic role.
-
-`extend_variants` therefore extends explicit family membership; it does not modify inheritance.
+- The parent must resolve to core, the same module, or a resolved dependency.
+- The child must be a new declaration.
+- A module may not change the parent or semantic role of an existing model.
 
 ---
 
-## 15. Validation requirements
+## 14. Validation requirements
 
 A conforming implementation must reject at least the following:
 
@@ -864,7 +785,7 @@ A conforming implementation must reject at least the following:
 - missing `root` on a schema document;
 - schema `root` not declared in that document;
 - schema root model missing a `description`;
-- `requires` or `extend_variants` on a core schema document.
+- `requires` on a core schema document.
 
 ### Naming and reference errors
 
@@ -893,10 +814,7 @@ A conforming implementation must reject at least the following:
 - model declaring both `type` and `fields`;
 - atomic Representation with inherited fields;
 - atomic Representation used as a parent;
-- atomic Representation declaring variants;
 - redefining an inherited field;
-- invalid or cyclic variant-family declarations;
-- variant whose structural parent does not match the declaring family.
 
 ### Field errors
 
@@ -919,16 +837,14 @@ A conforming implementation must reject at least the following:
 - parentless module model;
 - module redefinition/override of an existing declaration;
 - module model parent not available through core or resolved dependencies;
-- invalid `extend_variants` parent or child;
-- duplicate variant-family extension.
 
 Silently accepting any of these and dropping the invalid information is non-conforming behavior.
 
 ---
 
-## 16. Generated model identity and serialization
+## 15. Generated model identity and serialization
 
-### 16.1 Model IDs
+### 15.1 Model IDs
 
 Every compiled Type and Representation has a numeric OCCID model ID generated as part of the compiled contract.
 
@@ -941,7 +857,6 @@ They do **not** encode:
 - authored Concept ancestry;
 - compiled Type/Representation level;
 - authored parentage;
-- variant-family membership;
 - enum/vocabulary identity.
 
 Those relationships come from the schema itself.
@@ -950,13 +865,13 @@ Model IDs are local to one compiled structural contract. Adding, removing, or re
 
 Generation must fail if a compiled runtime model lacks a positive model ID or two live models share an ID.
 
-### 16.2 Compiled-level metadata
+### 15.2 Compiled-level metadata
 
 Every generated runtime model exposes `__occid_semantic_role__` as either `type` or `representation`.
 
-For a Type this value is compiler-derived from a childless authored Concept. For a Representation it reflects the authored Representation role. Concepts that are not Types do not exist as runtime models. Enums need no model-level metadata because their declaration kind already identifies them as Vocabulary.
+For a Type this value reflects the authored `type` role. For a Representation it reflects the authored `representation` role. Concepts do not exist as runtime models. Enums need no model-level metadata because their declaration kind already identifies them as Vocabulary.
 
-### 16.3 Enum representation
+### 15.3 Enum representation
 
 Enums are encoded by their numeric values on compact machine interfaces.
 
@@ -968,7 +883,7 @@ The IDL does not require redundant string-backed values such as:
 CARGO = "CARGO"
 ```
 
-### 16.4 Compact binary serialization
+### 15.4 Compact binary serialization
 
 The OCCID IDL is descriptive and human-readable. The compact OCCID wire representation is not.
 
@@ -1020,11 +935,11 @@ A compact decoder must reject:
 - a nested model inconsistent with the field's declared model family;
 - a top-level model ID inconsistent with a specifically requested concrete class.
 
-`model_id` may be used to dispatch a concrete instance of an explicit variant family, but the presence of a model ID does not itself declare that family.
+`model_id` identifies the concrete runtime model. Compatibility with a field's declared family is determined from the compiled `children` graph, not from the numeric ID itself.
 
 ---
 
-## 17. Unsupported constructs
+## 16. Unsupported constructs
 
 The OCCID IDL does not support:
 
@@ -1035,8 +950,6 @@ The OCCID IDL does not support:
 - anonymous inline models;
 - string-backed enums;
 - implicit Concept role inferred from `parent` when `semantic_role` is absent;
-- implicit variant-family membership derived only from `parent`;
-- implicit variant discriminator enums;
 - profile/include/exclude language;
 - JSON-Schema constructs such as `$defs`, `oneOf`, or `additionalProperties`.
 
@@ -1044,7 +957,7 @@ A needed feature should be added deliberately to the language and this specifica
 
 ---
 
-## 18. OCCID repository organization
+## 17. OCCID repository organization
 
 This section describes the reference repository layout; it does not add semantic meaning to directory names.
 
@@ -1056,9 +969,9 @@ lib/schema/
     ... *.schema.yaml
 ```
 
-Core documents may be grouped into subdirectories for readability. Directory placement does not define parentage, Concept ancestry, package identity, or variant families.
+Core documents may be grouped into subdirectories for readability. Directory placement does not define parentage, Concept ancestry, or package identity.
 
-The authored model graph is defined by `parent`. Explicit typed families are defined by `variants` and `extend_variants`. Authored model role is defined by `semantic_role`. Vocabulary is defined by enums. There is no separate authoritative ontology file; a complete Concept tree can be derived from the authored schemas.
+The authored model graph and every type family are defined by `parent`. Authored model role is defined by `semantic_role`. Vocabulary is defined by enums. There is no separate authoritative ontology file; the complete authored tree can be derived from the schemas, and the compiler writes emitted child relationships into `occid.yaml`.
 
 The reference generation path is:
 

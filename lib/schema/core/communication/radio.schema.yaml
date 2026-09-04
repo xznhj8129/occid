@@ -47,10 +47,6 @@ models:
     description: What messages are transmitted over
     semantic_role: representation
     parent: Link
-    variants:
-      - FrequencyRange
-      - ChannelSpec
-      - RadioProfile
 
   FrequencyRange:
     semantic_role: representation
@@ -73,7 +69,7 @@ models:
   RadioProfile:
     semantic_role: representation
     parent: Radio
-    variants: null
+
     fields:
       service: optional RadioService
       waveform: optional Waveform

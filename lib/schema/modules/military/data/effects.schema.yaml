@@ -109,7 +109,6 @@ models:
       payload_type: PayloadType
       qty: int = 0
 
-
   PayloadPlan:
     semantic_role: representation
     parent: Struct
@@ -118,7 +117,6 @@ models:
       approved: list[PayloadAllocation]
       loaded: list[PayloadAllocation]
       notes: optional string
-
 
   PayloadMount:
     semantic_role: representation
@@ -132,7 +130,6 @@ models:
       compat_tags: list[PayloadType]
       loaded: list[PayloadAllocation]
 
-
   EffectsPayload:
     semantic_role: representation
     parent: Payload
@@ -145,13 +142,10 @@ models:
       payload_mounts: map[string, PayloadMount]
       payload_plan: optional PayloadPlan
 
-
   Effects:
     semantic_role: representation
     parent: Struct
-    variants:
-      - GroundEffects
-      - AirEffects
+
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
@@ -162,13 +156,11 @@ models:
       warhead: WarheadType
       pylon_format: string = ""
 
-
   GroundEffects:
     semantic_role: representation
     parent: Effects
     fields:
       attack_modes: list[AttackMode]
-
 
   AirEffects:
     semantic_role: representation
@@ -177,7 +169,6 @@ models:
       reusable: optional bool
       attack_modes: list[AirAttackMode]
 
-
   TargetPriority:
     semantic_role: representation
     parent: Struct
@@ -185,7 +176,6 @@ models:
       threat: optional ThreatLevel
       is_high_value: bool = false
       note: optional string
-
 
   TargetKinematics:
     semantic_role: representation
@@ -203,7 +193,6 @@ models:
       id: IntID(TargetSet)
       name: string
 
-
   TargetSetCoord:
     semantic_role: representation
     parent: TargetSet
@@ -213,7 +202,6 @@ models:
       time_start_usec: int
       time_end_usec: int
 
-
   TargetBoxCoord:
     semantic_role: representation
     parent: TargetSet
@@ -221,7 +209,6 @@ models:
       corners: list[GlobalPosition]
       time_start_usec: int
       time_end_usec: int
-
 
   TargetCoord:
     semantic_role: representation
@@ -232,7 +219,6 @@ models:
       cep_max_m: float
       target_class: ObservedObjectType
       target_force: Faction
-
 
   Fires:
     semantic_role: representation
@@ -245,7 +231,6 @@ models:
       sequence: int
       cep_expected_m: float
 
-
   SplashCorrection:
     semantic_role: representation
     parent: Struct
@@ -255,7 +240,6 @@ models:
       sequence: int
       type_detected: int
       cep_expected_m: float
-
 
   TargetHandover:
     semantic_role: representation
@@ -274,7 +258,6 @@ models:
       target_force: Faction
       match_media_type: SensorDataFormat
 
-
   BattleDamageAssessment:
     semantic_role: representation
     parent: Struct
@@ -288,7 +271,6 @@ models:
       confidence_pct: int
       target_class: ObservedObjectType
       target_force: Faction
-
 
   EsadState:
     semantic_role: representation
@@ -305,7 +287,6 @@ models:
       ignition_status: EsadIgnitionStatus
       munition_type: int
 
-
   EsadArming:
     semantic_role: representation
     parent: Struct
@@ -313,7 +294,6 @@ models:
       time_usec: int
       arming_challenge_hash: int
       arming_request: EsadArmingRequest
-
 
   RwsPose:
     semantic_role: representation
@@ -329,7 +309,6 @@ models:
       accuracy_pitch_rad: float
       accuracy_yaw_rad: float
       coordinate_frame: int
-
 
   RwsState:
     semantic_role: representation

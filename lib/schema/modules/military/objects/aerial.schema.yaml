@@ -6,11 +6,6 @@ tags:
   - military
 requires:
   - core
-extend_variants:
-  AirNavigation:
-    - MilitaryAirNavigation
-  UnitFlightPlan:
-    - MilitaryUnitFlightPlan
 
 enums:
   MilitaryAirTask:

@@ -10,31 +10,11 @@ models:
     description: Primitive reusable low-level struct families.
     semantic_role: concept
     parent: Root
-    variants:
-      - ID
-      - Vector
-      - Measurement
-      - Bearing
-      - GeoPos
-      - LocalPos
-      - Line
-      - StructPath
-      - Shape
-      - Bounding
-      - Uncertainty
-      - Pose
-      - Range
-      - Transform
-      - Orbital
-      - SpatialStruct
 
   ID:
     semantic_role: type
     parent: Struct
-    variants:
-      - IntID
-      - UID
-  
+
   IntID:
     semantic_role: representation
     parent: ID

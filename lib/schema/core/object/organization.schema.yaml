@@ -26,9 +26,7 @@ models:
     description: A structured collection of organized entities and/or subordinate organizations with common command and control
     semantic_role: type
     parent: Set
-    variants:
-      - Group
-      - Unit
+
     fields:
       record: Record
       uid: UID

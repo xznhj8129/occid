@@ -40,13 +40,13 @@ class MeshNode(OCCIDModel):
     entity_uid: UID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
-    links: dict[builtins.str, Link]
-    radios: dict[builtins.str, RadioProfile]
-    protocols: dict[builtins.str, Protocol]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
+    radios: dict[builtins.str, SerializeAsAny[RadioProfile | MilitaryRadioProfile]]
+    protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]
     state: MeshNodeState | None = None
     last_seen_ts: Timestamp | None = None
     position: GlobalPosition | None = None
-    link_state: LinkState | None = None
+    link_state: SerializeAsAny[LinkState | MeshLink] | None = None
 
 class MeshView(OCCIDModel):
     'Current observed mesh topology and node/link state'
@@ -82,7 +82,7 @@ class MeshReceiveMetrics(OCCIDModel):
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
-    state: LinkState
+    state: SerializeAsAny[LinkState | MeshLink]
 
 class MeshPositionSample(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 141
@@ -105,4 +105,4 @@ class NodeHeartbeat(OCCIDModel):
     node_uid: UID
     last_seen_ts: Timestamp
     node_state: MeshNodeState | None = None
-    state: LinkState
+    state: SerializeAsAny[LinkState | MeshLink]

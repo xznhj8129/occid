@@ -63,11 +63,7 @@ models:
     description: Transmitted envelope plus payload
     semantic_role: concept
     parent: Communication
-    variants:
-      - CommandMessage
-      - TelemetryMessage
-      - ObservationMessage
-      - ResponseMessage
+
     fields:
       src: UID
       dst: UID
@@ -89,9 +85,7 @@ models:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
     semantic_role: type
     parent: Message
-    variants:
-      - DeliveryReceipt
-      - MessageTransferResult
+
     fields:
       seq_reply: optional int
       response_to: UID

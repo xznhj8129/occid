@@ -10,9 +10,7 @@ models:
     description: Limit, rule, or time/resource bound applied to directed work
     semantic_role: type
     parent: Control
-    variants:
-      - Restriction
-      - Limitation
+
     fields:
       condition: optional Condition
 

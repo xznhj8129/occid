@@ -9,15 +9,6 @@ requires:
   - military_effects
   - military_organization
   - military_aerial
-extend_variants:
-  Person:
-    - MilitaryPerson
-  Machine:
-    - MilitaryMachine
-  GroundMachine:
-    - MilitaryGroundMachine
-  AirMachine:
-    - MilitaryAirMachine
 
 models:
   MilitaryPerson:
@@ -28,13 +19,11 @@ models:
       weapons: list[ItemCount]
       ammo: list[ItemCount]
 
-
   MilitaryMachine:
     semantic_role: representation
     parent: Machine
     fields:
       category: optional NATOUnitCategory
-
 
   MilitaryGroundMachine:
     semantic_role: representation
@@ -42,7 +31,6 @@ models:
     fields:
       payload: Payload
       effects: GroundEffects
-
 
   MilitaryAirMachine:
     semantic_role: representation

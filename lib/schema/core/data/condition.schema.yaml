@@ -21,9 +21,6 @@ models:
     description: Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic
     semantic_role: concept
     parent: Data
-    variants:
-      - Predicate
-      - BooleanLogic
 
   Predicate:
     description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions

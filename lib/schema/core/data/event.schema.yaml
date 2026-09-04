@@ -31,9 +31,7 @@ models:
     description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data
     semantic_role: type
     parent: Data
-    variants:
-      - FlightEvent
-      - MissionEvent
+
     fields:
       record: Record
 

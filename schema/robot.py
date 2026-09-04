@@ -80,7 +80,7 @@ class Robot(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -103,7 +103,7 @@ class GroundRobot(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -114,14 +114,14 @@ class GroundRobot(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
     role: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: GroundNavigation
 
 class VideoConfig(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 270
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -134,7 +134,7 @@ class ReceiverConfig(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 202
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
@@ -143,7 +143,7 @@ class ChannelMapEntry(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 28
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
@@ -153,7 +153,7 @@ class ModeRange(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 158
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     mode_id: builtins.int
     mode_name: builtins.str | None = None
     channel: builtins.int
@@ -163,7 +163,7 @@ class RobotController(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 212
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     control_modes: RobotControlMode | None = None
     autopilot_type: AutopilotType
     autopilot_firmware: FirmwareInfo

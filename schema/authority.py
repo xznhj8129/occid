@@ -22,7 +22,7 @@ class CommandAuthority(OCCIDModel):
     holder_uid: UID
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     organization_uid: UID
     role: Role
 
@@ -36,7 +36,7 @@ class Lease(OCCIDModel):
     holder_uid: UID
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     asset_uid: UID
     bound: Predicate | BooleanLogic
 
@@ -50,7 +50,7 @@ class AttachmentLease(OCCIDModel):
     holder_uid: UID
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     asset_uid: UID
     bound: Predicate | BooleanLogic
     parent_uid: UID
@@ -66,7 +66,7 @@ class ControlLease(OCCIDModel):
     holder_uid: UID
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     asset_uid: UID
     bound: Predicate | BooleanLogic
     controller: UID

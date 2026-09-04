@@ -51,11 +51,7 @@ models:
     description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
     semantic_role: type
     parent: Control
-    variants:
-      - AutopilotFlightPlan
-      - GroupFlightPlan
-      - UnitFlightPlan
-      - MissionPlan
+
     fields:
       record: Record
       uid: UID
@@ -174,7 +170,7 @@ models:
   UnitFlightPlan:
     semantic_role: representation
     parent: Plan
-    variants: null
+
     fields:
       unit_num: int
       callsign: string

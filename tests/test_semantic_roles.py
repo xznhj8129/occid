@@ -28,6 +28,7 @@ def test_every_model_has_explicit_semantic_role() -> None:
             assert role in VALID_ROLES, f"{path}: {model_name} missing/invalid semantic_role"
             if role == "representation":
                 assert spec.get("parent"), f"{path}: Representation {model_name} must declare parent"
+            assert "children" not in spec, f"{path}: {model_name} must declare ancestry only through parent"
 
 
 def test_compiled_levels_match_authored_semantics() -> None:
@@ -51,5 +52,32 @@ def test_compiled_levels_match_authored_semantics() -> None:
     for section in (types, representations):
         for spec in section.values():
             assert "parent" not in spec
-            assert "variants" not in spec
             assert "semantic_role" not in spec
+
+
+def test_compiled_children_are_derived_from_parent_edges() -> None:
+    authored = _authored_models()
+    compiled = yaml.safe_load((REPO_ROOT / "occid.yaml").read_text())
+    emitted = {**compiled["types"], **compiled["representations"]}
+
+    authored_children: dict[str, list[str]] = {}
+    for child_name, spec in authored.items():
+        parent = spec.get("parent")
+        if parent:
+            authored_children.setdefault(parent, []).append(child_name)
+
+    def expected_children(model_name: str) -> list[str]:
+        result: list[str] = []
+
+        def walk(parent_name: str) -> None:
+            for child_name in authored_children.get(parent_name, []):
+                if child_name in emitted:
+                    result.append(child_name)
+                else:
+                    walk(child_name)
+
+        walk(model_name)
+        return result
+
+    for model_name, spec in emitted.items():
+        assert spec.get("children", []) == expected_children(model_name)

@@ -58,13 +58,6 @@ models:
     description: External detection, classification, track, signal, spot report, threat, or assessment data
     semantic_role: concept
     parent: Data
-    variants:
-      - Detection
-      - Classification
-      - Track
-      - TrackUpdate
-      - Assessment
-      - IsrObservation
 
   Classification:
     semantic_role: type
@@ -82,8 +75,6 @@ models:
   Assessment:
     semantic_role: type
     parent: Observation
-    variants:
-      - IsrResult
 
   Detection:
     description: Assessment that something exists or occurred

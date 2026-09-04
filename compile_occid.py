@@ -2,17 +2,16 @@
 """Compile authored OCCID semantics into the flat runtime schema ``occid.yaml``.
 
 Authored levels:
-    Concept         authored semantic category
+    Concept         ontology-only semantic category
+    Type            semantic category usable as a runtime field type
     Representation  explicit data-bearing shape
     Vocabulary      enum
 
-Derived level:
-    Type            Concept with no Concept children
-
 The compiled runtime schema contains only Types, Representations, Vocabulary,
-and constant maps. Runtime inheritance, full Concept ancestry, and variants are
-consumed by this compiler and do not survive into ``occid.yaml``. Each emitted
-model retains only its nearest ancestor Concept as ``family``.
+and constant maps. Authored ``parent`` edges are consumed by this compiler.
+Each emitted model retains its nearest semantic ``family`` and its compiled
+direct ``children`` so generated runtimes can recover polymorphic type families
+without duplicating child declarations in authored schema.
 """
 
 from __future__ import annotations
@@ -137,6 +136,7 @@ class Compiler:
         }
 
         self._descendant_cache: dict[str, list[str]] = {}
+        self._child_cache: dict[str, list[str]] = {}
         self._effective_field_cache: dict[str, dict[str, object]] = {}
 
     def emitted_descendants(self, model_name: str) -> list[str]:
@@ -158,6 +158,29 @@ class Compiler:
 
         walk(model_name)
         self._descendant_cache[model_name] = result
+        return result
+
+    def emitted_children(self, model_name: str) -> list[str]:
+        """Return direct compiled children after non-emitted Concepts are flattened out."""
+        cached = self._child_cache.get(model_name)
+        if cached is not None:
+            return cached
+
+        result: list[str] = []
+        seen: set[str] = set()
+
+        def walk(name: str) -> None:
+            for child in self.children.get(name, []):
+                if child in seen:
+                    continue
+                seen.add(child)
+                if child in self.emitted_models:
+                    result.append(child)
+                    continue
+                walk(child)
+
+        walk(model_name)
+        self._child_cache[model_name] = result
         return result
 
     def effective_fields(self, model_name: str) -> dict[str, object]:
@@ -274,6 +297,9 @@ class Compiler:
             "package": self.symbol_index[model_name],
             "family": self.model_family(model_name),
         }
+        children = self.emitted_children(model_name)
+        if children:
+            out["children"] = children
         if model.description:
             out["description"] = model.description
         if model.value_type is not None:
@@ -375,7 +401,7 @@ def main() -> None:
 
     concept_count = sum(model.semantic_role == "concept" for model in compiler.models.values())
     print(f"output={args.output}")
-    print(f"concepts_consumed={concept_count - len(compiler.types)}")
+    print(f"concepts_consumed={concept_count}")
     print(f"types={len(compiler.types)}")
     print(f"representations={len(compiler.representations)}")
     print(f"vocabulary={len(compiled['vocabulary'])}")

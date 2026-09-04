@@ -9,21 +9,13 @@ models:
     description: Atoms
     semantic_role: concept
     parent: Root
-    variants:
-      - Entity
-      - Set
-      - Item
-      - Location
+
     fields:
       capabilities: optional list[Capability]
 
   Set:
     semantic_role: concept
     parent: Object
-    variants:
-      - Organization
-      - Collection
-      - Cluster
 
   Collection:
     description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
@@ -39,10 +31,6 @@ models:
     description: A discrete bounded non-agent object
     semantic_role: concept
     parent: Object
-    variants:
-      - Equipment
-      - Component
-      - Payload
 
   Equipment:
     semantic_role: type
@@ -56,11 +44,7 @@ models:
     description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
     semantic_role: type
     parent: Object
-    variants:
-      - Mark
-      - Path
-      - Region
-      - Boundary
+
     fields:
       record: Record
       uid: UID

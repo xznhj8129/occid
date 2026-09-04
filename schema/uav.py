@@ -21,7 +21,7 @@ class AirRobot(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -32,8 +32,8 @@ class AirRobot(OCCIDModel):
     airframe: AirframeType
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigation
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    navigation: SerializeAsAny[AirNavigation | MilitaryAirNavigation]
     controller: RobotController
     remote_control: RemoteControl
 
@@ -49,7 +49,7 @@ class Drone(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -60,7 +60,7 @@ class Drone(OCCIDModel):
     airframe: AirframeType = AirframeType.COPTER
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigation
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    navigation: SerializeAsAny[AirNavigation | MilitaryAirNavigation]
     controller: RobotController
     remote_control: RemoteControl

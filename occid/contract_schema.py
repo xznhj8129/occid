@@ -95,6 +95,9 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
             model_type = definition.get("type")
             if isinstance(model_type, str):
                 current.update(_refs(model_type, known))
+            for child in definition.get("children") or []:
+                if isinstance(child, str) and child in known:
+                    current.add(child)
             for field in (definition.get("fields") or {}).values():
                 text = field if isinstance(field, str) else field.get("type") if isinstance(field, dict) else None
                 if isinstance(text, str):

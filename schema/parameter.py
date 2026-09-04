@@ -10,4 +10,4 @@ class Parameter(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 176
     __occid_semantic_role__: ClassVar[str] = 'type'
     key: builtins.str | None = None
-    value: MetadataValue | None = None
+    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None

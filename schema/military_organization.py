@@ -357,7 +357,7 @@ class OrbatOrg(OCCIDModel):
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, Link]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]
@@ -391,7 +391,7 @@ class GroundOrbatOrg(OCCIDModel):
     size: OOBSize
     op_domain: OperationalDomain = OperationalDomain.LAND
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, Link]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
     tac_elements: list[OrgComposition]
     sup_elements: list[OrgComposition]
     tac_e_comp: list[ItemCount]

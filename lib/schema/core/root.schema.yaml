@@ -14,10 +14,3 @@ models:
   Root:
     description: Any distinct part of the overall framework that can be identified, described, or referenced
     semantic_role: concept
-    variants:
-      - Definition
-      - Struct
-      - Object
-      - Control
-      - Communication
-      - Data

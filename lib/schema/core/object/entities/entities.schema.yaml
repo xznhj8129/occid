@@ -87,9 +87,7 @@ models:
     description: One discrete "atom" capable of actions
     semantic_role: concept
     parent: Object
-    variants:
-      - Actor
-      - Machine
+
     fields:
       record: Record
       uid: UID
@@ -107,9 +105,6 @@ models:
   Actor:
     semantic_role: type
     parent: Entity
-    variants:
-      - Person
-      - Agent
 
   Agent:
     semantic_role: representation
@@ -118,7 +113,7 @@ models:
   Person:
     semantic_role: representation
     parent: Actor
-    variants: null
+
     fields:
       entity_type: EntityType = PERSON
       role: string
@@ -131,10 +126,7 @@ models:
   Machine:
     semantic_role: type
     parent: Entity
-    variants:
-      - Vehicle
-      - Robot
-      - Platform
+
     fields:
       entity_type: EntityType = MACHINE
       serial_number: optional string
@@ -163,7 +155,7 @@ models:
   AirNavigation:
     semantic_role: representation
     parent: Attribute
-    variants: null
+
     fields:
       flight_type: AirframeType
       control_modes: list[StandardFlightMode]

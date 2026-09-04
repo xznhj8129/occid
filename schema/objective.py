@@ -19,7 +19,7 @@ class Objective(OCCIDModel):
     desired_state: builtins.str
     success_criteria: list[SuccessCriterion]
     target_uids: list[UID]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
     owner_uid: UID | None = None
@@ -32,4 +32,4 @@ class SuccessCriterion(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     statement: builtins.str
     metric: builtins.str | None = None
-    target_value: MetadataValue | None = None
+    target_value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None

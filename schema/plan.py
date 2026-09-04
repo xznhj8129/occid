@@ -62,7 +62,7 @@ class Plan(OCCIDModel):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
@@ -151,7 +151,7 @@ class AutopilotFlightPlan(OCCIDModel):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     waypoints: list[AutopilotMissionWaypoint]
@@ -170,7 +170,7 @@ class GroupFlightPlan(OCCIDModel):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     plan_phase: FlightPlanPhase
@@ -197,7 +197,7 @@ class UnitFlightPlan(OCCIDModel):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
@@ -226,7 +226,7 @@ class MissionPlan(OCCIDModel):
     assignment_uids: list[UID]
     steps: list[PlanStep]
     routes: list[GeoPath]
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     contingencies: list[PlanContingency]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     flight_type: FlightType = FlightType.SURVEY_POINT

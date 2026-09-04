@@ -6,9 +6,6 @@ tags:
   - military
 requires:
   - core
-extend_variants:
-  RadioProfile:
-    - MilitaryRadioProfile
 
 models:
   MilitaryRadioProfile:

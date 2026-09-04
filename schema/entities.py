@@ -97,7 +97,7 @@ class Actor(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -114,7 +114,7 @@ class Machine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -135,7 +135,7 @@ class Agent(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -152,7 +152,7 @@ class Person(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.PERSON
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -161,7 +161,7 @@ class Person(OCCIDModel):
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
     navaids: list[NavAids]
-    sensors: dict[builtins.str, SensorPayload]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
 
 class Vehicle(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 267
@@ -175,7 +175,7 @@ class Vehicle(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -196,7 +196,7 @@ class Platform(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -243,7 +243,7 @@ class GroundMachine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -254,7 +254,7 @@ class GroundMachine(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
     role: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: GroundNavigation
 
 class AirMachine(OCCIDModel):
@@ -269,7 +269,7 @@ class AirMachine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -280,5 +280,5 @@ class AirMachine(OCCIDModel):
     airframe: AirframeType
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigation
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    navigation: SerializeAsAny[AirNavigation | MilitaryAirNavigation]

@@ -29,6 +29,6 @@ class Execution(OCCIDModel):
     progress: builtins.float | None = None
     started_at: Timestamp
     completed_at: Timestamp
-    result: MetadataValue | None = None
+    result: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
     failure: builtins.str | None = None
     external_job_refs: list[builtins.str]

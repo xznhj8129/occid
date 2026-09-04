@@ -83,8 +83,8 @@ class OrgRole(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 174
     __occid_semantic_role__: ClassVar[str] = 'representation'
     role: builtins.str
-    authority: CommandAuthority | Lease | AttachmentLease | ControlLease
-    assignment: Assignment
+    authority: CommandAuthority | SerializeAsAny[Lease | AttachmentLease | ControlLease] | AttachmentLease | ControlLease
+    assignment: SerializeAsAny[Assignment | TaskAssignment | RoleAssignment | FlightAssignment]
     rank: builtins.int
 
 class Roster(OCCIDModel):

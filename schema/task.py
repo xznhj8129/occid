@@ -71,7 +71,7 @@ class Task(OCCIDModel):
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
@@ -90,7 +90,7 @@ class TaskManeuver(OCCIDModel):
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
@@ -110,7 +110,7 @@ class TaskEffect(OCCIDModel):
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
@@ -130,7 +130,7 @@ class TaskInformation(OCCIDModel):
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
@@ -150,7 +150,7 @@ class TaskTransport(OCCIDModel):
     target_uids: list[UID]
     location_uids: list[UID]
     objective_uid: UID | None = None
-    constraints: list[Constraint]
+    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
     preconditions: list[Predicate | BooleanLogic] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None

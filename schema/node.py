@@ -24,6 +24,6 @@ class Node(OCCIDModel):
     entity_uid: UID | None = None
     roles: list[CapabilityRole]
     addresses: list[NetworkAddress]
-    links: dict[builtins.str, Link]
-    radios: dict[builtins.str, RadioProfile]
-    protocols: dict[builtins.str, Protocol]
+    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
+    radios: dict[builtins.str, SerializeAsAny[RadioProfile | MilitaryRadioProfile]]
+    protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]

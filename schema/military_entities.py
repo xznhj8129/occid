@@ -20,7 +20,7 @@ class MilitaryPerson(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.PERSON
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -29,7 +29,7 @@ class MilitaryPerson(OCCIDModel):
     propulsion: PropulsionType = PropulsionType.FOOT
     navigation: NavigationMode
     navaids: list[NavAids]
-    sensors: dict[builtins.str, SensorPayload]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     attack_modes: list[AttackMode]
     weapons: list[ItemCount]
     ammo: list[ItemCount]
@@ -46,7 +46,7 @@ class MilitaryMachine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -68,7 +68,7 @@ class MilitaryGroundMachine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -79,9 +79,9 @@ class MilitaryGroundMachine(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
     role: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
     navigation: GroundNavigation
-    payload: Payload
+    payload: SerializeAsAny[Payload | SensorPayload | ImageSensor | RFSensor | EffectsPayload]
     effects: GroundEffects
 
 class MilitaryAirMachine(OCCIDModel):
@@ -96,7 +96,7 @@ class MilitaryAirMachine(OCCIDModel):
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, MetadataValue]
+    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
     relations: list[DirectedRelationship]
     symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
@@ -107,7 +107,7 @@ class MilitaryAirMachine(OCCIDModel):
     airframe: AirframeType
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
-    sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigation
-    payload: Payload
+    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
+    navigation: SerializeAsAny[AirNavigation | MilitaryAirNavigation]
+    payload: SerializeAsAny[Payload | SensorPayload | ImageSensor | RFSensor | EffectsPayload]
     effects: AirEffects

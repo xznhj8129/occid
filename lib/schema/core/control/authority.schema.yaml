@@ -57,9 +57,6 @@ models:
     fields:
       asset_uid: UID
       bound: Condition
-    variants:
-      - AttachmentLease
-      - ControlLease
 
   AttachmentLease:
     description: Authority lease to an organization

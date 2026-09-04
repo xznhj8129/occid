@@ -31,20 +31,23 @@ Structural compatibility is determined by the consumer contract described below.
 Authoritative authored schemas live under `lib/schema/`. They use the four-level OCCID semantic model:
 
 ```text
-Concept          authored semantic category
-Type             derived childless Concept
+Concept          authored ontology-only semantic category
+Type             authored semantic category usable as a runtime field type
 Representation   authored explicit data-bearing shape
 Vocabulary       enum / closed controlled values
 ```
 
-Only Concept and Representation are authored model roles:
+Concept, Type, and Representation are explicit authored model roles:
 
 ```yaml
 semantic_role: concept
+semantic_role: type
 semantic_role: representation
 ```
 
-A Type is derived when a Concept has no Concept children. Representation children do not make a Concept non-leaf. A Representation is introduced when software genuinely needs a distinct data shape; it does not claim a new Concept merely because code needs a struct. A Representation may be record-shaped with `fields:` or atomic with one model-level `type:`.
+A Concept is classification-only. A Type is a semantic category that remains directly usable as a runtime field type even when more specific Types or Representations exist beneath it. A Representation is a concrete data shape and may be record-shaped with `fields:` or atomic with one model-level `type:`. The compiler never guesses semantic role from leafness.
+
+`parent` is the single source of truth for the model tree. If a model declares `parent: X`, it is a child of `X`, belongs to the `X` family, and inherits `X` fields where applicable. No reverse child list is authored.
 
 Atomic Representations are the direct form for named single values:
 
@@ -72,16 +75,16 @@ lib/schema/**/*.schema.yaml
         -> schema/*.py
 ```
 
-`compile_occid.py` consumes Concept ancestry, resolves effective inherited fields for record models, lowers atomic model `type` expressions and field references, and emits one flat `occid.yaml`. The compiled file contains Types, Representations, Vocabulary, and maps only. It contains no `parent`, `variants`, or authored `semantic_role`.
+`compile_occid.py` consumes authored ancestry, resolves effective inherited fields for record models, lowers atomic model `type` expressions and field references, and emits one flat `occid.yaml`. The compiled file contains Types, Representations, Vocabulary, and maps only. Authored `parent` edges are replaced by compiler-derived `children` metadata on emitted models.
 
-`generate_pydantic.py` reads only `occid.yaml`. Record-shaped runtime models derive from `OCCIDModel`; atomic Representations derive from `OCCIDValue[T]` and dump as the underlying value rather than as a synthetic `{value: ...}` record. The Python class hierarchy is not the Concept hierarchy. Runtime model metadata is `type` or `representation`.
+`generate_pydantic.py` reads only `occid.yaml`. Record-shaped runtime models derive from `OCCIDModel`; atomic Representations derive from `OCCIDValue[T]` and dump as the underlying value rather than as a synthetic `{value: ...}` record. The Python class hierarchy is not the authored Concept tree. Runtime model metadata is `type` or `representation`, and polymorphic field handling is derived from compiled `children`.
 
 Reference lowering follows the semantic level:
 
 ```text
-non-leaf Concept -> union of emitted descendants
-Type             -> exact
-Representation   -> exact
+Concept          -> union of emitted descendants because the Concept is not emitted
+Type             -> exact named Type; descendants come from compiled children
+Representation   -> exact named Representation; descendants come from compiled children
 Vocabulary       -> exact
 ```
 
@@ -223,7 +226,7 @@ Every compiled Type and Representation has a numeric model ID used as a compact 
 
 The compiler derives these IDs deterministically from the complete emitted model set: emitted model names are sorted canonically and numbered from 1. The generated `occid.yaml` is the sole source of truth for those IDs. There is no hand-maintained model-ID registry.
 
-Model IDs are contract-local implementation identity. They are not semantic discovery, Concept ancestry, variant-family membership, or durable identity for the thing represented by a model. Adding, removing, or renaming an emitted model may renumber other models. That is acceptable because compact peers are already required to share the same OCCID structural contract.
+Model IDs are contract-local implementation identity. They are not semantic discovery, Concept ancestry, child-family membership, or durable identity for the thing represented by a model. Adding, removing, or renaming an emitted model may renumber other models. That is acceptable because compact peers are already required to share the same OCCID structural contract.
 
 During Year Zero, model IDs are not compatibility promises and no tombstones or numeric reservations are preserved. Regenerate affected outputs and consumers together.
 
