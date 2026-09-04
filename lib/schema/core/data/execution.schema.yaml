@@ -28,8 +28,8 @@ models:
       attempt: int = 0
       phase: ExecutionPhase = CREATED
       progress: optional float
-      started_at: optional float
-      completed_at: optional float
+      started_at: Timestamp
+      completed_at: Timestamp
       result: optional MetadataValue
       failure: optional string
       external_job_refs: list[string]

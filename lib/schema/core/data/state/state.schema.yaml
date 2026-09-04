@@ -52,7 +52,7 @@ models:
       resources: optional Supplies
       link_states: map[string, LinkState]
       control_state: optional ControlLevel
-      source_observation_ts: optional float
+      source_observation_ts: optional Timestamp
       source_time_basis: optional ObservationTimeBasis
-      received_ts: optional float
-      published_ts: optional float
+      received_ts: optional Timestamp
+      published_ts: optional Timestamp

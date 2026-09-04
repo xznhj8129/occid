@@ -40,7 +40,7 @@ class CryptoKey(OCCIDModel):
     label: builtins.str | None = None
     crypto_type: CryptoType
     version: builtins.str | None = None
-    fill_ts: builtins.float | None = None
+    fill_ts: Timestamp | None = None
 
 class CryptoProfile(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 46

@@ -83,7 +83,7 @@ models:
       entity_uid: UID
       record: UID # note: placeholder, needs to refer to "delta of what"
       changed_fields: map[string, State]
-      updated_ts: float
+      updated_ts: Timestamp
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
@@ -102,8 +102,8 @@ models:
     fields:
       node_uid: UID
       delivery_state: DeliveryState
-      seen_ts: optional float
-      exec_ts: optional float
+      seen_ts: optional Timestamp
+      exec_ts: optional Timestamp
       error_code: optional string
 
   MessageTransferResult:

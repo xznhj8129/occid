@@ -17,5 +17,5 @@ class MetadataValue(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     str: builtins.str | None = None
     int: builtins.int | None = None
-    float: builtins.float | None = None
+    float: Timestamp
     bool: builtins.bool | None = None

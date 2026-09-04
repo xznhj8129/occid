@@ -234,4 +234,4 @@ class MissionPlan(OCCIDModel):
     manual: builtins.bool = False
     points: PlannedRoutePoints
     config: dict[builtins.str, builtins.float]
-    saved_ts: builtins.float | None = None
+    saved_ts: Timestamp | None = None

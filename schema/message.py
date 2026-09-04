@@ -82,7 +82,7 @@ class Delta(OCCIDModel):
     entity_uid: UID
     record: UID
     changed_fields: dict[builtins.str, LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
-    updated_ts: builtins.float
+    updated_ts: Timestamp
 
 class DeliveryReceipt(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 51
@@ -96,8 +96,8 @@ class DeliveryReceipt(OCCIDModel):
     response_to: UID
     node_uid: UID
     delivery_state: DeliveryState
-    seen_ts: builtins.float | None = None
-    exec_ts: builtins.float | None = None
+    seen_ts: Timestamp | None = None
+    exec_ts: Timestamp | None = None
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):

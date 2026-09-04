@@ -80,7 +80,7 @@ class MeasurementQuality(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     str: builtins.str | None = None
     int: builtins.int | None = None
-    float: builtins.float | None = None
+    float: Timestamp
     bool: builtins.bool | None = None
     lat_err_m: builtins.float | None = None
     az_err_deg: builtins.float | None = None

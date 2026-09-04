@@ -30,7 +30,7 @@ class MeshLink(OCCIDModel):
     counters: LinkCounters | None = None
     src_uid: UID
     dst_uid: UID
-    updated_ts: builtins.float | None = None
+    updated_ts: Timestamp | None = None
 
 class MeshNode(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 140
@@ -44,7 +44,7 @@ class MeshNode(OCCIDModel):
     radios: dict[builtins.str, RadioProfile]
     protocols: dict[builtins.str, Protocol]
     state: MeshNodeState | None = None
-    last_seen_ts: builtins.float | None = None
+    last_seen_ts: Timestamp | None = None
     position: GlobalPosition | None = None
     link_state: LinkState | None = None
 
@@ -55,7 +55,6 @@ class MeshView(OCCIDModel):
     epoch: builtins.int = 0
     nodes: list[MeshNode]
     links: list[MeshLink]
-    partition_ref: builtins.str | None = None
 
 class MeshtasticMessage(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 144
@@ -105,5 +104,5 @@ class NodeHeartbeat(OCCIDModel):
     seq: builtins.int
     state: LinkState
     node_uid: UID
-    last_seen_ts: builtins.float
+    last_seen_ts: Timestamp
     node_state: MeshNodeState | None = None

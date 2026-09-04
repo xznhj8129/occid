@@ -40,8 +40,8 @@ models:
       subject_uid: UID
       object_uid: UID
       relation: RelationshipKind
-      since_ts: optional float
-      until_ts: optional float
+      since_ts: optional Timestamp
+      until_ts: optional Timestamp
       confidence: optional ConfidenceLevel
       source: optional string
 

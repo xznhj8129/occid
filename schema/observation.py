@@ -111,7 +111,7 @@ class IsrObservation(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Observation')]
     track_uid: UID | None = None
     sensor_uid: UID | None = None
-    obs_ts: builtins.float
+    obs_ts: Timestamp
     observation_kind: ObservationKind | None = None
     category: IntelCategory | None = None
     spotter_origin: SpotterOrigin | None = None
@@ -138,7 +138,7 @@ class TrackUpdate(OCCIDModel):
     record: Record
     track_uid: UID
     track_state: TrackState | None = None
-    updated_ts: builtins.float
+    updated_ts: Timestamp
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(OCCIDModel):

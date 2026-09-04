@@ -25,14 +25,14 @@ models:
     fields:
       src_uid: UID
       dst_uid: UID
-      updated_ts: optional float
+      updated_ts: optional Timestamp
 
   MeshNode:
     semantic_role: representation
     parent: Node
     fields:
       state: optional MeshNodeState
-      last_seen_ts: optional float
+      last_seen_ts: optional Timestamp
       position: optional GlobalPosition
       link_state: optional LinkState
       roles: list[CapabilityRole]
@@ -45,7 +45,6 @@ models:
       epoch: int = 0
       nodes: list[MeshNode]
       links: list[MeshLink]
-      partition_ref: optional string
 
   MeshtasticMessage:
     semantic_role: representation
@@ -78,6 +77,6 @@ models:
     parent: TelemetryMessage
     fields:
       node_uid: UID
-      last_seen_ts: float
+      last_seen_ts: Timestamp
       node_state: optional MeshNodeState
       state: LinkState

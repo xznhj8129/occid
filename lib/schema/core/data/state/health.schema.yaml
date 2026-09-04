@@ -85,7 +85,7 @@ models:
       power_state: optional ResourceStatus
       temp_state: optional ResourceStatus
       fault_count: int = 0
-      updated_ts: optional float
+      updated_ts: optional Timestamp
       subsystems: list[SubsystemHealth]
       alerts: list[HealthAlert]
 
@@ -94,8 +94,8 @@ models:
     parent: Health
     fields:
       state: MaintenanceState
-      last_service_ts: optional float
-      next_service_ts: optional float
+      last_service_ts: optional Timestamp
+      next_service_ts: optional Timestamp
       note: optional string
 
   NavReadinessState:

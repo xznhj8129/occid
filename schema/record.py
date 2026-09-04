@@ -12,7 +12,7 @@ class Record(OCCIDModel):
     uid: UID
     id: Annotated[IntID, IDNamespace('Record')]
     revision: builtins.int = 0
-    created_ts: builtins.float
-    updated_ts: builtins.float
+    created_ts: Timestamp
+    updated_ts: Timestamp
     origin_system: builtins.str
     provenance: list[builtins.str]

@@ -123,12 +123,7 @@ models:
     semantic_role: representation
     parent: Measurement
     fields:
-      seconds: float
-      minutes: int
-      hours: int
-      day: int
-      month: int
-      year: int
+      utime: float
       tz: int
 
   ItemCount:

@@ -19,4 +19,4 @@ class Validation(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
     condition: Predicate | BooleanLogic
     status: ValidationStatus
-    updated_ts: builtins.float | None = None
+    updated_ts: Timestamp | None = None

@@ -20,4 +20,4 @@ models:
     fields:
       condition: Condition
       status: ValidationStatus
-      updated_ts: optional float
+      updated_ts: optional Timestamp

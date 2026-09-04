@@ -27,8 +27,8 @@ class Execution(OCCIDModel):
     attempt: builtins.int = 0
     phase: ExecutionPhase = ExecutionPhase.CREATED
     progress: builtins.float | None = None
-    started_at: builtins.float | None = None
-    completed_at: builtins.float | None = None
+    started_at: Timestamp
+    completed_at: Timestamp
     result: MetadataValue | None = None
     failure: builtins.str | None = None
     external_job_refs: list[builtins.str]

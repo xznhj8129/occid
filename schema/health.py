@@ -82,7 +82,7 @@ class HealthSnapshot(OCCIDModel):
     power_state: ResourceStatus | None = None
     temp_state: ResourceStatus | None = None
     fault_count: builtins.int = 0
-    updated_ts: builtins.float | None = None
+    updated_ts: Timestamp | None = None
     subsystems: list[SubsystemHealth]
     alerts: list[HealthAlert]
 
@@ -90,8 +90,8 @@ class MaintenanceStatus(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 134
     __occid_semantic_role__: ClassVar[str] = 'representation'
     state: MaintenanceState
-    last_service_ts: builtins.float | None = None
-    next_service_ts: builtins.float | None = None
+    last_service_ts: Timestamp | None = None
+    next_service_ts: Timestamp | None = None
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):

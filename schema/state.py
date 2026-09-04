@@ -31,7 +31,7 @@ class EntityState(OCCIDModel):
     resources: Supplies | None = None
     link_states: dict[builtins.str, LinkState]
     control_state: ControlLevel | None = None
-    source_observation_ts: builtins.float | None = None
+    source_observation_ts: Timestamp | None = None
     source_time_basis: ObservationTimeBasis | None = None
-    received_ts: builtins.float | None = None
-    published_ts: builtins.float | None = None
+    received_ts: Timestamp | None = None
+    published_ts: Timestamp | None = None

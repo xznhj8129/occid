@@ -42,7 +42,7 @@ models:
       label: optional string
       crypto_type: CryptoType
       version: optional string
-      fill_ts: optional float
+      fill_ts: optional Timestamp
 
   CryptoProfile:
     semantic_role: representation

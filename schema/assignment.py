@@ -75,4 +75,4 @@ class FlightAssignment(OCCIDModel):
     objective_assign: builtins.int | None = None
     wave_n: builtins.int = 0
     formation_n: builtins.int = 0
-    takeoff_time: builtins.float = 0.0
+    takeoff_ts: Timestamp = 0.0

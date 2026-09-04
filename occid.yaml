@@ -1873,8 +1873,8 @@ types:
       attempt: int = 0
       phase: ExecutionPhase = CREATED
       progress: optional float
-      started_at: optional float
-      completed_at: optional float
+      started_at: Timestamp
+      completed_at: Timestamp
       result: optional MetadataValue
       failure: optional string
       external_job_refs: list[string]
@@ -2000,7 +2000,7 @@ types:
     fields:
       condition: Predicate | BooleanLogic
       status: ValidationStatus
-      updated_ts: optional float
+      updated_ts: optional Timestamp
 
   Frame:
     model_id: 81
@@ -2223,7 +2223,7 @@ representations:
       counters: optional LinkCounters
       src_uid: UID
       dst_uid: UID
-      updated_ts: optional float
+      updated_ts: optional Timestamp
 
   MeshNode:
     model_id: 140
@@ -2239,7 +2239,7 @@ representations:
       radios: map[string, RadioProfile]
       protocols: map[string, Protocol]
       state: optional MeshNodeState
-      last_seen_ts: optional float
+      last_seen_ts: optional Timestamp
       position: optional GlobalPosition
       link_state: optional LinkState
 
@@ -2252,7 +2252,6 @@ representations:
       epoch: int = 0
       nodes: list[MeshNode]
       links: list[MeshLink]
-      partition_ref: optional string
 
   MeshtasticMessage:
     model_id: 144
@@ -2310,7 +2309,7 @@ representations:
       seq: int
       state: LinkState
       node_uid: UID
-      last_seen_ts: float
+      last_seen_ts: Timestamp
       node_state: optional MeshNodeState
 
   HumanTextMessage:
@@ -2379,7 +2378,7 @@ representations:
         | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState
         | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position
         | LocationState | SpotterOrigin]
-      updated_ts: float
+      updated_ts: Timestamp
 
   DeliveryReceipt:
     model_id: 51
@@ -2395,8 +2394,8 @@ representations:
       response_to: UID
       node_uid: UID
       delivery_state: DeliveryState
-      seen_ts: optional float
-      exec_ts: optional float
+      seen_ts: optional Timestamp
+      exec_ts: optional Timestamp
       error_code: optional string
 
   MessageTransferResult:
@@ -2516,7 +2515,7 @@ representations:
       label: optional string
       crypto_type: CryptoType
       version: optional string
-      fill_ts: optional float
+      fill_ts: optional Timestamp
 
   CryptoProfile:
     model_id: 46
@@ -2704,7 +2703,7 @@ representations:
       objective_assign: optional int
       wave_n: int = 0
       formation_n: int = 0
-      takeoff_time: float = 0.0
+      takeoff_ts: Timestamp = 0.0
 
   Lease:
     model_id: 117
@@ -2998,7 +2997,7 @@ representations:
       manual: bool = false
       points: PlannedRoutePoints
       config: map[string, float]
-      saved_ts: optional float
+      saved_ts: optional Timestamp
 
   TaskManeuver:
     model_id: 247
@@ -3167,7 +3166,7 @@ representations:
       id: IntID(Observation)
       track_uid: optional UID
       sensor_uid: optional UID
-      obs_ts: float
+      obs_ts: Timestamp
       observation_kind: optional ObservationKind
       category: optional IntelCategory
       spotter_origin: optional SpotterOrigin
@@ -3198,7 +3197,7 @@ representations:
       record: Record
       track_uid: UID
       track_state: optional TrackState
-      updated_ts: float
+      updated_ts: Timestamp
       confidence: optional ConfidenceLevel
 
   IsrResult:
@@ -3265,7 +3264,7 @@ representations:
     fields:
       str: optional string
       int: optional int
-      float: optional float
+      float: Timestamp
       bool: optional bool
 
   DirectedRelationship:
@@ -3277,8 +3276,8 @@ representations:
       subject_uid: UID
       object_uid: UID
       relation: RelationshipKind
-      since_ts: optional float
-      until_ts: optional float
+      since_ts: optional Timestamp
+      until_ts: optional Timestamp
       confidence: optional ConfidenceLevel
       source: optional string
 
@@ -3372,7 +3371,7 @@ representations:
       power_state: optional ResourceStatus
       temp_state: optional ResourceStatus
       fault_count: int = 0
-      updated_ts: optional float
+      updated_ts: optional Timestamp
       subsystems: list[SubsystemHealth]
       alerts: list[HealthAlert]
 
@@ -3382,8 +3381,8 @@ representations:
     family: Health
     fields:
       state: MaintenanceState
-      last_service_ts: optional float
-      next_service_ts: optional float
+      last_service_ts: optional Timestamp
+      next_service_ts: optional Timestamp
       note: optional string
 
   NavReadinessState:
@@ -3609,10 +3608,10 @@ representations:
       resources: optional Supplies
       link_states: map[string, LinkState]
       control_state: optional ControlLevel
-      source_observation_ts: optional float
+      source_observation_ts: optional Timestamp
       source_time_basis: optional ObservationTimeBasis
-      received_ts: optional float
-      published_ts: optional float
+      received_ts: optional Timestamp
+      published_ts: optional Timestamp
 
   Coordinate:
     model_id: 44
@@ -4202,7 +4201,7 @@ representations:
     fields:
       str: optional string
       int: optional int
-      float: optional float
+      float: Timestamp
       bool: optional bool
       lat_err_m: optional float
       az_err_deg: optional float
@@ -4277,8 +4276,8 @@ representations:
       uid: UID
       id: IntID(Record)
       revision: int = 0
-      created_ts: float
-      updated_ts: float
+      created_ts: Timestamp
+      updated_ts: Timestamp
       origin_system: string
       provenance: list[string]
 
@@ -4516,12 +4515,7 @@ representations:
     package: struct
     family: Measurement
     fields:
-      seconds: float
-      minutes: int
-      hours: int
-      day: int
-      month: int
-      year: int
+      utime: float
       tz: int
 
   ItemCount:

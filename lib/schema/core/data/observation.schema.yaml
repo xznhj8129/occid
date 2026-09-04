@@ -130,7 +130,7 @@ models:
       id: IntID(Observation)
       track_uid: optional UID
       sensor_uid: optional UID
-      obs_ts: float
+      obs_ts: Timestamp
       observation_kind: optional ObservationKind
       category: optional IntelCategory
       spotter_origin: optional SpotterOrigin
@@ -159,7 +159,7 @@ models:
       record: Record
       track_uid: UID
       track_state: optional TrackState
-      updated_ts: float
+      updated_ts: Timestamp
       confidence: optional ConfidenceLevel
 
   IsrResult:

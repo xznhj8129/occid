@@ -59,4 +59,4 @@ models:
       objective_assign: optional int
       wave_n: int = 0 #?
       formation_n: int = 0 #???
-      takeoff_time: float = 0.0 #???
+      takeoff_ts: Timestamp = 0.0 #???

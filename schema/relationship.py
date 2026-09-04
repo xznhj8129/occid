@@ -35,8 +35,8 @@ class DirectedRelationship(OCCIDModel):
     subject_uid: UID
     object_uid: UID
     relation: RelationshipKind
-    since_ts: builtins.float | None = None
-    until_ts: builtins.float | None = None
+    since_ts: Timestamp | None = None
+    until_ts: Timestamp | None = None
     confidence: ConfidenceLevel | None = None
     source: builtins.str | None = None
 

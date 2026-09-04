@@ -17,7 +17,7 @@ models:
       uid: UID
       id: IntID(Record)
       revision: int = 0
-      created_ts: float
-      updated_ts: float
+      created_ts: Timestamp
+      updated_ts: Timestamp
       origin_system: string
       provenance: list[string]

@@ -88,12 +88,7 @@ class Duration(OCCIDModel):
 class Timestamp(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 252
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    seconds: builtins.float
-    minutes: builtins.int
-    hours: builtins.int
-    day: builtins.int
-    month: builtins.int
-    year: builtins.int
+    utime: builtins.float
     tz: builtins.int
 
 class ItemCount(OCCIDModel):
