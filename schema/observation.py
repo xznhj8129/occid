@@ -60,7 +60,7 @@ class Classification(OCCIDModel):
 
 class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 251
+    __occid_model_id__: ClassVar[int] = 257
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -72,17 +72,17 @@ class Assessment(OCCIDModel):
 
 class Detection(OCCIDModel):
     'Assessment that something exists or occurred'
-    __occid_model_id__: ClassVar[int] = 51
+    __occid_model_id__: ClassVar[int] = 52
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class VisionBox(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 268
+    __occid_model_id__: ClassVar[int] = 274
     __occid_semantic_role__: ClassVar[str] = 'representation'
     space: DetectionBoxSpace
     bounds: BoundingBox
 
 class VisionDetection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 269
+    __occid_model_id__: ClassVar[int] = 275
     __occid_semantic_role__: ClassVar[str] = 'representation'
     detection_id: Annotated[IntID, IDNamespace('Detection')]
     label: builtins.str | None = None
@@ -95,7 +95,7 @@ class VisionDetection(OCCIDModel):
     attributes: dict[builtins.str, MetadataValue]
 
 class VisionDetectionFrame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 270
+    __occid_model_id__: ClassVar[int] = 276
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     frame_ref: builtins.str | None = None
@@ -104,7 +104,7 @@ class VisionDetectionFrame(OCCIDModel):
     detections: list[VisionDetection]
 
 class IsrObservation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 111
+    __occid_model_id__: ClassVar[int] = 112
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -120,7 +120,7 @@ class IsrObservation(OCCIDModel):
     confidence: ConfidenceLevel | None = None
 
 class IsrParameters(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 112
+    __occid_model_id__: ClassVar[int] = 113
     __occid_semantic_role__: ClassVar[str] = 'representation'
     focus_type: IsrFocusType | None = None
     focus_point: GlobalPosition | None = None
@@ -133,7 +133,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 252
+    __occid_model_id__: ClassVar[int] = 258
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     track_uid: UID
@@ -142,7 +142,7 @@ class TrackUpdate(OCCIDModel):
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 113
+    __occid_model_id__: ClassVar[int] = 114
     __occid_semantic_role__: ClassVar[str] = 'representation'
     detections: list[IsrObservation]
     track_updates: list[TrackUpdate]

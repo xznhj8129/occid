@@ -60,7 +60,7 @@ class ConflictPolicy(IntEnum):
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 208
+    __occid_model_id__: ClassVar[int] = 211
     __occid_semantic_role__: ClassVar[str] = 'type'
     src: MessageTarget
     dst: MessageTarget
@@ -71,12 +71,12 @@ class ResponseMessage(OCCIDModel):
     response_to: builtins.str | None = None
 
 class MessageTarget(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 143
+    __occid_model_id__: ClassVar[int] = 145
     __occid_semantic_role__: ClassVar[str] = 'representation'
     target_uid: UID
 
 class DeliveryReceipt(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 50
+    __occid_model_id__: ClassVar[int] = 51
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -92,7 +92,7 @@ class DeliveryReceipt(OCCIDModel):
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 144
+    __occid_model_id__: ClassVar[int] = 146
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget

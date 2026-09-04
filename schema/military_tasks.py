@@ -15,7 +15,7 @@ class TaskCombat(IntEnum):
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 159
+    __occid_model_id__: ClassVar[int] = 161
     __occid_semantic_role__: ClassVar[str] = 'representation'
     munition_type: builtins.str
     qty: builtins.int = 0

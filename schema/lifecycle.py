@@ -7,5 +7,5 @@ from .common import *
 
 class Lifecycle(OCCIDModel):
     'Current stage in existence or execution.'
-    __occid_model_id__: ClassVar[int] = 116
+    __occid_model_id__: ClassVar[int] = 118
     __occid_semantic_role__: ClassVar[str] = 'representation'

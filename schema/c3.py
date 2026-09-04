@@ -7,7 +7,7 @@ from .common import *
 
 class CommandMessage(OCCIDModel):
     'Message whose payload directs action'
-    __occid_model_id__: ClassVar[int] = 34
+    __occid_model_id__: ClassVar[int] = 35
     __occid_semantic_role__: ClassVar[str] = 'type'
     src: MessageTarget
     dst: MessageTarget
@@ -17,7 +17,7 @@ class CommandMessage(OCCIDModel):
     command: StateChangeCommand | ProcessControlCommand | ConfigurationCommand | MotionCommand | ResourceCommand | ExecutionCommand
 
 class HumanTextMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 101
+    __occid_model_id__: ClassVar[int] = 102
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget

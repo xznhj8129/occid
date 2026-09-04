@@ -7,7 +7,7 @@ from .common import *
 
 class TelemetryMessage(OCCIDModel):
     'Message whose payload reports sender or asset state'
-    __occid_model_id__: ClassVar[int] = 248
+    __occid_model_id__: ClassVar[int] = 254
     __occid_semantic_role__: ClassVar[str] = 'type'
     src: MessageTarget
     dst: MessageTarget
@@ -17,7 +17,7 @@ class TelemetryMessage(OCCIDModel):
     state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
 
 class UAVTelemetryMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 257
+    __occid_model_id__: ClassVar[int] = 263
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -42,7 +42,7 @@ class CapabilityAdvert(OCCIDModel):
     payload_refs: list[builtins.str]
 
 class StateDelta(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 232
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -54,7 +54,7 @@ class StateDelta(OCCIDModel):
     changed_fields: dict[builtins.str, LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
 
 class TransportCounters(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 261
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -68,7 +68,7 @@ class TransportCounters(OCCIDModel):
     dropped_count: builtins.int = 0
 
 class TransportError(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 256
+    __occid_model_id__: ClassVar[int] = 262
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget

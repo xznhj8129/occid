@@ -129,11 +129,15 @@ def validate_identity_field_types() -> None:
 
 
 def run(script: str, *args: str) -> None:
-    subprocess.run(
+    result = subprocess.run(
         [sys.executable, str(REPO_ROOT / script), *args],
         cwd=REPO_ROOT,
-        check=True,
     )
+    # Child generators write their own actionable diagnostics.  Preserve that
+    # output and exit with the child's status instead of adding a second,
+    # unhelpful CalledProcessError traceback from this orchestration script.
+    if result.returncode:
+        raise SystemExit(result.returncode)
 
 
 def main() -> None:

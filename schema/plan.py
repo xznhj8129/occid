@@ -49,7 +49,7 @@ class AirPlanAction(IntEnum):
 
 class Plan(OCCIDModel):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
-    __occid_model_id__: ClassVar[int] = 182
+    __occid_model_id__: ClassVar[int] = 185
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -68,14 +68,14 @@ class Plan(OCCIDModel):
 
 class PlanStep(OCCIDModel):
     'Immutable planned step definition; runtime status belongs to execution state'
-    __occid_model_id__: ClassVar[int] = 184
+    __occid_model_id__: ClassVar[int] = 187
     __occid_semantic_role__: ClassVar[str] = 'representation'
     actor_uids: list[UID]
     depends_on: list[builtins.int]
     sequence: builtins.int
 
 class PlanContingency(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 183
+    __occid_model_id__: ClassVar[int] = 186
     __occid_semantic_role__: ClassVar[str] = 'representation'
     condition: Predicate | BooleanLogic
     response: builtins.str
@@ -83,7 +83,7 @@ class PlanContingency(OCCIDModel):
 
 class FlightLevelBand(OCCIDModel):
     'Embedded flight-level band value used by plans rather than an independently identified control reference'
-    __occid_model_id__: ClassVar[int] = 76
+    __occid_model_id__: ClassVar[int] = 77
     __occid_semantic_role__: ClassVar[str] = 'representation'
     altitude_range_m: NumericRange
     alt_sep_m: builtins.float
@@ -102,7 +102,7 @@ class AutopilotMissionWaypoint(OCCIDModel):
 
 class PlannerMissionPoint(OCCIDModel):
     'Embedded planner point value used while constructing a plan'
-    __occid_model_id__: ClassVar[int] = 186
+    __occid_model_id__: ClassVar[int] = 189
     __occid_semantic_role__: ClassVar[str] = 'representation'
     num: builtins.int
     point_type: PlannerPointType
@@ -111,7 +111,7 @@ class PlannerMissionPoint(OCCIDModel):
 
 class LoiterOrbit(OCCIDModel):
     'Embedded orbit geometry and timing value'
-    __occid_model_id__: ClassVar[int] = 130
+    __occid_model_id__: ClassVar[int] = 132
     __occid_semantic_role__: ClassVar[str] = 'representation'
     orbit_direction: builtins.int
     orbit_radius: builtins.int
@@ -119,7 +119,7 @@ class LoiterOrbit(OCCIDModel):
 
 class MissionRouteGeometry(OCCIDModel):
     'Embedded route geometry used by a mission plan'
-    __occid_model_id__: ClassVar[int] = 156
+    __occid_model_id__: ClassVar[int] = 158
     __occid_semantic_role__: ClassVar[str] = 'representation'
     route_in: GeoPath
     survey: GeoPath
@@ -128,7 +128,7 @@ class MissionRouteGeometry(OCCIDModel):
 
 class PlannedRoutePoints(OCCIDModel):
     'Embedded set of planner points defining mission-plan route segments'
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 188
     __occid_semantic_role__: ClassVar[str] = 'representation'
     start: PlannerMissionPoint
     route_in: list[PlannerMissionPoint]
@@ -157,7 +157,7 @@ class AutopilotFlightPlan(OCCIDModel):
     waypoints: list[AutopilotMissionWaypoint]
 
 class GroupFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 97
+    __occid_model_id__: ClassVar[int] = 98
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -184,7 +184,7 @@ class GroupFlightPlan(OCCIDModel):
     formation_3d: AirGroupFormation3DType | None = None
 
 class UnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 261
+    __occid_model_id__: ClassVar[int] = 267
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -213,7 +213,7 @@ class UnitFlightPlan(OCCIDModel):
 
 class MissionPlan(OCCIDModel):
     'Saved operator mission plan - the planner inputs, restorable for editing'
-    __occid_model_id__: ClassVar[int] = 155
+    __occid_model_id__: ClassVar[int] = 157
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

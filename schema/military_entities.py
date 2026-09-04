@@ -9,7 +9,7 @@ from .entities import EntityType, PropulsionType
 ### Models
 
 class MilitaryPerson(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 153
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -35,7 +35,7 @@ class MilitaryPerson(OCCIDModel):
     ammo: list[ItemCount]
 
 class MilitaryMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 149
+    __occid_model_id__: ClassVar[int] = 151
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -57,7 +57,7 @@ class MilitaryMachine(OCCIDModel):
     category: NATOUnitCategory | None = None
 
 class MilitaryGroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 148
+    __occid_model_id__: ClassVar[int] = 150
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -85,7 +85,7 @@ class MilitaryGroundMachine(OCCIDModel):
     effects: GroundEffectsSchema
 
 class MilitaryAirMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 146
+    __occid_model_id__: ClassVar[int] = 148
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

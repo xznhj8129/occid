@@ -19,7 +19,7 @@ class BooleanOperator(IntEnum):
 
 class Predicate(OCCIDModel):
     'Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions'
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 195
     __occid_semantic_role__: ClassVar[str] = 'type'
     subject_ref: UID | None = None
 

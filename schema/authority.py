@@ -13,9 +13,8 @@ class ControlLevel(IntEnum):
 
 ### Models
 
-class Authority(OCCIDModel):
-    'Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised'
-    __occid_model_id__: ClassVar[int] = 15
+class CommandAuthority(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 34
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -24,10 +23,12 @@ class Authority(OCCIDModel):
     granted_by_uid: UID | None = None
     scope_uids: list[UID]
     constraints: list[Constraint]
+    organization_uid: UID
+    role: Role
 
-class ControlLease(OCCIDModel):
-    'Time-bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 41
+class Lease(OCCIDModel):
+    'Bounded control right issued under an Authority record'
+    __occid_model_id__: ClassVar[int] = 117
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -37,7 +38,36 @@ class ControlLease(OCCIDModel):
     scope_uids: list[UID]
     constraints: list[Constraint]
     asset_uid: UID
+    bound: Predicate | BooleanLogic
+
+class AttachmentLease(OCCIDModel):
+    'Authority lease to an organization'
+    __occid_model_id__: ClassVar[int] = 14
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Authority')]
+    holder_uid: UID
+    granted_by_uid: UID | None = None
+    scope_uids: list[UID]
+    constraints: list[Constraint]
+    asset_uid: UID
+    bound: Predicate | BooleanLogic
+    parent_uid: UID
+    attachment_uid: UID
+
+class ControlLease(OCCIDModel):
+    'Temporary direct control access'
+    __occid_model_id__: ClassVar[int] = 42
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Authority')]
+    holder_uid: UID
+    granted_by_uid: UID | None = None
+    scope_uids: list[UID]
+    constraints: list[Constraint]
+    asset_uid: UID
+    bound: Predicate | BooleanLogic
+    controller: UID
     control_level: ControlLevel
-    lease_start: builtins.float
-    lease_end: builtins.float
-    lease_rev: builtins.int = 0

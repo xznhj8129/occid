@@ -103,7 +103,7 @@ class Actor(OCCIDModel):
     display_meta: DisplayMeta | None = None
 
 class Machine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 131
+    __occid_model_id__: ClassVar[int] = 133
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
     record: Record
@@ -141,7 +141,7 @@ class Agent(OCCIDModel):
     display_meta: DisplayMeta | None = None
 
 class Person(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 181
+    __occid_model_id__: ClassVar[int] = 184
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -164,7 +164,7 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, SensorPayload]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 264
+    __occid_model_id__: ClassVar[int] = 270
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -185,7 +185,7 @@ class Vehicle(OCCIDModel):
     components: list[EntityComponentRef]
 
 class Platform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 187
+    __occid_model_id__: ClassVar[int] = 190
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -206,7 +206,7 @@ class Platform(OCCIDModel):
     components: list[EntityComponentRef]
 
 class GroundNavigationSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 93
+    __occid_model_id__: ClassVar[int] = 94
     __occid_semantic_role__: ClassVar[str] = 'representation'
     propulsion: PropulsionType
     navigation: NavigationMode
@@ -232,7 +232,7 @@ class AirNavigationSchema(OCCIDModel):
     max_alt: builtins.float
 
 class GroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 92
+    __occid_model_id__: ClassVar[int] = 93
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

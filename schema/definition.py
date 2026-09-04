@@ -94,23 +94,23 @@ class Faction(IntEnum):
 ### Models
 
 class Frame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 80
+    __occid_model_id__: ClassVar[int] = 81
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class DefinitionRelationship(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 48
+    __occid_model_id__: ClassVar[int] = 49
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class SemanticType(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 216
+    __occid_model_id__: ClassVar[int] = 221
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class Coordinate(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 43
+    __occid_model_id__: ClassVar[int] = 44
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Geometry(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 88
+    __occid_model_id__: ClassVar[int] = 89
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Category(OCCIDModel):
@@ -118,13 +118,13 @@ class Category(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Role(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 212
+    __occid_model_id__: ClassVar[int] = 215
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Function(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 83
+    __occid_model_id__: ClassVar[int] = 84
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Domain(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 54
+    __occid_model_id__: ClassVar[int] = 55
     __occid_semantic_role__: ClassVar[str] = 'representation'

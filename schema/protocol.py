@@ -22,11 +22,11 @@ class CryptoType(IntEnum):
 
 class Protocol(OCCIDModel):
     'Wire format, message id space, payload format, command/result vocabulary, and mapping metadata'
-    __occid_model_id__: ClassVar[int] = 194
+    __occid_model_id__: ClassVar[int] = 197
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class ProtocolPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 199
     __occid_semantic_role__: ClassVar[str] = 'representation'
     format: ProtocolPayloadFormat
     content_type: builtins.str | None = None
@@ -34,7 +34,7 @@ class ProtocolPayload(OCCIDModel):
     data: builtins.bytes | None = None
 
 class CryptoKey(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 44
+    __occid_model_id__: ClassVar[int] = 45
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key_ref: builtins.str
     label: builtins.str | None = None
@@ -43,14 +43,14 @@ class CryptoKey(OCCIDModel):
     fill_ts: builtins.float | None = None
 
 class CryptoProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 45
+    __occid_model_id__: ClassVar[int] = 46
     __occid_semantic_role__: ClassVar[str] = 'representation'
     active_crypto: CryptoType | None = None
     keyset_ref: builtins.str | None = None
     keys: list[CryptoKey]
 
 class LoRaProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 123
+    __occid_model_id__: ClassVar[int] = 125
     __occid_semantic_role__: ClassVar[str] = 'representation'
     spreading_factor: builtins.int | None = None
     bandwidth_mhz: builtins.float | None = None
@@ -63,13 +63,13 @@ class AprsProfile(OCCIDModel):
     path: builtins.str | None = None
 
 class ElrsProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 59
+    __occid_model_id__: ClassVar[int] = 60
     __occid_semantic_role__: ClassVar[str] = 'representation'
     packet_rate_hz: builtins.int | None = None
     telemetry_ratio: builtins.str | None = None
 
 class FpvProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 79
+    __occid_model_id__: ClassVar[int] = 80
     __occid_semantic_role__: ClassVar[str] = 'representation'
     video_standard: builtins.str | None = None
     low_latency: builtins.bool | None = None

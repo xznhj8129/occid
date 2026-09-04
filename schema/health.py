@@ -55,11 +55,11 @@ class MaintenanceState(IntEnum):
 
 class Health(OCCIDModel):
     'Integrity, damage, faults, and readiness state'
-    __occid_model_id__: ClassVar[int] = 98
+    __occid_model_id__: ClassVar[int] = 99
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class HealthAlert(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 99
+    __occid_model_id__: ClassVar[int] = 100
     __occid_semantic_role__: ClassVar[str] = 'representation'
     alert_ref: builtins.str | None = None
     level: AlertLevel
@@ -67,7 +67,7 @@ class HealthAlert(OCCIDModel):
     acknowledged: builtins.bool = False
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 230
+    __occid_model_id__: ClassVar[int] = 235
     __occid_semantic_role__: ClassVar[str] = 'representation'
     subsystem_ref: builtins.str
     state: HealthStatus
@@ -75,7 +75,7 @@ class SubsystemHealth(OCCIDModel):
     note: builtins.str | None = None
 
 class HealthSnapshot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 100
+    __occid_model_id__: ClassVar[int] = 101
     __occid_semantic_role__: ClassVar[str] = 'representation'
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
@@ -87,7 +87,7 @@ class HealthSnapshot(OCCIDModel):
     alerts: list[HealthAlert]
 
 class MaintenanceStatus(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 132
+    __occid_model_id__: ClassVar[int] = 134
     __occid_semantic_role__: ClassVar[str] = 'representation'
     state: MaintenanceState
     last_service_ts: builtins.float | None = None
@@ -95,7 +95,7 @@ class MaintenanceStatus(OCCIDModel):
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 162
     __occid_semantic_role__: ClassVar[str] = 'representation'
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None

@@ -20,11 +20,11 @@ class NetworkError(IntEnum):
 
 class Network(OCCIDModel):
     'Connectivity topology and routing state'
-    __occid_model_id__: ClassVar[int] = 162
+    __occid_model_id__: ClassVar[int] = 164
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class NetworkAddress(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 163
+    __occid_model_id__: ClassVar[int] = 165
     __occid_semantic_role__: ClassVar[str] = 'representation'
     kind: AddressKind
     value: builtins.str

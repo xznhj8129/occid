@@ -18,18 +18,18 @@ class Cluster(OCCIDModel):
     capabilities: list[Capability] | None = None
 
 class Equipment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 62
+    __occid_model_id__: ClassVar[int] = 63
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
 class Component(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 35
+    __occid_model_id__: ClassVar[int] = 36
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
 class Location(OCCIDModel):
     'Identified physical-world spatial reference, place, feature, site, course, area, or delimiter'
-    __occid_model_id__: ClassVar[int] = 127
+    __occid_model_id__: ClassVar[int] = 129
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
     record: Record
@@ -40,7 +40,7 @@ class Location(OCCIDModel):
 
 class Mark(OCCIDModel):
     'Identified point reference in physical space'
-    __occid_model_id__: ClassVar[int] = 133
+    __occid_model_id__: ClassVar[int] = 135
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -52,7 +52,7 @@ class Mark(OCCIDModel):
 
 class Path(OCCIDModel):
     'Identified ordered spatial course or trace'
-    __occid_model_id__: ClassVar[int] = 175
+    __occid_model_id__: ClassVar[int] = 178
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -64,7 +64,7 @@ class Path(OCCIDModel):
 
 class Region(OCCIDModel):
     'Identified bounded spatial area'
-    __occid_model_id__: ClassVar[int] = 203
+    __occid_model_id__: ClassVar[int] = 206
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

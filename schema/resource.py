@@ -7,24 +7,24 @@ from .common import *
 
 class Resource(OCCIDModel):
     'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
-    __occid_model_id__: ClassVar[int] = 206
+    __occid_model_id__: ClassVar[int] = 209
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class FuelState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 82
+    __occid_model_id__: ClassVar[int] = 83
     __occid_semantic_role__: ClassVar[str] = 'representation'
     fuel_type: FuelType
     capacity: builtins.float | None = None
     remaining: builtins.float | None = None
 
 class SuppliesSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 232
+    __occid_model_id__: ClassVar[int] = 237
     __occid_semantic_role__: ClassVar[str] = 'representation'
     fuel: FuelState | None = None
     stores: list[ItemCount]
 
 class PowerSourceSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 190
+    __occid_model_id__: ClassVar[int] = 193
     __occid_semantic_role__: ClassVar[str] = 'representation'
     source_ref: builtins.str
     power_type: PowerType
@@ -32,14 +32,14 @@ class PowerSourceSchema(OCCIDModel):
     remaining_pct: builtins.float | None = None
 
 class PowerStateSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'representation'
     status: PowerStatus
     sources: list[PowerSourceSchema]
     electrical_sources: list[ElectricalResourceState]
 
 class ElectricalResourceState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 58
+    __occid_model_id__: ClassVar[int] = 59
     __occid_semantic_role__: ClassVar[str] = 'representation'
     source_ref: builtins.str | None = None
     voltage_v: builtins.float | None = None

@@ -17,35 +17,56 @@ class AssignmentStatus(IntEnum):
 ### Models
 
 class Assignment(OCCIDModel):
-    'Explicit binding of a task to an assignee under stated authority and constraints'
+    'Deliberate binding of an assignee to a subject under stated authority and constraints'
     __occid_model_id__: ClassVar[int] = 13
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
     id: Annotated[IntID, IDNamespace('Assignment')]
-    task_uid: UID
     assignee_uid: UID
-    plan_uid: UID | None = None
-    authority_uid: UID | None = None
+    authority_uid: UID
     assigned_by_uid: UID
-    assigned_at: builtins.float
-    accepted_at: builtins.float | None = None
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Constraint]
 
-class FlightAssignment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 73
+class TaskAssignment(OCCIDModel):
+    'Assignment of a Task to an assignee'
+    __occid_model_id__: ClassVar[int] = 247
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
     id: Annotated[IntID, IDNamespace('Assignment')]
-    task_uid: UID
     assignee_uid: UID
-    plan_uid: UID | None = None
-    authority_uid: UID | None = None
+    authority_uid: UID
     assigned_by_uid: UID
-    assigned_at: builtins.float
-    accepted_at: builtins.float | None = None
+    status: AssignmentStatus = AssignmentStatus.PROPOSED
+    constraints: list[Constraint]
+    task_uid: UID
+
+class RoleAssignment(OCCIDModel):
+    'Assignment of an organizational Role to an actor'
+    __occid_model_id__: ClassVar[int] = 216
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Assignment')]
+    assignee_uid: UID
+    authority_uid: UID
+    assigned_by_uid: UID
+    status: AssignmentStatus = AssignmentStatus.PROPOSED
+    constraints: list[Constraint]
+    organization_uid: UID
+    role: OrgRole
+
+class FlightAssignment(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 74
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    record: Record
+    uid: UID
+    id: Annotated[IntID, IDNamespace('Assignment')]
+    assignee_uid: UID
+    authority_uid: UID
+    assigned_by_uid: UID
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Constraint]
     num: builtins.int

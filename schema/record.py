@@ -7,7 +7,7 @@ from .common import *
 
 class Record(OCCIDModel):
     'Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance metadata'
-    __occid_model_id__: ClassVar[int] = 202
+    __occid_model_id__: ClassVar[int] = 205
     __occid_semantic_role__: ClassVar[str] = 'representation'
     uid: UID
     id: Annotated[IntID, IDNamespace('Record')]

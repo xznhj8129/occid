@@ -29,16 +29,16 @@ class AirMissionEvent(IntEnum):
 
 class Event(OCCIDModel):
     'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
-    __occid_model_id__: ClassVar[int] = 66
+    __occid_model_id__: ClassVar[int] = 67
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
 
 class FlightEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 75
+    __occid_model_id__: ClassVar[int] = 76
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
 
 class MissionEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 154
+    __occid_model_id__: ClassVar[int] = 156
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record

@@ -20,7 +20,7 @@ class MeshtasticPort(IntEnum):
 
 class MeshLink(OCCIDModel):
     'Observed state of a link between two mesh nodes'
-    __occid_model_id__: ClassVar[int] = 137
+    __occid_model_id__: ClassVar[int] = 139
     __occid_semantic_role__: ClassVar[str] = 'representation'
     link_ref: builtins.str | None = None
     condition: LinkCondition | None = None
@@ -33,7 +33,7 @@ class MeshLink(OCCIDModel):
     updated_ts: builtins.float | None = None
 
 class MeshNode(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 138
+    __occid_model_id__: ClassVar[int] = 140
     __occid_semantic_role__: ClassVar[str] = 'representation'
     uid: UID
     id: Annotated[IntID, IDNamespace('Node')]
@@ -50,7 +50,7 @@ class MeshNode(OCCIDModel):
 
 class MeshView(OCCIDModel):
     'Current observed mesh topology and node/link state'
-    __occid_model_id__: ClassVar[int] = 141
+    __occid_model_id__: ClassVar[int] = 143
     __occid_semantic_role__: ClassVar[str] = 'representation'
     epoch: builtins.int = 0
     nodes: list[MeshNode]
@@ -58,7 +58,7 @@ class MeshView(OCCIDModel):
     partition_ref: builtins.str | None = None
 
 class MeshtasticMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 142
+    __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -76,7 +76,7 @@ class MeshtasticMessage(OCCIDModel):
     metrics: MeshReceiveMetrics | None = None
 
 class MeshReceiveMetrics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 140
+    __occid_model_id__: ClassVar[int] = 142
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -86,7 +86,7 @@ class MeshReceiveMetrics(OCCIDModel):
     state: LinkState
 
 class MeshPositionSample(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 139
+    __occid_model_id__: ClassVar[int] = 141
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget
@@ -96,7 +96,7 @@ class MeshPositionSample(OCCIDModel):
     state: LocationState
 
 class NodeHeartbeat(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 165
+    __occid_model_id__: ClassVar[int] = 167
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget

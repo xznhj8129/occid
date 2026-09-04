@@ -9,7 +9,7 @@ from .task import TaskPriority, TaskStatus
 
 class Objective(OCCIDModel):
     'Desired end state with intent, success rule, target, priority, and deadline'
-    __occid_model_id__: ClassVar[int] = 167
+    __occid_model_id__: ClassVar[int] = 169
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -28,7 +28,7 @@ class Objective(OCCIDModel):
 
 class SuccessCriterion(OCCIDModel):
     'Typed, human-readable condition used to determine whether an objective succeeded'
-    __occid_model_id__: ClassVar[int] = 231
+    __occid_model_id__: ClassVar[int] = 236
     __occid_semantic_role__: ClassVar[str] = 'representation'
     statement: builtins.str
     metric: builtins.str | None = None

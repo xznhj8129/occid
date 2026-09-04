@@ -67,7 +67,7 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 ### Models
 
 class MilitaryAirNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 147
+    __occid_model_id__: ClassVar[int] = 149
     __occid_semantic_role__: ClassVar[str] = 'representation'
     flight_type: AirframeType
     control_modes: list[StandardFlightMode]
@@ -85,7 +85,7 @@ class MilitaryAirNavigation(OCCIDModel):
     roles: list[AirRole]
 
 class MilitaryUnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 153
+    __occid_model_id__: ClassVar[int] = 155
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

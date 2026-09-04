@@ -45,7 +45,7 @@ class NATORadioBands(IntEnum):
 
 class Radio(OCCIDModel):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 198
+    __occid_model_id__: ClassVar[int] = 201
     __occid_semantic_role__: ClassVar[str] = 'representation'
     schema_ref: builtins.str | None = None
     name: builtins.str | None = None
@@ -62,7 +62,7 @@ class Radio(OCCIDModel):
     network_ref: builtins.str | None = None
 
 class FrequencyRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 81
+    __occid_model_id__: ClassVar[int] = 82
     __occid_semantic_role__: ClassVar[str] = 'representation'
     schema_ref: builtins.str | None = None
     name: builtins.str | None = None
@@ -104,7 +104,7 @@ class ChannelSpec(OCCIDModel):
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 202
     __occid_semantic_role__: ClassVar[str] = 'representation'
     schema_ref: builtins.str | None = None
     name: builtins.str | None = None

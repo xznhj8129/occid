@@ -4,7 +4,7 @@ import builtins
 from .common import *
 
 from .definition import OperationalDomain
-from .organization import OrgLevel, OrgTopology
+from .organization import OrgTopology
 
 ### Enums
 
@@ -283,14 +283,14 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 172
+    __occid_model_id__: ClassVar[int] = 174
     __occid_semantic_role__: ClassVar[str] = 'representation'
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 150
+    __occid_model_id__: ClassVar[int] = 152
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -299,15 +299,19 @@ class MilitaryOrg(OCCIDModel):
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
     callsign: builtins.str | None = None
-    orglevel: OrgLevel = OrgLevel.GROUP
+    org_level: OrgLevel
+    org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
+    elements: list[UID]
+    roster: Roster
+    leases: list[AttachmentLease]
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
     link_loadout: list[ItemCount]
 
 class FlyingOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 78
+    __occid_model_id__: ClassVar[int] = 79
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -316,9 +320,13 @@ class FlyingOrg(OCCIDModel):
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
     callsign: builtins.str | None = None
-    orglevel: OrgLevel = OrgLevel.GROUP
+    org_level: OrgLevel
+    org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
+    elements: list[UID]
+    roster: Roster
+    leases: list[AttachmentLease]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
     link_loadout: list[ItemCount]
@@ -326,7 +334,7 @@ class FlyingOrg(OCCIDModel):
     air_units: list[ItemCount]
 
 class OrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 170
+    __occid_model_id__: ClassVar[int] = 172
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -335,9 +343,13 @@ class OrbatOrg(OCCIDModel):
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
     callsign: builtins.str | None = None
-    orglevel: OrgLevel = OrgLevel.GROUP
+    org_level: OrgLevel
+    org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology = OrgTopology.HIERARCHICAL
+    elements: list[UID]
+    roster: Roster
+    leases: list[AttachmentLease]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
     link_loadout: list[ItemCount]
@@ -356,7 +368,7 @@ class OrbatOrg(OCCIDModel):
     spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 94
+    __occid_model_id__: ClassVar[int] = 95
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -365,9 +377,13 @@ class GroundOrbatOrg(OCCIDModel):
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
     callsign: builtins.str | None = None
-    orglevel: OrgLevel = OrgLevel.GROUP
+    org_level: OrgLevel
+    org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology = OrgTopology.HIERARCHICAL
+    elements: list[UID]
+    roster: Roster
+    leases: list[AttachmentLease]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
     link_loadout: list[ItemCount]

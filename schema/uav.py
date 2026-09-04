@@ -38,7 +38,7 @@ class AirRobot(OCCIDModel):
     remote_control: RemoteControlSchema
 
 class Drone(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 55
+    __occid_model_id__: ClassVar[int] = 56
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

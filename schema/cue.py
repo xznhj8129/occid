@@ -7,7 +7,7 @@ from .common import *
 
 class Cue(OCCIDModel):
     'Spatial cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state'
-    __occid_model_id__: ClassVar[int] = 46
+    __occid_model_id__: ClassVar[int] = 47
     __occid_semantic_role__: ClassVar[str] = 'type'
     source_uid: UID | None = None
     target_uid: UID | None = None

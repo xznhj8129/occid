@@ -7,11 +7,11 @@ from .common import *
 
 class Media(OCCIDModel):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
-    __occid_model_id__: ClassVar[int] = 135
+    __occid_model_id__: ClassVar[int] = 137
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class MediaItem(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 136
+    __occid_model_id__: ClassVar[int] = 138
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

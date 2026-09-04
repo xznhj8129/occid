@@ -51,7 +51,7 @@ class ExecutionOperation(IntEnum):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 226
+    __occid_model_id__: ClassVar[int] = 231
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -61,7 +61,7 @@ class StateChangeCommand(OCCIDModel):
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 193
+    __occid_model_id__: ClassVar[int] = 196
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -70,7 +70,7 @@ class ProcessControlCommand(OCCIDModel):
 
 class ConfigurationCommand(OCCIDModel):
     'Set a configuration parameter or load a referenced configuration on the target'
-    __occid_model_id__: ClassVar[int] = 36
+    __occid_model_id__: ClassVar[int] = 37
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -81,7 +81,7 @@ class ConfigurationCommand(OCCIDModel):
 
 class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 160
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -94,20 +94,18 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 207
+    __occid_model_id__: ClassVar[int] = 210
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
     operation: ResourceOperation
     resource_ref: builtins.str | None = None
     quantity: builtins.float | None = None
-    destination_ref: builtins.str | None = None
 
 class ExecutionCommand(OCCIDModel):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
-    __occid_model_id__: ClassVar[int] = 69
+    __occid_model_id__: ClassVar[int] = 70
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
     operation: ExecutionOperation
-    dispatch_ref: builtins.str | None = None

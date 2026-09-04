@@ -49,7 +49,7 @@ class NetType(IntEnum):
 
 class Link(OCCIDModel):
     'Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState'
-    __occid_model_id__: ClassVar[int] = 119
+    __occid_model_id__: ClassVar[int] = 121
     __occid_semantic_role__: ClassVar[str] = 'type'
     schema_ref: builtins.str | None = None
     name: builtins.str | None = None
@@ -67,7 +67,7 @@ class Link(OCCIDModel):
 
 class LinkState(OCCIDModel):
     'Time-varying condition and observed quality of a communication link'
-    __occid_model_id__: ClassVar[int] = 122
+    __occid_model_id__: ClassVar[int] = 124
     __occid_semantic_role__: ClassVar[str] = 'type'
     link_ref: builtins.str | None = None
     condition: LinkCondition | None = None
@@ -77,14 +77,14 @@ class LinkState(OCCIDModel):
     counters: LinkCounters | None = None
 
 class DataRateSpec(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 47
+    __occid_model_id__: ClassVar[int] = 48
     __occid_semantic_role__: ClassVar[str] = 'representation'
     nominal_bps: builtins.float | None = None
     sustained_bps: builtins.float | None = None
     burst_bps: builtins.float | None = None
 
 class LinkCapacity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 120
+    __occid_model_id__: ClassVar[int] = 122
     __occid_semantic_role__: ClassVar[str] = 'representation'
     max_nodes: builtins.int | None = None
     max_users: builtins.int | None = None
@@ -92,7 +92,7 @@ class LinkCapacity(OCCIDModel):
 
 class SignalQuality(OCCIDModel):
     'Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning'
-    __occid_model_id__: ClassVar[int] = 221
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
     strength_dbm: builtins.float | None = None
     snr_db: builtins.float | None = None
@@ -100,7 +100,7 @@ class SignalQuality(OCCIDModel):
 
 class DeliveryQuality(OCCIDModel):
     'Protocol-neutral observed communication delivery quality over an observation interval'
-    __occid_model_id__: ClassVar[int] = 49
+    __occid_model_id__: ClassVar[int] = 50
     __occid_semantic_role__: ClassVar[str] = 'representation'
     latency_s: builtins.float | None = None
     packet_loss_ratio: builtins.float | None = None
@@ -108,7 +108,7 @@ class DeliveryQuality(OCCIDModel):
 
 class LinkCounters(OCCIDModel):
     'Monotonic observed communication-link event counters'
-    __occid_model_id__: ClassVar[int] = 121
+    __occid_model_id__: ClassVar[int] = 123
     __occid_semantic_role__: ClassVar[str] = 'representation'
     error_count: builtins.int | None = None
     receive_error_count: builtins.int | None = None

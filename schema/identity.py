@@ -7,17 +7,17 @@ from .common import *
 
 class Identity(OCCIDModel):
     'Identity bindings and identity-related properties'
-    __occid_model_id__: ClassVar[int] = 103
+    __occid_model_id__: ClassVar[int] = 104
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class StringName(OCCIDValue[builtins.str]):
     'Human-readable reference for something'
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 233
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class IdentityBootstrap(OCCIDModel):
     "Stable Node-centered binding of one deployed Node to the Entity it serves and that Entity's Organization"
-    __occid_model_id__: ClassVar[int] = 104
+    __occid_model_id__: ClassVar[int] = 105
     __occid_semantic_role__: ClassVar[str] = 'representation'
     node_uid: UID
     node_id: Annotated[IntID, IDNamespace('Node')]

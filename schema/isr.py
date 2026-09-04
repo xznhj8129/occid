@@ -7,7 +7,7 @@ from .common import *
 
 class ObservationMessage(OCCIDModel):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 168
+    __occid_model_id__: ClassVar[int] = 170
     __occid_semantic_role__: ClassVar[str] = 'type'
     src: MessageTarget
     dst: MessageTarget
@@ -17,7 +17,7 @@ class ObservationMessage(OCCIDModel):
     observation: Classification | Track | Assessment | IsrResult | Detection | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
 
 class ProtocolEventMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 195
+    __occid_model_id__: ClassVar[int] = 198
     __occid_semantic_role__: ClassVar[str] = 'representation'
     src: MessageTarget
     dst: MessageTarget

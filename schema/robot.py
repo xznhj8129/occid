@@ -69,7 +69,7 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 210
+    __occid_model_id__: ClassVar[int] = 213
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -92,7 +92,7 @@ class Robot(OCCIDModel):
     remote_control: RemoteControlSchema
 
 class GroundRobot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 95
+    __occid_model_id__: ClassVar[int] = 96
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -118,7 +118,7 @@ class GroundRobot(OCCIDModel):
     navigation: GroundNavigationSchema
 
 class VideoConfigSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 267
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -131,7 +131,7 @@ class VideoConfigSchema(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 204
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -150,7 +150,7 @@ class ChannelMapEntry(OCCIDModel):
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 157
+    __occid_model_id__: ClassVar[int] = 159
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -160,7 +160,7 @@ class ModeRange(OCCIDModel):
     range: NumericRange
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -169,7 +169,7 @@ class RobotController(OCCIDModel):
     autopilot_firmware: FirmwareInfo
 
 class RemoteControlSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 205
+    __occid_model_id__: ClassVar[int] = 208
     __occid_semantic_role__: ClassVar[str] = 'representation'
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
@@ -184,7 +184,7 @@ class RemoteControlSchema(OCCIDModel):
 
 class ObserverSource(OCCIDModel):
     'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 169
+    __occid_model_id__: ClassVar[int] = 171
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -210,7 +210,7 @@ class ObserverSource(OCCIDModel):
 
 class FlightControlState(OCCIDModel):
     'Portable flight-controller operational state independent of endpoint-specific mode identifiers'
-    __occid_model_id__: ClassVar[int] = 74
+    __occid_model_id__: ClassVar[int] = 75
     __occid_semantic_role__: ClassVar[str] = 'representation'
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None

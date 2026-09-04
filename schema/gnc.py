@@ -48,18 +48,18 @@ class GnssFixType(IntEnum):
 
 class GNC(OCCIDModel):
     'Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state'
-    __occid_model_id__: ClassVar[int] = 84
+    __occid_model_id__: ClassVar[int] = 85
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class NavigationValidity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 161
+    __occid_model_id__: ClassVar[int] = 163
     __occid_semantic_role__: ClassVar[str] = 'representation'
     local_position_ok: builtins.bool | None = None
     global_position_ok: builtins.bool | None = None
     home_position_ok: builtins.bool | None = None
 
 class GnssSolution(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 90
+    __occid_model_id__: ClassVar[int] = 91
     __occid_semantic_role__: ClassVar[str] = 'representation'
     fix_type: GnssFixType | None = None
     satellites_used: builtins.int | None = None

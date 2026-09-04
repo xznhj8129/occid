@@ -14,7 +14,7 @@ class ObservationTimeBasis(IntEnum):
 
 class EntityState(OCCIDModel):
     'Time-indexed mutable condition reported for an entity independently of its identity and specification'
-    __occid_model_id__: ClassVar[int] = 61
+    __occid_model_id__: ClassVar[int] = 62
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     subject_uid: UID

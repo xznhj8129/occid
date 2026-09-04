@@ -70,17 +70,17 @@ class WaypointType(IntEnum):
 
 class Position(OCCIDModel):
     'Position in space, address or placement'
-    __occid_model_id__: ClassVar[int] = 189
+    __occid_model_id__: ClassVar[int] = 192
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class SpatialStruct(OCCIDModel):
     'Spatial struct support models'
-    __occid_model_id__: ClassVar[int] = 223
+    __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class EulerAngles(OCCIDModel):
     'Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on'
-    __occid_model_id__: ClassVar[int] = 65
+    __occid_model_id__: ClassVar[int] = 66
     __occid_semantic_role__: ClassVar[str] = 'representation'
     roll_rad: builtins.float
     pitch_rad: builtins.float
@@ -90,7 +90,7 @@ class EulerAngles(OCCIDModel):
 
 class LocalDirection(OCCIDModel):
     'Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known'
-    __occid_model_id__: ClassVar[int] = 124
+    __occid_model_id__: ClassVar[int] = 126
     __occid_semantic_role__: ClassVar[str] = 'representation'
     bearing: builtins.float
     azimuth: builtins.float
@@ -98,7 +98,7 @@ class LocalDirection(OCCIDModel):
     slant_range: builtins.float | None = None
 
 class LocalVector(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 126
+    __occid_model_id__: ClassVar[int] = 128
     __occid_semantic_role__: ClassVar[str] = 'representation'
     x: builtins.float
     y: builtins.float
@@ -106,7 +106,7 @@ class LocalVector(OCCIDModel):
     frame: InertialReferenceFrame
 
 class GlobalPosition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 89
+    __occid_model_id__: ClassVar[int] = 90
     __occid_semantic_role__: ClassVar[str] = 'representation'
     lat: builtins.float
     lon: builtins.float
@@ -116,12 +116,12 @@ class GlobalPosition(OCCIDModel):
     alt_frame: AltitudeDatum
 
 class GeoPath(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 86
+    __occid_model_id__: ClassVar[int] = 87
     __occid_semantic_role__: ClassVar[str] = 'representation'
     points: list[GlobalPosition]
 
 class GeoArea(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 85
+    __occid_model_id__: ClassVar[int] = 86
     __occid_semantic_role__: ClassVar[str] = 'representation'
     vertices: list[GlobalPosition]
 
@@ -137,7 +137,7 @@ class BoundingBox(OCCIDModel):
 
 class VelocityVector(OCCIDModel):
     'Linear velocity with optional explicit inertial reference frame'
-    __occid_model_id__: ClassVar[int] = 265
+    __occid_model_id__: ClassVar[int] = 271
     __occid_semantic_role__: ClassVar[str] = 'representation'
     x: builtins.float
     y: builtins.float
@@ -163,7 +163,7 @@ class AltitudeState(OCCIDModel):
     relative_datum: AltitudeDatum | None = None
 
 class LocationUncertainty(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 129
+    __occid_model_id__: ClassVar[int] = 131
     __occid_semantic_role__: ClassVar[str] = 'representation'
     horiz_err_m: builtins.float | None = None
     vert_err_m: builtins.float | None = None
@@ -172,7 +172,7 @@ class LocationUncertainty(OCCIDModel):
     ellipse_bearing_deg: builtins.float | None = None
 
 class LocationState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 128
+    __occid_model_id__: ClassVar[int] = 130
     __occid_semantic_role__: ClassVar[str] = 'representation'
     inertial_frame: InertialReferenceFrame | None = None
     body_frame: BodyReferenceFrame | None = None
@@ -186,7 +186,7 @@ class LocationState(OCCIDModel):
     gnss: GnssSolution | None = None
 
 class SpotterOrigin(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'representation'
     position: GlobalPosition
     attitude: EulerAngles | None = None
