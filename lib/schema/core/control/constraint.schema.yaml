@@ -8,7 +8,7 @@ tags:
 models:
   Constraint:
     description: Limit, rule, or time/resource bound applied to directed work
-    semantic_role: concept
+    semantic_role: type
     parent: Control
     variants:
       - Restriction

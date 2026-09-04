@@ -8,7 +8,7 @@ tags:
 models:
   Identity:
     description: Identity bindings and identity-related properties
-    semantic_role: concept
+    semantic_role: type
     parent: Property
     variants:
       - StringName

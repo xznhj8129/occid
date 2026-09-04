@@ -17,7 +17,7 @@ enums:
 models:
   Execution:
     description: One execution attempt for an assignment, independently tracked across local and external executors
-    semantic_role: concept
+    semantic_role: type
     parent: Data
     fields:
       record: Record

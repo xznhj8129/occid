@@ -22,7 +22,7 @@ enums:
 models:
   Protocol:
     description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata
-    semantic_role: concept
+    semantic_role: type
     parent: Communication
 
   ProtocolPayload:

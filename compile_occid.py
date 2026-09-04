@@ -98,7 +98,6 @@ class Compiler:
         self.models: dict[str, idl.ModelDef] = {}
         self.model_order: list[str] = []
         self.children: dict[str, list[str]] = defaultdict(list)
-        self.concept_children: dict[str, list[str]] = defaultdict(list)
         self.raw_models: dict[str, dict] = {}
         self.raw_vocabulary: dict[str, list[str]] = {}
         self.raw_maps: dict[str, dict] = {}
@@ -110,9 +109,9 @@ class Compiler:
             for map_name, spec in (raw.get("maps") or {}).items():
                 self.raw_maps[map_name] = copy.deepcopy(spec)
             for model in module.models:
-                if model.semantic_role not in {"concept", "representation"}:
+                if model.semantic_role not in {"concept", "type", "representation"}:
                     raise CompileError(
-                        f"{module.path}: {model.name} must declare semantic_role concept or representation"
+                        f"{module.path}: {model.name} must declare semantic_role concept, type, or representation"
                     )
                 self.models[model.name] = model
                 self.model_order.append(model.name)
@@ -122,13 +121,8 @@ class Compiler:
         for model in self.models.values():
             if model.parent:
                 self.children[model.parent].append(model.name)
-                if model.semantic_role == "concept":
-                    self.concept_children[model.parent].append(model.name)
-
         self.types: set[str] = {
-            name
-            for name, model in self.models.items()
-            if model.semantic_role == "concept" and not self.concept_children.get(name)
+            name for name, model in self.models.items() if model.semantic_role == "type"
         }
         self.representations: set[str] = {
             name for name, model in self.models.items() if model.semantic_role == "representation"
@@ -192,7 +186,7 @@ class Compiler:
         return fields
 
     def model_family(self, model_name: str) -> str:
-        """Return the nearest ancestor Concept of an emitted runtime model."""
+        """Return the nearest ancestor Concept or Type of an emitted runtime model."""
         seen: set[str] = {model_name}
         current = self.models[model_name].parent
         while current is not None:
@@ -203,12 +197,12 @@ class Compiler:
             parent = self.models.get(current)
             if parent is None:
                 raise CompileError(f"model {model_name} has unknown parent {current}")
-            if parent.semantic_role == "concept":
+            if parent.semantic_role in {"concept", "type"}:
                 return current
             current = parent.parent
 
         raise CompileError(
-            f"emitted runtime model {model_name} has no ancestor Concept to use as family"
+            f"emitted runtime model {model_name} has no ancestor Concept or Type to use as family"
         )
 
     def lower_named_type(self, name: str) -> idl.TypeNode:
@@ -219,9 +213,9 @@ class Compiler:
         if model is None:
             return idl.TypeNode(kind="name", name=name)
 
-        # Type and Representation references are exact. Only a non-leaf
-        # Concept reference is semantic shorthand that must be resolved to the
-        # concrete runtime forms currently available beneath it.
+        # Type and Representation references are exact. Concept references are
+        # semantic shorthand that must be resolved to the emitted runtime forms
+        # currently available beneath them.
         if name in self.emitted_models:
             return idl.TypeNode(kind="name", name=name)
 

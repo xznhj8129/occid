@@ -27,14 +27,14 @@ models:
 
   Predicate:
     description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions
-    semantic_role: concept
+    semantic_role: type
     parent: Condition
     fields:
       subject_ref: optional UID
 
   BooleanLogic:
     description: Boolean composition of Conditions; NONE is identity and NOT is negation for a single term, while the remaining operators combine the term set
-    semantic_role: concept
+    semantic_role: type
     parent: Condition
     fields:
       operator: BooleanOperator

@@ -8,7 +8,7 @@ tags:
 models:
   CommandMessage:
     description: Message whose payload directs action
-    semantic_role: concept
+    semantic_role: type
     parent: Message
     fields:
       command: Command

@@ -8,7 +8,7 @@ tags:
 models:
   Resource:
     description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
-    semantic_role: concept
+    semantic_role: type
     parent: State
 
   FuelState:

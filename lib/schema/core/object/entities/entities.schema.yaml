@@ -105,7 +105,7 @@ models:
       display_meta: optional DisplayMeta
 
   Actor:
-    semantic_role: concept
+    semantic_role: type
     parent: Entity
     variants:
       - Person
@@ -129,7 +129,7 @@ models:
       sensors: map[string, SensorPayload]
 
   Machine:
-    semantic_role: concept
+    semantic_role: type
     parent: Entity
     variants:
       - Vehicle

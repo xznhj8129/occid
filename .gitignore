@@ -20,3 +20,5 @@ config/local*
 config/real*
 .agents/
 dist/
+*.zip
+*.patch

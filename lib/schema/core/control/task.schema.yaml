@@ -62,7 +62,7 @@ enums:
 models:
   Task:
     description: Directed work that must be accomplished in support of an optional objective
-    semantic_role: concept
+    semantic_role: type
     parent: Directive
     fields:
       record: Record

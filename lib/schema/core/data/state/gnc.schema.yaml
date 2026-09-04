@@ -48,7 +48,7 @@ enums:
 models:
   GNC:
     description: Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state
-    semantic_role: concept
+    semantic_role: type
     parent: State
 
   NavigationValidity:

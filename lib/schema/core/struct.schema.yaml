@@ -29,7 +29,7 @@ models:
       - SpatialStruct
 
   ID:
-    semantic_role: concept
+    semantic_role: type
     parent: Struct
     variants:
       - IntID
@@ -46,7 +46,7 @@ models:
     type: bytes[16]
 
   Vector:
-    semantic_role: concept
+    semantic_role: type
     parent: Struct
 
   Measurement:
@@ -82,7 +82,7 @@ models:
     parent: Struct
 
   Uncertainty:
-    semantic_role: concept
+    semantic_role: type
     parent: Struct
 
   Pose:
@@ -102,7 +102,7 @@ models:
     parent: Struct
 
   Time:
-    semantic_role: concept
+    semantic_role: type
     parent: Measurement
     fields:
       utime: int

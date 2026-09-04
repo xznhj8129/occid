@@ -55,7 +55,7 @@ enums:
 models:
   Health:
     description: Integrity, damage, faults, and readiness state
-    semantic_role: concept
+    semantic_role: type
     parent: State
 
   HealthAlert:

@@ -67,12 +67,12 @@ models:
       - IsrObservation
 
   Classification:
-    semantic_role: concept
+    semantic_role: type
     parent: Observation
 
   Track:
     description: Persistent maintained identity for one correlated observed object or phenomenon
-    semantic_role: concept
+    semantic_role: type
     parent: Observation
     fields:
       record: Record
@@ -80,14 +80,14 @@ models:
       id: IntID(Track)
 
   Assessment:
-    semantic_role: concept
+    semantic_role: type
     parent: Observation
     variants:
       - IsrResult
 
   Detection:
     description: Assessment that something exists or occurred
-    semantic_role: concept
+    semantic_role: type
     parent: Observation
 
   VisionBox:

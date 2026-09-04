@@ -27,12 +27,12 @@ models:
 
   Collection:
     description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
-    semantic_role: concept
+    semantic_role: type
     parent: Set
 
   Cluster:
     description: A set of objects united only by criterion
-    semantic_role: concept
+    semantic_role: type
     parent: Set
 
   Item:
@@ -45,16 +45,16 @@ models:
       - Payload
 
   Equipment:
-    semantic_role: concept
+    semantic_role: type
     parent: Item
 
   Component:
-    semantic_role: concept
+    semantic_role: type
     parent: Item
 
   Location:
     description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
-    semantic_role: concept
+    semantic_role: type
     parent: Object
     variants:
       - Mark

@@ -63,7 +63,7 @@ COMPILED_MODEL_KEYS = {"model_id", "package", "family", "description", "type", "
 COMPILED_VOCABULARY_KEYS = {"package", "values"}
 COMPILED_MAP_KEYS = {"package", "type", "value"}
 MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields", "variants"}
-MODEL_SEMANTIC_ROLES = {"concept", "representation"}
+MODEL_SEMANTIC_ROLES = {"concept", "type", "representation"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 

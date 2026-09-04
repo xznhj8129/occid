@@ -107,7 +107,7 @@ models:
       - DefinitionRelationship
 
   Frame:
-    semantic_role: concept
+    semantic_role: type
     parent: Definition
 
   Coordinate:
@@ -119,11 +119,11 @@ models:
     parent: Definition
 
   DefinitionRelationship:
-    semantic_role: concept
+    semantic_role: type
     parent: Definition
 
   SemanticType:
-    semantic_role: concept
+    semantic_role: type
     parent: Definition
     variants:
       - Category

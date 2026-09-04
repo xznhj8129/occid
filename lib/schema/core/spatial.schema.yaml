@@ -179,7 +179,7 @@ models:
 
   Position:
     description: Position in space, address or placement
-    semantic_role: concept
+    semantic_role: type
     parent: State
 
   LocationState:

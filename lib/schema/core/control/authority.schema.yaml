@@ -44,7 +44,7 @@ models:
   # means "the Commander role of Organization X actually possesses
   # command authority over Organization X."
   CommandAuthority:
-    semantic_role: concept
+    semantic_role: type
     parent: Authority
     fields:
       organization_uid: UID

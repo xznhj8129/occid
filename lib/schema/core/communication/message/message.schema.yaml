@@ -87,7 +87,7 @@ models:
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
-    semantic_role: concept
+    semantic_role: type
     parent: Message
     variants:
       - DeliveryReceipt

@@ -7,7 +7,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_ROOT = REPO_ROOT / "lib" / "schema"
-VALID_ROLES = {"concept", "representation"}
+VALID_ROLES = {"concept", "type", "representation"}
 
 
 def _authored_models() -> dict[str, dict]:
@@ -32,12 +32,6 @@ def test_every_model_has_explicit_semantic_role() -> None:
 
 def test_compiled_levels_match_authored_semantics() -> None:
     models = _authored_models()
-    concept_children: dict[str, list[str]] = {}
-    for model_name, spec in models.items():
-        parent = spec.get("parent")
-        if parent and spec.get("semantic_role") == "concept":
-            concept_children.setdefault(parent, []).append(model_name)
-
     compiled = yaml.safe_load((REPO_ROOT / "occid.yaml").read_text())
     types = compiled["types"]
     representations = compiled["representations"]
@@ -47,11 +41,11 @@ def test_compiled_levels_match_authored_semantics() -> None:
         if role == "representation":
             assert model_name in representations
             assert model_name not in types
-        elif concept_children.get(model_name):
-            assert model_name not in types
+        elif role == "type":
+            assert model_name in types
             assert model_name not in representations
         else:
-            assert model_name in types
+            assert model_name not in types
             assert model_name not in representations
 
     for section in (types, representations):

@@ -8,7 +8,7 @@ tags:
 models:
   TelemetryMessage:
     description: Message whose payload reports sender or asset state
-    semantic_role: concept
+    semantic_role: type
     parent: Message
     fields:
       state: State
