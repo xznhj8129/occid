@@ -102,7 +102,7 @@ class DefinitionRelationship(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class SemanticType(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 221
+    __occid_model_id__: ClassVar[int] = 219
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class Coordinate(OCCIDModel):
@@ -118,7 +118,7 @@ class Category(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Role(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 215
+    __occid_model_id__: ClassVar[int] = 213
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Function(OCCIDModel):
@@ -126,5 +126,5 @@ class Function(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class Domain(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 55
+    __occid_model_id__: ClassVar[int] = 56
     __occid_semantic_role__: ClassVar[str] = 'representation'

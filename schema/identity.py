@@ -12,7 +12,7 @@ class Identity(OCCIDModel):
 
 class StringName(OCCIDValue[builtins.str]):
     'Human-readable reference for something'
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class IdentityBootstrap(OCCIDModel):

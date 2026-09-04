@@ -515,6 +515,16 @@ vocabulary:
     - ABORTING
     - FAILING
 
+  ExecutionPhase:
+    package: execution
+    values:
+    - CREATED = 0
+    - QUEUED
+    - RUNNING
+    - SUCCEEDED
+    - FAILED
+    - CANCELLED
+
   IntelCategory:
     package: observation
     values:
@@ -605,16 +615,6 @@ vocabulary:
     - ENABLED
     - EXECUTING
     - EXHAUSTED
-
-  ExecutionPhase:
-    package: execution
-    values:
-    - CREATED = 0
-    - QUEUED
-    - RUNNING
-    - SUCCEEDED
-    - FAILED
-    - CANCELLED
 
   AirFailsafeMode:
     package: gnc
@@ -1546,19 +1546,18 @@ types:
     family: Communication
     description: Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
 
   LinkState:
     model_id: 124
@@ -1566,7 +1565,7 @@ types:
     family: State
     description: Time-varying condition and observed quality of a communication link
     fields:
-      link_ref: optional string
+      link_uid: optional UID
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
       signal: optional SignalQuality
@@ -1579,21 +1578,21 @@ types:
     family: Message
     description: Message whose payload directs action
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
       command: StateChangeCommand | ProcessControlCommand | ConfigurationCommand | MotionCommand | ResourceCommand | ExecutionCommand
 
   ObservationMessage:
-    model_id: 170
+    model_id: 169
     package: isr
     family: Message
     description: Message whose payload reports external objects, events, environment, or intelligence
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -1601,45 +1600,44 @@ types:
         | IsrObservation | TrackUpdate
 
   ResponseMessage:
-    model_id: 211
+    model_id: 209
     package: message
     family: Message
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
       seq_reply: optional int
-      response_to: optional string
+      response_to: UID
 
   TelemetryMessage:
-    model_id: 254
+    model_id: 250
     package: telemetry
     family: Message
     description: Message whose payload reports sender or asset state
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
-      state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport |
-        TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
+      state: LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState
+        | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState
+        | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo
+        | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState
+        | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
 
   Network:
-    model_id: 164
+    model_id: 163
     package: network
     family: Communication
     description: Connectivity topology and routing state
 
   Node:
-    model_id: 166
+    model_id: 165
     package: node
     family: Communication
     description: Deployed compute and communications endpoint participating in OCCID on behalf of an Entity
@@ -1654,7 +1652,7 @@ types:
       protocols: map[string, Protocol]
 
   Protocol:
-    model_id: 197
+    model_id: 195
     package: protocol
     family: Communication
     description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata
@@ -1690,7 +1688,7 @@ types:
       role: Role
 
   StateChangeCommand:
-    model_id: 231
+    model_id: 229
     package: command
     family: Command
     description: Change, enable, or disable one declared state property on the target
@@ -1702,7 +1700,7 @@ types:
       value: optional MetadataValue
 
   ProcessControlCommand:
-    model_id: 196
+    model_id: 194
     package: command
     family: Command
     description: Start, stop, pause, resume, or cancel a named process on the target
@@ -1723,10 +1721,10 @@ types:
       operation: ConfigurationOperation
       parameter_name: optional string
       value: optional MetadataValue
-      configuration_ref: optional string
+      configuration_uid: optional UID
 
   MotionCommand:
-    model_id: 160
+    model_id: 159
     package: command
     family: Command
     description: Direct immediate target motion using a destination, path, or maintained spatial condition
@@ -1741,7 +1739,7 @@ types:
       yaw_rad: optional float
 
   ResourceCommand:
-    model_id: 210
+    model_id: 208
     package: command
     family: Command
     description: Acquire, release, allocate, or transfer a referenced resource
@@ -1749,11 +1747,11 @@ types:
       target_uid: UID
       constraints: list[Constraint]
       operation: ResourceOperation
-      resource_ref: optional string
+      resource_uid: optional UID
       quantity: optional float
 
   ExecutionCommand:
-    model_id: 70
+    model_id: 71
     package: command
     family: Command
     description: Execute, abort, or reset a referenced plan, execution, or executable object
@@ -1771,7 +1769,7 @@ types:
       condition: optional Predicate | BooleanLogic
 
   Objective:
-    model_id: 169
+    model_id: 168
     package: objective
     family: Control
     description: Desired end state with intent, success rule, target, priority, and deadline
@@ -1792,7 +1790,7 @@ types:
       deadline: optional float
 
   Plan:
-    model_id: 185
+    model_id: 183
     package: plan
     family: Control
     description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes,
@@ -1814,7 +1812,7 @@ types:
       approval_state: PlanApprovalState = DRAFT
 
   Task:
-    model_id: 246
+    model_id: 243
     package: task
     family: Directive
     description: Directed work that must be accomplished in support of an optional objective
@@ -1832,9 +1830,10 @@ types:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
 
   Predicate:
-    model_id: 195
+    model_id: 193
     package: condition
     family: Condition
     description: Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding
@@ -1853,12 +1852,32 @@ types:
       terms: list[Predicate | BooleanLogic]
 
   Event:
-    model_id: 67
+    model_id: 69
     package: event
     family: Data
     description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data
     fields:
       record: Record
+
+  Execution:
+    model_id: 70
+    package: execution
+    family: Data
+    description: One execution attempt for an assignment, independently tracked across local and external executors
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Execution)
+      assignment_uid: UID
+      executor_uid: UID
+      attempt: int = 0
+      phase: ExecutionPhase = CREATED
+      progress: optional float
+      started_at: optional float
+      completed_at: optional float
+      result: optional MetadataValue
+      failure: optional string
+      external_job_refs: list[string]
 
   Media:
     model_id: 137
@@ -1872,7 +1891,7 @@ types:
     family: Observation
 
   Track:
-    model_id: 257
+    model_id: 253
     package: observation
     family: Observation
     description: Persistent maintained identity for one correlated observed object or phenomenon
@@ -1887,7 +1906,7 @@ types:
     family: Observation
 
   Detection:
-    model_id: 52
+    model_id: 53
     package: observation
     family: Observation
     description: Assessment that something exists or occurred
@@ -1912,7 +1931,7 @@ types:
     description: Identity bindings and identity-related properties
 
   Parameter:
-    model_id: 177
+    model_id: 176
     package: parameter
     family: Property
     description: Current operating configuration or control regime
@@ -1921,7 +1940,7 @@ types:
       value: optional MetadataValue
 
   Relationship:
-    model_id: 207
+    model_id: 205
     package: relationship
     family: Property
     description: Nature of relations, ownership, provenance, link
@@ -1948,26 +1967,6 @@ types:
       distance_m: optional float
       label: optional string
 
-  Execution:
-    model_id: 68
-    package: execution
-    family: State
-    description: One execution attempt for an assignment, independently tracked across local and external executors
-    fields:
-      record: Record
-      uid: UID
-      id: IntID(Execution)
-      assignment_uid: UID
-      executor_uid: UID
-      attempt: int = 0
-      phase: ExecutionPhase = CREATED
-      progress: optional float
-      started_at: optional float
-      completed_at: optional float
-      result: optional MetadataValue
-      failure: optional string
-      external_job_refs: list[string]
-
   GNC:
     model_id: 85
     package: gnc
@@ -1988,45 +1987,13 @@ types:
     description: Diagnostic internals of a machine or system.
 
   Resource:
-    model_id: 209
+    model_id: 207
     package: resource
     family: State
     description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
 
-  SensorState:
-    model_id: 224
-    package: sensorstate
-    family: State
-    description: Onboard sensor readings, readiness, calibration, and availability
-
-  EntityState:
-    model_id: 62
-    package: state
-    family: State
-    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
-    fields:
-      record: Record
-      subject_uid: UID
-      timestamp: float
-      position: optional LocationState
-      motion: optional VelocityVector
-      angular_velocity: optional AngularVelocityVector
-      airspeed: optional Airspeed
-      flight_control: optional FlightControlState
-      power: optional PowerStateSchema
-      operational_status: optional EntityOperationalState
-      lifecycle_status: optional EntityLifecycleStatus
-      health: optional HealthSnapshot
-      resources: optional SuppliesSchema
-      link_states: map[string, LinkState]
-      control_state: optional ControlLevel
-      source_observation_ts: optional float
-      source_time_basis: optional ObservationTimeBasis
-      received_ts: optional float
-      published_ts: optional float
-
   Validation:
-    model_id: 268
+    model_id: 264
     package: validation
     family: State
     description: Mutable state of evaluating a Condition, kept separate from the predicate itself
@@ -2046,7 +2013,7 @@ types:
     family: Definition
 
   SemanticType:
-    model_id: 221
+    model_id: 219
     package: definition
     family: Definition
 
@@ -2066,7 +2033,7 @@ types:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
 
   Machine:
@@ -2085,7 +2052,7 @@ types:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -2109,7 +2076,7 @@ types:
       capabilities: optional list[Capability]
 
   Equipment:
-    model_id: 63
+    model_id: 65
     package: object
     family: Item
     fields:
@@ -2133,10 +2100,10 @@ types:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
 
   Organization:
-    model_id: 176
+    model_id: 175
     package: organization
     family: Set
     description: A structured collection of organized entities and/or subordinate organizations with common command and control
@@ -2157,7 +2124,7 @@ types:
       leases: list[AttachmentLease]
 
   Payload:
-    model_id: 179
+    model_id: 178
     package: payload
     family: Item
     description: Object-carried sensor, effector, cargo, or other mounted payload
@@ -2165,7 +2132,7 @@ types:
       capabilities: optional list[Capability]
 
   Position:
-    model_id: 192
+    model_id: 190
     package: spatial
     family: State
     description: Position in space, address or placement
@@ -2176,17 +2143,17 @@ types:
     family: Struct
 
   Vector:
-    model_id: 269
-    package: struct
-    family: Struct
-
-  Uncertainty:
     model_id: 265
     package: struct
     family: Struct
 
+  Uncertainty:
+    model_id: 261
+    package: struct
+    family: Struct
+
   Time:
-    model_id: 255
+    model_id: 251
     package: struct
     family: Measurement
     fields:
@@ -2212,7 +2179,7 @@ representations:
       max_streams: optional int
 
   SignalQuality:
-    model_id: 226
+    model_id: 224
     package: link
     family: Measurement
     description: Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical
@@ -2248,7 +2215,7 @@ representations:
     family: LinkState
     description: Observed state of a link between two mesh nodes
     fields:
-      link_ref: optional string
+      link_uid: optional UID
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
       signal: optional SignalQuality
@@ -2292,8 +2259,8 @@ representations:
     package: mesh
     family: Message
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -2312,8 +2279,8 @@ representations:
     package: mesh
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -2324,20 +2291,20 @@ representations:
     package: mesh
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
       state: LocationState
 
   NodeHeartbeat:
-    model_id: 167
+    model_id: 166
     package: mesh
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -2351,14 +2318,14 @@ representations:
     package: c3
     family: Message
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
-      message_ref: optional string
-      conversation_ref: optional string
-      reply_to_ref: optional string
+      message_uid: optional UID
+      conversation_uid: optional UID
+      reply_to_uid: optional UID
       sender_uid: optional UID
       sender_name: optional string
       destination_uid: optional UID
@@ -2366,15 +2333,15 @@ representations:
       kind: optional string
       message: string
       position: optional GlobalPosition
-      targets: list[MessageTarget]
+      targets: list[UID]
 
   ProtocolEventMessage:
-    model_id: 198
+    model_id: 196
     package: isr
     family: ObservationMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -2391,27 +2358,41 @@ representations:
       uncertainty: optional LocationUncertainty
       detail: optional ProtocolPayload
       source_address: optional NetworkAddress
-      targets: list[MessageTarget]
+      targets: list[UID]
 
-  MessageTarget:
-    model_id: 145
+  Delta:
+    model_id: 52
     package: message
-    family: Struct
+    family: Message
+    description: K:V mapped delta of stored data to signal a change
     fields:
-      target_uid: UID
+      src: UID
+      dst: UID
+      ts: Timestamp
+      priority: MessagePriority
+      seq: int
+      entity_uid: UID
+      record: UID
+      changed_fields: map[string, LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution
+        | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus
+        | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal
+        | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState
+        | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position
+        | LocationState | SpotterOrigin]
+      updated_ts: float
 
   DeliveryReceipt:
     model_id: 51
     package: message
     family: ResponseMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
       seq_reply: optional int
-      response_to: optional string
+      response_to: UID
       node_uid: UID
       delivery_state: DeliveryState
       seen_ts: optional float
@@ -2419,29 +2400,29 @@ representations:
       error_code: optional string
 
   MessageTransferResult:
-    model_id: 146
+    model_id: 145
     package: message
     family: ResponseMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
       seq_reply: optional int
-      response_to: optional string
+      response_to: UID
       target_count: int = 0
       bytes_sent: int = 0
       delivery_state: optional DeliveryState
       error: optional string
 
   UAVTelemetryMessage:
-    model_id: 263
+    model_id: 259
     package: telemetry
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -2452,90 +2433,63 @@ representations:
     package: telemetry
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
-      state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport |
-        TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
+      state: LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState
+        | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState
+        | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo
+        | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState
+        | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
       node_uid: UID
       roles: list[CapabilityRole]
       link_refs: list[string]
       sensor_refs: list[string]
       payload_refs: list[string]
 
-  StateDelta:
-    model_id: 232
-    package: telemetry
-    family: TelemetryMessage
-    fields:
-      src: MessageTarget
-      dst: MessageTarget
-      ts: Timestamp
-      priority: MessagePriority
-      seq: int
-      state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport |
-        TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
-      entity_uid: UID
-      changed_fields: map[string, LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport
-        | TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
-
   TransportCounters:
-    model_id: 261
+    model_id: 257
     package: telemetry
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
-      state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport |
-        TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
+      state: LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState
+        | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState
+        | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo
+        | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState
+        | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
       rx_count: int = 0
       tx_count: int = 0
       parse_error_count: int = 0
       dropped_count: int = 0
 
   TransportError:
-    model_id: 262
+    model_id: 258
     package: telemetry
     family: TelemetryMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
-      state: LinkState | MeshLink | Lifecycle | Activation | Cue | Execution | ExecutionAcceptance | ExecutionStatusReport |
-        TaskDelta | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert
-        | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue
-        | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource
-        | FuelState | SuppliesSchema | PowerSourceSchema | PowerStateSchema | ElectricalResourceState | SensorState | TrackerState
-        | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
+      state: LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState
+        | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState
+        | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo
+        | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState
+        | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin
       error: NetworkError
       source_address: optional NetworkAddress
       payload: optional ProtocolPayload
 
   NetworkAddress:
-    model_id: 165
+    model_id: 164
     package: network
     family: Network
     fields:
@@ -2544,7 +2498,7 @@ representations:
       port: optional int
 
   ProtocolPayload:
-    model_id: 199
+    model_id: 197
     package: protocol
     family: Protocol
     fields:
@@ -2570,7 +2524,7 @@ representations:
     family: Protocol
     fields:
       active_crypto: optional CryptoType
-      keyset_ref: optional string
+      keyset_uid: optional UID
       keys: list[CryptoKey]
 
   LoRaProfile:
@@ -2591,7 +2545,7 @@ representations:
       path: optional string
 
   ElrsProfile:
-    model_id: 60
+    model_id: 62
     package: protocol
     family: Protocol
     fields:
@@ -2607,43 +2561,41 @@ representations:
       low_latency: optional bool
 
   Radio:
-    model_id: 201
+    model_id: 199
     package: radio
     family: Link
     description: What messages are transmitted over
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
 
   FrequencyRange:
     model_id: 82
     package: radio
     family: Link
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
       low_mhz: optional float
       high_mhz: optional float
       center_mhz: optional float
@@ -2653,48 +2605,46 @@ representations:
     package: radio
     family: Link
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
-      channel_ref: optional string
+      network_uid: optional UID
+      channel_uid: optional UID
       label: optional string
       frequency: optional FrequencyRange
       bandwidth_mhz: optional float
       spacing_mhz: optional float
 
   RadioProfile:
-    model_id: 202
+    model_id: 200
     package: radio
     family: Link
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
       service: optional RadioService
       waveform: optional Waveform
       frequency: optional FrequencyRange
       channel_plan: list[ChannelSpec]
-      active_channel_ref: optional string
+      active_channel_uid: optional UID
       crypto_types: list[CryptoType]
       crypto_profile: optional CryptoProfile
       lora: optional LoRaProfile
@@ -2703,7 +2653,7 @@ representations:
       fpv: optional FpvProfile
 
   TaskAssignment:
-    model_id: 247
+    model_id: 244
     package: assignment
     family: Assignment
     description: Assignment of a Task to an assignee
@@ -2719,7 +2669,7 @@ representations:
       task_uid: UID
 
   RoleAssignment:
-    model_id: 216
+    model_id: 214
     package: assignment
     family: Assignment
     description: Assignment of an organizational Role to an actor
@@ -2809,7 +2759,7 @@ representations:
       control_level: ControlLevel
 
   Restriction:
-    model_id: 212
+    model_id: 210
     package: constraint
     family: Constraint
     fields:
@@ -2823,7 +2773,7 @@ representations:
       condition: optional Predicate | BooleanLogic
 
   TaskTimeWindow:
-    model_id: 252
+    model_id: 248
     package: constraint
     family: Constraint
     fields:
@@ -2832,7 +2782,7 @@ representations:
       latest_finish: optional float
 
   WeatherLimits:
-    model_id: 277
+    model_id: 273
     package: constraint
     family: Constraint
     fields:
@@ -2847,7 +2797,7 @@ representations:
       icing: optional bool
 
   SuccessCriterion:
-    model_id: 236
+    model_id: 233
     package: objective
     family: Struct
     description: Typed, human-readable condition used to determine whether an objective succeeded
@@ -2857,7 +2807,7 @@ representations:
       target_value: optional MetadataValue
 
   PlanStep:
-    model_id: 187
+    model_id: 185
     package: plan
     family: Struct
     description: Immutable planned step definition; runtime status belongs to execution state
@@ -2867,7 +2817,7 @@ representations:
       sequence: int
 
   PlanContingency:
-    model_id: 186
+    model_id: 184
     package: plan
     family: Struct
     fields:
@@ -2899,7 +2849,7 @@ representations:
       flag: optional int
 
   PlannerMissionPoint:
-    model_id: 189
+    model_id: 187
     package: plan
     family: Struct
     description: Embedded planner point value used while constructing a plan
@@ -2920,7 +2870,7 @@ representations:
       loiter_time: int
 
   MissionRouteGeometry:
-    model_id: 158
+    model_id: 157
     package: plan
     family: Struct
     description: Embedded route geometry used by a mission plan
@@ -2931,7 +2881,7 @@ representations:
       route_out: GeoPath
 
   PlannedRoutePoints:
-    model_id: 188
+    model_id: 186
     package: plan
     family: Struct
     description: Embedded set of planner points defining mission-plan route segments
@@ -2994,7 +2944,7 @@ representations:
       formation_3d: optional AirGroupFormation3DType
 
   UnitFlightPlan:
-    model_id: 267
+    model_id: 263
     package: plan
     family: Plan
     fields:
@@ -3024,7 +2974,7 @@ representations:
       wp: GeoPath
 
   MissionPlan:
-    model_id: 157
+    model_id: 156
     package: plan
     family: Plan
     description: Saved operator mission plan - the planner inputs, restorable for editing
@@ -3051,7 +3001,7 @@ representations:
       saved_ts: optional float
 
   TaskManeuver:
-    model_id: 251
+    model_id: 247
     package: task
     family: Task
     description: Practical Task schema for desired movement, position, or spatial persistence
@@ -3069,10 +3019,11 @@ representations:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
       intent: ManeuverIntent
 
   TaskEffect:
-    model_id: 249
+    model_id: 245
     package: task
     family: Task
     description: Practical Task schema for desired creation, removal, modification, restoration, protection, or denial
@@ -3090,10 +3041,11 @@ representations:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
       intent: EffectIntent
 
   TaskInformation:
-    model_id: 250
+    model_id: 246
     package: task
     family: Task
     description: Practical Task schema for desired search, observation, identification, classification, measurement, assessment,
@@ -3112,10 +3064,11 @@ representations:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
       intent: InformationIntent
 
   TaskTransport:
-    model_id: 253
+    model_id: 249
     package: task
     family: Task
     description: Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets
@@ -3133,6 +3086,7 @@ representations:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
       intent: TransportIntent
 
   FlightEvent:
@@ -3143,7 +3097,7 @@ representations:
       record: Record
 
   MissionEvent:
-    model_id: 156
+    model_id: 155
     package: event
     family: Event
     fields:
@@ -3170,7 +3124,7 @@ representations:
       content_type: optional string
 
   VisionBox:
-    model_id: 274
+    model_id: 270
     package: observation
     family: Detection
     fields:
@@ -3178,7 +3132,7 @@ representations:
       bounds: BoundingBox
 
   VisionDetection:
-    model_id: 275
+    model_id: 271
     package: observation
     family: Detection
     fields:
@@ -3189,16 +3143,16 @@ representations:
       box: optional VisionBox
       bearing: optional LocalDirection
       position: optional GlobalPosition
-      source_frame_ref: optional string
+      source_frame_uid: optional UID
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
-    model_id: 276
+    model_id: 272
     package: observation
     family: Detection
     fields:
       record: Record
-      frame_ref: optional string
+      frame_uid: optional UID
       sensor_uid: optional UID
       timestamp_us: optional int
       detections: list[VisionDetection]
@@ -3236,7 +3190,7 @@ representations:
       evidence_level: optional EvidenceLevel
 
   TrackUpdate:
-    model_id: 258
+    model_id: 254
     package: observation
     family: Observation
     description: State update about an existing Track; does not define Track identity
@@ -3258,8 +3212,8 @@ representations:
       confidence: optional ConfidenceLevel
       observations: list[IsrObservation]
 
-  SymbologySchema:
-    model_id: 238
+  Symbology:
+    model_id: 235
     package: attribute
     family: Attribute
     fields:
@@ -3267,7 +3221,7 @@ representations:
       cot: optional string
 
   DisplayMeta:
-    model_id: 54
+    model_id: 55
     package: attribute
     family: Attribute
     fields:
@@ -3276,7 +3230,7 @@ representations:
       short_label: optional string
 
   StringName:
-    model_id: 233
+    model_id: 230
     package: identity
     family: Identity
     description: Human-readable reference for something
@@ -3296,7 +3250,7 @@ representations:
       organization_id: IntID(Organization)
 
   Version:
-    model_id: 272
+    model_id: 268
     package: property
     family: Property
     fields:
@@ -3305,7 +3259,7 @@ representations:
       patch: int
 
   MetadataValue:
-    model_id: 147
+    model_id: 146
     package: property
     family: Property
     fields:
@@ -3315,7 +3269,7 @@ representations:
       bool: optional bool
 
   DirectedRelationship:
-    model_id: 53
+    model_id: 54
     package: relationship
     family: Relationship
     description: Typed directed semantic relationship between two OCCID objects
@@ -3329,7 +3283,7 @@ representations:
       source: optional string
 
   EntityComponentRef:
-    model_id: 61
+    model_id: 63
     package: relationship
     family: Relationship
     fields:
@@ -3338,7 +3292,7 @@ representations:
       label: optional string
 
   SpatialRelationship:
-    model_id: 227
+    model_id: 225
     package: relationship
     family: Relationship
     description: Persisted asserted topological relationship between identified spatial objects; subject is related to reference
@@ -3351,55 +3305,8 @@ representations:
       reference_uid: UID
       relation: SpatialRelationKind
 
-  ExecutionAcceptance:
-    model_id: 69
-    package: execution
-    family: State
-    description: Executor admission decision for one exact dispatch of an existing Execution; distinct from transport delivery
-      and from execution completion
-    fields:
-      execution_uid: UID
-      dispatch_ref: string
-      executor_uid: UID
-      accepted: bool
-      retryable: bool = false
-      reason: optional string
-      reported_at: float
-
-  ExecutionStatusReport:
-    model_id: 71
-    package: execution
-    family: State
-    description: Executor report for one exact execution dispatch; may report that no retained status exists and is distinct
-      from transport delivery evidence
-    fields:
-      execution_uid: UID
-      dispatch_ref: string
-      executor_uid: UID
-      found: bool = true
-      phase: optional ExecutionPhase
-      progress: optional float
-      task_delta: optional TaskDelta
-      entity_state: optional EntityState
-      failure: optional string
-      reported_at: float
-
-  TaskDelta:
-    model_id: 248
-    package: execution
-    family: State
-    description: Time-indexed task-state update; not an assignment definition
-    fields:
-      record: Record
-      task_uid: UID
-      task_rev: int = 0
-      phase: TaskPhase
-      progress: optional float
-      owner_uid: optional UID
-      updated_ts: float
-
   NavigationValidity:
-    model_id: 163
+    model_id: 162
     package: gnc
     family: GNC
     fields:
@@ -3446,7 +3353,7 @@ representations:
       acknowledged: bool = false
 
   SubsystemHealth:
-    model_id: 235
+    model_id: 232
     package: health
     family: Health
     fields:
@@ -3480,7 +3387,7 @@ representations:
       note: optional string
 
   NavReadinessState:
-    model_id: 162
+    model_id: 161
     package: health
     family: Health
     fields:
@@ -3564,7 +3471,7 @@ representations:
       build: optional string
 
   RuntimeLoadState:
-    model_id: 218
+    model_id: 216
     package: internal
     family: Internal
     fields:
@@ -3607,16 +3514,16 @@ representations:
       capacity: optional float
       remaining: optional float
 
-  SuppliesSchema:
-    model_id: 237
+  Supplies:
+    model_id: 234
     package: resource
     family: Resource
     fields:
       fuel: optional FuelState
       stores: list[ItemCount]
 
-  PowerSourceSchema:
-    model_id: 193
+  PowerSource:
+    model_id: 191
     package: resource
     family: Resource
     fields:
@@ -3625,21 +3532,21 @@ representations:
       status: PowerStatus
       remaining_pct: optional float
 
-  PowerStateSchema:
-    model_id: 194
+  PowerState:
+    model_id: 192
     package: resource
     family: Resource
     fields:
       status: PowerStatus
-      sources: list[PowerSourceSchema]
+      sources: list[PowerSource]
       electrical_sources: list[ElectricalResourceState]
 
   ElectricalResourceState:
-    model_id: 59
+    model_id: 61
     package: resource
     family: Resource
     fields:
-      source_ref: optional string
+      source_uid: optional UID
       voltage_v: optional float
       current_a: optional float
       power_w: optional float
@@ -3650,10 +3557,16 @@ representations:
       remaining_capacity: optional float
       temperature_deg_c: optional float
 
-  TrackerState:
-    model_id: 259
+  SensorState:
+    model_id: 222
     package: sensorstate
-    family: SensorState
+    family: State
+    description: Onboard sensor readings, readiness, calibration, and availability
+
+  TrackerState:
+    model_id: 255
+    package: sensorstate
+    family: State
     fields:
       locked: optional bool
       target_uid: optional UID
@@ -3664,7 +3577,7 @@ representations:
   FlightSensorConfiguration:
     model_id: 78
     package: sensorstate
-    family: SensorState
+    family: State
     description: Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names
       remain opaque identifiers
     fields:
@@ -3674,6 +3587,32 @@ representations:
       airspeed: optional string
       rangefinder: optional string
       optical_flow: optional string
+
+  EntityState:
+    model_id: 64
+    package: state
+    family: State
+    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
+    fields:
+      record: Record
+      subject_uid: UID
+      timestamp: float
+      position: optional LocationState
+      motion: optional VelocityVector
+      angular_velocity: optional AngularVelocityVector
+      airspeed: optional Airspeed
+      flight_control: optional FlightControlState
+      power: optional PowerState
+      operational_status: optional EntityOperationalState
+      lifecycle_status: optional EntityLifecycleStatus
+      health: optional HealthSnapshot
+      resources: optional Supplies
+      link_states: map[string, LinkState]
+      control_state: optional ControlLevel
+      source_observation_ts: optional float
+      source_time_basis: optional ObservationTimeBasis
+      received_ts: optional float
+      published_ts: optional float
 
   Coordinate:
     model_id: 44
@@ -3691,7 +3630,7 @@ representations:
     family: SemanticType
 
   Role:
-    model_id: 215
+    model_id: 213
     package: definition
     family: SemanticType
 
@@ -3701,7 +3640,7 @@ representations:
     family: SemanticType
 
   Domain:
-    model_id: 55
+    model_id: 56
     package: definition
     family: SemanticType
 
@@ -3721,11 +3660,11 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
 
   Person:
-    model_id: 184
+    model_id: 182
     package: entities
     family: Actor
     fields:
@@ -3740,7 +3679,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       role: string
       op_domain: OperationalDomain = LAND
@@ -3750,7 +3689,7 @@ representations:
       sensors: map[string, SensorPayload]
 
   Vehicle:
-    model_id: 270
+    model_id: 266
     package: entities
     family: Machine
     fields:
@@ -3765,7 +3704,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -3773,7 +3712,7 @@ representations:
       components: list[EntityComponentRef]
 
   Platform:
-    model_id: 190
+    model_id: 188
     package: entities
     family: Machine
     fields:
@@ -3788,14 +3727,14 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
       components: list[EntityComponentRef]
 
-  GroundNavigationSchema:
+  GroundNavigation:
     model_id: 94
     package: entities
     family: Attribute
@@ -3806,7 +3745,7 @@ representations:
       max_range: float
       max_spd: float
 
-  AirNavigationSchema:
+  AirNavigation:
     model_id: 6
     package: entities
     family: Attribute
@@ -3841,7 +3780,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -3851,7 +3790,7 @@ representations:
       model: string
       role: string
       sensors: map[string, SensorPayload]
-      navigation: GroundNavigationSchema
+      navigation: GroundNavigation
 
   AirMachine:
     model_id: 5
@@ -3869,7 +3808,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -3879,10 +3818,10 @@ representations:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
+      navigation: AirNavigation
 
   Robot:
-    model_id: 213
+    model_id: 211
     package: robot
     family: Machine
     description: Robot entities and control surfaces
@@ -3898,14 +3837,14 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
       components: list[EntityComponentRef]
       robot_control: optional RobotController
-      remote_control: RemoteControlSchema
+      remote_control: RemoteControl
 
   GroundRobot:
     model_id: 96
@@ -3923,7 +3862,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -3933,10 +3872,10 @@ representations:
       model: string
       role: string
       sensors: map[string, SensorPayload]
-      navigation: GroundNavigationSchema
+      navigation: GroundNavigation
 
-  VideoConfigSchema:
-    model_id: 273
+  VideoConfig:
+    model_id: 269
     package: robot
     family: Parameter
     fields:
@@ -3951,7 +3890,7 @@ representations:
       hls_url: optional string
 
   ReceiverConfig:
-    model_id: 204
+    model_id: 202
     package: robot
     family: Parameter
     fields:
@@ -3974,7 +3913,7 @@ representations:
       label: optional string
 
   ModeRange:
-    model_id: 159
+    model_id: 158
     package: robot
     family: Parameter
     fields:
@@ -3986,7 +3925,7 @@ representations:
       range: NumericRange
 
   RobotController:
-    model_id: 214
+    model_id: 212
     package: robot
     family: Parameter
     fields:
@@ -3996,8 +3935,8 @@ representations:
       autopilot_type: AutopilotType
       autopilot_firmware: FirmwareInfo
 
-  RemoteControlSchema:
-    model_id: 208
+  RemoteControl:
+    model_id: 206
     package: robot
     family: Interface
     fields:
@@ -4013,7 +3952,7 @@ representations:
       mode_ranges: list[ModeRange]
 
   ObserverSource:
-    model_id: 171
+    model_id: 170
     package: robot
     family: Interface
     description: Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry,
@@ -4033,7 +3972,7 @@ representations:
       gimbal_axes: list[GimbalAxis]
       field_of_view: optional SensorFieldOfView
       media_kind: SensorDataFormat = VIDEO
-      video: optional VideoConfigSchema
+      video: optional VideoConfig
       video_res: optional tuple[int, int]
       telemetry_type: optional TelemetryType
       telem_port: optional string
@@ -4074,7 +4013,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -4084,12 +4023,12 @@ representations:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
+      navigation: AirNavigation
       controller: RobotController
-      remote_control: RemoteControlSchema
+      remote_control: RemoteControl
 
   Drone:
-    model_id: 56
+    model_id: 57
     package: uav
     family: Machine
     fields:
@@ -4104,7 +4043,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -4114,9 +4053,9 @@ representations:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
+      navigation: AirNavigation
       controller: RobotController
-      remote_control: RemoteControlSchema
+      remote_control: RemoteControl
 
   Mark:
     model_id: 135
@@ -4129,11 +4068,11 @@ representations:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       position: GlobalPosition
 
   Path:
-    model_id: 178
+    model_id: 177
     package: object
     family: Location
     description: Identified ordered spatial course or trace
@@ -4143,11 +4082,11 @@ representations:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       path: GeoPath
 
   Region:
-    model_id: 206
+    model_id: 204
     package: object
     family: Location
     description: Identified bounded spatial area
@@ -4157,7 +4096,7 @@ representations:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       area: GeoArea
 
   Boundary:
@@ -4171,7 +4110,7 @@ representations:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       path: GeoPath
 
   Group:
@@ -4196,7 +4135,7 @@ representations:
       orglevel: OrgLevel = GROUP
 
   Unit:
-    model_id: 266
+    model_id: 262
     package: organization
     family: Organization
     fields:
@@ -4217,7 +4156,7 @@ representations:
       orglevel: OrgLevel = UNIT
 
   OrgRole:
-    model_id: 175
+    model_id: 174
     package: organization
     family: Control
     fields:
@@ -4227,14 +4166,14 @@ representations:
       rank: int
 
   Roster:
-    model_id: 217
+    model_id: 215
     package: organization
     family: Control
     fields:
       roster: map[UID, OrgRole]
 
   SensorPayload:
-    model_id: 223
+    model_id: 221
     package: payload
     family: Payload
     fields:
@@ -4295,7 +4234,7 @@ representations:
       night_vision: bool
 
   RFSensor:
-    model_id: 200
+    model_id: 198
     package: payload
     family: Payload
     fields:
@@ -4321,7 +4260,7 @@ representations:
       chan_bw: optional float
 
   SensorFieldOfView:
-    model_id: 222
+    model_id: 220
     package: payload
     family: Attribute
     fields:
@@ -4329,7 +4268,7 @@ representations:
       vertical: optional NumericRange
 
   Record:
-    model_id: 205
+    model_id: 203
     package: record
     family: Struct
     description: Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance
@@ -4341,17 +4280,16 @@ representations:
       created_ts: float
       updated_ts: float
       origin_system: string
-      classification: optional string
       provenance: list[string]
 
   SpatialStruct:
-    model_id: 228
+    model_id: 226
     package: spatial
     family: Struct
     description: Spatial struct support models
 
   EulerAngles:
-    model_id: 66
+    model_id: 68
     package: spatial
     family: Struct
     description: Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or
@@ -4424,7 +4362,7 @@ representations:
       z2: float
 
   VelocityVector:
-    model_id: 271
+    model_id: 267
     package: spatial
     family: Vector
     description: Linear velocity with optional explicit inertial reference frame
@@ -4485,7 +4423,7 @@ representations:
       gnss: optional GnssSolution
 
   SpotterOrigin:
-    model_id: 230
+    model_id: 228
     package: spatial
     family: Position
     fields:
@@ -4500,7 +4438,7 @@ representations:
     type: int
 
   UID:
-    model_id: 264
+    model_id: 260
     package: struct
     family: ID
     type: bytes[16]
@@ -4526,12 +4464,12 @@ representations:
     family: Struct
 
   StructPath:
-    model_id: 234
+    model_id: 231
     package: struct
     family: Struct
 
   Shape:
-    model_id: 225
+    model_id: 223
     package: struct
     family: Struct
 
@@ -4541,27 +4479,27 @@ representations:
     family: Struct
 
   Pose:
-    model_id: 191
+    model_id: 189
     package: struct
     family: Struct
 
   Range:
-    model_id: 203
+    model_id: 201
     package: struct
     family: Struct
 
   Transform:
-    model_id: 260
+    model_id: 256
     package: struct
     family: Struct
 
   Orbital:
-    model_id: 173
+    model_id: 172
     package: struct
     family: Struct
 
   Duration:
-    model_id: 57
+    model_id: 58
     package: struct
     family: Measurement
     fields:
@@ -4574,7 +4512,7 @@ representations:
       years: optional int
 
   Timestamp:
-    model_id: 256
+    model_id: 252
     package: struct
     family: Measurement
     fields:
@@ -4595,7 +4533,7 @@ representations:
       qty: int = 0
 
   NumericRange:
-    model_id: 168
+    model_id: 167
     package: struct
     family: Struct
     fields:
@@ -4603,7 +4541,7 @@ representations:
       max_value: optional float
 
   MilitaryAirNavigation:
-    model_id: 149
+    model_id: 148
     package: military_aerial
     family: Attribute
     fields:
@@ -4623,7 +4561,7 @@ representations:
       roles: list[AirRole]
 
   MilitaryUnitFlightPlan:
-    model_id: 155
+    model_id: 154
     package: military_aerial
     family: Plan
     fields:
@@ -4653,15 +4591,15 @@ representations:
       wp: GeoPath
 
   PayloadAllocation:
-    model_id: 180
+    model_id: 179
     package: military_effects
     family: Struct
     fields:
       payload_type: PayloadType
       qty: int = 0
 
-  PayloadPlanSchema:
-    model_id: 182
+  PayloadPlan:
+    model_id: 181
     package: military_effects
     family: Struct
     fields:
@@ -4670,8 +4608,8 @@ representations:
       loaded: list[PayloadAllocation]
       notes: optional string
 
-  PayloadMountSchema:
-    model_id: 181
+  PayloadMount:
+    model_id: 180
     package: military_effects
     family: Struct
     fields:
@@ -4683,41 +4621,42 @@ representations:
       compat_tags: list[PayloadType]
       loaded: list[PayloadAllocation]
 
-  PayloadSchema:
-    model_id: 183
+  EffectsPayload:
+    model_id: 60
     package: military_effects
-    family: Struct
+    family: Payload
     fields:
+      capabilities: optional list[Capability]
       item_type: PayloadType
       state: optional PayloadState
       weapons: list[ItemCount]
       ammo: list[ItemCount]
       ordnance: list[ItemCount]
-      payload_mounts: map[string, PayloadMountSchema]
-      payload_plan: optional PayloadPlanSchema
+      payload_mounts: map[string, PayloadMount]
+      payload_plan: optional PayloadPlan
 
-  EffectsSchema:
-    model_id: 58
+  Effects:
+    model_id: 59
     package: military_effects
     family: Struct
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
-      payload_mounts: map[string, PayloadMountSchema]
+      payload_mounts: map[string, PayloadMount]
       effect_domain: OperationalDomain
       launch_domain: OperationalDomain
       guidance: GuidanceType
       warhead: WarheadType
       pylon_format: string = ""
 
-  GroundEffectsSchema:
+  GroundEffects:
     model_id: 92
     package: military_effects
     family: Struct
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
-      payload_mounts: map[string, PayloadMountSchema]
+      payload_mounts: map[string, PayloadMount]
       effect_domain: OperationalDomain
       launch_domain: OperationalDomain
       guidance: GuidanceType
@@ -4725,14 +4664,14 @@ representations:
       pylon_format: string = ""
       attack_modes: list[AttackMode]
 
-  AirEffectsSchema:
+  AirEffects:
     model_id: 4
     package: military_effects
     family: Struct
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
-      payload_mounts: map[string, PayloadMountSchema]
+      payload_mounts: map[string, PayloadMount]
       effect_domain: OperationalDomain
       launch_domain: OperationalDomain
       guidance: GuidanceType
@@ -4741,8 +4680,8 @@ representations:
       reusable: optional bool
       attack_modes: list[AirAttackMode]
 
-  TargetPrioritySchema:
-    model_id: 243
+  TargetPriority:
+    model_id: 240
     package: military_effects
     family: Struct
     fields:
@@ -4751,7 +4690,7 @@ representations:
       note: optional string
 
   TargetKinematics:
-    model_id: 242
+    model_id: 239
     package: military_effects
     family: Struct
     fields:
@@ -4760,7 +4699,7 @@ representations:
       velocity_covariance: optional VelocityVector
 
   TargetSet:
-    model_id: 244
+    model_id: 241
     package: military_effects
     family: Struct
     fields:
@@ -4769,7 +4708,7 @@ representations:
       name: string
 
   TargetSetCoord:
-    model_id: 245
+    model_id: 242
     package: military_effects
     family: Struct
     fields:
@@ -4782,7 +4721,7 @@ representations:
       time_end_usec: int
 
   TargetBoxCoord:
-    model_id: 239
+    model_id: 236
     package: military_effects
     family: Struct
     fields:
@@ -4794,7 +4733,7 @@ representations:
       time_end_usec: int
 
   TargetCoord:
-    model_id: 240
+    model_id: 237
     package: military_effects
     family: Struct
     fields:
@@ -4820,7 +4759,7 @@ representations:
       cep_expected_m: float
 
   SplashCorrection:
-    model_id: 229
+    model_id: 227
     package: military_effects
     family: Struct
     fields:
@@ -4831,7 +4770,7 @@ representations:
       cep_expected_m: float
 
   TargetHandover:
-    model_id: 241
+    model_id: 238
     package: military_effects
     family: Struct
     fields:
@@ -4864,7 +4803,7 @@ representations:
       target_force: Faction
 
   EsadState:
-    model_id: 65
+    model_id: 67
     package: military_effects
     family: Struct
     fields:
@@ -4880,7 +4819,7 @@ representations:
       munition_type: int
 
   EsadArming:
-    model_id: 64
+    model_id: 66
     package: military_effects
     family: Struct
     fields:
@@ -4889,7 +4828,7 @@ representations:
       arming_request: EsadArmingRequest
 
   RwsPose:
-    model_id: 219
+    model_id: 217
     package: military_effects
     family: Struct
     fields:
@@ -4905,7 +4844,7 @@ representations:
       coordinate_frame: int
 
   RwsState:
-    model_id: 220
+    model_id: 218
     package: military_effects
     family: Struct
     fields:
@@ -4914,7 +4853,7 @@ representations:
       arming_state: RwsArmingState
 
   MilitaryPerson:
-    model_id: 153
+    model_id: 152
     package: military_entities
     family: Actor
     fields:
@@ -4929,7 +4868,7 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       role: string
       op_domain: OperationalDomain = LAND
@@ -4942,30 +4881,6 @@ representations:
       ammo: list[ItemCount]
 
   MilitaryMachine:
-    model_id: 151
-    package: military_entities
-    family: Machine
-    fields:
-      capabilities: optional list[Capability]
-      record: Record
-      uid: UID
-      id: IntID(Entity)
-      node_uids: list[UID]
-      name: optional string
-      callsign: optional string
-      entity_type: EntityType = MACHINE
-      tags: list[string]
-      metadata: map[string, MetadataValue]
-      relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
-      display_meta: optional DisplayMeta
-      serial_number: optional string
-      propulsion: PropulsionType
-      machine_type: optional MachineType
-      components: list[EntityComponentRef]
-      category: optional NATOUnitCategory
-
-  MilitaryGroundMachine:
     model_id: 150
     package: military_entities
     family: Machine
@@ -4981,22 +4896,16 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
-      machine_type: MachineType
+      machine_type: optional MachineType
       components: list[EntityComponentRef]
-      op_domain: OperationalDomain = LAND
-      model: string
-      role: string
-      sensors: map[string, SensorPayload]
-      navigation: GroundNavigationSchema
-      payload: PayloadSchema
-      effects: GroundEffectsSchema
+      category: optional NATOUnitCategory
 
-  MilitaryAirMachine:
-    model_id: 148
+  MilitaryGroundMachine:
+    model_id: 149
     package: military_entities
     family: Machine
     fields:
@@ -5011,7 +4920,37 @@ representations:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
+      display_meta: optional DisplayMeta
+      serial_number: optional string
+      propulsion: PropulsionType
+      machine_type: MachineType
+      components: list[EntityComponentRef]
+      op_domain: OperationalDomain = LAND
+      model: string
+      role: string
+      sensors: map[string, SensorPayload]
+      navigation: GroundNavigation
+      payload: Payload
+      effects: GroundEffects
+
+  MilitaryAirMachine:
+    model_id: 147
+    package: military_entities
+    family: Machine
+    fields:
+      capabilities: optional list[Capability]
+      record: Record
+      uid: UID
+      id: IntID(Entity)
+      node_uids: list[UID]
+      name: optional string
+      callsign: optional string
+      entity_type: EntityType = MACHINE
+      tags: list[string]
+      metadata: map[string, MetadataValue]
+      relations: list[DirectedRelationship]
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
       serial_number: optional string
       propulsion: PropulsionType
@@ -5021,12 +4960,12 @@ representations:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
-      payload: PayloadSchema
-      effects: AirEffectsSchema
+      navigation: AirNavigation
+      payload: Payload
+      effects: AirEffects
 
   OrgComposition:
-    model_id: 174
+    model_id: 173
     package: military_organization
     family: Struct
     fields:
@@ -5035,7 +4974,7 @@ representations:
       qty: int = 0
 
   MilitaryOrg:
-    model_id: 152
+    model_id: 151
     package: military_organization
     family: Organization
     fields:
@@ -5083,7 +5022,7 @@ representations:
       air_units: list[ItemCount]
 
   OrbatOrg:
-    model_id: 172
+    model_id: 171
     package: military_organization
     family: Organization
     fields:
@@ -5159,28 +5098,27 @@ representations:
       air_units: list[ItemCount]
 
   MilitaryRadioProfile:
-    model_id: 154
+    model_id: 153
     package: military_radio
     family: Link
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
       service: optional RadioService
       waveform: optional Waveform
       frequency: optional FrequencyRange
       channel_plan: list[ChannelSpec]
-      active_channel_ref: optional string
+      active_channel_uid: optional UID
       crypto_types: list[CryptoType]
       crypto_profile: optional CryptoProfile
       lora: optional LoRaProfile
@@ -5190,7 +5128,7 @@ representations:
       bands: list[NATORadioBands]
 
   MunitionAllocation:
-    model_id: 161
+    model_id: 160
     package: military_tasks
     family: Struct
     fields:

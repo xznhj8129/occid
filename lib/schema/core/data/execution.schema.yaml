@@ -1,0 +1,37 @@
+version: 1
+type: schema
+package: execution
+root: Execution
+tags:
+  - core
+
+enums:
+  ExecutionPhase:
+    - CREATED = 0
+    - QUEUED
+    - RUNNING
+    - SUCCEEDED
+    - FAILED
+    - CANCELLED
+
+models:
+  Execution:
+    description: One execution attempt for an assignment, independently tracked across local and external executors
+    semantic_role: concept
+    parent: Data
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Execution)
+      assignment_uid: UID
+      executor_uid: UID
+      attempt: int = 0
+      phase: ExecutionPhase = CREATED
+      progress: optional float
+      started_at: optional float
+      completed_at: optional float
+      result: optional MetadataValue
+      failure: optional string
+      external_job_refs: list[string]
+
+  # Acceptance and StatusReport are Deltas

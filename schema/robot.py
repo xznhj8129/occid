@@ -69,7 +69,7 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 213
+    __occid_model_id__: ClassVar[int] = 211
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -82,14 +82,14 @@ class Robot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[EntityComponentRef]
     robot_control: RobotController | None = None
-    remote_control: RemoteControlSchema
+    remote_control: RemoteControl
 
 class GroundRobot(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 96
@@ -105,7 +105,7 @@ class GroundRobot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -115,10 +115,10 @@ class GroundRobot(OCCIDModel):
     model: builtins.str
     role: builtins.str
     sensors: dict[builtins.str, SensorPayload]
-    navigation: GroundNavigationSchema
+    navigation: GroundNavigation
 
-class VideoConfigSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 273
+class VideoConfig(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 269
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -131,7 +131,7 @@ class VideoConfigSchema(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 204
+    __occid_model_id__: ClassVar[int] = 202
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -150,7 +150,7 @@ class ChannelMapEntry(OCCIDModel):
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 159
+    __occid_model_id__: ClassVar[int] = 158
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -160,7 +160,7 @@ class ModeRange(OCCIDModel):
     range: NumericRange
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 214
+    __occid_model_id__: ClassVar[int] = 212
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None
@@ -168,8 +168,8 @@ class RobotController(OCCIDModel):
     autopilot_type: AutopilotType
     autopilot_firmware: FirmwareInfo
 
-class RemoteControlSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 208
+class RemoteControl(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 206
     __occid_semantic_role__: ClassVar[str] = 'representation'
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
@@ -184,7 +184,7 @@ class RemoteControlSchema(OCCIDModel):
 
 class ObserverSource(OCCIDModel):
     'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 171
+    __occid_model_id__: ClassVar[int] = 170
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -200,7 +200,7 @@ class ObserverSource(OCCIDModel):
     gimbal_axes: list[GimbalAxis]
     field_of_view: SensorFieldOfView | None = None
     media_kind: SensorDataFormat = SensorDataFormat.VIDEO
-    video: VideoConfigSchema | None = None
+    video: VideoConfig | None = None
     video_res: tuple[builtins.int, builtins.int] | None = None
     telemetry_type: TelemetryType | None = None
     telem_port: builtins.str | None = None

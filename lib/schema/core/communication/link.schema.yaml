@@ -53,19 +53,18 @@ models:
     semantic_role: concept
     parent: Communication
     fields:
-      schema_ref: optional string
       name: optional string
-      endpoint_ref: optional string
+      endpoint_uid: optional UID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_ref: optional string
+      radio_uid: optional UID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_ref: optional string
+      network_uid: optional UID
 
   DataRateSpec:
     semantic_role: representation
@@ -115,7 +114,7 @@ models:
     semantic_role: concept
     parent: State
     fields:
-      link_ref: optional string
+      link_uid: optional UID
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
       signal: optional SignalQuality

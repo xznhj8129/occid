@@ -283,14 +283,14 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 174
+    __occid_model_id__: ClassVar[int] = 173
     __occid_semantic_role__: ClassVar[str] = 'representation'
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 152
+    __occid_model_id__: ClassVar[int] = 151
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -334,7 +334,7 @@ class FlyingOrg(OCCIDModel):
     air_units: list[ItemCount]
 
 class OrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 172
+    __occid_model_id__: ClassVar[int] = 171
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

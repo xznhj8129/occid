@@ -12,7 +12,7 @@ models:
     semantic_role: concept
     parent: Property
 
-  SymbologySchema:
+  Symbology:
     semantic_role: representation
     parent: Attribute
     fields:

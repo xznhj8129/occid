@@ -17,7 +17,7 @@ class CapabilityRole(IntFlag):
 
 class Node(OCCIDModel):
     'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
-    __occid_model_id__: ClassVar[int] = 166
+    __occid_model_id__: ClassVar[int] = 165
     __occid_semantic_role__: ClassVar[str] = 'type'
     uid: UID
     id: Annotated[IntID, IDNamespace('Node')]

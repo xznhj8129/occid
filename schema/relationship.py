@@ -25,12 +25,12 @@ class SpatialRelationKind(IntEnum):
 
 class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 207
+    __occid_model_id__: ClassVar[int] = 205
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class DirectedRelationship(OCCIDModel):
     'Typed directed semantic relationship between two OCCID objects'
-    __occid_model_id__: ClassVar[int] = 53
+    __occid_model_id__: ClassVar[int] = 54
     __occid_semantic_role__: ClassVar[str] = 'representation'
     subject_uid: UID
     object_uid: UID
@@ -41,7 +41,7 @@ class DirectedRelationship(OCCIDModel):
     source: builtins.str | None = None
 
 class EntityComponentRef(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 61
+    __occid_model_id__: ClassVar[int] = 63
     __occid_semantic_role__: ClassVar[str] = 'representation'
     component_ref: builtins.str
     component_type: builtins.str | None = None
@@ -49,7 +49,7 @@ class EntityComponentRef(OCCIDModel):
 
 class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 225
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

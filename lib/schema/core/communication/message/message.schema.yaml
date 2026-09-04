@@ -58,6 +58,7 @@ enums:
     - MANUAL
 
 models:
+
   Message:
     description: Transmitted envelope plus payload
     semantic_role: concept
@@ -68,17 +69,21 @@ models:
       - ObservationMessage
       - ResponseMessage
     fields:
-      src: MessageTarget
-      dst: MessageTarget
+      src: UID
+      dst: UID
       ts: Timestamp
       priority: MessagePriority
       seq: int
 
-  MessageTarget:
+  Delta:
+    description: K:V mapped delta of stored data to signal a change
     semantic_role: representation
-    parent: Struct
+    parent: Message
     fields:
-      target_uid: UID
+      entity_uid: UID
+      record: UID # note: placeholder, needs to refer to "delta of what"
+      changed_fields: map[string, State]
+      updated_ts: float
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
@@ -89,7 +94,7 @@ models:
       - MessageTransferResult
     fields:
       seq_reply: optional int
-      response_to: optional string
+      response_to: UID
 
   DeliveryReceipt:
     semantic_role: representation

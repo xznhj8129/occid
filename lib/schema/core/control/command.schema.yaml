@@ -89,7 +89,7 @@ models:
       operation: ConfigurationOperation
       parameter_name: optional string
       value: optional MetadataValue
-      configuration_ref: optional string
+      configuration_uid: optional UID
 
   MotionCommand:
     description: Direct immediate target motion using a destination, path, or maintained spatial condition
@@ -109,7 +109,7 @@ models:
     parent: Command
     fields:
       operation: ResourceOperation
-      resource_ref: optional string
+      resource_uid: optional UID
       quantity: optional float
 
   ExecutionCommand:

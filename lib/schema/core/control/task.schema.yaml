@@ -78,6 +78,7 @@ models:
       deadline: optional float
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+      phase: TaskPhase
 
   TaskManeuver:
     description: Practical Task schema for desired movement, position, or spatial persistence

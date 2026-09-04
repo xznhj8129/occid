@@ -52,7 +52,7 @@ class GNC(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class NavigationValidity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 163
+    __occid_model_id__: ClassVar[int] = 162
     __occid_semantic_role__: ClassVar[str] = 'representation'
     local_position_ok: builtins.bool | None = None
     global_position_ok: builtins.bool | None = None

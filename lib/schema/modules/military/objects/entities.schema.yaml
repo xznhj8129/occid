@@ -40,13 +40,13 @@ models:
     semantic_role: representation
     parent: GroundMachine
     fields:
-      payload: PayloadSchema
-      effects: GroundEffectsSchema
+      payload: Payload
+      effects: GroundEffects
 
 
   MilitaryAirMachine:
     semantic_role: representation
     parent: AirMachine
     fields:
-      payload: PayloadSchema
-      effects: AirEffectsSchema
+      payload: Payload
+      effects: AirEffects

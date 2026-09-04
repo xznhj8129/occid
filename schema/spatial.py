@@ -70,17 +70,17 @@ class WaypointType(IntEnum):
 
 class Position(OCCIDModel):
     'Position in space, address or placement'
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 190
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class SpatialStruct(OCCIDModel):
     'Spatial struct support models'
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
 
 class EulerAngles(OCCIDModel):
     'Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on'
-    __occid_model_id__: ClassVar[int] = 66
+    __occid_model_id__: ClassVar[int] = 68
     __occid_semantic_role__: ClassVar[str] = 'representation'
     roll_rad: builtins.float
     pitch_rad: builtins.float
@@ -137,7 +137,7 @@ class BoundingBox(OCCIDModel):
 
 class VelocityVector(OCCIDModel):
     'Linear velocity with optional explicit inertial reference frame'
-    __occid_model_id__: ClassVar[int] = 271
+    __occid_model_id__: ClassVar[int] = 267
     __occid_semantic_role__: ClassVar[str] = 'representation'
     x: builtins.float
     y: builtins.float
@@ -186,7 +186,7 @@ class LocationState(OCCIDModel):
     gnss: GnssSolution | None = None
 
 class SpotterOrigin(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 230
+    __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'representation'
     position: GlobalPosition
     attitude: EulerAngles | None = None

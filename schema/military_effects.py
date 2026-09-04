@@ -99,21 +99,21 @@ class TargetCategory(IntEnum):
 ### Models
 
 class PayloadAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 180
+    __occid_model_id__: ClassVar[int] = 179
     __occid_semantic_role__: ClassVar[str] = 'representation'
     payload_type: PayloadType
     qty: builtins.int = 0
 
-class PayloadPlanSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 182
+class PayloadPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 181
     __occid_semantic_role__: ClassVar[str] = 'representation'
     requested: list[PayloadAllocation]
     approved: list[PayloadAllocation]
     loaded: list[PayloadAllocation]
     notes: builtins.str | None = None
 
-class PayloadMountSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 181
+class PayloadMount(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 180
     __occid_semantic_role__: ClassVar[str] = 'representation'
     mount_ref: builtins.str
     item_ref: builtins.str
@@ -123,35 +123,36 @@ class PayloadMountSchema(OCCIDModel):
     compat_tags: list[PayloadType]
     loaded: list[PayloadAllocation]
 
-class PayloadSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 183
+class EffectsPayload(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 60
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    capabilities: list[Capability] | None = None
     item_type: PayloadType
     state: PayloadState | None = None
     weapons: list[ItemCount]
     ammo: list[ItemCount]
     ordnance: list[ItemCount]
-    payload_mounts: dict[builtins.str, PayloadMountSchema]
-    payload_plan: PayloadPlanSchema | None = None
+    payload_mounts: dict[builtins.str, PayloadMount]
+    payload_plan: PayloadPlan | None = None
 
-class EffectsSchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 58
+class Effects(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 59
     __occid_semantic_role__: ClassVar[str] = 'representation'
     has_launchers: builtins.bool
     esad: EsadMunitionStatus | None = None
-    payload_mounts: dict[builtins.str, PayloadMountSchema]
+    payload_mounts: dict[builtins.str, PayloadMount]
     effect_domain: OperationalDomain
     launch_domain: OperationalDomain
     guidance: GuidanceType
     warhead: WarheadType
     pylon_format: builtins.str = ''
 
-class GroundEffectsSchema(OCCIDModel):
+class GroundEffects(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 92
     __occid_semantic_role__: ClassVar[str] = 'representation'
     has_launchers: builtins.bool
     esad: EsadMunitionStatus | None = None
-    payload_mounts: dict[builtins.str, PayloadMountSchema]
+    payload_mounts: dict[builtins.str, PayloadMount]
     effect_domain: OperationalDomain
     launch_domain: OperationalDomain
     guidance: GuidanceType
@@ -159,12 +160,12 @@ class GroundEffectsSchema(OCCIDModel):
     pylon_format: builtins.str = ''
     attack_modes: list[AttackMode]
 
-class AirEffectsSchema(OCCIDModel):
+class AirEffects(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 4
     __occid_semantic_role__: ClassVar[str] = 'representation'
     has_launchers: builtins.bool
     esad: EsadMunitionStatus | None = None
-    payload_mounts: dict[builtins.str, PayloadMountSchema]
+    payload_mounts: dict[builtins.str, PayloadMount]
     effect_domain: OperationalDomain
     launch_domain: OperationalDomain
     guidance: GuidanceType
@@ -173,29 +174,29 @@ class AirEffectsSchema(OCCIDModel):
     reusable: builtins.bool | None = None
     attack_modes: list[AirAttackMode]
 
-class TargetPrioritySchema(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 243
+class TargetPriority(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 240
     __occid_semantic_role__: ClassVar[str] = 'representation'
     threat: ThreatLevel | None = None
     is_high_value: builtins.bool = False
     note: builtins.str | None = None
 
 class TargetKinematics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 239
     __occid_semantic_role__: ClassVar[str] = 'representation'
     location_state: LocationState
     velocity: VelocityVector | None = None
     velocity_covariance: VelocityVector | None = None
 
 class TargetSet(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 244
+    __occid_model_id__: ClassVar[int] = 241
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
     name: builtins.str
 
 class TargetSetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 242
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -206,7 +207,7 @@ class TargetSetCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetBoxCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 239
+    __occid_model_id__: ClassVar[int] = 236
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -216,7 +217,7 @@ class TargetBoxCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 240
+    __occid_model_id__: ClassVar[int] = 237
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -238,7 +239,7 @@ class Fires(OCCIDModel):
     cep_expected_m: builtins.float
 
 class SplashCorrection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 229
+    __occid_model_id__: ClassVar[int] = 227
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     splash_position: GlobalPosition
@@ -247,7 +248,7 @@ class SplashCorrection(OCCIDModel):
     cep_expected_m: builtins.float
 
 class TargetHandover(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 238
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     detected_first_usec: builtins.int
@@ -276,7 +277,7 @@ class BattleDamageAssessment(OCCIDModel):
     target_force: Faction
 
 class EsadState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 65
+    __occid_model_id__: ClassVar[int] = 67
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     arming_challenge_hash: builtins.int
@@ -290,14 +291,14 @@ class EsadState(OCCIDModel):
     munition_type: builtins.int
 
 class EsadArming(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 64
+    __occid_model_id__: ClassVar[int] = 66
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     arming_challenge_hash: builtins.int
     arming_request: EsadArmingRequest
 
 class RwsPose(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 219
+    __occid_model_id__: ClassVar[int] = 217
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     kinematics: TargetKinematics
@@ -311,7 +312,7 @@ class RwsPose(OCCIDModel):
     coordinate_frame: builtins.int
 
 class RwsState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 220
+    __occid_model_id__: ClassVar[int] = 218
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     weapon_string: builtins.str

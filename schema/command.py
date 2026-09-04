@@ -51,7 +51,7 @@ class ExecutionOperation(IntEnum):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 231
+    __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -61,7 +61,7 @@ class StateChangeCommand(OCCIDModel):
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -77,11 +77,11 @@ class ConfigurationCommand(OCCIDModel):
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
     value: MetadataValue | None = None
-    configuration_ref: builtins.str | None = None
+    configuration_uid: UID | None = None
 
 class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 159
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
@@ -94,17 +94,17 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 210
+    __occid_model_id__: ClassVar[int] = 208
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]
     operation: ResourceOperation
-    resource_ref: builtins.str | None = None
+    resource_uid: UID | None = None
     quantity: builtins.float | None = None
 
 class ExecutionCommand(OCCIDModel):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
-    __occid_model_id__: ClassVar[int] = 70
+    __occid_model_id__: ClassVar[int] = 71
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]

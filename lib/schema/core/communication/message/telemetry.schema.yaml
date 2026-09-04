@@ -29,13 +29,6 @@ models:
       sensor_refs: list[string]
       payload_refs: list[string]
 
-  StateDelta:
-    semantic_role: representation
-    parent: TelemetryMessage
-    fields:
-      entity_uid: UID
-      changed_fields: map[string, State]
-
   TransportCounters:
     semantic_role: representation
     parent: TelemetryMessage

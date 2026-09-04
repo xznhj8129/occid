@@ -30,15 +30,11 @@ models:
       - Validation
       - Cue
       - Lifecycle
-      - Execution
-      - ExecutionAcceptance
-      - ExecutionStatusReport
-      - TaskDelta
       - EntityState
 
-  EntityState:
+  EntityState: # this really fucking stinks
     description: Time-indexed mutable condition reported for an entity independently of its identity and specification
-    semantic_role: concept
+    semantic_role: representation
     parent: State
     fields:
       record: Record
@@ -49,11 +45,11 @@ models:
       angular_velocity: optional AngularVelocityVector
       airspeed: optional Airspeed
       flight_control: optional FlightControlState
-      power: optional PowerStateSchema
+      power: optional PowerState
       operational_status: optional EntityOperationalState
       lifecycle_status: optional EntityLifecycleStatus
       health: optional HealthSnapshot
-      resources: optional SuppliesSchema
+      resources: optional Supplies
       link_states: map[string, LinkState]
       control_state: optional ControlLevel
       source_observation_ts: optional float

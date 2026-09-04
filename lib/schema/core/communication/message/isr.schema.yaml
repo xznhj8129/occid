@@ -28,4 +28,4 @@ models:
       uncertainty: optional LocationUncertainty
       detail: optional ProtocolPayload
       source_address: optional NetworkAddress
-      targets: list[MessageTarget]
+      targets: list[UID]

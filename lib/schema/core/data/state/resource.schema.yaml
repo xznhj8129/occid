@@ -19,14 +19,14 @@ models:
       capacity: optional float
       remaining: optional float
 
-  SuppliesSchema:
+  Supplies:
     semantic_role: representation
     parent: Resource
     fields:
       fuel: optional FuelState
       stores: list[ItemCount]
 
-  PowerSourceSchema:
+  PowerSource:
     semantic_role: representation
     parent: Resource
     fields:
@@ -35,19 +35,19 @@ models:
       status: PowerStatus
       remaining_pct: optional float
 
-  PowerStateSchema:
+  PowerState:
     semantic_role: representation
     parent: Resource
     fields:
       status: PowerStatus
-      sources: list[PowerSourceSchema]
+      sources: list[PowerSource]
       electrical_sources: list[ElectricalResourceState]
 
   ElectricalResourceState:
     semantic_role: representation
     parent: Resource
     fields:
-      source_ref: optional string
+      source_uid: optional UID
       voltage_v: optional float
       current_a: optional float
       power_w: optional float

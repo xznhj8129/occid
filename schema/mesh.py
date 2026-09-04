@@ -22,7 +22,7 @@ class MeshLink(OCCIDModel):
     'Observed state of a link between two mesh nodes'
     __occid_model_id__: ClassVar[int] = 139
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    link_ref: builtins.str | None = None
+    link_uid: UID | None = None
     condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
     signal: SignalQuality | None = None
@@ -60,8 +60,8 @@ class MeshView(OCCIDModel):
 class MeshtasticMessage(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
@@ -78,8 +78,8 @@ class MeshtasticMessage(OCCIDModel):
 class MeshReceiveMetrics(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 142
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
@@ -88,18 +88,18 @@ class MeshReceiveMetrics(OCCIDModel):
 class MeshPositionSample(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 141
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
     state: LocationState
 
 class NodeHeartbeat(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 167
+    __occid_model_id__: ClassVar[int] = 166
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int

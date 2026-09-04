@@ -31,7 +31,7 @@ class Assignment(OCCIDModel):
 
 class TaskAssignment(OCCIDModel):
     'Assignment of a Task to an assignee'
-    __occid_model_id__: ClassVar[int] = 247
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -45,7 +45,7 @@ class TaskAssignment(OCCIDModel):
 
 class RoleAssignment(OCCIDModel):
     'Assignment of an organizational Role to an actor'
-    __occid_model_id__: ClassVar[int] = 216
+    __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

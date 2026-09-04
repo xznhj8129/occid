@@ -50,12 +50,12 @@ class SensorFrustumShape(IntEnum):
 
 class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 179
+    __occid_model_id__: ClassVar[int] = 178
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
 class SensorPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 223
+    __occid_model_id__: ClassVar[int] = 221
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     name: builtins.str
@@ -110,7 +110,7 @@ class ImageSensor(OCCIDModel):
     night_vision: builtins.bool
 
 class RFSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 200
+    __occid_model_id__: ClassVar[int] = 198
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     name: builtins.str
@@ -134,7 +134,7 @@ class RFSensor(OCCIDModel):
     chan_bw: builtins.float | None = None
 
 class SensorFieldOfView(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 222
+    __occid_model_id__: ClassVar[int] = 220
     __occid_semantic_role__: ClassVar[str] = 'representation'
     horizontal: NumericRange | None = None
     vertical: NumericRange | None = None

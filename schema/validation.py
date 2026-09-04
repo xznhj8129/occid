@@ -15,7 +15,7 @@ class ValidationStatus(IntEnum):
 
 class Validation(OCCIDModel):
     'Mutable state of evaluating a Condition, kept separate from the predicate itself'
-    __occid_model_id__: ClassVar[int] = 268
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'type'
     condition: Predicate | BooleanLogic
     status: ValidationStatus

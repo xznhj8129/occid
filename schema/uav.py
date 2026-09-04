@@ -23,7 +23,7 @@ class AirRobot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -33,12 +33,12 @@ class AirRobot(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
     sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigationSchema
+    navigation: AirNavigation
     controller: RobotController
-    remote_control: RemoteControlSchema
+    remote_control: RemoteControl
 
 class Drone(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 56
+    __occid_model_id__: ClassVar[int] = 57
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -51,7 +51,7 @@ class Drone(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -61,6 +61,6 @@ class Drone(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
     sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigationSchema
+    navigation: AirNavigation
     controller: RobotController
-    remote_control: RemoteControlSchema
+    remote_control: RemoteControl

@@ -101,7 +101,7 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional SymbologySchema
+      symbology: optional Symbology
       display_meta: optional DisplayMeta
 
   Actor:
@@ -150,7 +150,7 @@ models:
     semantic_role: representation
     parent: Machine
 
-  GroundNavigationSchema:
+  GroundNavigation:
     semantic_role: representation
     parent: Attribute
     fields:
@@ -160,7 +160,7 @@ models:
       max_range: float
       max_spd: float
 
-  AirNavigationSchema:
+  AirNavigation:
     semantic_role: representation
     parent: Attribute
     variants: null
@@ -188,7 +188,7 @@ models:
       model: string
       role: string
       sensors: map[string, SensorPayload]
-      navigation: GroundNavigationSchema
+      navigation: GroundNavigation
 
   AirMachine:
     semantic_role: representation
@@ -199,4 +199,4 @@ models:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
+      navigation: AirNavigation

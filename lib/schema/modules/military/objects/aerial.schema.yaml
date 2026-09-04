@@ -7,7 +7,7 @@ tags:
 requires:
   - core
 extend_variants:
-  AirNavigationSchema:
+  AirNavigation:
     - MilitaryAirNavigation
   UnitFlightPlan:
     - MilitaryUnitFlightPlan
@@ -74,7 +74,7 @@ maps:
 models:
   MilitaryAirNavigation:
     semantic_role: representation
-    parent: AirNavigationSchema
+    parent: AirNavigation
     fields:
       roles: list[AirRole]
 

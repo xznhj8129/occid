@@ -14,8 +14,8 @@ class ObservationTimeBasis(IntEnum):
 
 class EntityState(OCCIDModel):
     'Time-indexed mutable condition reported for an entity independently of its identity and specification'
-    __occid_model_id__: ClassVar[int] = 62
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_model_id__: ClassVar[int] = 64
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     subject_uid: UID
     timestamp: builtins.float
@@ -24,11 +24,11 @@ class EntityState(OCCIDModel):
     angular_velocity: AngularVelocityVector | None = None
     airspeed: Airspeed | None = None
     flight_control: FlightControlState | None = None
-    power: PowerStateSchema | None = None
+    power: PowerState | None = None
     operational_status: EntityOperationalState | None = None
     lifecycle_status: EntityLifecycleStatus | None = None
     health: HealthSnapshot | None = None
-    resources: SuppliesSchema | None = None
+    resources: Supplies | None = None
     link_states: dict[builtins.str, LinkState]
     control_state: ControlLevel | None = None
     source_observation_ts: builtins.float | None = None

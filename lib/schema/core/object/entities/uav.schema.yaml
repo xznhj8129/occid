@@ -13,7 +13,7 @@ models:
     fields:
       machine_type: MachineType = ROBOT
       controller: RobotController
-      remote_control: RemoteControlSchema
+      remote_control: RemoteControl
 
   Drone:
     semantic_role: representation
@@ -23,4 +23,4 @@ models:
       op_domain: OperationalDomain = AIR
       model: string
       sensors: map[string, SensorPayload]
-      navigation: AirNavigationSchema
+      navigation: AirNavigation

@@ -110,7 +110,7 @@ models:
       qty: int = 0
 
 
-  PayloadPlanSchema:
+  PayloadPlan:
     semantic_role: representation
     parent: Struct
     fields:
@@ -120,7 +120,7 @@ models:
       notes: optional string
 
 
-  PayloadMountSchema:
+  PayloadMount:
     semantic_role: representation
     parent: Struct
     fields:
@@ -133,29 +133,29 @@ models:
       loaded: list[PayloadAllocation]
 
 
-  PayloadSchema:
+  EffectsPayload:
     semantic_role: representation
-    parent: Struct
+    parent: Payload
     fields:
       item_type: PayloadType
       state: optional PayloadState
       weapons: list[ItemCount]
       ammo: list[ItemCount]
       ordnance: list[ItemCount]
-      payload_mounts: map[string, PayloadMountSchema]
-      payload_plan: optional PayloadPlanSchema
+      payload_mounts: map[string, PayloadMount]
+      payload_plan: optional PayloadPlan
 
 
-  EffectsSchema:
+  Effects:
     semantic_role: representation
     parent: Struct
     variants:
-      - GroundEffectsSchema
-      - AirEffectsSchema
+      - GroundEffects
+      - AirEffects
     fields:
       has_launchers: bool
       esad: optional EsadMunitionStatus
-      payload_mounts: map[string, PayloadMountSchema]
+      payload_mounts: map[string, PayloadMount]
       effect_domain: OperationalDomain
       launch_domain: OperationalDomain
       guidance: GuidanceType
@@ -163,22 +163,22 @@ models:
       pylon_format: string = ""
 
 
-  GroundEffectsSchema:
+  GroundEffects:
     semantic_role: representation
-    parent: EffectsSchema
+    parent: Effects
     fields:
       attack_modes: list[AttackMode]
 
 
-  AirEffectsSchema:
+  AirEffects:
     semantic_role: representation
-    parent: EffectsSchema
+    parent: Effects
     fields:
       reusable: optional bool
       attack_modes: list[AirAttackMode]
 
 
-  TargetPrioritySchema:
+  TargetPriority:
     semantic_role: representation
     parent: Struct
     fields:

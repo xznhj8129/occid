@@ -18,7 +18,7 @@ class Cluster(OCCIDModel):
     capabilities: list[Capability] | None = None
 
 class Equipment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 63
+    __occid_model_id__: ClassVar[int] = 65
     __occid_semantic_role__: ClassVar[str] = 'type'
     capabilities: list[Capability] | None = None
 
@@ -36,7 +36,7 @@ class Location(OCCIDModel):
     uid: UID
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
 
 class Mark(OCCIDModel):
     'Identified point reference in physical space'
@@ -47,31 +47,31 @@ class Mark(OCCIDModel):
     uid: UID
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     position: GlobalPosition
 
 class Path(OCCIDModel):
     'Identified ordered spatial course or trace'
-    __occid_model_id__: ClassVar[int] = 178
+    __occid_model_id__: ClassVar[int] = 177
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     path: GeoPath
 
 class Region(OCCIDModel):
     'Identified bounded spatial area'
-    __occid_model_id__: ClassVar[int] = 206
+    __occid_model_id__: ClassVar[int] = 204
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
     uid: UID
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     area: GeoArea
 
 class Boundary(OCCIDModel):
@@ -83,5 +83,5 @@ class Boundary(OCCIDModel):
     uid: UID
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     path: GeoPath

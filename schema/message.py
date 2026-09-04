@@ -60,31 +60,40 @@ class ConflictPolicy(IntEnum):
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 209
     __occid_semantic_role__: ClassVar[str] = 'type'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: builtins.str | None = None
+    response_to: UID
 
-class MessageTarget(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 145
+class Delta(OCCIDModel):
+    'K:V mapped delta of stored data to signal a change'
+    __occid_model_id__: ClassVar[int] = 52
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    target_uid: UID
+    src: UID
+    dst: UID
+    ts: Timestamp
+    priority: MessagePriority
+    seq: builtins.int
+    entity_uid: UID
+    record: UID
+    changed_fields: dict[builtins.str, LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
+    updated_ts: builtins.float
 
 class DeliveryReceipt(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 51
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: builtins.str | None = None
+    response_to: UID
     node_uid: UID
     delivery_state: DeliveryState
     seen_ts: builtins.float | None = None
@@ -92,15 +101,15 @@ class DeliveryReceipt(OCCIDModel):
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 146
+    __occid_model_id__: ClassVar[int] = 145
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: MessageTarget
-    dst: MessageTarget
+    src: UID
+    dst: UID
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: builtins.str | None = None
+    response_to: UID
     target_count: builtins.int = 0
     bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None

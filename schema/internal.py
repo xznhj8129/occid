@@ -18,7 +18,7 @@ class FirmwareInfo(OCCIDModel):
     build: builtins.str | None = None
 
 class RuntimeLoadState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 218
+    __occid_model_id__: ClassVar[int] = 216
     __occid_semantic_role__: ClassVar[str] = 'representation'
     cpu_load: builtins.int | None = None
     cycle_time_us: builtins.int | None = None

@@ -12,7 +12,7 @@ class Constraint(OCCIDModel):
     condition: (Predicate | BooleanLogic) | None = None
 
 class Restriction(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 212
+    __occid_model_id__: ClassVar[int] = 210
     __occid_semantic_role__: ClassVar[str] = 'representation'
     condition: (Predicate | BooleanLogic) | None = None
 
@@ -22,14 +22,14 @@ class Limitation(OCCIDModel):
     condition: (Predicate | BooleanLogic) | None = None
 
 class TaskTimeWindow(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 252
+    __occid_model_id__: ClassVar[int] = 248
     __occid_semantic_role__: ClassVar[str] = 'representation'
     condition: (Predicate | BooleanLogic) | None = None
     earliest_start: builtins.float | None = None
     latest_finish: builtins.float | None = None
 
 class WeatherLimits(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 277
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'representation'
     condition: (Predicate | BooleanLogic) | None = None
     ifr: builtins.bool | None = None

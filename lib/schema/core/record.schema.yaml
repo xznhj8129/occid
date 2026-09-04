@@ -6,7 +6,8 @@ tags:
   - core
 
 models:
-  Record:
+  Record: 
+    # Note: do we even need this? Why do we need records of things? Isn't the stored data itself a record?
     description: Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance metadata
     semantic_role: representation
     parent: Struct
@@ -19,5 +20,4 @@ models:
       created_ts: float
       updated_ts: float
       origin_system: string
-      classification: optional string
       provenance: list[string]

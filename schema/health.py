@@ -67,7 +67,7 @@ class HealthAlert(OCCIDModel):
     acknowledged: builtins.bool = False
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 235
+    __occid_model_id__: ClassVar[int] = 232
     __occid_semantic_role__: ClassVar[str] = 'representation'
     subsystem_ref: builtins.str
     state: HealthStatus
@@ -95,7 +95,7 @@ class MaintenanceStatus(OCCIDModel):
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 162
+    __occid_model_id__: ClassVar[int] = 161
     __occid_semantic_role__: ClassVar[str] = 'representation'
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None

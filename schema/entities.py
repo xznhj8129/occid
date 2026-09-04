@@ -99,7 +99,7 @@ class Actor(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
 
 class Machine(OCCIDModel):
@@ -116,7 +116,7 @@ class Machine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -137,11 +137,11 @@ class Agent(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
 
 class Person(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 184
+    __occid_model_id__: ClassVar[int] = 182
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -154,7 +154,7 @@ class Person(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     role: builtins.str
     op_domain: OperationalDomain = OperationalDomain.LAND
@@ -164,7 +164,7 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, SensorPayload]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 270
+    __occid_model_id__: ClassVar[int] = 266
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -177,7 +177,7 @@ class Vehicle(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -185,7 +185,7 @@ class Vehicle(OCCIDModel):
     components: list[EntityComponentRef]
 
 class Platform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 190
+    __occid_model_id__: ClassVar[int] = 188
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record
@@ -198,14 +198,14 @@ class Platform(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[EntityComponentRef]
 
-class GroundNavigationSchema(OCCIDModel):
+class GroundNavigation(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 94
     __occid_semantic_role__: ClassVar[str] = 'representation'
     propulsion: PropulsionType
@@ -214,7 +214,7 @@ class GroundNavigationSchema(OCCIDModel):
     max_range: builtins.float
     max_spd: builtins.float
 
-class AirNavigationSchema(OCCIDModel):
+class AirNavigation(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 6
     __occid_semantic_role__: ClassVar[str] = 'representation'
     flight_type: AirframeType
@@ -245,7 +245,7 @@ class GroundMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -255,7 +255,7 @@ class GroundMachine(OCCIDModel):
     model: builtins.str
     role: builtins.str
     sensors: dict[builtins.str, SensorPayload]
-    navigation: GroundNavigationSchema
+    navigation: GroundNavigation
 
 class AirMachine(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 5
@@ -271,7 +271,7 @@ class AirMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, MetadataValue]
     relations: list[DirectedRelationship]
-    symbology: SymbologySchema | None = None
+    symbology: Symbology | None = None
     display_meta: DisplayMeta | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
@@ -281,4 +281,4 @@ class AirMachine(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.AIR
     model: builtins.str
     sensors: dict[builtins.str, SensorPayload]
-    navigation: AirNavigationSchema
+    navigation: AirNavigation
