@@ -40,7 +40,7 @@ models:
       org_rank: int
       org_type: optional OrgType
       topology: optional OrgTopology
-      elements: list
+      elements: list[UID]
       roster: Roster
       leases: list[AttachmentLease]
 

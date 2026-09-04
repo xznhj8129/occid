@@ -17,22 +17,37 @@ enums:
 
 models:
   Assignment:
-    # TODO: wrong, this is a TaskAssignment
-    description: Explicit binding of a task to an assignee under stated authority and constraints
+    description: Deliberate binding of an assignee to a subject under stated authority and constraints
     semantic_role: concept
     parent: Control
     fields:
       record: Record
       uid: UID
       id: IntID(Assignment)
-      task_uid: UID
       assignee_uid: UID
-      authority_uid: optional UID
+      authority_uid: UID
       assigned_by_uid: UID
-      assigned_at: float #needs a model for assignment/acceptance/status/time
-      accepted_at: optional float
       status: AssignmentStatus = PROPOSED
       constraints: list[Constraint]
+    variants:
+      - TaskAssignment
+      - RoleAssignment
+      - FlightAssignment
+
+  TaskAssignment:
+    description: Assignment of a Task to an assignee
+    semantic_role: representation
+    parent: Assignment
+    fields:
+      task_uid: UID
+
+  RoleAssignment:
+    description: Assignment of an organizational Role to an actor
+    semantic_role: representation
+    parent: Assignment
+    fields:
+      organization_uid: UID
+      role: OrgRole
 
   FlightAssignment:
     semantic_role: representation

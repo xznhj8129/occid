@@ -26,6 +26,28 @@ models:
       scope_uids: list[UID]
       constraints: list[Constraint]
 
+  # Command authority belongs to a ROLE WITHIN AN ORGANIZATION.
+  # It does not belong permanently to Alice, Bob, Hermes-7, etc.
+  #
+  # The roster tells us which actor currently occupies that role.
+  #
+  # Therefore command authority survives replacement of the actor.
+  #
+  # Role alone does not imply authority:
+  #
+  #   Commander Role
+  #
+  # means "organizational function named Commander".
+  #
+  #   CommandAuthority(Organization X, Commander)
+  #
+  # means "the Commander role of Organization X actually possesses
+  # command authority over Organization X."
+  CommandAuthority:
+    parent: Authority
+    organization_uid: UID
+    role: Role
+
   Lease:
     description: Bounded control right issued under an Authority record
     semantic_role: representation
@@ -42,6 +64,7 @@ models:
     semantic_role: representation
     parent: Lease
     fields:
+      parent_uid: UID
       attachment_uid: UID
 
   ControlLease:
