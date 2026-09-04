@@ -13,7 +13,7 @@ models:
     fields:
       observation: Observation
 
-  ProtocolEventMessage:
+  ProtocolEventMessage: # clearly something specific to a protocol (COT?) that was shoehorned in here
     semantic_role: representation
     parent: ObservationMessage
     fields:

@@ -81,7 +81,7 @@ class Delta(OCCIDModel):
     seq: builtins.int
     entity_uid: UID
     record: UID
-    changed_fields: dict[builtins.str, LinkState | MeshLink | Lifecycle | Activation | Cue | GNC | NavigationValidity | GnssSolution | AutopilotMissionState | FlightControlState | Health | HealthAlert | SubsystemHealth | HealthSnapshot | MaintenanceStatus | NavReadinessState | Input | ControlAxisSet | ControlChannelValue | ControlOverride | ControlAttitudeSetpoint | Internal | FirmwareInfo | RuntimeLoadState | Kinematic | ImuSample | Resource | FuelState | Supplies | PowerSource | PowerState | ElectricalResourceState | SensorState | TrackerState | FlightSensorConfiguration | EntityState | Validation | Position | LocationState | SpotterOrigin]
+    changed_fields: dict[builtins.str, State]
     updated_ts: Timestamp
 
 class DeliveryReceipt(OCCIDModel):

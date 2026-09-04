@@ -62,7 +62,7 @@ class TaskStatus(IntEnum):
 
 class Task(OCCIDModel):
     'Directed work that must be accomplished in support of an optional objective'
-    __occid_model_id__: ClassVar[int] = 243
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -81,7 +81,7 @@ class Task(OCCIDModel):
 
 class TaskManeuver(OCCIDModel):
     'Practical Task schema for desired movement, position, or spatial persistence'
-    __occid_model_id__: ClassVar[int] = 247
+    __occid_model_id__: ClassVar[int] = 248
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -101,7 +101,7 @@ class TaskManeuver(OCCIDModel):
 
 class TaskEffect(OCCIDModel):
     'Practical Task schema for desired creation, removal, modification, restoration, protection, or denial'
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 246
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -121,7 +121,7 @@ class TaskEffect(OCCIDModel):
 
 class TaskInformation(OCCIDModel):
     'Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring'
-    __occid_model_id__: ClassVar[int] = 246
+    __occid_model_id__: ClassVar[int] = 247
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID
@@ -141,7 +141,7 @@ class TaskInformation(OCCIDModel):
 
 class TaskTransport(OCCIDModel):
     'Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets'
-    __occid_model_id__: ClassVar[int] = 249
+    __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     uid: UID

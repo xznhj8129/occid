@@ -102,7 +102,7 @@ class NodeHeartbeat(OCCIDModel):
     ts: Timestamp
     priority: MessagePriority
     seq: builtins.int
-    state: LinkState
     node_uid: UID
     last_seen_ts: Timestamp
     node_state: MeshNodeState | None = None
+    state: LinkState

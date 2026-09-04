@@ -10,8 +10,6 @@ models:
     description: Message whose payload reports sender or asset state
     semantic_role: type
     parent: Message
-    fields:
-      state: State
 
   UAVTelemetryMessage:
     semantic_role: representation

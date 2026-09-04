@@ -164,7 +164,7 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, SensorPayload]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 266
+    __occid_model_id__: ClassVar[int] = 267
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

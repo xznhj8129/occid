@@ -137,7 +137,7 @@ class BoundingBox(OCCIDModel):
 
 class VelocityVector(OCCIDModel):
     'Linear velocity with optional explicit inertial reference frame'
-    __occid_model_id__: ClassVar[int] = 267
+    __occid_model_id__: ClassVar[int] = 268
     __occid_semantic_role__: ClassVar[str] = 'representation'
     x: builtins.float
     y: builtins.float

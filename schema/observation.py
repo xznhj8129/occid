@@ -60,7 +60,7 @@ class Classification(OCCIDModel):
 
 class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 253
+    __occid_model_id__: ClassVar[int] = 254
     __occid_semantic_role__: ClassVar[str] = 'type'
     record: Record
     uid: UID
@@ -76,13 +76,13 @@ class Detection(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class VisionBox(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 270
+    __occid_model_id__: ClassVar[int] = 271
     __occid_semantic_role__: ClassVar[str] = 'representation'
     space: DetectionBoxSpace
     bounds: BoundingBox
 
 class VisionDetection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 271
+    __occid_model_id__: ClassVar[int] = 272
     __occid_semantic_role__: ClassVar[str] = 'representation'
     detection_id: Annotated[IntID, IDNamespace('Detection')]
     label: builtins.str | None = None
@@ -95,7 +95,7 @@ class VisionDetection(OCCIDModel):
     attributes: dict[builtins.str, MetadataValue]
 
 class VisionDetectionFrame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 272
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     frame_uid: UID | None = None
@@ -133,7 +133,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 254
+    __occid_model_id__: ClassVar[int] = 255
     __occid_semantic_role__: ClassVar[str] = 'representation'
     record: Record
     track_uid: UID

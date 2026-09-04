@@ -109,14 +109,3 @@ models:
       receive_error_count: optional int
       corrected_receive_count: optional int
 
-  LinkState:
-    description: Time-varying condition and observed quality of a communication link
-    semantic_role: type
-    parent: State
-    fields:
-      link_uid: optional UID
-      condition: optional LinkCondition
-      connection_status: optional ConnectionStatus
-      signal: optional SignalQuality
-      delivery: optional DeliveryQuality
-      counters: optional LinkCounters

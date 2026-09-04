@@ -6,11 +6,18 @@ from .common import *
 ### Models
 
 class Version(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 268
+    __occid_model_id__: ClassVar[int] = 269
     __occid_semantic_role__: ClassVar[str] = 'representation'
     major: builtins.int
     minor: builtins.int
     patch: builtins.int
+
+class FirmwareInfo(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 73
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    name: builtins.str
+    version: Version
+    build: builtins.str | None = None
 
 class MetadataValue(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 146

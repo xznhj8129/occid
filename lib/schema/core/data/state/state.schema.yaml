@@ -14,7 +14,7 @@ enums:
 models:
   State:
     description: Changing condition of an object, node, link, task, system, or process
-    semantic_role: concept
+    semantic_role: type
     parent: Data
     variants:
       - Kinematic
@@ -25,7 +25,6 @@ models:
       - Input
       - Resource
       - Health
-      - LinkState
       - Activation
       - Validation
       - Cue

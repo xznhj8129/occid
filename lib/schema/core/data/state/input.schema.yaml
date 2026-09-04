@@ -8,7 +8,7 @@ tags:
 models:
   Input:
     description: Current operator or receiver input state and control mapping.
-    semantic_role: representation
+    semantic_role: type
     parent: State
 
   ControlAxisSet:

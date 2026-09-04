@@ -8,7 +8,7 @@ from .common import *
 class Input(OCCIDModel):
     'Current operator or receiver input state and control mapping.'
     __occid_model_id__: ClassVar[int] = 108
-    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
 class ControlAxisSet(OCCIDModel):
     'Normalized control-axis values in the signed range -1.0 to +1.0, independent of the native receiver or flight-controller representation'

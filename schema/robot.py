@@ -118,7 +118,7 @@ class GroundRobot(OCCIDModel):
     navigation: GroundNavigation
 
 class VideoConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 269
+    __occid_model_id__: ClassVar[int] = 270
     __occid_semantic_role__: ClassVar[str] = 'representation'
     key: builtins.str | None = None
     value: MetadataValue | None = None

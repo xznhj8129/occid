@@ -11,14 +11,6 @@ models:
     semantic_role: type
     parent: State
 
-  FirmwareInfo:
-    semantic_role: representation
-    parent: Internal
-    fields:
-      name: string
-      version: Version
-      build: optional string
-
   RuntimeLoadState:
     semantic_role: representation
     parent: Internal

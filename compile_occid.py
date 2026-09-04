@@ -332,7 +332,7 @@ def _dump_entry(name: str, value: object) -> list[str]:
         {name: value},
         sort_keys=False,
         allow_unicode=True,
-        width=120,
+        width=1e10,
     ).rstrip()
     return [f"  {line}" for line in text.splitlines()]
 

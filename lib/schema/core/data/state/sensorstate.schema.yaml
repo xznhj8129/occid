@@ -28,7 +28,7 @@ models:
 
   SensorState:
     description: Onboard sensor readings, readiness, calibration, and availability
-    semantic_role: representation
+    semantic_role: type
     parent: State
 
   TrackerState:

@@ -28,10 +28,10 @@ class GimbalState(IntEnum):
 class SensorState(OCCIDModel):
     'Onboard sensor readings, readiness, calibration, and availability'
     __occid_model_id__: ClassVar[int] = 222
-    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_semantic_role__: ClassVar[str] = 'type'
 
 class TrackerState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 256
     __occid_semantic_role__: ClassVar[str] = 'representation'
     locked: builtins.bool | None = None
     target_uid: UID | None = None

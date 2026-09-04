@@ -18,7 +18,7 @@ class FuelState(OCCIDModel):
     remaining: builtins.float | None = None
 
 class Supplies(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 234
+    __occid_model_id__: ClassVar[int] = 235
     __occid_semantic_role__: ClassVar[str] = 'representation'
     fuel: FuelState | None = None
     stores: list[ItemCount]

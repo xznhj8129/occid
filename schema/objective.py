@@ -28,7 +28,7 @@ class Objective(OCCIDModel):
 
 class SuccessCriterion(OCCIDModel):
     'Typed, human-readable condition used to determine whether an objective succeeded'
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 234
     __occid_semantic_role__: ClassVar[str] = 'representation'
     statement: builtins.str
     metric: builtins.str | None = None

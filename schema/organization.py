@@ -61,7 +61,7 @@ class Group(OCCIDModel):
     orglevel: OrgLevel = OrgLevel.GROUP
 
 class Unit(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 262
+    __occid_model_id__: ClassVar[int] = 263
     __occid_semantic_role__: ClassVar[str] = 'representation'
     capabilities: list[Capability] | None = None
     record: Record

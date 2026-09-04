@@ -11,7 +11,7 @@ class Attribute(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'type'
 
 class Symbology(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 235
+    __occid_model_id__: ClassVar[int] = 236
     __occid_semantic_role__: ClassVar[str] = 'representation'
     sidc: builtins.str | None = None
     cot: builtins.str | None = None

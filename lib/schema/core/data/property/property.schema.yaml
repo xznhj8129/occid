@@ -25,6 +25,14 @@ models:
       minor: int
       patch: int
 
+  FirmwareInfo:
+    semantic_role: representation
+    parent: Property
+    fields:
+      name: string
+      version: Version
+      build: optional string
+
   MetadataValue:
     semantic_role: representation
     parent: Property

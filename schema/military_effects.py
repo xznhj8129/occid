@@ -175,28 +175,28 @@ class AirEffects(OCCIDModel):
     attack_modes: list[AirAttackMode]
 
 class TargetPriority(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 240
+    __occid_model_id__: ClassVar[int] = 241
     __occid_semantic_role__: ClassVar[str] = 'representation'
     threat: ThreatLevel | None = None
     is_high_value: builtins.bool = False
     note: builtins.str | None = None
 
 class TargetKinematics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 239
+    __occid_model_id__: ClassVar[int] = 240
     __occid_semantic_role__: ClassVar[str] = 'representation'
     location_state: LocationState
     velocity: VelocityVector | None = None
     velocity_covariance: VelocityVector | None = None
 
 class TargetSet(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 242
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
     name: builtins.str
 
 class TargetSetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 243
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -207,7 +207,7 @@ class TargetSetCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetBoxCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 236
+    __occid_model_id__: ClassVar[int] = 237
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -217,7 +217,7 @@ class TargetBoxCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 237
+    __occid_model_id__: ClassVar[int] = 238
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     id: Annotated[IntID, IDNamespace('TargetSet')]
@@ -248,7 +248,7 @@ class SplashCorrection(OCCIDModel):
     cep_expected_m: builtins.float
 
 class TargetHandover(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 238
+    __occid_model_id__: ClassVar[int] = 239
     __occid_semantic_role__: ClassVar[str] = 'representation'
     time_usec: builtins.int
     detected_first_usec: builtins.int

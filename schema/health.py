@@ -58,6 +58,17 @@ class Health(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 99
     __occid_semantic_role__: ClassVar[str] = 'type'
 
+class LinkState(OCCIDModel):
+    'Time-varying condition and observed quality of a communication link'
+    __occid_model_id__: ClassVar[int] = 124
+    __occid_semantic_role__: ClassVar[str] = 'type'
+    link_uid: UID | None = None
+    condition: LinkCondition | None = None
+    connection_status: ConnectionStatus | None = None
+    signal: SignalQuality | None = None
+    delivery: DeliveryQuality | None = None
+    counters: LinkCounters | None = None
+
 class HealthAlert(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 100
     __occid_semantic_role__: ClassVar[str] = 'representation'
@@ -67,7 +78,7 @@ class HealthAlert(OCCIDModel):
     acknowledged: builtins.bool = False
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 232
+    __occid_model_id__: ClassVar[int] = 233
     __occid_semantic_role__: ClassVar[str] = 'representation'
     subsystem_ref: builtins.str
     state: HealthStatus

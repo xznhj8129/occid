@@ -67,6 +67,18 @@ models:
       condition: string
       acknowledged: bool = false
 
+  LinkState:
+    description: Time-varying condition and observed quality of a communication link
+    semantic_role: type
+    parent: Health
+    fields:
+      link_uid: optional UID
+      condition: optional LinkCondition
+      connection_status: optional ConnectionStatus
+      signal: optional SignalQuality
+      delivery: optional DeliveryQuality
+      counters: optional LinkCounters
+
   SubsystemHealth:
     semantic_role: representation
     parent: Health

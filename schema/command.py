@@ -51,7 +51,7 @@ class ExecutionOperation(IntEnum):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 229
+    __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'type'
     target_uid: UID
     constraints: list[Constraint]

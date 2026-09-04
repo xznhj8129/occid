@@ -64,17 +64,6 @@ class Link(OCCIDModel):
     user_capacity: LinkCapacity | None = None
     network_uid: UID | None = None
 
-class LinkState(OCCIDModel):
-    'Time-varying condition and observed quality of a communication link'
-    __occid_model_id__: ClassVar[int] = 124
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    link_uid: UID | None = None
-    condition: LinkCondition | None = None
-    connection_status: ConnectionStatus | None = None
-    signal: SignalQuality | None = None
-    delivery: DeliveryQuality | None = None
-    counters: LinkCounters | None = None
-
 class DataRateSpec(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 48
     __occid_semantic_role__: ClassVar[str] = 'representation'

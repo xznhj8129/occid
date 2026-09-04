@@ -12,6 +12,11 @@ class ObservationTimeBasis(IntEnum):
 
 ### Models
 
+class State(OCCIDModel):
+    'Changing condition of an object, node, link, task, system, or process'
+    __occid_model_id__: ClassVar[int] = 229
+    __occid_semantic_role__: ClassVar[str] = 'type'
+
 class EntityState(OCCIDModel):
     'Time-indexed mutable condition reported for an entity independently of its identity and specification'
     __occid_model_id__: ClassVar[int] = 64
