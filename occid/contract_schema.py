@@ -38,9 +38,10 @@ def _refs(text: str, known: set[str]) -> set[str]:
 def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> dict[str, Any]:
     """Hash the compiled OCCID runtime contract.
 
-    ``occid.yaml`` is the runtime schema boundary. Authored Concept hierarchy is
-    compiler input and therefore does not enter consumer structural hashes unless
-    it changes the compiled Type/Representation/Vocabulary output.
+    ``occid.yaml`` is the runtime schema boundary. Semantic parent/children
+    metadata is retained for reasoning, but consumer symbol hashes describe data
+    shape. Taxonomy-only changes therefore do not masquerade as representation
+    changes.
 
     ``include_modules`` is retained for API compatibility; the compiled schema
     already includes all loaded modules.
@@ -68,20 +69,22 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
         add(str(name), "enum", dict(spec or {}))
 
     runtime_model_ids: dict[int, str] = {}
-    for section, role in (("types", "type"), ("representations", "representation")):
-        for name, spec in (document.get(section) or {}).items():
-            name = str(name)
-            definition = dict(spec or {})
-            model_id = definition.get("model_id")
-            if type(model_id) is not int or model_id <= 0:
-                raise SchemaContractError(f"runtime model {name} has invalid model_id {model_id!r}")
-            previous = runtime_model_ids.get(model_id)
-            if previous is not None:
-                raise SchemaContractError(
-                    f"runtime models {previous} and {name} share model_id {model_id}"
-                )
-            runtime_model_ids[model_id] = name
-            add(name, role, definition)
+    for name, spec in (document.get("models") or {}).items():
+        name = str(name)
+        definition = dict(spec or {})
+        role = definition.get("semantic_role")
+        if role not in {"concept", "representation"}:
+            raise SchemaContractError(f"runtime model {name} has invalid semantic_role {role!r}")
+        model_id = definition.get("model_id")
+        if type(model_id) is not int or model_id <= 0:
+            raise SchemaContractError(f"runtime model {name} has invalid model_id {model_id!r}")
+        previous = runtime_model_ids.get(model_id)
+        if previous is not None:
+            raise SchemaContractError(
+                f"runtime models {previous} and {name} share model_id {model_id}"
+            )
+        runtime_model_ids[model_id] = name
+        add(name, role, definition)
 
     for name, spec in (document.get("maps") or {}).items():
         add(str(name), "map", dict(spec or {}))
@@ -91,13 +94,10 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
     for name, entry in raw.items():
         definition = entry["definition"]
         current = deps[name]
-        if entry["kind"] in {"type", "representation"}:
+        if entry["kind"] in {"concept", "representation"}:
             model_type = definition.get("type")
             if isinstance(model_type, str):
                 current.update(_refs(model_type, known))
-            for child in definition.get("children") or []:
-                if isinstance(child, str) and child in known:
-                    current.add(child)
             for field in (definition.get("fields") or {}).values():
                 text = field if isinstance(field, str) else field.get("type") if isinstance(field, dict) else None
                 if isinstance(text, str):
@@ -108,10 +108,16 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
                 current.update(_refs(text, known))
         current.discard(name)
 
-    local = {
-        name: {"kind": item["kind"], "definition": item["definition"]}
-        for name, item in raw.items()
-    }
+    local = {}
+    for name, item in raw.items():
+        definition = item["definition"]
+        if item["kind"] in {"concept", "representation"}:
+            definition = {
+                key: value
+                for key, value in definition.items()
+                if key not in {"model_id", "semantic_role", "parent", "children"}
+            }
+        local[name] = {"kind": item["kind"], "definition": definition}
 
     def closure(root_name: str) -> list[str]:
         seen: set[str] = set()
@@ -133,7 +139,7 @@ def build_manifest(repo_root: str | Path, *, include_modules: bool = True) -> di
             "dependencies": sorted(deps[name]),
             "source": "occid.yaml",
         }
-        if raw[name]["kind"] in {"type", "representation"}:
+        if raw[name]["kind"] in {"concept", "representation"}:
             item["model_id"] = raw[name]["definition"]["model_id"]
         symbols[name] = item
 

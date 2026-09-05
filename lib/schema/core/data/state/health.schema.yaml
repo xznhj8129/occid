@@ -55,7 +55,7 @@ enums:
 models:
   Health:
     description: Integrity, damage, faults, and readiness state
-    semantic_role: type
+    semantic_role: concept
     parent: State
 
   HealthAlert:
@@ -69,7 +69,7 @@ models:
 
   LinkState:
     description: Time-varying condition and observed quality of a communication link
-    semantic_role: type
+    semantic_role: concept
     parent: Health
     fields:
       link_uid: optional UID

@@ -7,14 +7,18 @@ from .common import *
 
 class Media(OCCIDModel):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
-    __occid_model_id__: ClassVar[int] = 137
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_model_id__: ClassVar[int] = 148
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Data'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('MediaItem',)
 
 class MediaItem(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 138
+    __occid_model_id__: ClassVar[int] = 149
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Media'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('MediaItem')]
     media_type: MediaType
     uri: builtins.str

@@ -7,41 +7,53 @@ from .common import *
 
 class Resource(OCCIDModel):
     'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
-    __occid_model_id__: ClassVar[int] = 207
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_model_id__: ClassVar[int] = 222
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'State'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('FuelState', 'Supplies', 'PowerSource', 'PowerState', 'ElectricalResourceState')
 
 class FuelState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 83
+    __occid_model_id__: ClassVar[int] = 92
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Resource'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     fuel_type: FuelType
     capacity: builtins.float | None = None
     remaining: builtins.float | None = None
 
 class Supplies(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 235
+    __occid_model_id__: ClassVar[int] = 253
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    fuel: FuelState | None = None
-    stores: list[ItemCount]
+    __occid_parent__: ClassVar[str | None] = 'Resource'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    fuel: Semantic[FuelState] | None = None
+    stores: list[Semantic[ItemCount]]
 
 class PowerSource(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 205
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Resource'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     source_ref: builtins.str
     power_type: PowerType
     status: PowerStatus
     remaining_pct: builtins.float | None = None
 
 class PowerState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 206
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Resource'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     status: PowerStatus
-    sources: list[PowerSource]
-    electrical_sources: list[ElectricalResourceState]
+    sources: list[Semantic[PowerSource]]
+    electrical_sources: list[Semantic[ElectricalResourceState]]
 
 class ElectricalResourceState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 61
+    __occid_model_id__: ClassVar[int] = 69
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    source_uid: UID | None = None
+    __occid_parent__: ClassVar[str | None] = 'Resource'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    source_uid: Semantic[UID] | None = None
     voltage_v: builtins.float | None = None
     current_a: builtins.float | None = None
     power_w: builtins.float | None = None

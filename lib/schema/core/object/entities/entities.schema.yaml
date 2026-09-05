@@ -103,7 +103,7 @@ models:
       display_meta: optional DisplayMeta
 
   Actor:
-    semantic_role: type
+    semantic_role: concept
     parent: Entity
 
   Agent:
@@ -124,7 +124,7 @@ models:
       sensors: map[string, SensorPayload]
 
   Machine:
-    semantic_role: type
+    semantic_role: concept
     parent: Entity
 
     fields:

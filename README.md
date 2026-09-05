@@ -188,7 +188,7 @@ This repository currently includes:
 
 - authored Concept / Representation schemas and Vocabulary;
 - record-shaped and atomic Representations (`fields:` or model-level `type:`);
-- a compiler that resolves them into flat `occid.yaml`;
+- a compiler that resolves them into one flat `occid.yaml` model table with preserved semantic roles;
 - generated Python models produced only from `occid.yaml`;
 - compact serialization and validation;
 - interoperability helpers;

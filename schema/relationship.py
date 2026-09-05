@@ -25,35 +25,43 @@ class SpatialRelationKind(IntEnum):
 
 class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 205
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_model_id__: ClassVar[int] = 220
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Property'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('DirectedRelationship', 'EntityComponentRef', 'SpatialRelationship')
 
 class DirectedRelationship(OCCIDModel):
     'Typed directed semantic relationship between two OCCID objects'
-    __occid_model_id__: ClassVar[int] = 54
+    __occid_model_id__: ClassVar[int] = 61
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    subject_uid: UID
-    object_uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Relationship'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    subject_uid: Semantic[UID]
+    object_uid: Semantic[UID]
     relation: RelationshipKind
-    since_ts: Timestamp | None = None
-    until_ts: Timestamp | None = None
+    since_ts: Semantic[Timestamp] | None = None
+    until_ts: Semantic[Timestamp] | None = None
     confidence: ConfidenceLevel | None = None
     source: builtins.str | None = None
 
 class EntityComponentRef(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 63
+    __occid_model_id__: ClassVar[int] = 72
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Relationship'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     component_ref: builtins.str
     component_type: builtins.str | None = None
     label: builtins.str | None = None
 
 class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 242
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Relationship'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Relationship')]
-    subject_uid: UID
-    reference_uid: UID
+    subject_uid: Semantic[UID]
+    reference_uid: Semantic[UID]
     relation: SpatialRelationKind

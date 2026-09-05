@@ -54,9 +54,9 @@ class ContractStabilityTests(unittest.TestCase):
         self.assertNotIn("status", PlanStep.model_fields)
 
     def test_assignment_and_task_delta_are_flat_runtime_models(self) -> None:
-        self.assertNotIn("Control", occid.__all__)
-        self.assertNotIn("State", occid.__all__)
-        self.assertEqual(Assignment.__occid_semantic_role__, "type")
+        self.assertIn("Control", occid.__all__)
+        self.assertIn("State", occid.__all__)
+        self.assertEqual(Assignment.__occid_semantic_role__, "concept")
         self.assertEqual(TaskDelta.__occid_semantic_role__, "representation")
         self.assertIn("record", Assignment.model_fields)
         self.assertIn("uid", Assignment.model_fields)
@@ -96,7 +96,7 @@ class ContractStabilityTests(unittest.TestCase):
         compiled = yaml.safe_load((REPO_ROOT / "occid.yaml").read_text())
         model_ids = {
             name: spec["model_id"]
-            for section in ("types", "representations")
+            for section in ("concepts", "representations")
             for name, spec in compiled[section].items()
         }
         self.assertEqual(len(model_ids.values()), len(set(model_ids.values())))

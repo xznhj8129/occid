@@ -20,12 +20,16 @@ class NetworkError(IntEnum):
 
 class Network(OCCIDModel):
     'Connectivity topology and routing state'
-    __occid_model_id__: ClassVar[int] = 163
-    __occid_semantic_role__: ClassVar[str] = 'type'
+    __occid_model_id__: ClassVar[int] = 175
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Communication'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('MeshView', 'NetworkAddress')
 
 class NetworkAddress(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 164
+    __occid_model_id__: ClassVar[int] = 176
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Network'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     kind: AddressKind
     value: builtins.str
     port: builtins.int | None = None

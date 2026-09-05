@@ -25,7 +25,7 @@ enums:
 models:
   Relationship:
     description: Nature of relations, ownership, provenance, link
-    semantic_role: type
+    semantic_role: concept
     parent: Property
 
   DirectedRelationship:

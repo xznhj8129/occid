@@ -9,7 +9,7 @@ models:
 
   Attribute:
     description: Fundamental characteristics, type, form
-    semantic_role: type
+    semantic_role: concept
     parent: Property
 
   Symbology:

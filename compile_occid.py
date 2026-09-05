@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 """Compile authored OCCID semantics into the flat runtime schema ``occid.yaml``.
 
-Authored levels:
-    Concept         ontology-only semantic category
-    Type            semantic category usable as a runtime field type
+Authored model roles:
+    Concept         semantic category in the ontology
     Representation  explicit data-bearing shape
     Vocabulary      enum
 
-The compiled runtime schema contains only Types, Representations, Vocabulary,
-and constant maps. Authored ``parent`` edges are consumed by this compiler.
-Each emitted model retains its nearest semantic ``family`` and its compiled
-direct ``children`` so generated runtimes can recover polymorphic type families
-without duplicating child declarations in authored schema.
+The compiler emits every Concept and Representation as a nominal flat runtime
+model. Authored ``parent`` is the sole is-a edge: inherited fields are flattened,
+``parent`` is preserved as semantic metadata, and ``children`` is derived directly
+from the authored parent graph.
 """
 
 from __future__ import annotations
@@ -108,9 +106,9 @@ class Compiler:
             for map_name, spec in (raw.get("maps") or {}).items():
                 self.raw_maps[map_name] = copy.deepcopy(spec)
             for model in module.models:
-                if model.semantic_role not in {"concept", "type", "representation"}:
+                if model.semantic_role not in {"concept", "representation"}:
                     raise CompileError(
-                        f"{module.path}: {model.name} must declare semantic_role concept, type, or representation"
+                        f"{module.path}: {model.name} must declare semantic_role concept or representation"
                     )
                 self.models[model.name] = model
                 self.model_order.append(model.name)
@@ -120,13 +118,7 @@ class Compiler:
         for model in self.models.values():
             if model.parent:
                 self.children[model.parent].append(model.name)
-        self.types: set[str] = {
-            name for name, model in self.models.items() if model.semantic_role == "type"
-        }
-        self.representations: set[str] = {
-            name for name, model in self.models.items() if model.semantic_role == "representation"
-        }
-        self.emitted_models = self.types | self.representations
+        self.emitted_models = set(self.models)
         # Runtime model IDs are contract-local wire discriminators. They are
         # derived deterministically from the emitted model set; there is no
         # hand-maintained registry or compatibility reservation.
@@ -135,53 +127,11 @@ class Compiler:
             for model_id, name in enumerate(sorted(self.emitted_models), start=1)
         }
 
-        self._descendant_cache: dict[str, list[str]] = {}
-        self._child_cache: dict[str, list[str]] = {}
         self._effective_field_cache: dict[str, dict[str, object]] = {}
 
-    def emitted_descendants(self, model_name: str) -> list[str]:
-        cached = self._descendant_cache.get(model_name)
-        if cached is not None:
-            return cached
-
-        result: list[str] = []
-        seen: set[str] = set()
-
-        def walk(name: str) -> None:
-            for child in self.children.get(name, []):
-                if child in seen:
-                    continue
-                seen.add(child)
-                if child in self.emitted_models:
-                    result.append(child)
-                walk(child)
-
-        walk(model_name)
-        self._descendant_cache[model_name] = result
-        return result
-
     def emitted_children(self, model_name: str) -> list[str]:
-        """Return direct compiled children after non-emitted Concepts are flattened out."""
-        cached = self._child_cache.get(model_name)
-        if cached is not None:
-            return cached
-
-        result: list[str] = []
-        seen: set[str] = set()
-
-        def walk(name: str) -> None:
-            for child in self.children.get(name, []):
-                if child in seen:
-                    continue
-                seen.add(child)
-                if child in self.emitted_models:
-                    result.append(child)
-                    continue
-                walk(child)
-
-        walk(model_name)
-        self._child_cache[model_name] = result
-        return result
+        """Return direct semantic children derived from authored parent edges."""
+        return list(self.children.get(model_name, []))
 
     def effective_fields(self, model_name: str) -> dict[str, object]:
         cached = self._effective_field_cache.get(model_name)
@@ -208,44 +158,10 @@ class Compiler:
         self._effective_field_cache[model_name] = copy.deepcopy(fields)
         return fields
 
-    def model_family(self, model_name: str) -> str:
-        """Return the nearest ancestor Concept or Type of an emitted runtime model."""
-        seen: set[str] = {model_name}
-        current = self.models[model_name].parent
-        while current is not None:
-            if current in seen:
-                raise CompileError(f"model parent cycle involving {current}")
-            seen.add(current)
-
-            parent = self.models.get(current)
-            if parent is None:
-                raise CompileError(f"model {model_name} has unknown parent {current}")
-            if parent.semantic_role in {"concept", "type"}:
-                return current
-            current = parent.parent
-
-        raise CompileError(
-            f"emitted runtime model {model_name} has no ancestor Concept or Type to use as family"
-        )
-
     def lower_named_type(self, name: str) -> idl.TypeNode:
-        if name in idl.PRIMITIVE_TYPES or name in self.enum_members:
-            return idl.TypeNode(kind="name", name=name)
-
-        model = self.models.get(name)
-        if model is None:
-            return idl.TypeNode(kind="name", name=name)
-
-        # Type and Representation references are exact. Concept references are
-        # semantic shorthand that must be resolved to the emitted runtime forms
-        # currently available beneath them.
-        if name in self.emitted_models:
-            return idl.TypeNode(kind="name", name=name)
-
-        candidates = self.emitted_descendants(name)
-        if not candidates:
-            raise CompileError(f"Concept {name} has no emitted Type or Representation descendants")
-        return flatten_union([idl.TypeNode(kind="name", name=item) for item in candidates])
+        # Named semantic references remain nominal. The runtime semantic registry
+        # handles is-a compatibility; the compiler never expands descendants.
+        return idl.TypeNode(kind="name", name=name)
 
     def lower_type(self, node: idl.TypeNode) -> idl.TypeNode:
         if node.kind == "fixed_bytes":
@@ -295,8 +211,10 @@ class Compiler:
         out: dict[str, object] = {
             "model_id": self.model_ids[model_name],
             "package": self.symbol_index[model_name],
-            "family": self.model_family(model_name),
+            "semantic_role": model.semantic_role,
         }
+        if model.parent:
+            out["parent"] = model.parent
         children = self.emitted_children(model_name)
         if children:
             out["children"] = children
@@ -322,8 +240,7 @@ class Compiler:
     def compile(self) -> dict[str, object]:
         vocabulary: dict[str, dict[str, object]] = {}
         maps: dict[str, dict[str, object]] = {}
-        types: dict[str, dict[str, object]] = {}
-        representations: dict[str, dict[str, object]] = {}
+        models: dict[str, dict[str, object]] = {}
 
         for module in self.modules:
             for enum in module.enums:
@@ -338,17 +255,13 @@ class Compiler:
                 }
 
         for model_name in self.model_order:
-            if model_name in self.types:
-                types[model_name] = self.compile_model(model_name)
-            elif model_name in self.representations:
-                representations[model_name] = self.compile_model(model_name)
+            models[model_name] = self.compile_model(model_name)
 
         return {
             "version": 1,
             "type": "occid",
             "vocabulary": vocabulary,
-            "types": types,
-            "representations": representations,
+            "models": models,
             "maps": maps,
         }
 
@@ -366,13 +279,13 @@ def _dump_entry(name: str, value: object) -> list[str]:
 def render_compiled_yaml(compiled: dict[str, object]) -> str:
     lines = [
         "# GENERATED by compile_occid.py. Do not edit.",
-        "# Concept hierarchy is compile-time input; runtime contains Types, Representations, and Vocabulary.",
+        "# Parent is semantic is-a; runtime classes are flat and children are compiler-derived.",
         f"version: {compiled['version']}",
         f"type: {compiled['type']}",
         "",
     ]
 
-    for section_name in ("vocabulary", "types", "representations", "maps"):
+    for section_name in ("vocabulary", "models", "maps"):
         section = compiled[section_name]
         assert isinstance(section, dict)
         lines.append(f"{section_name}:")
@@ -399,11 +312,12 @@ def main() -> None:
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(render_compiled_yaml(compiled))
 
-    concept_count = sum(model.semantic_role == "concept" for model in compiler.models.values())
     print(f"output={args.output}")
-    print(f"concepts_consumed={concept_count}")
-    print(f"types={len(compiler.types)}")
-    print(f"representations={len(compiler.representations)}")
+    concept_count = sum(model.semantic_role == "concept" for model in compiler.models.values())
+    representation_count = sum(model.semantic_role == "representation" for model in compiler.models.values())
+    print(f"models={len(compiler.models)}")
+    print(f"concepts={concept_count}")
+    print(f"representations={representation_count}")
     print(f"vocabulary={len(compiled['vocabulary'])}")
     print(f"maps={len(compiled['maps'])}")
 

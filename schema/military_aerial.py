@@ -67,12 +67,14 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 ### Models
 
 class MilitaryAirNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 148
+    __occid_model_id__: ClassVar[int] = 160
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'AirNavigation'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     flight_type: AirframeType
     control_modes: list[StandardFlightMode]
     failsafe_mode: AirFailsafeMode | None = None
-    weather_limits: WeatherLimits
+    weather_limits: Semantic[WeatherLimits]
     ifr: builtins.bool | None = None
     propulsion: PropulsionType
     navigation: NavigationMode
@@ -85,29 +87,31 @@ class MilitaryAirNavigation(OCCIDModel):
     roles: list[AirRole]
 
 class MilitaryUnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 154
+    __occid_model_id__: ClassVar[int] = 166
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'UnitFlightPlan'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
-    objective_uids: list[UID]
-    task_uids: list[UID]
-    actor_uids: list[UID]
-    resource_uids: list[UID]
-    assignment_uids: list[UID]
-    steps: list[PlanStep]
-    routes: list[GeoPath]
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    contingencies: list[PlanContingency]
+    objective_uids: list[Semantic[UID]]
+    task_uids: list[Semantic[UID]]
+    actor_uids: list[Semantic[UID]]
+    resource_uids: list[Semantic[UID]]
+    assignment_uids: list[Semantic[UID]]
+    steps: list[Semantic[PlanStep]]
+    routes: list[Semantic[GeoPath]]
+    constraints: list[Semantic[Constraint]]
+    contingencies: list[Semantic[PlanContingency]]
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float
-    route_in: GeoPath
-    target: PlannerMissionPoint
-    route_out: GeoPath
-    home: GlobalPosition
-    land_pos: GlobalPosition
+    route_in: Semantic[GeoPath]
+    target: Semantic[PlannerMissionPoint]
+    route_out: Semantic[GeoPath]
+    home: Semantic[GlobalPosition]
+    land_pos: Semantic[GlobalPosition]
     ip_wait_delay: builtins.float = 0.0
-    wp: GeoPath
+    wp: Semantic[GeoPath]

@@ -69,59 +69,65 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Machine'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[UID]
+    node_uids: list[Semantic[UID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
-    relations: list[DirectedRelationship]
-    symbology: Symbology | None = None
-    display_meta: DisplayMeta | None = None
+    metadata: dict[builtins.str, Semantic[MetadataValue]]
+    relations: list[Semantic[DirectedRelationship]]
+    symbology: Semantic[Symbology] | None = None
+    display_meta: Semantic[DisplayMeta] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
-    components: list[EntityComponentRef]
-    robot_control: RobotController | None = None
-    remote_control: RemoteControl
+    components: list[Semantic[EntityComponentRef]]
+    robot_control: Semantic[RobotController] | None = None
+    remote_control: Semantic[RemoteControl]
 
 class GroundRobot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 96
+    __occid_model_id__: ClassVar[int] = 105
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'GroundMachine'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[UID]
+    node_uids: list[Semantic[UID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
-    metadata: dict[builtins.str, SerializeAsAny[MetadataValue | MeasurementQuality]]
-    relations: list[DirectedRelationship]
-    symbology: Symbology | None = None
-    display_meta: DisplayMeta | None = None
+    metadata: dict[builtins.str, Semantic[MetadataValue]]
+    relations: list[Semantic[DirectedRelationship]]
+    symbology: Semantic[Symbology] | None = None
+    display_meta: Semantic[DisplayMeta] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType = MachineType.ROBOT
-    components: list[EntityComponentRef]
+    components: list[Semantic[EntityComponentRef]]
     op_domain: OperationalDomain = OperationalDomain.LAND
     model: builtins.str
     role: builtins.str
-    sensors: dict[builtins.str, SerializeAsAny[SensorPayload | ImageSensor | RFSensor]]
-    navigation: GroundNavigation
+    sensors: dict[builtins.str, Semantic[SensorPayload]]
+    navigation: Semantic[GroundNavigation]
 
 class VideoConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 270
+    __occid_model_id__: ClassVar[int] = 288
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Parameter'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: Semantic[MetadataValue] | None = None
     protocol: VideoProtocol | None = None
     port: builtins.int | None = None
     stream_url: builtins.str | None = None
@@ -131,76 +137,88 @@ class VideoConfig(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 202
+    __occid_model_id__: ClassVar[int] = 217
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Parameter'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: Semantic[MetadataValue] | None = None
     rx_min_usec: builtins.int
     rx_max_usec: builtins.int
     rx_center_usec: builtins.int
 
 class ChannelMapEntry(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 28
+    __occid_model_id__: ClassVar[int] = 29
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Parameter'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: Semantic[MetadataValue] | None = None
     axis: ControlAxis
     source_channel: builtins.int
     output_channel: builtins.int | None = None
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 170
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Parameter'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: Semantic[MetadataValue] | None = None
     mode_id: builtins.int
     mode_name: builtins.str | None = None
     channel: builtins.int
-    range: NumericRange
+    range: Semantic[NumericRange]
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 212
+    __occid_model_id__: ClassVar[int] = 227
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Parameter'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     key: builtins.str | None = None
-    value: SerializeAsAny[MetadataValue | MeasurementQuality] | None = None
+    value: Semantic[MetadataValue] | None = None
     control_modes: RobotControlMode | None = None
     autopilot_type: AutopilotType
-    autopilot_firmware: FirmwareInfo
+    autopilot_firmware: Semantic[FirmwareInfo]
 
 class RemoteControl(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 206
+    __occid_model_id__: ClassVar[int] = 221
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Interface'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     rc_link: builtins.str = ''
     vid_link: builtins.str = ''
     ctrl_video_sep: builtins.bool | None = None
-    rc_telemetry: ControlAxisSet | None = None
-    control_input: ControlAxisSet | None = None
-    control_output: ControlAxisSet | None = None
-    control_override: ControlOverride | None = None
-    receiver_config: ReceiverConfig | None = None
-    channel_map: list[ChannelMapEntry]
-    mode_ranges: list[ModeRange]
+    rc_telemetry: Semantic[ControlAxisSet] | None = None
+    control_input: Semantic[ControlAxisSet] | None = None
+    control_output: Semantic[ControlAxisSet] | None = None
+    control_override: Semantic[ControlOverride] | None = None
+    receiver_config: Semantic[ReceiverConfig] | None = None
+    channel_map: list[Semantic[ChannelMapEntry]]
+    mode_ranges: list[Semantic[ModeRange]]
 
 class ObserverSource(OCCIDModel):
     'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 170
+    __occid_model_id__: ClassVar[int] = 184
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Interface'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('ObserverSource')]
-    entity_uid: UID
+    entity_uid: Semantic[UID]
     name: builtins.str
     local_source: builtins.str
     objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
     active: builtins.bool = True
-    pos: GlobalPosition | None = None
-    attitude: EulerAngles | None = None
-    gimbal_ang: EulerAngles | None = None
+    pos: Semantic[GlobalPosition] | None = None
+    attitude: Semantic[EulerAngles] | None = None
+    gimbal_ang: Semantic[EulerAngles] | None = None
     gimbal_axes: list[GimbalAxis]
-    field_of_view: SensorFieldOfView | None = None
+    field_of_view: Semantic[SensorFieldOfView] | None = None
     media_kind: SensorDataFormat = SensorDataFormat.VIDEO
-    video: VideoConfig | None = None
+    video: Semantic[VideoConfig] | None = None
     video_res: tuple[builtins.int, builtins.int] | None = None
     telemetry_type: TelemetryType | None = None
     telem_port: builtins.str | None = None
@@ -210,14 +228,16 @@ class ObserverSource(OCCIDModel):
 
 class FlightControlState(OCCIDModel):
     'Portable flight-controller operational state independent of endpoint-specific mode identifiers'
-    __occid_model_id__: ClassVar[int] = 75
+    __occid_model_id__: ClassVar[int] = 84
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'GNC'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     armed: builtins.bool | None = None
     in_air: builtins.bool | None = None
     override_active: builtins.bool | None = None
     failsafe: builtins.bool | None = None
     standard_mode: StandardFlightMode | None = None
-    attitude_setpoint: ControlAttitudeSetpoint | None = None
-    navigation_validity: NavigationValidity | None = None
-    readiness: NavReadinessState | None = None
-    runtime_load: RuntimeLoadState | None = None
+    attitude_setpoint: Semantic[ControlAttitudeSetpoint] | None = None
+    navigation_validity: Semantic[NavigationValidity] | None = None
+    readiness: Semantic[NavReadinessState] | None = None
+    runtime_load: Semantic[RuntimeLoadState] | None = None

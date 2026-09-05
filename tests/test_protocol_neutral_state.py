@@ -38,8 +38,8 @@ class ProtocolNeutralStateTests(unittest.TestCase):
     def test_static_link_definition_is_separate_from_flat_link_state(self) -> None:
         self.assertNotIn("condition", Link.model_fields)
         self.assertNotIn("connection_status", Link.model_fields)
-        self.assertNotIn("State", occid.__all__)
-        self.assertEqual(LinkState.__occid_semantic_role__, "type")
+        self.assertIn("State", occid.__all__)
+        self.assertEqual(LinkState.__occid_semantic_role__, "concept")
         self.assertEqual(MeshLink.__occid_semantic_role__, "representation")
         for field in LinkState.model_fields:
             self.assertIn(field, MeshLink.model_fields)
@@ -51,7 +51,7 @@ class ProtocolNeutralStateTests(unittest.TestCase):
         self.assertIn("airspeed", EntityState.model_fields)
         self.assertIn("link_states", EntityState.model_fields)
         self.assertIn("received_ts", EntityState.model_fields)
-        self.assertNotIn("Measurement", occid.__all__)
+        self.assertIn("Measurement", occid.__all__)
         self.assertEqual(Airspeed.__occid_semantic_role__, "representation")
         self.assertEqual(set(Airspeed.model_fields), {"speed_ms", "reference"})
 

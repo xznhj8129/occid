@@ -14,7 +14,7 @@ enums:
 models:
   State:
     description: Changing condition of an object, node, link, task, system, or process
-    semantic_role: type
+    semantic_role: concept
     parent: Data
 
   EntityState: # this really fucking stinks

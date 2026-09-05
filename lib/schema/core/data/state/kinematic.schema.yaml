@@ -16,7 +16,7 @@ enums:
 models:
   Kinematic:
     description: Motion and derived movement state.
-    semantic_role: type
+    semantic_role: concept
     parent: State
 
   ImuSample:

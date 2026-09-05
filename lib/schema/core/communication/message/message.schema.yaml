@@ -83,7 +83,7 @@ models:
 
   ResponseMessage:
     description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
-    semantic_role: type
+    semantic_role: concept
     parent: Message
 
     fields:

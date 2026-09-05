@@ -42,3 +42,12 @@ class AirGroupFormation2DType(IntEnum):
     ECHELON_RIGHT = auto()
     STAGG_TRAIL_LEFT = auto()
     STAGG_TRAIL_RIGHT = auto()
+
+### Models
+
+class Control(OCCIDModel):
+    'Desired outcomes and directed work'
+    __occid_model_id__: ClassVar[int] = 43
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Root'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('Assignment', 'Authority', 'Constraint', 'Directive', 'Objective', 'Plan', 'OrgRole', 'Roster')

@@ -1,4 +1,5 @@
 from .common import *
+from .common import _validate_semantic_registry
 from .activation import *
 from .assignment import *
 from .attribute import *
@@ -11,7 +12,9 @@ from .condition import *
 from .constraint import *
 from .control import *
 from .cue import *
+from .data import *
 from .definition import *
+from .directive import *
 from .event import *
 from .execution import *
 from .gnc import *
@@ -64,5 +67,7 @@ from .uav import *
 
 for _model in [obj for obj in list(globals().values()) if (OCCIDModel in getattr(obj, "__mro__", ()) or OCCIDValue in getattr(obj, "__mro__", ())) and obj not in {OCCIDModel, OCCIDValue}]:
     _model.model_rebuild(_types_namespace=globals())
+
+_validate_semantic_registry()
 
 __all__ = [name for name in globals() if not name.startswith("_")]

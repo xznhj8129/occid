@@ -24,11 +24,13 @@ class OrgTopology(IntEnum):
 
 class Organization(OCCIDModel):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
-    __occid_model_id__: ClassVar[int] = 175
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_model_id__: ClassVar[int] = 189
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Set'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('Group', 'Unit', 'MilitaryOrg')
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -37,16 +39,18 @@ class Organization(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
 
 class Group(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 97
+    __occid_model_id__: ClassVar[int] = 106
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Organization'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -55,17 +59,19 @@ class Group(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     orglevel: OrgLevel = OrgLevel.GROUP
 
 class Unit(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 263
+    __occid_model_id__: ClassVar[int] = 281
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Organization'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -74,20 +80,24 @@ class Unit(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     orglevel: OrgLevel = OrgLevel.UNIT
 
 class OrgRole(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 174
+    __occid_model_id__: ClassVar[int] = 188
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Control'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     role: builtins.str
-    authority: CommandAuthority | SerializeAsAny[Lease | AttachmentLease | ControlLease] | AttachmentLease | ControlLease
-    assignment: SerializeAsAny[Assignment | TaskAssignment | RoleAssignment | FlightAssignment]
+    authority: Semantic[Authority]
+    assignment: Semantic[Assignment]
     rank: builtins.int
 
 class Roster(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 215
+    __occid_model_id__: ClassVar[int] = 231
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    roster: dict[UID, OrgRole]
+    __occid_parent__: ClassVar[str | None] = 'Control'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    roster: dict[Semantic[UID], Semantic[OrgRole]]

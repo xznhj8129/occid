@@ -29,16 +29,22 @@ class AirMissionEvent(IntEnum):
 
 class Event(OCCIDModel):
     'A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data'
-    __occid_model_id__: ClassVar[int] = 69
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    record: Record
+    __occid_model_id__: ClassVar[int] = 78
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Data'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('FlightEvent', 'MissionEvent')
+    record: Semantic[Record]
 
 class FlightEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 76
+    __occid_model_id__: ClassVar[int] = 85
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
+    __occid_parent__: ClassVar[str | None] = 'Event'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
 
 class MissionEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 155
+    __occid_model_id__: ClassVar[int] = 167
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
+    __occid_parent__: ClassVar[str | None] = 'Event'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]

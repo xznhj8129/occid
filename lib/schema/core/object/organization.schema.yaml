@@ -24,7 +24,7 @@ enums:
 models:
   Organization:
     description: A structured collection of organized entities and/or subordinate organizations with common command and control
-    semantic_role: type
+    semantic_role: concept
     parent: Set
 
     fields:

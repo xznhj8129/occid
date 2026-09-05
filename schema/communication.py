@@ -19,3 +19,12 @@ class AddressingMode(IntEnum):
 class ExchangePattern(IntEnum):
     PUSH = 0
     REQUEST_RESPONSE = auto()
+
+### Models
+
+class Communication(OCCIDModel):
+    'Movement of information between endpoints'
+    __occid_model_id__: ClassVar[int] = 38
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Root'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('Interface', 'Link', 'DataRateSpec', 'LinkCapacity', 'Message', 'Network', 'Node', 'Protocol')

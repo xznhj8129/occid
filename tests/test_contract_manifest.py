@@ -60,16 +60,17 @@ vocabulary:
     values:
       - OFF = 0
       - ON = 1
-types:
+models:
   Parent:
     model_id: 1
     package: test
+    semantic_role: concept
     fields:
       mode: Mode
-representations:
   Child:
     model_id: 2
     package: test
+    semantic_role: representation
     type: Mode
 maps: {}
 """,
@@ -85,6 +86,69 @@ maps: {}
             self.assertNotEqual(before["symbols"]["Parent"]["hash"], after["symbols"]["Parent"]["hash"])
             self.assertNotEqual(before["symbols"]["Child"]["hash"], after["symbols"]["Child"]["hash"])
 
+    def test_taxonomy_growth_does_not_change_parent_structural_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "VERSION").write_text("0.0.2\n", encoding="utf-8")
+            schema = root / "occid.yaml"
+            schema.write_text(
+                """version: 1
+type: occid
+vocabulary: {}
+models:
+  Parent:
+    model_id: 1
+    package: test
+    semantic_role: concept
+    children: [Child]
+    fields:
+      value: int
+  Child:
+    model_id: 2
+    package: test
+    semantic_role: concept
+    parent: Parent
+    fields:
+      value: int
+maps: {}
+""",
+                encoding="utf-8",
+            )
+            before = build_manifest(root)
+            schema.write_text(
+                """version: 1
+type: occid
+vocabulary: {}
+models:
+  Parent:
+    model_id: 1
+    package: test
+    semantic_role: concept
+    children: [Child, Added]
+    fields:
+      value: int
+  Child:
+    model_id: 2
+    package: test
+    semantic_role: concept
+    parent: Parent
+    fields:
+      value: int
+  Added:
+    model_id: 3
+    package: test
+    semantic_role: concept
+    parent: Parent
+    fields:
+      value: int
+maps: {}
+""",
+                encoding="utf-8",
+            )
+            after = build_manifest(root)
+            self.assertNotEqual(before["global_hash"], after["global_hash"])
+            self.assertEqual(before["symbols"]["Parent"]["hash"], after["symbols"]["Parent"]["hash"])
+
     def test_release_label_does_not_change_schema_contract(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -93,13 +157,13 @@ maps: {}
                 """version: 1
 type: occid
 vocabulary: {}
-types:
+models:
   Thing:
     model_id: 1
     package: test
+    semantic_role: concept
     fields:
       value: int
-representations: {}
 maps: {}
 """,
                 encoding="utf-8",

@@ -17,13 +17,15 @@ class CapabilityRole(IntFlag):
 
 class Node(OCCIDModel):
     'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
-    __occid_model_id__: ClassVar[int] = 165
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    uid: UID
+    __occid_model_id__: ClassVar[int] = 177
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Communication'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('MeshNode',)
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Node')]
-    entity_uid: UID | None = None
+    entity_uid: Semantic[UID] | None = None
     roles: list[CapabilityRole]
-    addresses: list[NetworkAddress]
-    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
-    radios: dict[builtins.str, SerializeAsAny[RadioProfile | MilitaryRadioProfile]]
-    protocols: dict[builtins.str, SerializeAsAny[Protocol | ProtocolPayload | CryptoKey | CryptoProfile | LoRaProfile | AprsProfile | ElrsProfile | FpvProfile]]
+    addresses: list[Semantic[NetworkAddress]]
+    links: dict[builtins.str, Semantic[Link]]
+    radios: dict[builtins.str, Semantic[RadioProfile]]
+    protocols: dict[builtins.str, Semantic[Protocol]]

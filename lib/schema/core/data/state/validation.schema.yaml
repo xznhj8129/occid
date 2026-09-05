@@ -15,7 +15,7 @@ enums:
 models:
   Validation:
     description: Mutable state of evaluating a Condition, kept separate from the predicate itself
-    semantic_role: type
+    semantic_role: concept
     parent: State
     fields:
       condition: Condition

@@ -1,7 +1,8 @@
 """Generate the Pydantic runtime package from compiled ``occid.yaml``.
 
-The authored hierarchy under ``lib/schema`` is consumed by ``compile_occid.py``.
-This generator only sees the flat Type / Representation / Vocabulary contract.
+The compiler preserves the semantic parent/children graph as metadata while
+flattening inherited fields. Generated Python classes never mirror ontology
+inheritance.
 """
 
 from __future__ import annotations
@@ -55,14 +56,12 @@ TOP_LEVEL_KEYS = {
     "models",
 }
 MAP_KEYS = {"type", "value"}
-COMPILED_TOP_LEVEL_KEYS = {"version", "type", "vocabulary", "types", "representations", "maps"}
-# ``family`` is compiler-owned semantic metadata. The Pydantic generator accepts
-# it in the flat contract but deliberately does not expose it on runtime models.
-COMPILED_MODEL_KEYS = {"model_id", "package", "family", "children", "description", "type", "fields"}
+COMPILED_TOP_LEVEL_KEYS = {"version", "type", "vocabulary", "models", "maps"}
+COMPILED_MODEL_KEYS = {"model_id", "package", "semantic_role", "parent", "children", "description", "type", "fields"}
 COMPILED_VOCABULARY_KEYS = {"package", "values"}
 COMPILED_MAP_KEYS = {"package", "type", "value"}
 MODEL_KEYS = {"description", "semantic_role", "parent", "type", "fields"}
-MODEL_SEMANTIC_ROLES = {"concept", "type", "representation"}
+MODEL_SEMANTIC_ROLES = {"concept", "representation"}
 YAML_FORBIDDEN_TOKENS = {AliasToken, AnchorToken, FlowMappingStartToken, FlowSequenceStartToken, TagToken}
 
 
@@ -527,56 +526,57 @@ def load_compiled_schema(path: Path) -> list[ModuleDef]:
 
     compiled_model_ids: set[int] = set()
 
-    for section_name, semantic_role in (("types", "type"), ("representations", "representation")):
-        section = data.get(section_name) or {}
-        if type(section) != dict:
-            raise SchemaError(f"{section_name} must be a mapping in {path}")
-        for name, spec in section.items():
-            if type(spec) != dict:
-                raise SchemaError(f"compiled {semantic_role} {name} must be a mapping in {path}")
-            unknown = sorted(set(spec) - COMPILED_MODEL_KEYS)
-            if unknown:
-                raise SchemaError(f"unknown keys {unknown} on compiled {semantic_role} {name}")
-            if "model_id" not in spec or "package" not in spec:
-                raise SchemaError(f"compiled {semantic_role} {name} requires model_id and package")
-            model_id = spec["model_id"]
-            if type(model_id) is not int or model_id <= 0:
-                raise SchemaError(f"compiled {semantic_role} {name} has invalid model_id {model_id!r}")
-            if model_id in compiled_model_ids:
-                raise SchemaError(f"duplicate compiled model_id {model_id} on {name}")
-            compiled_model_ids.add(model_id)
-            if "description" in spec and type(spec["description"]) != str:
-                raise SchemaError(f"description must be a string on compiled {semantic_role} {name}")
-            if "type" in spec and "fields" in spec:
-                raise SchemaError(f"compiled {semantic_role} {name} may declare type or fields, not both")
-            if "type" in spec and semantic_role != "representation":
-                raise SchemaError(f"compiled Type {name} may not declare model-level type")
-            value_type = None
-            if "type" in spec:
-                type_text = spec["type"]
-                if type(type_text) != str or not type_text.strip():
-                    raise SchemaError(f"compiled representation {name} has invalid type")
-                value_type = TypeParser(type_text.strip()).parse()
-            fields = spec.get("fields") or {}
-            if type(fields) != dict:
-                raise SchemaError(f"fields must be a mapping on compiled {semantic_role} {name}")
-            children = spec.get("children") or []
-            if type(children) != list or any(type(child) != str for child in children):
-                raise SchemaError(f"children must be a list of model names on compiled {semantic_role} {name}")
-            if len(children) != len(set(children)):
-                raise SchemaError(f"duplicate children on compiled {semantic_role} {name}")
-            module_for(spec["package"]).models.append(
-                ModelDef(
-                    name=name,
-                    description=spec.get("description"),
-                    semantic_role=semantic_role,
-                    parent=None,
-                    value_type=value_type,
-                    fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields.items()],
-                    children=children,
-                    model_id=model_id,
-                )
+    models = data.get("models") or {}
+    if type(models) != dict:
+        raise SchemaError(f"models must be a mapping in {path}")
+    for name, spec in models.items():
+        if type(spec) != dict:
+            raise SchemaError(f"compiled model {name} must be a mapping in {path}")
+        unknown = sorted(set(spec) - COMPILED_MODEL_KEYS)
+        if unknown:
+            raise SchemaError(f"unknown keys {unknown} on compiled model {name}")
+        if "model_id" not in spec or "package" not in spec or "semantic_role" not in spec:
+            raise SchemaError(f"compiled model {name} requires model_id, package, and semantic_role")
+        semantic_role = parse_semantic_role(name, spec.get("semantic_role"), MODEL_SEMANTIC_ROLES)
+        assert semantic_role is not None
+        model_id = spec["model_id"]
+        if type(model_id) is not int or model_id <= 0:
+            raise SchemaError(f"compiled model {name} has invalid model_id {model_id!r}")
+        if model_id in compiled_model_ids:
+            raise SchemaError(f"duplicate compiled model_id {model_id} on {name}")
+        compiled_model_ids.add(model_id)
+        if "description" in spec and type(spec["description"]) != str:
+            raise SchemaError(f"description must be a string on compiled model {name}")
+        if "type" in spec and "fields" in spec:
+            raise SchemaError(f"compiled model {name} may declare type or fields, not both")
+        if "type" in spec and semantic_role != "representation":
+            raise SchemaError(f"compiled Concept {name} may not declare model-level type")
+        value_type = None
+        if "type" in spec:
+            type_text = spec["type"]
+            if type(type_text) != str or not type_text.strip():
+                raise SchemaError(f"compiled representation {name} has invalid type")
+            value_type = TypeParser(type_text.strip()).parse()
+        fields = spec.get("fields") or {}
+        if type(fields) != dict:
+            raise SchemaError(f"fields must be a mapping on compiled model {name}")
+        children = spec.get("children") or []
+        if type(children) != list or any(type(child) != str for child in children):
+            raise SchemaError(f"children must be a list of model names on compiled model {name}")
+        if len(children) != len(set(children)):
+            raise SchemaError(f"duplicate children on compiled model {name}")
+        module_for(spec["package"]).models.append(
+            ModelDef(
+                name=name,
+                description=spec.get("description"),
+                semantic_role=semantic_role,
+                parent=spec.get("parent"),
+                value_type=value_type,
+                fields=[parse_field(field_name, field_spec) for field_name, field_spec in fields.items()],
+                children=children,
+                model_id=model_id,
             )
+        )
 
     maps = data.get("maps") or {}
     if type(maps) != dict:
@@ -813,7 +813,7 @@ def validate_schema(modules: list[ModuleDef], symbol_index: dict[str, str], enum
                     raise SchemaError(f"compiled model {model_def.name} cannot be its own child in {module.path}")
 
 
-def python_type_expr(node: TypeNode, child_type_members: dict[str, list[str]]) -> str:
+def python_type_expr(node: TypeNode, model_names: set[str]) -> str:
     if node.kind == "fixed_bytes":
         assert node.size is not None
         return f"Annotated[bytes, Field(strict=True, min_length={node.size}, max_length={node.size})]"
@@ -824,23 +824,22 @@ def python_type_expr(node: TypeNode, child_type_members: dict[str, list[str]]) -
     if node.kind == "name":
         if node.name in PRIMITIVE_TYPES:
             return PRIMITIVE_TYPES[node.name]
-        child_names = child_type_members.get(node.name) or []
-        if child_names:
-            return f"SerializeAsAny[{' | '.join([node.name, *child_names])}]"
+        if node.name in model_names:
+            return f"Semantic[{node.name}]"
         return node.name
     if node.kind == "list":
-        return f"list[{python_type_expr(node.args[0], child_type_members)}]"
+        return f"list[{python_type_expr(node.args[0], model_names)}]"
     if node.kind == "map":
-        return f"dict[{python_type_expr(node.args[0], child_type_members)}, {python_type_expr(node.args[1], child_type_members)}]"
+        return f"dict[{python_type_expr(node.args[0], model_names)}, {python_type_expr(node.args[1], model_names)}]"
     if node.kind == "tuple":
-        return f"tuple[{', '.join(python_type_expr(arg, child_type_members) for arg in node.args)}]"
+        return f"tuple[{', '.join(python_type_expr(arg, model_names) for arg in node.args)}]"
     if node.kind == "union":
-        return " | ".join(python_type_expr(arg, child_type_members) for arg in node.args)
+        return " | ".join(python_type_expr(arg, model_names) for arg in node.args)
     raise SchemaError(f"unsupported type node {node.kind}")
 
 
-def field_annotation(field_def: FieldDef, child_type_members: dict[str, list[str]]) -> str:
-    python_type = python_type_expr(field_def.type_node, child_type_members)
+def field_annotation(field_def: FieldDef, model_names: set[str]) -> str:
+    python_type = python_type_expr(field_def.type_node, model_names)
     if field_def.const and field_def.default is not None and field_def.type_node.kind == "name":
         if field_def.type_node.name in {"string", "int", "float", "bool"}:
             return f"Literal[{python_default_literal(field_def.default)}]"
@@ -849,7 +848,6 @@ def field_annotation(field_def: FieldDef, child_type_members: dict[str, list[str
             return f"({python_type}) | None"
         return f"{python_type} | None"
     return python_type
-
 
 def python_default_literal(value: object) -> str:
     if value is True:
@@ -877,8 +875,8 @@ def enum_default_expr(type_name: str, default: str, enum_members: dict[str, set[
     return f"{type_name}.{default}"
 
 
-def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], child_type_members: dict[str, list[str]]) -> str:
-    annotation = field_annotation(field_def, child_type_members)
+def field_assignment(field_def: FieldDef, enum_members: dict[str, set[str]], model_names: set[str]) -> str:
+    annotation = field_annotation(field_def, model_names)
 
     if field_def.const:
         type_name = field_def.type_node.name if field_def.type_node.kind == "name" else None
@@ -974,8 +972,6 @@ def model_type_refs(model_def: ModelDef) -> set[str]:
 
 def runtime_type_refs(model_def: ModelDef, enum_members: dict[str, set[str]]) -> set[str]:
     refs: set[str] = set()
-    if model_def.parent:
-        refs.add(model_def.parent)
     if model_def.value_type is not None:
         refs.update(collect_type_refs(model_def.value_type))
     for field_def in model_def.fields:
@@ -1014,12 +1010,12 @@ def module_imports(module: ModuleDef, symbol_index: dict[str, str], enum_members
 def render_model_block(
     model_def: ModelDef,
     enum_members: dict[str, set[str]],
-    child_type_members: dict[str, list[str]],
+    model_names: set[str],
 ) -> str:
     if model_def.value_type is not None:
-        parent = f"OCCIDValue[{python_type_expr(model_def.value_type, child_type_members)}]"
+        parent = f"OCCIDValue[{python_type_expr(model_def.value_type, model_names)}]"
     else:
-        parent = model_def.parent or "OCCIDModel"
+        parent = "OCCIDModel"
     lines = [f"class {model_def.name}({parent}):"]
     if model_def.description:
         lines.append(f"    {model_def.description!r}")
@@ -1028,8 +1024,10 @@ def render_model_block(
     lines.append(f"    __occid_model_id__: ClassVar[int] = {model_def.model_id}")
     if model_def.semantic_role:
         lines.append(f"    __occid_semantic_role__: ClassVar[str] = {model_def.semantic_role!r}")
+    lines.append(f"    __occid_parent__: ClassVar[str | None] = {model_def.parent!r}")
+    lines.append(f"    __occid_children__: ClassVar[tuple[str, ...]] = {tuple(model_def.children)!r}")
     for field_def in model_def.fields:
-        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, child_type_members)}")
+        lines.append(f"    {field_def.name}: {field_assignment(field_def, enum_members, model_names)}")
     return "\n".join(lines)
 
 
@@ -1045,9 +1043,9 @@ def mapping_value_literal(value: object, value_type: str, enum_members: dict[str
     return repr(value)
 
 
-def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]], child_type_members: dict[str, list[str]]) -> str:
+def render_mapping_block(mapping_def: MappingDef, enum_members: dict[str, set[str]], model_names: set[str]) -> str:
     lines = [
-        f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse(), child_type_members)}, {python_type_expr(TypeParser(mapping_def.value_type).parse(), child_type_members)}] = {{"
+        f"{mapping_def.name}: dict[{python_type_expr(TypeParser(mapping_def.key_type).parse(), model_names)}, {python_type_expr(TypeParser(mapping_def.value_type).parse(), model_names)}] = {{"
     ]
     for key, value in mapping_def.entries.items():
         key_expr = mapping_key_literal(key, mapping_def.key_type, enum_members)
@@ -1066,7 +1064,7 @@ def render_module(
     module: ModuleDef,
     symbol_index: dict[str, str],
     enum_members: dict[str, set[str]],
-    child_type_members: dict[str, list[str]],
+    model_names: set[str],
 ) -> str:
     sections = [load_template("module_header.py")]
     imports = module_imports(module, symbol_index, enum_members)
@@ -1079,12 +1077,12 @@ def render_module(
     if module.maps:
         sections.append("### Mappings")
         sections.append(
-            "\n\n".join(render_mapping_block(mapping_def, enum_members, child_type_members) for mapping_def in module.maps)
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, model_names) for mapping_def in module.maps)
         )
     if module.models:
         sections.append("### Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, child_type_members) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, model_names) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip() + "\n"
 
@@ -1092,7 +1090,7 @@ def render_module(
 def render_common_schema_module(
     module: ModuleDef,
     enum_members: dict[str, set[str]],
-    child_type_members: dict[str, list[str]],
+    model_names: set[str],
 ) -> str:
     sections = []
     if module.enums:
@@ -1102,35 +1100,14 @@ def render_common_schema_module(
     if module.maps:
         sections.append("### Schema Mappings")
         sections.append(
-            "\n\n".join(render_mapping_block(mapping_def, enum_members, child_type_members) for mapping_def in module.maps)
+            "\n\n".join(render_mapping_block(mapping_def, enum_members, model_names) for mapping_def in module.maps)
         )
     if module.models:
         sections.append("### Schema Models")
         sections.append(
-            "\n\n".join(render_model_block(model_def, enum_members, child_type_members) for model_def in module.models)
+            "\n\n".join(render_model_block(model_def, enum_members, model_names) for model_def in module.models)
         )
     return "\n\n".join(section.rstrip() for section in sections if section).rstrip()
-
-
-def build_child_type_members(modules: list[ModuleDef]) -> dict[str, list[str]]:
-    models_by_name = {model_def.name: model_def for module in modules for model_def in module.models}
-    child_type_members: dict[str, list[str]] = {}
-
-    def collect_children(model_name: str, seen: set[str]) -> list[str]:
-        child_names: list[str] = []
-        for child_name in models_by_name[model_name].children:
-            if child_name in seen:
-                continue
-            seen.add(child_name)
-            child_names.append(child_name)
-            child_names.extend(collect_children(child_name, seen))
-        return child_names
-
-    for model_def in models_by_name.values():
-        child_names = collect_children(model_def.name, set())
-        if child_names:
-            child_type_members[model_def.name] = child_names
-    return child_type_members
 
 
 def module_dependency_graph(
@@ -1170,7 +1147,7 @@ def topo_sort_modules(modules: list[ModuleDef], graph: dict[str, set[str]]) -> l
 
 
 def render_init(module_names: list[str]) -> str:
-    lines = ["from .common import *"]
+    lines = ["from .common import *", "from .common import _validate_semantic_registry"]
     lines.extend(f"from .{name} import *" for name in module_names if name != "common")
     lines.extend(
         [
@@ -1179,6 +1156,8 @@ def render_init(module_names: list[str]) -> str:
             "    _model.model_rebuild(_types_namespace=globals())",
         ]
     )
+    lines.append("")
+    lines.append("_validate_semantic_registry()")
     lines.append("")
     lines.append('__all__ = [name for name in globals() if not name.startswith("_")]')
     return "\n".join(lines) + "\n"
@@ -1193,13 +1172,13 @@ def write_package(
     graph = module_dependency_graph(modules, symbol_index, enum_members)
     ordered_names = topo_sort_modules(modules, graph)
     module_map = {module.name: module for module in modules}
-    child_type_members = build_child_type_members(modules)
+    model_names = {model.name for module in modules for model in module.models}
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True)
     common_sections = [render_common_runtime().rstrip()]
     if "common" in module_map:
-        common_sections.append(render_common_schema_module(module_map["common"], enum_members, child_type_members))
+        common_sections.append(render_common_schema_module(module_map["common"], enum_members, model_names))
     (output_dir / "common.py").write_text("\n\n".join(section for section in common_sections if section).rstrip() + "\n")
 
     for module_name in ordered_names:
@@ -1207,7 +1186,7 @@ def write_package(
             continue
         module = module_map[module_name]
         (output_dir / f"{module_name}.py").write_text(
-            render_module(module, symbol_index, enum_members, child_type_members)
+            render_module(module, symbol_index, enum_members, model_names)
         )
 
     (output_dir / "__init__.py").write_text(render_init(ordered_names))

@@ -15,8 +15,10 @@ class ValidationStatus(IntEnum):
 
 class Validation(OCCIDModel):
     'Mutable state of evaluating a Condition, kept separate from the predicate itself'
-    __occid_model_id__: ClassVar[int] = 265
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    condition: Predicate | BooleanLogic
+    __occid_model_id__: ClassVar[int] = 283
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'State'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    condition: Semantic[Condition]
     status: ValidationStatus
-    updated_ts: Timestamp | None = None
+    updated_ts: Semantic[Timestamp] | None = None

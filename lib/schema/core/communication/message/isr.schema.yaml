@@ -8,7 +8,7 @@ tags:
 models:
   ObservationMessage:
     description: Message whose payload reports external objects, events, environment, or intelligence
-    semantic_role: type
+    semantic_role: concept
     parent: Message
     fields:
       observation: Observation

@@ -12,7 +12,7 @@ models:
     parent: Root
 
   ID:
-    semantic_role: type
+    semantic_role: concept
     parent: Struct
 
   IntID:
@@ -26,7 +26,7 @@ models:
     type: bytes[16]
 
   Vector:
-    semantic_role: type
+    semantic_role: concept
     parent: Struct
 
   Measurement:
@@ -62,7 +62,7 @@ models:
     parent: Struct
 
   Uncertainty:
-    semantic_role: type
+    semantic_role: concept
     parent: Struct
 
   Pose:
@@ -82,7 +82,7 @@ models:
     parent: Struct
 
   Time:
-    semantic_role: type
+    semantic_role: concept
     parent: Measurement
     fields:
       utime: int

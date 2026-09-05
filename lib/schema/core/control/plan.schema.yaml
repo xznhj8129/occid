@@ -49,7 +49,7 @@ enums:
 models:
   Plan:
     description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
-    semantic_role: type
+    semantic_role: concept
     parent: Control
 
     fields:

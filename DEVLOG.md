@@ -1,5 +1,16 @@
 # Development log
 
+## 2026-09-04 - Restore one semantic hierarchy and flat runtime
+
+- Removed the authored and derived `Type` semantic level. Authored models are now only `Concept` or `Representation`; Vocabulary remains the enum declaration kind.
+- Made `parent` the sole semantic membership edge: `parent` always means is-a and field inheritance. Authored `variants` and `children` are not part of the language.
+- Changed the compiler to emit every Concept and Representation nominally, preserve `parent`, derive direct `children`, flatten inherited fields, and keep named references exact instead of lowering Concepts into descendant unions.
+- Removed compiled `family` metadata. The complete parent graph now carries semantic ancestry without a lossy nearest-family projection.
+- Kept generated Python classes flat. Runtime `is_a()` follows the compiled parent registry rather than Python inheritance, and `Semantic[T]` permits semantically compatible flat descendants in model fields.
+- Preserved compact heterogeneous decoding through concrete model IDs and added semantic compatibility checks for nested values.
+- Structural consumer hashes ignore taxonomy-only `parent`/`children` metadata and contract-local model IDs; effective field changes still alter the relevant structural hashes.
+- Regenerated `occid.yaml`, Python projections, and contract markers and added regression coverage for direct children, flat runtime ancestry, nominal broad references, and descendant wire round-trips.
+
 ## 2026-08-17 - Protocol-neutral observation-state correction
 
 - Traced flat telemetry and endpoint-native state fields back to the pre-ontological HiveLink protocol, where MAVLink-derived flight mode, speed, heading, altitude, RSSI/SNR, network quality, and endpoint-shaped commands were carried directly in transport payloads.

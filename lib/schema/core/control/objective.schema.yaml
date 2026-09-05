@@ -17,7 +17,7 @@ models:
 
   Objective:
     description: Desired end state with intent, success rule, target, priority, and deadline
-    semantic_role: type
+    semantic_role: concept
     parent: Control
     fields:
       record: Record

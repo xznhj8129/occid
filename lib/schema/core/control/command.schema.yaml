@@ -60,7 +60,7 @@ models:
 
   StateChangeCommand:
     description: Change, enable, or disable one declared state property on the target
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: StateChangeOperation
@@ -69,7 +69,7 @@ models:
 
   ProcessControlCommand:
     description: Start, stop, pause, resume, or cancel a named process on the target
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: ProcessControlOperation
@@ -77,7 +77,7 @@ models:
 
   ConfigurationCommand:
     description: Set a configuration parameter or load a referenced configuration on the target
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: ConfigurationOperation
@@ -87,7 +87,7 @@ models:
 
   MotionCommand:
     description: Direct immediate target motion using a destination, path, or maintained spatial condition
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: MotionOperation
@@ -99,7 +99,7 @@ models:
 
   ResourceCommand:
     description: Acquire, release, allocate, or transfer a referenced resource
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: ResourceOperation
@@ -108,7 +108,7 @@ models:
 
   ExecutionCommand:
     description: Execute, abort, or reset a referenced plan, execution, or executable object
-    semantic_role: type
+    semantic_role: concept
     parent: Command
     fields:
       operation: ExecutionOperation

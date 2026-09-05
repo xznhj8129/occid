@@ -283,18 +283,22 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 173
+    __occid_model_id__: ClassVar[int] = 187
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     category: NATOUnitCategory | None = None
     label: builtins.str | None = None
     qty: builtins.int = 0
 
 class MilitaryOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 163
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Organization'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('FlyingOrg', 'OrbatOrg')
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -303,19 +307,21 @@ class MilitaryOrg(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     sidc: builtins.str | None = None
     category: NATOUnitCategory | None = None
-    link_loadout: list[ItemCount]
+    link_loadout: list[Semantic[ItemCount]]
 
 class FlyingOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 79
+    __occid_model_id__: ClassVar[int] = 88
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'MilitaryOrg'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -324,21 +330,23 @@ class FlyingOrg(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology | None = None
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
-    link_loadout: list[ItemCount]
+    link_loadout: list[Semantic[ItemCount]]
     op_domain: OperationalDomain = OperationalDomain.AIR
-    air_units: list[ItemCount]
+    air_units: list[Semantic[ItemCount]]
 
 class OrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 171
+    __occid_model_id__: ClassVar[int] = 185
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'MilitaryOrg'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('GroundOrbatOrg',)
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -347,32 +355,34 @@ class OrbatOrg(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology = OrgTopology.HIERARCHICAL
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
-    link_loadout: list[ItemCount]
+    link_loadout: list[Semantic[ItemCount]]
     org_layout: OrgLayout = OrgLayout.ORBAT
     size: OOBSize
     op_domain: OperationalDomain
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
-    tac_elements: list[OrgComposition]
-    sup_elements: list[OrgComposition]
-    tac_e_comp: list[ItemCount]
-    sup_e_comp: list[ItemCount]
-    personnel: list[ItemCount]
-    vehicles: list[ItemCount]
-    equipment: list[ItemCount]
+    links: dict[builtins.str, Semantic[Link]]
+    tac_elements: list[Semantic[OrgComposition]]
+    sup_elements: list[Semantic[OrgComposition]]
+    tac_e_comp: list[Semantic[ItemCount]]
+    sup_e_comp: list[Semantic[ItemCount]]
+    personnel: list[Semantic[ItemCount]]
+    vehicles: list[Semantic[ItemCount]]
+    equipment: list[Semantic[ItemCount]]
     spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 95
+    __occid_model_id__: ClassVar[int] = 104
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    capabilities: list[Capability] | None = None
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'OrbatOrg'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    capabilities: list[Semantic[Capability]] | None = None
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
@@ -381,26 +391,26 @@ class GroundOrbatOrg(OCCIDModel):
     org_rank: builtins.int
     org_type: OrgType | None = None
     topology: OrgTopology = OrgTopology.HIERARCHICAL
-    elements: list[UID]
-    roster: Roster
-    leases: list[AttachmentLease]
+    elements: list[Semantic[UID]]
+    roster: Semantic[Roster]
+    leases: list[Semantic[AttachmentLease]]
     sidc: builtins.str | None = None
     category: NATOUnitCategory
-    link_loadout: list[ItemCount]
+    link_loadout: list[Semantic[ItemCount]]
     org_layout: OrgLayout = OrgLayout.ORBAT
     size: OOBSize
     op_domain: OperationalDomain = OperationalDomain.LAND
     taskforce: builtins.bool | None = None
-    links: dict[builtins.str, SerializeAsAny[Link | Radio | FrequencyRange | ChannelSpec | RadioProfile | MilitaryRadioProfile]]
-    tac_elements: list[OrgComposition]
-    sup_elements: list[OrgComposition]
-    tac_e_comp: list[ItemCount]
-    sup_e_comp: list[ItemCount]
-    personnel: list[ItemCount]
-    vehicles: list[ItemCount]
-    equipment: list[ItemCount]
+    links: dict[builtins.str, Semantic[Link]]
+    tac_elements: list[Semantic[OrgComposition]]
+    sup_elements: list[Semantic[OrgComposition]]
+    tac_e_comp: list[Semantic[ItemCount]]
+    sup_e_comp: list[Semantic[ItemCount]]
+    personnel: list[Semantic[ItemCount]]
+    vehicles: list[Semantic[ItemCount]]
+    equipment: list[Semantic[ItemCount]]
     spacing: builtins.float = 0.0
     combat_domain: OperationalDomain
-    ammo: list[ItemCount]
-    weapons: list[ItemCount]
-    air_units: list[ItemCount]
+    ammo: list[Semantic[ItemCount]]
+    weapons: list[Semantic[ItemCount]]
+    air_units: list[Semantic[ItemCount]]

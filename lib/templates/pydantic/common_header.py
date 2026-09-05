@@ -7,7 +7,7 @@ from types import UnionType
 from enum import IntEnum as _StdIntEnum, IntEnum, IntFlag, auto, Enum
 from typing import Annotated, Any, ClassVar, Generic, Literal, TypeVar, Union, get_args, get_origin
 import msgpack
-from pydantic import BaseModel, ConfigDict, Field, RootModel, SerializeAsAny
+from pydantic import BaseModel, ConfigDict, Field, RootModel
 
 
 OCCIDVersion = tuple[int, int, int]

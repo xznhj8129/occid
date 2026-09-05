@@ -60,12 +60,12 @@ models:
     parent: Data
 
   Classification:
-    semantic_role: type
+    semantic_role: concept
     parent: Observation
 
   Track:
     description: Persistent maintained identity for one correlated observed object or phenomenon
-    semantic_role: type
+    semantic_role: concept
     parent: Observation
     fields:
       record: Record
@@ -73,12 +73,12 @@ models:
       id: IntID(Track)
 
   Assessment:
-    semantic_role: type
+    semantic_role: concept
     parent: Observation
 
   Detection:
     description: Assessment that something exists or occurred
-    semantic_role: type
+    semantic_role: concept
     parent: Observation
 
   VisionBox:

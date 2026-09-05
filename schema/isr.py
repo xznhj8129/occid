@@ -7,24 +7,28 @@ from .common import *
 
 class ObservationMessage(OCCIDModel):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 169
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    src: UID
-    dst: UID
-    ts: Timestamp
+    __occid_model_id__: ClassVar[int] = 183
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Message'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('ProtocolEventMessage',)
+    src: Semantic[UID]
+    dst: Semantic[UID]
+    ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    observation: Classification | Track | SerializeAsAny[Assessment | IsrResult] | IsrResult | SerializeAsAny[Detection | VisionBox | VisionDetection | VisionDetectionFrame] | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
+    observation: Semantic[Observation]
 
 class ProtocolEventMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 211
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    src: UID
-    dst: UID
-    ts: Timestamp
+    __occid_parent__: ClassVar[str | None] = 'ObservationMessage'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    src: Semantic[UID]
+    dst: Semantic[UID]
+    ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    observation: Classification | Track | SerializeAsAny[Assessment | IsrResult] | IsrResult | SerializeAsAny[Detection | VisionBox | VisionDetection | VisionDetectionFrame] | VisionBox | VisionDetection | VisionDetectionFrame | IsrObservation | TrackUpdate
+    observation: Semantic[Observation]
     event_ref: builtins.str
     event_type: builtins.str
     event_method: builtins.str | None = None
@@ -32,8 +36,8 @@ class ProtocolEventMessage(OCCIDModel):
     time_text: builtins.str | None = None
     start_text: builtins.str | None = None
     stale_text: builtins.str | None = None
-    position: GlobalPosition | None = None
-    uncertainty: LocationUncertainty | None = None
-    detail: ProtocolPayload | None = None
-    source_address: NetworkAddress | None = None
-    targets: list[UID]
+    position: Semantic[GlobalPosition] | None = None
+    uncertainty: Semantic[LocationUncertainty] | None = None
+    detail: Semantic[ProtocolPayload] | None = None
+    source_address: Semantic[NetworkAddress] | None = None
+    targets: list[Semantic[UID]]

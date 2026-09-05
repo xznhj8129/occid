@@ -29,7 +29,7 @@ class AtomicRepresentationIDLTests(unittest.TestCase):
         self.assertEqual(node.size, 16)
         self.assertEqual(collect_type_refs(node), set())
         self.assertEqual(
-            python_type_expr(node, {}),
+            python_type_expr(node, set()),
             "Annotated[bytes, Field(strict=True, min_length=16, max_length=16)]",
         )
 
@@ -56,7 +56,7 @@ class AtomicRepresentationIDLTests(unittest.TestCase):
         self.assertEqual(node.semantic_args, ["Entity"])
         self.assertEqual(collect_type_refs(node), {"IntID"})
         self.assertEqual(
-            python_type_expr(node, {}),
+            python_type_expr(node, set()),
             "Annotated[IntID, IDNamespace('Entity')]",
         )
 
@@ -70,7 +70,7 @@ class AtomicRepresentationIDLTests(unittest.TestCase):
     def test_named_representation_is_a_schema_reference_not_a_primitive(self) -> None:
         uid = TypeParser("UID").parse()
         self.assertEqual(collect_type_refs(uid), {"UID"})
-        self.assertEqual(python_type_expr(uid, {}), "UID")
+        self.assertEqual(python_type_expr(uid, {"UID"}), "Semantic[UID]")
         self.assertEqual(collect_type_refs(TypeParser("list[UID]").parse()), {"UID"})
 
     def test_type_and_fields_are_mutually_exclusive(self) -> None:
@@ -98,13 +98,13 @@ class AtomicRepresentationIDLTests(unittest.TestCase):
 
     def test_compiled_schema_preserves_atomic_shape(self) -> None:
         compiled = yaml.safe_load((Path(__file__).resolve().parents[1] / "occid.yaml").read_text())
-        uid = compiled["representations"]["UID"]
+        uid = compiled["models"]["UID"]
         self.assertEqual(uid["type"], "bytes[16]")
         self.assertNotIn("fields", uid)
-        self.assertEqual(compiled["representations"]["IntID"]["type"], "int")
-        self.assertEqual(compiled["representations"]["StringName"]["type"], "string")
-        self.assertEqual(compiled["types"]["Node"]["fields"]["id"], "IntID(Node)")
-        bootstrap = compiled["representations"]["IdentityBootstrap"]["fields"]
+        self.assertEqual(compiled["models"]["IntID"]["type"], "int")
+        self.assertEqual(compiled["models"]["StringName"]["type"], "string")
+        self.assertEqual(compiled["models"]["Node"]["fields"]["id"], "IntID(Node)")
+        bootstrap = compiled["models"]["IdentityBootstrap"]["fields"]
         self.assertEqual(bootstrap["node_id"], "IntID(Node)")
         self.assertEqual(bootstrap["entity_id"], "IntID(Entity)")
         self.assertEqual(bootstrap["organization_id"], "IntID(Organization)")

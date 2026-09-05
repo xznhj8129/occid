@@ -1,7 +1,13 @@
+from pydantic_core import core_schema
+
+
 ### Models
 
 OCCID_MODEL_BY_ID = {}
 OCCID_MODEL_ID_BY_CLASS = {}
+OCCID_MODEL_BY_NAME = {}
+OCCID_PARENT_BY_NAME = {}
+OCCID_CHILDREN_BY_NAME = {}
 _OCCIDValueT = TypeVar("_OCCIDValueT")
 
 
@@ -9,26 +15,156 @@ class IDNamespace(str):
     """Schema-defined namespace attached to an IntID type expression."""
 
 
+def _occid_model_name(value) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, type):
+        return value.__name__
+    return type(value).__name__
+
+
+def is_a(actual, expected) -> bool:
+    """Return whether ``actual`` is ``expected`` or a semantic descendant.
+
+    Semantic ancestry is the compiled OCCID parent graph. Python inheritance is
+    deliberately irrelevant: generated runtime classes remain flat.
+    """
+    current = _occid_model_name(actual)
+    target = _occid_model_name(expected)
+    if current not in OCCID_PARENT_BY_NAME or target not in OCCID_PARENT_BY_NAME:
+        return False
+
+    seen = set()
+    while current is not None:
+        if current == target:
+            return True
+        if current in seen:
+            raise RuntimeError(f"OCCID semantic parent cycle involving {current}")
+        seen.add(current)
+        current = OCCID_PARENT_BY_NAME.get(current)
+    return False
+
+
+def children_of(model) -> tuple[str, ...]:
+    """Return direct semantic children derived by the compiler from ``parent``."""
+    return OCCID_CHILDREN_BY_NAME.get(_occid_model_name(model), ())
+
+
+class SemanticReference:
+    """Pydantic metadata for one nominal OCCID semantic reference.
+
+    JSON/dict validation keeps the declared model's stable schema. Python values
+    may additionally be any already-materialized flat OCCID model satisfying the
+    semantic parent graph. Compact-wire decoding uses the concrete model ID and
+    performs the same semantic check before constructing the nested value.
+    """
+
+    def __init__(self, expected: str):
+        self.expected = expected
+
+    def __repr__(self) -> str:
+        return f"SemanticReference({self.expected!r})"
+
+    def __get_pydantic_core_schema__(self, source_type, handler):
+        base_schema = handler(source_type)
+
+        def validate(value):
+            if not isinstance(value, (OCCIDModel, OCCIDValue)) or not is_a(value, self.expected):
+                actual = _occid_model_name(value)
+                raise ValueError(f"{actual} is not semantically compatible with {self.expected}")
+            return value
+
+        def serialize(value, info):
+            return value.model_dump(mode=info.mode, serialize_as_any=True)
+
+        python_schema = core_schema.union_schema(
+            [
+                core_schema.is_instance_schema(OCCIDModel),
+                core_schema.is_instance_schema(OCCIDValue),
+                base_schema,
+            ],
+            mode="left_to_right",
+        )
+        return core_schema.no_info_after_validator_function(
+            validate,
+            core_schema.json_or_python_schema(
+                json_schema=base_schema,
+                python_schema=python_schema,
+            ),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                serialize,
+                info_arg=True,
+            ),
+        )
+
+
+class Semantic:
+    """Stable runtime annotation for a nominal OCCID semantic model reference."""
+
+    def __class_getitem__(cls, expected):
+        if not isinstance(expected, type):
+            raise TypeError("Semantic[...] expects an OCCID model class")
+        return Annotated[expected, SemanticReference(expected.__name__)]
+
+
+def _register_occid_model(cls) -> None:
+    model_id = getattr(cls, "__occid_model_id__", None)
+    if model_id is None:
+        return
+    name = cls.__name__
+    OCCID_MODEL_BY_ID[model_id] = cls
+    OCCID_MODEL_ID_BY_CLASS[cls] = model_id
+    OCCID_MODEL_BY_NAME[name] = cls
+    OCCID_PARENT_BY_NAME[name] = getattr(cls, "__occid_parent__", None)
+    OCCID_CHILDREN_BY_NAME[name] = tuple(getattr(cls, "__occid_children__", ()))
+
+
+def _validate_semantic_registry() -> None:
+    """Assert that compiled children are exactly the reverse parent index."""
+    expected = {name: [] for name in OCCID_PARENT_BY_NAME}
+    for child, parent in OCCID_PARENT_BY_NAME.items():
+        if parent is None:
+            continue
+        if parent not in expected:
+            raise RuntimeError(f"unknown OCCID semantic parent {parent!r} for {child}")
+        expected[parent].append(child)
+
+    for parent, children in expected.items():
+        actual = list(OCCID_CHILDREN_BY_NAME.get(parent, ()))
+        if set(actual) != set(children):
+            raise RuntimeError(
+                f"compiled OCCID children disagree with parent edges for {parent}: "
+                f"expected {children}, got {actual}"
+            )
+
+
+def _semantic_reference(metadata) -> SemanticReference | None:
+    for item in metadata or ():
+        if isinstance(item, SemanticReference):
+            return item
+    return None
+
+
 class OCCIDModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
     __occid_model_id__: ClassVar[int | None] = None
     __occid_semantic_role__: ClassVar[str | None] = None
+    __occid_parent__: ClassVar[str | None] = None
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         if "__occid_semantic_role__" not in cls.__dict__:
             cls.__occid_semantic_role__ = None
-        model_id = getattr(cls, "__occid_model_id__", None)
-        if model_id is not None:
-            OCCID_MODEL_BY_ID[model_id] = cls
-            OCCID_MODEL_ID_BY_CLASS[cls] = model_id
+        _register_occid_model(cls)
 
     def encode(self) -> bytes:
         """Encode one OCCID model into the compact binary wire form.
 
         Wire shape: [model_id, {field_ordinal: value, ...}]. Field names and
         model names never appear on the compact wire. Atomic values use their
-        declared underlying representation when the field type is exact.
+        declared underlying representation when the concrete model is exactly
+        the field's declared semantic model.
         """
         envelope = [
             OCCID_MODEL_ID_BY_CLASS[type(self)],
@@ -55,33 +191,52 @@ class OCCIDModel(BaseModel):
             if type(field_id) is not int or field_id < 0 or field_id >= len(field_names):
                 raise ValueError(f"invalid field ordinal {field_id!r} for {cls.__name__}")
             field_name = field_names[field_id]
+            field_info = cls.model_fields[field_name]
             values[field_name] = cls._wire_to_value(
-                cls.model_fields[field_name].annotation,
+                field_info.annotation,
                 raw_value,
+                field_info.metadata,
             )
         return cls(**values)
 
     @classmethod
-    def _wire_to_value(cls, annotation, data):
+    def _wire_to_semantic(cls, expected: str, data):
+        if type(data) is list and len(data) == 2 and type(data[0]) is int:
+            model_id, model_payload = data
+            model_cls = OCCID_MODEL_BY_ID.get(model_id)
+            if model_cls is None:
+                raise ValueError(f"unknown OCCID model ID {model_id}")
+            if not is_a(model_cls, expected):
+                raise ValueError(
+                    f"model ID {model_id} ({model_cls.__name__}) is not semantically compatible with {expected}"
+                )
+            if issubclass(model_cls, OCCIDValue):
+                return model_cls._from_wire_value(model_payload)
+            return model_cls._from_wire_fields(model_payload)
+
+        expected_cls = OCCID_MODEL_BY_NAME.get(expected)
+        if expected_cls is None:
+            raise ValueError(f"unknown OCCID semantic model {expected}")
+        if issubclass(expected_cls, OCCIDValue):
+            return expected_cls._from_wire_value(data)
+        raise ValueError(f"nested semantic {expected} model must be [model_id, fields]")
+
+    @classmethod
+    def _wire_to_value(cls, annotation, data, metadata=()):
         if data is None:
             return None
+
+        semantic = _semantic_reference(metadata)
+        if semantic is not None:
+            return cls._wire_to_semantic(semantic.expected, data)
 
         origin = get_origin(annotation)
         args = get_args(annotation)
 
         if origin is Annotated:
-            return cls._wire_to_value(args[0], data)
+            return cls._wire_to_value(args[0], data, args[1:])
 
         if origin in (Union, UnionType):
-            if type(data) is list and len(data) == 2 and type(data[0]) is int:
-                model_cls = OCCID_MODEL_BY_ID.get(data[0])
-                if model_cls is not None and issubclass(model_cls, OCCIDValue):
-                    for arg in args:
-                        try:
-                            if arg is not type(None) and issubclass(model_cls, arg):
-                                return model_cls._from_wire_value(data[1])
-                        except TypeError:
-                            continue
             last_error = None
             for arg in args:
                 if arg is type(None):
@@ -118,9 +273,9 @@ class OCCIDModel(BaseModel):
                     model_cls = OCCID_MODEL_BY_ID.get(model_id)
                     if model_cls is None:
                         raise ValueError(f"unknown OCCID model ID {model_id}")
-                    if not issubclass(model_cls, annotation):
+                    if model_cls is not annotation:
                         raise ValueError(
-                            f"model ID {model_id} is not compatible with {annotation.__name__}"
+                            f"model ID {model_id} does not identify {annotation.__name__}"
                         )
                     return model_cls._from_wire_value(raw_value)
                 return annotation._from_wire_value(data)
@@ -135,9 +290,9 @@ class OCCIDModel(BaseModel):
                 model_cls = OCCID_MODEL_BY_ID.get(model_id)
                 if model_cls is None:
                     raise ValueError(f"unknown OCCID model ID {model_id}")
-                if not issubclass(model_cls, annotation):
+                if model_cls is not annotation:
                     raise ValueError(
-                        f"model ID {model_id} is not compatible with {annotation.__name__}"
+                        f"model ID {model_id} does not identify {annotation.__name__}"
                     )
                 return model_cls._from_wire_fields(fields)
         except TypeError:
@@ -158,13 +313,31 @@ class OCCIDModel(BaseModel):
         return data
 
     @classmethod
-    def _wire_value(cls, value, annotation=None):
+    def _wire_value(cls, value, annotation=None, metadata=()):
+        semantic = _semantic_reference(metadata)
+        if semantic is not None:
+            if not is_a(value, semantic.expected):
+                raise ValueError(
+                    f"{_occid_model_name(value)} is not semantically compatible with {semantic.expected}"
+                )
+            if isinstance(value, OCCIDValue):
+                root_annotation = type(value).model_fields["root"].annotation
+                if type(value).__name__ == semantic.expected:
+                    return cls._wire_value(value.root, root_annotation)
+                return [
+                    OCCID_MODEL_ID_BY_CLASS[type(value)],
+                    cls._wire_value(value.root, root_annotation),
+                ]
+            if isinstance(value, OCCIDModel):
+                return [
+                    OCCID_MODEL_ID_BY_CLASS[type(value)],
+                    cls._wire_model_fields(value),
+                ]
+
         origin = get_origin(annotation)
         args = get_args(annotation)
         if origin is Annotated:
-            annotation = args[0]
-            origin = get_origin(annotation)
-            args = get_args(annotation)
+            return cls._wire_value(value, args[0], args[1:])
 
         if isinstance(value, OCCIDValue):
             root_annotation = type(value).model_fields["root"].annotation
@@ -199,20 +372,18 @@ class OCCIDModel(BaseModel):
 
     @classmethod
     def _wire_model_fields(cls, value):
-        """Encode explicitly present fields by numeric ordinal.
-
-        The ordinal is the field's index in the effective generated model field
-        order for this OCCID contract. Optional/default fields not explicitly
-        present are omitted. Peers are expected to share the same OCCID contract.
-        """
-        return {
-            field_id: cls._wire_value(
+        """Encode explicitly present fields by numeric ordinal."""
+        result = {}
+        for field_id, field_name in enumerate(type(value).model_fields):
+            if field_name not in value.model_fields_set:
+                continue
+            field_info = type(value).model_fields[field_name]
+            result[field_id] = cls._wire_value(
                 getattr(value, field_name),
-                type(value).model_fields[field_name].annotation,
+                field_info.annotation,
+                field_info.metadata,
             )
-            for field_id, field_name in enumerate(type(value).model_fields)
-            if field_name in value.model_fields_set
-        }
+        return result
 
 
 class OCCIDValue(RootModel[_OCCIDValueT], Generic[_OCCIDValueT]):
@@ -220,15 +391,14 @@ class OCCIDValue(RootModel[_OCCIDValueT], Generic[_OCCIDValueT]):
 
     __occid_model_id__: ClassVar[int | None] = None
     __occid_semantic_role__: ClassVar[str | None] = None
+    __occid_parent__: ClassVar[str | None] = None
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
 
     def __init_subclass__(cls, **kwargs):
         super().__init_subclass__(**kwargs)
         if "__occid_semantic_role__" not in cls.__dict__:
             cls.__occid_semantic_role__ = None
-        model_id = getattr(cls, "__occid_model_id__", None)
-        if model_id is not None:
-            OCCID_MODEL_BY_ID[model_id] = cls
-            OCCID_MODEL_ID_BY_CLASS[cls] = model_id
+        _register_occid_model(cls)
 
     def encode(self) -> bytes:
         root_annotation = type(self).model_fields["root"].annotation
@@ -248,8 +418,8 @@ class OCCIDValue(RootModel[_OCCIDValueT], Generic[_OCCIDValueT]):
 
     @classmethod
     def _from_wire_value(cls, data):
-        annotation = cls.model_fields["root"].annotation
-        value = OCCIDModel._wire_to_value(annotation, data)
+        field_info = cls.model_fields["root"]
+        value = OCCIDModel._wire_to_value(field_info.annotation, data, field_info.metadata)
         return cls(root=value)
 
 

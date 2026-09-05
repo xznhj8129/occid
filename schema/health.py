@@ -55,59 +55,73 @@ class MaintenanceState(IntEnum):
 
 class Health(OCCIDModel):
     'Integrity, damage, faults, and readiness state'
-    __occid_model_id__: ClassVar[int] = 99
-    __occid_semantic_role__: ClassVar[str] = 'type'
-
-class LinkState(OCCIDModel):
-    'Time-varying condition and observed quality of a communication link'
-    __occid_model_id__: ClassVar[int] = 124
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    link_uid: UID | None = None
-    condition: LinkCondition | None = None
-    connection_status: ConnectionStatus | None = None
-    signal: SignalQuality | None = None
-    delivery: DeliveryQuality | None = None
-    counters: LinkCounters | None = None
+    __occid_model_id__: ClassVar[int] = 108
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'State'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('HealthAlert', 'LinkState', 'SubsystemHealth', 'HealthSnapshot', 'MaintenanceStatus', 'NavReadinessState')
 
 class HealthAlert(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 100
+    __occid_model_id__: ClassVar[int] = 109
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     alert_ref: builtins.str | None = None
     level: AlertLevel
     condition: builtins.str
     acknowledged: builtins.bool = False
 
+class LinkState(OCCIDModel):
+    'Time-varying condition and observed quality of a communication link'
+    __occid_model_id__: ClassVar[int] = 134
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('MeshLink',)
+    link_uid: Semantic[UID] | None = None
+    condition: LinkCondition | None = None
+    connection_status: ConnectionStatus | None = None
+    signal: Semantic[SignalQuality] | None = None
+    delivery: Semantic[DeliveryQuality] | None = None
+    counters: Semantic[LinkCounters] | None = None
+
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 251
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     subsystem_ref: builtins.str
     state: HealthStatus
     fault_count: builtins.int = 0
     note: builtins.str | None = None
 
 class HealthSnapshot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 101
+    __occid_model_id__: ClassVar[int] = 110
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     overall_state: HealthStatus
     link_state: LinkCondition | None = None
     power_state: ResourceStatus | None = None
     temp_state: ResourceStatus | None = None
     fault_count: builtins.int = 0
-    updated_ts: Timestamp | None = None
-    subsystems: list[SubsystemHealth]
-    alerts: list[HealthAlert]
+    updated_ts: Semantic[Timestamp] | None = None
+    subsystems: list[Semantic[SubsystemHealth]]
+    alerts: list[Semantic[HealthAlert]]
 
 class MaintenanceStatus(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 134
+    __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     state: MaintenanceState
-    last_service_ts: Timestamp | None = None
-    next_service_ts: Timestamp | None = None
+    last_service_ts: Semantic[Timestamp] | None = None
+    next_service_ts: Semantic[Timestamp] | None = None
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 161
+    __occid_model_id__: ClassVar[int] = 173
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Health'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     gyro_ok: builtins.bool | None = None
     accel_ok: builtins.bool | None = None
     mag_ok: builtins.bool | None = None

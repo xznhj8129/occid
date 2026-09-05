@@ -53,7 +53,7 @@ models:
 
   Payload:
     description: Object-carried sensor, effector, cargo, or other mounted payload
-    semantic_role: type
+    semantic_role: concept
     parent: Item
 
   SensorPayload:

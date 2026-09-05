@@ -62,17 +62,19 @@ class TaskStatus(IntEnum):
 
 class Task(OCCIDModel):
     'Directed work that must be accomplished in support of an optional objective'
-    __occid_model_id__: ClassVar[int] = 244
-    __occid_semantic_role__: ClassVar[str] = 'type'
-    record: Record
-    uid: UID
+    __occid_model_id__: ClassVar[int] = 262
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Directive'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('TaskManeuver', 'TaskEffect', 'TaskInformation', 'TaskTransport')
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
-    target_uids: list[UID]
-    location_uids: list[UID]
-    objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[Predicate | BooleanLogic] | None = None
+    target_uids: list[Semantic[UID]]
+    location_uids: list[Semantic[UID]]
+    objective_uid: Semantic[UID] | None = None
+    constraints: list[Semantic[Constraint]]
+    preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
@@ -81,17 +83,19 @@ class Task(OCCIDModel):
 
 class TaskManeuver(OCCIDModel):
     'Practical Task schema for desired movement, position, or spatial persistence'
-    __occid_model_id__: ClassVar[int] = 248
+    __occid_model_id__: ClassVar[int] = 266
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Task'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
-    target_uids: list[UID]
-    location_uids: list[UID]
-    objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[Predicate | BooleanLogic] | None = None
+    target_uids: list[Semantic[UID]]
+    location_uids: list[Semantic[UID]]
+    objective_uid: Semantic[UID] | None = None
+    constraints: list[Semantic[Constraint]]
+    preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
@@ -101,17 +105,19 @@ class TaskManeuver(OCCIDModel):
 
 class TaskEffect(OCCIDModel):
     'Practical Task schema for desired creation, removal, modification, restoration, protection, or denial'
-    __occid_model_id__: ClassVar[int] = 246
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Task'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
-    target_uids: list[UID]
-    location_uids: list[UID]
-    objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[Predicate | BooleanLogic] | None = None
+    target_uids: list[Semantic[UID]]
+    location_uids: list[Semantic[UID]]
+    objective_uid: Semantic[UID] | None = None
+    constraints: list[Semantic[Constraint]]
+    preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
@@ -121,17 +127,19 @@ class TaskEffect(OCCIDModel):
 
 class TaskInformation(OCCIDModel):
     'Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring'
-    __occid_model_id__: ClassVar[int] = 247
+    __occid_model_id__: ClassVar[int] = 265
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Task'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
-    target_uids: list[UID]
-    location_uids: list[UID]
-    objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[Predicate | BooleanLogic] | None = None
+    target_uids: list[Semantic[UID]]
+    location_uids: list[Semantic[UID]]
+    objective_uid: Semantic[UID] | None = None
+    constraints: list[Semantic[Constraint]]
+    preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE
@@ -141,17 +149,19 @@ class TaskInformation(OCCIDModel):
 
 class TaskTransport(OCCIDModel):
     'Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets'
-    __occid_model_id__: ClassVar[int] = 250
+    __occid_model_id__: ClassVar[int] = 268
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    record: Record
-    uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Task'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
-    target_uids: list[UID]
-    location_uids: list[UID]
-    objective_uid: UID | None = None
-    constraints: list[SerializeAsAny[Constraint | Restriction | Limitation | TaskTimeWindow | WeatherLimits]]
-    preconditions: list[Predicate | BooleanLogic] | None = None
+    target_uids: list[Semantic[UID]]
+    location_uids: list[Semantic[UID]]
+    objective_uid: Semantic[UID] | None = None
+    constraints: list[Semantic[Constraint]]
+    preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None
     priority: TaskPriority = TaskPriority.ROUTINE

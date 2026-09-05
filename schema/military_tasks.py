@@ -15,19 +15,23 @@ class TaskCombat(IntEnum):
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 172
     __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     munition_type: builtins.str
     qty: builtins.int = 0
 
 class CombatTaskProfile(OCCIDModel):
     'Military domain detail associated with a generic Task without creating a Task subtype'
-    __occid_model_id__: ClassVar[int] = 33
+    __occid_model_id__: ClassVar[int] = 34
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    task_uid: UID
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    task_uid: Semantic[UID]
     combat_task: TaskCombat | None = None
     target_category: TargetCategory | None = None
-    target_point: GlobalPosition | None = None
-    munitions: list[MunitionAllocation]
+    target_point: Semantic[GlobalPosition] | None = None
+    munitions: list[Semantic[MunitionAllocation]]
     effect: builtins.str | None = None
     desired_bda: builtins.bool = False

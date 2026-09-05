@@ -20,7 +20,7 @@ enums:
 models:
   Network:
     description: Connectivity topology and routing state
-    semantic_role: type
+    semantic_role: concept
     parent: Communication
 
   NetworkAddress:

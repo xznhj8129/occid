@@ -18,7 +18,7 @@ enums:
 models:
   Assignment:
     description: Deliberate binding of an assignee to a subject under stated authority and constraints
-    semantic_role: type
+    semantic_role: concept
     parent: Control
     fields:
       record: Record

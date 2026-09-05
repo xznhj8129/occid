@@ -29,19 +29,19 @@ TARGET_UID = bytes.fromhex("a55c2fe08e0642f3a50f1324cc1f9266")
 
 
 class ApexPrimitiveTests(unittest.TestCase):
-    def test_capability_is_a_runtime_type_and_payload_representation(self) -> None:
-        self.assertEqual(Capability.__occid_semantic_role__, "type")
-        self.assertEqual(Payload.__occid_semantic_role__, "representation")
-        self.assertNotIn("Object", occid.__all__)
-        self.assertNotIn("Property", occid.__all__)
+    def test_capability_and_payload_are_semantic_concepts(self) -> None:
+        self.assertEqual(Capability.__occid_semantic_role__, "concept")
+        self.assertEqual(Payload.__occid_semantic_role__, "concept")
+        self.assertIn("Object", occid.__all__)
+        self.assertIn("Property", occid.__all__)
         self.assertIn("capabilities", Payload.model_fields)
         payload = Payload(capabilities=[Capability()])
         self.assertEqual(Payload.decode(payload.encode()), payload)
 
     def test_condition_logic_compiles_into_constraint_without_runtime_ontology(self) -> None:
         for concept in ("Condition", "Data", "State"):
-            self.assertNotIn(concept, occid.__all__)
-        self.assertEqual(Health.__occid_semantic_role__, "type")
+            self.assertIn(concept, occid.__all__)
+        self.assertEqual(Health.__occid_semantic_role__, "concept")
         predicate = Predicate(subject_ref=PAYLOAD_UID_1)
         condition = BooleanLogic(operator=BooleanOperator.NOT, terms=[predicate])
         constraint = Constraint(condition=condition)
@@ -93,17 +93,17 @@ class ApexPrimitiveTests(unittest.TestCase):
             distance_m=25.0,
             label="target",
         )
-        self.assertEqual(Activation.__occid_semantic_role__, "type")
-        self.assertEqual(Cue.__occid_semantic_role__, "type")
+        self.assertEqual(Activation.__occid_semantic_role__, "concept")
+        self.assertEqual(Cue.__occid_semantic_role__, "concept")
         self.assertIsNone(cue.bearing_rad)
         self.assertIsNone(cue.elevation_rad)
         self.assertEqual(Activation.decode(activation.encode()), activation)
         self.assertEqual(Cue.decode(cue.encode()), cue)
 
     def test_gnc_representation_is_flat(self) -> None:
-        self.assertEqual(GNC.__occid_semantic_role__, "type")
+        self.assertEqual(GNC.__occid_semantic_role__, "concept")
         self.assertEqual(FlightControlState.__occid_semantic_role__, "representation")
-        self.assertEqual(Cue.__occid_semantic_role__, "type")
+        self.assertEqual(Cue.__occid_semantic_role__, "concept")
         self.assertNotIn("Guidance", occid.__all__)
         self.assertNotIn("OCCID_SCHEMA_VERSION", occid.__all__)
 
