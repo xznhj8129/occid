@@ -102,6 +102,10 @@ another external representation
 
 OCCID is under active development. The exact model will continue to change as real integrations expose better abstractions.
 
+For lossless named JSON at human, API, and persistence boundaries, use
+`occid.named`. See [the development guide](docs/development.md#lossless-named-boundary-codec)
+for UID, nested semantic-reference, enum, and atomic-value handling.
+
 ## Example
 
 [`example_usage.py`](example_usage.py) shows the basic idea with actual protocol-shaped input.

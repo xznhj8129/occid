@@ -309,6 +309,31 @@ The schema language is documented in [`../idl_spec.md`](../idl_spec.md).
 
 ## Development rule
 
+### Lossless named boundary codec
+
+`occid.named` supplies the shared human/API/persistence boundary codec. Use
+`to_data` / `from_data` for JSON-compatible Python values and `dumps` / `loads`
+for JSON text. `Named[T]` integrates the same validation with Pydantic request
+models. It is separate from the compact-wire codec.
+
+```python
+from occid import UID
+from occid.named import dumps, loads
+
+value = UID(bytes.fromhex("0180ff102030405060708090a0b0c0d0"))
+assert loads(dumps(value)) == value
+```
+
+Models carry concrete names, and enums carry symbolic names. Nested semantic
+references retain their concrete model. Atomic UID values use 32 lowercase hex
+digits. Tagged forms preserve large integers, arbitrary bytes, tuples, unusual
+map keys, and otherwise JSONB-incompatible text. Only explicitly set model
+fields are serialized, preserving omitted versus explicitly null fields.
+Malformed values, unknown symbols, and non-finite numbers raise `CodecError`.
+
+Durable callers must not replace these names with compact-wire numeric model
+IDs. The codec does not select database collections or application operations.
+
 OCCID should grow from demonstrated semantic requirements.
 
 Do not add foreign protocol structure to the shared model only to make an adapter easier.
