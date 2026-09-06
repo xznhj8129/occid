@@ -6,6 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import yaml
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
@@ -16,6 +18,7 @@ class SchemaGenerationTests(unittest.TestCase):
             tmp = Path(tmpdir)
             compiled = tmp / "occid.yaml"
             output_dir = tmp / "schema"
+            ontology = tmp / "ontology.yaml"
 
             subprocess.run(
                 [sys.executable, "compile_occid.py", "--output", str(compiled)],
@@ -34,12 +37,19 @@ class SchemaGenerationTests(unittest.TestCase):
                     str(compiled),
                     "--output-dir",
                     str(output_dir),
+                    "--ontology-output",
+                    str(ontology),
                 ],
                 cwd=REPO_ROOT,
                 check=True,
                 capture_output=True,
                 text=True,
             )
+
+            ontology_text = ontology.read_text()
+            self.assertTrue(ontology_text.endswith("\n\n"))
+            self.assertIsInstance(yaml.safe_load(ontology_text), dict)
+            self.assertEqual(ontology_text, (REPO_ROOT / "ontology.yaml").read_text())
 
             checked_in = REPO_ROOT / "schema"
             generated_files = sorted(path.name for path in output_dir.glob("*.py"))
