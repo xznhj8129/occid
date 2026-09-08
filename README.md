@@ -1,248 +1,114 @@
-# OCCID
+# OCCID TypeScript binding generator
 
-**Open Command, Control, Intelligence Data**
+Drop `generate_typescript.py` in the OCCID repository root beside
+`generate_pydantic.py`.
 
-OCCID is a shared semantic model for operational systems.
+It consumes the compiled `occid.yaml`, so Python and TypeScript are sibling
+bindings of the same OCCID contract.
 
-It gives different software, devices, protocols, and organizations a common way to describe the same operational world.
-
-It provides shared meaning for what operational systems can know, observe, communicate, request, command, and report.
-
-A vehicle can use MAVLink. A tactical application can use Cursor-on-Target. Another system can use MSP, a database schema, or its own API.
-
-OCCID lets those systems exchange meaning without making one external vocabulary the center of the whole system.
-
-```text
-     external systems and protocols
-
-  CoT / TAK   MAVLink   MSP   APIs   sensors   other data
-      \          |       |      |       |          /
-       \         |       |      |       |         /
-        +--------+-------+------+-------+--------+
-                         |
-                         v
-                       OCCID
-                         |
-             shared operational meaning
-                         |
-            +------------+------------+
-            |            |            |
-            v            v            v
-          humans       software      machines
-```
-
-## Why
-
-Different operational domains often share the same structural bones.
-
-Things have identity. Their state changes. Intent can be expressed. Information can be observed and exchanged. Relationships connect these facts into an operational picture.
-
-The domain vocabulary can differ while the underlying meaning overlaps.
-
-Interoperability is therefore not only a field-conversion problem.
-
-The same numbers can have different meaning.
-
-A position can describe:
-
-- where a vehicle is;
-- where an observation occurred;
-- where something should move;
-- a route point;
-- an area reference.
-
-Different systems can also use very different structures for the same underlying idea.
-
-OCCID therefore treats interoperability as a semantic problem first.
-
-```text
-external representation
-        |
-        v
-operational meaning
-        |
-        v
-external representation
-```
-
-The goal is simple:
-
-> Different systems should be able to talk about the same operational reality without first becoming the same system.
-
-## How it works
-
-At a system boundary, protocol data is parsed in its native form.
-
-Useful protocol-independent meaning is then mapped into OCCID.
-
-Application logic can work with that semantic model.
-
-When data must leave through another boundary, the relevant OCCID meaning can be mapped into the destination representation.
-
-```text
-foreign data
-    |
-    v
-parser / adapter
-    |
-    v
-semantic mapping
-    |
-    v
-  OCCID
-    |
-    +-----------> application logic
-    |
-    v
-semantic mapping
-    |
-    v
-another external representation
-```
-
-OCCID is under active development. The exact model will continue to change as real integrations expose better abstractions.
-
-For lossless named JSON at human, API, and persistence boundaries, use
-`occid.named`. See [the development guide](docs/development.md#lossless-named-boundary-codec)
-for UID, nested semantic-reference, enum, and atomic-value handling.
-
-## Example
-
-[`example_usage.py`](example_usage.py) shows the basic idea with actual protocol-shaped input.
-
-It starts with:
-
-- a hardcoded Cursor-on-Target XML event;
-- a hardcoded MAVLink v2 `GLOBAL_POSITION_INT` frame.
-
-The example parsers decode both inputs.
-
-The CoT contact becomes an OCCID observation.
-
-The MAVLink telemetry becomes OCCID state for a vehicle.
-
-The example then uses those records in a small control flow and maps an OCCID movement operation toward a MAVSDK `goto_location` call.
-
-```text
-CoT XML
-   |
-   v
-contact observation ----+
-                        |
-                        +----> OCCID operational model
-                        |
-MAVLink telemetry ------+
-   |
-   v
-vehicle state
-
-        |
-        v
-
-intent / work / responsibility / execution
-
-        |
-        v
-
-vehicle operation
-```
-
-Run it with:
+## Generate
 
 ```bash
-python example_usage.py
+python generate_typescript.py
 ```
 
-The parsers in the example are intentionally small. They demonstrate the boundary. They are not complete CoT or MAVLink implementations.
+Default output:
 
-## What OCCID models
+```text
+typescript/occid.ts
+```
 
-OCCID currently contains structures for operational concepts such as:
-
-- identity and objects;
-- changing state;
-- position and motion;
-- observations and information;
-- intent and directed work;
-- authority and responsibility;
-- execution and status;
-- relationships between operational records.
-
-These structures are not assumed to be the final decomposition.
-
-They are the current engineering model.
-
-The stable goal is the shared semantic layer.
-
-## Deep Ontology
-
-OCCID grew from a larger interoperability problem.
-
-Attempts to merge operational vocabularies directly produced duplicated concepts, mixed abstraction levels, and expanding taxonomies.
-
-That led to the **Deep Ontology** research direction: investigate how much of those vocabularies can be explained by smaller reusable semantic structures and legality rules.
-
-OCCID is the practical engineering side of that work.
-
-The deeper research does not need to be complete before OCCID can be useful. Real OCCID integrations also provide evidence about which abstractions work and which do not.
-
-## Current implementation
-
-This repository currently includes:
-
-- authored Concept / Representation schemas and Vocabulary;
-- record-shaped and atomic Representations (`fields:` or model-level `type:`);
-- a compiler that resolves them into one flat `occid.yaml` model table with preserved semantic roles;
-- generated Python models produced only from `occid.yaml`;
-- compact serialization and validation;
-- interoperability helpers;
-- structural consumer-contract tooling;
-- examples and tests.
-
-The current package version is stored in [`VERSION`](VERSION).
-
-Install the package locally with:
+Optional paths:
 
 ```bash
-python -m pip install -e .
+python generate_typescript.py \
+  --input occid.yaml \
+  --output typescript/occid.ts \
+  --version-file VERSION \
+  --contract occid-contract.json
 ```
 
-Import models from the canonical package namespace:
+## Recommended generate.py order
+
+Generate the contract marker before TypeScript so the emitted TypeScript
+metadata contains the current global contract hash:
 
 ```python
-from occid import EntityState, IsrObservation, TaskInformation
+run("compile_occid.py")
+run("generate_pydantic.py")
+
+from occid.contract import write_occid_marker
+write_occid_marker(REPO_ROOT)
+
+run("generate_typescript.py")
 ```
 
-## Repository structure
+## Runtime shape
 
-```text
-lib/schema/             authoritative authored semantic schemas
-compile_occid.py         compile Concept/Representation/Vocabulary to flat runtime schema
-occid.yaml               generated flat runtime schema
-generate_pydantic.py     generate record and atomic Python projections from occid.yaml
-schema/                  generated Python runtime models
-occid/                  canonical Python package namespace and tooling
-interop/                interoperability mappings
-tests/                  tests and regression coverage
-example_usage.py        end-to-end interoperability example
-idl_spec.md             schema language reference
-docs/                   developer and implementation documentation
+Materialized record:
+
+```ts
+const point = createModel("GlobalPosition", {
+  lat: 45.0,
+  lon: -73.0,
+  alt: 100,
+  alt_frame: AltitudeDatum.SEA_LEVEL,
+});
+
+point.lat;
+point.$model; // "GlobalPosition"
 ```
 
-For schema generation, serialization, model IDs, consumer contracts, and current adapter rules, see [`docs/development.md`](docs/development.md).
+Atomic value:
 
-## Status
+```ts
+const uid = createModel("UID", new Uint8Array(16));
+uid.value;
+```
 
-OCCID is experimental and under active development.
+Named JSON:
 
-Its purpose is stable:
+```ts
+const data = toData(point);
+const restored = fromData(data);
+const json = dumps(point);
+const restored2 = loads(json);
+```
 
-> provide a shared semantic foundation for heterogeneous operational systems.
+Semantic runtime checks:
 
-The exact structures used to achieve that purpose can evolve as the project is tested against more systems.
+```ts
+isA(point, "GeoPos");
+childrenOf("Task");
+```
 
-## License
+The generated semantic type aliases are derived from the OCCID parent graph.
+No frontend-maintained Task/Entity/Plan descendant unions are required.
 
-OCCID is licensed under the GNU General Public License version 3 only.
+## Compact wire
 
-See [`LICENSE`](LICENSE).
+`toWireEnvelope()` and `fromWireEnvelope()` implement the structural OCCID
+compact envelope used by the Python runtime. They intentionally do not bundle
+a MessagePack package. A binary transport can serialize that structure with a
+MessagePack implementation that preserves binary values, integer map keys, and
+64-bit integers.
+
+## Current validation
+
+Against the supplied OCCID snapshot:
+
+- 292 models generated.
+- 156 vocabularies generated.
+- Strict TypeScript 5.8 compilation passes.
+- Named JSON fixtures generated by Python `occid.named` round-trip in the
+  TypeScript runtime.
+- Compact wire structure matches Python for the tested UID, Record,
+  EntityState, nested semantic Constraint, and GlobalPosition fixtures.
+- Generation is deterministic.
+
+## Known OCCID schema defect found during generation
+
+`FlightAssignment.takeoff_ts` is declared as `Timestamp = 0.0`. The Python
+runtime currently permits that bad default because Pydantic does not validate
+defaults by default. The TypeScript generator reproduces compiled defaults; it
+does not silently rewrite OCCID schema mistakes.

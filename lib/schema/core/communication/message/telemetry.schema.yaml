@@ -8,7 +8,7 @@ tags:
 models:
   TelemetryMessage:
     description: Message whose payload reports sender or asset state
-    semantic_role: concept
+    semantic_role: type
     parent: Message
 
   UAVTelemetryMessage:
@@ -27,7 +27,7 @@ models:
       sensor_refs: list[string]
       payload_refs: list[string]
 
-  TransportCounters:
+  TransportCounters: # not a telemetry message
     semantic_role: representation
     parent: TelemetryMessage
     fields:
@@ -36,7 +36,7 @@ models:
       parse_error_count: int = 0
       dropped_count: int = 0
 
-  TransportError:
+  TransportError: # not a telemetry message
     semantic_role: representation
     parent: TelemetryMessage
     fields:

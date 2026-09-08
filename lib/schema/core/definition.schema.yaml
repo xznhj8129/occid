@@ -92,6 +92,11 @@ enums:
     - FAKER
     - JOKER
 
+  Reality:
+    - REAL = 0
+    - SIMULATED
+    - EXERCISE
+
 models:
 
   Definition:
