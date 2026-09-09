@@ -1,7 +1,6 @@
 from .common import *
 from .common import _validate_semantic_registry
 from .activation import *
-from .aerial import *
 from .assignment import *
 from .attribute import *
 from .authority import *
@@ -31,7 +30,6 @@ from .link import *
 from .media import *
 from .mesh import *
 from .message import *
-from .military_aerial import *
 from .military_communication import *
 from .military_definition import *
 from .military_effects import *
@@ -59,7 +57,9 @@ from .struct import *
 from .task import *
 from .telemetry import *
 from .validation import *
+from .aerial import *
 from .entities import *
+from .military_aerial import *
 from .military_organization import *
 from .objective import *
 from .military_entities import *

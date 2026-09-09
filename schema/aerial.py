@@ -3,6 +3,8 @@ from __future__ import annotations
 import builtins
 from .common import *
 
+from .plan import PlanApprovalState
+
 ### Enums
 
 class FlightPlanPhase(IntEnum):
@@ -85,6 +87,7 @@ class AirPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class GroupFlightPlan(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 109
@@ -95,6 +98,7 @@ class GroupFlightPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     plan_phase: FlightPlanPhase
     flight_level: Semantic[FlightLevelBand] | None = None
     alt_frame: AltitudeDatum | None = None
@@ -114,6 +118,7 @@ class UnitFlightPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float
@@ -135,6 +140,7 @@ class PlannedAirMission(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     flight_type: FlightType = FlightType.SURVEY_POINT
     air_action: AirPlanAction = AirPlanAction.FLY
     manual: builtins.bool = False

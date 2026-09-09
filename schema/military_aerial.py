@@ -3,6 +3,8 @@ from __future__ import annotations
 import builtins
 from .common import *
 
+from .plan import PlanApprovalState
+
 ### Enums
 
 class MilitaryAirTask(IntEnum):
@@ -93,6 +95,7 @@ class MilitaryUnitFlightPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float

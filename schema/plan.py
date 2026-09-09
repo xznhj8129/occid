@@ -32,6 +32,7 @@ class Plan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class OperationalPlan(OCCIDModel):
     'Task-based'
@@ -43,6 +44,7 @@ class OperationalPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     objective_uids: list[Semantic[UID]]
     task_uids: list[Semantic[UID]]
     actor_uids: list[Semantic[UID]]
@@ -61,6 +63,7 @@ class RoutePlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class PlanContingency(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 200
@@ -79,6 +82,7 @@ class AutopilotMission(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     waypoints: list[Semantic[AutopilotMissionWaypoint]]
 
 class AutopilotMissionWaypoint(OCCIDModel):

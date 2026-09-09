@@ -86,7 +86,7 @@ class MeasurementQuality(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     str: builtins.str | None = None
     int: builtins.int | None = None
-    float: Semantic[Timestamp]
+    float: builtins.float | None = None
     bool: builtins.bool | None = None
     lat_err_m: builtins.float | None = None
     az_err_deg: builtins.float | None = None
@@ -114,7 +114,6 @@ class ImageSensor(OCCIDModel):
     ai: list[SensorAICapability]
     field_of_view: Semantic[SensorFieldOfView] | None = None
     zoom_range: Semantic[NumericRange] | None = None
-    fov: Semantic[SensorFieldOfView] | None = None
     night_vision: builtins.bool
 
 class RFSensor(OCCIDModel):
@@ -144,9 +143,10 @@ class RFSensor(OCCIDModel):
     chan_bw: builtins.float | None = None
 
 class SensorFieldOfView(OCCIDModel):
+    'Sensor field-of-view angular limits in degrees'
     __occid_model_id__: ClassVar[int] = 238
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    horizontal: Semantic[NumericRange] | None = None
-    vertical: Semantic[NumericRange] | None = None
+    horizontal_deg: Semantic[NumericRange] | None = None
+    vertical_deg: Semantic[NumericRange] | None = None

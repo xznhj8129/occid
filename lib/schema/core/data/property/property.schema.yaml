@@ -33,5 +33,5 @@ models:
     fields:
       str: optional string
       int: optional int
-      float: Timestamp
+      float: optional float
       bool: optional bool

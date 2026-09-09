@@ -33,6 +33,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
 
   OperationalPlan:
     description: Task-based

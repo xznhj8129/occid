@@ -2252,6 +2252,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
 
   GroupFlightPlan:
     model_id: 109
@@ -2263,6 +2264,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       plan_phase: FlightPlanPhase
       flight_level: optional FlightLevelBand
       alt_frame: optional AltitudeDatum
@@ -2285,6 +2287,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       unit_num: int
       callsign: string
       fl: float
@@ -2307,6 +2310,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       flight_type: FlightType = SURVEY_POINT
       air_action: AirPlanAction = FLY
       manual: bool = false
@@ -2771,6 +2775,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
 
   OperationalPlan:
     model_id: 186
@@ -2783,6 +2788,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       objective_uids: list[UID]
       task_uids: list[UID]
       actor_uids: list[UID]
@@ -2804,6 +2810,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
 
   PlanContingency:
     model_id: 200
@@ -2824,6 +2831,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       waypoints: list[AutopilotMissionWaypoint]
 
   AutopilotMissionWaypoint:
@@ -3365,7 +3373,7 @@ models:
     fields:
       str: optional string
       int: optional int
-      float: Timestamp
+      float: optional float
       bool: optional bool
 
   Relationship:
@@ -4751,7 +4759,7 @@ models:
     fields:
       str: optional string
       int: optional int
-      float: Timestamp
+      float: optional float
       bool: optional bool
       lat_err_m: optional float
       az_err_deg: optional float
@@ -4780,7 +4788,6 @@ models:
       ai: list[SensorAICapability]
       field_of_view: optional SensorFieldOfView
       zoom_range: optional NumericRange
-      fov: optional SensorFieldOfView
       night_vision: bool
 
   RFSensor:
@@ -4815,9 +4822,10 @@ models:
     package: payload
     semantic_role: representation
     parent: Attribute
+    description: Sensor field-of-view angular limits in degrees
     fields:
-      horizontal: optional NumericRange
-      vertical: optional NumericRange
+      horizontal_deg: optional NumericRange
+      vertical_deg: optional NumericRange
 
   Record:
     model_id: 219
@@ -5286,6 +5294,7 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+      approval_state: PlanApprovalState = DRAFT
       unit_num: int
       callsign: string
       fl: float

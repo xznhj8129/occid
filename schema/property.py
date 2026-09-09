@@ -37,5 +37,5 @@ class MetadataValue(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeasurementQuality',)
     str: builtins.str | None = None
     int: builtins.int | None = None
-    float: Semantic[Timestamp]
+    float: builtins.float | None = None
     bool: builtins.bool | None = None
