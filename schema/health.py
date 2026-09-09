@@ -55,13 +55,13 @@ class MaintenanceState(IntEnum):
 
 class Health(OCCIDModel):
     'Integrity, damage, faults, and readiness state'
-    __occid_model_id__: ClassVar[int] = 108
+    __occid_model_id__: ClassVar[int] = 110
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('HealthAlert', 'LinkState', 'SubsystemHealth', 'HealthSnapshot', 'MaintenanceStatus', 'NavReadinessState')
 
 class HealthAlert(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 109
+    __occid_model_id__: ClassVar[int] = 111
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -72,7 +72,7 @@ class HealthAlert(OCCIDModel):
 
 class LinkState(OCCIDModel):
     'Time-varying condition and observed quality of a communication link'
-    __occid_model_id__: ClassVar[int] = 134
+    __occid_model_id__: ClassVar[int] = 136
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshLink',)
@@ -84,7 +84,7 @@ class LinkState(OCCIDModel):
     counters: Semantic[LinkCounters] | None = None
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 251
+    __occid_model_id__: ClassVar[int] = 253
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -94,7 +94,7 @@ class SubsystemHealth(OCCIDModel):
     note: builtins.str | None = None
 
 class HealthSnapshot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 110
+    __occid_model_id__: ClassVar[int] = 112
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -108,7 +108,7 @@ class HealthSnapshot(OCCIDModel):
     alerts: list[Semantic[HealthAlert]]
 
 class MaintenanceStatus(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 144
+    __occid_model_id__: ClassVar[int] = 146
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -118,7 +118,7 @@ class MaintenanceStatus(OCCIDModel):
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 173
+    __occid_model_id__: ClassVar[int] = 174
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

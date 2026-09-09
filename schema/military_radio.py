@@ -6,7 +6,7 @@ from .common import *
 ### Models
 
 class MilitaryRadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 165
+    __occid_model_id__: ClassVar[int] = 167
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RadioProfile'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

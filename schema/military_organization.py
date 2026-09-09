@@ -283,7 +283,7 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 ### Models
 
 class OrgComposition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 187
+    __occid_model_id__: ClassVar[int] = 189
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -292,7 +292,7 @@ class OrgComposition(OCCIDModel):
     qty: builtins.int = 0
 
 class MilitaryOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 163
+    __occid_model_id__: ClassVar[int] = 165
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Organization'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlyingOrg', 'OrbatOrg')
@@ -315,7 +315,7 @@ class MilitaryOrg(OCCIDModel):
     link_loadout: list[Semantic[ItemCount]]
 
 class FlyingOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 88
+    __occid_model_id__: ClassVar[int] = 90
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MilitaryOrg'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -340,7 +340,7 @@ class FlyingOrg(OCCIDModel):
     air_units: list[Semantic[ItemCount]]
 
 class OrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 187
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MilitaryOrg'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroundOrbatOrg',)
@@ -376,7 +376,7 @@ class OrbatOrg(OCCIDModel):
     spacing: builtins.float = 0.0
 
 class GroundOrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 104
+    __occid_model_id__: ClassVar[int] = 106
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OrbatOrg'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

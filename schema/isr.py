@@ -7,7 +7,7 @@ from .common import *
 
 class ObservationMessage(OCCIDModel):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 183
+    __occid_model_id__: ClassVar[int] = 184
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ProtocolEventMessage',)
@@ -19,7 +19,7 @@ class ObservationMessage(OCCIDModel):
     observation: Semantic[Observation]
 
 class ProtocolEventMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 212
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ObservationMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

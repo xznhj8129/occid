@@ -7,13 +7,13 @@ from .common import *
 
 class Media(OCCIDModel):
     'Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference'
-    __occid_model_id__: ClassVar[int] = 148
+    __occid_model_id__: ClassVar[int] = 150
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MediaItem',)
 
 class MediaItem(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 149
+    __occid_model_id__: ClassVar[int] = 151
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Media'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

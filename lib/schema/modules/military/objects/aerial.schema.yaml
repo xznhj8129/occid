@@ -77,4 +77,4 @@ models:
     semantic_role: representation
     parent: UnitFlightPlan
     fields:
-      target: PlannerMissionPoint
+      target: FlightMissionPoint

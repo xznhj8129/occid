@@ -3,8 +3,6 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-from .plan import PlanApprovalState
-
 ### Enums
 
 class MilitaryAirTask(IntEnum):
@@ -67,7 +65,7 @@ AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
 ### Models
 
 class MilitaryAirNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 162
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirNavigation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -87,7 +85,7 @@ class MilitaryAirNavigation(OCCIDModel):
     roles: list[AirRole]
 
 class MilitaryUnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 166
+    __occid_model_id__: ClassVar[int] = 168
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'UnitFlightPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -95,21 +93,11 @@ class MilitaryUnitFlightPlan(OCCIDModel):
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
-    objective_uids: list[Semantic[UID]]
-    task_uids: list[Semantic[UID]]
-    actor_uids: list[Semantic[UID]]
-    resource_uids: list[Semantic[UID]]
-    assignment_uids: list[Semantic[UID]]
-    steps: list[Semantic[PlanStep]]
-    routes: list[Semantic[GeoPath]]
-    constraints: list[Semantic[Constraint]]
-    contingencies: list[Semantic[PlanContingency]]
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     unit_num: builtins.int
     callsign: builtins.str
     fl: builtins.float
     route_in: Semantic[GeoPath]
-    target: Semantic[PlannerMissionPoint]
+    target: Semantic[FlightMissionPoint]
     route_out: Semantic[GeoPath]
     home: Semantic[GlobalPosition]
     land_pos: Semantic[GlobalPosition]

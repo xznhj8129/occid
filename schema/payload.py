@@ -50,14 +50,14 @@ class SensorFrustumShape(IntEnum):
 
 class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Item'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SensorPayload', 'EffectsPayload')
     capabilities: list[Semantic[Capability]] | None = None
 
 class SensorPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 237
+    __occid_model_id__: ClassVar[int] = 239
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Payload'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImageSensor', 'RFSensor')
@@ -80,7 +80,7 @@ class SensorPayload(OCCIDModel):
     zoom_range: Semantic[NumericRange] | None = None
 
 class MeasurementQuality(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 147
+    __occid_model_id__: ClassVar[int] = 149
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MetadataValue'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -93,7 +93,7 @@ class MeasurementQuality(OCCIDModel):
     range_err_m: builtins.float | None = None
 
 class ImageSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 115
+    __occid_model_id__: ClassVar[int] = 117
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -118,7 +118,7 @@ class ImageSensor(OCCIDModel):
     night_vision: builtins.bool
 
 class RFSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 213
+    __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -144,7 +144,7 @@ class RFSensor(OCCIDModel):
     chan_bw: builtins.float | None = None
 
 class SensorFieldOfView(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 236
+    __occid_model_id__: ClassVar[int] = 238
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

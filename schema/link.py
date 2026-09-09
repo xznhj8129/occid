@@ -49,7 +49,7 @@ class NetType(IntEnum):
 
 class Link(OCCIDModel):
     'Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState'
-    __occid_model_id__: ClassVar[int] = 131
+    __occid_model_id__: ClassVar[int] = 133
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Radio',)
@@ -67,7 +67,7 @@ class Link(OCCIDModel):
     network_uid: Semantic[UID] | None = None
 
 class DataRateSpec(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 54
+    __occid_model_id__: ClassVar[int] = 55
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -76,7 +76,7 @@ class DataRateSpec(OCCIDModel):
     burst_bps: builtins.float | None = None
 
 class LinkCapacity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 132
+    __occid_model_id__: ClassVar[int] = 134
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -86,7 +86,7 @@ class LinkCapacity(OCCIDModel):
 
 class SignalQuality(OCCIDModel):
     'Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning'
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 243
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -96,7 +96,7 @@ class SignalQuality(OCCIDModel):
 
 class DeliveryQuality(OCCIDModel):
     'Protocol-neutral observed communication delivery quality over an observation interval'
-    __occid_model_id__: ClassVar[int] = 57
+    __occid_model_id__: ClassVar[int] = 58
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -106,7 +106,7 @@ class DeliveryQuality(OCCIDModel):
 
 class LinkCounters(OCCIDModel):
     'Monotonic observed communication-link event counters'
-    __occid_model_id__: ClassVar[int] = 133
+    __occid_model_id__: ClassVar[int] = 135
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

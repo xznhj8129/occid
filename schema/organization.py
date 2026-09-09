@@ -24,7 +24,7 @@ class OrgTopology(IntEnum):
 
 class Organization(OCCIDModel):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
-    __occid_model_id__: ClassVar[int] = 189
+    __occid_model_id__: ClassVar[int] = 191
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Set'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Group', 'Unit', 'MilitaryOrg')
@@ -44,7 +44,7 @@ class Organization(OCCIDModel):
     leases: list[Semantic[AttachmentLease]]
 
 class Group(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 106
+    __occid_model_id__: ClassVar[int] = 108
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Organization'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -65,7 +65,7 @@ class Group(OCCIDModel):
     orglevel: OrgLevel = OrgLevel.GROUP
 
 class Unit(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 281
+    __occid_model_id__: ClassVar[int] = 283
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Organization'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -86,7 +86,7 @@ class Unit(OCCIDModel):
     orglevel: OrgLevel = OrgLevel.UNIT
 
 class OrgRole(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 188
+    __occid_model_id__: ClassVar[int] = 190
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -96,7 +96,7 @@ class OrgRole(OCCIDModel):
     rank: builtins.int
 
 class Roster(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 231
+    __occid_model_id__: ClassVar[int] = 232
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

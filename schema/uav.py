@@ -10,7 +10,7 @@ from .entities import AirframeType, EntityType, MachineType
 
 class AirRobot(OCCIDModel):
     'Any type of flying drone'
-    __occid_model_id__: ClassVar[int] = 7
+    __occid_model_id__: ClassVar[int] = 8
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Drone',)
@@ -40,7 +40,7 @@ class AirRobot(OCCIDModel):
     remote_control: Semantic[RemoteControl]
 
 class Drone(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 65
+    __occid_model_id__: ClassVar[int] = 66
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirRobot'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

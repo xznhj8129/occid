@@ -21,30 +21,6 @@ enums:
     - FAILED
     - SKIPPED
 
-  FlightType:
-    - SURVEY_POINT = 0
-    - SURVEY_AREA
-    - ONE_WAY
-
-  FlightPlanPhase:
-    - ONLINE = 0
-    - PREPARING
-    - TAKEOFF
-    - ASSEMBLY
-    - HOLDING
-    - ENROUTE
-    - INITIAL
-    - OBJECTIVE
-    - EGRESS
-    - RETURN
-    - APPROACH
-    - LANDING
-    - SHUTDOWN
-
-  AirPlanAction:
-    - FLY = 0
-    - AIR_DROP
-    - RECOVERY
 
 models:
   Plan:
@@ -57,140 +33,50 @@ models:
       uid: UID
       id: IntID(Plan)
       name: optional string
+
+  OperationalPlan:
+    description: Task-based
+    semantic_role: concept
+    parent: Plan
+    fields:
       objective_uids: list[UID]
       task_uids: list[UID]
       actor_uids: list[UID]
       resource_uids: list[UID]
       assignment_uids: list[UID]
-      steps: list[PlanStep]
-      routes: list[GeoPath]
       constraints: list[Constraint]
       contingencies: list[PlanContingency]
-      approval_state: PlanApprovalState = DRAFT
 
-  PlanStep:
-    description: Immutable planned step definition; runtime status belongs to execution state
-    semantic_role: representation
-    parent: Struct
-    fields:
-      actor_uids: list[UID]
-      depends_on: list[int]
-      sequence: int
 
-  PlanContingency:
+  RoutePlan:
+    description: Plan of routed movement along waypoints or routes
+    semantic_role: concept
+    parent: Plan
+
+  PlanContingency: # conditional plans or tasks?
     semantic_role: representation
     parent: Struct
     fields:
       condition: Condition
-      response: string
       task_uids: list[UID]
 
-  FlightLevelBand:
-    description: Embedded flight-level band value used by plans rather than an independently identified control reference
+  AutopilotMission:
     semantic_role: representation
-    parent: Struct
+    parent: RoutePlan
     fields:
-      altitude_range_m: NumericRange
-      alt_sep_m: float
+      waypoints: list[AutopilotMissionWaypoint]
 
   AutopilotMissionWaypoint:
     description: Embedded autopilot waypoint value used by a plan or protocol mapping
     semantic_role: representation
-    parent: Struct
+    parent: SpatialStruct
     fields:
       waypoint_index: int
-      action_code: optional int
       position: GlobalPosition
+      # these need formalizing
+      action_code: optional int
       param1: optional int
       param2: optional int
       param3: optional int
       flag: optional int
 
-  PlannerMissionPoint:
-    description: Embedded planner point value used while constructing a plan
-    semantic_role: representation
-    parent: Struct
-    fields:
-      num: int
-      point_type: PlannerPointType
-      category: PlannerPointCategory
-      pos: GlobalPosition
-
-  LoiterOrbit:
-    description: Embedded orbit geometry and timing value
-    semantic_role: representation
-    parent: Struct
-    fields:
-      orbit_direction: int
-      orbit_radius: int
-      loiter_time: int
-
-  MissionRouteGeometry:
-    description: Embedded route geometry used by a mission plan
-    semantic_role: representation
-    parent: Struct
-    fields:
-      route_in: GeoPath
-      survey: GeoPath
-      survey_area: GeoArea
-      route_out: GeoPath
-
-  PlannedRoutePoints:
-    description: Embedded set of planner points defining mission-plan route segments
-    semantic_role: representation
-    parent: Struct
-    fields:
-      start: PlannerMissionPoint
-      route_in: list[PlannerMissionPoint]
-      survey: list[PlannerMissionPoint]
-      survey_area: list[PlannerMissionPoint]
-      route_out: list[PlannerMissionPoint]
-      end: PlannerMissionPoint
-
-  AutopilotFlightPlan:
-    semantic_role: representation
-    parent: Plan
-    fields:
-      waypoints: list[AutopilotMissionWaypoint]
-
-  GroupFlightPlan:
-    semantic_role: representation
-    parent: Plan
-    fields:
-      plan_phase: FlightPlanPhase
-      flight_level: optional FlightLevelBand
-      alt_frame: optional AltitudeDatum
-      h_sep_m: optional float
-      delay_s: optional float
-      airspeed: optional float
-      path_offset: optional LocalDirection
-      formation_2d: optional AirGroupFormation2DType
-      formation_3d: optional AirGroupFormation3DType
-
-  UnitFlightPlan:
-    semantic_role: representation
-    parent: Plan
-
-    fields:
-      unit_num: int
-      callsign: string
-      fl: float
-      route_in: GeoPath
-      target: PlannerMissionPoint
-      route_out: GeoPath
-      home: GlobalPosition
-      land_pos: GlobalPosition
-      ip_wait_delay: float = 0.0
-      wp: GeoPath
-
-  MissionPlan:
-    semantic_role: representation
-    parent: Plan
-    description: Saved operator mission plan - the planner inputs, restorable for editing
-    fields:
-      flight_type: FlightType = SURVEY_POINT
-      air_action: AirPlanAction = FLY
-      manual: bool = false
-      points: PlannedRoutePoints
-      config: map[string, float]
-      saved_ts: optional Timestamp

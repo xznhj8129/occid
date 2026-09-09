@@ -9,7 +9,7 @@ from .entities import EntityType, PropulsionType
 ### Models
 
 class MilitaryPerson(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 164
+    __occid_model_id__: ClassVar[int] = 166
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Person'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -37,7 +37,7 @@ class MilitaryPerson(OCCIDModel):
     ammo: list[Semantic[ItemCount]]
 
 class MilitaryMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 162
+    __occid_model_id__: ClassVar[int] = 164
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -61,7 +61,7 @@ class MilitaryMachine(OCCIDModel):
     category: NATOUnitCategory | None = None
 
 class MilitaryGroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 161
+    __occid_model_id__: ClassVar[int] = 163
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -91,7 +91,7 @@ class MilitaryGroundMachine(OCCIDModel):
     effects: Semantic[GroundEffects]
 
 class MilitaryAirMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 159
+    __occid_model_id__: ClassVar[int] = 161
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

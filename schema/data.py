@@ -7,7 +7,7 @@ from .common import *
 
 class Data(OCCIDModel):
     'Concrete typed structures describing objects, their characteristics, condition, intentions, actions, or effects'
-    __occid_model_id__: ClassVar[int] = 53
+    __occid_model_id__: ClassVar[int] = 54
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Condition', 'Event', 'Execution', 'Media', 'Observation', 'Property', 'State')

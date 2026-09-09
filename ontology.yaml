@@ -41,6 +41,17 @@ Root:
           description: System or protocol interface through which a component communicates with another endpoint
 
 
+    Definition:
+      description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
+      children:
+
+        Frame: {}
+
+        DefinitionRelationship: {}
+
+        SemanticType: {}
+
+
     Control:
       description: Desired outcomes and directed work
       children:
@@ -57,6 +68,17 @@ Root:
 
         Plan:
           description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
+          children:
+
+            AirPlan:
+              description: Plan applicable to aerial operations and flight
+
+            OperationalPlan:
+              description: Task-based
+
+            RoutePlan:
+              description: Plan of routed movement along waypoints or routes
+
 
         Constraint:
           description: Limit, rule, or time/resource bound applied to directed work
@@ -94,17 +116,6 @@ Root:
 
         Objective:
           description: Desired end state with intent, success rule, target, priority, and deadline
-
-
-    Definition:
-      description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
-      children:
-
-        Frame: {}
-
-        DefinitionRelationship: {}
-
-        SemanticType: {}
 
 
     Data:

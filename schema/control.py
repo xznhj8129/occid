@@ -3,51 +3,11 @@ from __future__ import annotations
 import builtins
 from .common import *
 
-### Enums
-
-class PlannerPointType(IntEnum):
-    HOME = 0
-    TAKEOFF = auto()
-    LANDING = auto()
-    HOLD = auto()
-    WAYPOINT = auto()
-    ASSEMBLY = auto()
-    POI = auto()
-    ROI = auto()
-    SURVEY = auto()
-
-class PlannerPointCategory(IntEnum):
-    ROUTE_IN = 0
-    SURVEY = auto()
-    SURVEY_AREA = auto()
-    ROUTE_OUT = auto()
-
-class AirGroupFormation3DType(IntEnum):
-    NONE = 0
-    BOX = auto()
-    SEP_2D_PER_FL = auto()
-    SEP_2D_SPACED = auto()
-
-class AirGroupFormation2DType(IntEnum):
-    NONE = 0
-    LINE = auto()
-    ECHELON = auto()
-    TRAIL = auto()
-    SQUARE = auto()
-    DIAMOND = auto()
-    VEE = auto()
-    HEAVY_LEFT = auto()
-    HEAVY_RIGHT = auto()
-    ECHELON_LEFT = auto()
-    ECHELON_RIGHT = auto()
-    STAGG_TRAIL_LEFT = auto()
-    STAGG_TRAIL_RIGHT = auto()
-
 ### Models
 
 class Control(OCCIDModel):
     'Desired outcomes and directed work'
-    __occid_model_id__: ClassVar[int] = 43
+    __occid_model_id__: ClassVar[int] = 44
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Assignment', 'Authority', 'Constraint', 'Directive', 'Objective', 'Plan', 'OrgRole', 'Roster')

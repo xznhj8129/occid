@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Regenerate OCCID compiled schema, Python runtime, and structural marker."""
+"""Regenerate all OCCID compiled artifacts and language bindings."""
 from __future__ import annotations
 
+import importlib.util
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -140,6 +142,33 @@ def run(script: str, *args: str) -> None:
         raise SystemExit(result.returncode)
 
 
+def write_contract_markers() -> None:
+    """Write structural markers without importing the install-only package layout.
+
+    During generation, the Python binding exists at repository-root ``schema/``.
+    It becomes ``occid.schema`` only through setuptools package-dir mapping, so
+    importing ``occid.contract`` from a raw checkout executes ``occid.__init__``
+    too early and fails.  ``contract_schema.py`` is deliberately package-free,
+    so load that source module directly here.
+    """
+    path = REPO_ROOT / "occid" / "contract_schema.py"
+    spec = importlib.util.spec_from_file_location("_occid_contract_schema", path)
+    if spec is None or spec.loader is None:
+        raise SystemExit(f"cannot load OCCID contract schema helper: {path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    manifest = module.build_manifest(REPO_ROOT)
+    marker = {
+        "format": manifest["format"],
+        "release": manifest.get("release"),
+        "global_hash": manifest["global_hash"],
+    }
+    marker_text = json.dumps(marker, indent=2, sort_keys=True) + "\n"
+    (REPO_ROOT / "occid-contract.json").write_text(marker_text, encoding="utf-8")
+    (REPO_ROOT / "occid" / "occid-contract.json").write_text(marker_text, encoding="utf-8")
+
+
 def main() -> None:
     validate_enum_scalars()
     validate_identity_field_types()
@@ -147,9 +176,12 @@ def main() -> None:
     run("compile_occid.py")
     run("generate_pydantic.py")
 
-    from occid.contract import write_occid_marker
+    write_contract_markers()
 
-    write_occid_marker(REPO_ROOT)
+    # TypeScript is a first-class OCCID language binding, generated from the
+    # same compiled contract as Python.  Keep it behind this single entry point
+    # so consumers never have to remember a second generation command.
+    run("generate_typescript.py")
 
 
 if __name__ == "__main__":
