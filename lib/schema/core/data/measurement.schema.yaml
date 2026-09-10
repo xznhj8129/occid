@@ -1,0 +1,62 @@
+version: 1
+type: schema
+package: measurement
+root: SpatialMeasurement
+tags:
+  - core
+
+enums:
+  BearingReference:
+    - TRUE_NORTH = 0
+    - MAGNETIC_NORTH
+    - GRID_NORTH
+
+models:
+  SpatialMeasurement:
+    description: Persisted spatial measurement whose measured quantity is distinct from any graphic used to display it
+    semantic_role: concept
+    parent: Data
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(SpatialMeasurement)
+      name: optional string
+      measured_ts: optional Timestamp
+
+  DistanceMeasurement:
+    semantic_role: representation
+    parent: SpatialMeasurement
+    fields:
+      origin_uid: UID
+      target_uid: UID
+      distance: DistanceMeters
+
+  AreaMeasurement:
+    semantic_role: representation
+    parent: SpatialMeasurement
+    fields:
+      location_uid: UID
+      area: AreaSquareMeters
+
+  BearingMeasurement:
+    semantic_role: representation
+    parent: SpatialMeasurement
+    fields:
+      origin_uid: UID
+      target_uid: UID
+      bearing: AngleDegrees
+      reference: BearingReference
+
+  RadiusMeasurement:
+    semantic_role: representation
+    parent: SpatialMeasurement
+    fields:
+      center_uid: UID
+      radius: DistanceMeters
+
+  RouteMeasurement:
+    semantic_role: representation
+    parent: SpatialMeasurement
+    fields:
+      path_uid: UID
+      distance: DistanceMeters

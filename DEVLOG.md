@@ -1,5 +1,13 @@
 # Development log
 
+## 2026-09-10 - Flatten non-combat military semantics into core
+
+- Removed military/NATO source-module boundaries for organization/OOB, SIDC and symbology, standard identity/affiliation, tactical graphics, NATO supply classification, NATO communication/radio conventions, and non-combat aviation extensions. These are ordinary OCCID semantics and now compile from their corresponding core packages.
+- Reduced `lib/schema/modules/military/` to effects, combat tasking, and weapon/effects-bearing entity specializations only. Generic payload types, payload plans, and payload mounts moved to core `payload`.
+- Restored the established three-letter `OOBSize` vocabulary convention for the added upper echelons: `COR`, `ARM`, `AGP`, `THR`, and `CMD`.
+- Kept standard-specific vocabulary explicit rather than genericizing it away: `SymbologyStandard`, `StandardIdentity`, `NATOUnitCategory`, `NATOSupplyClass`, `NATOAlphabet`, and `NATORadioBands` remain truthful semantic vocabularies, just not separate modules.
+- Added regression coverage for the three-letter OOB codes and for the source/package boundary that leaves only weapons, munitions, fires, ESAD, targeting/attack, and directly effects-bearing specializations in `military_*`.
+
 ## 2026-09-04 - Restore one semantic hierarchy and flat runtime
 
 - Removed the authored and derived `Type` semantic level. Authored models are now only `Concept` or `Representation`; Vocabulary remains the enum declaration kind.

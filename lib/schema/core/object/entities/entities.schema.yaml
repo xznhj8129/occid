@@ -3,84 +3,84 @@ type: schema
 package: entities
 root: Entity
 tags:
-  - core
+- core
 
 enums:
   EntityType:
-    - PERSON = 0
-    - MACHINE
-    - SYSTEM
+  - PERSON = 0
+  - MACHINE
+  - SYSTEM
 
   EntitySubtype:
-    - PERSON = 0
-    - PLATFORM
-    - VEHICLE
-    - GROUND_ROBOT
-    - AIR_ROBOT
-    - SURFACE_ROBOT
+  - PERSON = 0
+  - PLATFORM
+  - VEHICLE
+  - GROUND_ROBOT
+  - AIR_ROBOT
+  - SURFACE_ROBOT
 
   MachineType:
-    - VEHICLE = 0
-    - ROBOT
+  - VEHICLE = 0
+  - ROBOT
 
   SystemType:
-    - PLATFORM = 0
-    - EQUIPMENT
+  - PLATFORM = 0
+  - EQUIPMENT
 
   EntityOperationalState:
-    - UNKNOWN = 0
-    - READY
-    - ACTIVE
-    - DEGRADED
-    - MAINTENANCE
-    - DAMAGED
-    - DESTROYED
-    - OFFLINE
+  - UNKNOWN = 0
+  - READY
+  - ACTIVE
+  - DEGRADED
+  - MAINTENANCE
+  - DAMAGED
+  - DESTROYED
+  - OFFLINE
 
   EntityLifecycleStatus:
-    - ACTIVE = 0
-    - INACTIVE
-    - UNKNOWN
+  - ACTIVE = 0
+  - INACTIVE
+  - UNKNOWN
 
   AirframeType:
-    - FIXED_WING = 0
-    - COPTER
-    - VTOL
-    - TAILSITTER
-    - FLYING_WING
+  - FIXED_WING = 0
+  - COPTER
+  - VTOL
+  - TAILSITTER
+  - FLYING_WING
 
   CopterType:
-    - X = 0
-    - Y
-    - HEXA
-    - OCTO
-    - DECA
-    - HELICOPTER
+  - X = 0
+  - Y
+  - HEXA
+  - OCTO
+  - DECA
+  - HELICOPTER
 
   VTOLType:
-    - NONE = 0
-    - QUADPLANE
-    - TILT
-    - VECTORING
-    - TAILSITTER
+  - NONE = 0
+  - QUADPLANE
+  - TILT
+  - VECTORING
+  - TAILSITTER
 
   NavAids:
-    - NONE = 0
-    - GNSS
-    - INS
-    - TERRAIN_MATCH
-    - CELESTIAL
-    - VISUAL
+  - NONE = 0
+  - GNSS
+  - INS
+  - TERRAIN_MATCH
+  - CELESTIAL
+  - VISUAL
 
   PropulsionType:
-    - FOOT = 0
-    - WHEELED
-    - TRACKED
-    - ROTARY_WING
-    - FIXED_WING
-    - JET
-    - MARITIME
-    - STATIC
+  - FOOT = 0
+  - WHEELED
+  - TRACKED
+  - ROTARY_WING
+  - FIXED_WING
+  - JET
+  - MARITIME
+  - STATIC
 
 models:
   Entity:
@@ -99,8 +99,6 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      symbology: optional Symbology
-      display_meta: optional DisplayMeta
 
   Actor:
     semantic_role: concept
@@ -192,3 +190,15 @@ models:
       model: string
       sensors: map[string, SensorPayload]
       navigation: AirNavigation
+  MilitaryAirNavigation:
+    semantic_role: representation
+    parent: AirNavigation
+    fields:
+      roles: list[AirRole]
+
+  MilitaryMachine:
+    semantic_role: representation
+    parent: Machine
+    fields:
+      category: optional NATOUnitCategory
+

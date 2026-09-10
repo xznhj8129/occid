@@ -3,23 +3,304 @@ type: schema
 package: organization
 root: Organization
 tags:
-  - core
+- core
 
 enums:
   OrgLevel:
-    - UNIT = 0
-    - GROUP
+  - UNIT = 0
+  - GROUP
 
   OrgType:
-    - CIV = 0
-    - COMMERCIAL
-    - NGO
-    - GOVT
+  - CIV = 0
+  - COMMERCIAL
+  - NGO
+  - GOVT
 
   OrgTopology:
-    - NONE = 0
-    - HIERARCHICAL
-    - CELLULAR
+  - NONE = 0
+  - HIERARCHICAL
+  - CELLULAR
+  - NETWORKED
+
+  OrganizationOperationalState:
+  - UNKNOWN = 0
+  - FORMING
+  - READY
+  - ACTIVE
+  - DEGRADED
+  - REORGANIZING
+  - RECONSTITUTING
+  - INACTIVE
+  - DISBANDED
+
+  ReadinessLevel:
+  - UNKNOWN = 0
+  - UNAVAILABLE
+  - LIMITED
+  - READY
+  - FULL
+
+  OOBSize:
+  - IND = 0
+  - TEM
+  - SQD
+  - SEC
+  - PLT
+  - COY
+  - BTN
+  - RGT
+  - BDE
+  - DIV
+  - FLT
+  - SQN
+  - GRP
+  - WNG
+  - COR
+  - ARM
+  - AGP
+  - THR
+  - CMD
+
+  NATOUnitCategory:
+  - COMB = 0
+  - BATT
+  - TF
+  - MECH
+  - INF
+  - MOT
+  - REC
+  - UAV
+  - UAVA
+  - UAVR
+  - UGV
+  - SIG
+  - ENG
+  - ART
+  - MORT
+  - MRL
+  - ARM
+  - CAV
+  - MED
+  - SUP
+  - LOG
+  - HQ
+  - NBC
+  - MP
+  - AIR
+  - SOF
+  - NAV
+  - AMP
+  - ADA
+  - EW
+  - ISR
+  - CBT
+  - CSS
+  - COM
+  - DET
+  - RES
+  - TRG
+
+  OrgLayout:
+  - FREEFORM = 0
+  - ORBAT
+
+  ReinforcementStatus:
+  - NONE = 0
+  - REINFORCED
+  - REDUCED
+  - REINFORCED_REDUCED
+
+  StrengthCondition:
+  - UNKNOWN = 0
+  - FULL
+  - SUBSTANTIAL
+  - REDUCED
+  - SEVERELY_REDUCED
+  - INEFFECTIVE
+
+
+maps:
+
+  UNIT_SIZE_LABELS:
+    type: map[OOBSize, string]
+    value:
+      IND: Individual
+      TEM: Team
+      SQD: Squad
+      SEC: Section
+      PLT: Platoon
+      COY: Company
+      BTN: Battalion
+      RGT: Regiment
+      BDE: Brigade
+      DIV: Division
+      FLT: Flight
+      SQN: Squadron
+      GRP: Group
+      WNG: Wing
+      COR: Corps
+      ARM: Army
+      AGP: Army Group/Front
+      THR: Region/Theater
+      CMD: Command
+
+  UNIT_SIZE_SHORT:
+    type: map[OOBSize, string]
+    value:
+      IND: Individual
+      TEM: Team
+      SQD: Squad
+      SEC: Section
+      PLT: Platoon
+      COY: Company
+      BTN: Battalion
+      RGT: Regiment
+      BDE: Brigade
+      DIV: Division
+      FLT: Flight
+      SQN: Squadron
+      GRP: Group
+      WNG: Wing
+      COR: Corps
+      ARM: Army
+      AGP: Army Group/Front
+      THR: Region/Theater
+      CMD: Command
+
+  UNIT_CATEGORY_LABELS:
+    type: map[NATOUnitCategory, string]
+    value:
+      COMB: Combined Arms
+      BATT: Battery
+      TF: Task Force
+      MECH: Mechanized Infantry
+      INF: Light Infantry
+      MOT: Motorized Infantry
+      REC: Reconnaissance
+      UAV: Unmanned Aerial Systems
+      UAVA: UAV Attack
+      UAVR: UAV Recon
+      UGV: Unmanned Ground Systems
+      SIG: Signal
+      ENG: Engineer
+      ART: Artillery
+      MORT: Mortar
+      MRL: Rocket Artillery
+      ARM: Armored
+      CAV: Cavalry
+      MED: Medical
+      SUP: Supply
+      LOG: Logistics
+      HQ: Headquarters
+      NBC: Nuclear, Biological, and Chemical Defense
+      MP: Military Police
+      AIR: Airborne Infantry
+      SOF: Special Operations Forces
+      NAV: Naval Infantry
+      AMP: Amphibious Infantry
+      ADA: Air Defense Artillery
+      EW: Electronic Warfare
+      ISR: Intelligence, Surveillance, and Reconnaissance
+      CBT: Combat Support
+      CSS: Combat Service Support
+      COM: Command
+      DET: Detachment
+      RES: Reserve
+      TRG: Training
+
+  UNIT_CATEGORY_NAMES:
+    type: map[NATOUnitCategory, string]
+    value:
+      COMB: Combined Arms
+      BATT: Battery
+      TF: Task Force
+      MECH: Mechanized Infantry
+      INF: Light Infantry
+      MOT: Motorized Infantry
+      REC: Reconnaissance
+      UAV: Unmanned Aerial Systems
+      UAVA: UAV Attack
+      UAVR: UAV Recon
+      UGV: Unmanned Ground Systems
+      SIG: Signal
+      ENG: Engineer
+      ART: Artillery
+      MORT: Mortar
+      MRL: Rocket Artillery
+      ARM: Armored
+      CAV: Cavalry
+      MED: Medical
+      SUP: Supply
+      LOG: Logistics
+      HQ: Headquarters
+      NBC: Nuclear, Biological, and Chemical Defense
+      MP: Military Police
+      AIR: Airborne Infantry
+      SOF: Special Operations Forces
+      NAV: Naval Infantry
+      AMP: Amphibious Infantry
+      ADA: Air Defense Artillery
+      EW: Electronic Warfare
+      ISR: Intelligence, Surveillance, and Reconnaissance
+      CBT: Combat Support
+      CSS: Combat Service Support
+      COM: Command
+      DET: Detachment
+      RES: Reserve
+      TRG: Training
+
+  UNIT_SIZE_LEVELS_LAND:
+    type: map[OOBSize, int]
+    value:
+      IND: 0
+      TEM: 1
+      SQD: 2
+      SEC: 3
+      PLT: 4
+      COY: 5
+      BTN: 6
+      RGT: 7
+      BDE: 8
+      DIV: 9
+      COR: 10
+      ARM: 11
+      AGP: 12
+      THR: 13
+      CMD: 14
+
+  UNIT_SIZE_LEVELS_AIR:
+    type: map[OOBSize, int]
+    value:
+      IND: 0
+      TEM: 1
+      FLT: 2
+      SQN: 3
+      GRP: 4
+      WNG: 5
+
+  CALLSIGN_TEMPLATES:
+    type: map[OOBSize, string]
+    value:
+      SQD: <coy_callsign>-<plt_num>-<s_num>
+      SEC: <coy_callsign>-<plt_num>-<s_num>
+      PLT: <coy_callsign>-<plt_num>
+      COY: <coy_callsign>-<btn_num>BTN
+      BTN: <btn_num>BTN-<rgt_num>RGT
+      RGT: <rgt_num>RGT-<bde_num>BDE
+      BDE: <bde_num>BDE
+
+  ENEMY_CALLSIGN_TEMPLATES:
+    type: map[OOBSize, string]
+    value:
+      SQD: <coy_callsign>-<plt_num>-<s_num>
+      SEC: <coy_callsign>-<plt_num>-<s_num>
+      PLT: <coy_callsign>-<plt_num>
+      COY: <coy_callsign>-<btn_num>BTN
+      BTN: <btn_num>BTN-<rgt_num>RGT
+      RGT: <rgt_num>RGT-<bde_num>BDE
+      BDE: <bde_num>BDE
+
+
 
 models:
   Organization:
@@ -35,36 +316,115 @@ models:
       unit_code: optional string
       callsign: optional string
       org_level: OrgLevel
-      org_rank: int
       org_type: optional OrgType
       topology: optional OrgTopology
-      elements: list[UID]
-      roster: Roster
-      leases: list[AttachmentLease]
+      definition_uid: optional UID
+      member_uids: optional list[UID]
+      roster: optional Roster
 
   Group:
     semantic_role: representation
     parent: Organization
     fields:
-      orglevel: OrgLevel = GROUP
+      org_level: OrgLevel = GROUP
 
   Unit:
     semantic_role: representation
     parent: Organization
     fields:
-      orglevel: OrgLevel = UNIT
+      org_level: OrgLevel = UNIT
+
+  Side:
+    description: Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership
+    semantic_role: concept
+    parent: Set
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Side)
+      name: optional string
+      description: optional PlainText
+      member_uids: list[UID]
+
+  Coalition:
+    description: Operational side composed of multiple organizations or other sides acting together
+    semantic_role: representation
+    parent: Side
 
   OrgRole:
     semantic_role: representation
     parent: Control
     fields:
-      role: string # temporary
+      role: Role
       authority: Authority
       assignment: Assignment
-      rank: int # temporary
 
   Roster:
     semantic_role: representation
     parent: Control
     fields:
       roster: map[UID, OrgRole]
+
+  OrganizationState:
+    description: Time-indexed mutable organizational condition, membership, location, readiness, holdings, and roster separated from organization identity
+    semantic_role: representation
+    parent: SubjectState
+    fields:
+      position: optional LocationState
+      operational_status: optional OrganizationOperationalState
+      readiness: optional ReadinessLevel
+      inventory: optional InventoryState
+      health: optional HealthSnapshot
+
+  MilitaryOrg:
+    semantic_role: representation
+    parent: Organization
+
+    fields:
+      category: optional NATOUnitCategory
+      resource_requirements: list[ResourceRequirement]
+
+  FlyingOrg:
+    semantic_role: representation
+    parent: MilitaryOrg
+    fields:
+      category: NATOUnitCategory
+      op_domain: OperationalDomain = AIR
+
+  OrbatOrg:
+    semantic_role: representation
+    parent: MilitaryOrg
+
+    fields:
+      org_layout: OrgLayout = ORBAT
+      topology: OrgTopology = HIERARCHICAL
+      category: NATOUnitCategory
+      size: OOBSize
+      op_domain: OperationalDomain
+      taskforce: optional bool
+      spacing: DistanceMeters
+
+  GroundOrbatOrg:
+    semantic_role: representation
+    parent: OrbatOrg
+    fields:
+      category: NATOUnitCategory
+      op_domain: OperationalDomain = LAND
+      combat_domain: OperationalDomain
+
+  MilitaryStrength:
+    description: Reported qualitative military strength when exact resource holdings are unavailable or inappropriate; exact counts remain ResourceHolding data
+    semantic_role: representation
+    parent: Struct
+    fields:
+      overall: optional StrengthCondition
+      personnel: optional StrengthCondition
+      equipment: optional StrengthCondition
+
+  MilitaryOrganizationState:
+    description: Military-specific changing organization state layered on generic OrganizationState
+    semantic_role: representation
+    parent: OrganizationState
+    fields:
+      reinforcement_status: optional ReinforcementStatus
+      strength: optional MilitaryStrength

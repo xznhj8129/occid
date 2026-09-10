@@ -50,7 +50,6 @@ models:
       uid: UID
       id: IntID(Location)
       name: optional string
-      symbology: optional Symbology
 
   Mark:
     description: Identified point reference in physical space

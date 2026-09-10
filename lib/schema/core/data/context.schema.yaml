@@ -1,0 +1,36 @@
+version: 1
+type: schema
+package: context
+root: Context
+tags:
+  - core
+
+models:
+  Context:
+    description: Semantic context that bounds the interpretation of operational objects without embedding those objects into one document aggregate
+    semantic_role: concept
+    parent: Data
+
+  OperationalContext:
+    description: Identified operational context with declared reality and temporal extent
+    semantic_role: concept
+    parent: Context
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(OperationalContext)
+      name: optional string
+      description: optional PlainText
+      reality: Reality
+      temporal_extent: optional TimeRange
+      member_uids: list[UID]
+
+  Operation:
+    description: Operational context describing an undertaking conducted by participating actors or organizations
+    semantic_role: representation
+    parent: OperationalContext
+
+  Scenario:
+    description: Operational context used to describe, rehearse, simulate, or replay a bounded situation
+    semantic_role: representation
+    parent: OperationalContext

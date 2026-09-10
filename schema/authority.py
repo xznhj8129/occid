@@ -15,7 +15,7 @@ class ControlLevel(IntEnum):
 
 class Authority(OCCIDModel):
     'Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised'
-    __occid_model_id__: ClassVar[int] = 17
+    __occid_model_id__: ClassVar[int] = 29
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CommandAuthority', 'Lease')
@@ -28,7 +28,7 @@ class Authority(OCCIDModel):
     constraints: list[Semantic[Constraint]]
 
 class CommandAuthority(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 37
+    __occid_model_id__: ClassVar[int] = 58
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -44,7 +44,7 @@ class CommandAuthority(OCCIDModel):
 
 class Lease(OCCIDModel):
     'Bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 129
+    __occid_model_id__: ClassVar[int] = 185
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AttachmentLease', 'ControlLease')
@@ -60,7 +60,7 @@ class Lease(OCCIDModel):
 
 class AttachmentLease(OCCIDModel):
     'Authority lease to an organization'
-    __occid_model_id__: ClassVar[int] = 15
+    __occid_model_id__: ClassVar[int] = 25
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -78,7 +78,7 @@ class AttachmentLease(OCCIDModel):
 
 class ControlLease(OCCIDModel):
     'Temporary direct control access'
-    __occid_model_id__: ClassVar[int] = 48
+    __occid_model_id__: ClassVar[int] = 70
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

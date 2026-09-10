@@ -69,7 +69,7 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 323
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -84,8 +84,6 @@ class Robot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    symbology: Semantic[Symbology] | None = None
-    display_meta: Semantic[DisplayMeta] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
@@ -94,7 +92,7 @@ class Robot(OCCIDModel):
     remote_control: Semantic[RemoteControl]
 
 class GroundRobot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 107
+    __occid_model_id__: ClassVar[int] = 155
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -109,8 +107,6 @@ class GroundRobot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    symbology: Semantic[Symbology] | None = None
-    display_meta: Semantic[DisplayMeta] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType = MachineType.ROBOT
@@ -122,7 +118,7 @@ class GroundRobot(OCCIDModel):
     navigation: Semantic[GroundNavigation]
 
 class VideoConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 290
+    __occid_model_id__: ClassVar[int] = 409
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -137,7 +133,7 @@ class VideoConfig(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 218
+    __occid_model_id__: ClassVar[int] = 308
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -148,7 +144,7 @@ class ReceiverConfig(OCCIDModel):
     rx_center_usec: builtins.int
 
 class ChannelMapEntry(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 30
+    __occid_model_id__: ClassVar[int] = 46
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -160,7 +156,7 @@ class ChannelMapEntry(OCCIDModel):
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 171
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -172,7 +168,7 @@ class ModeRange(OCCIDModel):
     range: Semantic[NumericRange]
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 324
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -183,7 +179,7 @@ class RobotController(OCCIDModel):
     autopilot_firmware: Semantic[FirmwareInfo]
 
 class RemoteControl(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 222
+    __occid_model_id__: ClassVar[int] = 313
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Interface'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -200,7 +196,7 @@ class RemoteControl(OCCIDModel):
 
 class ObserverSource(OCCIDModel):
     'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 260
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Interface'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -228,7 +224,7 @@ class ObserverSource(OCCIDModel):
 
 class FlightControlState(OCCIDModel):
     'Portable flight-controller operational state independent of endpoint-specific mode identifiers'
-    __occid_model_id__: ClassVar[int] = 85
+    __occid_model_id__: ClassVar[int] = 121
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

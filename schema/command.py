@@ -51,7 +51,7 @@ class ExecutionOperation(IntEnum):
 
 class Command(OCCIDModel):
     'Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics'
-    __occid_model_id__: ClassVar[int] = 36
+    __occid_model_id__: ClassVar[int] = 57
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Directive'
     __occid_children__: ClassVar[tuple[str, ...]] = ('StateChangeCommand', 'ProcessControlCommand', 'ConfigurationCommand', 'MotionCommand', 'ResourceCommand', 'ExecutionCommand')
@@ -60,7 +60,7 @@ class Command(OCCIDModel):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 249
+    __occid_model_id__: ClassVar[int] = 352
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -72,7 +72,7 @@ class StateChangeCommand(OCCIDModel):
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 209
+    __occid_model_id__: ClassVar[int] = 296
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -83,7 +83,7 @@ class ProcessControlCommand(OCCIDModel):
 
 class ConfigurationCommand(OCCIDModel):
     'Set a configuration parameter or load a referenced configuration on the target'
-    __occid_model_id__: ClassVar[int] = 42
+    __occid_model_id__: ClassVar[int] = 63
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -96,7 +96,7 @@ class ConfigurationCommand(OCCIDModel):
 
 class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 172
+    __occid_model_id__: ClassVar[int] = 245
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -111,7 +111,7 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 224
+    __occid_model_id__: ClassVar[int] = 317
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -123,7 +123,7 @@ class ResourceCommand(OCCIDModel):
 
 class ExecutionCommand(OCCIDModel):
     'Execute, abort, or reset a referenced plan, execution, or executable object'
-    __occid_model_id__: ClassVar[int] = 81
+    __occid_model_id__: ClassVar[int] = 115
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

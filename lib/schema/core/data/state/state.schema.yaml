@@ -17,14 +17,20 @@ models:
     semantic_role: concept
     parent: Data
 
-  EntityState: # this really fucking stinks
-    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
-    semantic_role: representation
+  SubjectState:
+    description: Persisted time-indexed state of an identified OCCID subject; semantic state history uses typed state records rather than generic object revision snapshots
+    semantic_role: concept
     parent: State
     fields:
       record: Record
       subject_uid: UID
-      timestamp: float
+      timestamp: Timestamp
+
+  EntityState:
+    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
+    semantic_role: representation
+    parent: SubjectState
+    fields:
       position: optional LocationState
       motion: optional VelocityVector
       angular_velocity: optional AngularVelocityVector
@@ -34,7 +40,7 @@ models:
       operational_status: optional EntityOperationalState
       lifecycle_status: optional EntityLifecycleStatus
       health: optional HealthSnapshot
-      resources: optional Supplies
+      resources: optional InventoryState
       link_states: map[string, LinkState]
       control_state: optional ControlLevel
       source_observation_ts: optional Timestamp

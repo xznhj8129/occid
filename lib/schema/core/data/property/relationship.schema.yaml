@@ -3,24 +3,24 @@ type: schema
 package: relationship
 root: Relationship
 tags:
-  - core
+- core
 
 enums:
   RelationshipKind:
-    - MEMBER_OF = 0
-    - COMMANDS
-    - OPERATES
-    - SUPPORTS
-    - OWNS
+  - MEMBER_OF = 0
+  - COMMANDS
+  - OPERATES
+  - SUPPORTS
+  - OWNS
 
   SpatialRelationKind:
-    - CONTAINS = 0
-    - WITHIN
-    - INTERSECTS
-    - OVERLAPS
-    - TOUCHES
-    - CROSSES
-    - CONNECTS
+  - CONTAINS = 0
+  - WITHIN
+  - INTERSECTS
+  - OVERLAPS
+  - TOUCHES
+  - CROSSES
+  - CONNECTS
 
 models:
   Relationship:
@@ -60,3 +60,13 @@ models:
       subject_uid: UID
       reference_uid: UID
       relation: SpatialRelationKind
+  MilitaryAffiliation:
+    description: Relative military standard identity assigned to a subject from the perspective of an observer, organization, or operational context
+    semantic_role: representation
+    parent: Relationship
+    fields:
+      observer_uid: UID
+      subject_uid: UID
+      identity: StandardIdentity
+      since_ts: optional Timestamp
+      until_ts: optional Timestamp

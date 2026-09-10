@@ -60,13 +60,6 @@ enums:
     - SECRET
     - TOP_SECRET
 
-  MediaType:
-    - IMAGE = 0
-    - VIDEO
-    - AUDIO
-    - DOCUMENT
-    - BINARY
-
   PowerStatus:
     - UNKNOWN = 0
     - NOT_PRESENT
@@ -81,17 +74,6 @@ enums:
     - SOLAR
     - NUCLEAR
 
-  Faction:
-    - UNKNOWN = 0
-    - PENDING
-    - FRIENDLY
-    - SUSPECT
-    - HOSTILE
-    - NEUTRAL
-    - ASSUMED
-    - FAKER
-    - JOKER
-
   Reality:
     - REAL = 0
     - SIMULATED
@@ -100,8 +82,7 @@ enums:
 models:
 
   Definition:
-    description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic
-      descriptors.
+    description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
     semantic_role: concept
     parent: Root
 
@@ -140,4 +121,3 @@ models:
   Domain:
     semantic_role: representation
     parent: SemanticType
-

@@ -12,10 +12,17 @@ class TaskCombat(IntEnum):
     COMBAT_SUPPORT = auto()
     COMBAT_RESERVE = auto()
 
+class AirCombatTask(IntEnum):
+    STRIKE = 0
+    CAS = auto()
+    CAP = auto()
+    INTERCEPT = auto()
+    HK = auto()
+
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 173
+    __occid_model_id__: ClassVar[int] = 246
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -24,7 +31,7 @@ class MunitionAllocation(OCCIDModel):
 
 class CombatTaskProfile(OCCIDModel):
     'Military domain detail associated with a generic Task without creating a Task subtype'
-    __occid_model_id__: ClassVar[int] = 35
+    __occid_model_id__: ClassVar[int] = 56
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

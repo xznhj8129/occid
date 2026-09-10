@@ -7,7 +7,7 @@ from .common import *
 
 class CommandMessage(OCCIDModel):
     'Message whose payload directs action'
-    __occid_model_id__: ClassVar[int] = 38
+    __occid_model_id__: ClassVar[int] = 59
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -19,7 +19,7 @@ class CommandMessage(OCCIDModel):
     command: Semantic[Command]
 
 class HumanTextMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 113
+    __occid_model_id__: ClassVar[int] = 162
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

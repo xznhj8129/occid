@@ -11,29 +11,47 @@ models:
     semantic_role: concept
     parent: State
 
+  ResourceHolding:
+    description: Current quantity of an identified resource definition held by a subject, separated from authorized or required quantity
+    semantic_role: representation
+    parent: Resource
+    fields:
+      resource_definition_uid: UID
+      on_hand: Quantity
+      available: optional Quantity
+      committed: optional Quantity
+
+  InventoryState:
+    description: Current holdings of independently defined resources
+    semantic_role: representation
+    parent: Resource
+    fields:
+      holdings: list[ResourceHolding]
+
   FuelState:
+    description: Current amount and capacity of a consumable fuel resource in an explicitly declared quantity representation
     semantic_role: representation
     parent: Resource
     fields:
       fuel_type: FuelType
-      capacity: optional float
-      remaining: optional float
+      capacity: optional Quantity
+      remaining: optional Quantity
 
   Supplies:
+    description: Supply-oriented inventory state retained as a specialization of generic inventory
     semantic_role: representation
-    parent: Resource
+    parent: InventoryState
     fields:
       fuel: optional FuelState
-      stores: list[ItemCount]
 
   PowerSource:
     semantic_role: representation
     parent: Resource
     fields:
-      source_ref: string
+      source_uid: optional UID
       power_type: PowerType
       status: PowerStatus
-      remaining_pct: optional float
+      remaining_ratio: optional NormalizedRatio
 
   PowerState:
     semantic_role: representation
@@ -44,16 +62,17 @@ models:
       electrical_sources: list[ElectricalResourceState]
 
   ElectricalResourceState:
+    description: Electrical measurements and remaining storage state for one identified electrical resource
     semantic_role: representation
     parent: Resource
     fields:
       source_uid: optional UID
-      voltage_v: optional float
-      current_a: optional float
-      power_w: optional float
-      consumed_mah: optional float
-      consumed_mwh: optional float
-      consumed_ah: optional float
-      remaining_pct: optional float
-      remaining_capacity: optional float
-      temperature_deg_c: optional float
+      potential: optional Volts
+      current: optional Amperes
+      power: optional Watts
+      consumed_charge: optional AmpereHours
+      consumed_energy: optional WattHours
+      remaining_ratio: optional NormalizedRatio
+      remaining_charge: optional AmpereHours
+      remaining_energy: optional WattHours
+      temperature: optional DegreesCelsius

@@ -2,7 +2,7 @@
 // Source: compiled OCCID runtime schema (occid.yaml).
 
 export const OCCID_VERSION = "0.1.0" as const;
-export const OCCID_CONTRACT_GLOBAL_HASH = "fb49b09991e0d47f4f369f613da13354c376f1e453866e984d76765ba989d0b2" as const;
+export const OCCID_CONTRACT_GLOBAL_HASH = "516927862271ae92491b6942c12047486abe3626f4dec8fb1a064e12674729b8" as const;
 export const SAFE_INTEGER = 9007199254740991;
 
 export type OCCIDInteger = number | bigint;
@@ -208,7 +208,7 @@ function flagValue<E extends string>(enumName: E, names: readonly string[], valu
 
 // OCCID vocabularies
 
-export type EnumName = "AckMode" | "ActivationPhase" | "AddressKind" | "AddressingMode" | "AirAttackMode" | "AirCombatTask" | "AirFailsafeMode" | "AirGroupFormation2DType" | "AirGroupFormation3DType" | "AirISRType" | "AirMissionEvent" | "AirPlanAction" | "AirRole" | "AirframeType" | "AirspeedReference" | "AlertLevel" | "AltitudeDatum" | "ArmingStatus" | "AssignmentStatus" | "AttackMode" | "AutopilotType" | "BodyReferenceFrame" | "BooleanOperator" | "CapabilityRole" | "ClassificationLevel" | "CommandResult" | "ConfidenceLevel" | "ConfigurationOperation" | "ConflictPolicy" | "ConnectionStatus" | "ControlAxis" | "ControlLevel" | "CopterType" | "CryptoType" | "DeliveryState" | "DetectionBoxSpace" | "EffectDomain" | "EffectIntent" | "EntityLifecycleStatus" | "EntityOperationalState" | "EntitySubtype" | "EntityType" | "EsadArmingRequest" | "EsadFaultFlag" | "EsadIgnitionStatus" | "EsadMunitionStatus" | "EvidenceLevel" | "ExchangePattern" | "ExecutionOperation" | "ExecutionPhase" | "Faction" | "FlightPhase" | "FlightPlanPhase" | "FlightPlanPointType" | "FlightType" | "FormationForm" | "FuelType" | "GeometryTypes" | "GimbalAxis" | "GimbalState" | "GnssFixType" | "GuidanceType" | "HealthStatus" | "HumanHealthStatus" | "InertialReferenceFrame" | "InformationIntent" | "IntelCategory" | "IsrFocusType" | "LinkCondition" | "LinkDataType" | "LinkDirection" | "LinkType" | "MachineType" | "MaintenanceState" | "ManeuverIntent" | "MediaType" | "MeshNodeState" | "MeshtasticPort" | "MessagePriority" | "MessageType" | "MilitaryAirTask" | "MotionOperation" | "NATOAlphabet" | "NATORadioBands" | "NATOUnitCategory" | "NATOUnitCategoryLabel" | "NavAids" | "NavigationMode" | "NetType" | "NetworkError" | "OOBSize" | "OOBSizeLabel" | "ObservationKind" | "ObservationTimeBasis" | "ObservedObjectType" | "OperationalDomain" | "OrbitPattern" | "OrgLayout" | "OrgLevel" | "OrgTopology" | "OrgType" | "PayloadState" | "PayloadType" | "PlanApprovalState" | "PlanStepStatus" | "PlannerPointCategory" | "PowerStatus" | "PowerType" | "PriorityLevel" | "ProcessControlOperation" | "PropulsionType" | "ProtocolPayloadFormat" | "QosTier" | "RCType" | "RadioService" | "Reality" | "RelationshipKind" | "ReplyAck" | "ResourceOperation" | "ResourceStatus" | "RobotControlMode" | "RootFlagExample" | "RouteLeg" | "RouteMethod" | "RouteMode" | "RouteType" | "RwsArmingState" | "SensorAICapability" | "SensorDataFormat" | "SensorErrorType" | "SensorFrustumShape" | "SensorMode" | "SensorRunState" | "SensorSpectrum" | "SensorType" | "SpatialRelationKind" | "StandardFlightMode" | "StateChangeOperation" | "SurfaceFormationShapes" | "SyncState" | "SystemError" | "SystemType" | "TargetCategory" | "TaskCombat" | "TaskPhase" | "TaskPriority" | "TaskStatus" | "TelemetryType" | "ThreatLevel" | "TrackState" | "TransportIntent" | "UAVRadioType" | "VTOLType" | "ValidationStatus" | "VideoProtocol" | "WarheadType" | "Waveform" | "WaypointType";
+export type EnumName = "AckMode" | "ActivationPhase" | "AddressKind" | "AddressingMode" | "AirAttackMode" | "AirCombatTask" | "AirFailsafeMode" | "AirGroupFormation2DType" | "AirGroupFormation3DType" | "AirISRType" | "AirMissionEvent" | "AirPlanAction" | "AirRole" | "AirframeType" | "AirspeedReference" | "AlertLevel" | "AltitudeDatum" | "ArmingStatus" | "AssignmentStatus" | "AttackMode" | "AutopilotType" | "BearingReference" | "BodyReferenceFrame" | "BooleanOperator" | "CapabilityRole" | "ClassificationLevel" | "CommandResult" | "ConfidenceLevel" | "ConfigurationOperation" | "ConflictPolicy" | "ConnectionStatus" | "ControlAxis" | "ControlLevel" | "CopterType" | "CryptoType" | "DeliveryState" | "DetectionBoxSpace" | "EffectDomain" | "EffectIntent" | "EntityLifecycleStatus" | "EntityOperationalState" | "EntitySubtype" | "EntityType" | "EsadArmingRequest" | "EsadFaultFlag" | "EsadIgnitionStatus" | "EsadMunitionStatus" | "EvidenceLevel" | "ExchangePattern" | "ExecutionOperation" | "ExecutionPhase" | "FillPattern" | "FlightPhase" | "FlightPlanPhase" | "FlightPlanPointType" | "FlightType" | "FormationForm" | "FuelType" | "GeometryTypes" | "GimbalAxis" | "GimbalState" | "GnssFixType" | "GraphicLengthUnit" | "GuidanceType" | "HealthStatus" | "Hemisphere" | "HumanHealthStatus" | "InertialReferenceFrame" | "InformationIntent" | "IntelCategory" | "IsrFocusType" | "LinkCondition" | "LinkDataType" | "LinkDirection" | "LinkType" | "MachineType" | "MaintenanceState" | "ManeuverIntent" | "MeshNodeState" | "MeshtasticPort" | "MessagePriority" | "MessageType" | "MilitaryAirTask" | "MotionOperation" | "NATOAlphabet" | "NATORadioBands" | "NATOSupplyClass" | "NATOUnitCategory" | "NavAids" | "NavigationMode" | "NetType" | "NetworkError" | "OOBSize" | "ObservationKind" | "ObservationTimeBasis" | "ObservedObjectType" | "OperationalDomain" | "OrbitPattern" | "OrgLayout" | "OrgLevel" | "OrgTopology" | "OrgType" | "OrganizationOperationalState" | "PayloadState" | "PayloadType" | "PlanApprovalState" | "PlanStepStatus" | "PlannerPointCategory" | "PowerStatus" | "PowerType" | "PriorityLevel" | "ProcessControlOperation" | "PropulsionType" | "ProtocolPayloadFormat" | "QosTier" | "QuantityUnit" | "RCType" | "RadioService" | "ReadinessLevel" | "Reality" | "ReinforcementStatus" | "RelationshipKind" | "ReplyAck" | "RepresentationFormat" | "ResourceOperation" | "ResourceStatus" | "RobotControlMode" | "RootFlagExample" | "RouteLeg" | "RouteMethod" | "RouteMode" | "RouteType" | "RwsArmingState" | "SensorAICapability" | "SensorDataFormat" | "SensorErrorType" | "SensorFrustumShape" | "SensorMode" | "SensorRunState" | "SensorSpectrum" | "SensorType" | "SpatialRelationKind" | "StandardFlightMode" | "StandardIdentity" | "StateChangeOperation" | "StrengthCondition" | "StrokePattern" | "SurfaceFormationShapes" | "SymbologyStandard" | "SyncState" | "SystemError" | "SystemType" | "TacticalGraphicStatus" | "TargetCategory" | "TaskCombat" | "TaskPhase" | "TaskPriority" | "TaskStatus" | "TelemetryType" | "TextAlignment" | "ThreatLevel" | "TrackState" | "TransportIntent" | "UAVRadioType" | "VTOLType" | "ValidationStatus" | "VideoProtocol" | "WarheadType" | "Waveform" | "WaypointType";
 
 export const AckMode = Object.freeze({
   NONE: enumValue("AckMode", "NONE", 0),
@@ -412,6 +412,13 @@ export const AutopilotType = Object.freeze({
   CUSTOM: enumValue("AutopilotType", "CUSTOM", 4),
 });
 export type AutopilotType = (typeof AutopilotType)[keyof typeof AutopilotType];
+
+export const BearingReference = Object.freeze({
+  TRUE_NORTH: enumValue("BearingReference", "TRUE_NORTH", 0),
+  MAGNETIC_NORTH: enumValue("BearingReference", "MAGNETIC_NORTH", 1),
+  GRID_NORTH: enumValue("BearingReference", "GRID_NORTH", 2),
+});
+export type BearingReference = (typeof BearingReference)[keyof typeof BearingReference];
 
 export const BodyReferenceFrame = Object.freeze({
   FLU: enumValue("BodyReferenceFrame", "FLU", 0),
@@ -669,18 +676,14 @@ export const ExecutionPhase = Object.freeze({
 });
 export type ExecutionPhase = (typeof ExecutionPhase)[keyof typeof ExecutionPhase];
 
-export const Faction = Object.freeze({
-  UNKNOWN: enumValue("Faction", "UNKNOWN", 0),
-  PENDING: enumValue("Faction", "PENDING", 1),
-  FRIENDLY: enumValue("Faction", "FRIENDLY", 2),
-  SUSPECT: enumValue("Faction", "SUSPECT", 3),
-  HOSTILE: enumValue("Faction", "HOSTILE", 4),
-  NEUTRAL: enumValue("Faction", "NEUTRAL", 5),
-  ASSUMED: enumValue("Faction", "ASSUMED", 6),
-  FAKER: enumValue("Faction", "FAKER", 7),
-  JOKER: enumValue("Faction", "JOKER", 8),
+export const FillPattern = Object.freeze({
+  NONE: enumValue("FillPattern", "NONE", 0),
+  SOLID: enumValue("FillPattern", "SOLID", 1),
+  DIAGONAL: enumValue("FillPattern", "DIAGONAL", 2),
+  CROSSHATCH: enumValue("FillPattern", "CROSSHATCH", 3),
+  DOTS: enumValue("FillPattern", "DOTS", 4),
 });
-export type Faction = (typeof Faction)[keyof typeof Faction];
+export type FillPattern = (typeof FillPattern)[keyof typeof FillPattern];
 
 export const FlightPhase = Object.freeze({
   PREFLIGHT: enumValue("FlightPhase", "PREFLIGHT", 0),
@@ -785,6 +788,12 @@ export const GnssFixType = Object.freeze({
 });
 export type GnssFixType = (typeof GnssFixType)[keyof typeof GnssFixType];
 
+export const GraphicLengthUnit = Object.freeze({
+  PIXEL: enumValue("GraphicLengthUnit", "PIXEL", 0),
+  METER: enumValue("GraphicLengthUnit", "METER", 1),
+});
+export type GraphicLengthUnit = (typeof GraphicLengthUnit)[keyof typeof GraphicLengthUnit];
+
 export const GuidanceType = Object.freeze({
   UNGUIDED: enumValue("GuidanceType", "UNGUIDED", 0),
   INERTIAL: enumValue("GuidanceType", "INERTIAL", 1),
@@ -807,6 +816,12 @@ export const HealthStatus = Object.freeze({
   NOT_READY: enumValue("HealthStatus", "NOT_READY", 4),
 });
 export type HealthStatus = (typeof HealthStatus)[keyof typeof HealthStatus];
+
+export const Hemisphere = Object.freeze({
+  NORTH: enumValue("Hemisphere", "NORTH", 0),
+  SOUTH: enumValue("Hemisphere", "SOUTH", 1),
+});
+export type Hemisphere = (typeof Hemisphere)[keyof typeof Hemisphere];
 
 export const HumanHealthStatus = Object.freeze({
   HEALTHY: enumValue("HumanHealthStatus", "HEALTHY", 0),
@@ -915,15 +930,6 @@ export const ManeuverIntent = Object.freeze({
 });
 export type ManeuverIntent = (typeof ManeuverIntent)[keyof typeof ManeuverIntent];
 
-export const MediaType = Object.freeze({
-  IMAGE: enumValue("MediaType", "IMAGE", 0),
-  VIDEO: enumValue("MediaType", "VIDEO", 1),
-  AUDIO: enumValue("MediaType", "AUDIO", 2),
-  DOCUMENT: enumValue("MediaType", "DOCUMENT", 3),
-  BINARY: enumValue("MediaType", "BINARY", 4),
-});
-export type MediaType = (typeof MediaType)[keyof typeof MediaType];
-
 export const MeshNodeState = Object.freeze({
   UNKNOWN: enumValue("MeshNodeState", "UNKNOWN", 0),
   ACTIVE: enumValue("MeshNodeState", "ACTIVE", 1),
@@ -1018,6 +1024,20 @@ export const NATORadioBands = Object.freeze({
 });
 export type NATORadioBands = (typeof NATORadioBands)[keyof typeof NATORadioBands];
 
+export const NATOSupplyClass = Object.freeze({
+  CLASS_I: enumValue("NATOSupplyClass", "CLASS_I", 0),
+  CLASS_II: enumValue("NATOSupplyClass", "CLASS_II", 1),
+  CLASS_III: enumValue("NATOSupplyClass", "CLASS_III", 2),
+  CLASS_IV: enumValue("NATOSupplyClass", "CLASS_IV", 3),
+  CLASS_V: enumValue("NATOSupplyClass", "CLASS_V", 4),
+  CLASS_VI: enumValue("NATOSupplyClass", "CLASS_VI", 5),
+  CLASS_VII: enumValue("NATOSupplyClass", "CLASS_VII", 6),
+  CLASS_VIII: enumValue("NATOSupplyClass", "CLASS_VIII", 7),
+  CLASS_IX: enumValue("NATOSupplyClass", "CLASS_IX", 8),
+  CLASS_X: enumValue("NATOSupplyClass", "CLASS_X", 9),
+});
+export type NATOSupplyClass = (typeof NATOSupplyClass)[keyof typeof NATOSupplyClass];
+
 export const NATOUnitCategory = Object.freeze({
   COMB: enumValue("NATOUnitCategory", "COMB", 0),
   BATT: enumValue("NATOUnitCategory", "BATT", 1),
@@ -1058,47 +1078,6 @@ export const NATOUnitCategory = Object.freeze({
   TRG: enumValue("NATOUnitCategory", "TRG", 36),
 });
 export type NATOUnitCategory = (typeof NATOUnitCategory)[keyof typeof NATOUnitCategory];
-
-export const NATOUnitCategoryLabel = Object.freeze({
-  COMB: enumValue("NATOUnitCategoryLabel", "COMB", "Combined Arms"),
-  BATT: enumValue("NATOUnitCategoryLabel", "BATT", "Battery"),
-  TF: enumValue("NATOUnitCategoryLabel", "TF", "Task Force"),
-  MECH: enumValue("NATOUnitCategoryLabel", "MECH", "Mechanized Infantry"),
-  INF: enumValue("NATOUnitCategoryLabel", "INF", "Light Infantry"),
-  MOT: enumValue("NATOUnitCategoryLabel", "MOT", "Motorized Infantry"),
-  REC: enumValue("NATOUnitCategoryLabel", "REC", "Reconnaissance"),
-  UAV: enumValue("NATOUnitCategoryLabel", "UAV", "Unmanned Aerial Systems"),
-  UAVA: enumValue("NATOUnitCategoryLabel", "UAVA", "UAV Attack"),
-  UAVR: enumValue("NATOUnitCategoryLabel", "UAVR", "UAV Recon"),
-  UGV: enumValue("NATOUnitCategoryLabel", "UGV", "Unmanned Ground Systems"),
-  SIG: enumValue("NATOUnitCategoryLabel", "SIG", "Signal"),
-  ENG: enumValue("NATOUnitCategoryLabel", "ENG", "Engineer"),
-  ART: enumValue("NATOUnitCategoryLabel", "ART", "Artillery"),
-  MORT: enumValue("NATOUnitCategoryLabel", "MORT", "Mortar"),
-  MRL: enumValue("NATOUnitCategoryLabel", "MRL", "Rocket Artillery"),
-  ARM: enumValue("NATOUnitCategoryLabel", "ARM", "Armored"),
-  CAV: enumValue("NATOUnitCategoryLabel", "CAV", "Cavalry"),
-  MED: enumValue("NATOUnitCategoryLabel", "MED", "Medical"),
-  SUP: enumValue("NATOUnitCategoryLabel", "SUP", "Supply"),
-  LOG: enumValue("NATOUnitCategoryLabel", "LOG", "Logistics"),
-  HQ: enumValue("NATOUnitCategoryLabel", "HQ", "Headquarters"),
-  NBC: enumValue("NATOUnitCategoryLabel", "NBC", "Nuclear, Biological, and Chemical Defense"),
-  MP: enumValue("NATOUnitCategoryLabel", "MP", "Military Police"),
-  AIR: enumValue("NATOUnitCategoryLabel", "AIR", "Airborne Infantry"),
-  SOF: enumValue("NATOUnitCategoryLabel", "SOF", "Special Operations Forces"),
-  NAV: enumValue("NATOUnitCategoryLabel", "NAV", "Naval Infantry"),
-  AMP: enumValue("NATOUnitCategoryLabel", "AMP", "Amphibious Infantry"),
-  ADA: enumValue("NATOUnitCategoryLabel", "ADA", "Air Defense Artillery"),
-  EW: enumValue("NATOUnitCategoryLabel", "EW", "Electronic Warfare"),
-  ISR: enumValue("NATOUnitCategoryLabel", "ISR", "Intelligence, Surveillance, and Reconnaissance"),
-  CBT: enumValue("NATOUnitCategoryLabel", "CBT", "Combat Support"),
-  CSS: enumValue("NATOUnitCategoryLabel", "CSS", "Combat Service Support"),
-  COM: enumValue("NATOUnitCategoryLabel", "COM", "Command"),
-  DET: enumValue("NATOUnitCategoryLabel", "DET", "Detachment"),
-  RES: enumValue("NATOUnitCategoryLabel", "RES", "Reserve"),
-  TRG: enumValue("NATOUnitCategoryLabel", "TRG", "Training"),
-});
-export type NATOUnitCategoryLabel = (typeof NATOUnitCategoryLabel)[keyof typeof NATOUnitCategoryLabel];
 
 export const NavAids = Object.freeze({
   NONE: enumValue("NavAids", "NONE", 0),
@@ -1151,26 +1130,13 @@ export const OOBSize = Object.freeze({
   SQN: enumValue("OOBSize", "SQN", 11),
   GRP: enumValue("OOBSize", "GRP", 12),
   WNG: enumValue("OOBSize", "WNG", 13),
+  COR: enumValue("OOBSize", "COR", 14),
+  ARM: enumValue("OOBSize", "ARM", 15),
+  AGP: enumValue("OOBSize", "AGP", 16),
+  THR: enumValue("OOBSize", "THR", 17),
+  CMD: enumValue("OOBSize", "CMD", 18),
 });
 export type OOBSize = (typeof OOBSize)[keyof typeof OOBSize];
-
-export const OOBSizeLabel = Object.freeze({
-  IND: enumValue("OOBSizeLabel", "IND", "Individual"),
-  TEM: enumValue("OOBSizeLabel", "TEM", "Team"),
-  SQD: enumValue("OOBSizeLabel", "SQD", "Squad"),
-  SEC: enumValue("OOBSizeLabel", "SEC", "Section"),
-  PLT: enumValue("OOBSizeLabel", "PLT", "Platoon"),
-  COY: enumValue("OOBSizeLabel", "COY", "Company"),
-  BTN: enumValue("OOBSizeLabel", "BTN", "Battalion"),
-  RGT: enumValue("OOBSizeLabel", "RGT", "Regiment"),
-  BDE: enumValue("OOBSizeLabel", "BDE", "Brigade"),
-  DIV: enumValue("OOBSizeLabel", "DIV", "Division"),
-  FLT: enumValue("OOBSizeLabel", "FLT", "Flight"),
-  SQN: enumValue("OOBSizeLabel", "SQN", "Squadron"),
-  GRP: enumValue("OOBSizeLabel", "GRP", "Group"),
-  WNG: enumValue("OOBSizeLabel", "WNG", "Wing"),
-});
-export type OOBSizeLabel = (typeof OOBSizeLabel)[keyof typeof OOBSizeLabel];
 
 export const ObservationKind = Object.freeze({
   DETECTION: enumValue("ObservationKind", "DETECTION", 0),
@@ -1232,6 +1198,7 @@ export const OrgTopology = Object.freeze({
   NONE: enumValue("OrgTopology", "NONE", 0),
   HIERARCHICAL: enumValue("OrgTopology", "HIERARCHICAL", 1),
   CELLULAR: enumValue("OrgTopology", "CELLULAR", 2),
+  NETWORKED: enumValue("OrgTopology", "NETWORKED", 3),
 });
 export type OrgTopology = (typeof OrgTopology)[keyof typeof OrgTopology];
 
@@ -1242,6 +1209,19 @@ export const OrgType = Object.freeze({
   GOVT: enumValue("OrgType", "GOVT", 3),
 });
 export type OrgType = (typeof OrgType)[keyof typeof OrgType];
+
+export const OrganizationOperationalState = Object.freeze({
+  UNKNOWN: enumValue("OrganizationOperationalState", "UNKNOWN", 0),
+  FORMING: enumValue("OrganizationOperationalState", "FORMING", 1),
+  READY: enumValue("OrganizationOperationalState", "READY", 2),
+  ACTIVE: enumValue("OrganizationOperationalState", "ACTIVE", 3),
+  DEGRADED: enumValue("OrganizationOperationalState", "DEGRADED", 4),
+  REORGANIZING: enumValue("OrganizationOperationalState", "REORGANIZING", 5),
+  RECONSTITUTING: enumValue("OrganizationOperationalState", "RECONSTITUTING", 6),
+  INACTIVE: enumValue("OrganizationOperationalState", "INACTIVE", 7),
+  DISBANDED: enumValue("OrganizationOperationalState", "DISBANDED", 8),
+});
+export type OrganizationOperationalState = (typeof OrganizationOperationalState)[keyof typeof OrganizationOperationalState];
 
 export const PayloadState = Object.freeze({
   OFF: enumValue("PayloadState", "OFF", 0),
@@ -1354,6 +1334,23 @@ export const QosTier = Object.freeze({
 });
 export type QosTier = (typeof QosTier)[keyof typeof QosTier];
 
+export const QuantityUnit = Object.freeze({
+  GRAM: enumValue("QuantityUnit", "GRAM", 0),
+  KILOGRAM: enumValue("QuantityUnit", "KILOGRAM", 1),
+  MILLILITER: enumValue("QuantityUnit", "MILLILITER", 2),
+  LITER: enumValue("QuantityUnit", "LITER", 3),
+  METER: enumValue("QuantityUnit", "METER", 4),
+  KILOMETER: enumValue("QuantityUnit", "KILOMETER", 5),
+  SQUARE_METER: enumValue("QuantityUnit", "SQUARE_METER", 6),
+  CUBIC_METER: enumValue("QuantityUnit", "CUBIC_METER", 7),
+  SECOND: enumValue("QuantityUnit", "SECOND", 8),
+  MINUTE: enumValue("QuantityUnit", "MINUTE", 9),
+  HOUR: enumValue("QuantityUnit", "HOUR", 10),
+  WATT_HOUR: enumValue("QuantityUnit", "WATT_HOUR", 11),
+  AMPERE_HOUR: enumValue("QuantityUnit", "AMPERE_HOUR", 12),
+});
+export type QuantityUnit = (typeof QuantityUnit)[keyof typeof QuantityUnit];
+
 export const RCType = Object.freeze({
   PWM: enumValue("RCType", "PWM", 0),
   CRSF: enumValue("RCType", "CRSF", 1),
@@ -1374,12 +1371,29 @@ export const RadioService = Object.freeze({
 });
 export type RadioService = (typeof RadioService)[keyof typeof RadioService];
 
+export const ReadinessLevel = Object.freeze({
+  UNKNOWN: enumValue("ReadinessLevel", "UNKNOWN", 0),
+  UNAVAILABLE: enumValue("ReadinessLevel", "UNAVAILABLE", 1),
+  LIMITED: enumValue("ReadinessLevel", "LIMITED", 2),
+  READY: enumValue("ReadinessLevel", "READY", 3),
+  FULL: enumValue("ReadinessLevel", "FULL", 4),
+});
+export type ReadinessLevel = (typeof ReadinessLevel)[keyof typeof ReadinessLevel];
+
 export const Reality = Object.freeze({
   REAL: enumValue("Reality", "REAL", 0),
   SIMULATED: enumValue("Reality", "SIMULATED", 1),
   EXERCISE: enumValue("Reality", "EXERCISE", 2),
 });
 export type Reality = (typeof Reality)[keyof typeof Reality];
+
+export const ReinforcementStatus = Object.freeze({
+  NONE: enumValue("ReinforcementStatus", "NONE", 0),
+  REINFORCED: enumValue("ReinforcementStatus", "REINFORCED", 1),
+  REDUCED: enumValue("ReinforcementStatus", "REDUCED", 2),
+  REINFORCED_REDUCED: enumValue("ReinforcementStatus", "REINFORCED_REDUCED", 3),
+});
+export type ReinforcementStatus = (typeof ReinforcementStatus)[keyof typeof ReinforcementStatus];
 
 export const RelationshipKind = Object.freeze({
   MEMBER_OF: enumValue("RelationshipKind", "MEMBER_OF", 0),
@@ -1396,6 +1410,21 @@ export const ReplyAck = Object.freeze({
   WILCO: enumValue("ReplyAck", "WILCO", 2),
 });
 export type ReplyAck = (typeof ReplyAck)[keyof typeof ReplyAck];
+
+export const RepresentationFormat = Object.freeze({
+  GEOJSON: enumValue("RepresentationFormat", "GEOJSON", 0),
+  KML: enumValue("RepresentationFormat", "KML", 1),
+  KMZ: enumValue("RepresentationFormat", "KMZ", 2),
+  GPX: enumValue("RepresentationFormat", "GPX", 3),
+  MILX: enumValue("RepresentationFormat", "MILX", 4),
+  PMTILES: enumValue("RepresentationFormat", "PMTILES", 5),
+  MAPBUNDLE: enumValue("RepresentationFormat", "MAPBUNDLE", 6),
+  TILEJSON: enumValue("RepresentationFormat", "TILEJSON", 7),
+  XYZ_TILES: enumValue("RepresentationFormat", "XYZ_TILES", 8),
+  VECTOR_TILES: enumValue("RepresentationFormat", "VECTOR_TILES", 9),
+  RASTER_IMAGE: enumValue("RepresentationFormat", "RASTER_IMAGE", 10),
+});
+export type RepresentationFormat = (typeof RepresentationFormat)[keyof typeof RepresentationFormat];
 
 export const ResourceOperation = Object.freeze({
   ACQUIRE: enumValue("ResourceOperation", "ACQUIRE", 0),
@@ -1561,12 +1590,43 @@ export const StandardFlightMode = Object.freeze({
 });
 export type StandardFlightMode = (typeof StandardFlightMode)[keyof typeof StandardFlightMode];
 
+export const StandardIdentity = Object.freeze({
+  PENDING: enumValue("StandardIdentity", "PENDING", 0),
+  UNKNOWN: enumValue("StandardIdentity", "UNKNOWN", 1),
+  ASSUMED_FRIEND: enumValue("StandardIdentity", "ASSUMED_FRIEND", 2),
+  FRIEND: enumValue("StandardIdentity", "FRIEND", 3),
+  NEUTRAL: enumValue("StandardIdentity", "NEUTRAL", 4),
+  SUSPECT: enumValue("StandardIdentity", "SUSPECT", 5),
+  HOSTILE: enumValue("StandardIdentity", "HOSTILE", 6),
+  JOKER: enumValue("StandardIdentity", "JOKER", 7),
+  FAKER: enumValue("StandardIdentity", "FAKER", 8),
+});
+export type StandardIdentity = (typeof StandardIdentity)[keyof typeof StandardIdentity];
+
 export const StateChangeOperation = Object.freeze({
   SET: enumValue("StateChangeOperation", "SET", 0),
   ENABLE: enumValue("StateChangeOperation", "ENABLE", 1),
   DISABLE: enumValue("StateChangeOperation", "DISABLE", 2),
 });
 export type StateChangeOperation = (typeof StateChangeOperation)[keyof typeof StateChangeOperation];
+
+export const StrengthCondition = Object.freeze({
+  UNKNOWN: enumValue("StrengthCondition", "UNKNOWN", 0),
+  FULL: enumValue("StrengthCondition", "FULL", 1),
+  SUBSTANTIAL: enumValue("StrengthCondition", "SUBSTANTIAL", 2),
+  REDUCED: enumValue("StrengthCondition", "REDUCED", 3),
+  SEVERELY_REDUCED: enumValue("StrengthCondition", "SEVERELY_REDUCED", 4),
+  INEFFECTIVE: enumValue("StrengthCondition", "INEFFECTIVE", 5),
+});
+export type StrengthCondition = (typeof StrengthCondition)[keyof typeof StrengthCondition];
+
+export const StrokePattern = Object.freeze({
+  SOLID: enumValue("StrokePattern", "SOLID", 0),
+  DASHED: enumValue("StrokePattern", "DASHED", 1),
+  DOTTED: enumValue("StrokePattern", "DOTTED", 2),
+  DASH_DOT: enumValue("StrokePattern", "DASH_DOT", 3),
+});
+export type StrokePattern = (typeof StrokePattern)[keyof typeof StrokePattern];
 
 export const SurfaceFormationShapes = Object.freeze({
   COLUMN: enumValue("SurfaceFormationShapes", "COLUMN", 0),
@@ -1578,6 +1638,13 @@ export const SurfaceFormationShapes = Object.freeze({
   SQUARE: enumValue("SurfaceFormationShapes", "SQUARE", 6),
 });
 export type SurfaceFormationShapes = (typeof SurfaceFormationShapes)[keyof typeof SurfaceFormationShapes];
+
+export const SymbologyStandard = Object.freeze({
+  MIL_STD_2525D: enumValue("SymbologyStandard", "MIL_STD_2525D", 0),
+  MIL_STD_2525E: enumValue("SymbologyStandard", "MIL_STD_2525E", 1),
+  APP_6D: enumValue("SymbologyStandard", "APP_6D", 2),
+});
+export type SymbologyStandard = (typeof SymbologyStandard)[keyof typeof SymbologyStandard];
 
 export const SyncState = Object.freeze({
   IN_SYNC: enumValue("SyncState", "IN_SYNC", 0),
@@ -1603,6 +1670,12 @@ export const SystemType = Object.freeze({
   EQUIPMENT: enumValue("SystemType", "EQUIPMENT", 1),
 });
 export type SystemType = (typeof SystemType)[keyof typeof SystemType];
+
+export const TacticalGraphicStatus = Object.freeze({
+  PRESENT: enumValue("TacticalGraphicStatus", "PRESENT", 0),
+  PLANNED: enumValue("TacticalGraphicStatus", "PLANNED", 1),
+});
+export type TacticalGraphicStatus = (typeof TacticalGraphicStatus)[keyof typeof TacticalGraphicStatus];
 
 export const TargetCategory = Object.freeze({
   OBJECT: enumValue("TargetCategory", "OBJECT", 0),
@@ -1655,6 +1728,13 @@ export const TelemetryType = Object.freeze({
   MANUAL_ENTRY: enumValue("TelemetryType", "MANUAL_ENTRY", 3),
 });
 export type TelemetryType = (typeof TelemetryType)[keyof typeof TelemetryType];
+
+export const TextAlignment = Object.freeze({
+  LEFT: enumValue("TextAlignment", "LEFT", 0),
+  CENTER: enumValue("TextAlignment", "CENTER", 1),
+  RIGHT: enumValue("TextAlignment", "RIGHT", 2),
+});
+export type TextAlignment = (typeof TextAlignment)[keyof typeof TextAlignment];
 
 export const ThreatLevel = Object.freeze({
   NONE: enumValue("ThreatLevel", "NONE", 0),
@@ -1777,8 +1857,6 @@ export interface Actor$Exact extends OCCIDModelValue<"Actor"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
 }
 
 export interface Actor$Input {
@@ -1793,8 +1871,6 @@ export interface Actor$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
 }
 
 export interface Agent$Exact extends OCCIDModelValue<"Agent"> {
@@ -1809,8 +1885,6 @@ export interface Agent$Exact extends OCCIDModelValue<"Agent"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
 }
 
 export interface Agent$Input {
@@ -1825,8 +1899,6 @@ export interface Agent$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
 }
 
 export interface AirEffects$Exact extends OCCIDModelValue<"AirEffects"> {
@@ -1867,8 +1939,6 @@ export interface AirMachine$Exact extends OCCIDModelValue<"AirMachine"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -1892,8 +1962,6 @@ export interface AirMachine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -1965,8 +2033,6 @@ export interface AirRobot$Exact extends OCCIDModelValue<"AirRobot"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -1992,8 +2058,6 @@ export interface AirRobot$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType;
@@ -2031,6 +2095,30 @@ export interface AltitudeState$Input {
   relative_datum?: AltitudeDatum | null;
 }
 
+export interface AmpereHours$Exact extends OCCIDAtomicValue<"AmpereHours", number> {}
+
+export type AmpereHours$Input = number;
+
+export interface Amperes$Exact extends OCCIDAtomicValue<"Amperes", number> {}
+
+export type Amperes$Input = number;
+
+export interface Angle$Exact extends OCCIDModelValue<"Angle"> {
+
+}
+
+export interface Angle$Input {
+
+}
+
+export interface AngleDegrees$Exact extends OCCIDAtomicValue<"AngleDegrees", number> {}
+
+export type AngleDegrees$Input = number;
+
+export interface AngleRadians$Exact extends OCCIDAtomicValue<"AngleRadians", number> {}
+
+export type AngleRadians$Input = number;
+
 export interface AngularVelocityVector$Exact extends OCCIDModelValue<"AngularVelocityVector"> {
   x_rad_s: number;
   y_rad_s: number;
@@ -2045,6 +2133,36 @@ export interface AngularVelocityVector$Input {
   frame?: BodyReferenceFrame | null;
 }
 
+export interface AnnotationAnchor$Exact extends OCCIDModelValue<"AnnotationAnchor"> {
+
+}
+
+export interface AnnotationAnchor$Input {
+
+}
+
+export interface AnnotationGraphic$Exact extends OCCIDModelValue<"AnnotationGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  anchor: AnnotationAnchor;
+}
+
+export interface AnnotationGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  anchor: AnnotationAnchor;
+}
+
 export interface AprsProfile$Exact extends OCCIDModelValue<"AprsProfile"> {
   callsign: string | null;
   path: string | null;
@@ -2054,6 +2172,38 @@ export interface AprsProfile$Input {
   callsign?: string | null;
   path?: string | null;
 }
+
+export interface AreaMeasure$Exact extends OCCIDModelValue<"AreaMeasure"> {
+
+}
+
+export interface AreaMeasure$Input {
+
+}
+
+export interface AreaMeasurement$Exact extends OCCIDModelValue<"AreaMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+  location_uid: UID;
+  area: AreaSquareMeters;
+}
+
+export interface AreaMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
+  location_uid: UID;
+  area: AreaSquareMeters;
+}
+
+export interface AreaSquareMeters$Exact extends OCCIDAtomicValue<"AreaSquareMeters", number> {}
+
+export type AreaSquareMeters$Input = number;
 
 export interface Assessment$Exact extends OCCIDModelValue<"Assessment"> {
 
@@ -2119,6 +2269,60 @@ export interface Attribute$Exact extends OCCIDModelValue<"Attribute"> {
 
 export interface Attribute$Input {
 
+}
+
+export interface AudioMedia$Exact extends OCCIDModelValue<"AudioMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface AudioMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface AudioRecording$Exact extends OCCIDModelValue<"AudioRecording"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+  duration: Duration | null;
+}
+
+export interface AudioRecording$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+  duration?: Duration | null;
 }
 
 export interface Authority$Exact extends OCCIDModelValue<"Authority"> {
@@ -2204,7 +2408,7 @@ export interface BattleDamageAssessment$Exact extends OCCIDModelValue<"BattleDam
   destruction_pct: OCCIDInteger;
   confidence_pct: OCCIDInteger;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
 }
 
 export interface BattleDamageAssessment$Input {
@@ -2216,7 +2420,7 @@ export interface BattleDamageAssessment$Input {
   destruction_pct: OCCIDInteger;
   confidence_pct: OCCIDInteger;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
 }
 
 export interface Bearing$Exact extends OCCIDModelValue<"Bearing"> {
@@ -2225,6 +2429,56 @@ export interface Bearing$Exact extends OCCIDModelValue<"Bearing"> {
 
 export interface Bearing$Input {
 
+}
+
+export interface BearingMeasurement$Exact extends OCCIDModelValue<"BearingMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+  origin_uid: UID;
+  target_uid: UID;
+  bearing: AngleDegrees;
+  reference: BearingReference;
+}
+
+export interface BearingMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
+  origin_uid: UID;
+  target_uid: UID;
+  bearing: AngleDegrees;
+  reference: BearingReference;
+}
+
+export interface BinaryMedia$Exact extends OCCIDModelValue<"BinaryMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface BinaryMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
 }
 
 export interface BooleanLogic$Exact extends OCCIDModelValue<"BooleanLogic"> {
@@ -2243,7 +2497,6 @@ export interface Boundary$Exact extends OCCIDModelValue<"Boundary"> {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name: string | null;
-  symbology: Symbology | null;
   path: GeoPath;
 }
 
@@ -2253,7 +2506,6 @@ export interface Boundary$Input {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name?: string | null;
-  symbology?: Symbology | null;
   path: GeoPath;
 }
 
@@ -2281,6 +2533,34 @@ export interface BoundingBox$Input {
   x2: number;
   y2: number;
   z2: number;
+}
+
+export interface ByteCount$Exact extends OCCIDAtomicValue<"ByteCount", OCCIDInteger> {}
+
+export type ByteCount$Input = OCCIDInteger;
+
+export interface CalloutGraphic$Exact extends OCCIDModelValue<"CalloutGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: Text;
+}
+
+export interface CalloutGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: Text;
 }
 
 export interface Capability$Exact extends OCCIDModelValue<"Capability"> {
@@ -2399,12 +2679,66 @@ export interface Cluster$Input {
   capabilities?: Array<Capability> | null;
 }
 
+export interface CoTSymbology$Exact extends OCCIDModelValue<"CoTSymbology"> {
+  cot: string;
+}
+
+export interface CoTSymbology$Input {
+  cot: string;
+}
+
+export interface Coalition$Exact extends OCCIDModelValue<"Coalition"> {
+  capabilities: Array<Capability> | null;
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Side">;
+  name: string | null;
+  description: PlainText | null;
+  member_uids: Array<UID>;
+}
+
+export interface Coalition$Input {
+  capabilities?: Array<Capability> | null;
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Side">;
+  name?: string | null;
+  description?: PlainText | null;
+  member_uids: Array<UID>;
+}
+
 export interface Collection$Exact extends OCCIDModelValue<"Collection"> {
   capabilities: Array<Capability> | null;
 }
 
 export interface Collection$Input {
   capabilities?: Array<Capability> | null;
+}
+
+export interface ColorChannel$Exact extends OCCIDAtomicValue<"ColorChannel", OCCIDInteger> {}
+
+export type ColorChannel$Input = OCCIDInteger;
+
+export interface ColorComponent$Exact extends OCCIDModelValue<"ColorComponent"> {
+
+}
+
+export interface ColorComponent$Input {
+
+}
+
+export interface ColorRGBA$Exact extends OCCIDModelValue<"ColorRGBA"> {
+  red: ColorChannel;
+  green: ColorChannel;
+  blue: ColorChannel;
+  alpha: Opacity | null;
+}
+
+export interface ColorRGBA$Input {
+  red: ColorChannel;
+  green: ColorChannel;
+  blue: ColorChannel;
+  alpha?: Opacity | null;
 }
 
 export interface CombatTaskProfile$Exact extends OCCIDModelValue<"CombatTaskProfile"> {
@@ -2529,6 +2863,14 @@ export interface Constraint$Input {
   condition?: Condition | null;
 }
 
+export interface Context$Exact extends OCCIDModelValue<"Context"> {
+
+}
+
+export interface Context$Input {
+
+}
+
 export interface Control$Exact extends OCCIDModelValue<"Control"> {
 
 }
@@ -2633,6 +2975,10 @@ export interface Coordinate$Input {
 
 }
 
+export interface Count$Exact extends OCCIDAtomicValue<"Count", OCCIDInteger> {}
+
+export type Count$Input = OCCIDInteger;
+
 export interface CryptoKey$Exact extends OCCIDModelValue<"CryptoKey"> {
   key_ref: string;
   label: string | null;
@@ -2687,6 +3033,26 @@ export interface Data$Input {
 
 }
 
+export interface DataLayer$Exact extends OCCIDModelValue<"DataLayer"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent: TimeRange | null;
+  source: RepresentationSource;
+}
+
+export interface DataLayer$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent?: TimeRange | null;
+  source: RepresentationSource;
+}
+
 export interface DataRateSpec$Exact extends OCCIDModelValue<"DataRateSpec"> {
   nominal_bps: number | null;
   sustained_bps: number | null;
@@ -2714,6 +3080,10 @@ export interface DefinitionRelationship$Exact extends OCCIDModelValue<"Definitio
 export interface DefinitionRelationship$Input {
 
 }
+
+export interface DegreesCelsius$Exact extends OCCIDAtomicValue<"DegreesCelsius", number> {}
+
+export type DegreesCelsius$Input = number;
 
 export interface DeliveryQuality$Exact extends OCCIDModelValue<"DeliveryQuality"> {
   latency_s: number | null;
@@ -2817,16 +3187,64 @@ export interface Directive$Input {
 
 }
 
-export interface DisplayMeta$Exact extends OCCIDModelValue<"DisplayMeta"> {
-  icon_code: string | null;
-  tint: string | null;
-  short_label: string | null;
+export interface Distance$Exact extends OCCIDModelValue<"Distance"> {
+
 }
 
-export interface DisplayMeta$Input {
-  icon_code?: string | null;
-  tint?: string | null;
-  short_label?: string | null;
+export interface Distance$Input {
+
+}
+
+export interface DistanceMeasurement$Exact extends OCCIDModelValue<"DistanceMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+  origin_uid: UID;
+  target_uid: UID;
+  distance: DistanceMeters;
+}
+
+export interface DistanceMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
+  origin_uid: UID;
+  target_uid: UID;
+  distance: DistanceMeters;
+}
+
+export interface DistanceMeters$Exact extends OCCIDAtomicValue<"DistanceMeters", number> {}
+
+export type DistanceMeters$Input = number;
+
+export interface DocumentMedia$Exact extends OCCIDModelValue<"DocumentMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface DocumentMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
 }
 
 export interface Domain$Exact extends OCCIDModelValue<"Domain"> {
@@ -2849,8 +3267,6 @@ export interface Drone$Exact extends OCCIDModelValue<"Drone"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -2876,8 +3292,6 @@ export interface Drone$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType;
@@ -2955,30 +3369,62 @@ export interface EffectsPayload$Input {
   payload_plan?: PayloadPlan | null;
 }
 
+export interface ElectricCharge$Exact extends OCCIDModelValue<"ElectricCharge"> {
+
+}
+
+export interface ElectricCharge$Input {
+
+}
+
+export interface ElectricCurrent$Exact extends OCCIDModelValue<"ElectricCurrent"> {
+
+}
+
+export interface ElectricCurrent$Input {
+
+}
+
+export interface ElectricPotential$Exact extends OCCIDModelValue<"ElectricPotential"> {
+
+}
+
+export interface ElectricPotential$Input {
+
+}
+
+export interface ElectricPower$Exact extends OCCIDModelValue<"ElectricPower"> {
+
+}
+
+export interface ElectricPower$Input {
+
+}
+
 export interface ElectricalResourceState$Exact extends OCCIDModelValue<"ElectricalResourceState"> {
   source_uid: UID | null;
-  voltage_v: number | null;
-  current_a: number | null;
-  power_w: number | null;
-  consumed_mah: number | null;
-  consumed_mwh: number | null;
-  consumed_ah: number | null;
-  remaining_pct: number | null;
-  remaining_capacity: number | null;
-  temperature_deg_c: number | null;
+  potential: Volts | null;
+  current: Amperes | null;
+  power: Watts | null;
+  consumed_charge: AmpereHours | null;
+  consumed_energy: WattHours | null;
+  remaining_ratio: NormalizedRatio | null;
+  remaining_charge: AmpereHours | null;
+  remaining_energy: WattHours | null;
+  temperature: DegreesCelsius | null;
 }
 
 export interface ElectricalResourceState$Input {
   source_uid?: UID | null;
-  voltage_v?: number | null;
-  current_a?: number | null;
-  power_w?: number | null;
-  consumed_mah?: number | null;
-  consumed_mwh?: number | null;
-  consumed_ah?: number | null;
-  remaining_pct?: number | null;
-  remaining_capacity?: number | null;
-  temperature_deg_c?: number | null;
+  potential?: Volts | null;
+  current?: Amperes | null;
+  power?: Watts | null;
+  consumed_charge?: AmpereHours | null;
+  consumed_energy?: WattHours | null;
+  remaining_ratio?: NormalizedRatio | null;
+  remaining_charge?: AmpereHours | null;
+  remaining_energy?: WattHours | null;
+  temperature?: DegreesCelsius | null;
 }
 
 export interface ElrsProfile$Exact extends OCCIDModelValue<"ElrsProfile"> {
@@ -2989,6 +3435,14 @@ export interface ElrsProfile$Exact extends OCCIDModelValue<"ElrsProfile"> {
 export interface ElrsProfile$Input {
   packet_rate_hz?: OCCIDInteger | null;
   telemetry_ratio?: string | null;
+}
+
+export interface Energy$Exact extends OCCIDModelValue<"Energy"> {
+
+}
+
+export interface Energy$Input {
+
 }
 
 export interface Entity$Exact extends OCCIDModelValue<"Entity"> {
@@ -3003,8 +3457,6 @@ export interface Entity$Exact extends OCCIDModelValue<"Entity"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
 }
 
 export interface Entity$Input {
@@ -3019,8 +3471,6 @@ export interface Entity$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
 }
 
 export interface EntityComponentRef$Exact extends OCCIDModelValue<"EntityComponentRef"> {
@@ -3038,7 +3488,7 @@ export interface EntityComponentRef$Input {
 export interface EntityState$Exact extends OCCIDModelValue<"EntityState"> {
   record: Record;
   subject_uid: UID;
-  timestamp: number;
+  timestamp: Timestamp;
   position: LocationState | null;
   motion: VelocityVector | null;
   angular_velocity: AngularVelocityVector | null;
@@ -3048,7 +3498,7 @@ export interface EntityState$Exact extends OCCIDModelValue<"EntityState"> {
   operational_status: EntityOperationalState | null;
   lifecycle_status: EntityLifecycleStatus | null;
   health: HealthSnapshot | null;
-  resources: Supplies | null;
+  resources: InventoryState | null;
   link_states: Map<string, LinkState>;
   control_state: ControlLevel | null;
   source_observation_ts: Timestamp | null;
@@ -3060,7 +3510,7 @@ export interface EntityState$Exact extends OCCIDModelValue<"EntityState"> {
 export interface EntityState$Input {
   record: Record;
   subject_uid: UID;
-  timestamp: number;
+  timestamp: Timestamp;
   position?: LocationState | null;
   motion?: VelocityVector | null;
   angular_velocity?: AngularVelocityVector | null;
@@ -3070,7 +3520,7 @@ export interface EntityState$Input {
   operational_status?: EntityOperationalState | null;
   lifecycle_status?: EntityLifecycleStatus | null;
   health?: HealthSnapshot | null;
-  resources?: Supplies | null;
+  resources?: InventoryState | null;
   link_states: Map<string, LinkState>;
   control_state?: ControlLevel | null;
   source_observation_ts?: Timestamp | null;
@@ -3085,6 +3535,22 @@ export interface Equipment$Exact extends OCCIDModelValue<"Equipment"> {
 
 export interface Equipment$Input {
   capabilities?: Array<Capability> | null;
+}
+
+export interface EquipmentTemplate$Exact extends OCCIDModelValue<"EquipmentTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name: string | null;
+  description: PlainText | null;
+}
+
+export interface EquipmentTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
 }
 
 export interface EsadArming$Exact extends OCCIDModelValue<"EsadArming"> {
@@ -3193,6 +3659,26 @@ export interface ExecutionCommand$Input {
   operation: ExecutionOperation;
 }
 
+export interface ExternalRepresentationSource$Exact extends OCCIDModelValue<"ExternalRepresentationSource"> {
+  uri: string;
+  format: RepresentationFormat;
+}
+
+export interface ExternalRepresentationSource$Input {
+  uri: string;
+  format: RepresentationFormat;
+}
+
+export interface FillStyle$Exact extends OCCIDModelValue<"FillStyle"> {
+  color: ColorRGBA | null;
+  pattern: FillPattern | null;
+}
+
+export interface FillStyle$Input {
+  color?: ColorRGBA | null;
+  pattern?: FillPattern | null;
+}
+
 export interface Fires$Exact extends OCCIDModelValue<"Fires"> {
   time_usec: OCCIDInteger;
   time_impact_usec: OCCIDInteger;
@@ -3285,10 +3771,16 @@ export interface FlightControlState$Input {
 
 export interface FlightEvent$Exact extends OCCIDModelValue<"FlightEvent"> {
   record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  event: AirMissionEvent;
 }
 
 export interface FlightEvent$Input {
   record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  event: AirMissionEvent;
 }
 
 export interface FlightLevelBand$Exact extends OCCIDModelValue<"FlightLevelBand"> {
@@ -3352,17 +3844,14 @@ export interface FlyingOrg$Exact extends OCCIDModelValue<"FlyingOrg"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc: string | null;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   op_domain: OperationalDomain;
-  air_units: Array<ItemCount>;
 }
 
 export interface FlyingOrg$Input {
@@ -3374,17 +3863,14 @@ export interface FlyingOrg$Input {
   unit_code?: string | null;
   callsign?: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type?: OrgType | null;
   topology?: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc?: string | null;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   op_domain?: OperationalDomain;
-  air_units: Array<ItemCount>;
 }
 
 export interface FpvProfile$Exact extends OCCIDModelValue<"FpvProfile"> {
@@ -3402,6 +3888,14 @@ export interface Frame$Exact extends OCCIDModelValue<"Frame"> {
 }
 
 export interface Frame$Input {
+
+}
+
+export interface Frequency$Exact extends OCCIDModelValue<"Frequency"> {
+
+}
+
+export interface Frequency$Input {
 
 }
 
@@ -3443,14 +3937,14 @@ export interface FrequencyRange$Input {
 
 export interface FuelState$Exact extends OCCIDModelValue<"FuelState"> {
   fuel_type: FuelType;
-  capacity: number | null;
-  remaining: number | null;
+  capacity: Quantity | null;
+  remaining: Quantity | null;
 }
 
 export interface FuelState$Input {
   fuel_type: FuelType;
-  capacity?: number | null;
-  remaining?: number | null;
+  capacity?: Quantity | null;
+  remaining?: Quantity | null;
 }
 
 export interface Function$Exact extends OCCIDModelValue<"Function"> {
@@ -3477,6 +3971,54 @@ export interface GeoArea$Input {
   vertices: Array<GlobalPosition>;
 }
 
+export interface GeoCircle$Exact extends OCCIDModelValue<"GeoCircle"> {
+  center: GlobalPosition;
+  radius: DistanceMeters;
+}
+
+export interface GeoCircle$Input {
+  center: GlobalPosition;
+  radius: DistanceMeters;
+}
+
+export interface GeoGeometryCollection$Exact extends OCCIDModelValue<"GeoGeometryCollection"> {
+  points: Array<GlobalPosition>;
+  paths: Array<GeoPath>;
+  areas: Array<GeoArea>;
+  circles: Array<GeoCircle>;
+}
+
+export interface GeoGeometryCollection$Input {
+  points: Array<GlobalPosition>;
+  paths: Array<GeoPath>;
+  areas: Array<GeoArea>;
+  circles: Array<GeoCircle>;
+}
+
+export interface GeoMultiArea$Exact extends OCCIDModelValue<"GeoMultiArea"> {
+  areas: Array<GeoArea>;
+}
+
+export interface GeoMultiArea$Input {
+  areas: Array<GeoArea>;
+}
+
+export interface GeoMultiPath$Exact extends OCCIDModelValue<"GeoMultiPath"> {
+  paths: Array<GeoPath>;
+}
+
+export interface GeoMultiPath$Input {
+  paths: Array<GeoPath>;
+}
+
+export interface GeoMultiPoint$Exact extends OCCIDModelValue<"GeoMultiPoint"> {
+  points: Array<GlobalPosition>;
+}
+
+export interface GeoMultiPoint$Input {
+  points: Array<GlobalPosition>;
+}
+
 export interface GeoPath$Exact extends OCCIDModelValue<"GeoPath"> {
   points: Array<GlobalPosition>;
 }
@@ -3493,12 +4035,66 @@ export interface GeoPos$Input {
 
 }
 
+export interface GeoRegistration$Exact extends OCCIDModelValue<"GeoRegistration"> {
+  footprint: GeoArea;
+}
+
+export interface GeoRegistration$Input {
+  footprint: GeoArea;
+}
+
 export interface Geometry$Exact extends OCCIDModelValue<"Geometry"> {
 
 }
 
 export interface Geometry$Input {
 
+}
+
+export interface GeometryGraphic$Exact extends OCCIDModelValue<"GeometryGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  location_uid: UID;
+}
+
+export interface GeometryGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  location_uid: UID;
+}
+
+export interface GeoreferencedMediaGraphic$Exact extends OCCIDModelValue<"GeoreferencedMediaGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  media_uid: UID;
+  registration: GeoRegistration;
+}
+
+export interface GeoreferencedMediaGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  media_uid: UID;
+  registration: GeoRegistration;
 }
 
 export interface GlobalPosition$Exact extends OCCIDModelValue<"GlobalPosition"> {
@@ -3543,6 +4139,48 @@ export interface GnssSolution$Input {
   yaw_deg?: number | null;
 }
 
+export interface Graphic$Exact extends OCCIDModelValue<"Graphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+}
+
+export interface Graphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+}
+
+export interface GraphicLength$Exact extends OCCIDModelValue<"GraphicLength"> {
+  value: number;
+  unit: GraphicLengthUnit;
+}
+
+export interface GraphicLength$Input {
+  value: number;
+  unit: GraphicLengthUnit;
+}
+
+export interface GraphicStyle$Exact extends OCCIDModelValue<"GraphicStyle"> {
+  stroke: StrokeStyle | null;
+  fill: FillStyle | null;
+  text: TextStyle | null;
+}
+
+export interface GraphicStyle$Input {
+  stroke?: StrokeStyle | null;
+  fill?: FillStyle | null;
+  text?: TextStyle | null;
+}
+
 export interface GroundEffects$Exact extends OCCIDModelValue<"GroundEffects"> {
   has_launchers: boolean;
   esad: EsadMunitionStatus | null;
@@ -3579,8 +4217,6 @@ export interface GroundMachine$Exact extends OCCIDModelValue<"GroundMachine"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -3604,8 +4240,6 @@ export interface GroundMachine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -3642,32 +4276,19 @@ export interface GroundOrbatOrg$Exact extends OCCIDModelValue<"GroundOrbatOrg"> 
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc: string | null;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   org_layout: OrgLayout;
   size: OOBSize;
   op_domain: OperationalDomain;
   taskforce: boolean | null;
-  links: Map<string, Link>;
-  tac_elements: Array<OrgComposition>;
-  sup_elements: Array<OrgComposition>;
-  tac_e_comp: Array<ItemCount>;
-  sup_e_comp: Array<ItemCount>;
-  personnel: Array<ItemCount>;
-  vehicles: Array<ItemCount>;
-  equipment: Array<ItemCount>;
-  spacing: number;
+  spacing: DistanceMeters;
   combat_domain: OperationalDomain;
-  ammo: Array<ItemCount>;
-  weapons: Array<ItemCount>;
-  air_units: Array<ItemCount>;
 }
 
 export interface GroundOrbatOrg$Input {
@@ -3679,32 +4300,19 @@ export interface GroundOrbatOrg$Input {
   unit_code?: string | null;
   callsign?: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type?: OrgType | null;
   topology?: OrgTopology;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc?: string | null;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   org_layout?: OrgLayout;
   size: OOBSize;
   op_domain?: OperationalDomain;
   taskforce?: boolean | null;
-  links: Map<string, Link>;
-  tac_elements: Array<OrgComposition>;
-  sup_elements: Array<OrgComposition>;
-  tac_e_comp: Array<ItemCount>;
-  sup_e_comp: Array<ItemCount>;
-  personnel: Array<ItemCount>;
-  vehicles: Array<ItemCount>;
-  equipment: Array<ItemCount>;
-  spacing?: number;
+  spacing: DistanceMeters;
   combat_domain: OperationalDomain;
-  ammo: Array<ItemCount>;
-  weapons: Array<ItemCount>;
-  air_units: Array<ItemCount>;
 }
 
 export interface GroundRobot$Exact extends OCCIDModelValue<"GroundRobot"> {
@@ -3719,8 +4327,6 @@ export interface GroundRobot$Exact extends OCCIDModelValue<"GroundRobot"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -3744,8 +4350,6 @@ export interface GroundRobot$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType;
@@ -3766,13 +4370,11 @@ export interface Group$Exact extends OCCIDModelValue<"Group"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  orglevel: OrgLevel;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
 }
 
 export interface Group$Input {
@@ -3783,14 +4385,12 @@ export interface Group$Input {
   name?: string | null;
   unit_code?: string | null;
   callsign?: string | null;
-  org_level: OrgLevel;
-  org_rank: OCCIDInteger;
+  org_level?: OrgLevel;
   org_type?: OrgType | null;
   topology?: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  orglevel?: OrgLevel;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
 }
 
 export interface GroupFlightPlan$Exact extends OCCIDModelValue<"GroupFlightPlan"> {
@@ -3871,6 +4471,10 @@ export interface HealthSnapshot$Input {
   alerts: Array<HealthAlert>;
 }
 
+export interface Hertz$Exact extends OCCIDAtomicValue<"Hertz", number> {}
+
+export type Hertz$Input = number;
+
 export interface HumanTextMessage$Exact extends OCCIDModelValue<"HumanTextMessage"> {
   src: UID;
   dst: UID;
@@ -3917,6 +4521,20 @@ export interface ID$Input {
 
 }
 
+export interface IdentifiedRepresentation$Exact extends OCCIDModelValue<"IdentifiedRepresentation"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+}
+
+export interface IdentifiedRepresentation$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+}
+
 export interface Identity$Exact extends OCCIDModelValue<"Identity"> {
 
 }
@@ -3941,6 +4559,32 @@ export interface IdentityBootstrap$Input {
   entity_id: NamespacedIntID<"Entity">;
   organization_uid: UID;
   organization_id: NamespacedIntID<"Organization">;
+}
+
+export interface ImageMedia$Exact extends OCCIDModelValue<"ImageMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface ImageMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
 }
 
 export interface ImageSensor$Exact extends OCCIDModelValue<"ImageSensor"> {
@@ -4031,6 +4675,14 @@ export interface Internal$Input {
 
 }
 
+export interface InventoryState$Exact extends OCCIDModelValue<"InventoryState"> {
+  holdings: Array<ResourceHolding>;
+}
+
+export interface InventoryState$Input {
+  holdings: Array<ResourceHolding>;
+}
+
 export interface IsrObservation$Exact extends OCCIDModelValue<"IsrObservation"> {
   record: Record;
   uid: UID;
@@ -4108,13 +4760,13 @@ export interface Item$Input {
 }
 
 export interface ItemCount$Exact extends OCCIDModelValue<"ItemCount"> {
-  item_type: string;
-  qty: OCCIDInteger;
+  item_uid: UID;
+  qty: Count;
 }
 
 export interface ItemCount$Input {
-  item_type: string;
-  qty?: OCCIDInteger;
+  item_uid: UID;
+  qty: Count;
 }
 
 export interface Kinematic$Exact extends OCCIDModelValue<"Kinematic"> {
@@ -4123,6 +4775,70 @@ export interface Kinematic$Exact extends OCCIDModelValue<"Kinematic"> {
 
 export interface Kinematic$Input {
 
+}
+
+export interface LabelGraphic$Exact extends OCCIDModelValue<"LabelGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: PlainText;
+}
+
+export interface LabelGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: PlainText;
+}
+
+export interface LatitudeLongitudeMapGrid$Exact extends OCCIDModelValue<"LatitudeLongitudeMapGrid"> {
+  style: GraphicStyle | null;
+  interval: AngleDegrees;
+}
+
+export interface LatitudeLongitudeMapGrid$Input {
+  style?: GraphicStyle | null;
+  interval: AngleDegrees;
+}
+
+export interface Layer$Exact extends OCCIDModelValue<"Layer"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent: TimeRange | null;
+}
+
+export interface Layer$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent?: TimeRange | null;
+}
+
+export interface LayerView$Exact extends OCCIDModelValue<"LayerView"> {
+  layer_uid: UID;
+  visible: boolean;
+  opacity: Opacity | null;
+}
+
+export interface LayerView$Input {
+  layer_uid: UID;
+  visible: boolean;
+  opacity?: Opacity | null;
 }
 
 export interface Lease$Exact extends OCCIDModelValue<"Lease"> {
@@ -4245,6 +4961,58 @@ export interface LinkState$Input {
   counters?: LinkCounters | null;
 }
 
+export interface LiveAudioStream$Exact extends OCCIDModelValue<"LiveAudioStream"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface LiveAudioStream$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface LiveVideoStream$Exact extends OCCIDModelValue<"LiveVideoStream"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface LiveVideoStream$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
 export interface LoRaProfile$Exact extends OCCIDModelValue<"LoRaProfile"> {
   spreading_factor: OCCIDInteger | null;
   bandwidth_mhz: number | null;
@@ -4269,6 +5037,20 @@ export interface LocalDirection$Input {
   azimuth: number;
   elevation: number;
   slant_range?: number | null;
+}
+
+export interface LocalMapGrid$Exact extends OCCIDModelValue<"LocalMapGrid"> {
+  style: GraphicStyle | null;
+  origin: GlobalPosition;
+  interval: DistanceMeters;
+  bearing: AngleDegrees;
+}
+
+export interface LocalMapGrid$Input {
+  style?: GraphicStyle | null;
+  origin: GlobalPosition;
+  interval: DistanceMeters;
+  bearing: AngleDegrees;
 }
 
 export interface LocalPos$Exact extends OCCIDModelValue<"LocalPos"> {
@@ -4299,7 +5081,6 @@ export interface Location$Exact extends OCCIDModelValue<"Location"> {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name: string | null;
-  symbology: Symbology | null;
 }
 
 export interface Location$Input {
@@ -4308,7 +5089,6 @@ export interface Location$Input {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name?: string | null;
-  symbology?: Symbology | null;
 }
 
 export interface LocationState$Exact extends OCCIDModelValue<"LocationState"> {
@@ -4367,6 +5147,16 @@ export interface LoiterOrbit$Input {
   pattern: OrbitPattern;
 }
 
+export interface MGRSMapGrid$Exact extends OCCIDModelValue<"MGRSMapGrid"> {
+  style: GraphicStyle | null;
+  interval: DistanceMeters;
+}
+
+export interface MGRSMapGrid$Input {
+  style?: GraphicStyle | null;
+  interval: DistanceMeters;
+}
+
 export interface Machine$Exact extends OCCIDModelValue<"Machine"> {
   capabilities: Array<Capability> | null;
   record: Record;
@@ -4379,8 +5169,6 @@ export interface Machine$Exact extends OCCIDModelValue<"Machine"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -4399,8 +5187,6 @@ export interface Machine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -4421,13 +5207,46 @@ export interface MaintenanceStatus$Input {
   note?: string | null;
 }
 
+export interface MapGrid$Exact extends OCCIDModelValue<"MapGrid"> {
+  style: GraphicStyle | null;
+}
+
+export interface MapGrid$Input {
+  style?: GraphicStyle | null;
+}
+
+export interface MapView$Exact extends OCCIDModelValue<"MapView"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MapView">;
+  focus: GlobalPosition | null;
+  extent: GeoArea | null;
+  layers: Array<LayerView>;
+  grid: MapGrid | null;
+  bearing: AngleDegrees | null;
+}
+
+export interface MapView$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MapView">;
+  focus?: GlobalPosition | null;
+  extent?: GeoArea | null;
+  layers: Array<LayerView>;
+  grid?: MapGrid | null;
+  bearing?: AngleDegrees | null;
+}
+
 export interface Mark$Exact extends OCCIDModelValue<"Mark"> {
   capabilities: Array<Capability> | null;
   record: Record;
   uid: UID;
   id: NamespacedIntID<"Location">;
   name: string | null;
-  symbology: Symbology | null;
   position: GlobalPosition;
 }
 
@@ -4437,9 +5256,12 @@ export interface Mark$Input {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name?: string | null;
-  symbology?: Symbology | null;
   position: GlobalPosition;
 }
+
+export interface MarkdownText$Exact extends OCCIDAtomicValue<"MarkdownText", string> {}
+
+export type MarkdownText$Input = string;
 
 export interface Measurement$Exact extends OCCIDModelValue<"Measurement"> {
 
@@ -4447,6 +5269,28 @@ export interface Measurement$Exact extends OCCIDModelValue<"Measurement"> {
 
 export interface Measurement$Input {
 
+}
+
+export interface MeasurementGraphic$Exact extends OCCIDModelValue<"MeasurementGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  measurement_uid: UID;
+}
+
+export interface MeasurementGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  measurement_uid: UID;
 }
 
 export interface MeasurementQuality$Exact extends OCCIDModelValue<"MeasurementQuality"> {
@@ -4470,33 +5314,77 @@ export interface MeasurementQuality$Input {
 }
 
 export interface Media$Exact extends OCCIDModelValue<"Media"> {
-
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
 }
 
 export interface Media$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+}
 
+export interface MediaGraphic$Exact extends OCCIDModelValue<"MediaGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  anchor: AnnotationAnchor;
+  media_uid: UID;
+}
+
+export interface MediaGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  anchor: AnnotationAnchor;
+  media_uid: UID;
 }
 
 export interface MediaItem$Exact extends OCCIDModelValue<"MediaItem"> {
   record: Record;
   uid: UID;
+  name: string | null;
+  description: PlainText | null;
   id: NamespacedIntID<"MediaItem">;
-  media_type: MediaType;
   uri: string;
-  label: string | null;
-  size_bytes: OCCIDInteger | null;
+  size: ByteCount | null;
   content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
 }
 
 export interface MediaItem$Input {
   record: Record;
   uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
   id: NamespacedIntID<"MediaItem">;
-  media_type: MediaType;
   uri: string;
-  label?: string | null;
-  size_bytes?: OCCIDInteger | null;
+  size?: ByteCount | null;
   content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface MediaRepresentationSource$Exact extends OCCIDModelValue<"MediaRepresentationSource"> {
+  media_uid: UID;
+  registration: GeoRegistration | null;
+}
+
+export interface MediaRepresentationSource$Input {
+  media_uid: UID;
+  registration?: GeoRegistration | null;
 }
 
 export interface MeshLink$Exact extends OCCIDModelValue<"MeshLink"> {
@@ -4693,6 +5581,22 @@ export interface MetadataValue$Input {
   bool?: boolean | null;
 }
 
+export interface MilitaryAffiliation$Exact extends OCCIDModelValue<"MilitaryAffiliation"> {
+  observer_uid: UID;
+  subject_uid: UID;
+  identity: StandardIdentity;
+  since_ts: Timestamp | null;
+  until_ts: Timestamp | null;
+}
+
+export interface MilitaryAffiliation$Input {
+  observer_uid: UID;
+  subject_uid: UID;
+  identity: StandardIdentity;
+  since_ts?: Timestamp | null;
+  until_ts?: Timestamp | null;
+}
+
 export interface MilitaryAirMachine$Exact extends OCCIDModelValue<"MilitaryAirMachine"> {
   capabilities: Array<Capability> | null;
   record: Record;
@@ -4705,8 +5609,6 @@ export interface MilitaryAirMachine$Exact extends OCCIDModelValue<"MilitaryAirMa
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -4732,8 +5634,6 @@ export interface MilitaryAirMachine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -4793,8 +5693,6 @@ export interface MilitaryGroundMachine$Exact extends OCCIDModelValue<"MilitaryGr
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -4820,8 +5718,6 @@ export interface MilitaryGroundMachine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType;
@@ -4847,8 +5743,6 @@ export interface MilitaryMachine$Exact extends OCCIDModelValue<"MilitaryMachine"
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -4868,8 +5762,6 @@ export interface MilitaryMachine$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -4886,15 +5778,13 @@ export interface MilitaryOrg$Exact extends OCCIDModelValue<"MilitaryOrg"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc: string | null;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
   category: NATOUnitCategory | null;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
 }
 
 export interface MilitaryOrg$Input {
@@ -4906,15 +5796,69 @@ export interface MilitaryOrg$Input {
   unit_code?: string | null;
   callsign?: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type?: OrgType | null;
   topology?: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc?: string | null;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
   category?: NATOUnitCategory | null;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
+}
+
+export interface MilitaryOrgTemplate$Exact extends OCCIDModelValue<"MilitaryOrgTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OrgTemplate">;
+  name: string | null;
+  description: PlainText | null;
+  topology: OrgTopology | null;
+  resource_requirements: Array<ResourceRequirement>;
+  category: NATOUnitCategory;
+  size: OOBSize;
+  op_domain: OperationalDomain;
+  tactical_elements: Array<OrgComposition>;
+  support_elements: Array<OrgComposition>;
+}
+
+export interface MilitaryOrgTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OrgTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
+  topology?: OrgTopology | null;
+  resource_requirements: Array<ResourceRequirement>;
+  category: NATOUnitCategory;
+  size: OOBSize;
+  op_domain: OperationalDomain;
+  tactical_elements: Array<OrgComposition>;
+  support_elements: Array<OrgComposition>;
+}
+
+export interface MilitaryOrganizationState$Exact extends OCCIDModelValue<"MilitaryOrganizationState"> {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  position: LocationState | null;
+  operational_status: OrganizationOperationalState | null;
+  readiness: ReadinessLevel | null;
+  inventory: InventoryState | null;
+  health: HealthSnapshot | null;
+  reinforcement_status: ReinforcementStatus | null;
+  strength: MilitaryStrength | null;
+}
+
+export interface MilitaryOrganizationState$Input {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  position?: LocationState | null;
+  operational_status?: OrganizationOperationalState | null;
+  readiness?: ReadinessLevel | null;
+  inventory?: InventoryState | null;
+  health?: HealthSnapshot | null;
+  reinforcement_status?: ReinforcementStatus | null;
+  strength?: MilitaryStrength | null;
 }
 
 export interface MilitaryPerson$Exact extends OCCIDModelValue<"MilitaryPerson"> {
@@ -4929,8 +5873,6 @@ export interface MilitaryPerson$Exact extends OCCIDModelValue<"MilitaryPerson"> 
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   role: string;
   op_domain: OperationalDomain;
   propulsion: PropulsionType;
@@ -4954,8 +5896,6 @@ export interface MilitaryPerson$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   role: string;
   op_domain?: OperationalDomain;
   propulsion?: PropulsionType;
@@ -5021,6 +5961,70 @@ export interface MilitaryRadioProfile$Input {
   bands: Array<NATORadioBands>;
 }
 
+export interface MilitaryStrength$Exact extends OCCIDModelValue<"MilitaryStrength"> {
+  overall: StrengthCondition | null;
+  personnel: StrengthCondition | null;
+  equipment: StrengthCondition | null;
+}
+
+export interface MilitaryStrength$Input {
+  overall?: StrengthCondition | null;
+  personnel?: StrengthCondition | null;
+  equipment?: StrengthCondition | null;
+}
+
+export interface MilitarySupplyTemplate$Exact extends OCCIDModelValue<"MilitarySupplyTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name: string | null;
+  description: PlainText | null;
+  quantity_unit: QuantityUnit | null;
+  supply_class: NATOSupplyClass;
+}
+
+export interface MilitarySupplyTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
+  quantity_unit?: QuantityUnit | null;
+  supply_class: NATOSupplyClass;
+}
+
+export interface MilitarySymbolGraphic$Exact extends OCCIDModelValue<"MilitarySymbolGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  subject_uid: UID;
+  symbology: MilitarySymbology;
+}
+
+export interface MilitarySymbolGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  subject_uid: UID;
+  symbology: MilitarySymbology;
+}
+
+export interface MilitarySymbology$Exact extends OCCIDModelValue<"MilitarySymbology"> {
+  sidc: SIDC;
+}
+
+export interface MilitarySymbology$Input {
+  sidc: SIDC;
+}
+
 export interface MilitaryUnitFlightPlan$Exact extends OCCIDModelValue<"MilitaryUnitFlightPlan"> {
   record: Record;
   uid: UID;
@@ -5059,10 +6063,14 @@ export interface MilitaryUnitFlightPlan$Input {
 
 export interface MissionEvent$Exact extends OCCIDModelValue<"MissionEvent"> {
   record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
 }
 
 export interface MissionEvent$Input {
   record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
 }
 
 export interface MissionRouteGeometry$Exact extends OCCIDModelValue<"MissionRouteGeometry"> {
@@ -5241,6 +6249,34 @@ export interface NodeHeartbeat$Input {
   state: LinkState;
 }
 
+export interface NormalizedRatio$Exact extends OCCIDAtomicValue<"NormalizedRatio", number> {}
+
+export type NormalizedRatio$Input = number;
+
+export interface NoteGraphic$Exact extends OCCIDModelValue<"NoteGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: Text;
+}
+
+export interface NoteGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  anchor: AnnotationAnchor;
+  text: Text;
+}
+
 export interface NumericRange$Exact extends OCCIDModelValue<"NumericRange"> {
   min_value: number | null;
   max_value: number | null;
@@ -5367,6 +6403,54 @@ export interface ObserverSource$Input {
   can_zoom?: boolean;
 }
 
+export interface Opacity$Exact extends OCCIDAtomicValue<"Opacity", number> {}
+
+export type Opacity$Input = number;
+
+export interface Operation$Exact extends OCCIDModelValue<"Operation"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name: string | null;
+  description: PlainText | null;
+  reality: Reality;
+  temporal_extent: TimeRange | null;
+  member_uids: Array<UID>;
+}
+
+export interface Operation$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name?: string | null;
+  description?: PlainText | null;
+  reality: Reality;
+  temporal_extent?: TimeRange | null;
+  member_uids: Array<UID>;
+}
+
+export interface OperationalContext$Exact extends OCCIDModelValue<"OperationalContext"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name: string | null;
+  description: PlainText | null;
+  reality: Reality;
+  temporal_extent: TimeRange | null;
+  member_uids: Array<UID>;
+}
+
+export interface OperationalContext$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name?: string | null;
+  description?: PlainText | null;
+  reality: Reality;
+  temporal_extent?: TimeRange | null;
+  member_uids: Array<UID>;
+}
+
 export interface OperationalPlan$Exact extends OCCIDModelValue<"OperationalPlan"> {
   record: Record;
   uid: UID;
@@ -5406,28 +6490,18 @@ export interface OrbatOrg$Exact extends OCCIDModelValue<"OrbatOrg"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc: string | null;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   org_layout: OrgLayout;
   size: OOBSize;
   op_domain: OperationalDomain;
   taskforce: boolean | null;
-  links: Map<string, Link>;
-  tac_elements: Array<OrgComposition>;
-  sup_elements: Array<OrgComposition>;
-  tac_e_comp: Array<ItemCount>;
-  sup_e_comp: Array<ItemCount>;
-  personnel: Array<ItemCount>;
-  vehicles: Array<ItemCount>;
-  equipment: Array<ItemCount>;
-  spacing: number;
+  spacing: DistanceMeters;
 }
 
 export interface OrbatOrg$Input {
@@ -5439,28 +6513,18 @@ export interface OrbatOrg$Input {
   unit_code?: string | null;
   callsign?: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type?: OrgType | null;
   topology?: OrgTopology;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  sidc?: string | null;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
   category: NATOUnitCategory;
-  link_loadout: Array<ItemCount>;
+  resource_requirements: Array<ResourceRequirement>;
   org_layout?: OrgLayout;
   size: OOBSize;
   op_domain: OperationalDomain;
   taskforce?: boolean | null;
-  links: Map<string, Link>;
-  tac_elements: Array<OrgComposition>;
-  sup_elements: Array<OrgComposition>;
-  tac_e_comp: Array<ItemCount>;
-  sup_e_comp: Array<ItemCount>;
-  personnel: Array<ItemCount>;
-  vehicles: Array<ItemCount>;
-  equipment: Array<ItemCount>;
-  spacing?: number;
+  spacing: DistanceMeters;
 }
 
 export interface Orbital$Exact extends OCCIDModelValue<"Orbital"> {
@@ -5472,29 +6536,45 @@ export interface Orbital$Input {
 }
 
 export interface OrgComposition$Exact extends OCCIDModelValue<"OrgComposition"> {
-  category: NATOUnitCategory | null;
-  label: string | null;
-  qty: OCCIDInteger;
+  org_template_uid: UID;
+  quantity: Count;
 }
 
 export interface OrgComposition$Input {
-  category?: NATOUnitCategory | null;
-  label?: string | null;
-  qty?: OCCIDInteger;
+  org_template_uid: UID;
+  quantity: Count;
 }
 
 export interface OrgRole$Exact extends OCCIDModelValue<"OrgRole"> {
-  role: string;
+  role: Role;
   authority: Authority;
   assignment: Assignment;
-  rank: OCCIDInteger;
 }
 
 export interface OrgRole$Input {
-  role: string;
+  role: Role;
   authority: Authority;
   assignment: Assignment;
-  rank: OCCIDInteger;
+}
+
+export interface OrgTemplate$Exact extends OCCIDModelValue<"OrgTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OrgTemplate">;
+  name: string | null;
+  description: PlainText | null;
+  topology: OrgTopology | null;
+  resource_requirements: Array<ResourceRequirement>;
+}
+
+export interface OrgTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OrgTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
+  topology?: OrgTopology | null;
+  resource_requirements: Array<ResourceRequirement>;
 }
 
 export interface Organization$Exact extends OCCIDModelValue<"Organization"> {
@@ -5506,12 +6586,11 @@ export interface Organization$Exact extends OCCIDModelValue<"Organization"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
 }
 
 export interface Organization$Input {
@@ -5523,12 +6602,53 @@ export interface Organization$Input {
   unit_code?: string | null;
   callsign?: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type?: OrgType | null;
   topology?: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
+}
+
+export interface OrganizationState$Exact extends OCCIDModelValue<"OrganizationState"> {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  position: LocationState | null;
+  operational_status: OrganizationOperationalState | null;
+  readiness: ReadinessLevel | null;
+  inventory: InventoryState | null;
+  health: HealthSnapshot | null;
+}
+
+export interface OrganizationState$Input {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+  position?: LocationState | null;
+  operational_status?: OrganizationOperationalState | null;
+  readiness?: ReadinessLevel | null;
+  inventory?: InventoryState | null;
+  health?: HealthSnapshot | null;
+}
+
+export interface OverlayLayer$Exact extends OCCIDModelValue<"OverlayLayer"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent: TimeRange | null;
+  graphic_uids: Array<UID>;
+}
+
+export interface OverlayLayer$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent?: TimeRange | null;
+  graphic_uids: Array<UID>;
 }
 
 export interface Parameter$Exact extends OCCIDModelValue<"Parameter"> {
@@ -5547,7 +6667,6 @@ export interface Path$Exact extends OCCIDModelValue<"Path"> {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name: string | null;
-  symbology: Symbology | null;
   path: GeoPath;
 }
 
@@ -5557,8 +6676,17 @@ export interface Path$Input {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name?: string | null;
-  symbology?: Symbology | null;
   path: GeoPath;
+}
+
+export interface PathAnchor$Exact extends OCCIDModelValue<"PathAnchor"> {
+  path_uid: UID;
+  distance_from_start: DistanceMeters;
+}
+
+export interface PathAnchor$Input {
+  path_uid: UID;
+  distance_from_start: DistanceMeters;
 }
 
 export interface Payload$Exact extends OCCIDModelValue<"Payload"> {
@@ -5625,8 +6753,6 @@ export interface Person$Exact extends OCCIDModelValue<"Person"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   role: string;
   op_domain: OperationalDomain;
   propulsion: PropulsionType;
@@ -5647,8 +6773,6 @@ export interface Person$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   role: string;
   op_domain?: OperationalDomain;
   propulsion?: PropulsionType;
@@ -5656,6 +6780,52 @@ export interface Person$Input {
   navaids: Array<NavAids>;
   sensors: Map<string, SensorPayload>;
 }
+
+export interface PersonnelTemplate$Exact extends OCCIDModelValue<"PersonnelTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name: string | null;
+  description: PlainText | null;
+}
+
+export interface PersonnelTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
+}
+
+export interface Photograph$Exact extends OCCIDModelValue<"Photograph"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface Photograph$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface PlainText$Exact extends OCCIDAtomicValue<"PlainText", string> {}
+
+export type PlainText$Input = string;
 
 export interface Plan$Exact extends OCCIDModelValue<"Plan"> {
   record: Record;
@@ -5737,8 +6907,6 @@ export interface Platform$Exact extends OCCIDModelValue<"Platform"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -5757,12 +6925,36 @@ export interface Platform$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
   components: Array<EntityComponentRef>;
+}
+
+export interface PointCloudMedia$Exact extends OCCIDModelValue<"PointCloudMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface PointCloudMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
 }
 
 export interface Pose$Exact extends OCCIDModelValue<"Pose"> {
@@ -5781,18 +6973,26 @@ export interface Position$Input {
 
 }
 
+export interface PositionAnchor$Exact extends OCCIDModelValue<"PositionAnchor"> {
+  position: GlobalPosition;
+}
+
+export interface PositionAnchor$Input {
+  position: GlobalPosition;
+}
+
 export interface PowerSource$Exact extends OCCIDModelValue<"PowerSource"> {
-  source_ref: string;
+  source_uid: UID | null;
   power_type: PowerType;
   status: PowerStatus;
-  remaining_pct: number | null;
+  remaining_ratio: NormalizedRatio | null;
 }
 
 export interface PowerSource$Input {
-  source_ref: string;
+  source_uid?: UID | null;
   power_type: PowerType;
   status: PowerStatus;
-  remaining_pct?: number | null;
+  remaining_ratio?: NormalizedRatio | null;
 }
 
 export interface PowerState$Exact extends OCCIDModelValue<"PowerState"> {
@@ -5899,6 +7099,14 @@ export interface ProtocolPayload$Input {
   content_type?: string | null;
   text?: string | null;
   data?: Uint8Array | null;
+}
+
+export interface Quantity$Exact extends OCCIDModelValue<"Quantity"> {
+
+}
+
+export interface Quantity$Input {
+
 }
 
 export interface RFSensor$Exact extends OCCIDModelValue<"RFSensor"> {
@@ -6029,11 +7237,39 @@ export interface RadioProfile$Input {
   fpv?: FpvProfile | null;
 }
 
+export interface RadiusMeasurement$Exact extends OCCIDModelValue<"RadiusMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+  center_uid: UID;
+  radius: DistanceMeters;
+}
+
+export interface RadiusMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
+  center_uid: UID;
+  radius: DistanceMeters;
+}
+
 export interface Range$Exact extends OCCIDModelValue<"Range"> {
 
 }
 
 export interface Range$Input {
+
+}
+
+export interface Ratio$Exact extends OCCIDModelValue<"Ratio"> {
+
+}
+
+export interface Ratio$Input {
 
 }
 
@@ -6073,13 +7309,32 @@ export interface Record$Input {
   provenance: Array<string>;
 }
 
+export interface ReferenceLayer$Exact extends OCCIDModelValue<"ReferenceLayer"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent: TimeRange | null;
+  source: RepresentationSource;
+}
+
+export interface ReferenceLayer$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Layer">;
+  temporal_extent?: TimeRange | null;
+  source: RepresentationSource;
+}
+
 export interface Region$Exact extends OCCIDModelValue<"Region"> {
   capabilities: Array<Capability> | null;
   record: Record;
   uid: UID;
   id: NamespacedIntID<"Location">;
   name: string | null;
-  symbology: Symbology | null;
   area: GeoArea;
 }
 
@@ -6089,7 +7344,6 @@ export interface Region$Input {
   uid: UID;
   id: NamespacedIntID<"Location">;
   name?: string | null;
-  symbology?: Symbology | null;
   area: GeoArea;
 }
 
@@ -6127,6 +7381,22 @@ export interface RemoteControl$Input {
   mode_ranges: Array<ModeRange>;
 }
 
+export interface Representation$Exact extends OCCIDModelValue<"Representation"> {
+
+}
+
+export interface Representation$Input {
+
+}
+
+export interface RepresentationSource$Exact extends OCCIDModelValue<"RepresentationSource"> {
+
+}
+
+export interface RepresentationSource$Input {
+
+}
+
 export interface Resource$Exact extends OCCIDModelValue<"Resource"> {
 
 }
@@ -6149,6 +7419,46 @@ export interface ResourceCommand$Input {
   operation: ResourceOperation;
   resource_uid?: UID | null;
   quantity?: number | null;
+}
+
+export interface ResourceHolding$Exact extends OCCIDModelValue<"ResourceHolding"> {
+  resource_definition_uid: UID;
+  on_hand: Quantity;
+  available: Quantity | null;
+  committed: Quantity | null;
+}
+
+export interface ResourceHolding$Input {
+  resource_definition_uid: UID;
+  on_hand: Quantity;
+  available?: Quantity | null;
+  committed?: Quantity | null;
+}
+
+export interface ResourceRequirement$Exact extends OCCIDModelValue<"ResourceRequirement"> {
+  resource_definition_uid: UID;
+  quantity: Quantity;
+}
+
+export interface ResourceRequirement$Input {
+  resource_definition_uid: UID;
+  quantity: Quantity;
+}
+
+export interface ResourceTemplate$Exact extends OCCIDModelValue<"ResourceTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name: string | null;
+  description: PlainText | null;
+}
+
+export interface ResourceTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
 }
 
 export interface ResponseMessage$Exact extends OCCIDModelValue<"ResponseMessage"> {
@@ -6191,8 +7501,6 @@ export interface Robot$Exact extends OCCIDModelValue<"Robot"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -6213,8 +7521,6 @@ export interface Robot$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -6289,6 +7595,26 @@ export interface Roster$Input {
   roster: Map<UID, OrgRole>;
 }
 
+export interface RouteMeasurement$Exact extends OCCIDModelValue<"RouteMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+  path_uid: UID;
+  distance: DistanceMeters;
+}
+
+export interface RouteMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
+  path_uid: UID;
+  distance: DistanceMeters;
+}
+
 export interface RoutePlan$Exact extends OCCIDModelValue<"RoutePlan"> {
   record: Record;
   uid: UID;
@@ -6351,6 +7677,38 @@ export interface RwsState$Input {
   time_usec: OCCIDInteger;
   weapon_string: string;
   arming_state: RwsArmingState;
+}
+
+export interface SIDC$Exact extends OCCIDModelValue<"SIDC"> {
+  value: string;
+  standard: SymbologyStandard;
+}
+
+export interface SIDC$Input {
+  value: string;
+  standard: SymbologyStandard;
+}
+
+export interface Scenario$Exact extends OCCIDModelValue<"Scenario"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name: string | null;
+  description: PlainText | null;
+  reality: Reality;
+  temporal_extent: TimeRange | null;
+  member_uids: Array<UID>;
+}
+
+export interface Scenario$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"OperationalContext">;
+  name?: string | null;
+  description?: PlainText | null;
+  reality: Reality;
+  temporal_extent?: TimeRange | null;
+  member_uids: Array<UID>;
 }
 
 export interface SemanticType$Exact extends OCCIDModelValue<"SemanticType"> {
@@ -6435,6 +7793,26 @@ export interface Shape$Input {
 
 }
 
+export interface Side$Exact extends OCCIDModelValue<"Side"> {
+  capabilities: Array<Capability> | null;
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Side">;
+  name: string | null;
+  description: PlainText | null;
+  member_uids: Array<UID>;
+}
+
+export interface Side$Input {
+  capabilities?: Array<Capability> | null;
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Side">;
+  name?: string | null;
+  description?: PlainText | null;
+  member_uids: Array<UID>;
+}
+
 export interface SignalQuality$Exact extends OCCIDModelValue<"SignalQuality"> {
   strength_dbm: number | null;
   snr_db: number | null;
@@ -6445,6 +7823,22 @@ export interface SignalQuality$Input {
   strength_dbm?: number | null;
   snr_db?: number | null;
   quality_ratio?: number | null;
+}
+
+export interface SpatialMeasurement$Exact extends OCCIDModelValue<"SpatialMeasurement"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name: string | null;
+  measured_ts: Timestamp | null;
+}
+
+export interface SpatialMeasurement$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"SpatialMeasurement">;
+  name?: string | null;
+  measured_ts?: Timestamp | null;
 }
 
 export interface SpatialRelationship$Exact extends OCCIDModelValue<"SpatialRelationship"> {
@@ -6471,6 +7865,62 @@ export interface SpatialStruct$Exact extends OCCIDModelValue<"SpatialStruct"> {
 
 export interface SpatialStruct$Input {
 
+}
+
+export interface SpectrumMedia$Exact extends OCCIDModelValue<"SpectrumMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface SpectrumMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface SpectrumRecording$Exact extends OCCIDModelValue<"SpectrumRecording"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+  frequency_range: FrequencyRange | null;
+  duration: Duration | null;
+}
+
+export interface SpectrumRecording$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+  frequency_range?: FrequencyRange | null;
+  duration?: Duration | null;
 }
 
 export interface SplashCorrection$Exact extends OCCIDModelValue<"SplashCorrection"> {
@@ -6525,9 +7975,47 @@ export interface StateChangeCommand$Input {
   value?: MetadataValue | null;
 }
 
+export interface StillImage$Exact extends OCCIDModelValue<"StillImage"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface StillImage$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
 export interface StringName$Exact extends OCCIDAtomicValue<"StringName", string> {}
 
 export type StringName$Input = string;
+
+export interface StrokeStyle$Exact extends OCCIDModelValue<"StrokeStyle"> {
+  color: ColorRGBA | null;
+  width: GraphicLength | null;
+  pattern: StrokePattern | null;
+}
+
+export interface StrokeStyle$Input {
+  color?: ColorRGBA | null;
+  width?: GraphicLength | null;
+  pattern?: StrokePattern | null;
+}
 
 export interface Struct$Exact extends OCCIDModelValue<"Struct"> {
 
@@ -6543,6 +8031,38 @@ export interface StructPath$Exact extends OCCIDModelValue<"StructPath"> {
 
 export interface StructPath$Input {
 
+}
+
+export interface SubjectAnchor$Exact extends OCCIDModelValue<"SubjectAnchor"> {
+  subject_uid: UID;
+}
+
+export interface SubjectAnchor$Input {
+  subject_uid: UID;
+}
+
+export interface SubjectEvent$Exact extends OCCIDModelValue<"SubjectEvent"> {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+}
+
+export interface SubjectEvent$Input {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+}
+
+export interface SubjectState$Exact extends OCCIDModelValue<"SubjectState"> {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
+}
+
+export interface SubjectState$Input {
+  record: Record;
+  subject_uid: UID;
+  timestamp: Timestamp;
 }
 
 export interface SubsystemHealth$Exact extends OCCIDModelValue<"SubsystemHealth"> {
@@ -6572,23 +8092,89 @@ export interface SuccessCriterion$Input {
 }
 
 export interface Supplies$Exact extends OCCIDModelValue<"Supplies"> {
+  holdings: Array<ResourceHolding>;
   fuel: FuelState | null;
-  stores: Array<ItemCount>;
 }
 
 export interface Supplies$Input {
+  holdings: Array<ResourceHolding>;
   fuel?: FuelState | null;
-  stores: Array<ItemCount>;
+}
+
+export interface SupplyTemplate$Exact extends OCCIDModelValue<"SupplyTemplate"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name: string | null;
+  description: PlainText | null;
+  quantity_unit: QuantityUnit | null;
+}
+
+export interface SupplyTemplate$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"ResourceTemplate">;
+  name?: string | null;
+  description?: PlainText | null;
+  quantity_unit?: QuantityUnit | null;
+}
+
+export interface SymbolGraphic$Exact extends OCCIDModelValue<"SymbolGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  subject_uid: UID;
+  symbology: Symbology;
+}
+
+export interface SymbolGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  subject_uid: UID;
+  symbology: Symbology;
 }
 
 export interface Symbology$Exact extends OCCIDModelValue<"Symbology"> {
-  sidc: string | null;
-  cot: string | null;
+
 }
 
 export interface Symbology$Input {
-  sidc?: string | null;
-  cot?: string | null;
+
+}
+
+export interface TacticalGraphic$Exact extends OCCIDModelValue<"TacticalGraphic"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style: GraphicStyle | null;
+  temporal_extent: TimeRange | null;
+  sidc: SIDC;
+  control_points: Array<GlobalPosition>;
+  status: TacticalGraphicStatus;
+}
+
+export interface TacticalGraphic$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"Graphic">;
+  style?: GraphicStyle | null;
+  temporal_extent?: TimeRange | null;
+  sidc: SIDC;
+  control_points: Array<GlobalPosition>;
+  status?: TacticalGraphicStatus;
 }
 
 export interface TargetBoxCoord$Exact extends OCCIDModelValue<"TargetBoxCoord"> {
@@ -6617,7 +8203,7 @@ export interface TargetCoord$Exact extends OCCIDModelValue<"TargetCoord"> {
   cep_desired_m: number;
   cep_max_m: number;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
 }
 
 export interface TargetCoord$Input {
@@ -6628,7 +8214,7 @@ export interface TargetCoord$Input {
   cep_desired_m: number;
   cep_max_m: number;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
 }
 
 export interface TargetHandover$Exact extends OCCIDModelValue<"TargetHandover"> {
@@ -6642,7 +8228,7 @@ export interface TargetHandover$Exact extends OCCIDModelValue<"TargetHandover"> 
   confidence_score: number;
   authorization: Array<OCCIDInteger>;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
   match_media_type: SensorDataFormat;
 }
 
@@ -6657,7 +8243,7 @@ export interface TargetHandover$Input {
   confidence_score: number;
   authorization: Array<OCCIDInteger>;
   target_class: ObservedObjectType;
-  target_force: Faction;
+  target_force: StandardIdentity;
   match_media_type: SensorDataFormat;
 }
 
@@ -6947,12 +8533,78 @@ export interface TelemetryMessage$Input {
   seq: OCCIDInteger;
 }
 
+export interface Temperature$Exact extends OCCIDModelValue<"Temperature"> {
+
+}
+
+export interface Temperature$Input {
+
+}
+
+export interface Text$Exact extends OCCIDModelValue<"Text"> {
+
+}
+
+export interface Text$Input {
+
+}
+
+export interface TextStyle$Exact extends OCCIDModelValue<"TextStyle"> {
+  color: ColorRGBA | null;
+  background: ColorRGBA | null;
+  size: GraphicLength | null;
+  alignment: TextAlignment | null;
+}
+
+export interface TextStyle$Input {
+  color?: ColorRGBA | null;
+  background?: ColorRGBA | null;
+  size?: GraphicLength | null;
+  alignment?: TextAlignment | null;
+}
+
 export interface Time$Exact extends OCCIDModelValue<"Time"> {
   utime: OCCIDInteger;
 }
 
 export interface Time$Input {
   utime: OCCIDInteger;
+}
+
+export interface TimeRange$Exact extends OCCIDModelValue<"TimeRange"> {
+  start_ts: Timestamp | null;
+  end_ts: Timestamp | null;
+}
+
+export interface TimeRange$Input {
+  start_ts?: Timestamp | null;
+  end_ts?: Timestamp | null;
+}
+
+export interface TimelineEvent$Exact extends OCCIDModelValue<"TimelineEvent"> {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Event">;
+  name: string | null;
+  description: Text | null;
+  temporal_extent: TimeRange;
+  context_uid: UID | null;
+  subject_uids: Array<UID>;
+  location_uids: Array<UID>;
+  media_uids: Array<UID>;
+}
+
+export interface TimelineEvent$Input {
+  record: Record;
+  uid: UID;
+  id: NamespacedIntID<"Event">;
+  name?: string | null;
+  description?: Text | null;
+  temporal_extent: TimeRange;
+  context_uid?: UID | null;
+  subject_uids: Array<UID>;
+  location_uids: Array<UID>;
+  media_uids: Array<UID>;
 }
 
 export interface Timestamp$Exact extends OCCIDModelValue<"Timestamp"> {
@@ -7085,6 +8737,24 @@ export interface UID$Exact extends OCCIDAtomicValue<"UID", Uint8Array> {}
 
 export type UID$Input = Uint8Array;
 
+export interface UTMMapGrid$Exact extends OCCIDModelValue<"UTMMapGrid"> {
+  style: GraphicStyle | null;
+  zone: UTMZone;
+  hemisphere: Hemisphere;
+  interval: DistanceMeters;
+}
+
+export interface UTMMapGrid$Input {
+  style?: GraphicStyle | null;
+  zone: UTMZone;
+  hemisphere: Hemisphere;
+  interval: DistanceMeters;
+}
+
+export interface UTMZone$Exact extends OCCIDAtomicValue<"UTMZone", OCCIDInteger> {}
+
+export type UTMZone$Input = OCCIDInteger;
+
 export interface Uncertainty$Exact extends OCCIDModelValue<"Uncertainty"> {
 
 }
@@ -7102,13 +8772,11 @@ export interface Unit$Exact extends OCCIDModelValue<"Unit"> {
   unit_code: string | null;
   callsign: string | null;
   org_level: OrgLevel;
-  org_rank: OCCIDInteger;
   org_type: OrgType | null;
   topology: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  orglevel: OrgLevel;
+  definition_uid: UID | null;
+  member_uids: Array<UID> | null;
+  roster: Roster | null;
 }
 
 export interface Unit$Input {
@@ -7119,14 +8787,12 @@ export interface Unit$Input {
   name?: string | null;
   unit_code?: string | null;
   callsign?: string | null;
-  org_level: OrgLevel;
-  org_rank: OCCIDInteger;
+  org_level?: OrgLevel;
   org_type?: OrgType | null;
   topology?: OrgTopology | null;
-  elements: Array<UID>;
-  roster: Roster;
-  leases: Array<AttachmentLease>;
-  orglevel?: OrgLevel;
+  definition_uid?: UID | null;
+  member_uids?: Array<UID> | null;
+  roster?: Roster | null;
 }
 
 export interface UnitFlightPlan$Exact extends OCCIDModelValue<"UnitFlightPlan"> {
@@ -7165,6 +8831,16 @@ export interface UnitFlightPlan$Input {
   wp: GeoPath;
 }
 
+export interface UnitQuantity$Exact extends OCCIDModelValue<"UnitQuantity"> {
+  value: number;
+  unit: QuantityUnit;
+}
+
+export interface UnitQuantity$Input {
+  value: number;
+  unit: QuantityUnit;
+}
+
 export interface Validation$Exact extends OCCIDModelValue<"Validation"> {
   condition: Condition;
   status: ValidationStatus;
@@ -7197,8 +8873,6 @@ export interface Vehicle$Exact extends OCCIDModelValue<"Vehicle"> {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology: Symbology | null;
-  display_meta: DisplayMeta | null;
   serial_number: string | null;
   propulsion: PropulsionType;
   machine_type: MachineType | null;
@@ -7217,8 +8891,6 @@ export interface Vehicle$Input {
   tags: Array<string>;
   metadata: Map<string, MetadataValue>;
   relations: Array<DirectedRelationship>;
-  symbology?: Symbology | null;
-  display_meta?: DisplayMeta | null;
   serial_number?: string | null;
   propulsion: PropulsionType;
   machine_type?: MachineType | null;
@@ -7275,6 +8947,88 @@ export interface VideoConfig$Input {
   hls_url?: string | null;
 }
 
+export interface VideoFrame$Exact extends OCCIDModelValue<"VideoFrame"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+  video_uid: UID | null;
+}
+
+export interface VideoFrame$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+  video_uid?: UID | null;
+}
+
+export interface VideoMedia$Exact extends OCCIDModelValue<"VideoMedia"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+}
+
+export interface VideoMedia$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+}
+
+export interface VideoRecording$Exact extends OCCIDModelValue<"VideoRecording"> {
+  record: Record;
+  uid: UID;
+  name: string | null;
+  description: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size: ByteCount | null;
+  content_type: string | null;
+  source_uid: UID | null;
+  captured_ts: Timestamp | null;
+  duration: Duration | null;
+}
+
+export interface VideoRecording$Input {
+  record: Record;
+  uid: UID;
+  name?: string | null;
+  description?: PlainText | null;
+  id: NamespacedIntID<"MediaItem">;
+  uri: string;
+  size?: ByteCount | null;
+  content_type?: string | null;
+  source_uid?: UID | null;
+  captured_ts?: Timestamp | null;
+  duration?: Duration | null;
+}
+
 export interface VisionBox$Exact extends OCCIDModelValue<"VisionBox"> {
   space: DetectionBoxSpace;
   bounds: BoundingBox;
@@ -7325,6 +9079,18 @@ export interface VisionDetectionFrame$Input {
   detections: Array<VisionDetection>;
 }
 
+export interface Volts$Exact extends OCCIDAtomicValue<"Volts", number> {}
+
+export type Volts$Input = number;
+
+export interface WattHours$Exact extends OCCIDAtomicValue<"WattHours", number> {}
+
+export type WattHours$Input = number;
+
+export interface Watts$Exact extends OCCIDAtomicValue<"Watts", number> {}
+
+export type Watts$Input = number;
+
 export interface WeatherLimits$Exact extends OCCIDModelValue<"WeatherLimits"> {
   condition: Condition | null;
   ifr: boolean | null;
@@ -7371,9 +9137,29 @@ export type Airspeed = Airspeed$Exact;
 
 export type AltitudeState = AltitudeState$Exact;
 
+export type AmpereHours = AmpereHours$Exact;
+
+export type Amperes = Amperes$Exact;
+
+export type Angle = Angle$Exact | AngleDegrees$Exact | AngleRadians$Exact;
+
+export type AngleDegrees = AngleDegrees$Exact;
+
+export type AngleRadians = AngleRadians$Exact;
+
 export type AngularVelocityVector = AngularVelocityVector$Exact;
 
+export type AnnotationAnchor = AnnotationAnchor$Exact | PositionAnchor$Exact | SubjectAnchor$Exact | PathAnchor$Exact;
+
+export type AnnotationGraphic = AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact;
+
 export type AprsProfile = AprsProfile$Exact;
+
+export type AreaMeasure = AreaMeasure$Exact | AreaSquareMeters$Exact;
+
+export type AreaMeasurement = AreaMeasurement$Exact;
+
+export type AreaSquareMeters = AreaSquareMeters$Exact;
 
 export type Assessment = Assessment$Exact | IsrResult$Exact;
 
@@ -7381,7 +9167,11 @@ export type Assignment = Assignment$Exact | TaskAssignment$Exact | RoleAssignmen
 
 export type AttachmentLease = AttachmentLease$Exact;
 
-export type Attribute = Attribute$Exact | Symbology$Exact | DisplayMeta$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact;
+export type Attribute = Attribute$Exact | Symbology$Exact | CoTSymbology$Exact | MilitarySymbology$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact;
+
+export type AudioMedia = AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact;
+
+export type AudioRecording = AudioRecording$Exact;
 
 export type Authority = Authority$Exact | CommandAuthority$Exact | Lease$Exact | AttachmentLease$Exact | ControlLease$Exact;
 
@@ -7395,6 +9185,10 @@ export type BattleDamageAssessment = BattleDamageAssessment$Exact;
 
 export type Bearing = Bearing$Exact | LocalDirection$Exact;
 
+export type BearingMeasurement = BearingMeasurement$Exact;
+
+export type BinaryMedia = BinaryMedia$Exact;
+
 export type BooleanLogic = BooleanLogic$Exact;
 
 export type Boundary = Boundary$Exact;
@@ -7402,6 +9196,10 @@ export type Boundary = Boundary$Exact;
 export type Bounding = Bounding$Exact | BoundingBox$Exact;
 
 export type BoundingBox = BoundingBox$Exact;
+
+export type ByteCount = ByteCount$Exact;
+
+export type CalloutGraphic = CalloutGraphic$Exact;
 
 export type Capability = Capability$Exact;
 
@@ -7417,7 +9215,17 @@ export type Classification = Classification$Exact;
 
 export type Cluster = Cluster$Exact;
 
+export type CoTSymbology = CoTSymbology$Exact;
+
+export type Coalition = Coalition$Exact;
+
 export type Collection = Collection$Exact;
+
+export type ColorChannel = ColorChannel$Exact;
+
+export type ColorComponent = ColorComponent$Exact | ColorChannel$Exact;
+
+export type ColorRGBA = ColorRGBA$Exact;
 
 export type CombatTaskProfile = CombatTaskProfile$Exact;
 
@@ -7437,6 +9245,8 @@ export type ConfigurationCommand = ConfigurationCommand$Exact;
 
 export type Constraint = Constraint$Exact | Restriction$Exact | Limitation$Exact | TaskTimeWindow$Exact | WeatherLimits$Exact;
 
+export type Context = Context$Exact | OperationalContext$Exact | Operation$Exact | Scenario$Exact;
+
 export type Control = Control$Exact | Assignment$Exact | TaskAssignment$Exact | RoleAssignment$Exact | FlightAssignment$Exact | Authority$Exact | CommandAuthority$Exact | Lease$Exact | AttachmentLease$Exact | ControlLease$Exact | Constraint$Exact | Restriction$Exact | Limitation$Exact | TaskTimeWindow$Exact | WeatherLimits$Exact | Directive$Exact | Command$Exact | StateChangeCommand$Exact | ProcessControlCommand$Exact | ConfigurationCommand$Exact | MotionCommand$Exact | ResourceCommand$Exact | ExecutionCommand$Exact | Task$Exact | TaskManeuver$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskTransport$Exact | Objective$Exact | Plan$Exact | AirPlan$Exact | GroupFlightPlan$Exact | UnitFlightPlan$Exact | MilitaryUnitFlightPlan$Exact | PlannedAirMission$Exact | OperationalPlan$Exact | RoutePlan$Exact | AutopilotMission$Exact | OrgRole$Exact | Roster$Exact;
 
 export type ControlAttitudeSetpoint = ControlAttitudeSetpoint$Exact;
@@ -7451,19 +9261,25 @@ export type ControlOverride = ControlOverride$Exact;
 
 export type Coordinate = Coordinate$Exact;
 
+export type Count = Count$Exact;
+
 export type CryptoKey = CryptoKey$Exact;
 
 export type CryptoProfile = CryptoProfile$Exact;
 
 export type Cue = Cue$Exact;
 
-export type Data = Data$Exact | Condition$Exact | Predicate$Exact | BooleanLogic$Exact | Event$Exact | FlightEvent$Exact | MissionEvent$Exact | Execution$Exact | Media$Exact | MediaItem$Exact | Observation$Exact | Classification$Exact | Track$Exact | Assessment$Exact | IsrResult$Exact | Detection$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | IsrObservation$Exact | TrackUpdate$Exact | Property$Exact | Attribute$Exact | Symbology$Exact | DisplayMeta$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | FuelState$Exact | Supplies$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | EntityState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact;
+export type Data = Data$Exact | Condition$Exact | Predicate$Exact | BooleanLogic$Exact | Context$Exact | OperationalContext$Exact | Operation$Exact | Scenario$Exact | Event$Exact | SubjectEvent$Exact | FlightEvent$Exact | MissionEvent$Exact | TimelineEvent$Exact | Execution$Exact | SpatialMeasurement$Exact | DistanceMeasurement$Exact | AreaMeasurement$Exact | BearingMeasurement$Exact | RadiusMeasurement$Exact | RouteMeasurement$Exact | Observation$Exact | Classification$Exact | Track$Exact | Assessment$Exact | IsrResult$Exact | Detection$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | IsrObservation$Exact | TrackUpdate$Exact | Property$Exact | Attribute$Exact | Symbology$Exact | CoTSymbology$Exact | MilitarySymbology$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | MilitaryAffiliation$Exact | Representation$Exact | IdentifiedRepresentation$Exact | Media$Exact | MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact | Graphic$Exact | GeometryGraphic$Exact | SymbolGraphic$Exact | MilitarySymbolGraphic$Exact | AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact | GeoreferencedMediaGraphic$Exact | MeasurementGraphic$Exact | TacticalGraphic$Exact | Layer$Exact | OverlayLayer$Exact | ReferenceLayer$Exact | DataLayer$Exact | MapView$Exact | State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | ResourceHolding$Exact | InventoryState$Exact | Supplies$Exact | FuelState$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | SubjectState$Exact | EntityState$Exact | OrganizationState$Exact | MilitaryOrganizationState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact;
+
+export type DataLayer = DataLayer$Exact;
 
 export type DataRateSpec = DataRateSpec$Exact;
 
-export type Definition = Definition$Exact | Frame$Exact | Coordinate$Exact | Geometry$Exact | DefinitionRelationship$Exact | SemanticType$Exact | Category$Exact | Role$Exact | Function$Exact | Domain$Exact;
+export type Definition = Definition$Exact | Frame$Exact | Coordinate$Exact | Geometry$Exact | DefinitionRelationship$Exact | SemanticType$Exact | Category$Exact | Role$Exact | Function$Exact | Domain$Exact | OrgTemplate$Exact | MilitaryOrgTemplate$Exact | ResourceTemplate$Exact | EquipmentTemplate$Exact | PersonnelTemplate$Exact | SupplyTemplate$Exact | MilitarySupplyTemplate$Exact;
 
 export type DefinitionRelationship = DefinitionRelationship$Exact;
+
+export type DegreesCelsius = DegreesCelsius$Exact;
 
 export type DeliveryQuality = DeliveryQuality$Exact;
 
@@ -7477,7 +9293,13 @@ export type DirectedRelationship = DirectedRelationship$Exact;
 
 export type Directive = Directive$Exact | Command$Exact | StateChangeCommand$Exact | ProcessControlCommand$Exact | ConfigurationCommand$Exact | MotionCommand$Exact | ResourceCommand$Exact | ExecutionCommand$Exact | Task$Exact | TaskManeuver$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskTransport$Exact;
 
-export type DisplayMeta = DisplayMeta$Exact;
+export type Distance = Distance$Exact | DistanceMeters$Exact;
+
+export type DistanceMeasurement = DistanceMeasurement$Exact;
+
+export type DistanceMeters = DistanceMeters$Exact;
+
+export type DocumentMedia = DocumentMedia$Exact;
 
 export type Domain = Domain$Exact;
 
@@ -7489,11 +9311,21 @@ export type Effects = Effects$Exact | GroundEffects$Exact | AirEffects$Exact;
 
 export type EffectsPayload = EffectsPayload$Exact;
 
+export type ElectricCharge = ElectricCharge$Exact | AmpereHours$Exact;
+
+export type ElectricCurrent = ElectricCurrent$Exact | Amperes$Exact;
+
+export type ElectricPotential = ElectricPotential$Exact | Volts$Exact;
+
+export type ElectricPower = ElectricPower$Exact | Watts$Exact;
+
 export type ElectricalResourceState = ElectricalResourceState$Exact;
 
 export type ElrsProfile = ElrsProfile$Exact;
 
-export type Entity = Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | Robot$Exact | MilitaryMachine$Exact;
+export type Energy = Energy$Exact | WattHours$Exact;
+
+export type Entity = Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | MilitaryMachine$Exact | Robot$Exact;
 
 export type EntityComponentRef = EntityComponentRef$Exact;
 
@@ -7501,17 +9333,23 @@ export type EntityState = EntityState$Exact;
 
 export type Equipment = Equipment$Exact;
 
+export type EquipmentTemplate = EquipmentTemplate$Exact;
+
 export type EsadArming = EsadArming$Exact;
 
 export type EsadState = EsadState$Exact;
 
 export type EulerAngles = EulerAngles$Exact;
 
-export type Event = Event$Exact | FlightEvent$Exact | MissionEvent$Exact;
+export type Event = Event$Exact | SubjectEvent$Exact | FlightEvent$Exact | MissionEvent$Exact | TimelineEvent$Exact;
 
 export type Execution = Execution$Exact;
 
 export type ExecutionCommand = ExecutionCommand$Exact;
+
+export type ExternalRepresentationSource = ExternalRepresentationSource$Exact;
+
+export type FillStyle = FillStyle$Exact;
 
 export type Fires = Fires$Exact;
 
@@ -7535,6 +9373,8 @@ export type FpvProfile = FpvProfile$Exact;
 
 export type Frame = Frame$Exact;
 
+export type Frequency = Frequency$Exact | Hertz$Exact;
+
 export type FrequencyRange = FrequencyRange$Exact;
 
 export type FuelState = FuelState$Exact;
@@ -7545,15 +9385,37 @@ export type GNC = GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | Au
 
 export type GeoArea = GeoArea$Exact;
 
+export type GeoCircle = GeoCircle$Exact;
+
+export type GeoGeometryCollection = GeoGeometryCollection$Exact;
+
+export type GeoMultiArea = GeoMultiArea$Exact;
+
+export type GeoMultiPath = GeoMultiPath$Exact;
+
+export type GeoMultiPoint = GeoMultiPoint$Exact;
+
 export type GeoPath = GeoPath$Exact;
 
 export type GeoPos = GeoPos$Exact | GlobalPosition$Exact;
 
+export type GeoRegistration = GeoRegistration$Exact;
+
 export type Geometry = Geometry$Exact;
+
+export type GeometryGraphic = GeometryGraphic$Exact;
+
+export type GeoreferencedMediaGraphic = GeoreferencedMediaGraphic$Exact;
 
 export type GlobalPosition = GlobalPosition$Exact;
 
 export type GnssSolution = GnssSolution$Exact;
+
+export type Graphic = Graphic$Exact | GeometryGraphic$Exact | SymbolGraphic$Exact | MilitarySymbolGraphic$Exact | AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact | GeoreferencedMediaGraphic$Exact | MeasurementGraphic$Exact | TacticalGraphic$Exact;
+
+export type GraphicLength = GraphicLength$Exact;
+
+export type GraphicStyle = GraphicStyle$Exact;
 
 export type GroundEffects = GroundEffects$Exact;
 
@@ -7575,13 +9437,19 @@ export type HealthAlert = HealthAlert$Exact;
 
 export type HealthSnapshot = HealthSnapshot$Exact;
 
+export type Hertz = Hertz$Exact;
+
 export type HumanTextMessage = HumanTextMessage$Exact;
 
 export type ID = ID$Exact | IntID$Exact | UID$Exact;
 
+export type IdentifiedRepresentation = IdentifiedRepresentation$Exact | Media$Exact | MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact | Graphic$Exact | GeometryGraphic$Exact | SymbolGraphic$Exact | MilitarySymbolGraphic$Exact | AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact | GeoreferencedMediaGraphic$Exact | MeasurementGraphic$Exact | TacticalGraphic$Exact | Layer$Exact | OverlayLayer$Exact | ReferenceLayer$Exact | DataLayer$Exact | MapView$Exact;
+
 export type Identity = Identity$Exact | StringName$Exact | IdentityBootstrap$Exact;
 
 export type IdentityBootstrap = IdentityBootstrap$Exact;
+
+export type ImageMedia = ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact;
 
 export type ImageSensor = ImageSensor$Exact;
 
@@ -7595,6 +9463,8 @@ export type Interface = Interface$Exact | RemoteControl$Exact | ObserverSource$E
 
 export type Internal = Internal$Exact | RuntimeLoadState$Exact;
 
+export type InventoryState = InventoryState$Exact | Supplies$Exact;
+
 export type IsrObservation = IsrObservation$Exact;
 
 export type IsrParameters = IsrParameters$Exact;
@@ -7606,6 +9476,14 @@ export type Item = Item$Exact | Equipment$Exact | Component$Exact | Payload$Exac
 export type ItemCount = ItemCount$Exact;
 
 export type Kinematic = Kinematic$Exact | ImuSample$Exact;
+
+export type LabelGraphic = LabelGraphic$Exact;
+
+export type LatitudeLongitudeMapGrid = LatitudeLongitudeMapGrid$Exact;
+
+export type Layer = Layer$Exact | OverlayLayer$Exact | ReferenceLayer$Exact | DataLayer$Exact;
+
+export type LayerView = LayerView$Exact;
 
 export type Lease = Lease$Exact | AttachmentLease$Exact | ControlLease$Exact;
 
@@ -7623,9 +9501,15 @@ export type LinkCounters = LinkCounters$Exact;
 
 export type LinkState = LinkState$Exact | MeshLink$Exact;
 
+export type LiveAudioStream = LiveAudioStream$Exact;
+
+export type LiveVideoStream = LiveVideoStream$Exact;
+
 export type LoRaProfile = LoRaProfile$Exact;
 
 export type LocalDirection = LocalDirection$Exact;
+
+export type LocalMapGrid = LocalMapGrid$Exact;
 
 export type LocalPos = LocalPos$Exact;
 
@@ -7639,19 +9523,33 @@ export type LocationUncertainty = LocationUncertainty$Exact;
 
 export type LoiterOrbit = LoiterOrbit$Exact;
 
-export type Machine = Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | Robot$Exact | MilitaryMachine$Exact;
+export type MGRSMapGrid = MGRSMapGrid$Exact;
+
+export type Machine = Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | MilitaryMachine$Exact | Robot$Exact;
 
 export type MaintenanceStatus = MaintenanceStatus$Exact;
 
+export type MapGrid = MapGrid$Exact | UTMMapGrid$Exact | MGRSMapGrid$Exact | LatitudeLongitudeMapGrid$Exact | LocalMapGrid$Exact;
+
+export type MapView = MapView$Exact;
+
 export type Mark = Mark$Exact;
 
-export type Measurement = Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | Airspeed$Exact | AltitudeState$Exact | Time$Exact | Duration$Exact | Timestamp$Exact | ItemCount$Exact;
+export type MarkdownText = MarkdownText$Exact;
+
+export type Measurement = Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | GraphicLength$Exact | Airspeed$Exact | AltitudeState$Exact | Quantity$Exact | Count$Exact | ByteCount$Exact | UnitQuantity$Exact | Distance$Exact | DistanceMeters$Exact | AreaMeasure$Exact | AreaSquareMeters$Exact | Angle$Exact | AngleDegrees$Exact | AngleRadians$Exact | Ratio$Exact | Opacity$Exact | NormalizedRatio$Exact | Frequency$Exact | Hertz$Exact | ElectricPotential$Exact | Volts$Exact | ElectricCurrent$Exact | Amperes$Exact | ElectricPower$Exact | Watts$Exact | ElectricCharge$Exact | AmpereHours$Exact | Energy$Exact | WattHours$Exact | Temperature$Exact | DegreesCelsius$Exact | Time$Exact | Duration$Exact | Timestamp$Exact;
+
+export type MeasurementGraphic = MeasurementGraphic$Exact;
 
 export type MeasurementQuality = MeasurementQuality$Exact;
 
-export type Media = Media$Exact | MediaItem$Exact;
+export type Media = Media$Exact | MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact;
 
-export type MediaItem = MediaItem$Exact;
+export type MediaGraphic = MediaGraphic$Exact;
+
+export type MediaItem = MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact;
+
+export type MediaRepresentationSource = MediaRepresentationSource$Exact;
 
 export type MeshLink = MeshLink$Exact;
 
@@ -7671,6 +9569,8 @@ export type MessageTransferResult = MessageTransferResult$Exact;
 
 export type MetadataValue = MetadataValue$Exact | MeasurementQuality$Exact;
 
+export type MilitaryAffiliation = MilitaryAffiliation$Exact;
+
 export type MilitaryAirMachine = MilitaryAirMachine$Exact;
 
 export type MilitaryAirNavigation = MilitaryAirNavigation$Exact;
@@ -7681,9 +9581,21 @@ export type MilitaryMachine = MilitaryMachine$Exact;
 
 export type MilitaryOrg = MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact;
 
+export type MilitaryOrgTemplate = MilitaryOrgTemplate$Exact;
+
+export type MilitaryOrganizationState = MilitaryOrganizationState$Exact;
+
 export type MilitaryPerson = MilitaryPerson$Exact;
 
 export type MilitaryRadioProfile = MilitaryRadioProfile$Exact;
+
+export type MilitaryStrength = MilitaryStrength$Exact;
+
+export type MilitarySupplyTemplate = MilitarySupplyTemplate$Exact;
+
+export type MilitarySymbolGraphic = MilitarySymbolGraphic$Exact;
+
+export type MilitarySymbology = MilitarySymbology$Exact;
 
 export type MilitaryUnitFlightPlan = MilitaryUnitFlightPlan$Exact;
 
@@ -7709,9 +9621,13 @@ export type Node = Node$Exact | MeshNode$Exact;
 
 export type NodeHeartbeat = NodeHeartbeat$Exact;
 
+export type NormalizedRatio = NormalizedRatio$Exact;
+
+export type NoteGraphic = NoteGraphic$Exact;
+
 export type NumericRange = NumericRange$Exact;
 
-export type Object = Object$Exact | Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | Robot$Exact | MilitaryMachine$Exact | Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact | Item$Exact | Equipment$Exact | Component$Exact | Payload$Exact | SensorPayload$Exact | ImageSensor$Exact | RFSensor$Exact | EffectsPayload$Exact | Location$Exact | Mark$Exact | Path$Exact | Region$Exact | Boundary$Exact;
+export type Object = Object$Exact | Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | MilitaryMachine$Exact | Robot$Exact | Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact | Side$Exact | Coalition$Exact | Item$Exact | Equipment$Exact | Component$Exact | Payload$Exact | SensorPayload$Exact | ImageSensor$Exact | RFSensor$Exact | EffectsPayload$Exact | Location$Exact | Mark$Exact | Path$Exact | Region$Exact | Boundary$Exact;
 
 export type Objective = Objective$Exact;
 
@@ -7720,6 +9636,12 @@ export type Observation = Observation$Exact | Classification$Exact | Track$Exact
 export type ObservationMessage = ObservationMessage$Exact | ProtocolEventMessage$Exact;
 
 export type ObserverSource = ObserverSource$Exact;
+
+export type Opacity = Opacity$Exact;
+
+export type Operation = Operation$Exact;
+
+export type OperationalContext = OperationalContext$Exact | Operation$Exact | Scenario$Exact;
 
 export type OperationalPlan = OperationalPlan$Exact;
 
@@ -7731,11 +9653,19 @@ export type OrgComposition = OrgComposition$Exact;
 
 export type OrgRole = OrgRole$Exact;
 
+export type OrgTemplate = OrgTemplate$Exact | MilitaryOrgTemplate$Exact;
+
 export type Organization = Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact;
+
+export type OrganizationState = OrganizationState$Exact | MilitaryOrganizationState$Exact;
+
+export type OverlayLayer = OverlayLayer$Exact;
 
 export type Parameter = Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact;
 
 export type Path = Path$Exact;
+
+export type PathAnchor = PathAnchor$Exact;
 
 export type Payload = Payload$Exact | SensorPayload$Exact | ImageSensor$Exact | RFSensor$Exact | EffectsPayload$Exact;
 
@@ -7747,6 +9677,12 @@ export type PayloadPlan = PayloadPlan$Exact;
 
 export type Person = Person$Exact | MilitaryPerson$Exact;
 
+export type PersonnelTemplate = PersonnelTemplate$Exact;
+
+export type Photograph = Photograph$Exact;
+
+export type PlainText = PlainText$Exact;
+
 export type Plan = Plan$Exact | AirPlan$Exact | GroupFlightPlan$Exact | UnitFlightPlan$Exact | MilitaryUnitFlightPlan$Exact | PlannedAirMission$Exact | OperationalPlan$Exact | RoutePlan$Exact | AutopilotMission$Exact;
 
 export type PlanContingency = PlanContingency$Exact;
@@ -7757,9 +9693,13 @@ export type PlannedRoutePoints = PlannedRoutePoints$Exact;
 
 export type Platform = Platform$Exact;
 
+export type PointCloudMedia = PointCloudMedia$Exact;
+
 export type Pose = Pose$Exact | EulerAngles$Exact;
 
 export type Position = Position$Exact | LocationState$Exact | SpotterOrigin$Exact;
+
+export type PositionAnchor = PositionAnchor$Exact;
 
 export type PowerSource = PowerSource$Exact;
 
@@ -7769,7 +9709,7 @@ export type Predicate = Predicate$Exact;
 
 export type ProcessControlCommand = ProcessControlCommand$Exact;
 
-export type Property = Property$Exact | Attribute$Exact | Symbology$Exact | DisplayMeta$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact;
+export type Property = Property$Exact | Attribute$Exact | Symbology$Exact | CoTSymbology$Exact | MilitarySymbology$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | MilitaryAffiliation$Exact;
 
 export type Protocol = Protocol$Exact | ProtocolPayload$Exact | CryptoKey$Exact | CryptoProfile$Exact | LoRaProfile$Exact | AprsProfile$Exact | ElrsProfile$Exact | FpvProfile$Exact;
 
@@ -7777,27 +9717,45 @@ export type ProtocolEventMessage = ProtocolEventMessage$Exact;
 
 export type ProtocolPayload = ProtocolPayload$Exact;
 
+export type Quantity = Quantity$Exact | Count$Exact | ByteCount$Exact | UnitQuantity$Exact;
+
 export type RFSensor = RFSensor$Exact;
 
 export type Radio = Radio$Exact | FrequencyRange$Exact | ChannelSpec$Exact | RadioProfile$Exact | MilitaryRadioProfile$Exact;
 
 export type RadioProfile = RadioProfile$Exact | MilitaryRadioProfile$Exact;
 
-export type Range = Range$Exact | NumericRange$Exact;
+export type RadiusMeasurement = RadiusMeasurement$Exact;
+
+export type Range = Range$Exact | TimeRange$Exact | NumericRange$Exact;
+
+export type Ratio = Ratio$Exact | Opacity$Exact | NormalizedRatio$Exact;
 
 export type ReceiverConfig = ReceiverConfig$Exact;
 
 export type Record = Record$Exact;
 
+export type ReferenceLayer = ReferenceLayer$Exact;
+
 export type Region = Region$Exact;
 
-export type Relationship = Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact;
+export type Relationship = Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | MilitaryAffiliation$Exact;
 
 export type RemoteControl = RemoteControl$Exact;
 
-export type Resource = Resource$Exact | FuelState$Exact | Supplies$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact;
+export type Representation = Representation$Exact | IdentifiedRepresentation$Exact | Media$Exact | MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact | Graphic$Exact | GeometryGraphic$Exact | SymbolGraphic$Exact | MilitarySymbolGraphic$Exact | AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact | GeoreferencedMediaGraphic$Exact | MeasurementGraphic$Exact | TacticalGraphic$Exact | Layer$Exact | OverlayLayer$Exact | ReferenceLayer$Exact | DataLayer$Exact | MapView$Exact;
+
+export type RepresentationSource = RepresentationSource$Exact | ExternalRepresentationSource$Exact | MediaRepresentationSource$Exact;
+
+export type Resource = Resource$Exact | ResourceHolding$Exact | InventoryState$Exact | Supplies$Exact | FuelState$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact;
 
 export type ResourceCommand = ResourceCommand$Exact;
+
+export type ResourceHolding = ResourceHolding$Exact;
+
+export type ResourceRequirement = ResourceRequirement$Exact;
+
+export type ResourceTemplate = ResourceTemplate$Exact | EquipmentTemplate$Exact | PersonnelTemplate$Exact | SupplyTemplate$Exact | MilitarySupplyTemplate$Exact;
 
 export type ResponseMessage = ResponseMessage$Exact | DeliveryReceipt$Exact | MessageTransferResult$Exact;
 
@@ -7811,9 +9769,11 @@ export type Role = Role$Exact;
 
 export type RoleAssignment = RoleAssignment$Exact;
 
-export type Root = Root$Exact | Communication$Exact | Interface$Exact | RemoteControl$Exact | ObserverSource$Exact | Link$Exact | Radio$Exact | FrequencyRange$Exact | ChannelSpec$Exact | RadioProfile$Exact | MilitaryRadioProfile$Exact | DataRateSpec$Exact | LinkCapacity$Exact | Message$Exact | MeshtasticMessage$Exact | CommandMessage$Exact | HumanTextMessage$Exact | ObservationMessage$Exact | ProtocolEventMessage$Exact | Delta$Exact | ResponseMessage$Exact | DeliveryReceipt$Exact | MessageTransferResult$Exact | TelemetryMessage$Exact | MeshReceiveMetrics$Exact | MeshPositionSample$Exact | NodeHeartbeat$Exact | UAVTelemetryMessage$Exact | CapabilityAdvert$Exact | TransportCounters$Exact | TransportError$Exact | Network$Exact | MeshView$Exact | NetworkAddress$Exact | Node$Exact | MeshNode$Exact | Protocol$Exact | ProtocolPayload$Exact | CryptoKey$Exact | CryptoProfile$Exact | LoRaProfile$Exact | AprsProfile$Exact | ElrsProfile$Exact | FpvProfile$Exact | Control$Exact | Assignment$Exact | TaskAssignment$Exact | RoleAssignment$Exact | FlightAssignment$Exact | Authority$Exact | CommandAuthority$Exact | Lease$Exact | AttachmentLease$Exact | ControlLease$Exact | Constraint$Exact | Restriction$Exact | Limitation$Exact | TaskTimeWindow$Exact | WeatherLimits$Exact | Directive$Exact | Command$Exact | StateChangeCommand$Exact | ProcessControlCommand$Exact | ConfigurationCommand$Exact | MotionCommand$Exact | ResourceCommand$Exact | ExecutionCommand$Exact | Task$Exact | TaskManeuver$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskTransport$Exact | Objective$Exact | Plan$Exact | AirPlan$Exact | GroupFlightPlan$Exact | UnitFlightPlan$Exact | MilitaryUnitFlightPlan$Exact | PlannedAirMission$Exact | OperationalPlan$Exact | RoutePlan$Exact | AutopilotMission$Exact | OrgRole$Exact | Roster$Exact | Data$Exact | Condition$Exact | Predicate$Exact | BooleanLogic$Exact | Event$Exact | FlightEvent$Exact | MissionEvent$Exact | Execution$Exact | Media$Exact | MediaItem$Exact | Observation$Exact | Classification$Exact | Track$Exact | Assessment$Exact | IsrResult$Exact | Detection$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | IsrObservation$Exact | TrackUpdate$Exact | Property$Exact | Attribute$Exact | Symbology$Exact | DisplayMeta$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | FuelState$Exact | Supplies$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | EntityState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact | Definition$Exact | Frame$Exact | Coordinate$Exact | Geometry$Exact | DefinitionRelationship$Exact | SemanticType$Exact | Category$Exact | Role$Exact | Function$Exact | Domain$Exact | Object$Exact | Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | Robot$Exact | MilitaryMachine$Exact | Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact | Item$Exact | Equipment$Exact | Component$Exact | Payload$Exact | SensorPayload$Exact | ImageSensor$Exact | RFSensor$Exact | EffectsPayload$Exact | Location$Exact | Mark$Exact | Path$Exact | Region$Exact | Boundary$Exact | Struct$Exact | FlightLevelBand$Exact | SuccessCriterion$Exact | PlanContingency$Exact | IsrParameters$Exact | Record$Exact | SpatialStruct$Exact | LoiterOrbit$Exact | MissionRouteGeometry$Exact | PlannedRoutePoints$Exact | AutopilotMissionWaypoint$Exact | FlightMissionPoint$Exact | ID$Exact | IntID$Exact | UID$Exact | Vector$Exact | LocalVector$Exact | VelocityVector$Exact | AngularVelocityVector$Exact | Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | Airspeed$Exact | AltitudeState$Exact | Time$Exact | Duration$Exact | Timestamp$Exact | ItemCount$Exact | Bearing$Exact | LocalDirection$Exact | GeoPos$Exact | GlobalPosition$Exact | LocalPos$Exact | Line$Exact | StructPath$Exact | GeoPath$Exact | Shape$Exact | GeoArea$Exact | Bounding$Exact | BoundingBox$Exact | Uncertainty$Exact | LocationUncertainty$Exact | Pose$Exact | EulerAngles$Exact | Range$Exact | NumericRange$Exact | Transform$Exact | Orbital$Exact | PayloadAllocation$Exact | PayloadPlan$Exact | PayloadMount$Exact | Effects$Exact | GroundEffects$Exact | AirEffects$Exact | TargetPriority$Exact | TargetKinematics$Exact | TargetSet$Exact | TargetSetCoord$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | Fires$Exact | SplashCorrection$Exact | TargetHandover$Exact | BattleDamageAssessment$Exact | EsadState$Exact | EsadArming$Exact | RwsPose$Exact | RwsState$Exact | OrgComposition$Exact | MunitionAllocation$Exact | CombatTaskProfile$Exact;
+export type Root = Root$Exact | Communication$Exact | Interface$Exact | RemoteControl$Exact | ObserverSource$Exact | Link$Exact | Radio$Exact | FrequencyRange$Exact | ChannelSpec$Exact | RadioProfile$Exact | MilitaryRadioProfile$Exact | DataRateSpec$Exact | LinkCapacity$Exact | Message$Exact | MeshtasticMessage$Exact | CommandMessage$Exact | HumanTextMessage$Exact | ObservationMessage$Exact | ProtocolEventMessage$Exact | Delta$Exact | ResponseMessage$Exact | DeliveryReceipt$Exact | MessageTransferResult$Exact | TelemetryMessage$Exact | MeshReceiveMetrics$Exact | MeshPositionSample$Exact | NodeHeartbeat$Exact | UAVTelemetryMessage$Exact | CapabilityAdvert$Exact | TransportCounters$Exact | TransportError$Exact | Network$Exact | MeshView$Exact | NetworkAddress$Exact | Node$Exact | MeshNode$Exact | Protocol$Exact | ProtocolPayload$Exact | CryptoKey$Exact | CryptoProfile$Exact | LoRaProfile$Exact | AprsProfile$Exact | ElrsProfile$Exact | FpvProfile$Exact | Control$Exact | Assignment$Exact | TaskAssignment$Exact | RoleAssignment$Exact | FlightAssignment$Exact | Authority$Exact | CommandAuthority$Exact | Lease$Exact | AttachmentLease$Exact | ControlLease$Exact | Constraint$Exact | Restriction$Exact | Limitation$Exact | TaskTimeWindow$Exact | WeatherLimits$Exact | Directive$Exact | Command$Exact | StateChangeCommand$Exact | ProcessControlCommand$Exact | ConfigurationCommand$Exact | MotionCommand$Exact | ResourceCommand$Exact | ExecutionCommand$Exact | Task$Exact | TaskManeuver$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskTransport$Exact | Objective$Exact | Plan$Exact | AirPlan$Exact | GroupFlightPlan$Exact | UnitFlightPlan$Exact | MilitaryUnitFlightPlan$Exact | PlannedAirMission$Exact | OperationalPlan$Exact | RoutePlan$Exact | AutopilotMission$Exact | OrgRole$Exact | Roster$Exact | Data$Exact | Condition$Exact | Predicate$Exact | BooleanLogic$Exact | Context$Exact | OperationalContext$Exact | Operation$Exact | Scenario$Exact | Event$Exact | SubjectEvent$Exact | FlightEvent$Exact | MissionEvent$Exact | TimelineEvent$Exact | Execution$Exact | SpatialMeasurement$Exact | DistanceMeasurement$Exact | AreaMeasurement$Exact | BearingMeasurement$Exact | RadiusMeasurement$Exact | RouteMeasurement$Exact | Observation$Exact | Classification$Exact | Track$Exact | Assessment$Exact | IsrResult$Exact | Detection$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | IsrObservation$Exact | TrackUpdate$Exact | Property$Exact | Attribute$Exact | Symbology$Exact | CoTSymbology$Exact | MilitarySymbology$Exact | GroundNavigation$Exact | AirNavigation$Exact | MilitaryAirNavigation$Exact | SensorFieldOfView$Exact | Capability$Exact | Identity$Exact | StringName$Exact | IdentityBootstrap$Exact | Parameter$Exact | VideoConfig$Exact | ReceiverConfig$Exact | ChannelMapEntry$Exact | ModeRange$Exact | RobotController$Exact | Version$Exact | FirmwareInfo$Exact | MetadataValue$Exact | MeasurementQuality$Exact | Relationship$Exact | DirectedRelationship$Exact | EntityComponentRef$Exact | SpatialRelationship$Exact | MilitaryAffiliation$Exact | Representation$Exact | IdentifiedRepresentation$Exact | Media$Exact | MediaItem$Exact | ImageMedia$Exact | StillImage$Exact | Photograph$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact | AudioMedia$Exact | AudioRecording$Exact | LiveAudioStream$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | PointCloudMedia$Exact | DocumentMedia$Exact | BinaryMedia$Exact | Graphic$Exact | GeometryGraphic$Exact | SymbolGraphic$Exact | MilitarySymbolGraphic$Exact | AnnotationGraphic$Exact | LabelGraphic$Exact | NoteGraphic$Exact | CalloutGraphic$Exact | MediaGraphic$Exact | GeoreferencedMediaGraphic$Exact | MeasurementGraphic$Exact | TacticalGraphic$Exact | Layer$Exact | OverlayLayer$Exact | ReferenceLayer$Exact | DataLayer$Exact | MapView$Exact | State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | ResourceHolding$Exact | InventoryState$Exact | Supplies$Exact | FuelState$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | SubjectState$Exact | EntityState$Exact | OrganizationState$Exact | MilitaryOrganizationState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact | Definition$Exact | Frame$Exact | Coordinate$Exact | Geometry$Exact | DefinitionRelationship$Exact | SemanticType$Exact | Category$Exact | Role$Exact | Function$Exact | Domain$Exact | OrgTemplate$Exact | MilitaryOrgTemplate$Exact | ResourceTemplate$Exact | EquipmentTemplate$Exact | PersonnelTemplate$Exact | SupplyTemplate$Exact | MilitarySupplyTemplate$Exact | Object$Exact | Entity$Exact | Actor$Exact | Agent$Exact | Person$Exact | MilitaryPerson$Exact | Machine$Exact | Vehicle$Exact | Platform$Exact | GroundMachine$Exact | GroundRobot$Exact | MilitaryGroundMachine$Exact | AirMachine$Exact | AirRobot$Exact | Drone$Exact | MilitaryAirMachine$Exact | MilitaryMachine$Exact | Robot$Exact | Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact | Side$Exact | Coalition$Exact | Item$Exact | Equipment$Exact | Component$Exact | Payload$Exact | SensorPayload$Exact | ImageSensor$Exact | RFSensor$Exact | EffectsPayload$Exact | Location$Exact | Mark$Exact | Path$Exact | Region$Exact | Boundary$Exact | Struct$Exact | FlightLevelBand$Exact | SuccessCriterion$Exact | PlanContingency$Exact | IsrParameters$Exact | SIDC$Exact | ColorComponent$Exact | ColorChannel$Exact | ColorRGBA$Exact | StrokeStyle$Exact | FillStyle$Exact | TextStyle$Exact | GraphicStyle$Exact | AnnotationAnchor$Exact | PositionAnchor$Exact | SubjectAnchor$Exact | PathAnchor$Exact | RepresentationSource$Exact | ExternalRepresentationSource$Exact | MediaRepresentationSource$Exact | GeoRegistration$Exact | LayerView$Exact | MapGrid$Exact | UTMMapGrid$Exact | MGRSMapGrid$Exact | LatitudeLongitudeMapGrid$Exact | LocalMapGrid$Exact | UTMZone$Exact | MilitaryStrength$Exact | PayloadAllocation$Exact | PayloadPlan$Exact | PayloadMount$Exact | OrgComposition$Exact | Record$Exact | ResourceRequirement$Exact | SpatialStruct$Exact | LoiterOrbit$Exact | MissionRouteGeometry$Exact | PlannedRoutePoints$Exact | AutopilotMissionWaypoint$Exact | FlightMissionPoint$Exact | ID$Exact | IntID$Exact | UID$Exact | Text$Exact | PlainText$Exact | MarkdownText$Exact | Vector$Exact | LocalVector$Exact | VelocityVector$Exact | AngularVelocityVector$Exact | Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | GraphicLength$Exact | Airspeed$Exact | AltitudeState$Exact | Quantity$Exact | Count$Exact | ByteCount$Exact | UnitQuantity$Exact | Distance$Exact | DistanceMeters$Exact | AreaMeasure$Exact | AreaSquareMeters$Exact | Angle$Exact | AngleDegrees$Exact | AngleRadians$Exact | Ratio$Exact | Opacity$Exact | NormalizedRatio$Exact | Frequency$Exact | Hertz$Exact | ElectricPotential$Exact | Volts$Exact | ElectricCurrent$Exact | Amperes$Exact | ElectricPower$Exact | Watts$Exact | ElectricCharge$Exact | AmpereHours$Exact | Energy$Exact | WattHours$Exact | Temperature$Exact | DegreesCelsius$Exact | Time$Exact | Duration$Exact | Timestamp$Exact | Bearing$Exact | LocalDirection$Exact | GeoPos$Exact | GlobalPosition$Exact | LocalPos$Exact | Line$Exact | StructPath$Exact | GeoPath$Exact | GeoMultiPath$Exact | Shape$Exact | GeoArea$Exact | GeoCircle$Exact | GeoMultiPoint$Exact | GeoMultiArea$Exact | GeoGeometryCollection$Exact | Bounding$Exact | BoundingBox$Exact | Uncertainty$Exact | LocationUncertainty$Exact | Pose$Exact | EulerAngles$Exact | Range$Exact | TimeRange$Exact | NumericRange$Exact | Transform$Exact | Orbital$Exact | ItemCount$Exact | Effects$Exact | GroundEffects$Exact | AirEffects$Exact | TargetPriority$Exact | TargetKinematics$Exact | TargetSet$Exact | TargetSetCoord$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | Fires$Exact | SplashCorrection$Exact | TargetHandover$Exact | BattleDamageAssessment$Exact | EsadState$Exact | EsadArming$Exact | RwsPose$Exact | RwsState$Exact | MunitionAllocation$Exact | CombatTaskProfile$Exact;
 
 export type Roster = Roster$Exact;
+
+export type RouteMeasurement = RouteMeasurement$Exact;
 
 export type RoutePlan = RoutePlan$Exact | AutopilotMission$Exact;
 
@@ -7823,6 +9783,10 @@ export type RwsPose = RwsPose$Exact;
 
 export type RwsState = RwsState$Exact;
 
+export type SIDC = SIDC$Exact;
+
+export type Scenario = Scenario$Exact;
+
 export type SemanticType = SemanticType$Exact | Category$Exact | Role$Exact | Function$Exact | Domain$Exact;
 
 export type SensorFieldOfView = SensorFieldOfView$Exact;
@@ -7831,29 +9795,47 @@ export type SensorPayload = SensorPayload$Exact | ImageSensor$Exact | RFSensor$E
 
 export type SensorState = SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact;
 
-export type Set = Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact;
+export type Set = Set$Exact | Collection$Exact | Cluster$Exact | Organization$Exact | Group$Exact | Unit$Exact | MilitaryOrg$Exact | FlyingOrg$Exact | OrbatOrg$Exact | GroundOrbatOrg$Exact | Side$Exact | Coalition$Exact;
 
-export type Shape = Shape$Exact | GeoArea$Exact;
+export type Shape = Shape$Exact | GeoArea$Exact | GeoCircle$Exact | GeoMultiPoint$Exact | GeoMultiArea$Exact | GeoGeometryCollection$Exact;
+
+export type Side = Side$Exact | Coalition$Exact;
 
 export type SignalQuality = SignalQuality$Exact;
+
+export type SpatialMeasurement = SpatialMeasurement$Exact | DistanceMeasurement$Exact | AreaMeasurement$Exact | BearingMeasurement$Exact | RadiusMeasurement$Exact | RouteMeasurement$Exact;
 
 export type SpatialRelationship = SpatialRelationship$Exact;
 
 export type SpatialStruct = SpatialStruct$Exact | LoiterOrbit$Exact | MissionRouteGeometry$Exact | PlannedRoutePoints$Exact | AutopilotMissionWaypoint$Exact | FlightMissionPoint$Exact;
 
+export type SpectrumMedia = SpectrumMedia$Exact | SpectrumRecording$Exact;
+
+export type SpectrumRecording = SpectrumRecording$Exact;
+
 export type SplashCorrection = SplashCorrection$Exact;
 
 export type SpotterOrigin = SpotterOrigin$Exact;
 
-export type State = State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | FuelState$Exact | Supplies$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | EntityState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact;
+export type State = State$Exact | Lifecycle$Exact | Activation$Exact | Cue$Exact | GNC$Exact | NavigationValidity$Exact | GnssSolution$Exact | AutopilotMissionState$Exact | FlightControlState$Exact | Health$Exact | HealthAlert$Exact | LinkState$Exact | MeshLink$Exact | SubsystemHealth$Exact | HealthSnapshot$Exact | MaintenanceStatus$Exact | NavReadinessState$Exact | Input$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlOverride$Exact | ControlAttitudeSetpoint$Exact | Internal$Exact | RuntimeLoadState$Exact | Kinematic$Exact | ImuSample$Exact | Resource$Exact | ResourceHolding$Exact | InventoryState$Exact | Supplies$Exact | FuelState$Exact | PowerSource$Exact | PowerState$Exact | ElectricalResourceState$Exact | SensorState$Exact | TrackerState$Exact | FlightSensorConfiguration$Exact | SubjectState$Exact | EntityState$Exact | OrganizationState$Exact | MilitaryOrganizationState$Exact | Validation$Exact | Position$Exact | LocationState$Exact | SpotterOrigin$Exact;
 
 export type StateChangeCommand = StateChangeCommand$Exact;
 
+export type StillImage = StillImage$Exact | Photograph$Exact | VideoFrame$Exact;
+
 export type StringName = StringName$Exact;
 
-export type Struct = Struct$Exact | FlightLevelBand$Exact | SuccessCriterion$Exact | PlanContingency$Exact | IsrParameters$Exact | Record$Exact | SpatialStruct$Exact | LoiterOrbit$Exact | MissionRouteGeometry$Exact | PlannedRoutePoints$Exact | AutopilotMissionWaypoint$Exact | FlightMissionPoint$Exact | ID$Exact | IntID$Exact | UID$Exact | Vector$Exact | LocalVector$Exact | VelocityVector$Exact | AngularVelocityVector$Exact | Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | Airspeed$Exact | AltitudeState$Exact | Time$Exact | Duration$Exact | Timestamp$Exact | ItemCount$Exact | Bearing$Exact | LocalDirection$Exact | GeoPos$Exact | GlobalPosition$Exact | LocalPos$Exact | Line$Exact | StructPath$Exact | GeoPath$Exact | Shape$Exact | GeoArea$Exact | Bounding$Exact | BoundingBox$Exact | Uncertainty$Exact | LocationUncertainty$Exact | Pose$Exact | EulerAngles$Exact | Range$Exact | NumericRange$Exact | Transform$Exact | Orbital$Exact | PayloadAllocation$Exact | PayloadPlan$Exact | PayloadMount$Exact | Effects$Exact | GroundEffects$Exact | AirEffects$Exact | TargetPriority$Exact | TargetKinematics$Exact | TargetSet$Exact | TargetSetCoord$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | Fires$Exact | SplashCorrection$Exact | TargetHandover$Exact | BattleDamageAssessment$Exact | EsadState$Exact | EsadArming$Exact | RwsPose$Exact | RwsState$Exact | OrgComposition$Exact | MunitionAllocation$Exact | CombatTaskProfile$Exact;
+export type StrokeStyle = StrokeStyle$Exact;
 
-export type StructPath = StructPath$Exact | GeoPath$Exact;
+export type Struct = Struct$Exact | FlightLevelBand$Exact | SuccessCriterion$Exact | PlanContingency$Exact | IsrParameters$Exact | SIDC$Exact | ColorComponent$Exact | ColorChannel$Exact | ColorRGBA$Exact | StrokeStyle$Exact | FillStyle$Exact | TextStyle$Exact | GraphicStyle$Exact | AnnotationAnchor$Exact | PositionAnchor$Exact | SubjectAnchor$Exact | PathAnchor$Exact | RepresentationSource$Exact | ExternalRepresentationSource$Exact | MediaRepresentationSource$Exact | GeoRegistration$Exact | LayerView$Exact | MapGrid$Exact | UTMMapGrid$Exact | MGRSMapGrid$Exact | LatitudeLongitudeMapGrid$Exact | LocalMapGrid$Exact | UTMZone$Exact | MilitaryStrength$Exact | PayloadAllocation$Exact | PayloadPlan$Exact | PayloadMount$Exact | OrgComposition$Exact | Record$Exact | ResourceRequirement$Exact | SpatialStruct$Exact | LoiterOrbit$Exact | MissionRouteGeometry$Exact | PlannedRoutePoints$Exact | AutopilotMissionWaypoint$Exact | FlightMissionPoint$Exact | ID$Exact | IntID$Exact | UID$Exact | Text$Exact | PlainText$Exact | MarkdownText$Exact | Vector$Exact | LocalVector$Exact | VelocityVector$Exact | AngularVelocityVector$Exact | Measurement$Exact | SignalQuality$Exact | DeliveryQuality$Exact | LinkCounters$Exact | GraphicLength$Exact | Airspeed$Exact | AltitudeState$Exact | Quantity$Exact | Count$Exact | ByteCount$Exact | UnitQuantity$Exact | Distance$Exact | DistanceMeters$Exact | AreaMeasure$Exact | AreaSquareMeters$Exact | Angle$Exact | AngleDegrees$Exact | AngleRadians$Exact | Ratio$Exact | Opacity$Exact | NormalizedRatio$Exact | Frequency$Exact | Hertz$Exact | ElectricPotential$Exact | Volts$Exact | ElectricCurrent$Exact | Amperes$Exact | ElectricPower$Exact | Watts$Exact | ElectricCharge$Exact | AmpereHours$Exact | Energy$Exact | WattHours$Exact | Temperature$Exact | DegreesCelsius$Exact | Time$Exact | Duration$Exact | Timestamp$Exact | Bearing$Exact | LocalDirection$Exact | GeoPos$Exact | GlobalPosition$Exact | LocalPos$Exact | Line$Exact | StructPath$Exact | GeoPath$Exact | GeoMultiPath$Exact | Shape$Exact | GeoArea$Exact | GeoCircle$Exact | GeoMultiPoint$Exact | GeoMultiArea$Exact | GeoGeometryCollection$Exact | Bounding$Exact | BoundingBox$Exact | Uncertainty$Exact | LocationUncertainty$Exact | Pose$Exact | EulerAngles$Exact | Range$Exact | TimeRange$Exact | NumericRange$Exact | Transform$Exact | Orbital$Exact | ItemCount$Exact | Effects$Exact | GroundEffects$Exact | AirEffects$Exact | TargetPriority$Exact | TargetKinematics$Exact | TargetSet$Exact | TargetSetCoord$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | Fires$Exact | SplashCorrection$Exact | TargetHandover$Exact | BattleDamageAssessment$Exact | EsadState$Exact | EsadArming$Exact | RwsPose$Exact | RwsState$Exact | MunitionAllocation$Exact | CombatTaskProfile$Exact;
+
+export type StructPath = StructPath$Exact | GeoPath$Exact | GeoMultiPath$Exact;
+
+export type SubjectAnchor = SubjectAnchor$Exact;
+
+export type SubjectEvent = SubjectEvent$Exact | FlightEvent$Exact | MissionEvent$Exact;
+
+export type SubjectState = SubjectState$Exact | EntityState$Exact | OrganizationState$Exact | MilitaryOrganizationState$Exact;
 
 export type SubsystemHealth = SubsystemHealth$Exact;
 
@@ -7861,7 +9843,13 @@ export type SuccessCriterion = SuccessCriterion$Exact;
 
 export type Supplies = Supplies$Exact;
 
-export type Symbology = Symbology$Exact;
+export type SupplyTemplate = SupplyTemplate$Exact | MilitarySupplyTemplate$Exact;
+
+export type SymbolGraphic = SymbolGraphic$Exact | MilitarySymbolGraphic$Exact;
+
+export type Symbology = Symbology$Exact | CoTSymbology$Exact | MilitarySymbology$Exact;
+
+export type TacticalGraphic = TacticalGraphic$Exact;
 
 export type TargetBoxCoord = TargetBoxCoord$Exact;
 
@@ -7893,7 +9881,17 @@ export type TaskTransport = TaskTransport$Exact;
 
 export type TelemetryMessage = TelemetryMessage$Exact | MeshReceiveMetrics$Exact | MeshPositionSample$Exact | NodeHeartbeat$Exact | UAVTelemetryMessage$Exact | CapabilityAdvert$Exact | TransportCounters$Exact | TransportError$Exact;
 
+export type Temperature = Temperature$Exact | DegreesCelsius$Exact;
+
+export type Text = Text$Exact | PlainText$Exact | MarkdownText$Exact;
+
+export type TextStyle = TextStyle$Exact;
+
 export type Time = Time$Exact;
+
+export type TimeRange = TimeRange$Exact;
+
+export type TimelineEvent = TimelineEvent$Exact;
 
 export type Timestamp = Timestamp$Exact;
 
@@ -7913,11 +9911,17 @@ export type UAVTelemetryMessage = UAVTelemetryMessage$Exact;
 
 export type UID = UID$Exact;
 
+export type UTMMapGrid = UTMMapGrid$Exact;
+
+export type UTMZone = UTMZone$Exact;
+
 export type Uncertainty = Uncertainty$Exact | LocationUncertainty$Exact;
 
 export type Unit = Unit$Exact;
 
 export type UnitFlightPlan = UnitFlightPlan$Exact | MilitaryUnitFlightPlan$Exact;
+
+export type UnitQuantity = UnitQuantity$Exact;
 
 export type Validation = Validation$Exact;
 
@@ -7931,17 +9935,29 @@ export type Version = Version$Exact;
 
 export type VideoConfig = VideoConfig$Exact;
 
+export type VideoFrame = VideoFrame$Exact;
+
+export type VideoMedia = VideoMedia$Exact | VideoRecording$Exact | LiveVideoStream$Exact;
+
+export type VideoRecording = VideoRecording$Exact;
+
 export type VisionBox = VisionBox$Exact;
 
 export type VisionDetection = VisionDetection$Exact;
 
 export type VisionDetectionFrame = VisionDetectionFrame$Exact;
 
+export type Volts = Volts$Exact;
+
+export type WattHours = WattHours$Exact;
+
+export type Watts = Watts$Exact;
+
 export type WeatherLimits = WeatherLimits$Exact;
 
-export type ModelName = "Activation" | "Actor" | "Agent" | "AirEffects" | "AirMachine" | "AirNavigation" | "AirPlan" | "AirRobot" | "Airspeed" | "AltitudeState" | "AngularVelocityVector" | "AprsProfile" | "Assessment" | "Assignment" | "AttachmentLease" | "Attribute" | "Authority" | "AutopilotMission" | "AutopilotMissionState" | "AutopilotMissionWaypoint" | "BattleDamageAssessment" | "Bearing" | "BooleanLogic" | "Boundary" | "Bounding" | "BoundingBox" | "Capability" | "CapabilityAdvert" | "Category" | "ChannelMapEntry" | "ChannelSpec" | "Classification" | "Cluster" | "Collection" | "CombatTaskProfile" | "Command" | "CommandAuthority" | "CommandMessage" | "Communication" | "Component" | "Condition" | "ConfigurationCommand" | "Constraint" | "Control" | "ControlAttitudeSetpoint" | "ControlAxisSet" | "ControlChannelValue" | "ControlLease" | "ControlOverride" | "Coordinate" | "CryptoKey" | "CryptoProfile" | "Cue" | "Data" | "DataRateSpec" | "Definition" | "DefinitionRelationship" | "DeliveryQuality" | "DeliveryReceipt" | "Delta" | "Detection" | "DirectedRelationship" | "Directive" | "DisplayMeta" | "Domain" | "Drone" | "Duration" | "Effects" | "EffectsPayload" | "ElectricalResourceState" | "ElrsProfile" | "Entity" | "EntityComponentRef" | "EntityState" | "Equipment" | "EsadArming" | "EsadState" | "EulerAngles" | "Event" | "Execution" | "ExecutionCommand" | "Fires" | "FirmwareInfo" | "FlightAssignment" | "FlightControlState" | "FlightEvent" | "FlightLevelBand" | "FlightMissionPoint" | "FlightSensorConfiguration" | "FlyingOrg" | "FpvProfile" | "Frame" | "FrequencyRange" | "FuelState" | "Function" | "GNC" | "GeoArea" | "GeoPath" | "GeoPos" | "Geometry" | "GlobalPosition" | "GnssSolution" | "GroundEffects" | "GroundMachine" | "GroundNavigation" | "GroundOrbatOrg" | "GroundRobot" | "Group" | "GroupFlightPlan" | "Health" | "HealthAlert" | "HealthSnapshot" | "HumanTextMessage" | "ID" | "Identity" | "IdentityBootstrap" | "ImageSensor" | "ImuSample" | "Input" | "IntID" | "Interface" | "Internal" | "IsrObservation" | "IsrParameters" | "IsrResult" | "Item" | "ItemCount" | "Kinematic" | "Lease" | "Lifecycle" | "Limitation" | "Line" | "Link" | "LinkCapacity" | "LinkCounters" | "LinkState" | "LoRaProfile" | "LocalDirection" | "LocalPos" | "LocalVector" | "Location" | "LocationState" | "LocationUncertainty" | "LoiterOrbit" | "Machine" | "MaintenanceStatus" | "Mark" | "Measurement" | "MeasurementQuality" | "Media" | "MediaItem" | "MeshLink" | "MeshNode" | "MeshPositionSample" | "MeshReceiveMetrics" | "MeshView" | "MeshtasticMessage" | "Message" | "MessageTransferResult" | "MetadataValue" | "MilitaryAirMachine" | "MilitaryAirNavigation" | "MilitaryGroundMachine" | "MilitaryMachine" | "MilitaryOrg" | "MilitaryPerson" | "MilitaryRadioProfile" | "MilitaryUnitFlightPlan" | "MissionEvent" | "MissionRouteGeometry" | "ModeRange" | "MotionCommand" | "MunitionAllocation" | "NavReadinessState" | "NavigationValidity" | "Network" | "NetworkAddress" | "Node" | "NodeHeartbeat" | "NumericRange" | "Object" | "Objective" | "Observation" | "ObservationMessage" | "ObserverSource" | "OperationalPlan" | "OrbatOrg" | "Orbital" | "OrgComposition" | "OrgRole" | "Organization" | "Parameter" | "Path" | "Payload" | "PayloadAllocation" | "PayloadMount" | "PayloadPlan" | "Person" | "Plan" | "PlanContingency" | "PlannedAirMission" | "PlannedRoutePoints" | "Platform" | "Pose" | "Position" | "PowerSource" | "PowerState" | "Predicate" | "ProcessControlCommand" | "Property" | "Protocol" | "ProtocolEventMessage" | "ProtocolPayload" | "RFSensor" | "Radio" | "RadioProfile" | "Range" | "ReceiverConfig" | "Record" | "Region" | "Relationship" | "RemoteControl" | "Resource" | "ResourceCommand" | "ResponseMessage" | "Restriction" | "Robot" | "RobotController" | "Role" | "RoleAssignment" | "Root" | "Roster" | "RoutePlan" | "RuntimeLoadState" | "RwsPose" | "RwsState" | "SemanticType" | "SensorFieldOfView" | "SensorPayload" | "SensorState" | "Set" | "Shape" | "SignalQuality" | "SpatialRelationship" | "SpatialStruct" | "SplashCorrection" | "SpotterOrigin" | "State" | "StateChangeCommand" | "StringName" | "Struct" | "StructPath" | "SubsystemHealth" | "SuccessCriterion" | "Supplies" | "Symbology" | "TargetBoxCoord" | "TargetCoord" | "TargetHandover" | "TargetKinematics" | "TargetPriority" | "TargetSet" | "TargetSetCoord" | "Task" | "TaskAssignment" | "TaskEffect" | "TaskInformation" | "TaskManeuver" | "TaskTimeWindow" | "TaskTransport" | "TelemetryMessage" | "Time" | "Timestamp" | "Track" | "TrackUpdate" | "TrackerState" | "Transform" | "TransportCounters" | "TransportError" | "UAVTelemetryMessage" | "UID" | "Uncertainty" | "Unit" | "UnitFlightPlan" | "Validation" | "Vector" | "Vehicle" | "VelocityVector" | "Version" | "VideoConfig" | "VisionBox" | "VisionDetection" | "VisionDetectionFrame" | "WeatherLimits";
+export type ModelName = "Activation" | "Actor" | "Agent" | "AirEffects" | "AirMachine" | "AirNavigation" | "AirPlan" | "AirRobot" | "Airspeed" | "AltitudeState" | "AmpereHours" | "Amperes" | "Angle" | "AngleDegrees" | "AngleRadians" | "AngularVelocityVector" | "AnnotationAnchor" | "AnnotationGraphic" | "AprsProfile" | "AreaMeasure" | "AreaMeasurement" | "AreaSquareMeters" | "Assessment" | "Assignment" | "AttachmentLease" | "Attribute" | "AudioMedia" | "AudioRecording" | "Authority" | "AutopilotMission" | "AutopilotMissionState" | "AutopilotMissionWaypoint" | "BattleDamageAssessment" | "Bearing" | "BearingMeasurement" | "BinaryMedia" | "BooleanLogic" | "Boundary" | "Bounding" | "BoundingBox" | "ByteCount" | "CalloutGraphic" | "Capability" | "CapabilityAdvert" | "Category" | "ChannelMapEntry" | "ChannelSpec" | "Classification" | "Cluster" | "CoTSymbology" | "Coalition" | "Collection" | "ColorChannel" | "ColorComponent" | "ColorRGBA" | "CombatTaskProfile" | "Command" | "CommandAuthority" | "CommandMessage" | "Communication" | "Component" | "Condition" | "ConfigurationCommand" | "Constraint" | "Context" | "Control" | "ControlAttitudeSetpoint" | "ControlAxisSet" | "ControlChannelValue" | "ControlLease" | "ControlOverride" | "Coordinate" | "Count" | "CryptoKey" | "CryptoProfile" | "Cue" | "Data" | "DataLayer" | "DataRateSpec" | "Definition" | "DefinitionRelationship" | "DegreesCelsius" | "DeliveryQuality" | "DeliveryReceipt" | "Delta" | "Detection" | "DirectedRelationship" | "Directive" | "Distance" | "DistanceMeasurement" | "DistanceMeters" | "DocumentMedia" | "Domain" | "Drone" | "Duration" | "Effects" | "EffectsPayload" | "ElectricCharge" | "ElectricCurrent" | "ElectricPotential" | "ElectricPower" | "ElectricalResourceState" | "ElrsProfile" | "Energy" | "Entity" | "EntityComponentRef" | "EntityState" | "Equipment" | "EquipmentTemplate" | "EsadArming" | "EsadState" | "EulerAngles" | "Event" | "Execution" | "ExecutionCommand" | "ExternalRepresentationSource" | "FillStyle" | "Fires" | "FirmwareInfo" | "FlightAssignment" | "FlightControlState" | "FlightEvent" | "FlightLevelBand" | "FlightMissionPoint" | "FlightSensorConfiguration" | "FlyingOrg" | "FpvProfile" | "Frame" | "Frequency" | "FrequencyRange" | "FuelState" | "Function" | "GNC" | "GeoArea" | "GeoCircle" | "GeoGeometryCollection" | "GeoMultiArea" | "GeoMultiPath" | "GeoMultiPoint" | "GeoPath" | "GeoPos" | "GeoRegistration" | "Geometry" | "GeometryGraphic" | "GeoreferencedMediaGraphic" | "GlobalPosition" | "GnssSolution" | "Graphic" | "GraphicLength" | "GraphicStyle" | "GroundEffects" | "GroundMachine" | "GroundNavigation" | "GroundOrbatOrg" | "GroundRobot" | "Group" | "GroupFlightPlan" | "Health" | "HealthAlert" | "HealthSnapshot" | "Hertz" | "HumanTextMessage" | "ID" | "IdentifiedRepresentation" | "Identity" | "IdentityBootstrap" | "ImageMedia" | "ImageSensor" | "ImuSample" | "Input" | "IntID" | "Interface" | "Internal" | "InventoryState" | "IsrObservation" | "IsrParameters" | "IsrResult" | "Item" | "ItemCount" | "Kinematic" | "LabelGraphic" | "LatitudeLongitudeMapGrid" | "Layer" | "LayerView" | "Lease" | "Lifecycle" | "Limitation" | "Line" | "Link" | "LinkCapacity" | "LinkCounters" | "LinkState" | "LiveAudioStream" | "LiveVideoStream" | "LoRaProfile" | "LocalDirection" | "LocalMapGrid" | "LocalPos" | "LocalVector" | "Location" | "LocationState" | "LocationUncertainty" | "LoiterOrbit" | "MGRSMapGrid" | "Machine" | "MaintenanceStatus" | "MapGrid" | "MapView" | "Mark" | "MarkdownText" | "Measurement" | "MeasurementGraphic" | "MeasurementQuality" | "Media" | "MediaGraphic" | "MediaItem" | "MediaRepresentationSource" | "MeshLink" | "MeshNode" | "MeshPositionSample" | "MeshReceiveMetrics" | "MeshView" | "MeshtasticMessage" | "Message" | "MessageTransferResult" | "MetadataValue" | "MilitaryAffiliation" | "MilitaryAirMachine" | "MilitaryAirNavigation" | "MilitaryGroundMachine" | "MilitaryMachine" | "MilitaryOrg" | "MilitaryOrgTemplate" | "MilitaryOrganizationState" | "MilitaryPerson" | "MilitaryRadioProfile" | "MilitaryStrength" | "MilitarySupplyTemplate" | "MilitarySymbolGraphic" | "MilitarySymbology" | "MilitaryUnitFlightPlan" | "MissionEvent" | "MissionRouteGeometry" | "ModeRange" | "MotionCommand" | "MunitionAllocation" | "NavReadinessState" | "NavigationValidity" | "Network" | "NetworkAddress" | "Node" | "NodeHeartbeat" | "NormalizedRatio" | "NoteGraphic" | "NumericRange" | "Object" | "Objective" | "Observation" | "ObservationMessage" | "ObserverSource" | "Opacity" | "Operation" | "OperationalContext" | "OperationalPlan" | "OrbatOrg" | "Orbital" | "OrgComposition" | "OrgRole" | "OrgTemplate" | "Organization" | "OrganizationState" | "OverlayLayer" | "Parameter" | "Path" | "PathAnchor" | "Payload" | "PayloadAllocation" | "PayloadMount" | "PayloadPlan" | "Person" | "PersonnelTemplate" | "Photograph" | "PlainText" | "Plan" | "PlanContingency" | "PlannedAirMission" | "PlannedRoutePoints" | "Platform" | "PointCloudMedia" | "Pose" | "Position" | "PositionAnchor" | "PowerSource" | "PowerState" | "Predicate" | "ProcessControlCommand" | "Property" | "Protocol" | "ProtocolEventMessage" | "ProtocolPayload" | "Quantity" | "RFSensor" | "Radio" | "RadioProfile" | "RadiusMeasurement" | "Range" | "Ratio" | "ReceiverConfig" | "Record" | "ReferenceLayer" | "Region" | "Relationship" | "RemoteControl" | "Representation" | "RepresentationSource" | "Resource" | "ResourceCommand" | "ResourceHolding" | "ResourceRequirement" | "ResourceTemplate" | "ResponseMessage" | "Restriction" | "Robot" | "RobotController" | "Role" | "RoleAssignment" | "Root" | "Roster" | "RouteMeasurement" | "RoutePlan" | "RuntimeLoadState" | "RwsPose" | "RwsState" | "SIDC" | "Scenario" | "SemanticType" | "SensorFieldOfView" | "SensorPayload" | "SensorState" | "Set" | "Shape" | "Side" | "SignalQuality" | "SpatialMeasurement" | "SpatialRelationship" | "SpatialStruct" | "SpectrumMedia" | "SpectrumRecording" | "SplashCorrection" | "SpotterOrigin" | "State" | "StateChangeCommand" | "StillImage" | "StringName" | "StrokeStyle" | "Struct" | "StructPath" | "SubjectAnchor" | "SubjectEvent" | "SubjectState" | "SubsystemHealth" | "SuccessCriterion" | "Supplies" | "SupplyTemplate" | "SymbolGraphic" | "Symbology" | "TacticalGraphic" | "TargetBoxCoord" | "TargetCoord" | "TargetHandover" | "TargetKinematics" | "TargetPriority" | "TargetSet" | "TargetSetCoord" | "Task" | "TaskAssignment" | "TaskEffect" | "TaskInformation" | "TaskManeuver" | "TaskTimeWindow" | "TaskTransport" | "TelemetryMessage" | "Temperature" | "Text" | "TextStyle" | "Time" | "TimeRange" | "TimelineEvent" | "Timestamp" | "Track" | "TrackUpdate" | "TrackerState" | "Transform" | "TransportCounters" | "TransportError" | "UAVTelemetryMessage" | "UID" | "UTMMapGrid" | "UTMZone" | "Uncertainty" | "Unit" | "UnitFlightPlan" | "UnitQuantity" | "Validation" | "Vector" | "Vehicle" | "VelocityVector" | "Version" | "VideoConfig" | "VideoFrame" | "VideoMedia" | "VideoRecording" | "VisionBox" | "VisionDetection" | "VisionDetectionFrame" | "Volts" | "WattHours" | "Watts" | "WeatherLimits";
 
-export type OCCIDValue = Activation$Exact | Actor$Exact | Agent$Exact | AirEffects$Exact | AirMachine$Exact | AirNavigation$Exact | AirPlan$Exact | AirRobot$Exact | Airspeed$Exact | AltitudeState$Exact | AngularVelocityVector$Exact | AprsProfile$Exact | Assessment$Exact | Assignment$Exact | AttachmentLease$Exact | Attribute$Exact | Authority$Exact | AutopilotMission$Exact | AutopilotMissionState$Exact | AutopilotMissionWaypoint$Exact | BattleDamageAssessment$Exact | Bearing$Exact | BooleanLogic$Exact | Boundary$Exact | Bounding$Exact | BoundingBox$Exact | Capability$Exact | CapabilityAdvert$Exact | Category$Exact | ChannelMapEntry$Exact | ChannelSpec$Exact | Classification$Exact | Cluster$Exact | Collection$Exact | CombatTaskProfile$Exact | Command$Exact | CommandAuthority$Exact | CommandMessage$Exact | Communication$Exact | Component$Exact | Condition$Exact | ConfigurationCommand$Exact | Constraint$Exact | Control$Exact | ControlAttitudeSetpoint$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlLease$Exact | ControlOverride$Exact | Coordinate$Exact | CryptoKey$Exact | CryptoProfile$Exact | Cue$Exact | Data$Exact | DataRateSpec$Exact | Definition$Exact | DefinitionRelationship$Exact | DeliveryQuality$Exact | DeliveryReceipt$Exact | Delta$Exact | Detection$Exact | DirectedRelationship$Exact | Directive$Exact | DisplayMeta$Exact | Domain$Exact | Drone$Exact | Duration$Exact | Effects$Exact | EffectsPayload$Exact | ElectricalResourceState$Exact | ElrsProfile$Exact | Entity$Exact | EntityComponentRef$Exact | EntityState$Exact | Equipment$Exact | EsadArming$Exact | EsadState$Exact | EulerAngles$Exact | Event$Exact | Execution$Exact | ExecutionCommand$Exact | Fires$Exact | FirmwareInfo$Exact | FlightAssignment$Exact | FlightControlState$Exact | FlightEvent$Exact | FlightLevelBand$Exact | FlightMissionPoint$Exact | FlightSensorConfiguration$Exact | FlyingOrg$Exact | FpvProfile$Exact | Frame$Exact | FrequencyRange$Exact | FuelState$Exact | Function$Exact | GNC$Exact | GeoArea$Exact | GeoPath$Exact | GeoPos$Exact | Geometry$Exact | GlobalPosition$Exact | GnssSolution$Exact | GroundEffects$Exact | GroundMachine$Exact | GroundNavigation$Exact | GroundOrbatOrg$Exact | GroundRobot$Exact | Group$Exact | GroupFlightPlan$Exact | Health$Exact | HealthAlert$Exact | HealthSnapshot$Exact | HumanTextMessage$Exact | ID$Exact | Identity$Exact | IdentityBootstrap$Exact | ImageSensor$Exact | ImuSample$Exact | Input$Exact | IntID$Exact | Interface$Exact | Internal$Exact | IsrObservation$Exact | IsrParameters$Exact | IsrResult$Exact | Item$Exact | ItemCount$Exact | Kinematic$Exact | Lease$Exact | Lifecycle$Exact | Limitation$Exact | Line$Exact | Link$Exact | LinkCapacity$Exact | LinkCounters$Exact | LinkState$Exact | LoRaProfile$Exact | LocalDirection$Exact | LocalPos$Exact | LocalVector$Exact | Location$Exact | LocationState$Exact | LocationUncertainty$Exact | LoiterOrbit$Exact | Machine$Exact | MaintenanceStatus$Exact | Mark$Exact | Measurement$Exact | MeasurementQuality$Exact | Media$Exact | MediaItem$Exact | MeshLink$Exact | MeshNode$Exact | MeshPositionSample$Exact | MeshReceiveMetrics$Exact | MeshView$Exact | MeshtasticMessage$Exact | Message$Exact | MessageTransferResult$Exact | MetadataValue$Exact | MilitaryAirMachine$Exact | MilitaryAirNavigation$Exact | MilitaryGroundMachine$Exact | MilitaryMachine$Exact | MilitaryOrg$Exact | MilitaryPerson$Exact | MilitaryRadioProfile$Exact | MilitaryUnitFlightPlan$Exact | MissionEvent$Exact | MissionRouteGeometry$Exact | ModeRange$Exact | MotionCommand$Exact | MunitionAllocation$Exact | NavReadinessState$Exact | NavigationValidity$Exact | Network$Exact | NetworkAddress$Exact | Node$Exact | NodeHeartbeat$Exact | NumericRange$Exact | Object$Exact | Objective$Exact | Observation$Exact | ObservationMessage$Exact | ObserverSource$Exact | OperationalPlan$Exact | OrbatOrg$Exact | Orbital$Exact | OrgComposition$Exact | OrgRole$Exact | Organization$Exact | Parameter$Exact | Path$Exact | Payload$Exact | PayloadAllocation$Exact | PayloadMount$Exact | PayloadPlan$Exact | Person$Exact | Plan$Exact | PlanContingency$Exact | PlannedAirMission$Exact | PlannedRoutePoints$Exact | Platform$Exact | Pose$Exact | Position$Exact | PowerSource$Exact | PowerState$Exact | Predicate$Exact | ProcessControlCommand$Exact | Property$Exact | Protocol$Exact | ProtocolEventMessage$Exact | ProtocolPayload$Exact | RFSensor$Exact | Radio$Exact | RadioProfile$Exact | Range$Exact | ReceiverConfig$Exact | Record$Exact | Region$Exact | Relationship$Exact | RemoteControl$Exact | Resource$Exact | ResourceCommand$Exact | ResponseMessage$Exact | Restriction$Exact | Robot$Exact | RobotController$Exact | Role$Exact | RoleAssignment$Exact | Root$Exact | Roster$Exact | RoutePlan$Exact | RuntimeLoadState$Exact | RwsPose$Exact | RwsState$Exact | SemanticType$Exact | SensorFieldOfView$Exact | SensorPayload$Exact | SensorState$Exact | Set$Exact | Shape$Exact | SignalQuality$Exact | SpatialRelationship$Exact | SpatialStruct$Exact | SplashCorrection$Exact | SpotterOrigin$Exact | State$Exact | StateChangeCommand$Exact | StringName$Exact | Struct$Exact | StructPath$Exact | SubsystemHealth$Exact | SuccessCriterion$Exact | Supplies$Exact | Symbology$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | TargetHandover$Exact | TargetKinematics$Exact | TargetPriority$Exact | TargetSet$Exact | TargetSetCoord$Exact | Task$Exact | TaskAssignment$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskManeuver$Exact | TaskTimeWindow$Exact | TaskTransport$Exact | TelemetryMessage$Exact | Time$Exact | Timestamp$Exact | Track$Exact | TrackUpdate$Exact | TrackerState$Exact | Transform$Exact | TransportCounters$Exact | TransportError$Exact | UAVTelemetryMessage$Exact | UID$Exact | Uncertainty$Exact | Unit$Exact | UnitFlightPlan$Exact | Validation$Exact | Vector$Exact | Vehicle$Exact | VelocityVector$Exact | Version$Exact | VideoConfig$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | WeatherLimits$Exact;
+export type OCCIDValue = Activation$Exact | Actor$Exact | Agent$Exact | AirEffects$Exact | AirMachine$Exact | AirNavigation$Exact | AirPlan$Exact | AirRobot$Exact | Airspeed$Exact | AltitudeState$Exact | AmpereHours$Exact | Amperes$Exact | Angle$Exact | AngleDegrees$Exact | AngleRadians$Exact | AngularVelocityVector$Exact | AnnotationAnchor$Exact | AnnotationGraphic$Exact | AprsProfile$Exact | AreaMeasure$Exact | AreaMeasurement$Exact | AreaSquareMeters$Exact | Assessment$Exact | Assignment$Exact | AttachmentLease$Exact | Attribute$Exact | AudioMedia$Exact | AudioRecording$Exact | Authority$Exact | AutopilotMission$Exact | AutopilotMissionState$Exact | AutopilotMissionWaypoint$Exact | BattleDamageAssessment$Exact | Bearing$Exact | BearingMeasurement$Exact | BinaryMedia$Exact | BooleanLogic$Exact | Boundary$Exact | Bounding$Exact | BoundingBox$Exact | ByteCount$Exact | CalloutGraphic$Exact | Capability$Exact | CapabilityAdvert$Exact | Category$Exact | ChannelMapEntry$Exact | ChannelSpec$Exact | Classification$Exact | Cluster$Exact | CoTSymbology$Exact | Coalition$Exact | Collection$Exact | ColorChannel$Exact | ColorComponent$Exact | ColorRGBA$Exact | CombatTaskProfile$Exact | Command$Exact | CommandAuthority$Exact | CommandMessage$Exact | Communication$Exact | Component$Exact | Condition$Exact | ConfigurationCommand$Exact | Constraint$Exact | Context$Exact | Control$Exact | ControlAttitudeSetpoint$Exact | ControlAxisSet$Exact | ControlChannelValue$Exact | ControlLease$Exact | ControlOverride$Exact | Coordinate$Exact | Count$Exact | CryptoKey$Exact | CryptoProfile$Exact | Cue$Exact | Data$Exact | DataLayer$Exact | DataRateSpec$Exact | Definition$Exact | DefinitionRelationship$Exact | DegreesCelsius$Exact | DeliveryQuality$Exact | DeliveryReceipt$Exact | Delta$Exact | Detection$Exact | DirectedRelationship$Exact | Directive$Exact | Distance$Exact | DistanceMeasurement$Exact | DistanceMeters$Exact | DocumentMedia$Exact | Domain$Exact | Drone$Exact | Duration$Exact | Effects$Exact | EffectsPayload$Exact | ElectricCharge$Exact | ElectricCurrent$Exact | ElectricPotential$Exact | ElectricPower$Exact | ElectricalResourceState$Exact | ElrsProfile$Exact | Energy$Exact | Entity$Exact | EntityComponentRef$Exact | EntityState$Exact | Equipment$Exact | EquipmentTemplate$Exact | EsadArming$Exact | EsadState$Exact | EulerAngles$Exact | Event$Exact | Execution$Exact | ExecutionCommand$Exact | ExternalRepresentationSource$Exact | FillStyle$Exact | Fires$Exact | FirmwareInfo$Exact | FlightAssignment$Exact | FlightControlState$Exact | FlightEvent$Exact | FlightLevelBand$Exact | FlightMissionPoint$Exact | FlightSensorConfiguration$Exact | FlyingOrg$Exact | FpvProfile$Exact | Frame$Exact | Frequency$Exact | FrequencyRange$Exact | FuelState$Exact | Function$Exact | GNC$Exact | GeoArea$Exact | GeoCircle$Exact | GeoGeometryCollection$Exact | GeoMultiArea$Exact | GeoMultiPath$Exact | GeoMultiPoint$Exact | GeoPath$Exact | GeoPos$Exact | GeoRegistration$Exact | Geometry$Exact | GeometryGraphic$Exact | GeoreferencedMediaGraphic$Exact | GlobalPosition$Exact | GnssSolution$Exact | Graphic$Exact | GraphicLength$Exact | GraphicStyle$Exact | GroundEffects$Exact | GroundMachine$Exact | GroundNavigation$Exact | GroundOrbatOrg$Exact | GroundRobot$Exact | Group$Exact | GroupFlightPlan$Exact | Health$Exact | HealthAlert$Exact | HealthSnapshot$Exact | Hertz$Exact | HumanTextMessage$Exact | ID$Exact | IdentifiedRepresentation$Exact | Identity$Exact | IdentityBootstrap$Exact | ImageMedia$Exact | ImageSensor$Exact | ImuSample$Exact | Input$Exact | IntID$Exact | Interface$Exact | Internal$Exact | InventoryState$Exact | IsrObservation$Exact | IsrParameters$Exact | IsrResult$Exact | Item$Exact | ItemCount$Exact | Kinematic$Exact | LabelGraphic$Exact | LatitudeLongitudeMapGrid$Exact | Layer$Exact | LayerView$Exact | Lease$Exact | Lifecycle$Exact | Limitation$Exact | Line$Exact | Link$Exact | LinkCapacity$Exact | LinkCounters$Exact | LinkState$Exact | LiveAudioStream$Exact | LiveVideoStream$Exact | LoRaProfile$Exact | LocalDirection$Exact | LocalMapGrid$Exact | LocalPos$Exact | LocalVector$Exact | Location$Exact | LocationState$Exact | LocationUncertainty$Exact | LoiterOrbit$Exact | MGRSMapGrid$Exact | Machine$Exact | MaintenanceStatus$Exact | MapGrid$Exact | MapView$Exact | Mark$Exact | MarkdownText$Exact | Measurement$Exact | MeasurementGraphic$Exact | MeasurementQuality$Exact | Media$Exact | MediaGraphic$Exact | MediaItem$Exact | MediaRepresentationSource$Exact | MeshLink$Exact | MeshNode$Exact | MeshPositionSample$Exact | MeshReceiveMetrics$Exact | MeshView$Exact | MeshtasticMessage$Exact | Message$Exact | MessageTransferResult$Exact | MetadataValue$Exact | MilitaryAffiliation$Exact | MilitaryAirMachine$Exact | MilitaryAirNavigation$Exact | MilitaryGroundMachine$Exact | MilitaryMachine$Exact | MilitaryOrg$Exact | MilitaryOrgTemplate$Exact | MilitaryOrganizationState$Exact | MilitaryPerson$Exact | MilitaryRadioProfile$Exact | MilitaryStrength$Exact | MilitarySupplyTemplate$Exact | MilitarySymbolGraphic$Exact | MilitarySymbology$Exact | MilitaryUnitFlightPlan$Exact | MissionEvent$Exact | MissionRouteGeometry$Exact | ModeRange$Exact | MotionCommand$Exact | MunitionAllocation$Exact | NavReadinessState$Exact | NavigationValidity$Exact | Network$Exact | NetworkAddress$Exact | Node$Exact | NodeHeartbeat$Exact | NormalizedRatio$Exact | NoteGraphic$Exact | NumericRange$Exact | Object$Exact | Objective$Exact | Observation$Exact | ObservationMessage$Exact | ObserverSource$Exact | Opacity$Exact | Operation$Exact | OperationalContext$Exact | OperationalPlan$Exact | OrbatOrg$Exact | Orbital$Exact | OrgComposition$Exact | OrgRole$Exact | OrgTemplate$Exact | Organization$Exact | OrganizationState$Exact | OverlayLayer$Exact | Parameter$Exact | Path$Exact | PathAnchor$Exact | Payload$Exact | PayloadAllocation$Exact | PayloadMount$Exact | PayloadPlan$Exact | Person$Exact | PersonnelTemplate$Exact | Photograph$Exact | PlainText$Exact | Plan$Exact | PlanContingency$Exact | PlannedAirMission$Exact | PlannedRoutePoints$Exact | Platform$Exact | PointCloudMedia$Exact | Pose$Exact | Position$Exact | PositionAnchor$Exact | PowerSource$Exact | PowerState$Exact | Predicate$Exact | ProcessControlCommand$Exact | Property$Exact | Protocol$Exact | ProtocolEventMessage$Exact | ProtocolPayload$Exact | Quantity$Exact | RFSensor$Exact | Radio$Exact | RadioProfile$Exact | RadiusMeasurement$Exact | Range$Exact | Ratio$Exact | ReceiverConfig$Exact | Record$Exact | ReferenceLayer$Exact | Region$Exact | Relationship$Exact | RemoteControl$Exact | Representation$Exact | RepresentationSource$Exact | Resource$Exact | ResourceCommand$Exact | ResourceHolding$Exact | ResourceRequirement$Exact | ResourceTemplate$Exact | ResponseMessage$Exact | Restriction$Exact | Robot$Exact | RobotController$Exact | Role$Exact | RoleAssignment$Exact | Root$Exact | Roster$Exact | RouteMeasurement$Exact | RoutePlan$Exact | RuntimeLoadState$Exact | RwsPose$Exact | RwsState$Exact | SIDC$Exact | Scenario$Exact | SemanticType$Exact | SensorFieldOfView$Exact | SensorPayload$Exact | SensorState$Exact | Set$Exact | Shape$Exact | Side$Exact | SignalQuality$Exact | SpatialMeasurement$Exact | SpatialRelationship$Exact | SpatialStruct$Exact | SpectrumMedia$Exact | SpectrumRecording$Exact | SplashCorrection$Exact | SpotterOrigin$Exact | State$Exact | StateChangeCommand$Exact | StillImage$Exact | StringName$Exact | StrokeStyle$Exact | Struct$Exact | StructPath$Exact | SubjectAnchor$Exact | SubjectEvent$Exact | SubjectState$Exact | SubsystemHealth$Exact | SuccessCriterion$Exact | Supplies$Exact | SupplyTemplate$Exact | SymbolGraphic$Exact | Symbology$Exact | TacticalGraphic$Exact | TargetBoxCoord$Exact | TargetCoord$Exact | TargetHandover$Exact | TargetKinematics$Exact | TargetPriority$Exact | TargetSet$Exact | TargetSetCoord$Exact | Task$Exact | TaskAssignment$Exact | TaskEffect$Exact | TaskInformation$Exact | TaskManeuver$Exact | TaskTimeWindow$Exact | TaskTransport$Exact | TelemetryMessage$Exact | Temperature$Exact | Text$Exact | TextStyle$Exact | Time$Exact | TimeRange$Exact | TimelineEvent$Exact | Timestamp$Exact | Track$Exact | TrackUpdate$Exact | TrackerState$Exact | Transform$Exact | TransportCounters$Exact | TransportError$Exact | UAVTelemetryMessage$Exact | UID$Exact | UTMMapGrid$Exact | UTMZone$Exact | Uncertainty$Exact | Unit$Exact | UnitFlightPlan$Exact | UnitQuantity$Exact | Validation$Exact | Vector$Exact | Vehicle$Exact | VelocityVector$Exact | Version$Exact | VideoConfig$Exact | VideoFrame$Exact | VideoMedia$Exact | VideoRecording$Exact | VisionBox$Exact | VisionDetection$Exact | VisionDetectionFrame$Exact | Volts$Exact | WattHours$Exact | Watts$Exact | WeatherLimits$Exact;
 
 export interface ExactModelMap {
 
@@ -7965,9 +9981,29 @@ export interface ExactModelMap {
 
   AltitudeState: AltitudeState$Exact;
 
+  AmpereHours: AmpereHours$Exact;
+
+  Amperes: Amperes$Exact;
+
+  Angle: Angle$Exact;
+
+  AngleDegrees: AngleDegrees$Exact;
+
+  AngleRadians: AngleRadians$Exact;
+
   AngularVelocityVector: AngularVelocityVector$Exact;
 
+  AnnotationAnchor: AnnotationAnchor$Exact;
+
+  AnnotationGraphic: AnnotationGraphic$Exact;
+
   AprsProfile: AprsProfile$Exact;
+
+  AreaMeasure: AreaMeasure$Exact;
+
+  AreaMeasurement: AreaMeasurement$Exact;
+
+  AreaSquareMeters: AreaSquareMeters$Exact;
 
   Assessment: Assessment$Exact;
 
@@ -7976,6 +10012,10 @@ export interface ExactModelMap {
   AttachmentLease: AttachmentLease$Exact;
 
   Attribute: Attribute$Exact;
+
+  AudioMedia: AudioMedia$Exact;
+
+  AudioRecording: AudioRecording$Exact;
 
   Authority: Authority$Exact;
 
@@ -7989,6 +10029,10 @@ export interface ExactModelMap {
 
   Bearing: Bearing$Exact;
 
+  BearingMeasurement: BearingMeasurement$Exact;
+
+  BinaryMedia: BinaryMedia$Exact;
+
   BooleanLogic: BooleanLogic$Exact;
 
   Boundary: Boundary$Exact;
@@ -7996,6 +10040,10 @@ export interface ExactModelMap {
   Bounding: Bounding$Exact;
 
   BoundingBox: BoundingBox$Exact;
+
+  ByteCount: ByteCount$Exact;
+
+  CalloutGraphic: CalloutGraphic$Exact;
 
   Capability: Capability$Exact;
 
@@ -8011,7 +10059,17 @@ export interface ExactModelMap {
 
   Cluster: Cluster$Exact;
 
+  CoTSymbology: CoTSymbology$Exact;
+
+  Coalition: Coalition$Exact;
+
   Collection: Collection$Exact;
+
+  ColorChannel: ColorChannel$Exact;
+
+  ColorComponent: ColorComponent$Exact;
+
+  ColorRGBA: ColorRGBA$Exact;
 
   CombatTaskProfile: CombatTaskProfile$Exact;
 
@@ -8031,6 +10089,8 @@ export interface ExactModelMap {
 
   Constraint: Constraint$Exact;
 
+  Context: Context$Exact;
+
   Control: Control$Exact;
 
   ControlAttitudeSetpoint: ControlAttitudeSetpoint$Exact;
@@ -8045,6 +10105,8 @@ export interface ExactModelMap {
 
   Coordinate: Coordinate$Exact;
 
+  Count: Count$Exact;
+
   CryptoKey: CryptoKey$Exact;
 
   CryptoProfile: CryptoProfile$Exact;
@@ -8053,11 +10115,15 @@ export interface ExactModelMap {
 
   Data: Data$Exact;
 
+  DataLayer: DataLayer$Exact;
+
   DataRateSpec: DataRateSpec$Exact;
 
   Definition: Definition$Exact;
 
   DefinitionRelationship: DefinitionRelationship$Exact;
+
+  DegreesCelsius: DegreesCelsius$Exact;
 
   DeliveryQuality: DeliveryQuality$Exact;
 
@@ -8071,7 +10137,13 @@ export interface ExactModelMap {
 
   Directive: Directive$Exact;
 
-  DisplayMeta: DisplayMeta$Exact;
+  Distance: Distance$Exact;
+
+  DistanceMeasurement: DistanceMeasurement$Exact;
+
+  DistanceMeters: DistanceMeters$Exact;
+
+  DocumentMedia: DocumentMedia$Exact;
 
   Domain: Domain$Exact;
 
@@ -8083,9 +10155,19 @@ export interface ExactModelMap {
 
   EffectsPayload: EffectsPayload$Exact;
 
+  ElectricCharge: ElectricCharge$Exact;
+
+  ElectricCurrent: ElectricCurrent$Exact;
+
+  ElectricPotential: ElectricPotential$Exact;
+
+  ElectricPower: ElectricPower$Exact;
+
   ElectricalResourceState: ElectricalResourceState$Exact;
 
   ElrsProfile: ElrsProfile$Exact;
+
+  Energy: Energy$Exact;
 
   Entity: Entity$Exact;
 
@@ -8094,6 +10176,8 @@ export interface ExactModelMap {
   EntityState: EntityState$Exact;
 
   Equipment: Equipment$Exact;
+
+  EquipmentTemplate: EquipmentTemplate$Exact;
 
   EsadArming: EsadArming$Exact;
 
@@ -8106,6 +10190,10 @@ export interface ExactModelMap {
   Execution: Execution$Exact;
 
   ExecutionCommand: ExecutionCommand$Exact;
+
+  ExternalRepresentationSource: ExternalRepresentationSource$Exact;
+
+  FillStyle: FillStyle$Exact;
 
   Fires: Fires$Exact;
 
@@ -8129,6 +10217,8 @@ export interface ExactModelMap {
 
   Frame: Frame$Exact;
 
+  Frequency: Frequency$Exact;
+
   FrequencyRange: FrequencyRange$Exact;
 
   FuelState: FuelState$Exact;
@@ -8139,15 +10229,37 @@ export interface ExactModelMap {
 
   GeoArea: GeoArea$Exact;
 
+  GeoCircle: GeoCircle$Exact;
+
+  GeoGeometryCollection: GeoGeometryCollection$Exact;
+
+  GeoMultiArea: GeoMultiArea$Exact;
+
+  GeoMultiPath: GeoMultiPath$Exact;
+
+  GeoMultiPoint: GeoMultiPoint$Exact;
+
   GeoPath: GeoPath$Exact;
 
   GeoPos: GeoPos$Exact;
 
+  GeoRegistration: GeoRegistration$Exact;
+
   Geometry: Geometry$Exact;
+
+  GeometryGraphic: GeometryGraphic$Exact;
+
+  GeoreferencedMediaGraphic: GeoreferencedMediaGraphic$Exact;
 
   GlobalPosition: GlobalPosition$Exact;
 
   GnssSolution: GnssSolution$Exact;
+
+  Graphic: Graphic$Exact;
+
+  GraphicLength: GraphicLength$Exact;
+
+  GraphicStyle: GraphicStyle$Exact;
 
   GroundEffects: GroundEffects$Exact;
 
@@ -8169,13 +10281,19 @@ export interface ExactModelMap {
 
   HealthSnapshot: HealthSnapshot$Exact;
 
+  Hertz: Hertz$Exact;
+
   HumanTextMessage: HumanTextMessage$Exact;
 
   ID: ID$Exact;
 
+  IdentifiedRepresentation: IdentifiedRepresentation$Exact;
+
   Identity: Identity$Exact;
 
   IdentityBootstrap: IdentityBootstrap$Exact;
+
+  ImageMedia: ImageMedia$Exact;
 
   ImageSensor: ImageSensor$Exact;
 
@@ -8189,6 +10307,8 @@ export interface ExactModelMap {
 
   Internal: Internal$Exact;
 
+  InventoryState: InventoryState$Exact;
+
   IsrObservation: IsrObservation$Exact;
 
   IsrParameters: IsrParameters$Exact;
@@ -8200,6 +10320,14 @@ export interface ExactModelMap {
   ItemCount: ItemCount$Exact;
 
   Kinematic: Kinematic$Exact;
+
+  LabelGraphic: LabelGraphic$Exact;
+
+  LatitudeLongitudeMapGrid: LatitudeLongitudeMapGrid$Exact;
+
+  Layer: Layer$Exact;
+
+  LayerView: LayerView$Exact;
 
   Lease: Lease$Exact;
 
@@ -8217,9 +10345,15 @@ export interface ExactModelMap {
 
   LinkState: LinkState$Exact;
 
+  LiveAudioStream: LiveAudioStream$Exact;
+
+  LiveVideoStream: LiveVideoStream$Exact;
+
   LoRaProfile: LoRaProfile$Exact;
 
   LocalDirection: LocalDirection$Exact;
+
+  LocalMapGrid: LocalMapGrid$Exact;
 
   LocalPos: LocalPos$Exact;
 
@@ -8233,19 +10367,33 @@ export interface ExactModelMap {
 
   LoiterOrbit: LoiterOrbit$Exact;
 
+  MGRSMapGrid: MGRSMapGrid$Exact;
+
   Machine: Machine$Exact;
 
   MaintenanceStatus: MaintenanceStatus$Exact;
 
+  MapGrid: MapGrid$Exact;
+
+  MapView: MapView$Exact;
+
   Mark: Mark$Exact;
 
+  MarkdownText: MarkdownText$Exact;
+
   Measurement: Measurement$Exact;
+
+  MeasurementGraphic: MeasurementGraphic$Exact;
 
   MeasurementQuality: MeasurementQuality$Exact;
 
   Media: Media$Exact;
 
+  MediaGraphic: MediaGraphic$Exact;
+
   MediaItem: MediaItem$Exact;
+
+  MediaRepresentationSource: MediaRepresentationSource$Exact;
 
   MeshLink: MeshLink$Exact;
 
@@ -8265,6 +10413,8 @@ export interface ExactModelMap {
 
   MetadataValue: MetadataValue$Exact;
 
+  MilitaryAffiliation: MilitaryAffiliation$Exact;
+
   MilitaryAirMachine: MilitaryAirMachine$Exact;
 
   MilitaryAirNavigation: MilitaryAirNavigation$Exact;
@@ -8275,9 +10425,21 @@ export interface ExactModelMap {
 
   MilitaryOrg: MilitaryOrg$Exact;
 
+  MilitaryOrgTemplate: MilitaryOrgTemplate$Exact;
+
+  MilitaryOrganizationState: MilitaryOrganizationState$Exact;
+
   MilitaryPerson: MilitaryPerson$Exact;
 
   MilitaryRadioProfile: MilitaryRadioProfile$Exact;
+
+  MilitaryStrength: MilitaryStrength$Exact;
+
+  MilitarySupplyTemplate: MilitarySupplyTemplate$Exact;
+
+  MilitarySymbolGraphic: MilitarySymbolGraphic$Exact;
+
+  MilitarySymbology: MilitarySymbology$Exact;
 
   MilitaryUnitFlightPlan: MilitaryUnitFlightPlan$Exact;
 
@@ -8303,6 +10465,10 @@ export interface ExactModelMap {
 
   NodeHeartbeat: NodeHeartbeat$Exact;
 
+  NormalizedRatio: NormalizedRatio$Exact;
+
+  NoteGraphic: NoteGraphic$Exact;
+
   NumericRange: NumericRange$Exact;
 
   Object: Object$Exact;
@@ -8315,6 +10481,12 @@ export interface ExactModelMap {
 
   ObserverSource: ObserverSource$Exact;
 
+  Opacity: Opacity$Exact;
+
+  Operation: Operation$Exact;
+
+  OperationalContext: OperationalContext$Exact;
+
   OperationalPlan: OperationalPlan$Exact;
 
   OrbatOrg: OrbatOrg$Exact;
@@ -8325,11 +10497,19 @@ export interface ExactModelMap {
 
   OrgRole: OrgRole$Exact;
 
+  OrgTemplate: OrgTemplate$Exact;
+
   Organization: Organization$Exact;
+
+  OrganizationState: OrganizationState$Exact;
+
+  OverlayLayer: OverlayLayer$Exact;
 
   Parameter: Parameter$Exact;
 
   Path: Path$Exact;
+
+  PathAnchor: PathAnchor$Exact;
 
   Payload: Payload$Exact;
 
@@ -8341,6 +10521,12 @@ export interface ExactModelMap {
 
   Person: Person$Exact;
 
+  PersonnelTemplate: PersonnelTemplate$Exact;
+
+  Photograph: Photograph$Exact;
+
+  PlainText: PlainText$Exact;
+
   Plan: Plan$Exact;
 
   PlanContingency: PlanContingency$Exact;
@@ -8351,9 +10537,13 @@ export interface ExactModelMap {
 
   Platform: Platform$Exact;
 
+  PointCloudMedia: PointCloudMedia$Exact;
+
   Pose: Pose$Exact;
 
   Position: Position$Exact;
+
+  PositionAnchor: PositionAnchor$Exact;
 
   PowerSource: PowerSource$Exact;
 
@@ -8371,17 +10561,25 @@ export interface ExactModelMap {
 
   ProtocolPayload: ProtocolPayload$Exact;
 
+  Quantity: Quantity$Exact;
+
   RFSensor: RFSensor$Exact;
 
   Radio: Radio$Exact;
 
   RadioProfile: RadioProfile$Exact;
 
+  RadiusMeasurement: RadiusMeasurement$Exact;
+
   Range: Range$Exact;
+
+  Ratio: Ratio$Exact;
 
   ReceiverConfig: ReceiverConfig$Exact;
 
   Record: Record$Exact;
+
+  ReferenceLayer: ReferenceLayer$Exact;
 
   Region: Region$Exact;
 
@@ -8389,9 +10587,19 @@ export interface ExactModelMap {
 
   RemoteControl: RemoteControl$Exact;
 
+  Representation: Representation$Exact;
+
+  RepresentationSource: RepresentationSource$Exact;
+
   Resource: Resource$Exact;
 
   ResourceCommand: ResourceCommand$Exact;
+
+  ResourceHolding: ResourceHolding$Exact;
+
+  ResourceRequirement: ResourceRequirement$Exact;
+
+  ResourceTemplate: ResourceTemplate$Exact;
 
   ResponseMessage: ResponseMessage$Exact;
 
@@ -8409,6 +10617,8 @@ export interface ExactModelMap {
 
   Roster: Roster$Exact;
 
+  RouteMeasurement: RouteMeasurement$Exact;
+
   RoutePlan: RoutePlan$Exact;
 
   RuntimeLoadState: RuntimeLoadState$Exact;
@@ -8416,6 +10626,10 @@ export interface ExactModelMap {
   RwsPose: RwsPose$Exact;
 
   RwsState: RwsState$Exact;
+
+  SIDC: SIDC$Exact;
+
+  Scenario: Scenario$Exact;
 
   SemanticType: SemanticType$Exact;
 
@@ -8429,11 +10643,19 @@ export interface ExactModelMap {
 
   Shape: Shape$Exact;
 
+  Side: Side$Exact;
+
   SignalQuality: SignalQuality$Exact;
+
+  SpatialMeasurement: SpatialMeasurement$Exact;
 
   SpatialRelationship: SpatialRelationship$Exact;
 
   SpatialStruct: SpatialStruct$Exact;
+
+  SpectrumMedia: SpectrumMedia$Exact;
+
+  SpectrumRecording: SpectrumRecording$Exact;
 
   SplashCorrection: SplashCorrection$Exact;
 
@@ -8443,11 +10665,21 @@ export interface ExactModelMap {
 
   StateChangeCommand: StateChangeCommand$Exact;
 
+  StillImage: StillImage$Exact;
+
   StringName: StringName$Exact;
+
+  StrokeStyle: StrokeStyle$Exact;
 
   Struct: Struct$Exact;
 
   StructPath: StructPath$Exact;
+
+  SubjectAnchor: SubjectAnchor$Exact;
+
+  SubjectEvent: SubjectEvent$Exact;
+
+  SubjectState: SubjectState$Exact;
 
   SubsystemHealth: SubsystemHealth$Exact;
 
@@ -8455,7 +10687,13 @@ export interface ExactModelMap {
 
   Supplies: Supplies$Exact;
 
+  SupplyTemplate: SupplyTemplate$Exact;
+
+  SymbolGraphic: SymbolGraphic$Exact;
+
   Symbology: Symbology$Exact;
+
+  TacticalGraphic: TacticalGraphic$Exact;
 
   TargetBoxCoord: TargetBoxCoord$Exact;
 
@@ -8487,7 +10725,17 @@ export interface ExactModelMap {
 
   TelemetryMessage: TelemetryMessage$Exact;
 
+  Temperature: Temperature$Exact;
+
+  Text: Text$Exact;
+
+  TextStyle: TextStyle$Exact;
+
   Time: Time$Exact;
+
+  TimeRange: TimeRange$Exact;
+
+  TimelineEvent: TimelineEvent$Exact;
 
   Timestamp: Timestamp$Exact;
 
@@ -8507,11 +10755,17 @@ export interface ExactModelMap {
 
   UID: UID$Exact;
 
+  UTMMapGrid: UTMMapGrid$Exact;
+
+  UTMZone: UTMZone$Exact;
+
   Uncertainty: Uncertainty$Exact;
 
   Unit: Unit$Exact;
 
   UnitFlightPlan: UnitFlightPlan$Exact;
+
+  UnitQuantity: UnitQuantity$Exact;
 
   Validation: Validation$Exact;
 
@@ -8525,11 +10779,23 @@ export interface ExactModelMap {
 
   VideoConfig: VideoConfig$Exact;
 
+  VideoFrame: VideoFrame$Exact;
+
+  VideoMedia: VideoMedia$Exact;
+
+  VideoRecording: VideoRecording$Exact;
+
   VisionBox: VisionBox$Exact;
 
   VisionDetection: VisionDetection$Exact;
 
   VisionDetectionFrame: VisionDetectionFrame$Exact;
+
+  Volts: Volts$Exact;
+
+  WattHours: WattHours$Exact;
+
+  Watts: Watts$Exact;
 
   WeatherLimits: WeatherLimits$Exact;
 
@@ -8557,9 +10823,29 @@ export interface SemanticModelMap {
 
   AltitudeState: AltitudeState;
 
+  AmpereHours: AmpereHours;
+
+  Amperes: Amperes;
+
+  Angle: Angle;
+
+  AngleDegrees: AngleDegrees;
+
+  AngleRadians: AngleRadians;
+
   AngularVelocityVector: AngularVelocityVector;
 
+  AnnotationAnchor: AnnotationAnchor;
+
+  AnnotationGraphic: AnnotationGraphic;
+
   AprsProfile: AprsProfile;
+
+  AreaMeasure: AreaMeasure;
+
+  AreaMeasurement: AreaMeasurement;
+
+  AreaSquareMeters: AreaSquareMeters;
 
   Assessment: Assessment;
 
@@ -8568,6 +10854,10 @@ export interface SemanticModelMap {
   AttachmentLease: AttachmentLease;
 
   Attribute: Attribute;
+
+  AudioMedia: AudioMedia;
+
+  AudioRecording: AudioRecording;
 
   Authority: Authority;
 
@@ -8581,6 +10871,10 @@ export interface SemanticModelMap {
 
   Bearing: Bearing;
 
+  BearingMeasurement: BearingMeasurement;
+
+  BinaryMedia: BinaryMedia;
+
   BooleanLogic: BooleanLogic;
 
   Boundary: Boundary;
@@ -8588,6 +10882,10 @@ export interface SemanticModelMap {
   Bounding: Bounding;
 
   BoundingBox: BoundingBox;
+
+  ByteCount: ByteCount;
+
+  CalloutGraphic: CalloutGraphic;
 
   Capability: Capability;
 
@@ -8603,7 +10901,17 @@ export interface SemanticModelMap {
 
   Cluster: Cluster;
 
+  CoTSymbology: CoTSymbology;
+
+  Coalition: Coalition;
+
   Collection: Collection;
+
+  ColorChannel: ColorChannel;
+
+  ColorComponent: ColorComponent;
+
+  ColorRGBA: ColorRGBA;
 
   CombatTaskProfile: CombatTaskProfile;
 
@@ -8623,6 +10931,8 @@ export interface SemanticModelMap {
 
   Constraint: Constraint;
 
+  Context: Context;
+
   Control: Control;
 
   ControlAttitudeSetpoint: ControlAttitudeSetpoint;
@@ -8637,6 +10947,8 @@ export interface SemanticModelMap {
 
   Coordinate: Coordinate;
 
+  Count: Count;
+
   CryptoKey: CryptoKey;
 
   CryptoProfile: CryptoProfile;
@@ -8645,11 +10957,15 @@ export interface SemanticModelMap {
 
   Data: Data;
 
+  DataLayer: DataLayer;
+
   DataRateSpec: DataRateSpec;
 
   Definition: Definition;
 
   DefinitionRelationship: DefinitionRelationship;
+
+  DegreesCelsius: DegreesCelsius;
 
   DeliveryQuality: DeliveryQuality;
 
@@ -8663,7 +10979,13 @@ export interface SemanticModelMap {
 
   Directive: Directive;
 
-  DisplayMeta: DisplayMeta;
+  Distance: Distance;
+
+  DistanceMeasurement: DistanceMeasurement;
+
+  DistanceMeters: DistanceMeters;
+
+  DocumentMedia: DocumentMedia;
 
   Domain: Domain;
 
@@ -8675,9 +10997,19 @@ export interface SemanticModelMap {
 
   EffectsPayload: EffectsPayload;
 
+  ElectricCharge: ElectricCharge;
+
+  ElectricCurrent: ElectricCurrent;
+
+  ElectricPotential: ElectricPotential;
+
+  ElectricPower: ElectricPower;
+
   ElectricalResourceState: ElectricalResourceState;
 
   ElrsProfile: ElrsProfile;
+
+  Energy: Energy;
 
   Entity: Entity;
 
@@ -8686,6 +11018,8 @@ export interface SemanticModelMap {
   EntityState: EntityState;
 
   Equipment: Equipment;
+
+  EquipmentTemplate: EquipmentTemplate;
 
   EsadArming: EsadArming;
 
@@ -8698,6 +11032,10 @@ export interface SemanticModelMap {
   Execution: Execution;
 
   ExecutionCommand: ExecutionCommand;
+
+  ExternalRepresentationSource: ExternalRepresentationSource;
+
+  FillStyle: FillStyle;
 
   Fires: Fires;
 
@@ -8721,6 +11059,8 @@ export interface SemanticModelMap {
 
   Frame: Frame;
 
+  Frequency: Frequency;
+
   FrequencyRange: FrequencyRange;
 
   FuelState: FuelState;
@@ -8731,15 +11071,37 @@ export interface SemanticModelMap {
 
   GeoArea: GeoArea;
 
+  GeoCircle: GeoCircle;
+
+  GeoGeometryCollection: GeoGeometryCollection;
+
+  GeoMultiArea: GeoMultiArea;
+
+  GeoMultiPath: GeoMultiPath;
+
+  GeoMultiPoint: GeoMultiPoint;
+
   GeoPath: GeoPath;
 
   GeoPos: GeoPos;
 
+  GeoRegistration: GeoRegistration;
+
   Geometry: Geometry;
+
+  GeometryGraphic: GeometryGraphic;
+
+  GeoreferencedMediaGraphic: GeoreferencedMediaGraphic;
 
   GlobalPosition: GlobalPosition;
 
   GnssSolution: GnssSolution;
+
+  Graphic: Graphic;
+
+  GraphicLength: GraphicLength;
+
+  GraphicStyle: GraphicStyle;
 
   GroundEffects: GroundEffects;
 
@@ -8761,13 +11123,19 @@ export interface SemanticModelMap {
 
   HealthSnapshot: HealthSnapshot;
 
+  Hertz: Hertz;
+
   HumanTextMessage: HumanTextMessage;
 
   ID: ID;
 
+  IdentifiedRepresentation: IdentifiedRepresentation;
+
   Identity: Identity;
 
   IdentityBootstrap: IdentityBootstrap;
+
+  ImageMedia: ImageMedia;
 
   ImageSensor: ImageSensor;
 
@@ -8781,6 +11149,8 @@ export interface SemanticModelMap {
 
   Internal: Internal;
 
+  InventoryState: InventoryState;
+
   IsrObservation: IsrObservation;
 
   IsrParameters: IsrParameters;
@@ -8792,6 +11162,14 @@ export interface SemanticModelMap {
   ItemCount: ItemCount;
 
   Kinematic: Kinematic;
+
+  LabelGraphic: LabelGraphic;
+
+  LatitudeLongitudeMapGrid: LatitudeLongitudeMapGrid;
+
+  Layer: Layer;
+
+  LayerView: LayerView;
 
   Lease: Lease;
 
@@ -8809,9 +11187,15 @@ export interface SemanticModelMap {
 
   LinkState: LinkState;
 
+  LiveAudioStream: LiveAudioStream;
+
+  LiveVideoStream: LiveVideoStream;
+
   LoRaProfile: LoRaProfile;
 
   LocalDirection: LocalDirection;
+
+  LocalMapGrid: LocalMapGrid;
 
   LocalPos: LocalPos;
 
@@ -8825,19 +11209,33 @@ export interface SemanticModelMap {
 
   LoiterOrbit: LoiterOrbit;
 
+  MGRSMapGrid: MGRSMapGrid;
+
   Machine: Machine;
 
   MaintenanceStatus: MaintenanceStatus;
 
+  MapGrid: MapGrid;
+
+  MapView: MapView;
+
   Mark: Mark;
 
+  MarkdownText: MarkdownText;
+
   Measurement: Measurement;
+
+  MeasurementGraphic: MeasurementGraphic;
 
   MeasurementQuality: MeasurementQuality;
 
   Media: Media;
 
+  MediaGraphic: MediaGraphic;
+
   MediaItem: MediaItem;
+
+  MediaRepresentationSource: MediaRepresentationSource;
 
   MeshLink: MeshLink;
 
@@ -8857,6 +11255,8 @@ export interface SemanticModelMap {
 
   MetadataValue: MetadataValue;
 
+  MilitaryAffiliation: MilitaryAffiliation;
+
   MilitaryAirMachine: MilitaryAirMachine;
 
   MilitaryAirNavigation: MilitaryAirNavigation;
@@ -8867,9 +11267,21 @@ export interface SemanticModelMap {
 
   MilitaryOrg: MilitaryOrg;
 
+  MilitaryOrgTemplate: MilitaryOrgTemplate;
+
+  MilitaryOrganizationState: MilitaryOrganizationState;
+
   MilitaryPerson: MilitaryPerson;
 
   MilitaryRadioProfile: MilitaryRadioProfile;
+
+  MilitaryStrength: MilitaryStrength;
+
+  MilitarySupplyTemplate: MilitarySupplyTemplate;
+
+  MilitarySymbolGraphic: MilitarySymbolGraphic;
+
+  MilitarySymbology: MilitarySymbology;
 
   MilitaryUnitFlightPlan: MilitaryUnitFlightPlan;
 
@@ -8895,6 +11307,10 @@ export interface SemanticModelMap {
 
   NodeHeartbeat: NodeHeartbeat;
 
+  NormalizedRatio: NormalizedRatio;
+
+  NoteGraphic: NoteGraphic;
+
   NumericRange: NumericRange;
 
   Object: Object;
@@ -8907,6 +11323,12 @@ export interface SemanticModelMap {
 
   ObserverSource: ObserverSource;
 
+  Opacity: Opacity;
+
+  Operation: Operation;
+
+  OperationalContext: OperationalContext;
+
   OperationalPlan: OperationalPlan;
 
   OrbatOrg: OrbatOrg;
@@ -8917,11 +11339,19 @@ export interface SemanticModelMap {
 
   OrgRole: OrgRole;
 
+  OrgTemplate: OrgTemplate;
+
   Organization: Organization;
+
+  OrganizationState: OrganizationState;
+
+  OverlayLayer: OverlayLayer;
 
   Parameter: Parameter;
 
   Path: Path;
+
+  PathAnchor: PathAnchor;
 
   Payload: Payload;
 
@@ -8933,6 +11363,12 @@ export interface SemanticModelMap {
 
   Person: Person;
 
+  PersonnelTemplate: PersonnelTemplate;
+
+  Photograph: Photograph;
+
+  PlainText: PlainText;
+
   Plan: Plan;
 
   PlanContingency: PlanContingency;
@@ -8943,9 +11379,13 @@ export interface SemanticModelMap {
 
   Platform: Platform;
 
+  PointCloudMedia: PointCloudMedia;
+
   Pose: Pose;
 
   Position: Position;
+
+  PositionAnchor: PositionAnchor;
 
   PowerSource: PowerSource;
 
@@ -8963,17 +11403,25 @@ export interface SemanticModelMap {
 
   ProtocolPayload: ProtocolPayload;
 
+  Quantity: Quantity;
+
   RFSensor: RFSensor;
 
   Radio: Radio;
 
   RadioProfile: RadioProfile;
 
+  RadiusMeasurement: RadiusMeasurement;
+
   Range: Range;
+
+  Ratio: Ratio;
 
   ReceiverConfig: ReceiverConfig;
 
   Record: Record;
+
+  ReferenceLayer: ReferenceLayer;
 
   Region: Region;
 
@@ -8981,9 +11429,19 @@ export interface SemanticModelMap {
 
   RemoteControl: RemoteControl;
 
+  Representation: Representation;
+
+  RepresentationSource: RepresentationSource;
+
   Resource: Resource;
 
   ResourceCommand: ResourceCommand;
+
+  ResourceHolding: ResourceHolding;
+
+  ResourceRequirement: ResourceRequirement;
+
+  ResourceTemplate: ResourceTemplate;
 
   ResponseMessage: ResponseMessage;
 
@@ -9001,6 +11459,8 @@ export interface SemanticModelMap {
 
   Roster: Roster;
 
+  RouteMeasurement: RouteMeasurement;
+
   RoutePlan: RoutePlan;
 
   RuntimeLoadState: RuntimeLoadState;
@@ -9008,6 +11468,10 @@ export interface SemanticModelMap {
   RwsPose: RwsPose;
 
   RwsState: RwsState;
+
+  SIDC: SIDC;
+
+  Scenario: Scenario;
 
   SemanticType: SemanticType;
 
@@ -9021,11 +11485,19 @@ export interface SemanticModelMap {
 
   Shape: Shape;
 
+  Side: Side;
+
   SignalQuality: SignalQuality;
+
+  SpatialMeasurement: SpatialMeasurement;
 
   SpatialRelationship: SpatialRelationship;
 
   SpatialStruct: SpatialStruct;
+
+  SpectrumMedia: SpectrumMedia;
+
+  SpectrumRecording: SpectrumRecording;
 
   SplashCorrection: SplashCorrection;
 
@@ -9035,11 +11507,21 @@ export interface SemanticModelMap {
 
   StateChangeCommand: StateChangeCommand;
 
+  StillImage: StillImage;
+
   StringName: StringName;
+
+  StrokeStyle: StrokeStyle;
 
   Struct: Struct;
 
   StructPath: StructPath;
+
+  SubjectAnchor: SubjectAnchor;
+
+  SubjectEvent: SubjectEvent;
+
+  SubjectState: SubjectState;
 
   SubsystemHealth: SubsystemHealth;
 
@@ -9047,7 +11529,13 @@ export interface SemanticModelMap {
 
   Supplies: Supplies;
 
+  SupplyTemplate: SupplyTemplate;
+
+  SymbolGraphic: SymbolGraphic;
+
   Symbology: Symbology;
+
+  TacticalGraphic: TacticalGraphic;
 
   TargetBoxCoord: TargetBoxCoord;
 
@@ -9079,7 +11567,17 @@ export interface SemanticModelMap {
 
   TelemetryMessage: TelemetryMessage;
 
+  Temperature: Temperature;
+
+  Text: Text;
+
+  TextStyle: TextStyle;
+
   Time: Time;
+
+  TimeRange: TimeRange;
+
+  TimelineEvent: TimelineEvent;
 
   Timestamp: Timestamp;
 
@@ -9099,11 +11597,17 @@ export interface SemanticModelMap {
 
   UID: UID;
 
+  UTMMapGrid: UTMMapGrid;
+
+  UTMZone: UTMZone;
+
   Uncertainty: Uncertainty;
 
   Unit: Unit;
 
   UnitFlightPlan: UnitFlightPlan;
+
+  UnitQuantity: UnitQuantity;
 
   Validation: Validation;
 
@@ -9117,11 +11621,23 @@ export interface SemanticModelMap {
 
   VideoConfig: VideoConfig;
 
+  VideoFrame: VideoFrame;
+
+  VideoMedia: VideoMedia;
+
+  VideoRecording: VideoRecording;
+
   VisionBox: VisionBox;
 
   VisionDetection: VisionDetection;
 
   VisionDetectionFrame: VisionDetectionFrame;
+
+  Volts: Volts;
+
+  WattHours: WattHours;
+
+  Watts: Watts;
 
   WeatherLimits: WeatherLimits;
 
@@ -9149,9 +11665,29 @@ export interface ModelInputMap {
 
   AltitudeState: AltitudeState$Input;
 
+  AmpereHours: AmpereHours$Input;
+
+  Amperes: Amperes$Input;
+
+  Angle: Angle$Input;
+
+  AngleDegrees: AngleDegrees$Input;
+
+  AngleRadians: AngleRadians$Input;
+
   AngularVelocityVector: AngularVelocityVector$Input;
 
+  AnnotationAnchor: AnnotationAnchor$Input;
+
+  AnnotationGraphic: AnnotationGraphic$Input;
+
   AprsProfile: AprsProfile$Input;
+
+  AreaMeasure: AreaMeasure$Input;
+
+  AreaMeasurement: AreaMeasurement$Input;
+
+  AreaSquareMeters: AreaSquareMeters$Input;
 
   Assessment: Assessment$Input;
 
@@ -9160,6 +11696,10 @@ export interface ModelInputMap {
   AttachmentLease: AttachmentLease$Input;
 
   Attribute: Attribute$Input;
+
+  AudioMedia: AudioMedia$Input;
+
+  AudioRecording: AudioRecording$Input;
 
   Authority: Authority$Input;
 
@@ -9173,6 +11713,10 @@ export interface ModelInputMap {
 
   Bearing: Bearing$Input;
 
+  BearingMeasurement: BearingMeasurement$Input;
+
+  BinaryMedia: BinaryMedia$Input;
+
   BooleanLogic: BooleanLogic$Input;
 
   Boundary: Boundary$Input;
@@ -9180,6 +11724,10 @@ export interface ModelInputMap {
   Bounding: Bounding$Input;
 
   BoundingBox: BoundingBox$Input;
+
+  ByteCount: ByteCount$Input;
+
+  CalloutGraphic: CalloutGraphic$Input;
 
   Capability: Capability$Input;
 
@@ -9195,7 +11743,17 @@ export interface ModelInputMap {
 
   Cluster: Cluster$Input;
 
+  CoTSymbology: CoTSymbology$Input;
+
+  Coalition: Coalition$Input;
+
   Collection: Collection$Input;
+
+  ColorChannel: ColorChannel$Input;
+
+  ColorComponent: ColorComponent$Input;
+
+  ColorRGBA: ColorRGBA$Input;
 
   CombatTaskProfile: CombatTaskProfile$Input;
 
@@ -9215,6 +11773,8 @@ export interface ModelInputMap {
 
   Constraint: Constraint$Input;
 
+  Context: Context$Input;
+
   Control: Control$Input;
 
   ControlAttitudeSetpoint: ControlAttitudeSetpoint$Input;
@@ -9229,6 +11789,8 @@ export interface ModelInputMap {
 
   Coordinate: Coordinate$Input;
 
+  Count: Count$Input;
+
   CryptoKey: CryptoKey$Input;
 
   CryptoProfile: CryptoProfile$Input;
@@ -9237,11 +11799,15 @@ export interface ModelInputMap {
 
   Data: Data$Input;
 
+  DataLayer: DataLayer$Input;
+
   DataRateSpec: DataRateSpec$Input;
 
   Definition: Definition$Input;
 
   DefinitionRelationship: DefinitionRelationship$Input;
+
+  DegreesCelsius: DegreesCelsius$Input;
 
   DeliveryQuality: DeliveryQuality$Input;
 
@@ -9255,7 +11821,13 @@ export interface ModelInputMap {
 
   Directive: Directive$Input;
 
-  DisplayMeta: DisplayMeta$Input;
+  Distance: Distance$Input;
+
+  DistanceMeasurement: DistanceMeasurement$Input;
+
+  DistanceMeters: DistanceMeters$Input;
+
+  DocumentMedia: DocumentMedia$Input;
 
   Domain: Domain$Input;
 
@@ -9267,9 +11839,19 @@ export interface ModelInputMap {
 
   EffectsPayload: EffectsPayload$Input;
 
+  ElectricCharge: ElectricCharge$Input;
+
+  ElectricCurrent: ElectricCurrent$Input;
+
+  ElectricPotential: ElectricPotential$Input;
+
+  ElectricPower: ElectricPower$Input;
+
   ElectricalResourceState: ElectricalResourceState$Input;
 
   ElrsProfile: ElrsProfile$Input;
+
+  Energy: Energy$Input;
 
   Entity: Entity$Input;
 
@@ -9278,6 +11860,8 @@ export interface ModelInputMap {
   EntityState: EntityState$Input;
 
   Equipment: Equipment$Input;
+
+  EquipmentTemplate: EquipmentTemplate$Input;
 
   EsadArming: EsadArming$Input;
 
@@ -9290,6 +11874,10 @@ export interface ModelInputMap {
   Execution: Execution$Input;
 
   ExecutionCommand: ExecutionCommand$Input;
+
+  ExternalRepresentationSource: ExternalRepresentationSource$Input;
+
+  FillStyle: FillStyle$Input;
 
   Fires: Fires$Input;
 
@@ -9313,6 +11901,8 @@ export interface ModelInputMap {
 
   Frame: Frame$Input;
 
+  Frequency: Frequency$Input;
+
   FrequencyRange: FrequencyRange$Input;
 
   FuelState: FuelState$Input;
@@ -9323,15 +11913,37 @@ export interface ModelInputMap {
 
   GeoArea: GeoArea$Input;
 
+  GeoCircle: GeoCircle$Input;
+
+  GeoGeometryCollection: GeoGeometryCollection$Input;
+
+  GeoMultiArea: GeoMultiArea$Input;
+
+  GeoMultiPath: GeoMultiPath$Input;
+
+  GeoMultiPoint: GeoMultiPoint$Input;
+
   GeoPath: GeoPath$Input;
 
   GeoPos: GeoPos$Input;
 
+  GeoRegistration: GeoRegistration$Input;
+
   Geometry: Geometry$Input;
+
+  GeometryGraphic: GeometryGraphic$Input;
+
+  GeoreferencedMediaGraphic: GeoreferencedMediaGraphic$Input;
 
   GlobalPosition: GlobalPosition$Input;
 
   GnssSolution: GnssSolution$Input;
+
+  Graphic: Graphic$Input;
+
+  GraphicLength: GraphicLength$Input;
+
+  GraphicStyle: GraphicStyle$Input;
 
   GroundEffects: GroundEffects$Input;
 
@@ -9353,13 +11965,19 @@ export interface ModelInputMap {
 
   HealthSnapshot: HealthSnapshot$Input;
 
+  Hertz: Hertz$Input;
+
   HumanTextMessage: HumanTextMessage$Input;
 
   ID: ID$Input;
 
+  IdentifiedRepresentation: IdentifiedRepresentation$Input;
+
   Identity: Identity$Input;
 
   IdentityBootstrap: IdentityBootstrap$Input;
+
+  ImageMedia: ImageMedia$Input;
 
   ImageSensor: ImageSensor$Input;
 
@@ -9373,6 +11991,8 @@ export interface ModelInputMap {
 
   Internal: Internal$Input;
 
+  InventoryState: InventoryState$Input;
+
   IsrObservation: IsrObservation$Input;
 
   IsrParameters: IsrParameters$Input;
@@ -9384,6 +12004,14 @@ export interface ModelInputMap {
   ItemCount: ItemCount$Input;
 
   Kinematic: Kinematic$Input;
+
+  LabelGraphic: LabelGraphic$Input;
+
+  LatitudeLongitudeMapGrid: LatitudeLongitudeMapGrid$Input;
+
+  Layer: Layer$Input;
+
+  LayerView: LayerView$Input;
 
   Lease: Lease$Input;
 
@@ -9401,9 +12029,15 @@ export interface ModelInputMap {
 
   LinkState: LinkState$Input;
 
+  LiveAudioStream: LiveAudioStream$Input;
+
+  LiveVideoStream: LiveVideoStream$Input;
+
   LoRaProfile: LoRaProfile$Input;
 
   LocalDirection: LocalDirection$Input;
+
+  LocalMapGrid: LocalMapGrid$Input;
 
   LocalPos: LocalPos$Input;
 
@@ -9417,19 +12051,33 @@ export interface ModelInputMap {
 
   LoiterOrbit: LoiterOrbit$Input;
 
+  MGRSMapGrid: MGRSMapGrid$Input;
+
   Machine: Machine$Input;
 
   MaintenanceStatus: MaintenanceStatus$Input;
 
+  MapGrid: MapGrid$Input;
+
+  MapView: MapView$Input;
+
   Mark: Mark$Input;
 
+  MarkdownText: MarkdownText$Input;
+
   Measurement: Measurement$Input;
+
+  MeasurementGraphic: MeasurementGraphic$Input;
 
   MeasurementQuality: MeasurementQuality$Input;
 
   Media: Media$Input;
 
+  MediaGraphic: MediaGraphic$Input;
+
   MediaItem: MediaItem$Input;
+
+  MediaRepresentationSource: MediaRepresentationSource$Input;
 
   MeshLink: MeshLink$Input;
 
@@ -9449,6 +12097,8 @@ export interface ModelInputMap {
 
   MetadataValue: MetadataValue$Input;
 
+  MilitaryAffiliation: MilitaryAffiliation$Input;
+
   MilitaryAirMachine: MilitaryAirMachine$Input;
 
   MilitaryAirNavigation: MilitaryAirNavigation$Input;
@@ -9459,9 +12109,21 @@ export interface ModelInputMap {
 
   MilitaryOrg: MilitaryOrg$Input;
 
+  MilitaryOrgTemplate: MilitaryOrgTemplate$Input;
+
+  MilitaryOrganizationState: MilitaryOrganizationState$Input;
+
   MilitaryPerson: MilitaryPerson$Input;
 
   MilitaryRadioProfile: MilitaryRadioProfile$Input;
+
+  MilitaryStrength: MilitaryStrength$Input;
+
+  MilitarySupplyTemplate: MilitarySupplyTemplate$Input;
+
+  MilitarySymbolGraphic: MilitarySymbolGraphic$Input;
+
+  MilitarySymbology: MilitarySymbology$Input;
 
   MilitaryUnitFlightPlan: MilitaryUnitFlightPlan$Input;
 
@@ -9487,6 +12149,10 @@ export interface ModelInputMap {
 
   NodeHeartbeat: NodeHeartbeat$Input;
 
+  NormalizedRatio: NormalizedRatio$Input;
+
+  NoteGraphic: NoteGraphic$Input;
+
   NumericRange: NumericRange$Input;
 
   Object: Object$Input;
@@ -9499,6 +12165,12 @@ export interface ModelInputMap {
 
   ObserverSource: ObserverSource$Input;
 
+  Opacity: Opacity$Input;
+
+  Operation: Operation$Input;
+
+  OperationalContext: OperationalContext$Input;
+
   OperationalPlan: OperationalPlan$Input;
 
   OrbatOrg: OrbatOrg$Input;
@@ -9509,11 +12181,19 @@ export interface ModelInputMap {
 
   OrgRole: OrgRole$Input;
 
+  OrgTemplate: OrgTemplate$Input;
+
   Organization: Organization$Input;
+
+  OrganizationState: OrganizationState$Input;
+
+  OverlayLayer: OverlayLayer$Input;
 
   Parameter: Parameter$Input;
 
   Path: Path$Input;
+
+  PathAnchor: PathAnchor$Input;
 
   Payload: Payload$Input;
 
@@ -9525,6 +12205,12 @@ export interface ModelInputMap {
 
   Person: Person$Input;
 
+  PersonnelTemplate: PersonnelTemplate$Input;
+
+  Photograph: Photograph$Input;
+
+  PlainText: PlainText$Input;
+
   Plan: Plan$Input;
 
   PlanContingency: PlanContingency$Input;
@@ -9535,9 +12221,13 @@ export interface ModelInputMap {
 
   Platform: Platform$Input;
 
+  PointCloudMedia: PointCloudMedia$Input;
+
   Pose: Pose$Input;
 
   Position: Position$Input;
+
+  PositionAnchor: PositionAnchor$Input;
 
   PowerSource: PowerSource$Input;
 
@@ -9555,17 +12245,25 @@ export interface ModelInputMap {
 
   ProtocolPayload: ProtocolPayload$Input;
 
+  Quantity: Quantity$Input;
+
   RFSensor: RFSensor$Input;
 
   Radio: Radio$Input;
 
   RadioProfile: RadioProfile$Input;
 
+  RadiusMeasurement: RadiusMeasurement$Input;
+
   Range: Range$Input;
+
+  Ratio: Ratio$Input;
 
   ReceiverConfig: ReceiverConfig$Input;
 
   Record: Record$Input;
+
+  ReferenceLayer: ReferenceLayer$Input;
 
   Region: Region$Input;
 
@@ -9573,9 +12271,19 @@ export interface ModelInputMap {
 
   RemoteControl: RemoteControl$Input;
 
+  Representation: Representation$Input;
+
+  RepresentationSource: RepresentationSource$Input;
+
   Resource: Resource$Input;
 
   ResourceCommand: ResourceCommand$Input;
+
+  ResourceHolding: ResourceHolding$Input;
+
+  ResourceRequirement: ResourceRequirement$Input;
+
+  ResourceTemplate: ResourceTemplate$Input;
 
   ResponseMessage: ResponseMessage$Input;
 
@@ -9593,6 +12301,8 @@ export interface ModelInputMap {
 
   Roster: Roster$Input;
 
+  RouteMeasurement: RouteMeasurement$Input;
+
   RoutePlan: RoutePlan$Input;
 
   RuntimeLoadState: RuntimeLoadState$Input;
@@ -9600,6 +12310,10 @@ export interface ModelInputMap {
   RwsPose: RwsPose$Input;
 
   RwsState: RwsState$Input;
+
+  SIDC: SIDC$Input;
+
+  Scenario: Scenario$Input;
 
   SemanticType: SemanticType$Input;
 
@@ -9613,11 +12327,19 @@ export interface ModelInputMap {
 
   Shape: Shape$Input;
 
+  Side: Side$Input;
+
   SignalQuality: SignalQuality$Input;
+
+  SpatialMeasurement: SpatialMeasurement$Input;
 
   SpatialRelationship: SpatialRelationship$Input;
 
   SpatialStruct: SpatialStruct$Input;
+
+  SpectrumMedia: SpectrumMedia$Input;
+
+  SpectrumRecording: SpectrumRecording$Input;
 
   SplashCorrection: SplashCorrection$Input;
 
@@ -9627,11 +12349,21 @@ export interface ModelInputMap {
 
   StateChangeCommand: StateChangeCommand$Input;
 
+  StillImage: StillImage$Input;
+
   StringName: StringName$Input;
+
+  StrokeStyle: StrokeStyle$Input;
 
   Struct: Struct$Input;
 
   StructPath: StructPath$Input;
+
+  SubjectAnchor: SubjectAnchor$Input;
+
+  SubjectEvent: SubjectEvent$Input;
+
+  SubjectState: SubjectState$Input;
 
   SubsystemHealth: SubsystemHealth$Input;
 
@@ -9639,7 +12371,13 @@ export interface ModelInputMap {
 
   Supplies: Supplies$Input;
 
+  SupplyTemplate: SupplyTemplate$Input;
+
+  SymbolGraphic: SymbolGraphic$Input;
+
   Symbology: Symbology$Input;
+
+  TacticalGraphic: TacticalGraphic$Input;
 
   TargetBoxCoord: TargetBoxCoord$Input;
 
@@ -9671,7 +12409,17 @@ export interface ModelInputMap {
 
   TelemetryMessage: TelemetryMessage$Input;
 
+  Temperature: Temperature$Input;
+
+  Text: Text$Input;
+
+  TextStyle: TextStyle$Input;
+
   Time: Time$Input;
+
+  TimeRange: TimeRange$Input;
+
+  TimelineEvent: TimelineEvent$Input;
 
   Timestamp: Timestamp$Input;
 
@@ -9691,11 +12439,17 @@ export interface ModelInputMap {
 
   UID: UID$Input;
 
+  UTMMapGrid: UTMMapGrid$Input;
+
+  UTMZone: UTMZone$Input;
+
   Uncertainty: Uncertainty$Input;
 
   Unit: Unit$Input;
 
   UnitFlightPlan: UnitFlightPlan$Input;
+
+  UnitQuantity: UnitQuantity$Input;
 
   Validation: Validation$Input;
 
@@ -9709,11 +12463,23 @@ export interface ModelInputMap {
 
   VideoConfig: VideoConfig$Input;
 
+  VideoFrame: VideoFrame$Input;
+
+  VideoMedia: VideoMedia$Input;
+
+  VideoRecording: VideoRecording$Input;
+
   VisionBox: VisionBox$Input;
 
   VisionDetection: VisionDetection$Input;
 
   VisionDetectionFrame: VisionDetectionFrame$Input;
+
+  Volts: Volts$Input;
+
+  WattHours: WattHours$Input;
+
+  Watts: Watts$Input;
 
   WeatherLimits: WeatherLimits$Input;
 
@@ -9724,15 +12490,15 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "ActivationPhase": {package:"activation",flags:false,members:{"STANDBY":0,"VALIDATING":1,"READY":2,"ENABLED":3,"EXECUTING":4,"EXHAUSTED":5}},
   "AddressKind": {package:"network",flags:false,members:{"IPV4":0,"IPV6":1,"MAC":2,"CALLSIGN":3,"URI":4}},
   "AddressingMode": {package:"communication",flags:false,members:{"UNICAST":0,"MULTICAST":1,"BROADCAST":2}},
-  "AirAttackMode": {package:"military_aerial",flags:false,members:{"ONEWAY":0,"DROPPER":1,"DIVE":2,"STRAFE":3,"STANDOFF_LAUNCH":4}},
-  "AirCombatTask": {package:"military_aerial",flags:false,members:{"STRIKE":0,"CAS":1,"CAP":2,"INTERCEPT":3,"HK":4}},
+  "AirAttackMode": {package:"military_effects",flags:false,members:{"ONEWAY":0,"DROPPER":1,"DIVE":2,"STRAFE":3,"STANDOFF_LAUNCH":4}},
+  "AirCombatTask": {package:"military_tasks",flags:false,members:{"STRIKE":0,"CAS":1,"CAP":2,"INTERCEPT":3,"HK":4}},
   "AirFailsafeMode": {package:"gnc",flags:false,members:{"HOLD":0,"RTB":1,"LAND":2,"LOITER":3,"CONTINUE_LAST":4}},
   "AirGroupFormation2DType": {package:"aerial",flags:false,members:{"NONE":0,"LINE":1,"ECHELON":2,"TRAIL":3,"SQUARE":4,"DIAMOND":5,"VEE":6,"HEAVY_LEFT":7,"HEAVY_RIGHT":8,"ECHELON_LEFT":9,"ECHELON_RIGHT":10,"STAGG_TRAIL_LEFT":11,"STAGG_TRAIL_RIGHT":12}},
   "AirGroupFormation3DType": {package:"aerial",flags:false,members:{"NONE":0,"BOX":1,"SEP_2D_PER_FL":2,"SEP_2D_SPACED":3}},
-  "AirISRType": {package:"military_aerial",flags:false,members:{"OVERFLY":0,"FLYBY":1,"ORBIT":2}},
+  "AirISRType": {package:"aerial",flags:false,members:{"OVERFLY":0,"FLYBY":1,"ORBIT":2}},
   "AirMissionEvent": {package:"event",flags:false,members:{"ONLINE":0,"PREPARED":1,"LOADED":2,"READY_TAKEOFF":3,"TAKEOFF_COMPLETE":4,"ASSEMBLY":5,"ENROUTE":6,"HOLDING":7,"ACTING":8,"PROCEEDING":9,"RESUMING":10,"BINGO":11,"RTB":12,"LANDING":13,"LANDED":14,"SHUTDOWN":15,"ABORTING":16,"FAILING":17}},
   "AirPlanAction": {package:"aerial",flags:false,members:{"FLY":0,"AIR_DROP":1,"RECOVERY":2}},
-  "AirRole": {package:"military_aerial",flags:false,members:{"GROUND":0,"AIR_DEFENSE":1,"FIGHTER":2,"GROUND_ATTACK":3,"ISR":4,"MINE":5,"CARGO":6}},
+  "AirRole": {package:"aerial",flags:false,members:{"GROUND":0,"AIR_DEFENSE":1,"FIGHTER":2,"GROUND_ATTACK":3,"ISR":4,"MINE":5,"CARGO":6}},
   "AirframeType": {package:"entities",flags:false,members:{"FIXED_WING":0,"COPTER":1,"VTOL":2,"TAILSITTER":3,"FLYING_WING":4}},
   "AirspeedReference": {package:"kinematic",flags:false,members:{"UNSPECIFIED":0,"INDICATED":1,"CALIBRATED":2,"TAS":3,"EQUIVALENT":4}},
   "AlertLevel": {package:"health",flags:false,members:{"ADVISORY":0,"CAUTION":1,"WARNING":2}},
@@ -9741,6 +12507,7 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "AssignmentStatus": {package:"assignment",flags:false,members:{"PROPOSED":0,"ASSIGNED":1,"ACCEPTED":2,"ACTIVE":3,"COMPLETE":4,"REJECTED":5,"CANCELLED":6}},
   "AttackMode": {package:"military_effects",flags:false,members:{"DIRECT_FIRE":0,"INDIRECT_FIRE":1,"STANDOFF":2}},
   "AutopilotType": {package:"robot",flags:false,members:{"BETAFLIGHT":0,"INAV":1,"ARDUPILOT":2,"PX4":3,"CUSTOM":4}},
+  "BearingReference": {package:"measurement",flags:false,members:{"TRUE_NORTH":0,"MAGNETIC_NORTH":1,"GRID_NORTH":2}},
   "BodyReferenceFrame": {package:"spatial",flags:false,members:{"FLU":0,"FRD":1}},
   "BooleanOperator": {package:"condition",flags:false,members:{"NONE":0,"NOT":1,"AND":2,"OR":3,"XOR":4,"NAND":5,"NOR":6,"XNOR":7}},
   "CapabilityRole": {package:"node",flags:true,members:{"CONTROLLER":1,"RELAY":2,"SENSOR":3,"EFFECTOR":4,"GATEWAY":5,"RECORDER":6}},
@@ -9770,7 +12537,7 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "ExchangePattern": {package:"communication",flags:false,members:{"PUSH":0,"REQUEST_RESPONSE":1}},
   "ExecutionOperation": {package:"command",flags:false,members:{"EXECUTE":0,"ABORT":1,"RESET":2}},
   "ExecutionPhase": {package:"execution",flags:false,members:{"CREATED":0,"QUEUED":1,"RUNNING":2,"SUCCEEDED":3,"FAILED":4,"CANCELLED":5}},
-  "Faction": {package:"definition",flags:false,members:{"UNKNOWN":0,"PENDING":1,"FRIENDLY":2,"SUSPECT":3,"HOSTILE":4,"NEUTRAL":5,"ASSUMED":6,"FAKER":7,"JOKER":8}},
+  "FillPattern": {package:"representation",flags:false,members:{"NONE":0,"SOLID":1,"DIAGONAL":2,"CROSSHATCH":3,"DOTS":4}},
   "FlightPhase": {package:"gnc",flags:false,members:{"PREFLIGHT":0,"TAKEOFF":1,"CRUISE":2,"LOITER":3,"PLAN_OPERATION":4,"RTB":5,"LANDING":6,"POSTFLIGHT":7,"ABORT":8}},
   "FlightPlanPhase": {package:"aerial",flags:false,members:{"ONLINE":0,"PREPARING":1,"TAKEOFF":2,"ASSEMBLY":3,"HOLDING":4,"ENROUTE":5,"INITIAL":6,"OBJECTIVE":7,"EGRESS":8,"RETURN":9,"APPROACH":10,"LANDING":11,"SHUTDOWN":12}},
   "FlightPlanPointType": {package:"aerial",flags:false,members:{"HOME":0,"TAKEOFF":1,"LANDING":2,"HOLD":3,"WAYPOINT":4,"ASSEMBLY":5,"POI":6,"ROI":7,"SURVEY":8}},
@@ -9781,8 +12548,10 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "GimbalAxis": {package:"robot",flags:false,members:{"ROLL":0,"PITCH":1,"YAW":2}},
   "GimbalState": {package:"sensorstate",flags:false,members:{"STOWED":0,"STABILIZED":1,"SCANNING":2,"TRACKING":3}},
   "GnssFixType": {package:"gnc",flags:false,members:{"NONE":0,"NO_FIX":1,"FIX_2D":2,"FIX_3D":3,"DGPS":4,"RTK_FLOAT":5,"RTK_FIXED":6}},
+  "GraphicLengthUnit": {package:"representation",flags:false,members:{"PIXEL":0,"METER":1}},
   "GuidanceType": {package:"military_effects",flags:false,members:{"UNGUIDED":0,"INERTIAL":1,"FPV":2,"MCLOS":3,"SACLOS":4,"OPTICAL":5,"IR":6,"RADAR":7,"LASER":8,"RF":9}},
   "HealthStatus": {package:"health",flags:false,members:{"HEALTHY":0,"WARN":1,"FAIL":2,"OFFLINE":3,"NOT_READY":4}},
+  "Hemisphere": {package:"representation",flags:false,members:{"NORTH":0,"SOUTH":1}},
   "HumanHealthStatus": {package:"health",flags:false,members:{"HEALTHY":0,"TIRED":1,"SICK":2,"WOUNDED_LIGHT":3,"WOUNDED_CRITICAL":4,"DEAD":5,"MISSING":6,"CAPTURED":7}},
   "InertialReferenceFrame": {package:"spatial",flags:false,members:{"NEU":0,"NED":1,"ENU":2}},
   "InformationIntent": {package:"task",flags:false,members:{"SEARCH":0,"OBSERVE":1,"IDENTIFY":2,"CLASSIFY":3,"MEASURE":4,"ASSESS":5,"MONITOR":6}},
@@ -9795,34 +12564,33 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "MachineType": {package:"entities",flags:false,members:{"VEHICLE":0,"ROBOT":1}},
   "MaintenanceState": {package:"health",flags:false,members:{"UNKNOWN":0,"READY":1,"DUE":2,"IN_PROGRESS":3,"GROUNDED":4,"FAILED":5}},
   "ManeuverIntent": {package:"task",flags:false,members:{"MOVE":0,"HOLD":1,"FOLLOW":2,"TRANSIT":3,"POSITION":4}},
-  "MediaType": {package:"definition",flags:false,members:{"IMAGE":0,"VIDEO":1,"AUDIO":2,"DOCUMENT":3,"BINARY":4}},
   "MeshNodeState": {package:"mesh",flags:false,members:{"UNKNOWN":0,"ACTIVE":1,"DEGRADED":2,"LOST":3}},
   "MeshtasticPort": {package:"mesh",flags:false,members:{"TEXT_MESSAGE":0,"POSITION":1,"PRIVATE":2}},
   "MessagePriority": {package:"message",flags:false,members:{"ROUTINE":0,"PRIORITY":1,"IMMEDIATE":2,"FLASH":3}},
   "MessageType": {package:"message",flags:false,members:{"BROADCAST":0,"REQUEST":1,"REPLY":2}},
-  "MilitaryAirTask": {package:"military_aerial",flags:false,members:{"ISR":0,"CLOSE_AIR_SUPPORT":1,"ELECTRONIC_WARFARE":2,"STRIKE":3,"SEAD":4}},
+  "MilitaryAirTask": {package:"aerial",flags:false,members:{"ISR":0,"CLOSE_AIR_SUPPORT":1,"ELECTRONIC_WARFARE":2,"STRIKE":3,"SEAD":4}},
   "MotionOperation": {package:"command",flags:false,members:{"MOVE_TO":0,"FOLLOW_PATH":1,"MAINTAIN":2,"STOP":3}},
-  "NATOAlphabet": {package:"military_communication",flags:false,members:{"ALPHA":0,"BRAVO":1,"CHARLIE":2,"DELTA":3,"ECHO":4,"FOXTROT":5,"GOLF":6,"HOTEL":7,"INDIA":8,"JULIETT":9,"KILO":10,"LIMA":11,"MIKE":12,"NOVEMBER":13,"OSCAR":14,"PAPA":15,"QUEBEC":16,"ROMEO":17,"SIERRA":18,"TANGO":19,"UNIFORM":20,"VICTOR":21,"WHISKEY":22,"XRAY":23,"YANKEE":24,"ZULU":25}},
+  "NATOAlphabet": {package:"communication",flags:false,members:{"ALPHA":0,"BRAVO":1,"CHARLIE":2,"DELTA":3,"ECHO":4,"FOXTROT":5,"GOLF":6,"HOTEL":7,"INDIA":8,"JULIETT":9,"KILO":10,"LIMA":11,"MIKE":12,"NOVEMBER":13,"OSCAR":14,"PAPA":15,"QUEBEC":16,"ROMEO":17,"SIERRA":18,"TANGO":19,"UNIFORM":20,"VICTOR":21,"WHISKEY":22,"XRAY":23,"YANKEE":24,"ZULU":25}},
   "NATORadioBands": {package:"radio",flags:false,members:{"A_BAND_0_250M":0,"B_BAND_250M_500M":1,"C_BAND_500M_1G":2,"D_BAND_1G_2G":3,"E_BAND_2G_3G":4,"F_BAND_3G_4G":5,"G_BAND_4G_6G":6,"H_BAND_6G_8G":7,"I_BAND_8G_10G":8,"J_BAND_10G_20G":9,"K_BAND_20G_40G":10,"L_BAND_40G_60G":11,"M_BAND_60G_100G":12}},
-  "NATOUnitCategory": {package:"military_organization",flags:false,members:{"COMB":0,"BATT":1,"TF":2,"MECH":3,"INF":4,"MOT":5,"REC":6,"UAV":7,"UAVA":8,"UAVR":9,"UGV":10,"SIG":11,"ENG":12,"ART":13,"MORT":14,"MRL":15,"ARM":16,"CAV":17,"MED":18,"SUP":19,"LOG":20,"HQ":21,"NBC":22,"MP":23,"AIR":24,"SOF":25,"NAV":26,"AMP":27,"ADA":28,"EW":29,"ISR":30,"CBT":31,"CSS":32,"COM":33,"DET":34,"RES":35,"TRG":36}},
-  "NATOUnitCategoryLabel": {package:"military_organization",flags:false,members:{"COMB":"Combined Arms","BATT":"Battery","TF":"Task Force","MECH":"Mechanized Infantry","INF":"Light Infantry","MOT":"Motorized Infantry","REC":"Reconnaissance","UAV":"Unmanned Aerial Systems","UAVA":"UAV Attack","UAVR":"UAV Recon","UGV":"Unmanned Ground Systems","SIG":"Signal","ENG":"Engineer","ART":"Artillery","MORT":"Mortar","MRL":"Rocket Artillery","ARM":"Armored","CAV":"Cavalry","MED":"Medical","SUP":"Supply","LOG":"Logistics","HQ":"Headquarters","NBC":"Nuclear, Biological, and Chemical Defense","MP":"Military Police","AIR":"Airborne Infantry","SOF":"Special Operations Forces","NAV":"Naval Infantry","AMP":"Amphibious Infantry","ADA":"Air Defense Artillery","EW":"Electronic Warfare","ISR":"Intelligence, Surveillance, and Reconnaissance","CBT":"Combat Support","CSS":"Combat Service Support","COM":"Command","DET":"Detachment","RES":"Reserve","TRG":"Training"}},
+  "NATOSupplyClass": {package:"resource_templates",flags:false,members:{"CLASS_I":0,"CLASS_II":1,"CLASS_III":2,"CLASS_IV":3,"CLASS_V":4,"CLASS_VI":5,"CLASS_VII":6,"CLASS_VIII":7,"CLASS_IX":8,"CLASS_X":9}},
+  "NATOUnitCategory": {package:"organization",flags:false,members:{"COMB":0,"BATT":1,"TF":2,"MECH":3,"INF":4,"MOT":5,"REC":6,"UAV":7,"UAVA":8,"UAVR":9,"UGV":10,"SIG":11,"ENG":12,"ART":13,"MORT":14,"MRL":15,"ARM":16,"CAV":17,"MED":18,"SUP":19,"LOG":20,"HQ":21,"NBC":22,"MP":23,"AIR":24,"SOF":25,"NAV":26,"AMP":27,"ADA":28,"EW":29,"ISR":30,"CBT":31,"CSS":32,"COM":33,"DET":34,"RES":35,"TRG":36}},
   "NavAids": {package:"entities",flags:false,members:{"NONE":0,"GNSS":1,"INS":2,"TERRAIN_MATCH":3,"CELESTIAL":4,"VISUAL":5}},
   "NavigationMode": {package:"definition",flags:false,members:{"MANUAL":0,"INS":1,"GNSS":2,"INS_GNSS":3,"VISUAL":4,"TERRAIN_FOLLOW":5}},
   "NetType": {package:"link",flags:false,members:{"RF":0,"CELLULAR":1,"LTE":2,"SATCOM":3,"WIFI":4,"WIRED":5}},
   "NetworkError": {package:"network",flags:false,members:{"PLACEHOLDER1":0,"PLACEHOLDER2":1}},
-  "OOBSize": {package:"military_organization",flags:false,members:{"IND":0,"TEM":1,"SQD":2,"SEC":3,"PLT":4,"COY":5,"BTN":6,"RGT":7,"BDE":8,"DIV":9,"FLT":10,"SQN":11,"GRP":12,"WNG":13}},
-  "OOBSizeLabel": {package:"military_organization",flags:false,members:{"IND":"Individual","TEM":"Team","SQD":"Squad","SEC":"Section","PLT":"Platoon","COY":"Company","BTN":"Battalion","RGT":"Regiment","BDE":"Brigade","DIV":"Division","FLT":"Flight","SQN":"Squadron","GRP":"Group","WNG":"Wing"}},
+  "OOBSize": {package:"organization",flags:false,members:{"IND":0,"TEM":1,"SQD":2,"SEC":3,"PLT":4,"COY":5,"BTN":6,"RGT":7,"BDE":8,"DIV":9,"FLT":10,"SQN":11,"GRP":12,"WNG":13,"COR":14,"ARM":15,"AGP":16,"THR":17,"CMD":18}},
   "ObservationKind": {package:"observation",flags:false,members:{"DETECTION":0,"TRACK":1,"IDENTIFICATION":2,"CLASSIFICATION":3}},
   "ObservationTimeBasis": {package:"state",flags:false,members:{"UNKNOWN":0,"UNIX":1,"BOOT":2}},
   "ObservedObjectType": {package:"observation",flags:false,members:{"PERSONNEL":0,"VEHICLES":1,"AIRCRAFT":2,"INSTALLATION":3,"WATERCRAFT":4,"ROUTE":5,"TRACE_SIGNATURE":6}},
   "OperationalDomain": {package:"definition",flags:false,members:{"LAND":0,"AIR":1,"SEA":2,"SUB":3,"SPACE":4,"CYBER":5,"ALL":6}},
   "OrbitPattern": {package:"aerial",flags:false,members:{"CIRCLE":0,"RACETRACK":1,"FIGURE_EIGHT":2}},
-  "OrgLayout": {package:"military_organization",flags:false,members:{"FREEFORM":0,"ORBAT":1}},
+  "OrgLayout": {package:"organization",flags:false,members:{"FREEFORM":0,"ORBAT":1}},
   "OrgLevel": {package:"organization",flags:false,members:{"UNIT":0,"GROUP":1}},
-  "OrgTopology": {package:"organization",flags:false,members:{"NONE":0,"HIERARCHICAL":1,"CELLULAR":2}},
+  "OrgTopology": {package:"organization",flags:false,members:{"NONE":0,"HIERARCHICAL":1,"CELLULAR":2,"NETWORKED":3}},
   "OrgType": {package:"organization",flags:false,members:{"CIV":0,"COMMERCIAL":1,"NGO":2,"GOVT":3}},
-  "PayloadState": {package:"military_effects",flags:false,members:{"OFF":0,"READY":1,"ACTIVE":2,"DEGRADED":3,"FAILED":4}},
-  "PayloadType": {package:"military_effects",flags:false,members:{"EO":0,"EO_IR":1,"RADAR":2,"ELINT":3,"RELAY":4,"WEAPON":5,"CARGO":6,"JAMMER":7}},
+  "OrganizationOperationalState": {package:"organization",flags:false,members:{"UNKNOWN":0,"FORMING":1,"READY":2,"ACTIVE":3,"DEGRADED":4,"REORGANIZING":5,"RECONSTITUTING":6,"INACTIVE":7,"DISBANDED":8}},
+  "PayloadState": {package:"payload",flags:false,members:{"OFF":0,"READY":1,"ACTIVE":2,"DEGRADED":3,"FAILED":4}},
+  "PayloadType": {package:"payload",flags:false,members:{"EO":0,"EO_IR":1,"RADAR":2,"ELINT":3,"RELAY":4,"WEAPON":5,"CARGO":6,"JAMMER":7}},
   "PlanApprovalState": {package:"plan",flags:false,members:{"DRAFT":0,"PROPOSED":1,"APPROVED":2,"REJECTED":3,"SUPERSEDED":4}},
   "PlanStepStatus": {package:"plan",flags:false,members:{"PENDING":0,"READY":1,"ACTIVE":2,"COMPLETE":3,"FAILED":4,"SKIPPED":5}},
   "PlannerPointCategory": {package:"aerial",flags:false,members:{"ROUTE_IN":0,"SURVEY":1,"SURVEY_AREA":2,"ROUTE_OUT":3}},
@@ -9833,11 +12601,15 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "PropulsionType": {package:"entities",flags:false,members:{"FOOT":0,"WHEELED":1,"TRACKED":2,"ROTARY_WING":3,"FIXED_WING":4,"JET":5,"MARITIME":6,"STATIC":7}},
   "ProtocolPayloadFormat": {package:"protocol",flags:false,members:{"TEXT":0,"XML":1,"JSON":2,"BYTES":3}},
   "QosTier": {package:"message",flags:false,members:{"BULK":0,"ROUTINE":1,"URGENT":2,"CRITICAL":3}},
+  "QuantityUnit": {package:"struct",flags:false,members:{"GRAM":0,"KILOGRAM":1,"MILLILITER":2,"LITER":3,"METER":4,"KILOMETER":5,"SQUARE_METER":6,"CUBIC_METER":7,"SECOND":8,"MINUTE":9,"HOUR":10,"WATT_HOUR":11,"AMPERE_HOUR":12}},
   "RCType": {package:"robot",flags:false,members:{"PWM":0,"CRSF":1,"MAVLINK":2,"MSP":3}},
   "RadioService": {package:"radio",flags:false,members:{"VOICE":0,"APRS":1,"LORA":2,"RC_LINK":3,"TELEMETRY_LINK":4,"FPV_VIDEO":5,"MESHTASTIC":6,"MESHCORE":7}},
+  "ReadinessLevel": {package:"organization",flags:false,members:{"UNKNOWN":0,"UNAVAILABLE":1,"LIMITED":2,"READY":3,"FULL":4}},
   "Reality": {package:"definition",flags:false,members:{"REAL":0,"SIMULATED":1,"EXERCISE":2}},
+  "ReinforcementStatus": {package:"organization",flags:false,members:{"NONE":0,"REINFORCED":1,"REDUCED":2,"REINFORCED_REDUCED":3}},
   "RelationshipKind": {package:"relationship",flags:false,members:{"MEMBER_OF":0,"COMMANDS":1,"OPERATES":2,"SUPPORTS":3,"OWNS":4}},
   "ReplyAck": {package:"message",flags:false,members:{"ACK":0,"RECEIVED":1,"WILCO":2}},
+  "RepresentationFormat": {package:"representation",flags:false,members:{"GEOJSON":0,"KML":1,"KMZ":2,"GPX":3,"MILX":4,"PMTILES":5,"MAPBUNDLE":6,"TILEJSON":7,"XYZ_TILES":8,"VECTOR_TILES":9,"RASTER_IMAGE":10}},
   "ResourceOperation": {package:"command",flags:false,members:{"ACQUIRE":0,"RELEASE":1,"ALLOCATE":2,"TRANSFER":3}},
   "ResourceStatus": {package:"health",flags:false,members:{"UNKNOWN":0,"NOMINAL":1,"DEGRADED":2,"FAILED":3,"OFFLINE":4}},
   "RobotControlMode": {package:"robot",flags:false,members:{"MANUAL":0,"REMOTE":1,"ASSISTED":2,"PROGRAMMED":3,"AUTONOMOUS":4,"ROGUE":5}},
@@ -9857,17 +12629,23 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
   "SensorType": {package:"payload",flags:false,members:{"EO":0,"EO_MULTISPECTRAL":1,"RADAR":2,"ELINT":3,"LIDAR":4}},
   "SpatialRelationKind": {package:"relationship",flags:false,members:{"CONTAINS":0,"WITHIN":1,"INTERSECTS":2,"OVERLAPS":3,"TOUCHES":4,"CROSSES":5,"CONNECTS":6}},
   "StandardFlightMode": {package:"gnc",flags:false,members:{"NON_STANDARD":0,"POSITION_HOLD":1,"ORBIT":2,"CRUISE":3,"ALTITUDE_HOLD":4,"SAFE_RECOVERY":5,"MISSION":6,"LAND":7,"TAKEOFF":8,"EXTERNAL_CONTROL":9}},
+  "StandardIdentity": {package:"attribute",flags:false,members:{"PENDING":0,"UNKNOWN":1,"ASSUMED_FRIEND":2,"FRIEND":3,"NEUTRAL":4,"SUSPECT":5,"HOSTILE":6,"JOKER":7,"FAKER":8}},
   "StateChangeOperation": {package:"command",flags:false,members:{"SET":0,"ENABLE":1,"DISABLE":2}},
+  "StrengthCondition": {package:"organization",flags:false,members:{"UNKNOWN":0,"FULL":1,"SUBSTANTIAL":2,"REDUCED":3,"SEVERELY_REDUCED":4,"INEFFECTIVE":5}},
+  "StrokePattern": {package:"representation",flags:false,members:{"SOLID":0,"DASHED":1,"DOTTED":2,"DASH_DOT":3}},
   "SurfaceFormationShapes": {package:"spatial",flags:false,members:{"COLUMN":0,"LINE":1,"SCREEN":2,"WEDGE":3,"LOZENGE":4,"CIRCLE":5,"SQUARE":6}},
+  "SymbologyStandard": {package:"attribute",flags:false,members:{"MIL_STD_2525D":0,"MIL_STD_2525E":1,"APP_6D":2}},
   "SyncState": {package:"communication",flags:false,members:{"IN_SYNC":0,"PARTIAL":1,"STALE":2,"DIVERGED":3}},
   "SystemError": {package:"health",flags:false,members:{"NO_ERROR":0,"NOT_FOUND":1,"DEVICE_UNAVAILABLE":2,"HARDWARE_ERROR":3,"SOFTWARE_ERROR":4,"DATABASE_ERROR":5,"NETWORK_ERROR":6}},
   "SystemType": {package:"entities",flags:false,members:{"PLATFORM":0,"EQUIPMENT":1}},
+  "TacticalGraphicStatus": {package:"representation",flags:false,members:{"PRESENT":0,"PLANNED":1}},
   "TargetCategory": {package:"military_effects",flags:false,members:{"OBJECT":0,"LOCATION":1,"AREA":2}},
   "TaskCombat": {package:"military_tasks",flags:false,members:{"DEFEND":0,"ATTACK":1,"PROTECT":2,"COMBAT_SUPPORT":3,"COMBAT_RESERVE":4}},
   "TaskPhase": {package:"task",flags:false,members:{"CREATED":0,"DISPATCHED":1,"ASSIGNED":2,"RUNNING":3,"DONE_OK":4,"DONE_FAIL":5,"CANCELLED":6}},
   "TaskPriority": {package:"task",flags:false,members:{"ROUTINE":0,"HIGH":1,"IMMEDIATE":2}},
   "TaskStatus": {package:"task",flags:false,members:{"NEW":0,"ACCEPTED":1,"ACTIVE":2,"COMPLETE":3,"FAILED":4,"CANCELLED":5}},
   "TelemetryType": {package:"robot",flags:false,members:{"MSP":0,"MAVLINK":1,"CRSF":2,"MANUAL_ENTRY":3}},
+  "TextAlignment": {package:"representation",flags:false,members:{"LEFT":0,"CENTER":1,"RIGHT":2}},
   "ThreatLevel": {package:"military_effects",flags:false,members:{"NONE":0,"LOW":1,"MEDIUM":2,"HIGH":3,"CRITICAL":4}},
   "TrackState": {package:"observation",flags:false,members:{"NEW":0,"ACTIVE":1,"STALE":2,"LOST":3}},
   "TransportIntent": {package:"task",flags:false,members:{"CARGO":0,"PERSONNEL":1,"SUPPLY":2,"EVACUATE":3,"RECOVER":4}},
@@ -9882,299 +12660,424 @@ export const ENUM_REGISTRY: Readonly<StringMap<EnumSpec>> = Object.freeze({
 
 export const MODEL_REGISTRY: Readonly<StringMap<ModelSpec>> = Object.freeze({
   "Activation": {id:1,package:"activation",semanticRole:"concept",parent:"State",children:[],atomic:false,fields:{"phase":{type:{kind:"enum",name:"ActivationPhase"},optional:false,const:false,default:null},"remaining_uses":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["phase","remaining_uses"]},
-  "Actor": {id:2,package:"entities",semanticRole:"concept",parent:"Entity",children:["Agent","Person"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta"]},
-  "Agent": {id:3,package:"entities",semanticRole:"representation",parent:"Actor",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta"]},
+  "Actor": {id:2,package:"entities",semanticRole:"concept",parent:"Entity",children:["Agent","Person"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations"]},
+  "Agent": {id:3,package:"entities",semanticRole:"representation",parent:"Actor",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations"]},
   "AirEffects": {id:4,package:"military_effects",semanticRole:"representation",parent:"Effects",children:[],atomic:false,fields:{"has_launchers":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"esad":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"effect_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"launch_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"guidance":{type:{kind:"enum",name:"GuidanceType"},optional:false,const:false,default:null},"warhead":{type:{kind:"enum",name:"WarheadType"},optional:false,const:false,default:null},"pylon_format":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"reusable":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"attack_modes":{type:{kind:"list",item:{kind:"enum",name:"AirAttackMode"}},optional:false,const:false,default:null}},fieldOrder:["has_launchers","esad","payload_mounts","effect_domain","launch_domain","guidance","warhead","pylon_format","reusable","attack_modes"]},
-  "AirMachine": {id:5,package:"entities",semanticRole:"representation",parent:"Machine",children:["AirRobot","MilitaryAirMachine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation"]},
+  "AirMachine": {id:5,package:"entities",semanticRole:"representation",parent:"Machine",children:["AirRobot","MilitaryAirMachine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation"]},
   "AirNavigation": {id:6,package:"entities",semanticRole:"representation",parent:"Attribute",children:["MilitaryAirNavigation"],atomic:false,fields:{"flight_type":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"control_modes":{type:{kind:"list",item:{kind:"enum",name:"StandardFlightMode"}},optional:false,const:false,default:null},"failsafe_mode":{type:{kind:"enum",name:"AirFailsafeMode"},optional:true,const:false,default:{kind:"literal",value:null}},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"ifr":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_flight_t":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"cruise_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_alt":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["flight_type","control_modes","failsafe_mode","weather_limits","ifr","propulsion","navigation","navaids","max_range","max_flight_t","max_spd","cruise_spd","max_alt"]},
   "AirPlan": {id:7,package:"aerial",semanticRole:"concept",parent:"Plan",children:["GroupFlightPlan","UnitFlightPlan","PlannedAirMission"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}}},fieldOrder:["record","uid","id","name","approval_state"]},
-  "AirRobot": {id:8,package:"uav",semanticRole:"representation",parent:"AirMachine",children:["Drone"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"RobotController"},optional:false,const:false,default:null},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","controller","remote_control"]},
+  "AirRobot": {id:8,package:"uav",semanticRole:"representation",parent:"AirMachine",children:["Drone"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"RobotController"},optional:false,const:false,default:null},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","controller","remote_control"]},
   "Airspeed": {id:9,package:"kinematic",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"speed_ms":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"reference":{type:{kind:"enum",name:"AirspeedReference"},optional:false,const:false,default:{kind:"enum",enum:"AirspeedReference",member:"UNSPECIFIED"}}},fieldOrder:["speed_ms","reference"]},
   "AltitudeState": {id:10,package:"spatial",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"absolute_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"absolute_datum":{type:{kind:"enum",name:"AltitudeDatum"},optional:true,const:false,default:{kind:"literal",value:null}},"relative_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"relative_datum":{type:{kind:"enum",name:"AltitudeDatum"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["absolute_m","absolute_datum","relative_m","relative_datum"]},
-  "AngularVelocityVector": {id:11,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["x_rad_s","y_rad_s","z_rad_s","frame"]},
-  "AprsProfile": {id:12,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["callsign","path"]},
-  "Assessment": {id:13,package:"observation",semanticRole:"concept",parent:"Observation",children:["IsrResult"],atomic:false,fields:{},fieldOrder:[]},
-  "Assignment": {id:14,package:"assignment",semanticRole:"concept",parent:"Control",children:["TaskAssignment","RoleAssignment","FlightAssignment"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints"]},
-  "AttachmentLease": {id:15,package:"authority",semanticRole:"representation",parent:"Lease",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"parent_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"attachment_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound","parent_uid","attachment_uid"]},
-  "Attribute": {id:16,package:"attribute",semanticRole:"concept",parent:"Property",children:["Symbology","DisplayMeta","GroundNavigation","AirNavigation","SensorFieldOfView"],atomic:false,fields:{},fieldOrder:[]},
-  "Authority": {id:17,package:"authority",semanticRole:"concept",parent:"Control",children:["CommandAuthority","Lease"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints"]},
-  "AutopilotMission": {id:18,package:"plan",semanticRole:"representation",parent:"RoutePlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"waypoints":{type:{kind:"list",item:{kind:"model",name:"AutopilotMissionWaypoint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","waypoints"]},
-  "AutopilotMissionState": {id:19,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"valid":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"current_waypoint_index":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"waypoint_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_waypoints":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"waypoints_remaining":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["valid","current_waypoint_index","waypoint_count","max_waypoints","waypoints_remaining"]},
-  "AutopilotMissionWaypoint": {id:20,package:"plan",semanticRole:"representation",parent:"SpatialStruct",children:["FlightMissionPoint"],atomic:false,fields:{"waypoint_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"action_code":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param1":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param2":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param3":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"flag":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["waypoint_index","position","action_code","param1","param2","param3","flag"]},
-  "BattleDamageAssessment": {id:21,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"target_set_id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"target_name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"authorization":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"destruction_pct":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"confidence_pct":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"Faction"},optional:false,const:false,default:null}},fieldOrder:["time_usec","kinematics","target_set_id","target_name","authorization","destruction_pct","confidence_pct","target_class","target_force"]},
-  "Bearing": {id:22,package:"struct",semanticRole:"representation",parent:"Struct",children:["LocalDirection"],atomic:false,fields:{},fieldOrder:[]},
-  "BooleanLogic": {id:23,package:"condition",semanticRole:"concept",parent:"Condition",children:[],atomic:false,fields:{"operator":{type:{kind:"enum",name:"BooleanOperator"},optional:false,const:false,default:null},"terms":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:false,const:false,default:null}},fieldOrder:["operator","terms"]},
-  "Boundary": {id:24,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","symbology","path"]},
-  "Bounding": {id:25,package:"struct",semanticRole:"representation",parent:"Struct",children:["BoundingBox"],atomic:false,fields:{},fieldOrder:[]},
-  "BoundingBox": {id:26,package:"spatial",semanticRole:"representation",parent:"Bounding",children:[],atomic:false,fields:{"x1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"x2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["x1","y1","z1","x2","y2","z2"]},
-  "Capability": {id:27,package:"capability",semanticRole:"concept",parent:"Property",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "CapabilityAdvert": {id:28,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"link_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"sensor_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"payload_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","node_uid","roles","link_refs","sensor_refs","payload_refs"]},
-  "Category": {id:29,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "ChannelMapEntry": {id:30,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"axis":{type:{kind:"enum",name:"ControlAxis"},optional:false,const:false,default:null},"source_channel":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"output_channel":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value","axis","source_channel","output_channel","label"]},
-  "ChannelSpec": {id:31,package:"radio",semanticRole:"representation",parent:"Radio",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"bandwidth_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"spacing_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","channel_uid","label","frequency","bandwidth_mhz","spacing_mhz"]},
-  "Classification": {id:32,package:"observation",semanticRole:"concept",parent:"Observation",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "Cluster": {id:33,package:"object",semanticRole:"concept",parent:"Set",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "Collection": {id:34,package:"object",semanticRole:"concept",parent:"Set",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "CombatTaskProfile": {id:35,package:"military_tasks",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"task_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"combat_task":{type:{kind:"enum",name:"TaskCombat"},optional:true,const:false,default:{kind:"literal",value:null}},"target_category":{type:{kind:"enum",name:"TargetCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"target_point":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"munitions":{type:{kind:"list",item:{kind:"model",name:"MunitionAllocation"}},optional:false,const:false,default:null},"effect":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"desired_bda":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["task_uid","combat_task","target_category","target_point","munitions","effect","desired_bda"]},
-  "Command": {id:36,package:"command",semanticRole:"concept",parent:"Directive",children:["StateChangeCommand","ProcessControlCommand","ConfigurationCommand","MotionCommand","ResourceCommand","ExecutionCommand"],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["target_uid","constraints"]},
-  "CommandAuthority": {id:37,package:"authority",semanticRole:"concept",parent:"Authority",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"role":{type:{kind:"model",name:"Role"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","organization_uid","role"]},
-  "CommandMessage": {id:38,package:"c3",semanticRole:"concept",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"command":{type:{kind:"model",name:"Command"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","command"]},
-  "Communication": {id:39,package:"communication",semanticRole:"concept",parent:"Root",children:["Interface","Link","DataRateSpec","LinkCapacity","Message","Network","Node","Protocol"],atomic:false,fields:{},fieldOrder:[]},
-  "Component": {id:40,package:"object",semanticRole:"concept",parent:"Item",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "Condition": {id:41,package:"condition",semanticRole:"concept",parent:"Data",children:["Predicate","BooleanLogic"],atomic:false,fields:{},fieldOrder:[]},
-  "ConfigurationCommand": {id:42,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ConfigurationOperation"},optional:false,const:false,default:null},"parameter_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"configuration_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","parameter_name","value","configuration_uid"]},
-  "Constraint": {id:43,package:"constraint",semanticRole:"concept",parent:"Control",children:["Restriction","Limitation","TaskTimeWindow","WeatherLimits"],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
-  "Control": {id:44,package:"control",semanticRole:"concept",parent:"Root",children:["Assignment","Authority","Constraint","Directive","Objective","Plan","OrgRole","Roster"],atomic:false,fields:{},fieldOrder:[]},
-  "ControlAttitudeSetpoint": {id:45,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"thrust_normalized":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"reference_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["roll_rad","pitch_rad","yaw_rad","thrust_normalized","body_frame","reference_frame"]},
-  "ControlAxisSet": {id:46,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"pitch":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"throttle":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"aux":{type:{kind:"list",item:{kind:"primitive",name:"float"}},optional:false,const:false,default:null}},fieldOrder:["roll","pitch","yaw","throttle","aux"]},
-  "ControlChannelValue": {id:47,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"channel_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["channel_index","value"]},
-  "ControlLease": {id:48,package:"authority",semanticRole:"representation",parent:"Lease",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"control_level":{type:{kind:"enum",name:"ControlLevel"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound","controller","control_level"]},
-  "ControlOverride": {id:49,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"pitch":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"throttle":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"aux":{type:{kind:"list",item:{kind:"model",name:"ControlChannelValue"}},optional:false,const:false,default:null}},fieldOrder:["roll","pitch","yaw","throttle","aux"]},
-  "Coordinate": {id:50,package:"definition",semanticRole:"representation",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "CryptoKey": {id:51,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"key_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_type":{type:{kind:"enum",name:"CryptoType"},optional:false,const:false,default:null},"version":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"fill_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key_ref","label","crypto_type","version","fill_ts"]},
-  "CryptoProfile": {id:52,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"active_crypto":{type:{kind:"enum",name:"CryptoType"},optional:true,const:false,default:{kind:"literal",value:null}},"keyset_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"keys":{type:{kind:"list",item:{kind:"model",name:"CryptoKey"}},optional:false,const:false,default:null}},fieldOrder:["active_crypto","keyset_uid","keys"]},
-  "Cue": {id:53,package:"cue",semanticRole:"concept",parent:"State",children:[],atomic:false,fields:{"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"target_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"bearing_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"elevation_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"distance_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_uid","target_uid","bearing_rad","elevation_rad","distance_m","label"]},
-  "Data": {id:54,package:"data",semanticRole:"concept",parent:"Root",children:["Condition","Event","Execution","Media","Observation","Property","State"],atomic:false,fields:{},fieldOrder:[]},
-  "DataRateSpec": {id:55,package:"link",semanticRole:"representation",parent:"Communication",children:[],atomic:false,fields:{"nominal_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"sustained_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"burst_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["nominal_bps","sustained_bps","burst_bps"]},
-  "Definition": {id:56,package:"definition",semanticRole:"concept",parent:"Root",children:["Frame","Coordinate","Geometry","DefinitionRelationship","SemanticType"],atomic:false,fields:{},fieldOrder:[]},
-  "DefinitionRelationship": {id:57,package:"definition",semanticRole:"concept",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "DeliveryQuality": {id:58,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"latency_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"packet_loss_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"error_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["latency_s","packet_loss_ratio","error_ratio"]},
-  "DeliveryReceipt": {id:59,package:"message",semanticRole:"representation",parent:"ResponseMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"delivery_state":{type:{kind:"enum",name:"DeliveryState"},optional:false,const:false,default:null},"seen_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"exec_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"error_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to","node_uid","delivery_state","seen_ts","exec_ts","error_code"]},
-  "Delta": {id:60,package:"message",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"record":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"changed_fields":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"State"}},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","entity_uid","record","changed_fields","updated_ts"]},
-  "Detection": {id:61,package:"observation",semanticRole:"concept",parent:"Observation",children:["VisionBox","VisionDetection","VisionDetectionFrame"],atomic:false,fields:{},fieldOrder:[]},
-  "DirectedRelationship": {id:62,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"object_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"relation":{type:{kind:"enum",name:"RelationshipKind"},optional:false,const:false,default:null},"since_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"until_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"source":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subject_uid","object_uid","relation","since_ts","until_ts","confidence","source"]},
-  "Directive": {id:63,package:"directive",semanticRole:"concept",parent:"Control",children:["Command","Task"],atomic:false,fields:{},fieldOrder:[]},
-  "DisplayMeta": {id:64,package:"attribute",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"icon_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"tint":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"short_label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["icon_code","tint","short_label"]},
-  "Domain": {id:65,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "Drone": {id:66,package:"uav",semanticRole:"representation",parent:"AirRobot",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:{kind:"enum",enum:"AirframeType",member:"COPTER"}},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"RobotController"},optional:false,const:false,default:null},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","controller","remote_control"]},
-  "Duration": {id:67,package:"struct",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"seconds":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"minutes":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"hours":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"days":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"weeks":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"months":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"years":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["seconds","minutes","hours","days","weeks","months","years"]},
-  "Effects": {id:68,package:"military_effects",semanticRole:"representation",parent:"Struct",children:["GroundEffects","AirEffects"],atomic:false,fields:{"has_launchers":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"esad":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"effect_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"launch_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"guidance":{type:{kind:"enum",name:"GuidanceType"},optional:false,const:false,default:null},"warhead":{type:{kind:"enum",name:"WarheadType"},optional:false,const:false,default:null},"pylon_format":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}}},fieldOrder:["has_launchers","esad","payload_mounts","effect_domain","launch_domain","guidance","warhead","pylon_format"]},
-  "EffectsPayload": {id:69,package:"military_effects",semanticRole:"representation",parent:"Payload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"item_type":{type:{kind:"enum",name:"PayloadType"},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"PayloadState"},optional:true,const:false,default:{kind:"literal",value:null}},"weapons":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ammo":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ordnance":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"payload_plan":{type:{kind:"model",name:"PayloadPlan"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","item_type","state","weapons","ammo","ordnance","payload_mounts","payload_plan"]},
-  "ElectricalResourceState": {id:70,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"voltage_v":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"current_a":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"power_w":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"consumed_mah":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"consumed_mwh":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"consumed_ah":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining_pct":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining_capacity":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"temperature_deg_c":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_uid","voltage_v","current_a","power_w","consumed_mah","consumed_mwh","consumed_ah","remaining_pct","remaining_capacity","temperature_deg_c"]},
-  "ElrsProfile": {id:71,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"packet_rate_hz":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"telemetry_ratio":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["packet_rate_hz","telemetry_ratio"]},
-  "Entity": {id:72,package:"entities",semanticRole:"concept",parent:"Object",children:["Actor","Machine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta"]},
-  "EntityComponentRef": {id:73,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"component_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"component_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["component_ref","component_type","label"]},
-  "EntityState": {id:74,package:"state",semanticRole:"representation",parent:"State",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"LocationState"},optional:true,const:false,default:{kind:"literal",value:null}},"motion":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_velocity":{type:{kind:"model",name:"AngularVelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"model",name:"Airspeed"},optional:true,const:false,default:{kind:"literal",value:null}},"flight_control":{type:{kind:"model",name:"FlightControlState"},optional:true,const:false,default:{kind:"literal",value:null}},"power":{type:{kind:"model",name:"PowerState"},optional:true,const:false,default:{kind:"literal",value:null}},"operational_status":{type:{kind:"enum",name:"EntityOperationalState"},optional:true,const:false,default:{kind:"literal",value:null}},"lifecycle_status":{type:{kind:"enum",name:"EntityLifecycleStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"health":{type:{kind:"model",name:"HealthSnapshot"},optional:true,const:false,default:{kind:"literal",value:null}},"resources":{type:{kind:"model",name:"Supplies"},optional:true,const:false,default:{kind:"literal",value:null}},"link_states":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"LinkState"}},optional:false,const:false,default:null},"control_state":{type:{kind:"enum",name:"ControlLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"source_observation_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"source_time_basis":{type:{kind:"enum",name:"ObservationTimeBasis"},optional:true,const:false,default:{kind:"literal",value:null}},"received_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"published_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","subject_uid","timestamp","position","motion","angular_velocity","airspeed","flight_control","power","operational_status","lifecycle_status","health","resources","link_states","control_state","source_observation_ts","source_time_basis","received_ts","published_ts"]},
-  "Equipment": {id:75,package:"object",semanticRole:"concept",parent:"Item",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "EsadArming": {id:76,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_challenge_hash":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_request":{type:{kind:"enum",name:"EsadArmingRequest"},optional:false,const:false,default:null}},fieldOrder:["time_usec","arming_challenge_hash","arming_request"]},
-  "EsadState": {id:77,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_challenge_hash":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"fault_flags":{type:{kind:"enum",name:"EsadFaultFlag"},optional:false,const:false,default:null},"input_1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"input_2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"sw_version_hash":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"arming_status":{type:{kind:"enum",name:"ArmingStatus"},optional:false,const:false,default:null},"munition_status":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:false,const:false,default:null},"ignition_status":{type:{kind:"enum",name:"EsadIgnitionStatus"},optional:false,const:false,default:null},"munition_type":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","arming_challenge_hash","fault_flags","input_1","input_2","sw_version_hash","arming_status","munition_status","ignition_status","munition_type"]},
-  "EulerAngles": {id:78,package:"spatial",semanticRole:"representation",parent:"Pose",children:[],atomic:false,fields:{"roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"reference_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["roll_rad","pitch_rad","yaw_rad","body_frame","reference_frame"]},
-  "Event": {id:79,package:"event",semanticRole:"concept",parent:"Data",children:["FlightEvent","MissionEvent"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null}},fieldOrder:["record"]},
-  "Execution": {id:80,package:"execution",semanticRole:"concept",parent:"Data",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Execution"},optional:false,const:false,default:null},"assignment_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"executor_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"attempt":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"phase":{type:{kind:"enum",name:"ExecutionPhase"},optional:false,const:false,default:{kind:"enum",enum:"ExecutionPhase",member:"CREATED"}},"progress":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"started_at":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"completed_at":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"result":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"failure":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"external_job_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignment_uid","executor_uid","attempt","phase","progress","started_at","completed_at","result","failure","external_job_refs"]},
-  "ExecutionCommand": {id:81,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ExecutionOperation"},optional:false,const:false,default:null}},fieldOrder:["target_uid","constraints","operation"]},
-  "Fires": {id:82,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_impact_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"target_position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"effector_id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"sequence":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"cep_expected_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["time_usec","time_impact_usec","target_position","effector_id","sequence","cep_expected_m"]},
-  "FirmwareInfo": {id:83,package:"property",semanticRole:"representation",parent:"Property",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"version":{type:{kind:"model",name:"Version"},optional:false,const:false,default:null},"build":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","version","build"]},
-  "FlightAssignment": {id:84,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"unit_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"objective_assign":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"wave_n":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"formation_n":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"takeoff_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","num","unit_uid","callsign","objective_assign","wave_n","formation_n","takeoff_ts"]},
-  "FlightControlState": {id:85,package:"robot",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"armed":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"in_air":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"override_active":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"failsafe":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"standard_mode":{type:{kind:"enum",name:"StandardFlightMode"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude_setpoint":{type:{kind:"model",name:"ControlAttitudeSetpoint"},optional:true,const:false,default:{kind:"literal",value:null}},"navigation_validity":{type:{kind:"model",name:"NavigationValidity"},optional:true,const:false,default:{kind:"literal",value:null}},"readiness":{type:{kind:"model",name:"NavReadinessState"},optional:true,const:false,default:{kind:"literal",value:null}},"runtime_load":{type:{kind:"model",name:"RuntimeLoadState"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["armed","in_air","override_active","failsafe","standard_mode","attitude_setpoint","navigation_validity","readiness","runtime_load"]},
-  "FlightEvent": {id:86,package:"event",semanticRole:"representation",parent:"Event",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null}},fieldOrder:["record"]},
-  "FlightLevelBand": {id:87,package:"aerial",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"altitude_range_m":{type:{kind:"model",name:"NumericRange"},optional:false,const:false,default:null},"alt_sep_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["altitude_range_m","alt_sep_m"]},
-  "FlightMissionPoint": {id:88,package:"aerial",semanticRole:"representation",parent:"AutopilotMissionWaypoint",children:[],atomic:false,fields:{"waypoint_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"action_code":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param1":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param2":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param3":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"flag":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"point_type":{type:{kind:"enum",name:"FlightPlanPointType"},optional:false,const:false,default:null},"category":{type:{kind:"enum",name:"PlannerPointCategory"},optional:false,const:false,default:null}},fieldOrder:["waypoint_index","position","action_code","param1","param2","param3","flag","point_type","category"]},
-  "FlightSensorConfiguration": {id:89,package:"sensorstate",semanticRole:"representation",parent:"SensorState",children:[],atomic:false,fields:{"accelerometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"barometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"magnetometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"rangefinder":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"optical_flow":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["accelerometer","barometer","magnetometer","airspeed","rangefinder","optical_flow"]},
-  "FlyingOrg": {id:90,package:"military_organization",semanticRole:"representation",parent:"MilitaryOrg",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"sidc":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"link_loadout":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"air_units":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","sidc","category","link_loadout","op_domain","air_units"]},
-  "FpvProfile": {id:91,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"video_standard":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"low_latency":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["video_standard","low_latency"]},
-  "Frame": {id:92,package:"definition",semanticRole:"concept",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "FrequencyRange": {id:93,package:"radio",semanticRole:"representation",parent:"Radio",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"low_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"high_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"center_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","low_mhz","high_mhz","center_mhz"]},
-  "FuelState": {id:94,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"fuel_type":{type:{kind:"enum",name:"FuelType"},optional:false,const:false,default:null},"capacity":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["fuel_type","capacity","remaining"]},
-  "Function": {id:95,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "GNC": {id:96,package:"gnc",semanticRole:"concept",parent:"State",children:["NavigationValidity","GnssSolution","AutopilotMissionState","FlightControlState"],atomic:false,fields:{},fieldOrder:[]},
-  "GeoArea": {id:97,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"vertices":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null}},fieldOrder:["vertices"]},
-  "GeoPath": {id:98,package:"spatial",semanticRole:"representation",parent:"StructPath",children:[],atomic:false,fields:{"points":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null}},fieldOrder:["points"]},
-  "GeoPos": {id:99,package:"struct",semanticRole:"representation",parent:"Struct",children:["GlobalPosition"],atomic:false,fields:{},fieldOrder:[]},
-  "Geometry": {id:100,package:"definition",semanticRole:"representation",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "GlobalPosition": {id:101,package:"spatial",semanticRole:"representation",parent:"GeoPos",children:[],atomic:false,fields:{"lat":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"lon":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"alt":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"mgrs":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"datum":{type:{kind:"primitive",name:"string"},optional:false,const:true,default:{kind:"literal",value:"WGS84"}},"alt_frame":{type:{kind:"enum",name:"AltitudeDatum"},optional:false,const:false,default:null}},fieldOrder:["lat","lon","alt","mgrs","datum","alt_frame"]},
-  "GnssSolution": {id:102,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"fix_type":{type:{kind:"enum",name:"GnssFixType"},optional:true,const:false,default:{kind:"literal",value:null}},"satellites_used":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"altitude":{type:{kind:"model",name:"AltitudeState"},optional:true,const:false,default:{kind:"literal",value:null}},"ground_speed_ms":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ground_course_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"hdop":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"vdop":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["fix_type","satellites_used","position","altitude","ground_speed_ms","ground_course_deg","hdop","vdop","yaw_deg"]},
-  "GroundEffects": {id:103,package:"military_effects",semanticRole:"representation",parent:"Effects",children:[],atomic:false,fields:{"has_launchers":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"esad":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"effect_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"launch_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"guidance":{type:{kind:"enum",name:"GuidanceType"},optional:false,const:false,default:null},"warhead":{type:{kind:"enum",name:"WarheadType"},optional:false,const:false,default:null},"pylon_format":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"attack_modes":{type:{kind:"list",item:{kind:"enum",name:"AttackMode"}},optional:false,const:false,default:null}},fieldOrder:["has_launchers","esad","payload_mounts","effect_domain","launch_domain","guidance","warhead","pylon_format","attack_modes"]},
-  "GroundMachine": {id:104,package:"entities",semanticRole:"representation",parent:"Machine",children:["GroundRobot","MilitaryGroundMachine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:null},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation"]},
-  "GroundNavigation": {id:105,package:"entities",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["propulsion","navigation","navaids","max_range","max_spd"]},
-  "GroundOrbatOrg": {id:106,package:"military_organization",semanticRole:"representation",parent:"OrbatOrg",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:false,const:false,default:{kind:"enum",enum:"OrgTopology",member:"HIERARCHICAL"}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"sidc":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"link_loadout":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"org_layout":{type:{kind:"enum",name:"OrgLayout"},optional:false,const:false,default:{kind:"enum",enum:"OrgLayout",member:"ORBAT"}},"size":{type:{kind:"enum",name:"OOBSize"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"taskforce":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"tac_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null},"sup_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null},"tac_e_comp":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"sup_e_comp":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"personnel":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"vehicles":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"equipment":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"spacing":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}},"combat_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"ammo":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"weapons":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"air_units":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","sidc","category","link_loadout","org_layout","size","op_domain","taskforce","links","tac_elements","sup_elements","tac_e_comp","sup_e_comp","personnel","vehicles","equipment","spacing","combat_domain","ammo","weapons","air_units"]},
-  "GroundRobot": {id:107,package:"robot",semanticRole:"representation",parent:"GroundMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation"]},
-  "Group": {id:108,package:"organization",semanticRole:"representation",parent:"Organization",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"orglevel":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:{kind:"enum",enum:"OrgLevel",member:"GROUP"}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","orglevel"]},
-  "GroupFlightPlan": {id:109,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"plan_phase":{type:{kind:"enum",name:"FlightPlanPhase"},optional:false,const:false,default:null},"flight_level":{type:{kind:"model",name:"FlightLevelBand"},optional:true,const:false,default:{kind:"literal",value:null}},"alt_frame":{type:{kind:"enum",name:"AltitudeDatum"},optional:true,const:false,default:{kind:"literal",value:null}},"h_sep_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"delay_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"path_offset":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"formation_2d":{type:{kind:"enum",name:"AirGroupFormation2DType"},optional:true,const:false,default:{kind:"literal",value:null}},"formation_3d":{type:{kind:"enum",name:"AirGroupFormation3DType"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","approval_state","plan_phase","flight_level","alt_frame","h_sep_m","delay_s","airspeed","path_offset","formation_2d","formation_3d"]},
-  "Health": {id:110,package:"health",semanticRole:"concept",parent:"State",children:["HealthAlert","LinkState","SubsystemHealth","HealthSnapshot","MaintenanceStatus","NavReadinessState"],atomic:false,fields:{},fieldOrder:[]},
-  "HealthAlert": {id:111,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"alert_ref":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"level":{type:{kind:"enum",name:"AlertLevel"},optional:false,const:false,default:null},"condition":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"acknowledged":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["alert_ref","level","condition","acknowledged"]},
-  "HealthSnapshot": {id:112,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"overall_state":{type:{kind:"enum",name:"HealthStatus"},optional:false,const:false,default:null},"link_state":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"power_state":{type:{kind:"enum",name:"ResourceStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"temp_state":{type:{kind:"enum",name:"ResourceStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"fault_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"subsystems":{type:{kind:"list",item:{kind:"model",name:"SubsystemHealth"}},optional:false,const:false,default:null},"alerts":{type:{kind:"list",item:{kind:"model",name:"HealthAlert"}},optional:false,const:false,default:null}},fieldOrder:["overall_state","link_state","power_state","temp_state","fault_count","updated_ts","subsystems","alerts"]},
-  "HumanTextMessage": {id:113,package:"c3",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"message_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"conversation_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"reply_to_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sender_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sender_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_group":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"kind":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"message":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"targets":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","message_uid","conversation_uid","reply_to_uid","sender_uid","sender_name","destination_uid","destination_group","kind","message","position","targets"]},
-  "ID": {id:114,package:"struct",semanticRole:"concept",parent:"Struct",children:["IntID","UID"],atomic:false,fields:{},fieldOrder:[]},
-  "Identity": {id:115,package:"identity",semanticRole:"concept",parent:"Property",children:["StringName","IdentityBootstrap"],atomic:false,fields:{},fieldOrder:[]},
-  "IdentityBootstrap": {id:116,package:"identity",semanticRole:"representation",parent:"Identity",children:[],atomic:false,fields:{"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"node_id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"entity_id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"organization_id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null}},fieldOrder:["node_uid","node_id","entity_uid","entity_id","organization_uid","organization_id"]},
-  "ImageSensor": {id:117,package:"payload",semanticRole:"representation",parent:"SensorPayload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"night_vision":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range","night_vision"]},
-  "ImuSample": {id:118,package:"kinematic",semanticRole:"representation",parent:"Kinematic",children:[],atomic:false,fields:{"acceleration":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_velocity":{type:{kind:"model",name:"AngularVelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"magnetic_field":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"temperature_deg_c":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"timestamp_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["acceleration","angular_velocity","magnetic_field","temperature_deg_c","timestamp_us","frame"]},
-  "Input": {id:119,package:"input",semanticRole:"concept",parent:"State",children:["ControlAxisSet","ControlChannelValue","ControlOverride","ControlAttitudeSetpoint"],atomic:false,fields:{},fieldOrder:[]},
-  "IntID": {id:120,package:"struct",semanticRole:"representation",parent:"ID",children:[],atomic:true,valueType:{kind:"primitive",name:"int"},fields:{},fieldOrder:[]},
-  "Interface": {id:121,package:"interface",semanticRole:"concept",parent:"Communication",children:["RemoteControl","ObserverSource"],atomic:false,fields:{},fieldOrder:[]},
-  "Internal": {id:122,package:"internal",semanticRole:"concept",parent:"State",children:["RuntimeLoadState"],atomic:false,fields:{},fieldOrder:[]},
-  "IsrObservation": {id:123,package:"observation",semanticRole:"representation",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Observation"},optional:false,const:false,default:null},"track_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"obs_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"observation_kind":{type:{kind:"enum",name:"ObservationKind"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"IntelCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"spotter_origin":{type:{kind:"model",name:"SpotterOrigin"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","track_uid","sensor_uid","obs_ts","observation_kind","category","spotter_origin","position","uncertainty","confidence"]},
-  "IsrParameters": {id:124,package:"observation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"focus_type":{type:{kind:"enum",name:"IsrFocusType"},optional:true,const:false,default:{kind:"literal",value:null}},"focus_point":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"dwell_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"revisit_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_types":{type:{kind:"list",item:{kind:"enum",name:"SensorType"}},optional:false,const:false,default:null},"sensor_modes":{type:{kind:"list",item:{kind:"enum",name:"SensorMode"}},optional:false,const:false,default:null},"effect_domains":{type:{kind:"list",item:{kind:"enum",name:"EffectDomain"}},optional:false,const:false,default:null},"evidence_level":{type:{kind:"enum",name:"EvidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["focus_type","focus_point","dwell_s","revisit_s","sensor_types","sensor_modes","effect_domains","evidence_level"]},
-  "IsrResult": {id:125,package:"observation",semanticRole:"representation",parent:"Assessment",children:[],atomic:false,fields:{"detections":{type:{kind:"list",item:{kind:"model",name:"IsrObservation"}},optional:false,const:false,default:null},"track_updates":{type:{kind:"list",item:{kind:"model",name:"TrackUpdate"}},optional:false,const:false,default:null},"media":{type:{kind:"list",item:{kind:"model",name:"MediaItem"}},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"observations":{type:{kind:"list",item:{kind:"model",name:"IsrObservation"}},optional:false,const:false,default:null}},fieldOrder:["detections","track_updates","media","confidence","observations"]},
-  "Item": {id:126,package:"object",semanticRole:"concept",parent:"Object",children:["Equipment","Component","Payload"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "ItemCount": {id:127,package:"struct",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"item_type":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["item_type","qty"]},
-  "Kinematic": {id:128,package:"kinematic",semanticRole:"concept",parent:"State",children:["ImuSample"],atomic:false,fields:{},fieldOrder:[]},
-  "Lease": {id:129,package:"authority",semanticRole:"representation",parent:"Authority",children:["AttachmentLease","ControlLease"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound"]},
-  "Lifecycle": {id:130,package:"lifecycle",semanticRole:"representation",parent:"State",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "Limitation": {id:131,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
-  "Line": {id:132,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "Link": {id:133,package:"link",semanticRole:"concept",parent:"Communication",children:["Radio"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid"]},
-  "LinkCapacity": {id:134,package:"link",semanticRole:"representation",parent:"Communication",children:[],atomic:false,fields:{"max_nodes":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_users":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_streams":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["max_nodes","max_users","max_streams"]},
-  "LinkCounters": {id:135,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"error_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"receive_error_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"corrected_receive_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["error_count","receive_error_count","corrected_receive_count"]},
-  "LinkState": {id:136,package:"health",semanticRole:"concept",parent:"Health",children:["MeshLink"],atomic:false,fields:{"link_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"condition":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"connection_status":{type:{kind:"enum",name:"ConnectionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"signal":{type:{kind:"model",name:"SignalQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"delivery":{type:{kind:"model",name:"DeliveryQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"counters":{type:{kind:"model",name:"LinkCounters"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["link_uid","condition","connection_status","signal","delivery","counters"]},
-  "LoRaProfile": {id:137,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"spreading_factor":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"bandwidth_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"coding_rate":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["spreading_factor","bandwidth_mhz","coding_rate"]},
-  "LocalDirection": {id:138,package:"spatial",semanticRole:"representation",parent:"Bearing",children:[],atomic:false,fields:{"bearing":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"azimuth":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"elevation":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"slant_range":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["bearing","azimuth","elevation","slant_range"]},
-  "LocalPos": {id:139,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "LocalVector": {id:140,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:false,const:false,default:null}},fieldOrder:["x","y","z","frame"]},
-  "Location": {id:141,package:"object",semanticRole:"concept",parent:"Object",children:["Mark","Path","Region","Boundary"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","name","symbology"]},
-  "LocationState": {id:142,package:"spatial",semanticRole:"representation",parent:"Position",children:[],atomic:false,fields:{"inertial_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"local_position":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"altitude":{type:{kind:"model",name:"AltitudeState"},optional:true,const:false,default:{kind:"literal",value:null}},"velocity":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"navigation_validity":{type:{kind:"model",name:"NavigationValidity"},optional:true,const:false,default:{kind:"literal",value:null}},"gnss":{type:{kind:"model",name:"GnssSolution"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["inertial_frame","body_frame","position","local_position","uncertainty","attitude","altitude","velocity","navigation_validity","gnss"]},
-  "LocationUncertainty": {id:143,package:"spatial",semanticRole:"representation",parent:"Uncertainty",children:[],atomic:false,fields:{"horiz_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"vert_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_major_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_minor_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_bearing_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["horiz_err_m","vert_err_m","ellipse_major_m","ellipse_minor_m","ellipse_bearing_deg"]},
-  "LoiterOrbit": {id:144,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"orbit_direction_ccw":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"orbit_radius_m":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"loiter_time_s":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"pattern":{type:{kind:"enum",name:"OrbitPattern"},optional:false,const:false,default:null}},fieldOrder:["orbit_direction_ccw","orbit_radius_m","loiter_time_s","pattern"]},
-  "Machine": {id:145,package:"entities",semanticRole:"concept",parent:"Entity",children:["Vehicle","Platform","GroundMachine","AirMachine","Robot","MilitaryMachine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components"]},
-  "MaintenanceStatus": {id:146,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"state":{type:{kind:"enum",name:"MaintenanceState"},optional:false,const:false,default:null},"last_service_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"next_service_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["state","last_service_ts","next_service_ts","note"]},
-  "Mark": {id:147,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","symbology","position"]},
-  "Measurement": {id:148,package:"struct",semanticRole:"concept",parent:"Struct",children:["SignalQuality","DeliveryQuality","LinkCounters","Airspeed","AltitudeState","Time","Duration","Timestamp","ItemCount"],atomic:false,fields:{},fieldOrder:[]},
-  "MeasurementQuality": {id:149,package:"payload",semanticRole:"representation",parent:"MetadataValue",children:[],atomic:false,fields:{"str":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"int":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"float":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"bool":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"lat_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"az_err_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"range_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["str","int","float","bool","lat_err_m","az_err_deg","range_err_m"]},
-  "Media": {id:150,package:"media",semanticRole:"concept",parent:"Data",children:["MediaItem"],atomic:false,fields:{},fieldOrder:[]},
-  "MediaItem": {id:151,package:"media",semanticRole:"representation",parent:"Media",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"media_type":{type:{kind:"enum",name:"MediaType"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"size_bytes":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","media_type","uri","label","size_bytes","content_type"]},
-  "MeshLink": {id:152,package:"mesh",semanticRole:"representation",parent:"LinkState",children:[],atomic:false,fields:{"link_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"condition":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"connection_status":{type:{kind:"enum",name:"ConnectionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"signal":{type:{kind:"model",name:"SignalQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"delivery":{type:{kind:"model",name:"DeliveryQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"counters":{type:{kind:"model",name:"LinkCounters"},optional:true,const:false,default:{kind:"literal",value:null}},"src_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["link_uid","condition","connection_status","signal","delivery","counters","src_uid","dst_uid","updated_ts"]},
-  "MeshNode": {id:153,package:"mesh",semanticRole:"representation",parent:"Node",children:[],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"addresses":{type:{kind:"list",item:{kind:"model",name:"NetworkAddress"}},optional:false,const:false,default:null},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"radios":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"RadioProfile"}},optional:false,const:false,default:null},"protocols":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Protocol"}},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"MeshNodeState"},optional:true,const:false,default:{kind:"literal",value:null}},"last_seen_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"link_state":{type:{kind:"model",name:"LinkState"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["uid","id","entity_uid","roles","addresses","links","radios","protocols","state","last_seen_ts","position","link_state"]},
-  "MeshPositionSample": {id:154,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"LocationState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
-  "MeshReceiveMetrics": {id:155,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"LinkState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
-  "MeshView": {id:156,package:"mesh",semanticRole:"representation",parent:"Network",children:[],atomic:false,fields:{"epoch":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"nodes":{type:{kind:"list",item:{kind:"model",name:"MeshNode"}},optional:false,const:false,default:null},"links":{type:{kind:"list",item:{kind:"model",name:"MeshLink"}},optional:false,const:false,default:null}},fieldOrder:["epoch","nodes","links"]},
-  "MeshtasticMessage": {id:157,package:"mesh",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"sender_node_num":{type:{kind:"primitive",name:"uint32"},optional:false,const:false,default:null},"sender_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_node_num":{type:{kind:"primitive",name:"uint32"},optional:false,const:false,default:null},"port":{type:{kind:"enum",name:"MeshtasticPort"},optional:true,const:false,default:{kind:"literal",value:null}},"private_port_num":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"payload":{type:{kind:"primitive",name:"bytes"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"MeshPositionSample"},optional:true,const:false,default:{kind:"literal",value:null}},"metrics":{type:{kind:"model",name:"MeshReceiveMetrics"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","sender_node_num","sender_name","destination_node_num","port","private_port_num","text","payload","position","metrics"]},
-  "Message": {id:158,package:"message",semanticRole:"concept",parent:"Communication",children:["MeshtasticMessage","CommandMessage","HumanTextMessage","ObservationMessage","Delta","ResponseMessage","TelemetryMessage"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq"]},
-  "MessageTransferResult": {id:159,package:"message",semanticRole:"representation",parent:"ResponseMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"target_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"bytes_sent":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"delivery_state":{type:{kind:"enum",name:"DeliveryState"},optional:true,const:false,default:{kind:"literal",value:null}},"error":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to","target_count","bytes_sent","delivery_state","error"]},
-  "MetadataValue": {id:160,package:"property",semanticRole:"representation",parent:"Property",children:["MeasurementQuality"],atomic:false,fields:{"str":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"int":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"float":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"bool":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["str","int","float","bool"]},
-  "MilitaryAirMachine": {id:161,package:"military_entities",semanticRole:"representation",parent:"AirMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"payload":{type:{kind:"model",name:"Payload"},optional:false,const:false,default:null},"effects":{type:{kind:"model",name:"AirEffects"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","payload","effects"]},
-  "MilitaryAirNavigation": {id:162,package:"military_aerial",semanticRole:"representation",parent:"AirNavigation",children:[],atomic:false,fields:{"flight_type":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"control_modes":{type:{kind:"list",item:{kind:"enum",name:"StandardFlightMode"}},optional:false,const:false,default:null},"failsafe_mode":{type:{kind:"enum",name:"AirFailsafeMode"},optional:true,const:false,default:{kind:"literal",value:null}},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"ifr":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_flight_t":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"cruise_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_alt":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"roles":{type:{kind:"list",item:{kind:"enum",name:"AirRole"}},optional:false,const:false,default:null}},fieldOrder:["flight_type","control_modes","failsafe_mode","weather_limits","ifr","propulsion","navigation","navaids","max_range","max_flight_t","max_spd","cruise_spd","max_alt","roles"]},
-  "MilitaryGroundMachine": {id:163,package:"military_entities",semanticRole:"representation",parent:"GroundMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:null},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null},"payload":{type:{kind:"model",name:"Payload"},optional:false,const:false,default:null},"effects":{type:{kind:"model",name:"GroundEffects"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation","payload","effects"]},
-  "MilitaryMachine": {id:164,package:"military_entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","category"]},
-  "MilitaryOrg": {id:165,package:"military_organization",semanticRole:"representation",parent:"Organization",children:["FlyingOrg","OrbatOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"sidc":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"link_loadout":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","sidc","category","link_loadout"]},
-  "MilitaryPerson": {id:166,package:"military_entities",semanticRole:"representation",parent:"Person",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"PERSON"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:{kind:"enum",enum:"PropulsionType",member:"FOOT"}},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"attack_modes":{type:{kind:"list",item:{kind:"enum",name:"AttackMode"}},optional:false,const:false,default:null},"weapons":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ammo":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","role","op_domain","propulsion","navigation","navaids","sensors","attack_modes","weapons","ammo"]},
-  "MilitaryRadioProfile": {id:167,package:"military_radio",semanticRole:"representation",parent:"RadioProfile",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"service":{type:{kind:"enum",name:"RadioService"},optional:true,const:false,default:{kind:"literal",value:null}},"waveform":{type:{kind:"enum",name:"Waveform"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_plan":{type:{kind:"list",item:{kind:"model",name:"ChannelSpec"}},optional:false,const:false,default:null},"active_channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_types":{type:{kind:"list",item:{kind:"enum",name:"CryptoType"}},optional:false,const:false,default:null},"crypto_profile":{type:{kind:"model",name:"CryptoProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"lora":{type:{kind:"model",name:"LoRaProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"aprs":{type:{kind:"model",name:"AprsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"elrs":{type:{kind:"model",name:"ElrsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"fpv":{type:{kind:"model",name:"FpvProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"bands":{type:{kind:"list",item:{kind:"enum",name:"NATORadioBands"}},optional:false,const:false,default:null}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","service","waveform","frequency","channel_plan","active_channel_uid","crypto_types","crypto_profile","lora","aprs","elrs","fpv","bands"]},
-  "MilitaryUnitFlightPlan": {id:168,package:"military_aerial",semanticRole:"representation",parent:"UnitFlightPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"unit_num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"callsign":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"fl":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"target":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"home":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"land_pos":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"ip_wait_delay":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}},"wp":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","unit_num","callsign","fl","route_in","target","route_out","home","land_pos","ip_wait_delay","wp"]},
-  "MissionEvent": {id:169,package:"event",semanticRole:"representation",parent:"Event",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null}},fieldOrder:["record"]},
-  "MissionRouteGeometry": {id:170,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"survey":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"survey_area":{type:{kind:"model",name:"GeoArea"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["route_in","survey","survey_area","route_out"]},
-  "ModeRange": {id:171,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_id":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"mode_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"channel":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"range":{type:{kind:"model",name:"NumericRange"},optional:false,const:false,default:null}},fieldOrder:["key","value","mode_id","mode_name","channel","range"]},
-  "MotionCommand": {id:172,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"MotionOperation"},optional:false,const:false,default:null},"destination":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:true,const:false,default:{kind:"literal",value:null}},"radius_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"speed_ms":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","destination","path","radius_m","speed_ms","yaw_rad"]},
-  "MunitionAllocation": {id:173,package:"military_tasks",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"munition_type":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["munition_type","qty"]},
-  "NavReadinessState": {id:174,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"gyro_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"accel_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"mag_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"local_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"global_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"home_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"armable":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"arm_ready":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"takeoff_ready":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"ekf_using_gps":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"can_arm_or_run":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_problems":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"health_problems":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["gyro_ok","accel_ok","mag_ok","local_position_ok","global_position_ok","home_position_ok","armable","arm_ready","takeoff_ready","ekf_using_gps","can_arm_or_run","mode_name","mode_problems","health_problems"]},
-  "NavigationValidity": {id:175,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"local_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"global_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"home_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["local_position_ok","global_position_ok","home_position_ok"]},
-  "Network": {id:176,package:"network",semanticRole:"concept",parent:"Communication",children:["MeshView","NetworkAddress"],atomic:false,fields:{},fieldOrder:[]},
-  "NetworkAddress": {id:177,package:"network",semanticRole:"representation",parent:"Network",children:[],atomic:false,fields:{"kind":{type:{kind:"enum",name:"AddressKind"},optional:false,const:false,default:null},"value":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"port":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["kind","value","port"]},
-  "Node": {id:178,package:"node",semanticRole:"concept",parent:"Communication",children:["MeshNode"],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"addresses":{type:{kind:"list",item:{kind:"model",name:"NetworkAddress"}},optional:false,const:false,default:null},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"radios":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"RadioProfile"}},optional:false,const:false,default:null},"protocols":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Protocol"}},optional:false,const:false,default:null}},fieldOrder:["uid","id","entity_uid","roles","addresses","links","radios","protocols"]},
-  "NodeHeartbeat": {id:179,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"last_seen_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"node_state":{type:{kind:"enum",name:"MeshNodeState"},optional:true,const:false,default:{kind:"literal",value:null}},"state":{type:{kind:"model",name:"LinkState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","node_uid","last_seen_ts","node_state","state"]},
-  "NumericRange": {id:180,package:"struct",semanticRole:"representation",parent:"Range",children:[],atomic:false,fields:{"min_value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"max_value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["min_value","max_value"]},
-  "Object": {id:181,package:"object",semanticRole:"concept",parent:"Root",children:["Entity","Set","Item","Location"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "Objective": {id:182,package:"objective",semanticRole:"concept",parent:"Control",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Objective"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"intent":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"desired_state":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"success_criteria":{type:{kind:"list",item:{kind:"model",name:"SuccessCriterion"}},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"owner_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","intent","desired_state","success_criteria","target_uids","constraints","priority","status","owner_uid","start_time","deadline"]},
-  "Observation": {id:183,package:"observation",semanticRole:"concept",parent:"Data",children:["Classification","Track","Assessment","Detection","IsrObservation","TrackUpdate"],atomic:false,fields:{},fieldOrder:[]},
-  "ObservationMessage": {id:184,package:"isr",semanticRole:"concept",parent:"Message",children:["ProtocolEventMessage"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"observation":{type:{kind:"model",name:"Observation"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","observation"]},
-  "ObserverSource": {id:185,package:"robot",semanticRole:"representation",parent:"Interface",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ObserverSource"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"local_source":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"objtype":{type:{kind:"enum",name:"EntitySubtype"},optional:false,const:false,default:{kind:"enum",enum:"EntitySubtype",member:"AIR_ROBOT"}},"active":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:true}},"pos":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"gimbal_ang":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"gimbal_axes":{type:{kind:"list",item:{kind:"enum",name:"GimbalAxis"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"media_kind":{type:{kind:"enum",name:"SensorDataFormat"},optional:false,const:false,default:{kind:"enum",enum:"SensorDataFormat",member:"VIDEO"}},"video":{type:{kind:"model",name:"VideoConfig"},optional:true,const:false,default:{kind:"literal",value:null}},"video_res":{type:{kind:"tuple",items:[{kind:"primitive",name:"int"},{kind:"primitive",name:"int"}]},optional:true,const:false,default:{kind:"literal",value:null}},"telemetry_type":{type:{kind:"enum",name:"TelemetryType"},optional:true,const:false,default:{kind:"literal",value:null}},"telem_port":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"telem_baud":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"commands_allowed":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"can_zoom":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["record","uid","id","entity_uid","name","local_source","objtype","active","pos","attitude","gimbal_ang","gimbal_axes","field_of_view","media_kind","video","video_res","telemetry_type","telem_port","telem_baud","commands_allowed","can_zoom"]},
-  "OperationalPlan": {id:186,package:"plan",semanticRole:"concept",parent:"Plan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"objective_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"task_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"actor_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"resource_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"assignment_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"contingencies":{type:{kind:"list",item:{kind:"model",name:"PlanContingency"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","objective_uids","task_uids","actor_uids","resource_uids","assignment_uids","constraints","contingencies"]},
-  "OrbatOrg": {id:187,package:"military_organization",semanticRole:"representation",parent:"MilitaryOrg",children:["GroundOrbatOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:false,const:false,default:{kind:"enum",enum:"OrgTopology",member:"HIERARCHICAL"}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"sidc":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"link_loadout":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"org_layout":{type:{kind:"enum",name:"OrgLayout"},optional:false,const:false,default:{kind:"enum",enum:"OrgLayout",member:"ORBAT"}},"size":{type:{kind:"enum",name:"OOBSize"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"taskforce":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"tac_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null},"sup_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null},"tac_e_comp":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"sup_e_comp":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"personnel":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"vehicles":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"equipment":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"spacing":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","sidc","category","link_loadout","org_layout","size","op_domain","taskforce","links","tac_elements","sup_elements","tac_e_comp","sup_e_comp","personnel","vehicles","equipment","spacing"]},
-  "Orbital": {id:188,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "OrgComposition": {id:189,package:"military_organization",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["category","label","qty"]},
-  "OrgRole": {id:190,package:"organization",semanticRole:"representation",parent:"Control",children:[],atomic:false,fields:{"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"authority":{type:{kind:"model",name:"Authority"},optional:false,const:false,default:null},"assignment":{type:{kind:"model",name:"Assignment"},optional:false,const:false,default:null},"rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["role","authority","assignment","rank"]},
-  "Organization": {id:191,package:"organization",semanticRole:"concept",parent:"Set",children:["Group","Unit","MilitaryOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases"]},
-  "Parameter": {id:192,package:"parameter",semanticRole:"concept",parent:"Property",children:["VideoConfig","ReceiverConfig","ChannelMapEntry","ModeRange","RobotController"],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value"]},
-  "Path": {id:193,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","symbology","path"]},
-  "Payload": {id:194,package:"payload",semanticRole:"concept",parent:"Item",children:["SensorPayload","EffectsPayload"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "PayloadAllocation": {id:195,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"payload_type":{type:{kind:"enum",name:"PayloadType"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["payload_type","qty"]},
-  "PayloadMount": {id:196,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"mount_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"item_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"pylons":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"launcher":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"compat_tags":{type:{kind:"list",item:{kind:"enum",name:"PayloadType"}},optional:false,const:false,default:null},"loaded":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null}},fieldOrder:["mount_ref","item_ref","qty","pylons","launcher","compat_tags","loaded"]},
-  "PayloadPlan": {id:197,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"requested":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"approved":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"loaded":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"notes":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["requested","approved","loaded","notes"]},
-  "Person": {id:198,package:"entities",semanticRole:"representation",parent:"Actor",children:["MilitaryPerson"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"PERSON"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:{kind:"enum",enum:"PropulsionType",member:"FOOT"}},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","role","op_domain","propulsion","navigation","navaids","sensors"]},
-  "Plan": {id:199,package:"plan",semanticRole:"concept",parent:"Control",children:["AirPlan","OperationalPlan","RoutePlan"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}}},fieldOrder:["record","uid","id","name","approval_state"]},
-  "PlanContingency": {id:200,package:"plan",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"task_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["condition","task_uids"]},
-  "PlannedAirMission": {id:201,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"flight_type":{type:{kind:"enum",name:"FlightType"},optional:false,const:false,default:{kind:"enum",enum:"FlightType",member:"SURVEY_POINT"}},"air_action":{type:{kind:"enum",name:"AirPlanAction"},optional:false,const:false,default:{kind:"enum",enum:"AirPlanAction",member:"FLY"}},"manual":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"points":{type:{kind:"model",name:"PlannedRoutePoints"},optional:false,const:false,default:null},"config":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"primitive",name:"float"}},optional:false,const:false,default:null},"saved_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","approval_state","flight_type","air_action","manual","points","config","saved_ts"]},
-  "PlannedRoutePoints": {id:202,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"start":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_in":{type:{kind:"list",item:{kind:"model",name:"FlightMissionPoint"}},optional:false,const:false,default:null},"route_out":{type:{kind:"list",item:{kind:"model",name:"FlightMissionPoint"}},optional:false,const:false,default:null},"end":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null}},fieldOrder:["start","route_in","route_out","end"]},
-  "Platform": {id:203,package:"entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components"]},
-  "Pose": {id:204,package:"struct",semanticRole:"representation",parent:"Struct",children:["EulerAngles"],atomic:false,fields:{},fieldOrder:[]},
-  "Position": {id:205,package:"spatial",semanticRole:"concept",parent:"State",children:["LocationState","SpotterOrigin"],atomic:false,fields:{},fieldOrder:[]},
-  "PowerSource": {id:206,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"source_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"power_type":{type:{kind:"enum",name:"PowerType"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"PowerStatus"},optional:false,const:false,default:null},"remaining_pct":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_ref","power_type","status","remaining_pct"]},
-  "PowerState": {id:207,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"status":{type:{kind:"enum",name:"PowerStatus"},optional:false,const:false,default:null},"sources":{type:{kind:"list",item:{kind:"model",name:"PowerSource"}},optional:false,const:false,default:null},"electrical_sources":{type:{kind:"list",item:{kind:"model",name:"ElectricalResourceState"}},optional:false,const:false,default:null}},fieldOrder:["status","sources","electrical_sources"]},
-  "Predicate": {id:208,package:"condition",semanticRole:"concept",parent:"Condition",children:[],atomic:false,fields:{"subject_ref":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subject_ref"]},
-  "ProcessControlCommand": {id:209,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ProcessControlOperation"},optional:false,const:false,default:null},"process_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","process_name"]},
-  "Property": {id:210,package:"property",semanticRole:"concept",parent:"Data",children:["Attribute","Capability","Identity","Parameter","Version","FirmwareInfo","MetadataValue","Relationship"],atomic:false,fields:{},fieldOrder:[]},
-  "Protocol": {id:211,package:"protocol",semanticRole:"concept",parent:"Communication",children:["ProtocolPayload","CryptoKey","CryptoProfile","LoRaProfile","AprsProfile","ElrsProfile","FpvProfile"],atomic:false,fields:{},fieldOrder:[]},
-  "ProtocolEventMessage": {id:212,package:"isr",semanticRole:"representation",parent:"ObservationMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"observation":{type:{kind:"model",name:"Observation"},optional:false,const:false,default:null},"event_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"event_type":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"event_method":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"time_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"start_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"stale_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"detail":{type:{kind:"model",name:"ProtocolPayload"},optional:true,const:false,default:{kind:"literal",value:null}},"source_address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"targets":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","observation","event_ref","event_type","event_method","callsign","time_text","start_text","stale_text","position","uncertainty","detail","source_address","targets"]},
-  "ProtocolPayload": {id:213,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"format":{type:{kind:"enum",name:"ProtocolPayloadFormat"},optional:false,const:false,default:null},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"data":{type:{kind:"primitive",name:"bytes"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["format","content_type","text","data"]},
-  "RFSensor": {id:214,package:"payload",semanticRole:"representation",parent:"SensorPayload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"frustum_shape":{type:{kind:"enum",name:"SensorFrustumShape"},optional:true,const:false,default:{kind:"literal",value:null}},"freq_span":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"chan_bw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range","frustum_shape","freq_span","chan_bw"]},
-  "Radio": {id:215,package:"radio",semanticRole:"representation",parent:"Link",children:["FrequencyRange","ChannelSpec","RadioProfile"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid"]},
-  "RadioProfile": {id:216,package:"radio",semanticRole:"representation",parent:"Radio",children:["MilitaryRadioProfile"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"service":{type:{kind:"enum",name:"RadioService"},optional:true,const:false,default:{kind:"literal",value:null}},"waveform":{type:{kind:"enum",name:"Waveform"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_plan":{type:{kind:"list",item:{kind:"model",name:"ChannelSpec"}},optional:false,const:false,default:null},"active_channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_types":{type:{kind:"list",item:{kind:"enum",name:"CryptoType"}},optional:false,const:false,default:null},"crypto_profile":{type:{kind:"model",name:"CryptoProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"lora":{type:{kind:"model",name:"LoRaProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"aprs":{type:{kind:"model",name:"AprsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"elrs":{type:{kind:"model",name:"ElrsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"fpv":{type:{kind:"model",name:"FpvProfile"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","service","waveform","frequency","channel_plan","active_channel_uid","crypto_types","crypto_profile","lora","aprs","elrs","fpv"]},
-  "Range": {id:217,package:"struct",semanticRole:"representation",parent:"Struct",children:["NumericRange"],atomic:false,fields:{},fieldOrder:[]},
-  "ReceiverConfig": {id:218,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"rx_min_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_max_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_center_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["key","value","rx_min_usec","rx_max_usec","rx_center_usec"]},
-  "Record": {id:219,package:"record",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Record"},optional:false,const:false,default:null},"revision":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"created_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"origin_system":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"provenance":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["uid","id","revision","created_ts","updated_ts","origin_system","provenance"]},
-  "Region": {id:220,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"area":{type:{kind:"model",name:"GeoArea"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","symbology","area"]},
-  "Relationship": {id:221,package:"relationship",semanticRole:"concept",parent:"Property",children:["DirectedRelationship","EntityComponentRef","SpatialRelationship"],atomic:false,fields:{},fieldOrder:[]},
-  "RemoteControl": {id:222,package:"robot",semanticRole:"representation",parent:"Interface",children:[],atomic:false,fields:{"rc_link":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"vid_link":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"ctrl_video_sep":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"rc_telemetry":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_input":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_output":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_override":{type:{kind:"model",name:"ControlOverride"},optional:true,const:false,default:{kind:"literal",value:null}},"receiver_config":{type:{kind:"model",name:"ReceiverConfig"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_map":{type:{kind:"list",item:{kind:"model",name:"ChannelMapEntry"}},optional:false,const:false,default:null},"mode_ranges":{type:{kind:"list",item:{kind:"model",name:"ModeRange"}},optional:false,const:false,default:null}},fieldOrder:["rc_link","vid_link","ctrl_video_sep","rc_telemetry","control_input","control_output","control_override","receiver_config","channel_map","mode_ranges"]},
-  "Resource": {id:223,package:"resource",semanticRole:"concept",parent:"State",children:["FuelState","Supplies","PowerSource","PowerState","ElectricalResourceState"],atomic:false,fields:{},fieldOrder:[]},
-  "ResourceCommand": {id:224,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ResourceOperation"},optional:false,const:false,default:null},"resource_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"quantity":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","resource_uid","quantity"]},
-  "ResponseMessage": {id:225,package:"message",semanticRole:"concept",parent:"Message",children:["DeliveryReceipt","MessageTransferResult"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to"]},
-  "Restriction": {id:226,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
-  "Robot": {id:227,package:"robot",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"robot_control":{type:{kind:"model",name:"RobotController"},optional:true,const:false,default:{kind:"literal",value:null}},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components","robot_control","remote_control"]},
-  "RobotController": {id:228,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"control_modes":{type:{kind:"enum",name:"RobotControlMode"},optional:true,const:false,default:{kind:"literal",value:null}},"autopilot_type":{type:{kind:"enum",name:"AutopilotType"},optional:false,const:false,default:null},"autopilot_firmware":{type:{kind:"model",name:"FirmwareInfo"},optional:false,const:false,default:null}},fieldOrder:["key","value","control_modes","autopilot_type","autopilot_firmware"]},
-  "Role": {id:229,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "RoleAssignment": {id:230,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"role":{type:{kind:"model",name:"OrgRole"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","organization_uid","role"]},
-  "Root": {id:231,package:"root",semanticRole:"concept",parent:null,children:["Communication","Control","Data","Definition","Object","Struct"],atomic:false,fields:{},fieldOrder:[]},
-  "Roster": {id:232,package:"organization",semanticRole:"representation",parent:"Control",children:[],atomic:false,fields:{"roster":{type:{kind:"map",key:{kind:"model",name:"UID"},value:{kind:"model",name:"OrgRole"}},optional:false,const:false,default:null}},fieldOrder:["roster"]},
-  "RoutePlan": {id:233,package:"plan",semanticRole:"concept",parent:"Plan",children:["AutopilotMission"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}}},fieldOrder:["record","uid","id","name","approval_state"]},
-  "RuntimeLoadState": {id:234,package:"internal",semanticRole:"representation",parent:"Internal",children:[],atomic:false,fields:{"cpu_load":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"cycle_time_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["cpu_load","cycle_time_us"]},
-  "RwsPose": {id:235,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"offset_x_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"offset_y_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"offset_z_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"orientation_quaternion":{type:{kind:"tuple",items:[{kind:"primitive",name:"float"},{kind:"primitive",name:"float"},{kind:"primitive",name:"float"},{kind:"primitive",name:"float"}]},optional:false,const:false,default:null},"accuracy_roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"accuracy_pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"accuracy_yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"coordinate_frame":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","kinematics","offset_x_m","offset_y_m","offset_z_m","orientation_quaternion","accuracy_roll_rad","accuracy_pitch_rad","accuracy_yaw_rad","coordinate_frame"]},
-  "RwsState": {id:236,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"weapon_string":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"arming_state":{type:{kind:"enum",name:"RwsArmingState"},optional:false,const:false,default:null}},fieldOrder:["time_usec","weapon_string","arming_state"]},
-  "SemanticType": {id:237,package:"definition",semanticRole:"concept",parent:"Definition",children:["Category","Role","Function","Domain"],atomic:false,fields:{},fieldOrder:[]},
-  "SensorFieldOfView": {id:238,package:"payload",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"horizontal_deg":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"vertical_deg":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["horizontal_deg","vertical_deg"]},
-  "SensorPayload": {id:239,package:"payload",semanticRole:"representation",parent:"Payload",children:["ImageSensor","RFSensor"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range"]},
-  "SensorState": {id:240,package:"sensorstate",semanticRole:"concept",parent:"State",children:["TrackerState","FlightSensorConfiguration"],atomic:false,fields:{},fieldOrder:[]},
-  "Set": {id:241,package:"object",semanticRole:"concept",parent:"Object",children:["Collection","Cluster","Organization"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
-  "Shape": {id:242,package:"struct",semanticRole:"representation",parent:"Struct",children:["GeoArea"],atomic:false,fields:{},fieldOrder:[]},
-  "SignalQuality": {id:243,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"strength_dbm":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"snr_db":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"quality_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["strength_dbm","snr_db","quality_ratio"]},
-  "SpatialRelationship": {id:244,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Relationship"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"reference_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"relation":{type:{kind:"enum",name:"SpatialRelationKind"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","subject_uid","reference_uid","relation"]},
-  "SpatialStruct": {id:245,package:"spatial",semanticRole:"representation",parent:"Struct",children:["LoiterOrbit","MissionRouteGeometry","PlannedRoutePoints","AutopilotMissionWaypoint"],atomic:false,fields:{},fieldOrder:[]},
-  "SplashCorrection": {id:246,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"splash_position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"sequence":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"type_detected":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"cep_expected_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["time_usec","splash_position","sequence","type_detected","cep_expected_m"]},
-  "SpotterOrigin": {id:247,package:"spatial",semanticRole:"representation",parent:"Position",children:[],atomic:false,fields:{"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"look_vector":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["position","attitude","look_vector"]},
-  "State": {id:248,package:"state",semanticRole:"concept",parent:"Data",children:["Lifecycle","Activation","Cue","GNC","Health","Input","Internal","Kinematic","Resource","SensorState","EntityState","Validation","Position"],atomic:false,fields:{},fieldOrder:[]},
-  "StateChangeCommand": {id:249,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"StateChangeOperation"},optional:false,const:false,default:null},"property_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","property_name","value"]},
-  "StringName": {id:250,package:"identity",semanticRole:"representation",parent:"Identity",children:[],atomic:true,valueType:{kind:"primitive",name:"string"},fields:{},fieldOrder:[]},
-  "Struct": {id:251,package:"struct",semanticRole:"concept",parent:"Root",children:["FlightLevelBand","SuccessCriterion","PlanContingency","IsrParameters","Record","SpatialStruct","ID","Vector","Measurement","Bearing","GeoPos","LocalPos","Line","StructPath","Shape","Bounding","Uncertainty","Pose","Range","Transform","Orbital","PayloadAllocation","PayloadPlan","PayloadMount","Effects","TargetPriority","TargetKinematics","TargetSet","Fires","SplashCorrection","TargetHandover","BattleDamageAssessment","EsadState","EsadArming","RwsPose","RwsState","OrgComposition","MunitionAllocation","CombatTaskProfile"],atomic:false,fields:{},fieldOrder:[]},
-  "StructPath": {id:252,package:"struct",semanticRole:"representation",parent:"Struct",children:["GeoPath"],atomic:false,fields:{},fieldOrder:[]},
-  "SubsystemHealth": {id:253,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"subsystem_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"HealthStatus"},optional:false,const:false,default:null},"fault_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subsystem_ref","state","fault_count","note"]},
-  "SuccessCriterion": {id:254,package:"objective",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"statement":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"metric":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"target_value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["statement","metric","target_value"]},
-  "Supplies": {id:255,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"fuel":{type:{kind:"model",name:"FuelState"},optional:true,const:false,default:{kind:"literal",value:null}},"stores":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["fuel","stores"]},
-  "Symbology": {id:256,package:"attribute",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"sidc":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"cot":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["sidc","cot"]},
-  "TargetBoxCoord": {id:257,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"corners":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null},"time_start_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_end_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","corners","time_start_usec","time_end_usec"]},
-  "TargetCoord": {id:258,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"cep_desired_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"cep_max_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"Faction"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","kinematics","cep_desired_m","cep_max_m","target_class","target_force"]},
-  "TargetHandover": {id:259,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"detected_first_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"valid_until_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"target_set_id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"target_name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"match_media_url":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"confidence_score":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"authorization":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"Faction"},optional:false,const:false,default:null},"match_media_type":{type:{kind:"enum",name:"SensorDataFormat"},optional:false,const:false,default:null}},fieldOrder:["time_usec","detected_first_usec","valid_until_usec","kinematics","target_set_id","target_name","match_media_url","confidence_score","authorization","target_class","target_force","match_media_type"]},
-  "TargetKinematics": {id:260,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"location_state":{type:{kind:"model",name:"LocationState"},optional:false,const:false,default:null},"velocity":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"velocity_covariance":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["location_state","velocity","velocity_covariance"]},
-  "TargetPriority": {id:261,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"threat":{type:{kind:"enum",name:"ThreatLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"is_high_value":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["threat","is_high_value","note"]},
-  "TargetSet": {id:262,package:"military_effects",semanticRole:"representation",parent:"Struct",children:["TargetSetCoord","TargetBoxCoord","TargetCoord"],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name"]},
-  "TargetSetCoord": {id:263,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"center":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"radius_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"time_start_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_end_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","center","radius_m","time_start_usec","time_end_usec"]},
-  "Task": {id:264,package:"task",semanticRole:"concept",parent:"Directive",children:["TaskManeuver","TaskEffect","TaskInformation","TaskTransport"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase"]},
-  "TaskAssignment": {id:265,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"task_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","task_uid"]},
-  "TaskEffect": {id:266,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"EffectIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
-  "TaskInformation": {id:267,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"InformationIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
-  "TaskManeuver": {id:268,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"ManeuverIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
-  "TaskTimeWindow": {id:269,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}},"earliest_start":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"latest_finish":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","earliest_start","latest_finish"]},
-  "TaskTransport": {id:270,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"TransportIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
-  "TelemetryMessage": {id:271,package:"telemetry",semanticRole:"concept",parent:"Message",children:["MeshReceiveMetrics","MeshPositionSample","NodeHeartbeat","UAVTelemetryMessage","CapabilityAdvert","TransportCounters","TransportError"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq"]},
-  "Time": {id:272,package:"struct",semanticRole:"concept",parent:"Measurement",children:[],atomic:false,fields:{"utime":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["utime"]},
-  "Timestamp": {id:273,package:"struct",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"utime":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"tz":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["utime","tz"]},
-  "Track": {id:274,package:"observation",semanticRole:"concept",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Track"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id"]},
-  "TrackUpdate": {id:275,package:"observation",semanticRole:"representation",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"track_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"track_state":{type:{kind:"enum",name:"TrackState"},optional:true,const:false,default:{kind:"literal",value:null}},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","track_uid","track_state","updated_ts","confidence"]},
-  "TrackerState": {id:276,package:"sensorstate",semanticRole:"representation",parent:"SensorState",children:[],atomic:false,fields:{"locked":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"target_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_error":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"search_box_size":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"detections":{type:{kind:"model",name:"VisionDetectionFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["locked","target_uid","angular_error","search_box_size","detections"]},
-  "Transform": {id:277,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
-  "TransportCounters": {id:278,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"tx_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"parse_error_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"dropped_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["src","dst","ts","priority","seq","rx_count","tx_count","parse_error_count","dropped_count"]},
-  "TransportError": {id:279,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"error":{type:{kind:"enum",name:"NetworkError"},optional:false,const:false,default:null},"source_address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"payload":{type:{kind:"model",name:"ProtocolPayload"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","error","source_address","payload"]},
-  "UAVTelemetryMessage": {id:280,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"EntityState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
-  "UID": {id:281,package:"struct",semanticRole:"representation",parent:"ID",children:[],atomic:true,valueType:{kind:"fixedBytes",size:16},fields:{},fieldOrder:[]},
-  "Uncertainty": {id:282,package:"struct",semanticRole:"concept",parent:"Struct",children:["LocationUncertainty"],atomic:false,fields:{},fieldOrder:[]},
-  "Unit": {id:283,package:"organization",semanticRole:"representation",parent:"Organization",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_rank":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"elements":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"roster":{type:{kind:"model",name:"Roster"},optional:false,const:false,default:null},"leases":{type:{kind:"list",item:{kind:"model",name:"AttachmentLease"}},optional:false,const:false,default:null},"orglevel":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:{kind:"enum",enum:"OrgLevel",member:"UNIT"}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_rank","org_type","topology","elements","roster","leases","orglevel"]},
-  "UnitFlightPlan": {id:284,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:["MilitaryUnitFlightPlan"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"unit_num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"callsign":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"fl":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"target":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"home":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"land_pos":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"ip_wait_delay":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}},"wp":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","unit_num","callsign","fl","route_in","target","route_out","home","land_pos","ip_wait_delay","wp"]},
-  "Validation": {id:285,package:"validation",semanticRole:"concept",parent:"State",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"ValidationStatus"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","status","updated_ts"]},
-  "Vector": {id:286,package:"struct",semanticRole:"concept",parent:"Struct",children:["LocalVector","VelocityVector","AngularVelocityVector"],atomic:false,fields:{},fieldOrder:[]},
-  "Vehicle": {id:287,package:"entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:true,const:false,default:{kind:"literal",value:null}},"display_meta":{type:{kind:"model",name:"DisplayMeta"},optional:true,const:false,default:{kind:"literal",value:null}},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","symbology","display_meta","serial_number","propulsion","machine_type","components"]},
-  "VelocityVector": {id:288,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["x","y","z","frame"]},
-  "Version": {id:289,package:"property",semanticRole:"representation",parent:"Property",children:[],atomic:false,fields:{"major":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"minor":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"patch":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["major","minor","patch"]},
-  "VideoConfig": {id:290,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"protocol":{type:{kind:"enum",name:"VideoProtocol"},optional:true,const:false,default:{kind:"literal",value:null}},"port":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"stream_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"overlay_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"webrtc_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"overlay_webrtc_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"hls_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value","protocol","port","stream_url","overlay_url","webrtc_url","overlay_webrtc_url","hls_url"]},
-  "VisionBox": {id:291,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"space":{type:{kind:"enum",name:"DetectionBoxSpace"},optional:false,const:false,default:null},"bounds":{type:{kind:"model",name:"BoundingBox"},optional:false,const:false,default:null}},fieldOrder:["space","bounds"]},
-  "VisionDetection": {id:292,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"detection_id":{type:{kind:"namespacedIntID",namespace:"Detection"},optional:false,const:false,default:null},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"class_index":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"box":{type:{kind:"model",name:"VisionBox"},optional:true,const:false,default:{kind:"literal",value:null}},"bearing":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"source_frame_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"attributes":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null}},fieldOrder:["detection_id","label","class_index","confidence","box","bearing","position","source_frame_uid","attributes"]},
-  "VisionDetectionFrame": {id:293,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"frame_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"timestamp_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"detections":{type:{kind:"list",item:{kind:"model",name:"VisionDetection"}},optional:false,const:false,default:null}},fieldOrder:["record","frame_uid","sensor_uid","timestamp_us","detections"]},
-  "WeatherLimits": {id:294,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}},"ifr":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"night":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"rain":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"snow":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"temp":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"wind":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"vis":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"icing":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","ifr","night","rain","snow","temp","wind","vis","icing"]},
+  "AmpereHours": {id:11,package:"struct",semanticRole:"representation",parent:"ElectricCharge",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "Amperes": {id:12,package:"struct",semanticRole:"representation",parent:"ElectricCurrent",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "Angle": {id:13,package:"struct",semanticRole:"concept",parent:"Measurement",children:["AngleDegrees","AngleRadians"],atomic:false,fields:{},fieldOrder:[]},
+  "AngleDegrees": {id:14,package:"struct",semanticRole:"representation",parent:"Angle",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "AngleRadians": {id:15,package:"struct",semanticRole:"representation",parent:"Angle",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "AngularVelocityVector": {id:16,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z_rad_s":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["x_rad_s","y_rad_s","z_rad_s","frame"]},
+  "AnnotationAnchor": {id:17,package:"representation",semanticRole:"concept",parent:"Struct",children:["PositionAnchor","SubjectAnchor","PathAnchor"],atomic:false,fields:{},fieldOrder:[]},
+  "AnnotationGraphic": {id:18,package:"representation",semanticRole:"concept",parent:"Graphic",children:["LabelGraphic","NoteGraphic","CalloutGraphic","MediaGraphic"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"anchor":{type:{kind:"model",name:"AnnotationAnchor"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","anchor"]},
+  "AprsProfile": {id:19,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["callsign","path"]},
+  "AreaMeasure": {id:20,package:"struct",semanticRole:"concept",parent:"Measurement",children:["AreaSquareMeters"],atomic:false,fields:{},fieldOrder:[]},
+  "AreaMeasurement": {id:21,package:"measurement",semanticRole:"representation",parent:"SpatialMeasurement",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"location_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"area":{type:{kind:"model",name:"AreaSquareMeters"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","measured_ts","location_uid","area"]},
+  "AreaSquareMeters": {id:22,package:"struct",semanticRole:"representation",parent:"AreaMeasure",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "Assessment": {id:23,package:"observation",semanticRole:"concept",parent:"Observation",children:["IsrResult"],atomic:false,fields:{},fieldOrder:[]},
+  "Assignment": {id:24,package:"assignment",semanticRole:"concept",parent:"Control",children:["TaskAssignment","RoleAssignment","FlightAssignment"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints"]},
+  "AttachmentLease": {id:25,package:"authority",semanticRole:"representation",parent:"Lease",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"parent_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"attachment_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound","parent_uid","attachment_uid"]},
+  "Attribute": {id:26,package:"attribute",semanticRole:"concept",parent:"Property",children:["Symbology","GroundNavigation","AirNavigation","SensorFieldOfView"],atomic:false,fields:{},fieldOrder:[]},
+  "AudioMedia": {id:27,package:"media",semanticRole:"concept",parent:"MediaItem",children:["AudioRecording","LiveAudioStream"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "AudioRecording": {id:28,package:"media",semanticRole:"representation",parent:"AudioMedia",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"duration":{type:{kind:"model",name:"Duration"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts","duration"]},
+  "Authority": {id:29,package:"authority",semanticRole:"concept",parent:"Control",children:["CommandAuthority","Lease"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints"]},
+  "AutopilotMission": {id:30,package:"plan",semanticRole:"representation",parent:"RoutePlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"waypoints":{type:{kind:"list",item:{kind:"model",name:"AutopilotMissionWaypoint"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","waypoints"]},
+  "AutopilotMissionState": {id:31,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"valid":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"current_waypoint_index":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"waypoint_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_waypoints":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"waypoints_remaining":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["valid","current_waypoint_index","waypoint_count","max_waypoints","waypoints_remaining"]},
+  "AutopilotMissionWaypoint": {id:32,package:"plan",semanticRole:"representation",parent:"SpatialStruct",children:["FlightMissionPoint"],atomic:false,fields:{"waypoint_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"action_code":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param1":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param2":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param3":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"flag":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["waypoint_index","position","action_code","param1","param2","param3","flag"]},
+  "BattleDamageAssessment": {id:33,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"target_set_id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"target_name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"authorization":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"destruction_pct":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"confidence_pct":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"StandardIdentity"},optional:false,const:false,default:null}},fieldOrder:["time_usec","kinematics","target_set_id","target_name","authorization","destruction_pct","confidence_pct","target_class","target_force"]},
+  "Bearing": {id:34,package:"struct",semanticRole:"representation",parent:"Struct",children:["LocalDirection"],atomic:false,fields:{},fieldOrder:[]},
+  "BearingMeasurement": {id:35,package:"measurement",semanticRole:"representation",parent:"SpatialMeasurement",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"origin_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bearing":{type:{kind:"model",name:"AngleDegrees"},optional:false,const:false,default:null},"reference":{type:{kind:"enum",name:"BearingReference"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","measured_ts","origin_uid","target_uid","bearing","reference"]},
+  "BinaryMedia": {id:36,package:"media",semanticRole:"representation",parent:"MediaItem",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "BooleanLogic": {id:37,package:"condition",semanticRole:"concept",parent:"Condition",children:[],atomic:false,fields:{"operator":{type:{kind:"enum",name:"BooleanOperator"},optional:false,const:false,default:null},"terms":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:false,const:false,default:null}},fieldOrder:["operator","terms"]},
+  "Boundary": {id:38,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","path"]},
+  "Bounding": {id:39,package:"struct",semanticRole:"representation",parent:"Struct",children:["BoundingBox"],atomic:false,fields:{},fieldOrder:[]},
+  "BoundingBox": {id:40,package:"spatial",semanticRole:"representation",parent:"Bounding",children:[],atomic:false,fields:{"x1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"x2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["x1","y1","z1","x2","y2","z2"]},
+  "ByteCount": {id:41,package:"struct",semanticRole:"representation",parent:"Quantity",children:[],atomic:true,valueType:{kind:"primitive",name:"int"},fields:{},fieldOrder:[]},
+  "CalloutGraphic": {id:42,package:"representation",semanticRole:"representation",parent:"AnnotationGraphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"anchor":{type:{kind:"model",name:"AnnotationAnchor"},optional:false,const:false,default:null},"text":{type:{kind:"model",name:"Text"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","anchor","text"]},
+  "Capability": {id:43,package:"capability",semanticRole:"concept",parent:"Property",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "CapabilityAdvert": {id:44,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"link_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"sensor_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"payload_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","node_uid","roles","link_refs","sensor_refs","payload_refs"]},
+  "Category": {id:45,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "ChannelMapEntry": {id:46,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"axis":{type:{kind:"enum",name:"ControlAxis"},optional:false,const:false,default:null},"source_channel":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"output_channel":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value","axis","source_channel","output_channel","label"]},
+  "ChannelSpec": {id:47,package:"radio",semanticRole:"representation",parent:"Radio",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"bandwidth_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"spacing_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","channel_uid","label","frequency","bandwidth_mhz","spacing_mhz"]},
+  "Classification": {id:48,package:"observation",semanticRole:"concept",parent:"Observation",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Cluster": {id:49,package:"object",semanticRole:"concept",parent:"Set",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "CoTSymbology": {id:50,package:"attribute",semanticRole:"representation",parent:"Symbology",children:[],atomic:false,fields:{"cot":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null}},fieldOrder:["cot"]},
+  "Coalition": {id:51,package:"organization",semanticRole:"representation",parent:"Side",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Side"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","description","member_uids"]},
+  "Collection": {id:52,package:"object",semanticRole:"concept",parent:"Set",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "ColorChannel": {id:53,package:"representation",semanticRole:"representation",parent:"ColorComponent",children:[],atomic:true,valueType:{kind:"primitive",name:"uint8"},fields:{},fieldOrder:[]},
+  "ColorComponent": {id:54,package:"representation",semanticRole:"concept",parent:"Struct",children:["ColorChannel"],atomic:false,fields:{},fieldOrder:[]},
+  "ColorRGBA": {id:55,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"red":{type:{kind:"model",name:"ColorChannel"},optional:false,const:false,default:null},"green":{type:{kind:"model",name:"ColorChannel"},optional:false,const:false,default:null},"blue":{type:{kind:"model",name:"ColorChannel"},optional:false,const:false,default:null},"alpha":{type:{kind:"model",name:"Opacity"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["red","green","blue","alpha"]},
+  "CombatTaskProfile": {id:56,package:"military_tasks",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"task_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"combat_task":{type:{kind:"enum",name:"TaskCombat"},optional:true,const:false,default:{kind:"literal",value:null}},"target_category":{type:{kind:"enum",name:"TargetCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"target_point":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"munitions":{type:{kind:"list",item:{kind:"model",name:"MunitionAllocation"}},optional:false,const:false,default:null},"effect":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"desired_bda":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["task_uid","combat_task","target_category","target_point","munitions","effect","desired_bda"]},
+  "Command": {id:57,package:"command",semanticRole:"concept",parent:"Directive",children:["StateChangeCommand","ProcessControlCommand","ConfigurationCommand","MotionCommand","ResourceCommand","ExecutionCommand"],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null}},fieldOrder:["target_uid","constraints"]},
+  "CommandAuthority": {id:58,package:"authority",semanticRole:"concept",parent:"Authority",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"role":{type:{kind:"model",name:"Role"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","organization_uid","role"]},
+  "CommandMessage": {id:59,package:"c3",semanticRole:"concept",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"command":{type:{kind:"model",name:"Command"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","command"]},
+  "Communication": {id:60,package:"communication",semanticRole:"concept",parent:"Root",children:["Interface","Link","DataRateSpec","LinkCapacity","Message","Network","Node","Protocol"],atomic:false,fields:{},fieldOrder:[]},
+  "Component": {id:61,package:"object",semanticRole:"concept",parent:"Item",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "Condition": {id:62,package:"condition",semanticRole:"concept",parent:"Data",children:["Predicate","BooleanLogic"],atomic:false,fields:{},fieldOrder:[]},
+  "ConfigurationCommand": {id:63,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ConfigurationOperation"},optional:false,const:false,default:null},"parameter_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"configuration_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","parameter_name","value","configuration_uid"]},
+  "Constraint": {id:64,package:"constraint",semanticRole:"concept",parent:"Control",children:["Restriction","Limitation","TaskTimeWindow","WeatherLimits"],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
+  "Context": {id:65,package:"context",semanticRole:"concept",parent:"Data",children:["OperationalContext"],atomic:false,fields:{},fieldOrder:[]},
+  "Control": {id:66,package:"control",semanticRole:"concept",parent:"Root",children:["Assignment","Authority","Constraint","Directive","Objective","Plan","OrgRole","Roster"],atomic:false,fields:{},fieldOrder:[]},
+  "ControlAttitudeSetpoint": {id:67,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"thrust_normalized":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"reference_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["roll_rad","pitch_rad","yaw_rad","thrust_normalized","body_frame","reference_frame"]},
+  "ControlAxisSet": {id:68,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"pitch":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"throttle":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"aux":{type:{kind:"list",item:{kind:"primitive",name:"float"}},optional:false,const:false,default:null}},fieldOrder:["roll","pitch","yaw","throttle","aux"]},
+  "ControlChannelValue": {id:69,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"channel_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["channel_index","value"]},
+  "ControlLease": {id:70,package:"authority",semanticRole:"representation",parent:"Lease",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"control_level":{type:{kind:"enum",name:"ControlLevel"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound","controller","control_level"]},
+  "ControlOverride": {id:71,package:"input",semanticRole:"representation",parent:"Input",children:[],atomic:false,fields:{"roll":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"pitch":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"throttle":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"aux":{type:{kind:"list",item:{kind:"model",name:"ControlChannelValue"}},optional:false,const:false,default:null}},fieldOrder:["roll","pitch","yaw","throttle","aux"]},
+  "Coordinate": {id:72,package:"definition",semanticRole:"representation",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Count": {id:73,package:"struct",semanticRole:"representation",parent:"Quantity",children:[],atomic:true,valueType:{kind:"primitive",name:"int"},fields:{},fieldOrder:[]},
+  "CryptoKey": {id:74,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"key_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_type":{type:{kind:"enum",name:"CryptoType"},optional:false,const:false,default:null},"version":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"fill_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key_ref","label","crypto_type","version","fill_ts"]},
+  "CryptoProfile": {id:75,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"active_crypto":{type:{kind:"enum",name:"CryptoType"},optional:true,const:false,default:{kind:"literal",value:null}},"keyset_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"keys":{type:{kind:"list",item:{kind:"model",name:"CryptoKey"}},optional:false,const:false,default:null}},fieldOrder:["active_crypto","keyset_uid","keys"]},
+  "Cue": {id:76,package:"cue",semanticRole:"concept",parent:"State",children:[],atomic:false,fields:{"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"target_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"bearing_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"elevation_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"distance_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_uid","target_uid","bearing_rad","elevation_rad","distance_m","label"]},
+  "Data": {id:77,package:"data",semanticRole:"concept",parent:"Root",children:["Condition","Context","Event","Execution","SpatialMeasurement","Observation","Property","Representation","State"],atomic:false,fields:{},fieldOrder:[]},
+  "DataLayer": {id:78,package:"representation",semanticRole:"representation",parent:"Layer",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Layer"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"source":{type:{kind:"model",name:"RepresentationSource"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","temporal_extent","source"]},
+  "DataRateSpec": {id:79,package:"link",semanticRole:"representation",parent:"Communication",children:[],atomic:false,fields:{"nominal_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"sustained_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"burst_bps":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["nominal_bps","sustained_bps","burst_bps"]},
+  "Definition": {id:80,package:"definition",semanticRole:"concept",parent:"Root",children:["Frame","Coordinate","Geometry","DefinitionRelationship","SemanticType","OrgTemplate","ResourceTemplate"],atomic:false,fields:{},fieldOrder:[]},
+  "DefinitionRelationship": {id:81,package:"definition",semanticRole:"concept",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "DegreesCelsius": {id:82,package:"struct",semanticRole:"representation",parent:"Temperature",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "DeliveryQuality": {id:83,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"latency_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"packet_loss_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"error_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["latency_s","packet_loss_ratio","error_ratio"]},
+  "DeliveryReceipt": {id:84,package:"message",semanticRole:"representation",parent:"ResponseMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"delivery_state":{type:{kind:"enum",name:"DeliveryState"},optional:false,const:false,default:null},"seen_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"exec_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"error_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to","node_uid","delivery_state","seen_ts","exec_ts","error_code"]},
+  "Delta": {id:85,package:"message",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"record":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"changed_fields":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"State"}},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","entity_uid","record","changed_fields","updated_ts"]},
+  "Detection": {id:86,package:"observation",semanticRole:"concept",parent:"Observation",children:["VisionBox","VisionDetection","VisionDetectionFrame"],atomic:false,fields:{},fieldOrder:[]},
+  "DirectedRelationship": {id:87,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"object_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"relation":{type:{kind:"enum",name:"RelationshipKind"},optional:false,const:false,default:null},"since_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"until_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"source":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subject_uid","object_uid","relation","since_ts","until_ts","confidence","source"]},
+  "Directive": {id:88,package:"directive",semanticRole:"concept",parent:"Control",children:["Command","Task"],atomic:false,fields:{},fieldOrder:[]},
+  "Distance": {id:89,package:"struct",semanticRole:"concept",parent:"Measurement",children:["DistanceMeters"],atomic:false,fields:{},fieldOrder:[]},
+  "DistanceMeasurement": {id:90,package:"measurement",semanticRole:"representation",parent:"SpatialMeasurement",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"origin_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"distance":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","measured_ts","origin_uid","target_uid","distance"]},
+  "DistanceMeters": {id:91,package:"struct",semanticRole:"representation",parent:"Distance",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "DocumentMedia": {id:92,package:"media",semanticRole:"representation",parent:"MediaItem",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "Domain": {id:93,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Drone": {id:94,package:"uav",semanticRole:"representation",parent:"AirRobot",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:{kind:"enum",enum:"AirframeType",member:"COPTER"}},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"controller":{type:{kind:"model",name:"RobotController"},optional:false,const:false,default:null},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","controller","remote_control"]},
+  "Duration": {id:95,package:"struct",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"seconds":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"minutes":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"hours":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"days":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"weeks":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"months":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"years":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["seconds","minutes","hours","days","weeks","months","years"]},
+  "Effects": {id:96,package:"military_effects",semanticRole:"representation",parent:"Struct",children:["GroundEffects","AirEffects"],atomic:false,fields:{"has_launchers":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"esad":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"effect_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"launch_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"guidance":{type:{kind:"enum",name:"GuidanceType"},optional:false,const:false,default:null},"warhead":{type:{kind:"enum",name:"WarheadType"},optional:false,const:false,default:null},"pylon_format":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}}},fieldOrder:["has_launchers","esad","payload_mounts","effect_domain","launch_domain","guidance","warhead","pylon_format"]},
+  "EffectsPayload": {id:97,package:"military_effects",semanticRole:"representation",parent:"Payload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"item_type":{type:{kind:"enum",name:"PayloadType"},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"PayloadState"},optional:true,const:false,default:{kind:"literal",value:null}},"weapons":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ammo":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ordnance":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"payload_plan":{type:{kind:"model",name:"PayloadPlan"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","item_type","state","weapons","ammo","ordnance","payload_mounts","payload_plan"]},
+  "ElectricCharge": {id:98,package:"struct",semanticRole:"concept",parent:"Measurement",children:["AmpereHours"],atomic:false,fields:{},fieldOrder:[]},
+  "ElectricCurrent": {id:99,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Amperes"],atomic:false,fields:{},fieldOrder:[]},
+  "ElectricPotential": {id:100,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Volts"],atomic:false,fields:{},fieldOrder:[]},
+  "ElectricPower": {id:101,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Watts"],atomic:false,fields:{},fieldOrder:[]},
+  "ElectricalResourceState": {id:102,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"potential":{type:{kind:"model",name:"Volts"},optional:true,const:false,default:{kind:"literal",value:null}},"current":{type:{kind:"model",name:"Amperes"},optional:true,const:false,default:{kind:"literal",value:null}},"power":{type:{kind:"model",name:"Watts"},optional:true,const:false,default:{kind:"literal",value:null}},"consumed_charge":{type:{kind:"model",name:"AmpereHours"},optional:true,const:false,default:{kind:"literal",value:null}},"consumed_energy":{type:{kind:"model",name:"WattHours"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining_ratio":{type:{kind:"model",name:"NormalizedRatio"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining_charge":{type:{kind:"model",name:"AmpereHours"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining_energy":{type:{kind:"model",name:"WattHours"},optional:true,const:false,default:{kind:"literal",value:null}},"temperature":{type:{kind:"model",name:"DegreesCelsius"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_uid","potential","current","power","consumed_charge","consumed_energy","remaining_ratio","remaining_charge","remaining_energy","temperature"]},
+  "ElrsProfile": {id:103,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"packet_rate_hz":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"telemetry_ratio":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["packet_rate_hz","telemetry_ratio"]},
+  "Energy": {id:104,package:"struct",semanticRole:"concept",parent:"Measurement",children:["WattHours"],atomic:false,fields:{},fieldOrder:[]},
+  "Entity": {id:105,package:"entities",semanticRole:"concept",parent:"Object",children:["Actor","Machine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:true,const:false,default:{kind:"literal",value:null}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations"]},
+  "EntityComponentRef": {id:106,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"component_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"component_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["component_ref","component_type","label"]},
+  "EntityState": {id:107,package:"state",semanticRole:"representation",parent:"SubjectState",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"LocationState"},optional:true,const:false,default:{kind:"literal",value:null}},"motion":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_velocity":{type:{kind:"model",name:"AngularVelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"model",name:"Airspeed"},optional:true,const:false,default:{kind:"literal",value:null}},"flight_control":{type:{kind:"model",name:"FlightControlState"},optional:true,const:false,default:{kind:"literal",value:null}},"power":{type:{kind:"model",name:"PowerState"},optional:true,const:false,default:{kind:"literal",value:null}},"operational_status":{type:{kind:"enum",name:"EntityOperationalState"},optional:true,const:false,default:{kind:"literal",value:null}},"lifecycle_status":{type:{kind:"enum",name:"EntityLifecycleStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"health":{type:{kind:"model",name:"HealthSnapshot"},optional:true,const:false,default:{kind:"literal",value:null}},"resources":{type:{kind:"model",name:"InventoryState"},optional:true,const:false,default:{kind:"literal",value:null}},"link_states":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"LinkState"}},optional:false,const:false,default:null},"control_state":{type:{kind:"enum",name:"ControlLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"source_observation_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"source_time_basis":{type:{kind:"enum",name:"ObservationTimeBasis"},optional:true,const:false,default:{kind:"literal",value:null}},"received_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"published_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","subject_uid","timestamp","position","motion","angular_velocity","airspeed","flight_control","power","operational_status","lifecycle_status","health","resources","link_states","control_state","source_observation_ts","source_time_basis","received_ts","published_ts"]},
+  "Equipment": {id:108,package:"object",semanticRole:"concept",parent:"Item",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "EquipmentTemplate": {id:109,package:"resource_templates",semanticRole:"representation",parent:"ResourceTemplate",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ResourceTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","description"]},
+  "EsadArming": {id:110,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_challenge_hash":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_request":{type:{kind:"enum",name:"EsadArmingRequest"},optional:false,const:false,default:null}},fieldOrder:["time_usec","arming_challenge_hash","arming_request"]},
+  "EsadState": {id:111,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"arming_challenge_hash":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"fault_flags":{type:{kind:"enum",name:"EsadFaultFlag"},optional:false,const:false,default:null},"input_1":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"input_2":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"sw_version_hash":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"arming_status":{type:{kind:"enum",name:"ArmingStatus"},optional:false,const:false,default:null},"munition_status":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:false,const:false,default:null},"ignition_status":{type:{kind:"enum",name:"EsadIgnitionStatus"},optional:false,const:false,default:null},"munition_type":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","arming_challenge_hash","fault_flags","input_1","input_2","sw_version_hash","arming_status","munition_status","ignition_status","munition_type"]},
+  "EulerAngles": {id:112,package:"spatial",semanticRole:"representation",parent:"Pose",children:[],atomic:false,fields:{"roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"reference_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["roll_rad","pitch_rad","yaw_rad","body_frame","reference_frame"]},
+  "Event": {id:113,package:"event",semanticRole:"concept",parent:"Data",children:["SubjectEvent","TimelineEvent"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null}},fieldOrder:["record"]},
+  "Execution": {id:114,package:"execution",semanticRole:"concept",parent:"Data",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Execution"},optional:false,const:false,default:null},"assignment_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"executor_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"attempt":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"phase":{type:{kind:"enum",name:"ExecutionPhase"},optional:false,const:false,default:{kind:"enum",enum:"ExecutionPhase",member:"CREATED"}},"progress":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"started_at":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"completed_at":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"result":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"failure":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"external_job_refs":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignment_uid","executor_uid","attempt","phase","progress","started_at","completed_at","result","failure","external_job_refs"]},
+  "ExecutionCommand": {id:115,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ExecutionOperation"},optional:false,const:false,default:null}},fieldOrder:["target_uid","constraints","operation"]},
+  "ExternalRepresentationSource": {id:116,package:"representation",semanticRole:"representation",parent:"RepresentationSource",children:[],atomic:false,fields:{"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"format":{type:{kind:"enum",name:"RepresentationFormat"},optional:false,const:false,default:null}},fieldOrder:["uri","format"]},
+  "FillStyle": {id:117,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"color":{type:{kind:"model",name:"ColorRGBA"},optional:true,const:false,default:{kind:"literal",value:null}},"pattern":{type:{kind:"enum",name:"FillPattern"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["color","pattern"]},
+  "Fires": {id:118,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_impact_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"target_position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"effector_id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"sequence":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"cep_expected_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["time_usec","time_impact_usec","target_position","effector_id","sequence","cep_expected_m"]},
+  "FirmwareInfo": {id:119,package:"property",semanticRole:"representation",parent:"Property",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"version":{type:{kind:"model",name:"Version"},optional:false,const:false,default:null},"build":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","version","build"]},
+  "FlightAssignment": {id:120,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"unit_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"objective_assign":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"wave_n":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"formation_n":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"takeoff_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","num","unit_uid","callsign","objective_assign","wave_n","formation_n","takeoff_ts"]},
+  "FlightControlState": {id:121,package:"robot",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"armed":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"in_air":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"override_active":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"failsafe":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"standard_mode":{type:{kind:"enum",name:"StandardFlightMode"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude_setpoint":{type:{kind:"model",name:"ControlAttitudeSetpoint"},optional:true,const:false,default:{kind:"literal",value:null}},"navigation_validity":{type:{kind:"model",name:"NavigationValidity"},optional:true,const:false,default:{kind:"literal",value:null}},"readiness":{type:{kind:"model",name:"NavReadinessState"},optional:true,const:false,default:{kind:"literal",value:null}},"runtime_load":{type:{kind:"model",name:"RuntimeLoadState"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["armed","in_air","override_active","failsafe","standard_mode","attitude_setpoint","navigation_validity","readiness","runtime_load"]},
+  "FlightEvent": {id:122,package:"event",semanticRole:"representation",parent:"SubjectEvent",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"event":{type:{kind:"enum",name:"AirMissionEvent"},optional:false,const:false,default:null}},fieldOrder:["record","subject_uid","timestamp","event"]},
+  "FlightLevelBand": {id:123,package:"aerial",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"altitude_range_m":{type:{kind:"model",name:"NumericRange"},optional:false,const:false,default:null},"alt_sep_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["altitude_range_m","alt_sep_m"]},
+  "FlightMissionPoint": {id:124,package:"aerial",semanticRole:"representation",parent:"AutopilotMissionWaypoint",children:[],atomic:false,fields:{"waypoint_index":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"action_code":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param1":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param2":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"param3":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"flag":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"point_type":{type:{kind:"enum",name:"FlightPlanPointType"},optional:false,const:false,default:null},"category":{type:{kind:"enum",name:"PlannerPointCategory"},optional:false,const:false,default:null}},fieldOrder:["waypoint_index","position","action_code","param1","param2","param3","flag","point_type","category"]},
+  "FlightSensorConfiguration": {id:125,package:"sensorstate",semanticRole:"representation",parent:"SensorState",children:[],atomic:false,fields:{"accelerometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"barometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"magnetometer":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"rangefinder":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"optical_flow":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["accelerometer","barometer","magnetometer","airspeed","rangefinder","optical_flow"]},
+  "FlyingOrg": {id:126,package:"organization",semanticRole:"representation",parent:"MilitaryOrg",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster","category","resource_requirements","op_domain"]},
+  "FpvProfile": {id:127,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"video_standard":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"low_latency":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["video_standard","low_latency"]},
+  "Frame": {id:128,package:"definition",semanticRole:"concept",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Frequency": {id:129,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Hertz"],atomic:false,fields:{},fieldOrder:[]},
+  "FrequencyRange": {id:130,package:"radio",semanticRole:"representation",parent:"Radio",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"low_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"high_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"center_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","low_mhz","high_mhz","center_mhz"]},
+  "FuelState": {id:131,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"fuel_type":{type:{kind:"enum",name:"FuelType"},optional:false,const:false,default:null},"capacity":{type:{kind:"model",name:"Quantity"},optional:true,const:false,default:{kind:"literal",value:null}},"remaining":{type:{kind:"model",name:"Quantity"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["fuel_type","capacity","remaining"]},
+  "Function": {id:132,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "GNC": {id:133,package:"gnc",semanticRole:"concept",parent:"State",children:["NavigationValidity","GnssSolution","AutopilotMissionState","FlightControlState"],atomic:false,fields:{},fieldOrder:[]},
+  "GeoArea": {id:134,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"vertices":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null}},fieldOrder:["vertices"]},
+  "GeoCircle": {id:135,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"center":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"radius":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["center","radius"]},
+  "GeoGeometryCollection": {id:136,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"points":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null},"paths":{type:{kind:"list",item:{kind:"model",name:"GeoPath"}},optional:false,const:false,default:null},"areas":{type:{kind:"list",item:{kind:"model",name:"GeoArea"}},optional:false,const:false,default:null},"circles":{type:{kind:"list",item:{kind:"model",name:"GeoCircle"}},optional:false,const:false,default:null}},fieldOrder:["points","paths","areas","circles"]},
+  "GeoMultiArea": {id:137,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"areas":{type:{kind:"list",item:{kind:"model",name:"GeoArea"}},optional:false,const:false,default:null}},fieldOrder:["areas"]},
+  "GeoMultiPath": {id:138,package:"spatial",semanticRole:"representation",parent:"StructPath",children:[],atomic:false,fields:{"paths":{type:{kind:"list",item:{kind:"model",name:"GeoPath"}},optional:false,const:false,default:null}},fieldOrder:["paths"]},
+  "GeoMultiPoint": {id:139,package:"spatial",semanticRole:"representation",parent:"Shape",children:[],atomic:false,fields:{"points":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null}},fieldOrder:["points"]},
+  "GeoPath": {id:140,package:"spatial",semanticRole:"representation",parent:"StructPath",children:[],atomic:false,fields:{"points":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null}},fieldOrder:["points"]},
+  "GeoPos": {id:141,package:"struct",semanticRole:"representation",parent:"Struct",children:["GlobalPosition"],atomic:false,fields:{},fieldOrder:[]},
+  "GeoRegistration": {id:142,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"footprint":{type:{kind:"model",name:"GeoArea"},optional:false,const:false,default:null}},fieldOrder:["footprint"]},
+  "Geometry": {id:143,package:"definition",semanticRole:"representation",parent:"Definition",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "GeometryGraphic": {id:144,package:"representation",semanticRole:"representation",parent:"Graphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"location_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","location_uid"]},
+  "GeoreferencedMediaGraphic": {id:145,package:"representation",semanticRole:"representation",parent:"Graphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"media_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"registration":{type:{kind:"model",name:"GeoRegistration"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","media_uid","registration"]},
+  "GlobalPosition": {id:146,package:"spatial",semanticRole:"representation",parent:"GeoPos",children:[],atomic:false,fields:{"lat":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"lon":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"alt":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"mgrs":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"datum":{type:{kind:"primitive",name:"string"},optional:false,const:true,default:{kind:"literal",value:"WGS84"}},"alt_frame":{type:{kind:"enum",name:"AltitudeDatum"},optional:false,const:false,default:null}},fieldOrder:["lat","lon","alt","mgrs","datum","alt_frame"]},
+  "GnssSolution": {id:147,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"fix_type":{type:{kind:"enum",name:"GnssFixType"},optional:true,const:false,default:{kind:"literal",value:null}},"satellites_used":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"altitude":{type:{kind:"model",name:"AltitudeState"},optional:true,const:false,default:{kind:"literal",value:null}},"ground_speed_ms":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ground_course_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"hdop":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"vdop":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["fix_type","satellites_used","position","altitude","ground_speed_ms","ground_course_deg","hdop","vdop","yaw_deg"]},
+  "Graphic": {id:148,package:"representation",semanticRole:"concept",parent:"IdentifiedRepresentation",children:["GeometryGraphic","SymbolGraphic","AnnotationGraphic","GeoreferencedMediaGraphic","MeasurementGraphic","TacticalGraphic"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","style","temporal_extent"]},
+  "GraphicLength": {id:149,package:"representation",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"value":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"unit":{type:{kind:"enum",name:"GraphicLengthUnit"},optional:false,const:false,default:null}},fieldOrder:["value","unit"]},
+  "GraphicStyle": {id:150,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"stroke":{type:{kind:"model",name:"StrokeStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"fill":{type:{kind:"model",name:"FillStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"text":{type:{kind:"model",name:"TextStyle"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["stroke","fill","text"]},
+  "GroundEffects": {id:151,package:"military_effects",semanticRole:"representation",parent:"Effects",children:[],atomic:false,fields:{"has_launchers":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"esad":{type:{kind:"enum",name:"EsadMunitionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"payload_mounts":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"PayloadMount"}},optional:false,const:false,default:null},"effect_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"launch_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"guidance":{type:{kind:"enum",name:"GuidanceType"},optional:false,const:false,default:null},"warhead":{type:{kind:"enum",name:"WarheadType"},optional:false,const:false,default:null},"pylon_format":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"attack_modes":{type:{kind:"list",item:{kind:"enum",name:"AttackMode"}},optional:false,const:false,default:null}},fieldOrder:["has_launchers","esad","payload_mounts","effect_domain","launch_domain","guidance","warhead","pylon_format","attack_modes"]},
+  "GroundMachine": {id:152,package:"entities",semanticRole:"representation",parent:"Machine",children:["GroundRobot","MilitaryGroundMachine"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:null},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation"]},
+  "GroundNavigation": {id:153,package:"entities",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["propulsion","navigation","navaids","max_range","max_spd"]},
+  "GroundOrbatOrg": {id:154,package:"organization",semanticRole:"representation",parent:"OrbatOrg",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:false,const:false,default:{kind:"enum",enum:"OrgTopology",member:"HIERARCHICAL"}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null},"org_layout":{type:{kind:"enum",name:"OrgLayout"},optional:false,const:false,default:{kind:"enum",enum:"OrgLayout",member:"ORBAT"}},"size":{type:{kind:"enum",name:"OOBSize"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"taskforce":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"spacing":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null},"combat_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster","category","resource_requirements","org_layout","size","op_domain","taskforce","spacing","combat_domain"]},
+  "GroundRobot": {id:155,package:"robot",semanticRole:"representation",parent:"GroundMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:{kind:"enum",enum:"MachineType",member:"ROBOT"}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation"]},
+  "Group": {id:156,package:"organization",semanticRole:"representation",parent:"Organization",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:{kind:"enum",enum:"OrgLevel",member:"GROUP"}},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster"]},
+  "GroupFlightPlan": {id:157,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"plan_phase":{type:{kind:"enum",name:"FlightPlanPhase"},optional:false,const:false,default:null},"flight_level":{type:{kind:"model",name:"FlightLevelBand"},optional:true,const:false,default:{kind:"literal",value:null}},"alt_frame":{type:{kind:"enum",name:"AltitudeDatum"},optional:true,const:false,default:{kind:"literal",value:null}},"h_sep_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"delay_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"airspeed":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"path_offset":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"formation_2d":{type:{kind:"enum",name:"AirGroupFormation2DType"},optional:true,const:false,default:{kind:"literal",value:null}},"formation_3d":{type:{kind:"enum",name:"AirGroupFormation3DType"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","approval_state","plan_phase","flight_level","alt_frame","h_sep_m","delay_s","airspeed","path_offset","formation_2d","formation_3d"]},
+  "Health": {id:158,package:"health",semanticRole:"concept",parent:"State",children:["HealthAlert","LinkState","SubsystemHealth","HealthSnapshot","MaintenanceStatus","NavReadinessState"],atomic:false,fields:{},fieldOrder:[]},
+  "HealthAlert": {id:159,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"alert_ref":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"level":{type:{kind:"enum",name:"AlertLevel"},optional:false,const:false,default:null},"condition":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"acknowledged":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["alert_ref","level","condition","acknowledged"]},
+  "HealthSnapshot": {id:160,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"overall_state":{type:{kind:"enum",name:"HealthStatus"},optional:false,const:false,default:null},"link_state":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"power_state":{type:{kind:"enum",name:"ResourceStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"temp_state":{type:{kind:"enum",name:"ResourceStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"fault_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"subsystems":{type:{kind:"list",item:{kind:"model",name:"SubsystemHealth"}},optional:false,const:false,default:null},"alerts":{type:{kind:"list",item:{kind:"model",name:"HealthAlert"}},optional:false,const:false,default:null}},fieldOrder:["overall_state","link_state","power_state","temp_state","fault_count","updated_ts","subsystems","alerts"]},
+  "Hertz": {id:161,package:"struct",semanticRole:"representation",parent:"Frequency",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "HumanTextMessage": {id:162,package:"c3",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"message_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"conversation_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"reply_to_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sender_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sender_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_group":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"kind":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"message":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"targets":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","message_uid","conversation_uid","reply_to_uid","sender_uid","sender_name","destination_uid","destination_group","kind","message","position","targets"]},
+  "ID": {id:163,package:"struct",semanticRole:"concept",parent:"Struct",children:["IntID","UID"],atomic:false,fields:{},fieldOrder:[]},
+  "IdentifiedRepresentation": {id:164,package:"representation",semanticRole:"concept",parent:"Representation",children:["Media","Graphic","Layer","MapView"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description"]},
+  "Identity": {id:165,package:"identity",semanticRole:"concept",parent:"Property",children:["StringName","IdentityBootstrap"],atomic:false,fields:{},fieldOrder:[]},
+  "IdentityBootstrap": {id:166,package:"identity",semanticRole:"representation",parent:"Identity",children:[],atomic:false,fields:{"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"node_id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"entity_id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"organization_id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null}},fieldOrder:["node_uid","node_id","entity_uid","entity_id","organization_uid","organization_id"]},
+  "ImageMedia": {id:167,package:"media",semanticRole:"concept",parent:"MediaItem",children:["StillImage"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "ImageSensor": {id:168,package:"payload",semanticRole:"representation",parent:"SensorPayload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"night_vision":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range","night_vision"]},
+  "ImuSample": {id:169,package:"kinematic",semanticRole:"representation",parent:"Kinematic",children:[],atomic:false,fields:{"acceleration":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_velocity":{type:{kind:"model",name:"AngularVelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"magnetic_field":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"temperature_deg_c":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"timestamp_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["acceleration","angular_velocity","magnetic_field","temperature_deg_c","timestamp_us","frame"]},
+  "Input": {id:170,package:"input",semanticRole:"concept",parent:"State",children:["ControlAxisSet","ControlChannelValue","ControlOverride","ControlAttitudeSetpoint"],atomic:false,fields:{},fieldOrder:[]},
+  "IntID": {id:171,package:"struct",semanticRole:"representation",parent:"ID",children:[],atomic:true,valueType:{kind:"primitive",name:"int"},fields:{},fieldOrder:[]},
+  "Interface": {id:172,package:"interface",semanticRole:"concept",parent:"Communication",children:["RemoteControl","ObserverSource"],atomic:false,fields:{},fieldOrder:[]},
+  "Internal": {id:173,package:"internal",semanticRole:"concept",parent:"State",children:["RuntimeLoadState"],atomic:false,fields:{},fieldOrder:[]},
+  "InventoryState": {id:174,package:"resource",semanticRole:"representation",parent:"Resource",children:["Supplies"],atomic:false,fields:{"holdings":{type:{kind:"list",item:{kind:"model",name:"ResourceHolding"}},optional:false,const:false,default:null}},fieldOrder:["holdings"]},
+  "IsrObservation": {id:175,package:"observation",semanticRole:"representation",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Observation"},optional:false,const:false,default:null},"track_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"obs_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"observation_kind":{type:{kind:"enum",name:"ObservationKind"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"IntelCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"spotter_origin":{type:{kind:"model",name:"SpotterOrigin"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","track_uid","sensor_uid","obs_ts","observation_kind","category","spotter_origin","position","uncertainty","confidence"]},
+  "IsrParameters": {id:176,package:"observation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"focus_type":{type:{kind:"enum",name:"IsrFocusType"},optional:true,const:false,default:{kind:"literal",value:null}},"focus_point":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"dwell_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"revisit_s":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_types":{type:{kind:"list",item:{kind:"enum",name:"SensorType"}},optional:false,const:false,default:null},"sensor_modes":{type:{kind:"list",item:{kind:"enum",name:"SensorMode"}},optional:false,const:false,default:null},"effect_domains":{type:{kind:"list",item:{kind:"enum",name:"EffectDomain"}},optional:false,const:false,default:null},"evidence_level":{type:{kind:"enum",name:"EvidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["focus_type","focus_point","dwell_s","revisit_s","sensor_types","sensor_modes","effect_domains","evidence_level"]},
+  "IsrResult": {id:177,package:"observation",semanticRole:"representation",parent:"Assessment",children:[],atomic:false,fields:{"detections":{type:{kind:"list",item:{kind:"model",name:"IsrObservation"}},optional:false,const:false,default:null},"track_updates":{type:{kind:"list",item:{kind:"model",name:"TrackUpdate"}},optional:false,const:false,default:null},"media":{type:{kind:"list",item:{kind:"model",name:"MediaItem"}},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"observations":{type:{kind:"list",item:{kind:"model",name:"IsrObservation"}},optional:false,const:false,default:null}},fieldOrder:["detections","track_updates","media","confidence","observations"]},
+  "Item": {id:178,package:"object",semanticRole:"concept",parent:"Object",children:["Equipment","Component","Payload"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "ItemCount": {id:179,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"item_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"qty":{type:{kind:"model",name:"Count"},optional:false,const:false,default:null}},fieldOrder:["item_uid","qty"]},
+  "Kinematic": {id:180,package:"kinematic",semanticRole:"concept",parent:"State",children:["ImuSample"],atomic:false,fields:{},fieldOrder:[]},
+  "LabelGraphic": {id:181,package:"representation",semanticRole:"representation",parent:"AnnotationGraphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"anchor":{type:{kind:"model",name:"AnnotationAnchor"},optional:false,const:false,default:null},"text":{type:{kind:"model",name:"PlainText"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","anchor","text"]},
+  "LatitudeLongitudeMapGrid": {id:182,package:"representation",semanticRole:"representation",parent:"MapGrid",children:[],atomic:false,fields:{"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"interval":{type:{kind:"model",name:"AngleDegrees"},optional:false,const:false,default:null}},fieldOrder:["style","interval"]},
+  "Layer": {id:183,package:"representation",semanticRole:"concept",parent:"IdentifiedRepresentation",children:["OverlayLayer","ReferenceLayer","DataLayer"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Layer"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","temporal_extent"]},
+  "LayerView": {id:184,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"layer_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"visible":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"opacity":{type:{kind:"model",name:"Opacity"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["layer_uid","visible","opacity"]},
+  "Lease": {id:185,package:"authority",semanticRole:"representation",parent:"Authority",children:["AttachmentLease","ControlLease"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Authority"},optional:false,const:false,default:null},"holder_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"granted_by_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"scope_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"asset_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"bound":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","holder_uid","granted_by_uid","scope_uids","constraints","asset_uid","bound"]},
+  "Lifecycle": {id:186,package:"lifecycle",semanticRole:"representation",parent:"State",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Limitation": {id:187,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
+  "Line": {id:188,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "Link": {id:189,package:"link",semanticRole:"concept",parent:"Communication",children:["Radio"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid"]},
+  "LinkCapacity": {id:190,package:"link",semanticRole:"representation",parent:"Communication",children:[],atomic:false,fields:{"max_nodes":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_users":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"max_streams":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["max_nodes","max_users","max_streams"]},
+  "LinkCounters": {id:191,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"error_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"receive_error_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"corrected_receive_count":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["error_count","receive_error_count","corrected_receive_count"]},
+  "LinkState": {id:192,package:"health",semanticRole:"concept",parent:"Health",children:["MeshLink"],atomic:false,fields:{"link_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"condition":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"connection_status":{type:{kind:"enum",name:"ConnectionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"signal":{type:{kind:"model",name:"SignalQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"delivery":{type:{kind:"model",name:"DeliveryQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"counters":{type:{kind:"model",name:"LinkCounters"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["link_uid","condition","connection_status","signal","delivery","counters"]},
+  "LiveAudioStream": {id:193,package:"media",semanticRole:"representation",parent:"AudioMedia",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "LiveVideoStream": {id:194,package:"media",semanticRole:"representation",parent:"VideoMedia",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "LoRaProfile": {id:195,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"spreading_factor":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"bandwidth_mhz":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"coding_rate":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["spreading_factor","bandwidth_mhz","coding_rate"]},
+  "LocalDirection": {id:196,package:"spatial",semanticRole:"representation",parent:"Bearing",children:[],atomic:false,fields:{"bearing":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"azimuth":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"elevation":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"slant_range":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["bearing","azimuth","elevation","slant_range"]},
+  "LocalMapGrid": {id:197,package:"representation",semanticRole:"representation",parent:"MapGrid",children:[],atomic:false,fields:{"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"origin":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"interval":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null},"bearing":{type:{kind:"model",name:"AngleDegrees"},optional:false,const:false,default:null}},fieldOrder:["style","origin","interval","bearing"]},
+  "LocalPos": {id:198,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "LocalVector": {id:199,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:false,const:false,default:null}},fieldOrder:["x","y","z","frame"]},
+  "Location": {id:200,package:"object",semanticRole:"concept",parent:"Object",children:["Mark","Path","Region","Boundary"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","name"]},
+  "LocationState": {id:201,package:"spatial",semanticRole:"representation",parent:"Position",children:[],atomic:false,fields:{"inertial_frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"body_frame":{type:{kind:"enum",name:"BodyReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"local_position":{type:{kind:"model",name:"LocalVector"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"altitude":{type:{kind:"model",name:"AltitudeState"},optional:true,const:false,default:{kind:"literal",value:null}},"velocity":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"navigation_validity":{type:{kind:"model",name:"NavigationValidity"},optional:true,const:false,default:{kind:"literal",value:null}},"gnss":{type:{kind:"model",name:"GnssSolution"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["inertial_frame","body_frame","position","local_position","uncertainty","attitude","altitude","velocity","navigation_validity","gnss"]},
+  "LocationUncertainty": {id:202,package:"spatial",semanticRole:"representation",parent:"Uncertainty",children:[],atomic:false,fields:{"horiz_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"vert_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_major_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_minor_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"ellipse_bearing_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["horiz_err_m","vert_err_m","ellipse_major_m","ellipse_minor_m","ellipse_bearing_deg"]},
+  "LoiterOrbit": {id:203,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"orbit_direction_ccw":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"orbit_radius_m":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"loiter_time_s":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"pattern":{type:{kind:"enum",name:"OrbitPattern"},optional:false,const:false,default:null}},fieldOrder:["orbit_direction_ccw","orbit_radius_m","loiter_time_s","pattern"]},
+  "MGRSMapGrid": {id:204,package:"representation",semanticRole:"representation",parent:"MapGrid",children:[],atomic:false,fields:{"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"interval":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["style","interval"]},
+  "Machine": {id:205,package:"entities",semanticRole:"concept",parent:"Entity",children:["Vehicle","Platform","GroundMachine","AirMachine","MilitaryMachine","Robot"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components"]},
+  "MaintenanceStatus": {id:206,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"state":{type:{kind:"enum",name:"MaintenanceState"},optional:false,const:false,default:null},"last_service_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"next_service_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["state","last_service_ts","next_service_ts","note"]},
+  "MapGrid": {id:207,package:"representation",semanticRole:"concept",parent:"Struct",children:["UTMMapGrid","MGRSMapGrid","LatitudeLongitudeMapGrid","LocalMapGrid"],atomic:false,fields:{"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["style"]},
+  "MapView": {id:208,package:"representation",semanticRole:"representation",parent:"IdentifiedRepresentation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MapView"},optional:false,const:false,default:null},"focus":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"extent":{type:{kind:"model",name:"GeoArea"},optional:true,const:false,default:{kind:"literal",value:null}},"layers":{type:{kind:"list",item:{kind:"model",name:"LayerView"}},optional:false,const:false,default:null},"grid":{type:{kind:"model",name:"MapGrid"},optional:true,const:false,default:{kind:"literal",value:null}},"bearing":{type:{kind:"model",name:"AngleDegrees"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","focus","extent","layers","grid","bearing"]},
+  "Mark": {id:209,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","position"]},
+  "MarkdownText": {id:210,package:"struct",semanticRole:"representation",parent:"Text",children:[],atomic:true,valueType:{kind:"primitive",name:"string"},fields:{},fieldOrder:[]},
+  "Measurement": {id:211,package:"struct",semanticRole:"concept",parent:"Struct",children:["SignalQuality","DeliveryQuality","LinkCounters","GraphicLength","Airspeed","AltitudeState","Quantity","Distance","AreaMeasure","Angle","Ratio","Frequency","ElectricPotential","ElectricCurrent","ElectricPower","ElectricCharge","Energy","Temperature","Time","Duration","Timestamp"],atomic:false,fields:{},fieldOrder:[]},
+  "MeasurementGraphic": {id:212,package:"representation",semanticRole:"representation",parent:"Graphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"measurement_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","measurement_uid"]},
+  "MeasurementQuality": {id:213,package:"payload",semanticRole:"representation",parent:"MetadataValue",children:[],atomic:false,fields:{"str":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"int":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"float":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"bool":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"lat_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"az_err_deg":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"range_err_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["str","int","float","bool","lat_err_m","az_err_deg","range_err_m"]},
+  "Media": {id:214,package:"media",semanticRole:"concept",parent:"IdentifiedRepresentation",children:["MediaItem"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description"]},
+  "MediaGraphic": {id:215,package:"representation",semanticRole:"representation",parent:"AnnotationGraphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"anchor":{type:{kind:"model",name:"AnnotationAnchor"},optional:false,const:false,default:null},"media_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","anchor","media_uid"]},
+  "MediaItem": {id:216,package:"media",semanticRole:"concept",parent:"Media",children:["ImageMedia","VideoMedia","AudioMedia","SpectrumMedia","PointCloudMedia","DocumentMedia","BinaryMedia"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "MediaRepresentationSource": {id:217,package:"representation",semanticRole:"representation",parent:"RepresentationSource",children:[],atomic:false,fields:{"media_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"registration":{type:{kind:"model",name:"GeoRegistration"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["media_uid","registration"]},
+  "MeshLink": {id:218,package:"mesh",semanticRole:"representation",parent:"LinkState",children:[],atomic:false,fields:{"link_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"condition":{type:{kind:"enum",name:"LinkCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"connection_status":{type:{kind:"enum",name:"ConnectionStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"signal":{type:{kind:"model",name:"SignalQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"delivery":{type:{kind:"model",name:"DeliveryQuality"},optional:true,const:false,default:{kind:"literal",value:null}},"counters":{type:{kind:"model",name:"LinkCounters"},optional:true,const:false,default:{kind:"literal",value:null}},"src_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["link_uid","condition","connection_status","signal","delivery","counters","src_uid","dst_uid","updated_ts"]},
+  "MeshNode": {id:219,package:"mesh",semanticRole:"representation",parent:"Node",children:[],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"addresses":{type:{kind:"list",item:{kind:"model",name:"NetworkAddress"}},optional:false,const:false,default:null},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"radios":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"RadioProfile"}},optional:false,const:false,default:null},"protocols":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Protocol"}},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"MeshNodeState"},optional:true,const:false,default:{kind:"literal",value:null}},"last_seen_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"link_state":{type:{kind:"model",name:"LinkState"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["uid","id","entity_uid","roles","addresses","links","radios","protocols","state","last_seen_ts","position","link_state"]},
+  "MeshPositionSample": {id:220,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"LocationState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
+  "MeshReceiveMetrics": {id:221,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"LinkState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
+  "MeshView": {id:222,package:"mesh",semanticRole:"representation",parent:"Network",children:[],atomic:false,fields:{"epoch":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"nodes":{type:{kind:"list",item:{kind:"model",name:"MeshNode"}},optional:false,const:false,default:null},"links":{type:{kind:"list",item:{kind:"model",name:"MeshLink"}},optional:false,const:false,default:null}},fieldOrder:["epoch","nodes","links"]},
+  "MeshtasticMessage": {id:223,package:"mesh",semanticRole:"representation",parent:"Message",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"sender_node_num":{type:{kind:"primitive",name:"uint32"},optional:false,const:false,default:null},"sender_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"destination_node_num":{type:{kind:"primitive",name:"uint32"},optional:false,const:false,default:null},"port":{type:{kind:"enum",name:"MeshtasticPort"},optional:true,const:false,default:{kind:"literal",value:null}},"private_port_num":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"payload":{type:{kind:"primitive",name:"bytes"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"MeshPositionSample"},optional:true,const:false,default:{kind:"literal",value:null}},"metrics":{type:{kind:"model",name:"MeshReceiveMetrics"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","sender_node_num","sender_name","destination_node_num","port","private_port_num","text","payload","position","metrics"]},
+  "Message": {id:224,package:"message",semanticRole:"concept",parent:"Communication",children:["MeshtasticMessage","CommandMessage","HumanTextMessage","ObservationMessage","Delta","ResponseMessage","TelemetryMessage"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq"]},
+  "MessageTransferResult": {id:225,package:"message",semanticRole:"representation",parent:"ResponseMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"target_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"bytes_sent":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"delivery_state":{type:{kind:"enum",name:"DeliveryState"},optional:true,const:false,default:{kind:"literal",value:null}},"error":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to","target_count","bytes_sent","delivery_state","error"]},
+  "MetadataValue": {id:226,package:"property",semanticRole:"representation",parent:"Property",children:["MeasurementQuality"],atomic:false,fields:{"str":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"int":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"float":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"bool":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["str","int","float","bool"]},
+  "MilitaryAffiliation": {id:227,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"observer_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"identity":{type:{kind:"enum",name:"StandardIdentity"},optional:false,const:false,default:null},"since_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"until_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["observer_uid","subject_uid","identity","since_ts","until_ts"]},
+  "MilitaryAirMachine": {id:228,package:"military_entities",semanticRole:"representation",parent:"AirMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"airframe":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"AIR"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"AirNavigation"},optional:false,const:false,default:null},"payload":{type:{kind:"model",name:"Payload"},optional:false,const:false,default:null},"effects":{type:{kind:"model",name:"AirEffects"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","airframe","op_domain","model","sensors","navigation","payload","effects"]},
+  "MilitaryAirNavigation": {id:229,package:"entities",semanticRole:"representation",parent:"AirNavigation",children:[],atomic:false,fields:{"flight_type":{type:{kind:"enum",name:"AirframeType"},optional:false,const:false,default:null},"control_modes":{type:{kind:"list",item:{kind:"enum",name:"StandardFlightMode"}},optional:false,const:false,default:null},"failsafe_mode":{type:{kind:"enum",name:"AirFailsafeMode"},optional:true,const:false,default:{kind:"literal",value:null}},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"ifr":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_flight_t":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"cruise_spd":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"max_alt":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"roles":{type:{kind:"list",item:{kind:"enum",name:"AirRole"}},optional:false,const:false,default:null}},fieldOrder:["flight_type","control_modes","failsafe_mode","weather_limits","ifr","propulsion","navigation","navaids","max_range","max_flight_t","max_spd","cruise_spd","max_alt","roles"]},
+  "MilitaryGroundMachine": {id:230,package:"military_entities",semanticRole:"representation",parent:"GroundMachine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:false,const:false,default:null},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"navigation":{type:{kind:"model",name:"GroundNavigation"},optional:false,const:false,default:null},"payload":{type:{kind:"model",name:"Payload"},optional:false,const:false,default:null},"effects":{type:{kind:"model",name:"GroundEffects"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","op_domain","model","role","sensors","navigation","payload","effects"]},
+  "MilitaryMachine": {id:231,package:"entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","category"]},
+  "MilitaryOrg": {id:232,package:"organization",semanticRole:"representation",parent:"Organization",children:["FlyingOrg","OrbatOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:true,const:false,default:{kind:"literal",value:null}},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster","category","resource_requirements"]},
+  "MilitaryOrgTemplate": {id:233,package:"org_templates",semanticRole:"representation",parent:"OrgTemplate",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"OrgTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"size":{type:{kind:"enum",name:"OOBSize"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"tactical_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null},"support_elements":{type:{kind:"list",item:{kind:"model",name:"OrgComposition"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","topology","resource_requirements","category","size","op_domain","tactical_elements","support_elements"]},
+  "MilitaryOrganizationState": {id:234,package:"organization",semanticRole:"representation",parent:"OrganizationState",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"LocationState"},optional:true,const:false,default:{kind:"literal",value:null}},"operational_status":{type:{kind:"enum",name:"OrganizationOperationalState"},optional:true,const:false,default:{kind:"literal",value:null}},"readiness":{type:{kind:"enum",name:"ReadinessLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"inventory":{type:{kind:"model",name:"InventoryState"},optional:true,const:false,default:{kind:"literal",value:null}},"health":{type:{kind:"model",name:"HealthSnapshot"},optional:true,const:false,default:{kind:"literal",value:null}},"reinforcement_status":{type:{kind:"enum",name:"ReinforcementStatus"},optional:true,const:false,default:{kind:"literal",value:null}},"strength":{type:{kind:"model",name:"MilitaryStrength"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","subject_uid","timestamp","position","operational_status","readiness","inventory","health","reinforcement_status","strength"]},
+  "MilitaryPerson": {id:235,package:"military_entities",semanticRole:"representation",parent:"Person",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"PERSON"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:{kind:"enum",enum:"PropulsionType",member:"FOOT"}},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null},"attack_modes":{type:{kind:"list",item:{kind:"enum",name:"AttackMode"}},optional:false,const:false,default:null},"weapons":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null},"ammo":{type:{kind:"list",item:{kind:"model",name:"ItemCount"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","role","op_domain","propulsion","navigation","navaids","sensors","attack_modes","weapons","ammo"]},
+  "MilitaryRadioProfile": {id:236,package:"radio",semanticRole:"representation",parent:"RadioProfile",children:[],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"service":{type:{kind:"enum",name:"RadioService"},optional:true,const:false,default:{kind:"literal",value:null}},"waveform":{type:{kind:"enum",name:"Waveform"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_plan":{type:{kind:"list",item:{kind:"model",name:"ChannelSpec"}},optional:false,const:false,default:null},"active_channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_types":{type:{kind:"list",item:{kind:"enum",name:"CryptoType"}},optional:false,const:false,default:null},"crypto_profile":{type:{kind:"model",name:"CryptoProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"lora":{type:{kind:"model",name:"LoRaProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"aprs":{type:{kind:"model",name:"AprsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"elrs":{type:{kind:"model",name:"ElrsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"fpv":{type:{kind:"model",name:"FpvProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"bands":{type:{kind:"list",item:{kind:"enum",name:"NATORadioBands"}},optional:false,const:false,default:null}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","service","waveform","frequency","channel_plan","active_channel_uid","crypto_types","crypto_profile","lora","aprs","elrs","fpv","bands"]},
+  "MilitaryStrength": {id:237,package:"organization",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"overall":{type:{kind:"enum",name:"StrengthCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"personnel":{type:{kind:"enum",name:"StrengthCondition"},optional:true,const:false,default:{kind:"literal",value:null}},"equipment":{type:{kind:"enum",name:"StrengthCondition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["overall","personnel","equipment"]},
+  "MilitarySupplyTemplate": {id:238,package:"resource_templates",semanticRole:"representation",parent:"SupplyTemplate",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ResourceTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"quantity_unit":{type:{kind:"enum",name:"QuantityUnit"},optional:true,const:false,default:{kind:"literal",value:null}},"supply_class":{type:{kind:"enum",name:"NATOSupplyClass"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","quantity_unit","supply_class"]},
+  "MilitarySymbolGraphic": {id:239,package:"representation",semanticRole:"representation",parent:"SymbolGraphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"MilitarySymbology"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","subject_uid","symbology"]},
+  "MilitarySymbology": {id:240,package:"attribute",semanticRole:"representation",parent:"Symbology",children:[],atomic:false,fields:{"sidc":{type:{kind:"model",name:"SIDC"},optional:false,const:false,default:null}},fieldOrder:["sidc"]},
+  "MilitaryUnitFlightPlan": {id:241,package:"aerial",semanticRole:"representation",parent:"UnitFlightPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"unit_num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"callsign":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"fl":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"target":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"home":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"land_pos":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"ip_wait_delay":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}},"wp":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","unit_num","callsign","fl","route_in","target","route_out","home","land_pos","ip_wait_delay","wp"]},
+  "MissionEvent": {id:242,package:"event",semanticRole:"representation",parent:"SubjectEvent",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["record","subject_uid","timestamp"]},
+  "MissionRouteGeometry": {id:243,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"survey":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"survey_area":{type:{kind:"model",name:"GeoArea"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["route_in","survey","survey_area","route_out"]},
+  "ModeRange": {id:244,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_id":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"mode_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"channel":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"range":{type:{kind:"model",name:"NumericRange"},optional:false,const:false,default:null}},fieldOrder:["key","value","mode_id","mode_name","channel","range"]},
+  "MotionCommand": {id:245,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"MotionOperation"},optional:false,const:false,default:null},"destination":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:true,const:false,default:{kind:"literal",value:null}},"radius_m":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"speed_ms":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"yaw_rad":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","destination","path","radius_m","speed_ms","yaw_rad"]},
+  "MunitionAllocation": {id:246,package:"military_tasks",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"munition_type":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["munition_type","qty"]},
+  "NavReadinessState": {id:247,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"gyro_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"accel_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"mag_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"local_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"global_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"home_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"armable":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"arm_ready":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"takeoff_ready":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"ekf_using_gps":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"can_arm_or_run":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"mode_problems":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"health_problems":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["gyro_ok","accel_ok","mag_ok","local_position_ok","global_position_ok","home_position_ok","armable","arm_ready","takeoff_ready","ekf_using_gps","can_arm_or_run","mode_name","mode_problems","health_problems"]},
+  "NavigationValidity": {id:248,package:"gnc",semanticRole:"representation",parent:"GNC",children:[],atomic:false,fields:{"local_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"global_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"home_position_ok":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["local_position_ok","global_position_ok","home_position_ok"]},
+  "Network": {id:249,package:"network",semanticRole:"concept",parent:"Communication",children:["MeshView","NetworkAddress"],atomic:false,fields:{},fieldOrder:[]},
+  "NetworkAddress": {id:250,package:"network",semanticRole:"representation",parent:"Network",children:[],atomic:false,fields:{"kind":{type:{kind:"enum",name:"AddressKind"},optional:false,const:false,default:null},"value":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"port":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["kind","value","port"]},
+  "Node": {id:251,package:"node",semanticRole:"concept",parent:"Communication",children:["MeshNode"],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Node"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"roles":{type:{kind:"list",item:{kind:"enum",name:"CapabilityRole"}},optional:false,const:false,default:null},"addresses":{type:{kind:"list",item:{kind:"model",name:"NetworkAddress"}},optional:false,const:false,default:null},"links":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Link"}},optional:false,const:false,default:null},"radios":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"RadioProfile"}},optional:false,const:false,default:null},"protocols":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"Protocol"}},optional:false,const:false,default:null}},fieldOrder:["uid","id","entity_uid","roles","addresses","links","radios","protocols"]},
+  "NodeHeartbeat": {id:252,package:"mesh",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"node_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"last_seen_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"node_state":{type:{kind:"enum",name:"MeshNodeState"},optional:true,const:false,default:{kind:"literal",value:null}},"state":{type:{kind:"model",name:"LinkState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","node_uid","last_seen_ts","node_state","state"]},
+  "NormalizedRatio": {id:253,package:"struct",semanticRole:"representation",parent:"Ratio",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "NoteGraphic": {id:254,package:"representation",semanticRole:"representation",parent:"AnnotationGraphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"anchor":{type:{kind:"model",name:"AnnotationAnchor"},optional:false,const:false,default:null},"text":{type:{kind:"model",name:"Text"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","anchor","text"]},
+  "NumericRange": {id:255,package:"struct",semanticRole:"representation",parent:"Range",children:[],atomic:false,fields:{"min_value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"max_value":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["min_value","max_value"]},
+  "Object": {id:256,package:"object",semanticRole:"concept",parent:"Root",children:["Entity","Set","Item","Location"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "Objective": {id:257,package:"objective",semanticRole:"concept",parent:"Control",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Objective"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"intent":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"desired_state":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"success_criteria":{type:{kind:"list",item:{kind:"model",name:"SuccessCriterion"}},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"owner_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","intent","desired_state","success_criteria","target_uids","constraints","priority","status","owner_uid","start_time","deadline"]},
+  "Observation": {id:258,package:"observation",semanticRole:"concept",parent:"Data",children:["Classification","Track","Assessment","Detection","IsrObservation","TrackUpdate"],atomic:false,fields:{},fieldOrder:[]},
+  "ObservationMessage": {id:259,package:"isr",semanticRole:"concept",parent:"Message",children:["ProtocolEventMessage"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"observation":{type:{kind:"model",name:"Observation"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","observation"]},
+  "ObserverSource": {id:260,package:"robot",semanticRole:"representation",parent:"Interface",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ObserverSource"},optional:false,const:false,default:null},"entity_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"local_source":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"objtype":{type:{kind:"enum",name:"EntitySubtype"},optional:false,const:false,default:{kind:"enum",enum:"EntitySubtype",member:"AIR_ROBOT"}},"active":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:true}},"pos":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"gimbal_ang":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"gimbal_axes":{type:{kind:"list",item:{kind:"enum",name:"GimbalAxis"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"media_kind":{type:{kind:"enum",name:"SensorDataFormat"},optional:false,const:false,default:{kind:"enum",enum:"SensorDataFormat",member:"VIDEO"}},"video":{type:{kind:"model",name:"VideoConfig"},optional:true,const:false,default:{kind:"literal",value:null}},"video_res":{type:{kind:"tuple",items:[{kind:"primitive",name:"int"},{kind:"primitive",name:"int"}]},optional:true,const:false,default:{kind:"literal",value:null}},"telemetry_type":{type:{kind:"enum",name:"TelemetryType"},optional:true,const:false,default:{kind:"literal",value:null}},"telem_port":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"telem_baud":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"commands_allowed":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"can_zoom":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}}},fieldOrder:["record","uid","id","entity_uid","name","local_source","objtype","active","pos","attitude","gimbal_ang","gimbal_axes","field_of_view","media_kind","video","video_res","telemetry_type","telem_port","telem_baud","commands_allowed","can_zoom"]},
+  "Opacity": {id:261,package:"representation",semanticRole:"representation",parent:"Ratio",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "Operation": {id:262,package:"context",semanticRole:"representation",parent:"OperationalContext",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"OperationalContext"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"reality":{type:{kind:"enum",name:"Reality"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","reality","temporal_extent","member_uids"]},
+  "OperationalContext": {id:263,package:"context",semanticRole:"concept",parent:"Context",children:["Operation","Scenario"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"OperationalContext"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"reality":{type:{kind:"enum",name:"Reality"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","reality","temporal_extent","member_uids"]},
+  "OperationalPlan": {id:264,package:"plan",semanticRole:"concept",parent:"Plan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"objective_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"task_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"actor_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"resource_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"assignment_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"contingencies":{type:{kind:"list",item:{kind:"model",name:"PlanContingency"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","objective_uids","task_uids","actor_uids","resource_uids","assignment_uids","constraints","contingencies"]},
+  "OrbatOrg": {id:265,package:"organization",semanticRole:"representation",parent:"MilitaryOrg",children:["GroundOrbatOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:false,const:false,default:{kind:"enum",enum:"OrgTopology",member:"HIERARCHICAL"}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}},"category":{type:{kind:"enum",name:"NATOUnitCategory"},optional:false,const:false,default:null},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null},"org_layout":{type:{kind:"enum",name:"OrgLayout"},optional:false,const:false,default:{kind:"enum",enum:"OrgLayout",member:"ORBAT"}},"size":{type:{kind:"enum",name:"OOBSize"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:null},"taskforce":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"spacing":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster","category","resource_requirements","org_layout","size","op_domain","taskforce","spacing"]},
+  "Orbital": {id:266,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "OrgComposition": {id:267,package:"org_templates",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"org_template_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"quantity":{type:{kind:"model",name:"Count"},optional:false,const:false,default:null}},fieldOrder:["org_template_uid","quantity"]},
+  "OrgRole": {id:268,package:"organization",semanticRole:"representation",parent:"Control",children:[],atomic:false,fields:{"role":{type:{kind:"model",name:"Role"},optional:false,const:false,default:null},"authority":{type:{kind:"model",name:"Authority"},optional:false,const:false,default:null},"assignment":{type:{kind:"model",name:"Assignment"},optional:false,const:false,default:null}},fieldOrder:["role","authority","assignment"]},
+  "OrgTemplate": {id:269,package:"org_templates",semanticRole:"concept",parent:"Definition",children:["MilitaryOrgTemplate"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"OrgTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"resource_requirements":{type:{kind:"list",item:{kind:"model",name:"ResourceRequirement"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","topology","resource_requirements"]},
+  "Organization": {id:270,package:"organization",semanticRole:"concept",parent:"Set",children:["Group","Unit","MilitaryOrg"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:null},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster"]},
+  "OrganizationState": {id:271,package:"organization",semanticRole:"representation",parent:"SubjectState",children:["MilitaryOrganizationState"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"position":{type:{kind:"model",name:"LocationState"},optional:true,const:false,default:{kind:"literal",value:null}},"operational_status":{type:{kind:"enum",name:"OrganizationOperationalState"},optional:true,const:false,default:{kind:"literal",value:null}},"readiness":{type:{kind:"enum",name:"ReadinessLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"inventory":{type:{kind:"model",name:"InventoryState"},optional:true,const:false,default:{kind:"literal",value:null}},"health":{type:{kind:"model",name:"HealthSnapshot"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","subject_uid","timestamp","position","operational_status","readiness","inventory","health"]},
+  "OverlayLayer": {id:272,package:"representation",semanticRole:"representation",parent:"Layer",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Layer"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"graphic_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","temporal_extent","graphic_uids"]},
+  "Parameter": {id:273,package:"parameter",semanticRole:"concept",parent:"Property",children:["VideoConfig","ReceiverConfig","ChannelMapEntry","ModeRange","RobotController"],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value"]},
+  "Path": {id:274,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"path":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","path"]},
+  "PathAnchor": {id:275,package:"representation",semanticRole:"representation",parent:"AnnotationAnchor",children:[],atomic:false,fields:{"path_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"distance_from_start":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["path_uid","distance_from_start"]},
+  "Payload": {id:276,package:"payload",semanticRole:"concept",parent:"Item",children:["SensorPayload","EffectsPayload"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "PayloadAllocation": {id:277,package:"payload",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"payload_type":{type:{kind:"enum",name:"PayloadType"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["payload_type","qty"]},
+  "PayloadMount": {id:278,package:"payload",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"mount_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"item_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"qty":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"pylons":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"launcher":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"compat_tags":{type:{kind:"list",item:{kind:"enum",name:"PayloadType"}},optional:false,const:false,default:null},"loaded":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null}},fieldOrder:["mount_ref","item_ref","qty","pylons","launcher","compat_tags","loaded"]},
+  "PayloadPlan": {id:279,package:"payload",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"requested":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"approved":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"loaded":{type:{kind:"list",item:{kind:"model",name:"PayloadAllocation"}},optional:false,const:false,default:null},"notes":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["requested","approved","loaded","notes"]},
+  "Person": {id:280,package:"entities",semanticRole:"representation",parent:"Actor",children:["MilitaryPerson"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"PERSON"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"role":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"op_domain":{type:{kind:"enum",name:"OperationalDomain"},optional:false,const:false,default:{kind:"enum",enum:"OperationalDomain",member:"LAND"}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:{kind:"enum",enum:"PropulsionType",member:"FOOT"}},"navigation":{type:{kind:"enum",name:"NavigationMode"},optional:false,const:false,default:null},"navaids":{type:{kind:"list",item:{kind:"enum",name:"NavAids"}},optional:false,const:false,default:null},"sensors":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"SensorPayload"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","role","op_domain","propulsion","navigation","navaids","sensors"]},
+  "PersonnelTemplate": {id:281,package:"resource_templates",semanticRole:"representation",parent:"ResourceTemplate",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ResourceTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","description"]},
+  "Photograph": {id:282,package:"media",semanticRole:"representation",parent:"StillImage",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "PlainText": {id:283,package:"struct",semanticRole:"representation",parent:"Text",children:[],atomic:true,valueType:{kind:"primitive",name:"string"},fields:{},fieldOrder:[]},
+  "Plan": {id:284,package:"plan",semanticRole:"concept",parent:"Control",children:["AirPlan","OperationalPlan","RoutePlan"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}}},fieldOrder:["record","uid","id","name","approval_state"]},
+  "PlanContingency": {id:285,package:"plan",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"task_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["condition","task_uids"]},
+  "PlannedAirMission": {id:286,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"flight_type":{type:{kind:"enum",name:"FlightType"},optional:false,const:false,default:{kind:"enum",enum:"FlightType",member:"SURVEY_POINT"}},"air_action":{type:{kind:"enum",name:"AirPlanAction"},optional:false,const:false,default:{kind:"enum",enum:"AirPlanAction",member:"FLY"}},"manual":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"points":{type:{kind:"model",name:"PlannedRoutePoints"},optional:false,const:false,default:null},"config":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"primitive",name:"float"}},optional:false,const:false,default:null},"saved_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","approval_state","flight_type","air_action","manual","points","config","saved_ts"]},
+  "PlannedRoutePoints": {id:287,package:"aerial",semanticRole:"representation",parent:"SpatialStruct",children:[],atomic:false,fields:{"start":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_in":{type:{kind:"list",item:{kind:"model",name:"FlightMissionPoint"}},optional:false,const:false,default:null},"route_out":{type:{kind:"list",item:{kind:"model",name:"FlightMissionPoint"}},optional:false,const:false,default:null},"end":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null}},fieldOrder:["start","route_in","route_out","end"]},
+  "Platform": {id:288,package:"entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components"]},
+  "PointCloudMedia": {id:289,package:"media",semanticRole:"representation",parent:"MediaItem",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "Pose": {id:290,package:"struct",semanticRole:"representation",parent:"Struct",children:["EulerAngles"],atomic:false,fields:{},fieldOrder:[]},
+  "Position": {id:291,package:"spatial",semanticRole:"concept",parent:"State",children:["LocationState","SpotterOrigin"],atomic:false,fields:{},fieldOrder:[]},
+  "PositionAnchor": {id:292,package:"representation",semanticRole:"representation",parent:"AnnotationAnchor",children:[],atomic:false,fields:{"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null}},fieldOrder:["position"]},
+  "PowerSource": {id:293,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"power_type":{type:{kind:"enum",name:"PowerType"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"PowerStatus"},optional:false,const:false,default:null},"remaining_ratio":{type:{kind:"model",name:"NormalizedRatio"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["source_uid","power_type","status","remaining_ratio"]},
+  "PowerState": {id:294,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"status":{type:{kind:"enum",name:"PowerStatus"},optional:false,const:false,default:null},"sources":{type:{kind:"list",item:{kind:"model",name:"PowerSource"}},optional:false,const:false,default:null},"electrical_sources":{type:{kind:"list",item:{kind:"model",name:"ElectricalResourceState"}},optional:false,const:false,default:null}},fieldOrder:["status","sources","electrical_sources"]},
+  "Predicate": {id:295,package:"condition",semanticRole:"concept",parent:"Condition",children:[],atomic:false,fields:{"subject_ref":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subject_ref"]},
+  "ProcessControlCommand": {id:296,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ProcessControlOperation"},optional:false,const:false,default:null},"process_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","process_name"]},
+  "Property": {id:297,package:"property",semanticRole:"concept",parent:"Data",children:["Attribute","Capability","Identity","Parameter","Version","FirmwareInfo","MetadataValue","Relationship"],atomic:false,fields:{},fieldOrder:[]},
+  "Protocol": {id:298,package:"protocol",semanticRole:"concept",parent:"Communication",children:["ProtocolPayload","CryptoKey","CryptoProfile","LoRaProfile","AprsProfile","ElrsProfile","FpvProfile"],atomic:false,fields:{},fieldOrder:[]},
+  "ProtocolEventMessage": {id:299,package:"isr",semanticRole:"representation",parent:"ObservationMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"observation":{type:{kind:"model",name:"Observation"},optional:false,const:false,default:null},"event_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"event_type":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"event_method":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"time_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"start_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"stale_text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"uncertainty":{type:{kind:"model",name:"LocationUncertainty"},optional:true,const:false,default:{kind:"literal",value:null}},"detail":{type:{kind:"model",name:"ProtocolPayload"},optional:true,const:false,default:{kind:"literal",value:null}},"source_address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"targets":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","observation","event_ref","event_type","event_method","callsign","time_text","start_text","stale_text","position","uncertainty","detail","source_address","targets"]},
+  "ProtocolPayload": {id:300,package:"protocol",semanticRole:"representation",parent:"Protocol",children:[],atomic:false,fields:{"format":{type:{kind:"enum",name:"ProtocolPayloadFormat"},optional:false,const:false,default:null},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"text":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"data":{type:{kind:"primitive",name:"bytes"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["format","content_type","text","data"]},
+  "Quantity": {id:301,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Count","ByteCount","UnitQuantity"],atomic:false,fields:{},fieldOrder:[]},
+  "RFSensor": {id:302,package:"payload",semanticRole:"representation",parent:"SensorPayload",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"frustum_shape":{type:{kind:"enum",name:"SensorFrustumShape"},optional:true,const:false,default:{kind:"literal",value:null}},"freq_span":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"chan_bw":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range","frustum_shape","freq_span","chan_bw"]},
+  "Radio": {id:303,package:"radio",semanticRole:"representation",parent:"Link",children:["FrequencyRange","ChannelSpec","RadioProfile"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid"]},
+  "RadioProfile": {id:304,package:"radio",semanticRole:"representation",parent:"Radio",children:["MilitaryRadioProfile"],atomic:false,fields:{"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"endpoint_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"interface_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"radio_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"link_type":{type:{kind:"enum",name:"LinkType"},optional:true,const:false,default:{kind:"literal",value:null}},"net_type":{type:{kind:"enum",name:"NetType"},optional:true,const:false,default:{kind:"literal",value:null}},"data_type":{type:{kind:"enum",name:"LinkDataType"},optional:true,const:false,default:{kind:"literal",value:null}},"direction":{type:{kind:"enum",name:"LinkDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"rate_spec":{type:{kind:"model",name:"DataRateSpec"},optional:true,const:false,default:{kind:"literal",value:null}},"user_capacity":{type:{kind:"model",name:"LinkCapacity"},optional:true,const:false,default:{kind:"literal",value:null}},"network_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"service":{type:{kind:"enum",name:"RadioService"},optional:true,const:false,default:{kind:"literal",value:null}},"waveform":{type:{kind:"enum",name:"Waveform"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_plan":{type:{kind:"list",item:{kind:"model",name:"ChannelSpec"}},optional:false,const:false,default:null},"active_channel_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"crypto_types":{type:{kind:"list",item:{kind:"enum",name:"CryptoType"}},optional:false,const:false,default:null},"crypto_profile":{type:{kind:"model",name:"CryptoProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"lora":{type:{kind:"model",name:"LoRaProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"aprs":{type:{kind:"model",name:"AprsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"elrs":{type:{kind:"model",name:"ElrsProfile"},optional:true,const:false,default:{kind:"literal",value:null}},"fpv":{type:{kind:"model",name:"FpvProfile"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["name","endpoint_uid","interface_name","address","radio_uid","link_type","net_type","data_type","direction","rate_spec","user_capacity","network_uid","service","waveform","frequency","channel_plan","active_channel_uid","crypto_types","crypto_profile","lora","aprs","elrs","fpv"]},
+  "RadiusMeasurement": {id:305,package:"measurement",semanticRole:"representation",parent:"SpatialMeasurement",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"center_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"radius":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","measured_ts","center_uid","radius"]},
+  "Range": {id:306,package:"struct",semanticRole:"representation",parent:"Struct",children:["TimeRange","NumericRange"],atomic:false,fields:{},fieldOrder:[]},
+  "Ratio": {id:307,package:"struct",semanticRole:"concept",parent:"Measurement",children:["Opacity","NormalizedRatio"],atomic:false,fields:{},fieldOrder:[]},
+  "ReceiverConfig": {id:308,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"rx_min_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_max_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_center_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["key","value","rx_min_usec","rx_max_usec","rx_center_usec"]},
+  "Record": {id:309,package:"record",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Record"},optional:false,const:false,default:null},"revision":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"created_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"origin_system":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"provenance":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null}},fieldOrder:["uid","id","revision","created_ts","updated_ts","origin_system","provenance"]},
+  "ReferenceLayer": {id:310,package:"representation",semanticRole:"representation",parent:"Layer",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Layer"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"source":{type:{kind:"model",name:"RepresentationSource"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","temporal_extent","source"]},
+  "Region": {id:311,package:"object",semanticRole:"representation",parent:"Location",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Location"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"area":{type:{kind:"model",name:"GeoArea"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","area"]},
+  "Relationship": {id:312,package:"relationship",semanticRole:"concept",parent:"Property",children:["DirectedRelationship","EntityComponentRef","SpatialRelationship","MilitaryAffiliation"],atomic:false,fields:{},fieldOrder:[]},
+  "RemoteControl": {id:313,package:"robot",semanticRole:"representation",parent:"Interface",children:[],atomic:false,fields:{"rc_link":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"vid_link":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:{kind:"literal",value:""}},"ctrl_video_sep":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"rc_telemetry":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_input":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_output":{type:{kind:"model",name:"ControlAxisSet"},optional:true,const:false,default:{kind:"literal",value:null}},"control_override":{type:{kind:"model",name:"ControlOverride"},optional:true,const:false,default:{kind:"literal",value:null}},"receiver_config":{type:{kind:"model",name:"ReceiverConfig"},optional:true,const:false,default:{kind:"literal",value:null}},"channel_map":{type:{kind:"list",item:{kind:"model",name:"ChannelMapEntry"}},optional:false,const:false,default:null},"mode_ranges":{type:{kind:"list",item:{kind:"model",name:"ModeRange"}},optional:false,const:false,default:null}},fieldOrder:["rc_link","vid_link","ctrl_video_sep","rc_telemetry","control_input","control_output","control_override","receiver_config","channel_map","mode_ranges"]},
+  "Representation": {id:314,package:"representation",semanticRole:"concept",parent:"Data",children:["IdentifiedRepresentation"],atomic:false,fields:{},fieldOrder:[]},
+  "RepresentationSource": {id:315,package:"representation",semanticRole:"concept",parent:"Struct",children:["ExternalRepresentationSource","MediaRepresentationSource"],atomic:false,fields:{},fieldOrder:[]},
+  "Resource": {id:316,package:"resource",semanticRole:"concept",parent:"State",children:["ResourceHolding","InventoryState","FuelState","PowerSource","PowerState","ElectricalResourceState"],atomic:false,fields:{},fieldOrder:[]},
+  "ResourceCommand": {id:317,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"ResourceOperation"},optional:false,const:false,default:null},"resource_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"quantity":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","resource_uid","quantity"]},
+  "ResourceHolding": {id:318,package:"resource",semanticRole:"representation",parent:"Resource",children:[],atomic:false,fields:{"resource_definition_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"on_hand":{type:{kind:"model",name:"Quantity"},optional:false,const:false,default:null},"available":{type:{kind:"model",name:"Quantity"},optional:true,const:false,default:{kind:"literal",value:null}},"committed":{type:{kind:"model",name:"Quantity"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["resource_definition_uid","on_hand","available","committed"]},
+  "ResourceRequirement": {id:319,package:"resource_templates",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"resource_definition_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"quantity":{type:{kind:"model",name:"Quantity"},optional:false,const:false,default:null}},fieldOrder:["resource_definition_uid","quantity"]},
+  "ResourceTemplate": {id:320,package:"resource_templates",semanticRole:"concept",parent:"Definition",children:["EquipmentTemplate","PersonnelTemplate","SupplyTemplate"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ResourceTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","description"]},
+  "ResponseMessage": {id:321,package:"message",semanticRole:"concept",parent:"Message",children:["DeliveryReceipt","MessageTransferResult"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"seq_reply":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"response_to":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","seq_reply","response_to"]},
+  "Restriction": {id:322,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition"]},
+  "Robot": {id:323,package:"robot",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null},"robot_control":{type:{kind:"model",name:"RobotController"},optional:true,const:false,default:{kind:"literal",value:null}},"remote_control":{type:{kind:"model",name:"RemoteControl"},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components","robot_control","remote_control"]},
+  "RobotController": {id:324,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"control_modes":{type:{kind:"enum",name:"RobotControlMode"},optional:true,const:false,default:{kind:"literal",value:null}},"autopilot_type":{type:{kind:"enum",name:"AutopilotType"},optional:false,const:false,default:null},"autopilot_firmware":{type:{kind:"model",name:"FirmwareInfo"},optional:false,const:false,default:null}},fieldOrder:["key","value","control_modes","autopilot_type","autopilot_firmware"]},
+  "Role": {id:325,package:"definition",semanticRole:"representation",parent:"SemanticType",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "RoleAssignment": {id:326,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"organization_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"role":{type:{kind:"model",name:"OrgRole"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","organization_uid","role"]},
+  "Root": {id:327,package:"root",semanticRole:"concept",parent:null,children:["Communication","Control","Data","Definition","Object","Struct"],atomic:false,fields:{},fieldOrder:[]},
+  "Roster": {id:328,package:"organization",semanticRole:"representation",parent:"Control",children:[],atomic:false,fields:{"roster":{type:{kind:"map",key:{kind:"model",name:"UID"},value:{kind:"model",name:"OrgRole"}},optional:false,const:false,default:null}},fieldOrder:["roster"]},
+  "RouteMeasurement": {id:329,package:"measurement",semanticRole:"representation",parent:"SpatialMeasurement",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"path_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"distance":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","measured_ts","path_uid","distance"]},
+  "RoutePlan": {id:330,package:"plan",semanticRole:"concept",parent:"Plan",children:["AutopilotMission"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}}},fieldOrder:["record","uid","id","name","approval_state"]},
+  "RuntimeLoadState": {id:331,package:"internal",semanticRole:"representation",parent:"Internal",children:[],atomic:false,fields:{"cpu_load":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"cycle_time_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["cpu_load","cycle_time_us"]},
+  "RwsPose": {id:332,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"offset_x_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"offset_y_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"offset_z_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"orientation_quaternion":{type:{kind:"tuple",items:[{kind:"primitive",name:"float"},{kind:"primitive",name:"float"},{kind:"primitive",name:"float"},{kind:"primitive",name:"float"}]},optional:false,const:false,default:null},"accuracy_roll_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"accuracy_pitch_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"accuracy_yaw_rad":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"coordinate_frame":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","kinematics","offset_x_m","offset_y_m","offset_z_m","orientation_quaternion","accuracy_roll_rad","accuracy_pitch_rad","accuracy_yaw_rad","coordinate_frame"]},
+  "RwsState": {id:333,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"weapon_string":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"arming_state":{type:{kind:"enum",name:"RwsArmingState"},optional:false,const:false,default:null}},fieldOrder:["time_usec","weapon_string","arming_state"]},
+  "SIDC": {id:334,package:"attribute",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"value":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"standard":{type:{kind:"enum",name:"SymbologyStandard"},optional:false,const:false,default:null}},fieldOrder:["value","standard"]},
+  "Scenario": {id:335,package:"context",semanticRole:"representation",parent:"OperationalContext",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"OperationalContext"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"reality":{type:{kind:"enum",name:"Reality"},optional:false,const:false,default:null},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","reality","temporal_extent","member_uids"]},
+  "SemanticType": {id:336,package:"definition",semanticRole:"concept",parent:"Definition",children:["Category","Role","Function","Domain"],atomic:false,fields:{},fieldOrder:[]},
+  "SensorFieldOfView": {id:337,package:"payload",semanticRole:"representation",parent:"Attribute",children:[],atomic:false,fields:{"horizontal_deg":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"vertical_deg":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["horizontal_deg","vertical_deg"]},
+  "SensorPayload": {id:338,package:"payload",semanticRole:"representation",parent:"Payload",children:["ImageSensor","RFSensor"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"model":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"type":{type:{kind:"enum",name:"SensorType"},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"effect_domain":{type:{kind:"enum",name:"EffectDomain"},optional:false,const:false,default:null},"max_range":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"ptz":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"spectrum":{type:{kind:"enum",name:"SensorSpectrum"},optional:false,const:false,default:null},"all_weather":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:null},"weather_limits":{type:{kind:"model",name:"WeatherLimits"},optional:false,const:false,default:null},"error_margin":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"error_type":{type:{kind:"enum",name:"SensorErrorType"},optional:false,const:false,default:null},"data_formats":{type:{kind:"list",item:{kind:"enum",name:"SensorDataFormat"}},optional:false,const:false,default:null},"ai":{type:{kind:"list",item:{kind:"enum",name:"SensorAICapability"}},optional:false,const:false,default:null},"field_of_view":{type:{kind:"model",name:"SensorFieldOfView"},optional:true,const:false,default:{kind:"literal",value:null}},"zoom_range":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","name","model","type","serial_number","effect_domain","max_range","ptz","spectrum","all_weather","weather_limits","error_margin","error_type","data_formats","ai","field_of_view","zoom_range"]},
+  "SensorState": {id:339,package:"sensorstate",semanticRole:"concept",parent:"State",children:["TrackerState","FlightSensorConfiguration"],atomic:false,fields:{},fieldOrder:[]},
+  "Set": {id:340,package:"object",semanticRole:"concept",parent:"Object",children:["Collection","Cluster","Organization","Side"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities"]},
+  "Shape": {id:341,package:"struct",semanticRole:"representation",parent:"Struct",children:["GeoArea","GeoCircle","GeoMultiPoint","GeoMultiArea","GeoGeometryCollection"],atomic:false,fields:{},fieldOrder:[]},
+  "Side": {id:342,package:"organization",semanticRole:"concept",parent:"Set",children:["Coalition"],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Side"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","name","description","member_uids"]},
+  "SignalQuality": {id:343,package:"link",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"strength_dbm":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"snr_db":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"quality_ratio":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["strength_dbm","snr_db","quality_ratio"]},
+  "SpatialMeasurement": {id:344,package:"measurement",semanticRole:"concept",parent:"Data",children:["DistanceMeasurement","AreaMeasurement","BearingMeasurement","RadiusMeasurement","RouteMeasurement"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"SpatialMeasurement"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"measured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","measured_ts"]},
+  "SpatialRelationship": {id:345,package:"relationship",semanticRole:"representation",parent:"Relationship",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Relationship"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"reference_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"relation":{type:{kind:"enum",name:"SpatialRelationKind"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","subject_uid","reference_uid","relation"]},
+  "SpatialStruct": {id:346,package:"spatial",semanticRole:"representation",parent:"Struct",children:["LoiterOrbit","MissionRouteGeometry","PlannedRoutePoints","AutopilotMissionWaypoint"],atomic:false,fields:{},fieldOrder:[]},
+  "SpectrumMedia": {id:347,package:"media",semanticRole:"concept",parent:"MediaItem",children:["SpectrumRecording"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "SpectrumRecording": {id:348,package:"media",semanticRole:"representation",parent:"SpectrumMedia",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"frequency_range":{type:{kind:"model",name:"FrequencyRange"},optional:true,const:false,default:{kind:"literal",value:null}},"duration":{type:{kind:"model",name:"Duration"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts","frequency_range","duration"]},
+  "SplashCorrection": {id:349,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"splash_position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"sequence":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"type_detected":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"cep_expected_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null}},fieldOrder:["time_usec","splash_position","sequence","type_detected","cep_expected_m"]},
+  "SpotterOrigin": {id:350,package:"spatial",semanticRole:"representation",parent:"Position",children:[],atomic:false,fields:{"position":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"attitude":{type:{kind:"model",name:"EulerAngles"},optional:true,const:false,default:{kind:"literal",value:null}},"look_vector":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["position","attitude","look_vector"]},
+  "State": {id:351,package:"state",semanticRole:"concept",parent:"Data",children:["Lifecycle","Activation","Cue","GNC","Health","Input","Internal","Kinematic","Resource","SensorState","SubjectState","Validation","Position"],atomic:false,fields:{},fieldOrder:[]},
+  "StateChangeCommand": {id:352,package:"command",semanticRole:"concept",parent:"Command",children:[],atomic:false,fields:{"target_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"operation":{type:{kind:"enum",name:"StateChangeOperation"},optional:false,const:false,default:null},"property_name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["target_uid","constraints","operation","property_name","value"]},
+  "StillImage": {id:353,package:"media",semanticRole:"representation",parent:"ImageMedia",children:["Photograph","VideoFrame"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "StringName": {id:354,package:"identity",semanticRole:"representation",parent:"Identity",children:[],atomic:true,valueType:{kind:"primitive",name:"string"},fields:{},fieldOrder:[]},
+  "StrokeStyle": {id:355,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"color":{type:{kind:"model",name:"ColorRGBA"},optional:true,const:false,default:{kind:"literal",value:null}},"width":{type:{kind:"model",name:"GraphicLength"},optional:true,const:false,default:{kind:"literal",value:null}},"pattern":{type:{kind:"enum",name:"StrokePattern"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["color","width","pattern"]},
+  "Struct": {id:356,package:"struct",semanticRole:"concept",parent:"Root",children:["FlightLevelBand","SuccessCriterion","PlanContingency","IsrParameters","SIDC","ColorComponent","ColorRGBA","StrokeStyle","FillStyle","TextStyle","GraphicStyle","AnnotationAnchor","RepresentationSource","GeoRegistration","LayerView","MapGrid","UTMZone","MilitaryStrength","PayloadAllocation","PayloadPlan","PayloadMount","OrgComposition","Record","ResourceRequirement","SpatialStruct","ID","Text","Vector","Measurement","Bearing","GeoPos","LocalPos","Line","StructPath","Shape","Bounding","Uncertainty","Pose","Range","Transform","Orbital","ItemCount","Effects","TargetPriority","TargetKinematics","TargetSet","Fires","SplashCorrection","TargetHandover","BattleDamageAssessment","EsadState","EsadArming","RwsPose","RwsState","MunitionAllocation","CombatTaskProfile"],atomic:false,fields:{},fieldOrder:[]},
+  "StructPath": {id:357,package:"struct",semanticRole:"representation",parent:"Struct",children:["GeoPath","GeoMultiPath"],atomic:false,fields:{},fieldOrder:[]},
+  "SubjectAnchor": {id:358,package:"representation",semanticRole:"representation",parent:"AnnotationAnchor",children:[],atomic:false,fields:{"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["subject_uid"]},
+  "SubjectEvent": {id:359,package:"event",semanticRole:"concept",parent:"Event",children:["FlightEvent","MissionEvent"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["record","subject_uid","timestamp"]},
+  "SubjectState": {id:360,package:"state",semanticRole:"concept",parent:"State",children:["EntityState","OrganizationState"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"timestamp":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null}},fieldOrder:["record","subject_uid","timestamp"]},
+  "SubsystemHealth": {id:361,package:"health",semanticRole:"representation",parent:"Health",children:[],atomic:false,fields:{"subsystem_ref":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"state":{type:{kind:"enum",name:"HealthStatus"},optional:false,const:false,default:null},"fault_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["subsystem_ref","state","fault_count","note"]},
+  "SuccessCriterion": {id:362,package:"objective",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"statement":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"metric":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"target_value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["statement","metric","target_value"]},
+  "Supplies": {id:363,package:"resource",semanticRole:"representation",parent:"InventoryState",children:[],atomic:false,fields:{"holdings":{type:{kind:"list",item:{kind:"model",name:"ResourceHolding"}},optional:false,const:false,default:null},"fuel":{type:{kind:"model",name:"FuelState"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["holdings","fuel"]},
+  "SupplyTemplate": {id:364,package:"resource_templates",semanticRole:"representation",parent:"ResourceTemplate",children:["MilitarySupplyTemplate"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"ResourceTemplate"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"quantity_unit":{type:{kind:"enum",name:"QuantityUnit"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","id","name","description","quantity_unit"]},
+  "SymbolGraphic": {id:365,package:"representation",semanticRole:"representation",parent:"Graphic",children:["MilitarySymbolGraphic"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"subject_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"symbology":{type:{kind:"model",name:"Symbology"},optional:false,const:false,default:null}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","subject_uid","symbology"]},
+  "Symbology": {id:366,package:"attribute",semanticRole:"concept",parent:"Attribute",children:["CoTSymbology","MilitarySymbology"],atomic:false,fields:{},fieldOrder:[]},
+  "TacticalGraphic": {id:367,package:"representation",semanticRole:"representation",parent:"Graphic",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"Graphic"},optional:false,const:false,default:null},"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:true,const:false,default:{kind:"literal",value:null}},"sidc":{type:{kind:"model",name:"SIDC"},optional:false,const:false,default:null},"control_points":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"TacticalGraphicStatus"},optional:false,const:false,default:{kind:"enum",enum:"TacticalGraphicStatus",member:"PRESENT"}}},fieldOrder:["record","uid","name","description","id","style","temporal_extent","sidc","control_points","status"]},
+  "TargetBoxCoord": {id:368,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"corners":{type:{kind:"list",item:{kind:"model",name:"GlobalPosition"}},optional:false,const:false,default:null},"time_start_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_end_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","corners","time_start_usec","time_end_usec"]},
+  "TargetCoord": {id:369,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"cep_desired_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"cep_max_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"StandardIdentity"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","kinematics","cep_desired_m","cep_max_m","target_class","target_force"]},
+  "TargetHandover": {id:370,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"detected_first_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"valid_until_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"kinematics":{type:{kind:"model",name:"TargetKinematics"},optional:false,const:false,default:null},"target_set_id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"target_name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"match_media_url":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"confidence_score":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"authorization":{type:{kind:"list",item:{kind:"primitive",name:"int"}},optional:false,const:false,default:null},"target_class":{type:{kind:"enum",name:"ObservedObjectType"},optional:false,const:false,default:null},"target_force":{type:{kind:"enum",name:"StandardIdentity"},optional:false,const:false,default:null},"match_media_type":{type:{kind:"enum",name:"SensorDataFormat"},optional:false,const:false,default:null}},fieldOrder:["time_usec","detected_first_usec","valid_until_usec","kinematics","target_set_id","target_name","match_media_url","confidence_score","authorization","target_class","target_force","match_media_type"]},
+  "TargetKinematics": {id:371,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"location_state":{type:{kind:"model",name:"LocationState"},optional:false,const:false,default:null},"velocity":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}},"velocity_covariance":{type:{kind:"model",name:"VelocityVector"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["location_state","velocity","velocity_covariance"]},
+  "TargetPriority": {id:372,package:"military_effects",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"threat":{type:{kind:"enum",name:"ThreatLevel"},optional:true,const:false,default:{kind:"literal",value:null}},"is_high_value":{type:{kind:"primitive",name:"bool"},optional:false,const:false,default:{kind:"literal",value:false}},"note":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["threat","is_high_value","note"]},
+  "TargetSet": {id:373,package:"military_effects",semanticRole:"representation",parent:"Struct",children:["TargetSetCoord","TargetBoxCoord","TargetCoord"],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name"]},
+  "TargetSetCoord": {id:374,package:"military_effects",semanticRole:"representation",parent:"TargetSet",children:[],atomic:false,fields:{"time_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"TargetSet"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"center":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"radius_m":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"time_start_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"time_end_usec":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["time_usec","id","name","center","radius_m","time_start_usec","time_end_usec"]},
+  "Task": {id:375,package:"task",semanticRole:"concept",parent:"Directive",children:["TaskManeuver","TaskEffect","TaskInformation","TaskTransport"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase"]},
+  "TaskAssignment": {id:376,package:"assignment",semanticRole:"representation",parent:"Assignment",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Assignment"},optional:false,const:false,default:null},"assignee_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"authority_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"assigned_by_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"AssignmentStatus"},optional:false,const:false,default:{kind:"enum",enum:"AssignmentStatus",member:"PROPOSED"}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"task_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","assignee_uid","authority_uid","assigned_by_uid","status","constraints","task_uid"]},
+  "TaskEffect": {id:377,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"EffectIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
+  "TaskInformation": {id:378,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"InformationIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
+  "TaskManeuver": {id:379,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"ManeuverIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
+  "TaskTimeWindow": {id:380,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}},"earliest_start":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"latest_finish":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","earliest_start","latest_finish"]},
+  "TaskTransport": {id:381,package:"task",semanticRole:"representation",parent:"Task",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Task"},optional:false,const:false,default:null},"instruction":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"target_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"objective_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"constraints":{type:{kind:"list",item:{kind:"model",name:"Constraint"}},optional:false,const:false,default:null},"preconditions":{type:{kind:"list",item:{kind:"model",name:"Condition"}},optional:true,const:false,default:{kind:"literal",value:null}},"start_time":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"deadline":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"priority":{type:{kind:"enum",name:"TaskPriority"},optional:false,const:false,default:{kind:"enum",enum:"TaskPriority",member:"ROUTINE"}},"status":{type:{kind:"enum",name:"TaskStatus"},optional:false,const:false,default:{kind:"enum",enum:"TaskStatus",member:"NEW"}},"phase":{type:{kind:"enum",name:"TaskPhase"},optional:false,const:false,default:null},"intent":{type:{kind:"enum",name:"TransportIntent"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","instruction","target_uids","location_uids","objective_uid","constraints","preconditions","start_time","deadline","priority","status","phase","intent"]},
+  "TelemetryMessage": {id:382,package:"telemetry",semanticRole:"concept",parent:"Message",children:["MeshReceiveMetrics","MeshPositionSample","NodeHeartbeat","UAVTelemetryMessage","CapabilityAdvert","TransportCounters","TransportError"],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq"]},
+  "Temperature": {id:383,package:"struct",semanticRole:"concept",parent:"Measurement",children:["DegreesCelsius"],atomic:false,fields:{},fieldOrder:[]},
+  "Text": {id:384,package:"struct",semanticRole:"concept",parent:"Struct",children:["PlainText","MarkdownText"],atomic:false,fields:{},fieldOrder:[]},
+  "TextStyle": {id:385,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{"color":{type:{kind:"model",name:"ColorRGBA"},optional:true,const:false,default:{kind:"literal",value:null}},"background":{type:{kind:"model",name:"ColorRGBA"},optional:true,const:false,default:{kind:"literal",value:null}},"size":{type:{kind:"model",name:"GraphicLength"},optional:true,const:false,default:{kind:"literal",value:null}},"alignment":{type:{kind:"enum",name:"TextAlignment"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["color","background","size","alignment"]},
+  "Time": {id:386,package:"struct",semanticRole:"concept",parent:"Measurement",children:[],atomic:false,fields:{"utime":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["utime"]},
+  "TimeRange": {id:387,package:"struct",semanticRole:"representation",parent:"Range",children:[],atomic:false,fields:{"start_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"end_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["start_ts","end_ts"]},
+  "TimelineEvent": {id:388,package:"event",semanticRole:"representation",parent:"Event",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Event"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"Text"},optional:true,const:false,default:{kind:"literal",value:null}},"temporal_extent":{type:{kind:"model",name:"TimeRange"},optional:false,const:false,default:null},"context_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"subject_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"location_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"media_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","description","temporal_extent","context_uid","subject_uids","location_uids","media_uids"]},
+  "Timestamp": {id:389,package:"struct",semanticRole:"representation",parent:"Measurement",children:[],atomic:false,fields:{"utime":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"tz":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["utime","tz"]},
+  "Track": {id:390,package:"observation",semanticRole:"concept",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Track"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id"]},
+  "TrackUpdate": {id:391,package:"observation",semanticRole:"representation",parent:"Observation",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"track_uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"track_state":{type:{kind:"enum",name:"TrackState"},optional:true,const:false,default:{kind:"literal",value:null}},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"confidence":{type:{kind:"enum",name:"ConfidenceLevel"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","track_uid","track_state","updated_ts","confidence"]},
+  "TrackerState": {id:392,package:"sensorstate",semanticRole:"representation",parent:"SensorState",children:[],atomic:false,fields:{"locked":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"target_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"angular_error":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"search_box_size":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"detections":{type:{kind:"model",name:"VisionDetectionFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["locked","target_uid","angular_error","search_box_size","detections"]},
+  "Transform": {id:393,package:"struct",semanticRole:"representation",parent:"Struct",children:[],atomic:false,fields:{},fieldOrder:[]},
+  "TransportCounters": {id:394,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"rx_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"tx_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"parse_error_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}},"dropped_count":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:{kind:"literal",value:0}}},fieldOrder:["src","dst","ts","priority","seq","rx_count","tx_count","parse_error_count","dropped_count"]},
+  "TransportError": {id:395,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"error":{type:{kind:"enum",name:"NetworkError"},optional:false,const:false,default:null},"source_address":{type:{kind:"model",name:"NetworkAddress"},optional:true,const:false,default:{kind:"literal",value:null}},"payload":{type:{kind:"model",name:"ProtocolPayload"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["src","dst","ts","priority","seq","error","source_address","payload"]},
+  "UAVTelemetryMessage": {id:396,package:"telemetry",semanticRole:"representation",parent:"TelemetryMessage",children:[],atomic:false,fields:{"src":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"dst":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"ts":{type:{kind:"model",name:"Timestamp"},optional:false,const:false,default:null},"priority":{type:{kind:"enum",name:"MessagePriority"},optional:false,const:false,default:null},"seq":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"state":{type:{kind:"model",name:"EntityState"},optional:false,const:false,default:null}},fieldOrder:["src","dst","ts","priority","seq","state"]},
+  "UID": {id:397,package:"struct",semanticRole:"representation",parent:"ID",children:[],atomic:true,valueType:{kind:"fixedBytes",size:16},fields:{},fieldOrder:[]},
+  "UTMMapGrid": {id:398,package:"representation",semanticRole:"representation",parent:"MapGrid",children:[],atomic:false,fields:{"style":{type:{kind:"model",name:"GraphicStyle"},optional:true,const:false,default:{kind:"literal",value:null}},"zone":{type:{kind:"model",name:"UTMZone"},optional:false,const:false,default:null},"hemisphere":{type:{kind:"enum",name:"Hemisphere"},optional:false,const:false,default:null},"interval":{type:{kind:"model",name:"DistanceMeters"},optional:false,const:false,default:null}},fieldOrder:["style","zone","hemisphere","interval"]},
+  "UTMZone": {id:399,package:"representation",semanticRole:"representation",parent:"Struct",children:[],atomic:true,valueType:{kind:"primitive",name:"int"},fields:{},fieldOrder:[]},
+  "Uncertainty": {id:400,package:"struct",semanticRole:"concept",parent:"Struct",children:["LocationUncertainty"],atomic:false,fields:{},fieldOrder:[]},
+  "Unit": {id:401,package:"organization",semanticRole:"representation",parent:"Organization",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Organization"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"unit_code":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"org_level":{type:{kind:"enum",name:"OrgLevel"},optional:false,const:false,default:{kind:"enum",enum:"OrgLevel",member:"UNIT"}},"org_type":{type:{kind:"enum",name:"OrgType"},optional:true,const:false,default:{kind:"literal",value:null}},"topology":{type:{kind:"enum",name:"OrgTopology"},optional:true,const:false,default:{kind:"literal",value:null}},"definition_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"member_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:true,const:false,default:{kind:"literal",value:null}},"roster":{type:{kind:"model",name:"Roster"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["capabilities","record","uid","id","name","unit_code","callsign","org_level","org_type","topology","definition_uid","member_uids","roster"]},
+  "UnitFlightPlan": {id:402,package:"aerial",semanticRole:"representation",parent:"AirPlan",children:["MilitaryUnitFlightPlan"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Plan"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"approval_state":{type:{kind:"enum",name:"PlanApprovalState"},optional:false,const:false,default:{kind:"enum",enum:"PlanApprovalState",member:"DRAFT"}},"unit_num":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"callsign":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"fl":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"route_in":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"target":{type:{kind:"model",name:"FlightMissionPoint"},optional:false,const:false,default:null},"route_out":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null},"home":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"land_pos":{type:{kind:"model",name:"GlobalPosition"},optional:false,const:false,default:null},"ip_wait_delay":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:{kind:"literal",value:0.0}},"wp":{type:{kind:"model",name:"GeoPath"},optional:false,const:false,default:null}},fieldOrder:["record","uid","id","name","approval_state","unit_num","callsign","fl","route_in","target","route_out","home","land_pos","ip_wait_delay","wp"]},
+  "UnitQuantity": {id:403,package:"struct",semanticRole:"representation",parent:"Quantity",children:[],atomic:false,fields:{"value":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"unit":{type:{kind:"enum",name:"QuantityUnit"},optional:false,const:false,default:null}},fieldOrder:["value","unit"]},
+  "Validation": {id:404,package:"validation",semanticRole:"concept",parent:"State",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:false,const:false,default:null},"status":{type:{kind:"enum",name:"ValidationStatus"},optional:false,const:false,default:null},"updated_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","status","updated_ts"]},
+  "Vector": {id:405,package:"struct",semanticRole:"concept",parent:"Struct",children:["LocalVector","VelocityVector","AngularVelocityVector"],atomic:false,fields:{},fieldOrder:[]},
+  "Vehicle": {id:406,package:"entities",semanticRole:"representation",parent:"Machine",children:[],atomic:false,fields:{"capabilities":{type:{kind:"list",item:{kind:"model",name:"Capability"}},optional:true,const:false,default:{kind:"literal",value:null}},"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"id":{type:{kind:"namespacedIntID",namespace:"Entity"},optional:false,const:false,default:null},"node_uids":{type:{kind:"list",item:{kind:"model",name:"UID"}},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"callsign":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"entity_type":{type:{kind:"enum",name:"EntityType"},optional:false,const:false,default:{kind:"enum",enum:"EntityType",member:"MACHINE"}},"tags":{type:{kind:"list",item:{kind:"primitive",name:"string"}},optional:false,const:false,default:null},"metadata":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null},"relations":{type:{kind:"list",item:{kind:"model",name:"DirectedRelationship"}},optional:false,const:false,default:null},"serial_number":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"propulsion":{type:{kind:"enum",name:"PropulsionType"},optional:false,const:false,default:null},"machine_type":{type:{kind:"enum",name:"MachineType"},optional:true,const:false,default:{kind:"literal",value:null}},"components":{type:{kind:"list",item:{kind:"model",name:"EntityComponentRef"}},optional:false,const:false,default:null}},fieldOrder:["capabilities","record","uid","id","node_uids","name","callsign","entity_type","tags","metadata","relations","serial_number","propulsion","machine_type","components"]},
+  "VelocityVector": {id:407,package:"spatial",semanticRole:"representation",parent:"Vector",children:[],atomic:false,fields:{"x":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"y":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"z":{type:{kind:"primitive",name:"float"},optional:false,const:false,default:null},"frame":{type:{kind:"enum",name:"InertialReferenceFrame"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["x","y","z","frame"]},
+  "Version": {id:408,package:"property",semanticRole:"representation",parent:"Property",children:[],atomic:false,fields:{"major":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"minor":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null},"patch":{type:{kind:"primitive",name:"int"},optional:false,const:false,default:null}},fieldOrder:["major","minor","patch"]},
+  "VideoConfig": {id:409,package:"robot",semanticRole:"representation",parent:"Parameter",children:[],atomic:false,fields:{"key":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"value":{type:{kind:"model",name:"MetadataValue"},optional:true,const:false,default:{kind:"literal",value:null}},"protocol":{type:{kind:"enum",name:"VideoProtocol"},optional:true,const:false,default:{kind:"literal",value:null}},"port":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"stream_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"overlay_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"webrtc_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"overlay_webrtc_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"hls_url":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["key","value","protocol","port","stream_url","overlay_url","webrtc_url","overlay_webrtc_url","hls_url"]},
+  "VideoFrame": {id:410,package:"media",semanticRole:"representation",parent:"StillImage",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"video_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts","video_uid"]},
+  "VideoMedia": {id:411,package:"media",semanticRole:"concept",parent:"MediaItem",children:["VideoRecording","LiveVideoStream"],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts"]},
+  "VideoRecording": {id:412,package:"media",semanticRole:"representation",parent:"VideoMedia",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"uid":{type:{kind:"model",name:"UID"},optional:false,const:false,default:null},"name":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"description":{type:{kind:"model",name:"PlainText"},optional:true,const:false,default:{kind:"literal",value:null}},"id":{type:{kind:"namespacedIntID",namespace:"MediaItem"},optional:false,const:false,default:null},"uri":{type:{kind:"primitive",name:"string"},optional:false,const:false,default:null},"size":{type:{kind:"model",name:"ByteCount"},optional:true,const:false,default:{kind:"literal",value:null}},"content_type":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"source_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"captured_ts":{type:{kind:"model",name:"Timestamp"},optional:true,const:false,default:{kind:"literal",value:null}},"duration":{type:{kind:"model",name:"Duration"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["record","uid","name","description","id","uri","size","content_type","source_uid","captured_ts","duration"]},
+  "VisionBox": {id:413,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"space":{type:{kind:"enum",name:"DetectionBoxSpace"},optional:false,const:false,default:null},"bounds":{type:{kind:"model",name:"BoundingBox"},optional:false,const:false,default:null}},fieldOrder:["space","bounds"]},
+  "VisionDetection": {id:414,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"detection_id":{type:{kind:"namespacedIntID",namespace:"Detection"},optional:false,const:false,default:null},"label":{type:{kind:"primitive",name:"string"},optional:true,const:false,default:{kind:"literal",value:null}},"class_index":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"confidence":{type:{kind:"primitive",name:"float"},optional:true,const:false,default:{kind:"literal",value:null}},"box":{type:{kind:"model",name:"VisionBox"},optional:true,const:false,default:{kind:"literal",value:null}},"bearing":{type:{kind:"model",name:"LocalDirection"},optional:true,const:false,default:{kind:"literal",value:null}},"position":{type:{kind:"model",name:"GlobalPosition"},optional:true,const:false,default:{kind:"literal",value:null}},"source_frame_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"attributes":{type:{kind:"map",key:{kind:"primitive",name:"string"},value:{kind:"model",name:"MetadataValue"}},optional:false,const:false,default:null}},fieldOrder:["detection_id","label","class_index","confidence","box","bearing","position","source_frame_uid","attributes"]},
+  "VisionDetectionFrame": {id:415,package:"observation",semanticRole:"representation",parent:"Detection",children:[],atomic:false,fields:{"record":{type:{kind:"model",name:"Record"},optional:false,const:false,default:null},"frame_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"sensor_uid":{type:{kind:"model",name:"UID"},optional:true,const:false,default:{kind:"literal",value:null}},"timestamp_us":{type:{kind:"primitive",name:"int"},optional:true,const:false,default:{kind:"literal",value:null}},"detections":{type:{kind:"list",item:{kind:"model",name:"VisionDetection"}},optional:false,const:false,default:null}},fieldOrder:["record","frame_uid","sensor_uid","timestamp_us","detections"]},
+  "Volts": {id:416,package:"struct",semanticRole:"representation",parent:"ElectricPotential",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "WattHours": {id:417,package:"struct",semanticRole:"representation",parent:"Energy",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "Watts": {id:418,package:"struct",semanticRole:"representation",parent:"ElectricPower",children:[],atomic:true,valueType:{kind:"primitive",name:"float"},fields:{},fieldOrder:[]},
+  "WeatherLimits": {id:419,package:"constraint",semanticRole:"representation",parent:"Constraint",children:[],atomic:false,fields:{"condition":{type:{kind:"model",name:"Condition"},optional:true,const:false,default:{kind:"literal",value:null}},"ifr":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"night":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}},"rain":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"snow":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"temp":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"wind":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"vis":{type:{kind:"model",name:"NumericRange"},optional:true,const:false,default:{kind:"literal",value:null}},"icing":{type:{kind:"primitive",name:"bool"},optional:true,const:false,default:{kind:"literal",value:null}}},fieldOrder:["condition","ifr","night","rain","snow","temp","wind","vis","icing"]},
 });
 
 export const MODEL_NAME_BY_ID: Readonly<{ readonly [key: number]: ModelName }> = Object.freeze({
@@ -10188,290 +13091,415 @@ export const MODEL_NAME_BY_ID: Readonly<{ readonly [key: number]: ModelName }> =
   8: "AirRobot",
   9: "Airspeed",
   10: "AltitudeState",
-  11: "AngularVelocityVector",
-  12: "AprsProfile",
-  13: "Assessment",
-  14: "Assignment",
-  15: "AttachmentLease",
-  16: "Attribute",
-  17: "Authority",
-  18: "AutopilotMission",
-  19: "AutopilotMissionState",
-  20: "AutopilotMissionWaypoint",
-  21: "BattleDamageAssessment",
-  22: "Bearing",
-  23: "BooleanLogic",
-  24: "Boundary",
-  25: "Bounding",
-  26: "BoundingBox",
-  27: "Capability",
-  28: "CapabilityAdvert",
-  29: "Category",
-  30: "ChannelMapEntry",
-  31: "ChannelSpec",
-  32: "Classification",
-  33: "Cluster",
-  34: "Collection",
-  35: "CombatTaskProfile",
-  36: "Command",
-  37: "CommandAuthority",
-  38: "CommandMessage",
-  39: "Communication",
-  40: "Component",
-  41: "Condition",
-  42: "ConfigurationCommand",
-  43: "Constraint",
-  44: "Control",
-  45: "ControlAttitudeSetpoint",
-  46: "ControlAxisSet",
-  47: "ControlChannelValue",
-  48: "ControlLease",
-  49: "ControlOverride",
-  50: "Coordinate",
-  51: "CryptoKey",
-  52: "CryptoProfile",
-  53: "Cue",
-  54: "Data",
-  55: "DataRateSpec",
-  56: "Definition",
-  57: "DefinitionRelationship",
-  58: "DeliveryQuality",
-  59: "DeliveryReceipt",
-  60: "Delta",
-  61: "Detection",
-  62: "DirectedRelationship",
-  63: "Directive",
-  64: "DisplayMeta",
-  65: "Domain",
-  66: "Drone",
-  67: "Duration",
-  68: "Effects",
-  69: "EffectsPayload",
-  70: "ElectricalResourceState",
-  71: "ElrsProfile",
-  72: "Entity",
-  73: "EntityComponentRef",
-  74: "EntityState",
-  75: "Equipment",
-  76: "EsadArming",
-  77: "EsadState",
-  78: "EulerAngles",
-  79: "Event",
-  80: "Execution",
-  81: "ExecutionCommand",
-  82: "Fires",
-  83: "FirmwareInfo",
-  84: "FlightAssignment",
-  85: "FlightControlState",
-  86: "FlightEvent",
-  87: "FlightLevelBand",
-  88: "FlightMissionPoint",
-  89: "FlightSensorConfiguration",
-  90: "FlyingOrg",
-  91: "FpvProfile",
-  92: "Frame",
-  93: "FrequencyRange",
-  94: "FuelState",
-  95: "Function",
-  96: "GNC",
-  97: "GeoArea",
-  98: "GeoPath",
-  99: "GeoPos",
-  100: "Geometry",
-  101: "GlobalPosition",
-  102: "GnssSolution",
-  103: "GroundEffects",
-  104: "GroundMachine",
-  105: "GroundNavigation",
-  106: "GroundOrbatOrg",
-  107: "GroundRobot",
-  108: "Group",
-  109: "GroupFlightPlan",
-  110: "Health",
-  111: "HealthAlert",
-  112: "HealthSnapshot",
-  113: "HumanTextMessage",
-  114: "ID",
-  115: "Identity",
-  116: "IdentityBootstrap",
-  117: "ImageSensor",
-  118: "ImuSample",
-  119: "Input",
-  120: "IntID",
-  121: "Interface",
-  122: "Internal",
-  123: "IsrObservation",
-  124: "IsrParameters",
-  125: "IsrResult",
-  126: "Item",
-  127: "ItemCount",
-  128: "Kinematic",
-  129: "Lease",
-  130: "Lifecycle",
-  131: "Limitation",
-  132: "Line",
-  133: "Link",
-  134: "LinkCapacity",
-  135: "LinkCounters",
-  136: "LinkState",
-  137: "LoRaProfile",
-  138: "LocalDirection",
-  139: "LocalPos",
-  140: "LocalVector",
-  141: "Location",
-  142: "LocationState",
-  143: "LocationUncertainty",
-  144: "LoiterOrbit",
-  145: "Machine",
-  146: "MaintenanceStatus",
-  147: "Mark",
-  148: "Measurement",
-  149: "MeasurementQuality",
-  150: "Media",
-  151: "MediaItem",
-  152: "MeshLink",
-  153: "MeshNode",
-  154: "MeshPositionSample",
-  155: "MeshReceiveMetrics",
-  156: "MeshView",
-  157: "MeshtasticMessage",
-  158: "Message",
-  159: "MessageTransferResult",
-  160: "MetadataValue",
-  161: "MilitaryAirMachine",
-  162: "MilitaryAirNavigation",
-  163: "MilitaryGroundMachine",
-  164: "MilitaryMachine",
-  165: "MilitaryOrg",
-  166: "MilitaryPerson",
-  167: "MilitaryRadioProfile",
-  168: "MilitaryUnitFlightPlan",
-  169: "MissionEvent",
-  170: "MissionRouteGeometry",
-  171: "ModeRange",
-  172: "MotionCommand",
-  173: "MunitionAllocation",
-  174: "NavReadinessState",
-  175: "NavigationValidity",
-  176: "Network",
-  177: "NetworkAddress",
-  178: "Node",
-  179: "NodeHeartbeat",
-  180: "NumericRange",
-  181: "Object",
-  182: "Objective",
-  183: "Observation",
-  184: "ObservationMessage",
-  185: "ObserverSource",
-  186: "OperationalPlan",
-  187: "OrbatOrg",
-  188: "Orbital",
-  189: "OrgComposition",
-  190: "OrgRole",
-  191: "Organization",
-  192: "Parameter",
-  193: "Path",
-  194: "Payload",
-  195: "PayloadAllocation",
-  196: "PayloadMount",
-  197: "PayloadPlan",
-  198: "Person",
-  199: "Plan",
-  200: "PlanContingency",
-  201: "PlannedAirMission",
-  202: "PlannedRoutePoints",
-  203: "Platform",
-  204: "Pose",
-  205: "Position",
-  206: "PowerSource",
-  207: "PowerState",
-  208: "Predicate",
-  209: "ProcessControlCommand",
-  210: "Property",
-  211: "Protocol",
-  212: "ProtocolEventMessage",
-  213: "ProtocolPayload",
-  214: "RFSensor",
-  215: "Radio",
-  216: "RadioProfile",
-  217: "Range",
-  218: "ReceiverConfig",
-  219: "Record",
-  220: "Region",
-  221: "Relationship",
-  222: "RemoteControl",
-  223: "Resource",
-  224: "ResourceCommand",
-  225: "ResponseMessage",
-  226: "Restriction",
-  227: "Robot",
-  228: "RobotController",
-  229: "Role",
-  230: "RoleAssignment",
-  231: "Root",
-  232: "Roster",
-  233: "RoutePlan",
-  234: "RuntimeLoadState",
-  235: "RwsPose",
-  236: "RwsState",
-  237: "SemanticType",
-  238: "SensorFieldOfView",
-  239: "SensorPayload",
-  240: "SensorState",
-  241: "Set",
-  242: "Shape",
-  243: "SignalQuality",
-  244: "SpatialRelationship",
-  245: "SpatialStruct",
-  246: "SplashCorrection",
-  247: "SpotterOrigin",
-  248: "State",
-  249: "StateChangeCommand",
-  250: "StringName",
-  251: "Struct",
-  252: "StructPath",
-  253: "SubsystemHealth",
-  254: "SuccessCriterion",
-  255: "Supplies",
-  256: "Symbology",
-  257: "TargetBoxCoord",
-  258: "TargetCoord",
-  259: "TargetHandover",
-  260: "TargetKinematics",
-  261: "TargetPriority",
-  262: "TargetSet",
-  263: "TargetSetCoord",
-  264: "Task",
-  265: "TaskAssignment",
-  266: "TaskEffect",
-  267: "TaskInformation",
-  268: "TaskManeuver",
-  269: "TaskTimeWindow",
-  270: "TaskTransport",
-  271: "TelemetryMessage",
-  272: "Time",
-  273: "Timestamp",
-  274: "Track",
-  275: "TrackUpdate",
-  276: "TrackerState",
-  277: "Transform",
-  278: "TransportCounters",
-  279: "TransportError",
-  280: "UAVTelemetryMessage",
-  281: "UID",
-  282: "Uncertainty",
-  283: "Unit",
-  284: "UnitFlightPlan",
-  285: "Validation",
-  286: "Vector",
-  287: "Vehicle",
-  288: "VelocityVector",
-  289: "Version",
-  290: "VideoConfig",
-  291: "VisionBox",
-  292: "VisionDetection",
-  293: "VisionDetectionFrame",
-  294: "WeatherLimits",
+  11: "AmpereHours",
+  12: "Amperes",
+  13: "Angle",
+  14: "AngleDegrees",
+  15: "AngleRadians",
+  16: "AngularVelocityVector",
+  17: "AnnotationAnchor",
+  18: "AnnotationGraphic",
+  19: "AprsProfile",
+  20: "AreaMeasure",
+  21: "AreaMeasurement",
+  22: "AreaSquareMeters",
+  23: "Assessment",
+  24: "Assignment",
+  25: "AttachmentLease",
+  26: "Attribute",
+  27: "AudioMedia",
+  28: "AudioRecording",
+  29: "Authority",
+  30: "AutopilotMission",
+  31: "AutopilotMissionState",
+  32: "AutopilotMissionWaypoint",
+  33: "BattleDamageAssessment",
+  34: "Bearing",
+  35: "BearingMeasurement",
+  36: "BinaryMedia",
+  37: "BooleanLogic",
+  38: "Boundary",
+  39: "Bounding",
+  40: "BoundingBox",
+  41: "ByteCount",
+  42: "CalloutGraphic",
+  43: "Capability",
+  44: "CapabilityAdvert",
+  45: "Category",
+  46: "ChannelMapEntry",
+  47: "ChannelSpec",
+  48: "Classification",
+  49: "Cluster",
+  50: "CoTSymbology",
+  51: "Coalition",
+  52: "Collection",
+  53: "ColorChannel",
+  54: "ColorComponent",
+  55: "ColorRGBA",
+  56: "CombatTaskProfile",
+  57: "Command",
+  58: "CommandAuthority",
+  59: "CommandMessage",
+  60: "Communication",
+  61: "Component",
+  62: "Condition",
+  63: "ConfigurationCommand",
+  64: "Constraint",
+  65: "Context",
+  66: "Control",
+  67: "ControlAttitudeSetpoint",
+  68: "ControlAxisSet",
+  69: "ControlChannelValue",
+  70: "ControlLease",
+  71: "ControlOverride",
+  72: "Coordinate",
+  73: "Count",
+  74: "CryptoKey",
+  75: "CryptoProfile",
+  76: "Cue",
+  77: "Data",
+  78: "DataLayer",
+  79: "DataRateSpec",
+  80: "Definition",
+  81: "DefinitionRelationship",
+  82: "DegreesCelsius",
+  83: "DeliveryQuality",
+  84: "DeliveryReceipt",
+  85: "Delta",
+  86: "Detection",
+  87: "DirectedRelationship",
+  88: "Directive",
+  89: "Distance",
+  90: "DistanceMeasurement",
+  91: "DistanceMeters",
+  92: "DocumentMedia",
+  93: "Domain",
+  94: "Drone",
+  95: "Duration",
+  96: "Effects",
+  97: "EffectsPayload",
+  98: "ElectricCharge",
+  99: "ElectricCurrent",
+  100: "ElectricPotential",
+  101: "ElectricPower",
+  102: "ElectricalResourceState",
+  103: "ElrsProfile",
+  104: "Energy",
+  105: "Entity",
+  106: "EntityComponentRef",
+  107: "EntityState",
+  108: "Equipment",
+  109: "EquipmentTemplate",
+  110: "EsadArming",
+  111: "EsadState",
+  112: "EulerAngles",
+  113: "Event",
+  114: "Execution",
+  115: "ExecutionCommand",
+  116: "ExternalRepresentationSource",
+  117: "FillStyle",
+  118: "Fires",
+  119: "FirmwareInfo",
+  120: "FlightAssignment",
+  121: "FlightControlState",
+  122: "FlightEvent",
+  123: "FlightLevelBand",
+  124: "FlightMissionPoint",
+  125: "FlightSensorConfiguration",
+  126: "FlyingOrg",
+  127: "FpvProfile",
+  128: "Frame",
+  129: "Frequency",
+  130: "FrequencyRange",
+  131: "FuelState",
+  132: "Function",
+  133: "GNC",
+  134: "GeoArea",
+  135: "GeoCircle",
+  136: "GeoGeometryCollection",
+  137: "GeoMultiArea",
+  138: "GeoMultiPath",
+  139: "GeoMultiPoint",
+  140: "GeoPath",
+  141: "GeoPos",
+  142: "GeoRegistration",
+  143: "Geometry",
+  144: "GeometryGraphic",
+  145: "GeoreferencedMediaGraphic",
+  146: "GlobalPosition",
+  147: "GnssSolution",
+  148: "Graphic",
+  149: "GraphicLength",
+  150: "GraphicStyle",
+  151: "GroundEffects",
+  152: "GroundMachine",
+  153: "GroundNavigation",
+  154: "GroundOrbatOrg",
+  155: "GroundRobot",
+  156: "Group",
+  157: "GroupFlightPlan",
+  158: "Health",
+  159: "HealthAlert",
+  160: "HealthSnapshot",
+  161: "Hertz",
+  162: "HumanTextMessage",
+  163: "ID",
+  164: "IdentifiedRepresentation",
+  165: "Identity",
+  166: "IdentityBootstrap",
+  167: "ImageMedia",
+  168: "ImageSensor",
+  169: "ImuSample",
+  170: "Input",
+  171: "IntID",
+  172: "Interface",
+  173: "Internal",
+  174: "InventoryState",
+  175: "IsrObservation",
+  176: "IsrParameters",
+  177: "IsrResult",
+  178: "Item",
+  179: "ItemCount",
+  180: "Kinematic",
+  181: "LabelGraphic",
+  182: "LatitudeLongitudeMapGrid",
+  183: "Layer",
+  184: "LayerView",
+  185: "Lease",
+  186: "Lifecycle",
+  187: "Limitation",
+  188: "Line",
+  189: "Link",
+  190: "LinkCapacity",
+  191: "LinkCounters",
+  192: "LinkState",
+  193: "LiveAudioStream",
+  194: "LiveVideoStream",
+  195: "LoRaProfile",
+  196: "LocalDirection",
+  197: "LocalMapGrid",
+  198: "LocalPos",
+  199: "LocalVector",
+  200: "Location",
+  201: "LocationState",
+  202: "LocationUncertainty",
+  203: "LoiterOrbit",
+  204: "MGRSMapGrid",
+  205: "Machine",
+  206: "MaintenanceStatus",
+  207: "MapGrid",
+  208: "MapView",
+  209: "Mark",
+  210: "MarkdownText",
+  211: "Measurement",
+  212: "MeasurementGraphic",
+  213: "MeasurementQuality",
+  214: "Media",
+  215: "MediaGraphic",
+  216: "MediaItem",
+  217: "MediaRepresentationSource",
+  218: "MeshLink",
+  219: "MeshNode",
+  220: "MeshPositionSample",
+  221: "MeshReceiveMetrics",
+  222: "MeshView",
+  223: "MeshtasticMessage",
+  224: "Message",
+  225: "MessageTransferResult",
+  226: "MetadataValue",
+  227: "MilitaryAffiliation",
+  228: "MilitaryAirMachine",
+  229: "MilitaryAirNavigation",
+  230: "MilitaryGroundMachine",
+  231: "MilitaryMachine",
+  232: "MilitaryOrg",
+  233: "MilitaryOrgTemplate",
+  234: "MilitaryOrganizationState",
+  235: "MilitaryPerson",
+  236: "MilitaryRadioProfile",
+  237: "MilitaryStrength",
+  238: "MilitarySupplyTemplate",
+  239: "MilitarySymbolGraphic",
+  240: "MilitarySymbology",
+  241: "MilitaryUnitFlightPlan",
+  242: "MissionEvent",
+  243: "MissionRouteGeometry",
+  244: "ModeRange",
+  245: "MotionCommand",
+  246: "MunitionAllocation",
+  247: "NavReadinessState",
+  248: "NavigationValidity",
+  249: "Network",
+  250: "NetworkAddress",
+  251: "Node",
+  252: "NodeHeartbeat",
+  253: "NormalizedRatio",
+  254: "NoteGraphic",
+  255: "NumericRange",
+  256: "Object",
+  257: "Objective",
+  258: "Observation",
+  259: "ObservationMessage",
+  260: "ObserverSource",
+  261: "Opacity",
+  262: "Operation",
+  263: "OperationalContext",
+  264: "OperationalPlan",
+  265: "OrbatOrg",
+  266: "Orbital",
+  267: "OrgComposition",
+  268: "OrgRole",
+  269: "OrgTemplate",
+  270: "Organization",
+  271: "OrganizationState",
+  272: "OverlayLayer",
+  273: "Parameter",
+  274: "Path",
+  275: "PathAnchor",
+  276: "Payload",
+  277: "PayloadAllocation",
+  278: "PayloadMount",
+  279: "PayloadPlan",
+  280: "Person",
+  281: "PersonnelTemplate",
+  282: "Photograph",
+  283: "PlainText",
+  284: "Plan",
+  285: "PlanContingency",
+  286: "PlannedAirMission",
+  287: "PlannedRoutePoints",
+  288: "Platform",
+  289: "PointCloudMedia",
+  290: "Pose",
+  291: "Position",
+  292: "PositionAnchor",
+  293: "PowerSource",
+  294: "PowerState",
+  295: "Predicate",
+  296: "ProcessControlCommand",
+  297: "Property",
+  298: "Protocol",
+  299: "ProtocolEventMessage",
+  300: "ProtocolPayload",
+  301: "Quantity",
+  302: "RFSensor",
+  303: "Radio",
+  304: "RadioProfile",
+  305: "RadiusMeasurement",
+  306: "Range",
+  307: "Ratio",
+  308: "ReceiverConfig",
+  309: "Record",
+  310: "ReferenceLayer",
+  311: "Region",
+  312: "Relationship",
+  313: "RemoteControl",
+  314: "Representation",
+  315: "RepresentationSource",
+  316: "Resource",
+  317: "ResourceCommand",
+  318: "ResourceHolding",
+  319: "ResourceRequirement",
+  320: "ResourceTemplate",
+  321: "ResponseMessage",
+  322: "Restriction",
+  323: "Robot",
+  324: "RobotController",
+  325: "Role",
+  326: "RoleAssignment",
+  327: "Root",
+  328: "Roster",
+  329: "RouteMeasurement",
+  330: "RoutePlan",
+  331: "RuntimeLoadState",
+  332: "RwsPose",
+  333: "RwsState",
+  334: "SIDC",
+  335: "Scenario",
+  336: "SemanticType",
+  337: "SensorFieldOfView",
+  338: "SensorPayload",
+  339: "SensorState",
+  340: "Set",
+  341: "Shape",
+  342: "Side",
+  343: "SignalQuality",
+  344: "SpatialMeasurement",
+  345: "SpatialRelationship",
+  346: "SpatialStruct",
+  347: "SpectrumMedia",
+  348: "SpectrumRecording",
+  349: "SplashCorrection",
+  350: "SpotterOrigin",
+  351: "State",
+  352: "StateChangeCommand",
+  353: "StillImage",
+  354: "StringName",
+  355: "StrokeStyle",
+  356: "Struct",
+  357: "StructPath",
+  358: "SubjectAnchor",
+  359: "SubjectEvent",
+  360: "SubjectState",
+  361: "SubsystemHealth",
+  362: "SuccessCriterion",
+  363: "Supplies",
+  364: "SupplyTemplate",
+  365: "SymbolGraphic",
+  366: "Symbology",
+  367: "TacticalGraphic",
+  368: "TargetBoxCoord",
+  369: "TargetCoord",
+  370: "TargetHandover",
+  371: "TargetKinematics",
+  372: "TargetPriority",
+  373: "TargetSet",
+  374: "TargetSetCoord",
+  375: "Task",
+  376: "TaskAssignment",
+  377: "TaskEffect",
+  378: "TaskInformation",
+  379: "TaskManeuver",
+  380: "TaskTimeWindow",
+  381: "TaskTransport",
+  382: "TelemetryMessage",
+  383: "Temperature",
+  384: "Text",
+  385: "TextStyle",
+  386: "Time",
+  387: "TimeRange",
+  388: "TimelineEvent",
+  389: "Timestamp",
+  390: "Track",
+  391: "TrackUpdate",
+  392: "TrackerState",
+  393: "Transform",
+  394: "TransportCounters",
+  395: "TransportError",
+  396: "UAVTelemetryMessage",
+  397: "UID",
+  398: "UTMMapGrid",
+  399: "UTMZone",
+  400: "Uncertainty",
+  401: "Unit",
+  402: "UnitFlightPlan",
+  403: "UnitQuantity",
+  404: "Validation",
+  405: "Vector",
+  406: "Vehicle",
+  407: "VelocityVector",
+  408: "Version",
+  409: "VideoConfig",
+  410: "VideoFrame",
+  411: "VideoMedia",
+  412: "VideoRecording",
+  413: "VisionBox",
+  414: "VisionDetection",
+  415: "VisionDetectionFrame",
+  416: "Volts",
+  417: "WattHours",
+  418: "Watts",
+  419: "WeatherLimits",
 });
 
 export const OCCID_SYMBOL_HASHES: Readonly<StringMap<string>> = Object.freeze({});
@@ -11537,6 +14565,11 @@ export const UNIT_SIZE_LABELS: ReadonlyMap<OOBSize, string> = new Map<OOBSize, s
   [OOBSize.SQN, "Squadron"],
   [OOBSize.GRP, "Group"],
   [OOBSize.WNG, "Wing"],
+  [OOBSize.COR, "Corps"],
+  [OOBSize.ARM, "Army"],
+  [OOBSize.AGP, "Army Group/Front"],
+  [OOBSize.THR, "Region/Theater"],
+  [OOBSize.CMD, "Command"],
 ]);
 
 export const UNIT_SIZE_LEVELS_AIR: ReadonlyMap<OOBSize, OCCIDInteger> = new Map<OOBSize, OCCIDInteger>([
@@ -11559,6 +14592,11 @@ export const UNIT_SIZE_LEVELS_LAND: ReadonlyMap<OOBSize, OCCIDInteger> = new Map
   [OOBSize.RGT, 7],
   [OOBSize.BDE, 8],
   [OOBSize.DIV, 9],
+  [OOBSize.COR, 10],
+  [OOBSize.ARM, 11],
+  [OOBSize.AGP, 12],
+  [OOBSize.THR, 13],
+  [OOBSize.CMD, 14],
 ]);
 
 export const UNIT_SIZE_SHORT: ReadonlyMap<OOBSize, string> = new Map<OOBSize, string>([
@@ -11576,4 +14614,9 @@ export const UNIT_SIZE_SHORT: ReadonlyMap<OOBSize, string> = new Map<OOBSize, st
   [OOBSize.SQN, "Squadron"],
   [OOBSize.GRP, "Group"],
   [OOBSize.WNG, "Wing"],
+  [OOBSize.COR, "Corps"],
+  [OOBSize.ARM, "Army"],
+  [OOBSize.AGP, "Army Group/Front"],
+  [OOBSize.THR, "Region/Theater"],
+  [OOBSize.CMD, "Command"],
 ]);

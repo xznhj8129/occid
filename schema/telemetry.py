@@ -7,7 +7,7 @@ from .common import *
 
 class TelemetryMessage(OCCIDModel):
     'Message whose payload reports sender or asset state'
-    __occid_model_id__: ClassVar[int] = 271
+    __occid_model_id__: ClassVar[int] = 382
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshReceiveMetrics', 'MeshPositionSample', 'NodeHeartbeat', 'UAVTelemetryMessage', 'CapabilityAdvert', 'TransportCounters', 'TransportError')
@@ -18,7 +18,7 @@ class TelemetryMessage(OCCIDModel):
     seq: builtins.int
 
 class UAVTelemetryMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 280
+    __occid_model_id__: ClassVar[int] = 396
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -30,7 +30,7 @@ class UAVTelemetryMessage(OCCIDModel):
     state: Semantic[EntityState]
 
 class CapabilityAdvert(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 28
+    __occid_model_id__: ClassVar[int] = 44
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -46,7 +46,7 @@ class CapabilityAdvert(OCCIDModel):
     payload_refs: list[builtins.str]
 
 class TransportCounters(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 278
+    __occid_model_id__: ClassVar[int] = 394
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -61,7 +61,7 @@ class TransportCounters(OCCIDModel):
     dropped_count: builtins.int = 0
 
 class TransportError(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 279
+    __occid_model_id__: ClassVar[int] = 395
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

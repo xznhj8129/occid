@@ -76,6 +76,7 @@ from occid import (
     OrgLevel,
     OrgTopology,
     OrgType,
+    OrganizationState,
     Plan,
     PlanApprovalState,
     Person,
@@ -470,8 +471,8 @@ def main() -> None:
     # -----------------------------------------------------------------------
     # 2. Organization
     # -----------------------------------------------------------------------
-    # Organization.elements is the authoritative containment/membership edge.
-    # The Group contains the Unit; the Unit contains its individual actors.
+    # Organization identity is stable. Mutable membership and roster belong to
+    # OrganizationState observations rather than being embedded in identity.
     uas_unit = Unit(
         record=record(registry, "provisioning"),
         uid=uas_unit_uid,
@@ -480,12 +481,16 @@ def main() -> None:
         unit_code="UAS",
         callsign="FROG-UAS",
         org_level=OrgLevel.UNIT,
-        org_rank=1,
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
-        elements=[operator.uid, uav.uid],
+    )
+
+    uas_unit_state = OrganizationState(
+        record=record(registry, "sigma.organization"),
+        subject_uid=uas_unit.uid,
+        timestamp=timestamp(),
+        member_uids=[operator.uid, uav.uid],
         roster=Roster(roster={}),
-        leases=[],
     )
 
     task_force = Group(
@@ -496,12 +501,16 @@ def main() -> None:
         unit_code="TFF",
         callsign="FROG-HQ",
         org_level=OrgLevel.GROUP,
-        org_rank=0,
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
-        elements=[uas_unit.uid],
+    )
+
+    task_force_state = OrganizationState(
+        record=record(registry, "sigma.organization"),
+        subject_uid=task_force.uid,
+        timestamp=timestamp(),
+        member_uids=[uas_unit.uid],
         roster=Roster(roster={}),
-        leases=[],
     )
 
     # -----------------------------------------------------------------------
@@ -553,7 +562,7 @@ def main() -> None:
     initial_uav_state = EntityState(
         record=record(registry, "adapter.mavlink"),
         subject_uid=uav.uid,
-        timestamp=time.time(),
+        timestamp=timestamp(),
         position=mavlink_location,
         motion=VelocityVector(
             x=mavlink.velocity_north_m_s,
@@ -707,7 +716,7 @@ def main() -> None:
     uav_state = EntityState(
         record=record(registry, "adapter.mavlink"),
         subject_uid=uav.uid,
-        timestamp=time.time(),
+        timestamp=timestamp(),
         position=moving_location,
         motion=VelocityVector(
             x=mavlink_moving.velocity_north_m_s,

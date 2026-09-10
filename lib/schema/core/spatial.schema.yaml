@@ -126,6 +126,45 @@ models:
     fields:
       vertices: list[GlobalPosition]
 
+  GeoCircle:
+    description: Circular geographic area defined by a center and metric radius
+    semantic_role: representation
+    parent: Shape
+    fields:
+      center: GlobalPosition
+      radius: DistanceMeters
+
+  GeoMultiPoint:
+    description: Aggregate of geographic points without introducing a new point semantics
+    semantic_role: representation
+    parent: Shape
+    fields:
+      points: list[GlobalPosition]
+
+  GeoMultiPath:
+    description: Aggregate of independent geographic paths
+    semantic_role: representation
+    parent: StructPath
+    fields:
+      paths: list[GeoPath]
+
+  GeoMultiArea:
+    description: Aggregate of independent geographic areas
+    semantic_role: representation
+    parent: Shape
+    fields:
+      areas: list[GeoArea]
+
+  GeoGeometryCollection:
+    description: Heterogeneous geographic geometry aggregate expressed through existing semantic geometry primitives
+    semantic_role: representation
+    parent: Shape
+    fields:
+      points: list[GlobalPosition]
+      paths: list[GeoPath]
+      areas: list[GeoArea]
+      circles: list[GeoCircle]
+
   BoundingBox:
     semantic_role: representation
     parent: Bounding

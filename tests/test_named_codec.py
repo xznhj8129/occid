@@ -50,7 +50,7 @@ def test_record_bootstrap_and_complete_state_roundtrip():
     now = Timestamp(utime=1788600000.125, tz=0)
     record = Record(uid=UID(bytes(range(240, 256))), id=IntID(2**63 - 1),
                     created_ts=now, updated_ts=now, origin_system="operator", provenance=[])
-    state = EntityState(record=record, subject_uid=uid, timestamp=now.utime,
+    state = EntityState(record=record, subject_uid=uid, timestamp=now,
                         position=LocationState(position=None), link_states={},
                         source_observation_ts=now, source_time_basis=ObservationTimeBasis.UNIX)
     restored = loads(dumps(state))

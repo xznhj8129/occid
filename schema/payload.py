@@ -46,18 +46,35 @@ class SensorFrustumShape(IntEnum):
     ELLIPTICAL = auto()
     SECTOR = auto()
 
+class PayloadType(IntEnum):
+    EO = 0
+    EO_IR = auto()
+    RADAR = auto()
+    ELINT = auto()
+    RELAY = auto()
+    WEAPON = auto()
+    CARGO = auto()
+    JAMMER = auto()
+
+class PayloadState(IntEnum):
+    OFF = 0
+    READY = auto()
+    ACTIVE = auto()
+    DEGRADED = auto()
+    FAILED = auto()
+
 ### Models
 
 class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 194
+    __occid_model_id__: ClassVar[int] = 276
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Item'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SensorPayload', 'EffectsPayload')
     capabilities: list[Semantic[Capability]] | None = None
 
 class SensorPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 239
+    __occid_model_id__: ClassVar[int] = 338
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Payload'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImageSensor', 'RFSensor')
@@ -80,7 +97,7 @@ class SensorPayload(OCCIDModel):
     zoom_range: Semantic[NumericRange] | None = None
 
 class MeasurementQuality(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 149
+    __occid_model_id__: ClassVar[int] = 213
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MetadataValue'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -93,7 +110,7 @@ class MeasurementQuality(OCCIDModel):
     range_err_m: builtins.float | None = None
 
 class ImageSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 117
+    __occid_model_id__: ClassVar[int] = 168
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -117,7 +134,7 @@ class ImageSensor(OCCIDModel):
     night_vision: builtins.bool
 
 class RFSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 214
+    __occid_model_id__: ClassVar[int] = 302
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -144,9 +161,40 @@ class RFSensor(OCCIDModel):
 
 class SensorFieldOfView(OCCIDModel):
     'Sensor field-of-view angular limits in degrees'
-    __occid_model_id__: ClassVar[int] = 238
+    __occid_model_id__: ClassVar[int] = 337
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     horizontal_deg: Semantic[NumericRange] | None = None
     vertical_deg: Semantic[NumericRange] | None = None
+
+class PayloadAllocation(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 277
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    payload_type: PayloadType
+    qty: builtins.int = 0
+
+class PayloadPlan(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 279
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    requested: list[Semantic[PayloadAllocation]]
+    approved: list[Semantic[PayloadAllocation]]
+    loaded: list[Semantic[PayloadAllocation]]
+    notes: builtins.str | None = None
+
+class PayloadMount(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 278
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    mount_ref: builtins.str
+    item_ref: builtins.str
+    qty: builtins.int = 0
+    pylons: builtins.str = ''
+    launcher: builtins.str = ''
+    compat_tags: list[PayloadType]
+    loaded: list[Semantic[PayloadAllocation]]

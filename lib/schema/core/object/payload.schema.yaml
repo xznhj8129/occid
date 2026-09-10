@@ -3,51 +3,68 @@ type: schema
 package: payload
 root: Payload
 tags:
-  - core
+- core
 
 enums:
 
   SensorType:
-    - EO = 0
-    - EO_MULTISPECTRAL
-    - RADAR
-    - ELINT
-    - LIDAR
+  - EO = 0
+  - EO_MULTISPECTRAL
+  - RADAR
+  - ELINT
+  - LIDAR
 
   SensorSpectrum:
-    - VISUAL = 0
-    - SWIR
-    - MWIR
-    - LWIR
-    - RF
-    - UV
+  - VISUAL = 0
+  - SWIR
+  - MWIR
+  - LWIR
+  - RF
+  - UV
 
   SensorErrorType:
-    - CEP = 0
-    - RMS
+  - CEP = 0
+  - RMS
 
   SensorDataFormat:
-    - TEXT = 0
-    - STILL_IMAGE
-    - VIDEO
-    - TRACK
-    - RANGE
-    - POINT_CLOUD
+  - TEXT = 0
+  - STILL_IMAGE
+  - VIDEO
+  - TRACK
+  - RANGE
+  - POINT_CLOUD
 
   SensorAICapability:
-    - DETECTION = 0
-    - TRACKING
-    - CLASSIFICATION
-    - IDENTIFICATION
-    - OCR
-    - CHANGE_DETECTION
+  - DETECTION = 0
+  - TRACKING
+  - CLASSIFICATION
+  - IDENTIFICATION
+  - OCR
+  - CHANGE_DETECTION
 
   SensorFrustumShape:
-    - CONICAL = 0
-    - RECTANGULAR
-    - ELLIPTICAL
-    - SECTOR
+  - CONICAL = 0
+  - RECTANGULAR
+  - ELLIPTICAL
+  - SECTOR
 
+
+  PayloadType:
+  - EO = 0
+  - EO_IR
+  - RADAR
+  - ELINT
+  - RELAY
+  - WEAPON
+  - CARGO
+  - JAMMER
+
+  PayloadState:
+  - OFF = 0
+  - READY
+  - ACTIVE
+  - DEGRADED
+  - FAILED
 
 models:
 
@@ -90,7 +107,7 @@ models:
     parent: SensorPayload
     fields:
       night_vision: bool
-  
+
   RFSensor:
     semantic_role: representation
     parent: SensorPayload
@@ -106,3 +123,31 @@ models:
     fields:
       horizontal_deg: optional NumericRange
       vertical_deg: optional NumericRange
+  PayloadAllocation:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      payload_type: PayloadType
+      qty: int = 0
+
+  PayloadPlan:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      requested: list[PayloadAllocation]
+      approved: list[PayloadAllocation]
+      loaded: list[PayloadAllocation]
+      notes: optional string
+
+  PayloadMount:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      mount_ref: string
+      item_ref: string
+      qty: int = 0
+      pylons: string = ""
+      launcher: string = ""
+      compat_tags: list[PayloadType]
+      loaded: list[PayloadAllocation]
+

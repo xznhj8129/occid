@@ -7,13 +7,13 @@ from .common import *
 
 class Property(OCCIDModel):
     'A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition'
-    __occid_model_id__: ClassVar[int] = 210
+    __occid_model_id__: ClassVar[int] = 297
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Attribute', 'Capability', 'Identity', 'Parameter', 'Version', 'FirmwareInfo', 'MetadataValue', 'Relationship')
 
 class Version(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 289
+    __occid_model_id__: ClassVar[int] = 408
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -22,7 +22,7 @@ class Version(OCCIDModel):
     patch: builtins.int
 
 class FirmwareInfo(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 83
+    __occid_model_id__: ClassVar[int] = 119
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -31,7 +31,7 @@ class FirmwareInfo(OCCIDModel):
     build: builtins.str | None = None
 
 class MetadataValue(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeasurementQuality',)

@@ -24,7 +24,7 @@ class PlanStepStatus(IntEnum):
 
 class Plan(OCCIDModel):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 284
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirPlan', 'OperationalPlan', 'RoutePlan')
@@ -36,7 +36,7 @@ class Plan(OCCIDModel):
 
 class OperationalPlan(OCCIDModel):
     'Task-based'
-    __occid_model_id__: ClassVar[int] = 186
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -55,7 +55,7 @@ class OperationalPlan(OCCIDModel):
 
 class RoutePlan(OCCIDModel):
     'Plan of routed movement along waypoints or routes'
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 330
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AutopilotMission',)
@@ -66,7 +66,7 @@ class RoutePlan(OCCIDModel):
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class PlanContingency(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 200
+    __occid_model_id__: ClassVar[int] = 285
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -74,7 +74,7 @@ class PlanContingency(OCCIDModel):
     task_uids: list[Semantic[UID]]
 
 class AutopilotMission(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 18
+    __occid_model_id__: ClassVar[int] = 30
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RoutePlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -87,7 +87,7 @@ class AutopilotMission(OCCIDModel):
 
 class AutopilotMissionWaypoint(OCCIDModel):
     'Embedded autopilot waypoint value used by a plan or protocol mapping'
-    __occid_model_id__: ClassVar[int] = 20
+    __occid_model_id__: ClassVar[int] = 32
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlightMissionPoint',)

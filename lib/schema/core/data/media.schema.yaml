@@ -7,19 +7,100 @@ tags:
 
 models:
   Media:
-    description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference
+    description: Recorded, streamed, sampled, or otherwise encoded information used as an operational representation
     semantic_role: concept
-    parent: Data
+    parent: IdentifiedRepresentation
 
   MediaItem:
-    semantic_role: representation
+    description: Identified media resource with address, provenance, and common storage metadata; concrete media semantics are expressed by children
+    semantic_role: concept
     parent: Media
     fields:
-      record: Record
-      uid: UID
       id: IntID(MediaItem)
-      media_type: MediaType
       uri: string
-      label: optional string
-      size_bytes: optional int
+      size: optional ByteCount
       content_type: optional string
+      source_uid: optional UID
+      captured_ts: optional Timestamp
+
+  ImageMedia:
+    description: Two-dimensional visual media
+    semantic_role: concept
+    parent: MediaItem
+
+  StillImage:
+    description: Time-static image media independent of how the image was produced
+    semantic_role: representation
+    parent: ImageMedia
+
+  Photograph:
+    description: Still image produced by an imaging sensor or camera
+    semantic_role: representation
+    parent: StillImage
+
+  VideoFrame:
+    description: Still image identified as a frame originating from video media
+    semantic_role: representation
+    parent: StillImage
+    fields:
+      video_uid: optional UID
+
+  VideoMedia:
+    description: Time-varying visual media
+    semantic_role: concept
+    parent: MediaItem
+
+  VideoRecording:
+    semantic_role: representation
+    parent: VideoMedia
+    fields:
+      duration: optional Duration
+
+  LiveVideoStream:
+    description: Live or near-live video stream endpoint
+    semantic_role: representation
+    parent: VideoMedia
+
+  AudioMedia:
+    description: Acoustic or other audio-band media
+    semantic_role: concept
+    parent: MediaItem
+
+  AudioRecording:
+    semantic_role: representation
+    parent: AudioMedia
+    fields:
+      duration: optional Duration
+
+  LiveAudioStream:
+    description: Live or near-live audio stream endpoint
+    semantic_role: representation
+    parent: AudioMedia
+
+  SpectrumMedia:
+    description: Frequency-domain sampled or recorded media
+    semantic_role: concept
+    parent: MediaItem
+
+  SpectrumRecording:
+    description: Recorded radio-frequency or other spectrum data over a declared frequency span
+    semantic_role: representation
+    parent: SpectrumMedia
+    fields:
+      frequency_range: optional FrequencyRange
+      duration: optional Duration
+
+  PointCloudMedia:
+    description: Spatial point-cloud media
+    semantic_role: representation
+    parent: MediaItem
+
+  DocumentMedia:
+    description: Human- or machine-readable document media
+    semantic_role: representation
+    parent: MediaItem
+
+  BinaryMedia:
+    description: Binary media whose deeper semantics are not yet known or not represented by another MediaItem child
+    semantic_role: representation
+    parent: MediaItem

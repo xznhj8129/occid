@@ -1,135 +1,94 @@
 version: 1
 type: module
 package: military_effects
-description: "Military effects, payloads, fires, target handover, munitions, and damage assessment."
+description: "Weapons, munitions, targeting, fires, ESAD, attack effects, and battle-damage semantics."
 tags:
-  - military
+- military
 requires:
-  - core
-  - military_aerial
-  - military_definition
-
+- core
 enums:
   GuidanceType:
-    - UNGUIDED = 0
-    - INERTIAL
-    - FPV
-    - MCLOS
-    - SACLOS
-    - OPTICAL
-    - IR
-    - RADAR
-    - LASER
-    - RF
+  - UNGUIDED = 0
+  - INERTIAL
+  - FPV
+  - MCLOS
+  - SACLOS
+  - OPTICAL
+  - IR
+  - RADAR
+  - LASER
+  - RF
 
   AttackMode:
-    - DIRECT_FIRE = 0
-    - INDIRECT_FIRE
-    - STANDOFF
+  - DIRECT_FIRE = 0
+  - INDIRECT_FIRE
+  - STANDOFF
 
   ThreatLevel:
-    - NONE = 0
-    - LOW
-    - MEDIUM
-    - HIGH
-    - CRITICAL
+  - NONE = 0
+  - LOW
+  - MEDIUM
+  - HIGH
+  - CRITICAL
 
   ArmingStatus:
-    - DISARMED = 0
-    - ARMED
-    - FAULT
+  - DISARMED = 0
+  - ARMED
+  - FAULT
 
   EsadMunitionStatus:
-    - NOT_PRESENT = 0
-    - PRESENT
-    - READY
-    - FAULT
+  - NOT_PRESENT = 0
+  - PRESENT
+  - READY
+  - FAULT
 
   EsadIgnitionStatus:
-    - OPEN = 0
-    - CLOSED
-    - FIRED
-    - FAULT
+  - OPEN = 0
+  - CLOSED
+  - FIRED
+  - FAULT
 
   EsadFaultFlag:
-    - NONE = 0
-    - WIRING = 1
-    - POWER_GLITCH = 2
-    - SIGNAL_INTEGRITY = 4
-    - SENSOR_ACC = 8
-    - SENSOR_LIDAR = 16
+  - NONE = 0
+  - WIRING = 1
+  - POWER_GLITCH = 2
+  - SIGNAL_INTEGRITY = 4
+  - SENSOR_ACC = 8
+  - SENSOR_LIDAR = 16
 
   EsadArmingRequest:
-    - DISARM = 0
-    - ARM
+  - DISARM = 0
+  - ARM
 
   RwsArmingState:
-    - SAFE = 0
-    - ARMED
-    - FAULT
-
-  PayloadType:
-    - EO = 0
-    - EO_IR
-    - RADAR
-    - ELINT
-    - RELAY
-    - WEAPON
-    - CARGO
-    - JAMMER
-
-  PayloadState:
-    - OFF = 0
-    - READY
-    - ACTIVE
-    - DEGRADED
-    - FAILED
+  - SAFE = 0
+  - ARMED
+  - FAULT
 
   WarheadType:
-    - INERT = 0
-    - HE
-    - HEAT
-    - FRAG
-    - INC
-    - SMOKE
-    - AP
-    - EFP
-    - CRW
+  - INERT = 0
+  - HE
+  - HEAT
+  - FRAG
+  - INC
+  - SMOKE
+  - AP
+  - EFP
+  - CRW
 
   TargetCategory:
-    - OBJECT = 0
-    - LOCATION
-    - AREA
+  - OBJECT = 0
+  - LOCATION
+  - AREA
+
+  AirAttackMode:
+  - ONEWAY = 0
+  - DROPPER
+  - DIVE
+  - STRAFE
+  - STANDOFF_LAUNCH
 
 models:
-  PayloadAllocation:
-    semantic_role: representation
-    parent: Struct
-    fields:
-      payload_type: PayloadType
-      qty: int = 0
-
-  PayloadPlan:
-    semantic_role: representation
-    parent: Struct
-    fields:
-      requested: list[PayloadAllocation]
-      approved: list[PayloadAllocation]
-      loaded: list[PayloadAllocation]
-      notes: optional string
-
-  PayloadMount:
-    semantic_role: representation
-    parent: Struct
-    fields:
-      mount_ref: string
-      item_ref: string
-      qty: int = 0
-      pylons: string = ""
-      launcher: string = ""
-      compat_tags: list[PayloadType]
-      loaded: list[PayloadAllocation]
-
   EffectsPayload:
     semantic_role: representation
     parent: Payload
@@ -218,7 +177,7 @@ models:
       cep_desired_m: float
       cep_max_m: float
       target_class: ObservedObjectType
-      target_force: Faction
+      target_force: StandardIdentity
 
   Fires:
     semantic_role: representation
@@ -255,7 +214,7 @@ models:
       confidence_score: float
       authorization: list[int]
       target_class: ObservedObjectType
-      target_force: Faction
+      target_force: StandardIdentity
       match_media_type: SensorDataFormat
 
   BattleDamageAssessment:
@@ -270,7 +229,7 @@ models:
       destruction_pct: int
       confidence_pct: int
       target_class: ObservedObjectType
-      target_force: Faction
+      target_force: StandardIdentity
 
   EsadState:
     semantic_role: representation

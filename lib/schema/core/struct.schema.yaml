@@ -5,6 +5,22 @@ root: Struct
 tags:
   - core
 
+enums:
+  QuantityUnit:
+    - GRAM = 0
+    - KILOGRAM
+    - MILLILITER
+    - LITER
+    - METER
+    - KILOMETER
+    - SQUARE_METER
+    - CUBIC_METER
+    - SECOND
+    - MINUTE
+    - HOUR
+    - WATT_HOUR
+    - AMPERE_HOUR
+
 models:
   Struct:
     description: Primitive reusable low-level struct families.
@@ -25,6 +41,21 @@ models:
     parent: ID
     type: bytes[16]
 
+  Text:
+    description: Human-authored textual content whose encoding is not itself domain meaning
+    semantic_role: concept
+    parent: Struct
+
+  PlainText:
+    semantic_role: representation
+    parent: Text
+    type: string
+
+  MarkdownText:
+    semantic_role: representation
+    parent: Text
+    type: string
+
   Vector:
     semantic_role: concept
     parent: Struct
@@ -32,6 +63,141 @@ models:
   Measurement:
     semantic_role: concept
     parent: Struct
+
+  Quantity:
+    description: Amount of something, either discrete or expressed in a declared unit
+    semantic_role: concept
+    parent: Measurement
+
+  Count:
+    description: Discrete non-negative quantity; validity constraints are imposed by the consuming semantic model
+    semantic_role: representation
+    parent: Quantity
+    type: int
+
+  ByteCount:
+    description: Quantity of octets
+    semantic_role: representation
+    parent: Quantity
+    type: int
+
+  UnitQuantity:
+    description: Scalar quantity with an explicit unit vocabulary
+    semantic_role: representation
+    parent: Quantity
+    fields:
+      value: float
+      unit: QuantityUnit
+
+  Distance:
+    semantic_role: concept
+    parent: Measurement
+
+  DistanceMeters:
+    semantic_role: representation
+    parent: Distance
+    type: float
+
+  AreaMeasure:
+    semantic_role: concept
+    parent: Measurement
+
+  AreaSquareMeters:
+    semantic_role: representation
+    parent: AreaMeasure
+    type: float
+
+  Angle:
+    semantic_role: concept
+    parent: Measurement
+
+  AngleDegrees:
+    semantic_role: representation
+    parent: Angle
+    type: float
+
+  AngleRadians:
+    semantic_role: representation
+    parent: Angle
+    type: float
+
+  Ratio:
+    semantic_role: concept
+    parent: Measurement
+
+  NormalizedRatio:
+    description: Dimensionless ratio conventionally interpreted on the closed interval zero through one
+    semantic_role: representation
+    parent: Ratio
+    type: float
+
+  Frequency:
+    semantic_role: concept
+    parent: Measurement
+
+  Hertz:
+    semantic_role: representation
+    parent: Frequency
+    type: float
+
+  ElectricPotential:
+    description: Electric potential difference
+    semantic_role: concept
+    parent: Measurement
+
+  Volts:
+    semantic_role: representation
+    parent: ElectricPotential
+    type: float
+
+  ElectricCurrent:
+    description: Electric current
+    semantic_role: concept
+    parent: Measurement
+
+  Amperes:
+    semantic_role: representation
+    parent: ElectricCurrent
+    type: float
+
+  ElectricPower:
+    description: Electrical power
+    semantic_role: concept
+    parent: Measurement
+
+  Watts:
+    semantic_role: representation
+    parent: ElectricPower
+    type: float
+
+  ElectricCharge:
+    description: Electric charge expressed as a storage or consumption quantity
+    semantic_role: concept
+    parent: Measurement
+
+  AmpereHours:
+    semantic_role: representation
+    parent: ElectricCharge
+    type: float
+
+  Energy:
+    description: Energy quantity
+    semantic_role: concept
+    parent: Measurement
+
+  WattHours:
+    semantic_role: representation
+    parent: Energy
+    type: float
+
+  Temperature:
+    semantic_role: concept
+    parent: Measurement
+
+  DegreesCelsius:
+    semantic_role: representation
+    parent: Temperature
+    type: float
 
   Bearing:
     semantic_role: representation
@@ -106,12 +272,21 @@ models:
       utime: float
       tz: int
 
-  ItemCount:
+  TimeRange:
+    description: Closed or open temporal extent expressed by semantic timestamps
     semantic_role: representation
-    parent: Measurement
+    parent: Range
     fields:
-      item_type: string
-      qty: int = 0
+      start_ts: optional Timestamp
+      end_ts: optional Timestamp
+
+  ItemCount:
+    description: Quantity of an identified item or resource definition; the item is referenced semantically rather than named ad hoc
+    semantic_role: representation
+    parent: Struct
+    fields:
+      item_uid: UID
+      qty: Count
 
   NumericRange:
     semantic_role: representation

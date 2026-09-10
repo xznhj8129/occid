@@ -1,0 +1,64 @@
+version: 1
+type: schema
+package: resource_templates
+root: ResourceTemplate
+tags:
+- core
+
+models:
+  ResourceTemplate:
+    description: Identified definition of a resource kind that can be required, authorized, held, consumed, or assigned
+    semantic_role: concept
+    parent: Definition
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(ResourceTemplate)
+      name: optional string
+      description: optional PlainText
+
+  EquipmentTemplate:
+    description: Template of equipment counted or allocated as a resource; individual physical equipment may additionally exist as Equipment objects
+    semantic_role: representation
+    parent: ResourceTemplate
+
+  PersonnelTemplate:
+    description: Template of a personnel category used for strength, staffing, or resource planning
+    semantic_role: representation
+    parent: ResourceTemplate
+
+  SupplyTemplate:
+    description: Template of a consumable or stock resource with a customary quantity unit
+    semantic_role: representation
+    parent: ResourceTemplate
+    fields:
+      quantity_unit: optional QuantityUnit
+
+  ResourceRequirement:
+    description: Required or authorized quantity of one resource definition
+    semantic_role: representation
+    parent: Struct
+    fields:
+      resource_definition_uid: UID
+      quantity: Quantity
+      
+  MilitarySupplyTemplate:
+    description: Military supply definition classified by NATO-style supply class while retaining the generic resource identity and quantity unit
+    semantic_role: representation
+    parent: SupplyTemplate
+    fields:
+      supply_class: NATOSupplyClass
+
+enums:
+  NATOSupplyClass:
+  - CLASS_I = 0
+  - CLASS_II
+  - CLASS_III
+  - CLASS_IV
+  - CLASS_V
+  - CLASS_VI
+  - CLASS_VII
+  - CLASS_VIII
+  - CLASS_IX
+  - CLASS_X
+

@@ -9,7 +9,7 @@ from .task import TaskPriority, TaskStatus
 
 class SuccessCriterion(OCCIDModel):
     'Typed, human-readable condition used to determine whether an objective succeeded'
-    __occid_model_id__: ClassVar[int] = 254
+    __occid_model_id__: ClassVar[int] = 362
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -19,7 +19,7 @@ class SuccessCriterion(OCCIDModel):
 
 class Objective(OCCIDModel):
     'Desired end state with intent, success rule, target, priority, and deadline'
-    __occid_model_id__: ClassVar[int] = 182
+    __occid_model_id__: ClassVar[int] = 257
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

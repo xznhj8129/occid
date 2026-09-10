@@ -7,7 +7,7 @@ from .common import *
 
 class Record(OCCIDModel):
     'Persistent Record UID, class-local Record ID, revision, timestamps, origin, classification, and provenance metadata'
-    __occid_model_id__: ClassVar[int] = 219
+    __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

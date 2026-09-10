@@ -51,6 +51,74 @@ Root:
 
         SemanticType: {}
 
+        ResourceTemplate:
+          description: Identified definition of a resource kind that can be required, authorized, held, consumed, or assigned
+
+        OrgTemplate:
+          description: Reusable definition or template for an organization, distinct from a concrete Organization and its changing state
+
+
+    Struct:
+      description: Primitive reusable low-level struct families.
+      children:
+
+        ColorComponent:
+          description: Component of a declared graphic color value
+
+        AnnotationAnchor:
+          description: Semantic anchor for an annotation graphic
+
+        RepresentationSource:
+          description: Source used to construct a reference or data representation
+
+        MapGrid:
+          description: Coordinate-reference grid definition used by a saved map representation; renderer appearance is optional representation data
+
+        ID: {}
+
+        Text:
+          description: Human-authored textual content whose encoding is not itself domain meaning
+
+        Vector: {}
+
+        Measurement:
+          children:
+
+            Quantity:
+              description: Amount of something, either discrete or expressed in a declared unit
+
+            Distance: {}
+
+            AreaMeasure: {}
+
+            Angle: {}
+
+            Ratio: {}
+
+            Frequency: {}
+
+            ElectricPotential:
+              description: Electric potential difference
+
+            ElectricCurrent:
+              description: Electric current
+
+            ElectricPower:
+              description: Electrical power
+
+            ElectricCharge:
+              description: Electric charge expressed as a storage or consumption quantity
+
+            Energy:
+              description: Energy quantity
+
+            Temperature: {}
+
+            Time: {}
+
+
+        Uncertainty: {}
+
 
     Control:
       description: Desired outcomes and directed work
@@ -134,10 +202,18 @@ Root:
 
 
         Event:
-          description: A discrete occurrence, planned or unplanned, with subject, source, time, type, and event data
+          description: A discrete occurrence; concrete event representations define the subject, time, vocabulary, and event-specific data appropriate to that semantic branch
+          children:
+
+            SubjectEvent:
+              description: Event concerning one identified operational subject at one semantic timestamp
+
 
         Execution:
           description: One execution attempt for an assignment, independently tracked across local and external executors
+
+        SpatialMeasurement:
+          description: Persisted spatial measurement whose measured quantity is distinct from any graphic used to display it
 
         Observation:
           description: External detection, classification, track, signal, spot report, threat, or assessment data
@@ -152,6 +228,49 @@ Root:
 
             Detection:
               description: Assessment that something exists or occurred
+
+
+        Representation:
+          description: An authored or shared depiction, presentation, organization, or view of operational information; representation changes do not alter the represented subject itself
+          children:
+
+            IdentifiedRepresentation:
+              description: Persisted shared representation with durable OCCID identity, distinct from transient renderer or session state
+              children:
+
+                Graphic:
+                  description: Persisted graphical representation of one or more operational subjects or spatial constructs
+                  children:
+
+                    AnnotationGraphic:
+                      description: Human-authored annotation anchored to space or another operational object
+
+
+                Layer:
+                  description: Shared organization of representations; visibility choices for a particular operator or saved map view are modeled separately
+
+                Media:
+                  description: Recorded, streamed, sampled, or otherwise encoded information used as an operational representation
+                  children:
+
+                    MediaItem:
+                      description: Identified media resource with address, provenance, and common storage metadata; concrete media semantics are expressed by children
+                      children:
+
+                        ImageMedia:
+                          description: Two-dimensional visual media
+
+                        VideoMedia:
+                          description: Time-varying visual media
+
+                        AudioMedia:
+                          description: Acoustic or other audio-band media
+
+                        SpectrumMedia:
+                          description: Frequency-domain sampled or recorded media
+
+
+
 
 
         State:
@@ -178,6 +297,9 @@ Root:
             SensorState:
               description: Onboard sensor readings, readiness, calibration, and availability
 
+            SubjectState:
+              description: Persisted time-indexed state of an identified OCCID subject; semantic state history uses typed state records rather than generic object revision snapshots
+
             Validation:
               description: Mutable state of evaluating a Condition, kept separate from the predicate itself
 
@@ -197,18 +319,28 @@ Root:
               description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
 
 
-        Media:
-          description: Image, video, audio, document, frame, recording, point cloud, sample block, or binary media reference
+        Context:
+          description: Semantic context that bounds the interpretation of operational objects without embedding those objects into one document aggregate
+          children:
+
+            OperationalContext:
+              description: Identified operational context with declared reality and temporal extent
+
 
         Property:
           description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
           children:
 
-            Relationship:
-              description: Nature of relations, ownership, provenance, link
-
             Attribute:
               description: Fundamental characteristics, type, form
+              children:
+
+                Symbology:
+                  description: Semantic family for symbolic codings associated with an operational subject; concrete standards are represented by children
+
+
+            Relationship:
+              description: Nature of relations, ownership, provenance, link
 
             Capability:
               description: An ability an Object possesses or can provide; concrete capability schemas define the specific semantics and parameters
@@ -240,6 +372,9 @@ Root:
             Organization:
               description: A structured collection of organized entities and/or subordinate organizations with common command and control
 
+            Side:
+              description: Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership
+
             Collection:
               description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
 
@@ -261,23 +396,6 @@ Root:
 
         Location:
           description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
-
-
-    Struct:
-      description: Primitive reusable low-level struct families.
-      children:
-
-        ID: {}
-
-        Vector: {}
-
-        Measurement:
-          children:
-
-            Time: {}
-
-
-        Uncertainty: {}
 
 
 

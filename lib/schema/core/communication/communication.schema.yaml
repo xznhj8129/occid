@@ -3,24 +3,52 @@ type: schema
 package: communication
 root: Communication
 tags:
-  - core
+- core
 
 enums:
   SyncState:
-    - IN_SYNC = 0
-    - PARTIAL
-    - STALE
-    - DIVERGED
+  - IN_SYNC = 0
+  - PARTIAL
+  - STALE
+  - DIVERGED
 
   AddressingMode:
-    - UNICAST = 0
-    - MULTICAST
-    - BROADCAST
+  - UNICAST = 0
+  - MULTICAST
+  - BROADCAST
 
   ExchangePattern:
-    - PUSH = 0
-    - REQUEST_RESPONSE
+  - PUSH = 0
+  - REQUEST_RESPONSE
 
+  NATOAlphabet:
+  - ALPHA = 0
+  - BRAVO
+  - CHARLIE
+  - DELTA
+  - ECHO
+  - FOXTROT
+  - GOLF
+  - HOTEL
+  - INDIA
+  - JULIETT
+  - KILO
+  - LIMA
+  - MIKE
+  - NOVEMBER
+  - OSCAR
+  - PAPA
+  - QUEBEC
+  - ROMEO
+  - SIERRA
+  - TANGO
+  - UNIFORM
+  - VICTOR
+  - WHISKEY
+  - XRAY
+  - YANKEE
+  - ZULU
+  
 models:
   Communication:
     description: Movement of information between endpoints

@@ -1,20 +1,27 @@
 version: 1
 type: module
 package: military_tasks
-description: "Military tasking vocabulary and profiles attached to generic OCCID Tasks."
+description: "Combat, attack, and munition-allocation semantics attached to generic OCCID Tasks."
 tags:
-  - military
+- military
 requires:
-  - core
-  - military_effects
+- core
+- military_effects
 
 enums:
   TaskCombat:
-    - DEFEND = 0
-    - ATTACK
-    - PROTECT
-    - COMBAT_SUPPORT
-    - COMBAT_RESERVE
+  - DEFEND = 0
+  - ATTACK
+  - PROTECT
+  - COMBAT_SUPPORT
+  - COMBAT_RESERVE
+
+  AirCombatTask:
+  - STRIKE = 0
+  - CAS
+  - CAP
+  - INTERCEPT
+  - HK
 
 models:
   MunitionAllocation:
