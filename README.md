@@ -617,7 +617,7 @@ occid.yaml
 generate_pydantic.py   generate_typescript.py   contract metadata
         |                      |                      |
         v                      v                      v
-schema/*.py          typescript/occid.ts       OCCID contract data
+liboccid/py/*.py    liboccid/ts/occid.ts       OCCID contract data
 ```
 
 Normal regeneration uses the single entry point:
@@ -664,7 +664,7 @@ Consumers import models from the canonical `occid` namespace:
 from occid import Entity, EntityState, Photograph, Task, UID
 ```
 
-Generated Python modules physically live under `schema/`, but consumers should not treat that directory as a separate model authority.
+Generated Python modules physically live under `liboccid/py/`, but consumers should not treat that directory as a separate model authority.
 
 The Python runtime currently uses generated Pydantic-based models for strongly typed object creation and validation, plus OCCID runtime metadata for semantic ancestry.
 
@@ -679,7 +679,7 @@ It is **not** a separate frontend schema and it is not the purpose of this repos
 `generate_typescript.py` reads the same compiled `occid.yaml` and emits:
 
 ```text
-typescript/occid.ts
+liboccid/ts/occid.ts
 ```
 
 The generated TypeScript runtime includes model creation, named-data conversion, runtime semantic ancestry checks, enum/vocabulary definitions, and compact-wire structure helpers.
@@ -919,8 +919,8 @@ ontology.yaml               generated readable semantic hierarchy
 occid-contract.json         generated structural contract metadata
 
 occid/                      canonical Python package/runtime tooling
-schema/                     generated Python models
-typescript/                 generated TypeScript binding and parity fixtures
+liboccid/py/                generated Python models
+liboccid/ts/                generated TypeScript binding and parity fixtures
 interop/                    deterministic external representation mappings
 
 tests/                      compiler, runtime, identity, contract, codec,

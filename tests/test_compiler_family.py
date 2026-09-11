@@ -15,22 +15,21 @@ def _compiled_contract() -> dict[str, object]:
     return compile_occid.Compiler(modules).compile()
 
 
-def test_family_is_nearest_ancestor_concept() -> None:
+def test_compiled_contract_carries_ancestry_only_through_parent() -> None:
     compiled = _compiled_contract()
-    representations = compiled["representations"]
-    assert isinstance(representations, dict)
-
-    # Direct Representation -> Concept parent.
-    assert representations["Vehicle"]["family"] == "Machine"
-
-    # Representation chains do not become runtime ancestry. AirRobot and Drone
-    # both walk through Representation parents until the nearest Concept.
-    assert representations["AirRobot"]["family"] == "Machine"
-    assert representations["Drone"]["family"] == "Machine"
-
-    # A different branch retains only its own nearest Concept parent.
-    assert representations["Person"]["family"] == "Actor"
+    assert set(compiled) == {"version", "type", "vocabulary", "models", "maps"}
+    assert "representations" not in compiled
+    assert "concepts" not in compiled
+    for spec in compiled["models"].values():
+        assert "family" not in spec
 
 
-def test_family_is_independent_of_source_package() -> None:
+def test_parent_edges_are_semantic_not_source_package() -> None:
     compiled = _compiled_contract()
+    models = compiled["models"]
+    assert models["Vehicle"]["parent"] == "Machine"
+    assert models["AirRobot"]["parent"] == "AirMachine"
+    assert models["Drone"]["parent"] == "AirRobot"
+    assert models["Person"]["parent"] == "Actor"
+    assert models["Machine"]["parent"] == "Entity"
+    assert models["Actor"]["parent"] == "Entity"

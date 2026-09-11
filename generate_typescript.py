@@ -46,7 +46,7 @@ import generate_pydantic as idl
 
 REPO_ROOT = Path(__file__).resolve().parent
 DEFAULT_INPUT = REPO_ROOT / "occid.yaml"
-DEFAULT_OUTPUT = REPO_ROOT / "typescript" / "occid.ts"
+DEFAULT_OUTPUT = REPO_ROOT / "liboccid" / "ts" / "occid.ts"
 DEFAULT_VERSION = REPO_ROOT / "VERSION"
 DEFAULT_CONTRACT = REPO_ROOT / "occid-contract.json"
 

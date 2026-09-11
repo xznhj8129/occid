@@ -18,6 +18,7 @@ from occid import (
     PlanContingency,
     Predicate,
     Task,
+    Timestamp,
     Validation,
     ValidationStatus,
 )
@@ -71,13 +72,11 @@ class ApexPrimitiveTests(unittest.TestCase):
 
     def test_condition_validation_is_separate_runtime_state(self) -> None:
         predicate = Predicate(subject_ref=PAYLOAD_UID_1)
-        validation = Validation(condition=predicate, status=ValidationStatus.VALID, updated_ts=1.0)
+        validation = Validation(condition=predicate, status=ValidationStatus.VALID, updated_ts=Timestamp(utime=1.0, tz=0))
         self.assertEqual(Validation.decode(validation.encode()), validation)
         self.assertIn("preconditions", Task.model_fields)
         contingency = PlanContingency(
-            id=1,
             condition=predicate,
-            response="continue",
             task_uids=[],
         )
         self.assertEqual(contingency.condition, predicate)

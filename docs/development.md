@@ -18,7 +18,7 @@ Consumers use the canonical namespace:
 from occid import Entity, EntityState, TaskInformation, Assignment, Execution
 ```
 
-Generated runtime models live under `schema/` internally and are re-exported through `occid`.
+Generated runtime models live under `liboccid/py/` internally and are re-exported through `occid`.
 
 The repository `VERSION` identifies a release. It is provenance, not a consumer compatibility test.
 
@@ -68,7 +68,7 @@ lib/schema/**/*.schema.yaml
         -> compile_occid.py
         -> occid.yaml
         -> generate_pydantic.py
-        -> schema/*.py
+        -> liboccid/py/*.py
 ```
 
 `compile_occid.py` resolves effective inherited fields for record models and emits one flat `occid.yaml`. All Concepts and Representations live together under one compiled `models` mapping; each model preserves its `semantic_role` and authored `parent`, and direct `children` are derived from that parent graph. Named field references remain exactly as authored; the compiler never expands a semantic parent into a descendant union.

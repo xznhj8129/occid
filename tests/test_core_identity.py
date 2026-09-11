@@ -2,19 +2,22 @@ from __future__ import annotations
 
 import unittest
 
-import occid
 from pydantic import ValidationError
 
 from occid import (
     Agent,
     AltitudeDatum,
+    Entity,
     GlobalPosition,
+    Location,
     Machine,
     Mark,
     Node,
     Organization,
-    RecordMeta,
+    OrgLevel,
+    Record,
     SensorPayload,
+    Timestamp,
 )
 
 
@@ -25,20 +28,21 @@ LOCATION_UID = bytes.fromhex("a2f5826e0d6749e48ce36415d9f4c01b")
 RECORD_UID = bytes.fromhex("c1a7312e46b74b9c8ba78c457e23ab11")
 
 
-def record() -> RecordMeta:
-    return RecordMeta(
+def record() -> Record:
+    return Record(
         uid=RECORD_UID,
         id=1,
-        created_ts=0.0,
-        updated_ts=0.0,
+        created_ts=Timestamp(utime=0.0, tz=0),
+        updated_ts=Timestamp(utime=0.0, tz=0),
         origin_system="test",
         provenance=[],
     )
 
 
 class CoreIdentityTests(unittest.TestCase):
-    def test_entity_concept_is_consumed_but_agent_node_and_organization_keep_identity(self) -> None:
-        self.assertNotIn("Entity", occid.__all__)
+    def test_agent_node_and_organization_keep_identity(self) -> None:
+        self.assertEqual(Entity.__occid_semantic_role__, "concept")
+        self.assertEqual(Agent.__occid_semantic_role__, "representation")
         entity = Agent(
             record=record(),
             uid=ENTITY_UID,
@@ -64,21 +68,23 @@ class CoreIdentityTests(unittest.TestCase):
             record=record(),
             uid=ORG_UID,
             id=3,
+            org_level=OrgLevel.UNIT,
             name="Example Unit",
             unit_code="EXAMPLE",
             callsign="EXAMPLE-3",
         )
 
         self.assertEqual(entity.uid.root, ENTITY_UID)
-        self.assertEqual(entity.id, 17)
+        self.assertEqual(entity.id.root, 17)
         self.assertEqual([uid.root for uid in entity.node_uids], [NODE_UID])
         self.assertEqual(node.uid.root, NODE_UID)
         self.assertEqual(node.entity_uid.root, ENTITY_UID)
         self.assertEqual(organization.uid.root, ORG_UID)
-        self.assertEqual(organization.id, 3)
+        self.assertEqual(organization.id.root, 3)
 
     def test_record_and_mark_use_uid_identity(self) -> None:
-        self.assertNotIn("Location", occid.__all__)
+        self.assertEqual(Location.__occid_semantic_role__, "concept")
+        self.assertEqual(Mark.__occid_semantic_role__, "representation")
         meta = record()
         mark = Mark(
             record=meta,
@@ -96,11 +102,11 @@ class CoreIdentityTests(unittest.TestCase):
         self.assertEqual(mark.uid.root, LOCATION_UID)
 
         with self.assertRaises(ValidationError):
-            RecordMeta(
+            Record(
                 uid="database-row-1",
                 id=1,
-                created_ts=0.0,
-                updated_ts=0.0,
+                created_ts=Timestamp(utime=0.0, tz=0),
+                updated_ts=Timestamp(utime=0.0, tz=0),
                 origin_system="test",
                 provenance=[],
             )

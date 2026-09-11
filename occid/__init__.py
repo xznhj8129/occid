@@ -1,9 +1,9 @@
 """Canonical Python SDK namespace for OCCID.
 
-Generated runtime models live in the repository's ``schema/`` source directory
-and are installed as the ``occid.schema`` package. Consumers import them only
-through ``occid`` so OCCID never competes with the common third-party package
-named ``schema``.
+Generated runtime models live in the repository's ``liboccid/py/`` source
+directory and are installed as the ``occid.schema`` package. Consumers import
+them only through ``occid`` so OCCID never competes with the common third-party
+package named ``schema``.
 """
 
 from __future__ import annotations

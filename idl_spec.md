@@ -490,7 +490,7 @@ occid.yaml
 generate_pydantic.py
         |
         v
-schema/*.py
+liboccid/py/*.py
 ```
 
 `occid.yaml` contains:
@@ -972,7 +972,7 @@ lib/schema/              authoritative authored semantics
 compile_occid.py         semantic compiler
 occid.yaml               generated flat runtime schema
 generate_pydantic.py     Python projection generator
-schema/                  generated Python runtime
+liboccid/py/             generated Python runtime
 ```
 
 `occid.yaml` and generated language bindings are build artifacts derived from the authoritative authored schemas. They are checked in for deterministic inspection and consumer tooling, but must not become independent authored sources of semantic truth.

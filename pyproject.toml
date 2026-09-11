@@ -18,7 +18,7 @@ dependencies = [
 packages = ["occid", "occid.schema", "occid.lib", "interop"]
 
 [tool.setuptools.package-dir]
-"occid.schema" = "schema"
+"occid.schema" = "liboccid/py"
 "occid.lib" = "lib"
 
 [tool.setuptools.package-data]

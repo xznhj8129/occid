@@ -151,11 +151,11 @@ def run(script: str, *args: str) -> None:
 def write_contract_markers() -> None:
     """Write structural markers without importing the install-only package layout.
 
-    During generation, the Python binding exists at repository-root ``schema/``.
-    It becomes ``occid.schema`` only through setuptools package-dir mapping, so
-    importing ``occid.contract`` from a raw checkout executes ``occid.__init__``
-    too early and fails.  ``contract_schema.py`` is deliberately package-free,
-    so load that source module directly here.
+    During generation, the Python binding exists at repository-root
+    ``liboccid/py/``.  It becomes ``occid.schema`` only through setuptools
+    package-dir mapping, so importing ``occid.contract`` from a raw checkout
+    executes ``occid.__init__`` too early and fails.  ``contract_schema.py`` is
+    deliberately package-free, so load that source module directly here.
     """
     path = REPO_ROOT / "occid" / "contract_schema.py"
     spec = importlib.util.spec_from_file_location("_occid_contract_schema", path)

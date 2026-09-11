@@ -51,7 +51,7 @@ class SchemaGenerationTests(unittest.TestCase):
             self.assertIsInstance(yaml.safe_load(ontology_text), dict)
             self.assertEqual(ontology_text, (REPO_ROOT / "ontology.yaml").read_text())
 
-            checked_in = REPO_ROOT / "schema"
+            checked_in = REPO_ROOT / "liboccid" / "py"
             generated_files = sorted(path.name for path in output_dir.glob("*.py"))
             checked_in_files = sorted(path.name for path in checked_in.glob("*.py"))
             self.assertEqual(generated_files, checked_in_files)

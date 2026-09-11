@@ -76,9 +76,12 @@ def test_persistent_measurements_are_objects_and_range_ring_is_derived():
 def test_organization_identity_and_mutable_state_are_separated():
     org = fields("Organization")
     state = fields("OrganizationState")
-    for mutable in ("member_uids", "roster", "position", "operational_status", "readiness", "inventory", "health"):
+    for mutable in ("position", "operational_status", "readiness", "inventory", "health"):
         assert mutable not in org
         assert mutable in state
+    for membership in ("member_uids", "roster"):
+        assert membership in org
+        assert membership not in state
     assert MODELS["OrganizationState"]["parent"] == "SubjectState"
     assert fields("Group")["org_level"].endswith("GROUP")
     assert fields("Unit")["org_level"].endswith("UNIT")
@@ -87,8 +90,8 @@ def test_organization_identity_and_mutable_state_are_separated():
 
 
 def test_authorized_resources_are_distinct_from_current_holdings():
-    assert MODELS["ResourceDefinition"]["parent"] == "Definition"
-    assert {"EquipmentDefinition", "PersonnelDefinition", "SupplyDefinition"} <= children("ResourceDefinition")
+    assert MODELS["ResourceTemplate"]["parent"] == "Definition"
+    assert {"EquipmentTemplate", "PersonnelTemplate", "SupplyTemplate"} <= children("ResourceTemplate")
     req = fields("ResourceRequirement")
     holding = fields("ResourceHolding")
     assert req == {"resource_definition_uid": "UID", "quantity": "Quantity"}
@@ -110,12 +113,14 @@ def test_electrical_resource_values_use_measurement_primitives():
 
 def test_media_has_semantic_children():
     assert MODELS["MediaItem"]["semantic_role"] == "concept"
-    assert {"ImageMedia", "VideoMedia", "AudioMedia", "SpectrumMedia", "PointCloudMedia", "DocumentMedia", "BinaryMedia"} <= children("MediaItem")
-    assert MODELS["StillImage"]["parent"] == "ImageMedia"
-    assert MODELS["Photograph"]["parent"] == "StillImage"
+    assert {"DurationalMedia", "StillMedia"} <= children("MediaItem")
+    assert MODELS["StillImage"]["parent"] == "StillMedia"
     assert MODELS["VideoFrame"]["parent"] == "StillImage"
-    assert MODELS["VideoRecording"]["parent"] == "VideoMedia"
+    assert MODELS["PointCloudMedia"]["parent"] == "StillMedia"
+    assert MODELS["AudioMedia"]["parent"] == "DurationalMedia"
+    assert MODELS["VideoMedia"]["parent"] == "DurationalMedia"
     assert MODELS["LiveVideoStream"]["parent"] == "VideoMedia"
+    assert MODELS["SpectrumMedia"]["parent"] == "DurationalMedia"
     assert MODELS["SpectrumRecording"]["parent"] == "SpectrumMedia"
 
 
@@ -164,13 +169,13 @@ def test_oob_size_vocabulary_preserves_three_letter_codes():
 def test_noncombat_military_and_nato_semantics_are_not_separate_modules():
     expected_core_models = {
         "MilitaryOrg": "organization",
-        "MilitaryOrganizationDefinition": "organization_definition",
+        "MilitaryOrgTemplate": "organization",
         "MilitaryOrganizationState": "organization",
         "MilitaryAffiliation": "relationship",
         "MilitarySymbolGraphic": "representation",
         "TacticalGraphic": "representation",
-        "MilitarySupplyDefinition": "resource_definition",
-        "MilitaryRadioProfile": "radio",
+        "MilitarySupplyTemplate": "resource",
+        "RadioProfile": "radio",
         "MilitaryAirNavigation": "entities",
         "MilitaryUnitFlightPlan": "aerial",
         "MilitaryMachine": "entities",
@@ -184,7 +189,7 @@ def test_noncombat_military_and_nato_semantics_are_not_separate_modules():
         "SymbologyStandard": "attribute",
         "StandardIdentity": "attribute",
         "TacticalGraphicStatus": "representation",
-        "NATOSupplyClass": "resource_definition",
+        "NATOSupplyClass": "resource",
         "NATOAlphabet": "communication",
         "AirRole": "aerial",
         "AirISRType": "aerial",
