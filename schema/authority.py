@@ -15,7 +15,7 @@ class ControlLevel(IntEnum):
 
 class Authority(OCCIDModel):
     'Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised'
-    __occid_model_id__: ClassVar[int] = 29
+    __occid_model_id__: ClassVar[int] = 28
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CommandAuthority', 'Lease')

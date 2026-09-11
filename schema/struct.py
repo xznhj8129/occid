@@ -24,10 +24,10 @@ class QuantityUnit(IntEnum):
 
 class Struct(OCCIDModel):
     'Primitive reusable low-level struct families.'
-    __occid_model_id__: ClassVar[int] = 356
+    __occid_model_id__: ClassVar[int] = 354
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('FlightLevelBand', 'SuccessCriterion', 'PlanContingency', 'IsrParameters', 'SIDC', 'ColorComponent', 'ColorRGBA', 'StrokeStyle', 'FillStyle', 'TextStyle', 'GraphicStyle', 'AnnotationAnchor', 'RepresentationSource', 'GeoRegistration', 'LayerView', 'MapGrid', 'UTMZone', 'MilitaryStrength', 'PayloadAllocation', 'PayloadPlan', 'PayloadMount', 'OrgComposition', 'Record', 'ResourceRequirement', 'SpatialStruct', 'ID', 'Text', 'Vector', 'Measurement', 'Bearing', 'GeoPos', 'LocalPos', 'Line', 'StructPath', 'Shape', 'Bounding', 'Uncertainty', 'Pose', 'Range', 'Transform', 'Orbital', 'ItemCount', 'Effects', 'TargetPriority', 'TargetKinematics', 'TargetSet', 'Fires', 'SplashCorrection', 'TargetHandover', 'BattleDamageAssessment', 'EsadState', 'EsadArming', 'RwsPose', 'RwsState', 'MunitionAllocation', 'CombatTaskProfile')
+    __occid_children__: ClassVar[tuple[str, ...]] = ('FlightLevelBand', 'SuccessCriterion', 'PlanContingency', 'IsrParameters', 'SIDC', 'ColorComponent', 'ColorRGBA', 'StrokeStyle', 'FillStyle', 'TextStyle', 'GraphicStyle', 'AnnotationAnchor', 'RepresentationSource', 'GeoRegistration', 'LayerView', 'MapGrid', 'UTMZone', 'ResourceRequirement', 'OrgComposition', 'MilitaryStrength', 'PayloadAllocation', 'PayloadPlan', 'PayloadMount', 'Record', 'SpatialStruct', 'ID', 'Text', 'Vector', 'Measurement', 'Bearing', 'GeoPos', 'LocalPos', 'Line', 'StructPath', 'Shape', 'Bounding', 'Uncertainty', 'Pose', 'Range', 'Transform', 'Orbital', 'ItemCount', 'Effects', 'TargetPriority', 'TargetKinematics', 'TargetSet', 'Fires', 'SplashCorrection', 'TargetHandover', 'BattleDamageAssessment', 'EsadState', 'EsadArming', 'RwsPose', 'RwsState', 'MunitionAllocation', 'CombatTaskProfile')
 
 class ID(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 163
@@ -42,45 +42,45 @@ class IntID(OCCIDValue[builtins.int]):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class UID(OCCIDValue[Annotated[bytes, Field(strict=True, min_length=16, max_length=16)]]):
-    __occid_model_id__: ClassVar[int] = 397
+    __occid_model_id__: ClassVar[int] = 395
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ID'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Text(OCCIDModel):
     'Human-authored textual content whose encoding is not itself domain meaning'
-    __occid_model_id__: ClassVar[int] = 384
+    __occid_model_id__: ClassVar[int] = 382
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('PlainText', 'MarkdownText')
 
 class PlainText(OCCIDValue[builtins.str]):
-    __occid_model_id__: ClassVar[int] = 283
+    __occid_model_id__: ClassVar[int] = 280
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Text'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class MarkdownText(OCCIDValue[builtins.str]):
-    __occid_model_id__: ClassVar[int] = 210
+    __occid_model_id__: ClassVar[int] = 209
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Text'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Vector(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 405
+    __occid_model_id__: ClassVar[int] = 403
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LocalVector', 'VelocityVector', 'AngularVelocityVector')
 
 class Measurement(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 210
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SignalQuality', 'DeliveryQuality', 'LinkCounters', 'GraphicLength', 'Airspeed', 'AltitudeState', 'Quantity', 'Distance', 'AreaMeasure', 'Angle', 'Ratio', 'Frequency', 'ElectricPotential', 'ElectricCurrent', 'ElectricPower', 'ElectricCharge', 'Energy', 'Temperature', 'Time', 'Duration', 'Timestamp')
 
 class Quantity(OCCIDModel):
     'Amount of something, either discrete or expressed in a declared unit'
-    __occid_model_id__: ClassVar[int] = 301
+    __occid_model_id__: ClassVar[int] = 298
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Count', 'ByteCount', 'UnitQuantity')
@@ -94,14 +94,14 @@ class Count(OCCIDValue[builtins.int]):
 
 class ByteCount(OCCIDValue[builtins.int]):
     'Quantity of octets'
-    __occid_model_id__: ClassVar[int] = 41
+    __occid_model_id__: ClassVar[int] = 39
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Quantity'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class UnitQuantity(OCCIDModel):
     'Scalar quantity with an explicit unit vocabulary'
-    __occid_model_id__: ClassVar[int] = 403
+    __occid_model_id__: ClassVar[int] = 401
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Quantity'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -151,14 +151,14 @@ class AngleRadians(OCCIDValue[builtins.float]):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Ratio(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 307
+    __occid_model_id__: ClassVar[int] = 304
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Opacity', 'NormalizedRatio')
 
 class NormalizedRatio(OCCIDValue[builtins.float]):
     'Dimensionless ratio conventionally interpreted on the closed interval zero through one'
-    __occid_model_id__: ClassVar[int] = 253
+    __occid_model_id__: ClassVar[int] = 252
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Ratio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -183,7 +183,7 @@ class ElectricPotential(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('Volts',)
 
 class Volts(OCCIDValue[builtins.float]):
-    __occid_model_id__: ClassVar[int] = 416
+    __occid_model_id__: ClassVar[int] = 413
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ElectricPotential'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -209,7 +209,7 @@ class ElectricPower(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('Watts',)
 
 class Watts(OCCIDValue[builtins.float]):
-    __occid_model_id__: ClassVar[int] = 418
+    __occid_model_id__: ClassVar[int] = 415
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ElectricPower'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -235,13 +235,13 @@ class Energy(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('WattHours',)
 
 class WattHours(OCCIDValue[builtins.float]):
-    __occid_model_id__: ClassVar[int] = 417
+    __occid_model_id__: ClassVar[int] = 414
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Energy'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Temperature(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 383
+    __occid_model_id__: ClassVar[int] = 381
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DegreesCelsius',)
@@ -253,7 +253,7 @@ class DegreesCelsius(OCCIDValue[builtins.float]):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Bearing(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 34
+    __occid_model_id__: ClassVar[int] = 33
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LocalDirection',)
@@ -265,7 +265,7 @@ class GeoPos(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('GlobalPosition',)
 
 class LocalPos(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 198
+    __occid_model_id__: ClassVar[int] = 197
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -277,62 +277,62 @@ class Line(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class StructPath(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 357
+    __occid_model_id__: ClassVar[int] = 355
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GeoPath', 'GeoMultiPath')
 
 class Shape(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 341
+    __occid_model_id__: ClassVar[int] = 338
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GeoArea', 'GeoCircle', 'GeoMultiPoint', 'GeoMultiArea', 'GeoGeometryCollection')
 
 class Bounding(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 39
+    __occid_model_id__: ClassVar[int] = 37
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('BoundingBox',)
 
 class Uncertainty(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 400
+    __occid_model_id__: ClassVar[int] = 398
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LocationUncertainty',)
 
 class Pose(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 290
+    __occid_model_id__: ClassVar[int] = 287
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('EulerAngles',)
 
 class Range(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 306
+    __occid_model_id__: ClassVar[int] = 303
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TimeRange', 'NumericRange')
 
 class Transform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 393
+    __occid_model_id__: ClassVar[int] = 391
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Orbital(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 266
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Time(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 386
+    __occid_model_id__: ClassVar[int] = 384
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     utime: builtins.int
 
 class Duration(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 95
+    __occid_model_id__: ClassVar[int] = 94
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -345,7 +345,7 @@ class Duration(OCCIDModel):
     years: builtins.int | None = None
 
 class Timestamp(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 389
+    __occid_model_id__: ClassVar[int] = 387
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -354,7 +354,7 @@ class Timestamp(OCCIDModel):
 
 class TimeRange(OCCIDModel):
     'Closed or open temporal extent expressed by semantic timestamps'
-    __occid_model_id__: ClassVar[int] = 387
+    __occid_model_id__: ClassVar[int] = 385
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Range'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -371,7 +371,7 @@ class ItemCount(OCCIDModel):
     qty: Semantic[Count]
 
 class NumericRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 254
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Range'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -14,6 +14,7 @@ models:
       machine_type: MachineType = ROBOT
       controller: RobotController
       remote_control: RemoteControl
+      telemetry_type: TelemetryType
 
   Drone:
     semantic_role: representation

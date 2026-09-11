@@ -10,3 +10,10 @@ models:
     description: An ability an Object possesses or can provide; concrete capability schemas define the specific semantics and parameters
     semantic_role: concept
     parent: Property
+
+  MediaProductionCapability:
+    description: Ability of an Object to originate media in the declared modalities
+    semantic_role: representation
+    parent: Capability
+    fields:
+      content_types: list[MediaSpectrum]

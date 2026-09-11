@@ -13,7 +13,7 @@ class Internal(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('RuntimeLoadState',)
 
 class RuntimeLoadState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 331
+    __occid_model_id__: ClassVar[int] = 328
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Internal'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

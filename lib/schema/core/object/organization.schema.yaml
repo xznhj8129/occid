@@ -334,6 +334,38 @@ models:
     fields:
       org_level: OrgLevel = UNIT
 
+  OrgTemplate:
+    description: Reusable definition or template for an organization, distinct from a concrete Organization and its changing state
+    semantic_role: concept
+    parent: Definition
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(OrgTemplate)
+      name: optional string
+      description: optional PlainText
+      topology: optional OrgTopology
+      resource_requirements: list[ResourceRequirement]
+
+  OrgComposition:
+    description: Required or doctrinal quantity of subordinate organizations defined by reusable organization definitions
+    semantic_role: representation
+    parent: Struct
+    fields:
+      org_template_uid: UID
+      quantity: Count
+      
+  MilitaryOrgTemplate:
+    description: Reusable military organizational definition or template, including doctrinal structure and authorized resources
+    semantic_role: representation
+    parent: OrgTemplate
+    fields:
+      category: NATOUnitCategory
+      size: OOBSize
+      op_domain: OperationalDomain
+      tactical_elements: list[OrgComposition]
+      support_elements: list[OrgComposition]
+
   Side:
     description: Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership
     semantic_role: concept

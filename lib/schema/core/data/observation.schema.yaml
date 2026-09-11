@@ -99,7 +99,6 @@ models:
       box: optional VisionBox
       bearing: optional LocalDirection
       position: optional GlobalPosition
-      source_frame_uid: optional UID
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
@@ -107,7 +106,8 @@ models:
     parent: Detection
     fields:
       record: Record
-      frame_uid: optional UID
+      media_uid: optional UID
+      observer_entity_uid: optional UID
       sensor_uid: optional UID
       timestamp_us: optional int
       detections: list[VisionDetection]
@@ -120,7 +120,9 @@ models:
       uid: UID
       id: IntID(Observation)
       track_uid: optional UID
+      observer_entity_uid: optional UID
       sensor_uid: optional UID
+      evidence_media_uids: list[UID]
       obs_ts: Timestamp
       observation_kind: optional ObservationKind
       category: optional IntelCategory

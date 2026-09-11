@@ -86,7 +86,7 @@ class LinkCapacity(OCCIDModel):
 
 class SignalQuality(OCCIDModel):
     'Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning'
-    __occid_model_id__: ClassVar[int] = 343
+    __occid_model_id__: ClassVar[int] = 340
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -149,7 +149,7 @@ class Attribute(OCCIDModel):
 
 class Symbology(OCCIDModel):
     'Semantic family for symbolic codings associated with an operational subject; concrete standards are represented by children'
-    __occid_model_id__: ClassVar[int] = 366
+    __occid_model_id__: ClassVar[int] = 364
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CoTSymbology', 'MilitarySymbology')
@@ -164,7 +164,7 @@ class CoTSymbology(OCCIDModel):
 
 class SIDC(OCCIDModel):
     'Standard identity and symbol code encoded according to an explicitly declared military symbology standard'
-    __occid_model_id__: ClassVar[int] = 334
+    __occid_model_id__: ClassVar[int] = 331
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -173,7 +173,7 @@ class SIDC(OCCIDModel):
 
 class MilitarySymbology(OCCIDModel):
     'Military symbolic coding of an operational subject'
-    __occid_model_id__: ClassVar[int] = 240
+    __occid_model_id__: ClassVar[int] = 239
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Symbology'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

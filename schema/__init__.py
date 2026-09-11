@@ -22,7 +22,6 @@ from .gnc import *
 from .health import *
 from .identity import *
 from .input import *
-from .interface import *
 from .internal import *
 from .isr import *
 from .kinematic import *
@@ -38,7 +37,6 @@ from .network import *
 from .node import *
 from .object import *
 from .observation import *
-from .org_templates import *
 from .parameter import *
 from .payload import *
 from .plan import *
@@ -49,7 +47,6 @@ from .record import *
 from .relationship import *
 from .representation import *
 from .resource import *
-from .resource_templates import *
 from .root import *
 from .sensorstate import *
 from .spatial import *

@@ -16,10 +16,10 @@ enums:
     - WEBRTC
 
   TelemetryType:
-    - MSP = 0
+    - NONE = 0
+    - MSP
     - MAVLINK
     - CRSF
-    - MANUAL_ENTRY
 
   RCType:
     - PWM = 0
@@ -137,33 +137,6 @@ models:
       receiver_config: optional ReceiverConfig
       channel_map: list[ChannelMapEntry]
       mode_ranges: list[ModeRange]
-
-  ObserverSource:
-    semantic_role: representation
-    parent: Interface
-    description: Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links
-    fields:
-      record: Record
-      uid: UID
-      id: IntID(ObserverSource)
-      entity_uid: UID
-      name: string
-      local_source: string
-      objtype: EntitySubtype = AIR_ROBOT
-      active: bool = true
-      pos: optional GlobalPosition
-      attitude: optional EulerAngles
-      gimbal_ang: optional EulerAngles
-      gimbal_axes: list[GimbalAxis]
-      field_of_view: optional SensorFieldOfView
-      media_kind: SensorDataFormat = VIDEO
-      video: optional VideoConfig
-      video_res: optional tuple[int, int]
-      telemetry_type: optional TelemetryType
-      telem_port: optional string
-      telem_baud: optional int
-      commands_allowed: bool = false
-      can_zoom: bool = false
 
   FlightControlState:
     description: Portable flight-controller operational state independent of endpoint-specific mode identifiers

@@ -8,6 +8,9 @@ Root:
       description: Movement of information between endpoints
       children:
 
+        Interface:
+          description: System or protocol interface through which a component communicates with another endpoint
+
         Link:
           description: Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState
 
@@ -37,22 +40,19 @@ Root:
         Protocol:
           description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata
 
-        Interface:
-          description: System or protocol interface through which a component communicates with another endpoint
-
 
     Definition:
       description: Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.
       children:
+
+        ResourceTemplate:
+          description: Identified definition of a resource kind that can be required, authorized, held, consumed, or assigned
 
         Frame: {}
 
         DefinitionRelationship: {}
 
         SemanticType: {}
-
-        ResourceTemplate:
-          description: Identified definition of a resource kind that can be required, authorized, held, consumed, or assigned
 
         OrgTemplate:
           description: Reusable definition or template for an organization, distinct from a concrete Organization and its changing state
@@ -215,6 +215,33 @@ Root:
         SpatialMeasurement:
           description: Persisted spatial measurement whose measured quantity is distinct from any graphic used to display it
 
+        Media:
+          description: Recorded, streamed, sampled, or otherwise encoded non-text information used as an operational representation
+          children:
+
+            MediaItem:
+              description: Identified media resource with typed content, address, acquisition provenance, and common storage metadata; concrete media semantics are expressed by children
+              children:
+
+                StillMedia:
+                  description: Spatial-domain fixed media
+
+                DurationalMedia:
+                  description: Media with a time dimension
+                  children:
+
+                    VideoMedia:
+                      description: Time-varying visual media
+
+                    AudioMedia:
+                      description: Acoustic or other audio-band media
+
+                    SpectrumMedia:
+                      description: Frequency-domain sampled or recorded media
+
+
+
+
         Observation:
           description: External detection, classification, track, signal, spot report, threat, or assessment data
           children:
@@ -249,28 +276,6 @@ Root:
                 Layer:
                   description: Shared organization of representations; visibility choices for a particular operator or saved map view are modeled separately
 
-                Media:
-                  description: Recorded, streamed, sampled, or otherwise encoded information used as an operational representation
-                  children:
-
-                    MediaItem:
-                      description: Identified media resource with address, provenance, and common storage metadata; concrete media semantics are expressed by children
-                      children:
-
-                        ImageMedia:
-                          description: Two-dimensional visual media
-
-                        VideoMedia:
-                          description: Time-varying visual media
-
-                        AudioMedia:
-                          description: Acoustic or other audio-band media
-
-                        SpectrumMedia:
-                          description: Frequency-domain sampled or recorded media
-
-
-
 
 
         State:
@@ -294,11 +299,16 @@ Root:
             Kinematic:
               description: Motion and derived movement state.
 
-            SensorState:
-              description: Onboard sensor readings, readiness, calibration, and availability
+            Resource:
+              description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
 
             SubjectState:
               description: Persisted time-indexed state of an identified OCCID subject; semantic state history uses typed state records rather than generic object revision snapshots
+              children:
+
+                SensorState:
+                  description: Time-indexed readings, readiness, calibration, and availability of an identified sensor
+
 
             Validation:
               description: Mutable state of evaluating a Condition, kept separate from the predicate itself
@@ -314,9 +324,6 @@ Root:
 
             Internal:
               description: Diagnostic internals of a machine or system.
-
-            Resource:
-              description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
 
 
         Context:

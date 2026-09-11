@@ -25,7 +25,7 @@ class SpatialRelationKind(IntEnum):
 
 class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 312
+    __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DirectedRelationship', 'EntityComponentRef', 'SpatialRelationship', 'MilitaryAffiliation')
@@ -55,7 +55,7 @@ class EntityComponentRef(OCCIDModel):
 
 class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 345
+    __occid_model_id__: ClassVar[int] = 342
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

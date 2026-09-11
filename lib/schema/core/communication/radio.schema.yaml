@@ -60,7 +60,7 @@ models:
     semantic_role: representation
     parent: Radio
     fields:
-      channel_uid: optional UID
+      channel_id: int
       label: optional string
       frequency: optional FrequencyRange
       bandwidth_mhz: optional float
@@ -71,6 +71,7 @@ models:
     parent: Radio
 
     fields:
+      bands: list[NATORadioBands]
       service: optional RadioService
       waveform: optional Waveform
       frequency: optional FrequencyRange
@@ -82,8 +83,3 @@ models:
       aprs: optional AprsProfile
       elrs: optional ElrsProfile
       fpv: optional FpvProfile
-  MilitaryRadioProfile:
-    semantic_role: representation
-    parent: RadioProfile
-    fields:
-      bands: list[NATORadioBands]

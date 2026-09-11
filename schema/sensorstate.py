@@ -26,17 +26,38 @@ class GimbalState(IntEnum):
 ### Models
 
 class SensorState(OCCIDModel):
-    'Onboard sensor readings, readiness, calibration, and availability'
-    __occid_model_id__: ClassVar[int] = 339
+    'Time-indexed readings, readiness, calibration, and availability of an identified sensor'
+    __occid_model_id__: ClassVar[int] = 336
     __occid_semantic_role__: ClassVar[str] = 'concept'
-    __occid_parent__: ClassVar[str | None] = 'State'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('TrackerState', 'FlightSensorConfiguration')
+    __occid_parent__: ClassVar[str | None] = 'SubjectState'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('ImagingSensorState', 'TrackerState', 'FlightSensorConfiguration')
+    record: Semantic[Record]
+    subject_uid: Semantic[UID]
+    timestamp: Semantic[Timestamp]
 
-class TrackerState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 392
+class ImagingSensorState(OCCIDModel):
+    'Current operating and pointing state of an imaging sensor'
+    __occid_model_id__: ClassVar[int] = 168
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    subject_uid: Semantic[UID]
+    timestamp: Semantic[Timestamp]
+    run_state: SensorRunState
+    mode: SensorMode | None = None
+    gimbal_state: GimbalState | None = None
+    gimbal_attitude: Semantic[EulerAngles] | None = None
+    field_of_view: Semantic[SensorFieldOfView] | None = None
+
+class TrackerState(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 390
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'SensorState'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    subject_uid: Semantic[UID]
+    timestamp: Semantic[Timestamp]
     locked: builtins.bool | None = None
     target_uid: Semantic[UID] | None = None
     angular_error: Semantic[LocalDirection] | None = None
@@ -49,6 +70,9 @@ class FlightSensorConfiguration(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    subject_uid: Semantic[UID]
+    timestamp: Semantic[Timestamp]
     accelerometer: builtins.str | None = None
     barometer: builtins.str | None = None
     magnetometer: builtins.str | None = None

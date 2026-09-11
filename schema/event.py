@@ -37,7 +37,7 @@ class Event(OCCIDModel):
 
 class SubjectEvent(OCCIDModel):
     'Event concerning one identified operational subject at one semantic timestamp'
-    __occid_model_id__: ClassVar[int] = 359
+    __occid_model_id__: ClassVar[int] = 357
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlightEvent', 'MissionEvent')
@@ -57,7 +57,7 @@ class FlightEvent(OCCIDModel):
     event: AirMissionEvent
 
 class MissionEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 241
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -67,7 +67,7 @@ class MissionEvent(OCCIDModel):
 
 class TimelineEvent(OCCIDModel):
     'Human-authored or imported operational timeline occurrence used for scenario, rehearsal, planning, and historical presentation'
-    __occid_model_id__: ClassVar[int] = 388
+    __occid_model_id__: ClassVar[int] = 386
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

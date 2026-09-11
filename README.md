@@ -326,6 +326,9 @@ Media
 ```
 
 Concrete media forms can carry the fields appropriate to that kind of media while remaining members of the broader semantic family.
+Media resources carry a controlled `MediaModality`, use typed network addresses,
+identify their producing Entity and acquisition sensor when known, and put pixel
+dimensions directly on image and video media.
 
 Media itself is also separate from how that media is displayed. A photograph can exist as media, while a `MediaGraphic` or `GeoreferencedMediaGraphic` represents how it is placed in a visual product or map.
 
@@ -443,7 +446,7 @@ The APEX Payload work was used as an interoperability stress test for this part 
 
 OCCID contains robotics and UAV-oriented representations because those systems are major real consumers, not because OCCID is a drone-specific ontology.
 
-Current structures include robot/controller configuration, receiver and channel mapping, remote-control interfaces, observer sources, flight-control state, video configuration, autopilot and RC vocabularies, and UAV-related telemetry/message forms.
+Current structures include robot/controller configuration, receiver and channel mapping, remote-control interfaces, media-production capabilities, identified image sensors, imaging-sensor state, flight-control state, video configuration, autopilot and RC vocabularies, and UAV-related telemetry/message forms.
 
 Endpoint-specific calls such as `arm()`, `goto_location()`, or `start_offboard()` do not automatically become ontology classes. They are adapter/runtime operations that may map to more general OCCID intent or command semantics.
 

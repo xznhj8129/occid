@@ -60,7 +60,7 @@ class Command(OCCIDModel):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 352
+    __occid_model_id__: ClassVar[int] = 349
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -72,7 +72,7 @@ class StateChangeCommand(OCCIDModel):
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 296
+    __occid_model_id__: ClassVar[int] = 293
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -96,7 +96,7 @@ class ConfigurationCommand(OCCIDModel):
 
 class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -111,7 +111,7 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 317
+    __occid_model_id__: ClassVar[int] = 314
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -4,8 +4,7 @@ import builtins
 from .common import *
 
 from .definition import OperationalDomain
-from .entities import EntitySubtype, EntityType, MachineType
-from .payload import SensorDataFormat
+from .entities import EntityType, MachineType
 
 ### Enums
 
@@ -19,10 +18,10 @@ class VideoProtocol(IntEnum):
     WEBRTC = auto()
 
 class TelemetryType(IntEnum):
-    MSP = 0
+    NONE = 0
+    MSP = auto()
     MAVLINK = auto()
     CRSF = auto()
-    MANUAL_ENTRY = auto()
 
 class RCType(IntEnum):
     PWM = 0
@@ -69,7 +68,7 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 323
+    __occid_model_id__: ClassVar[int] = 320
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -118,7 +117,7 @@ class GroundRobot(OCCIDModel):
     navigation: Semantic[GroundNavigation]
 
 class VideoConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 409
+    __occid_model_id__: ClassVar[int] = 407
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -133,7 +132,7 @@ class VideoConfig(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 308
+    __occid_model_id__: ClassVar[int] = 305
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -156,7 +155,7 @@ class ChannelMapEntry(OCCIDModel):
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 244
+    __occid_model_id__: ClassVar[int] = 243
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -168,7 +167,7 @@ class ModeRange(OCCIDModel):
     range: Semantic[NumericRange]
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 324
+    __occid_model_id__: ClassVar[int] = 321
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -179,7 +178,7 @@ class RobotController(OCCIDModel):
     autopilot_firmware: Semantic[FirmwareInfo]
 
 class RemoteControl(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 313
+    __occid_model_id__: ClassVar[int] = 310
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Interface'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -193,34 +192,6 @@ class RemoteControl(OCCIDModel):
     receiver_config: Semantic[ReceiverConfig] | None = None
     channel_map: list[Semantic[ChannelMapEntry]]
     mode_ranges: list[Semantic[ModeRange]]
-
-class ObserverSource(OCCIDModel):
-    'Entity-owned imagery/video observation source with OCCID identity, local acquisition source, camera geometry, and telemetry links'
-    __occid_model_id__: ClassVar[int] = 260
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Interface'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ObserverSource')]
-    entity_uid: Semantic[UID]
-    name: builtins.str
-    local_source: builtins.str
-    objtype: EntitySubtype = EntitySubtype.AIR_ROBOT
-    active: builtins.bool = True
-    pos: Semantic[GlobalPosition] | None = None
-    attitude: Semantic[EulerAngles] | None = None
-    gimbal_ang: Semantic[EulerAngles] | None = None
-    gimbal_axes: list[GimbalAxis]
-    field_of_view: Semantic[SensorFieldOfView] | None = None
-    media_kind: SensorDataFormat = SensorDataFormat.VIDEO
-    video: Semantic[VideoConfig] | None = None
-    video_res: tuple[builtins.int, builtins.int] | None = None
-    telemetry_type: TelemetryType | None = None
-    telem_port: builtins.str | None = None
-    telem_baud: builtins.int | None = None
-    commands_allowed: builtins.bool = False
-    can_zoom: builtins.bool = False
 
 class FlightControlState(OCCIDModel):
     'Portable flight-controller operational state independent of endpoint-specific mode identifiers'

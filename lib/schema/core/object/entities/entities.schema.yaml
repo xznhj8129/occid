@@ -190,6 +190,7 @@ models:
       model: string
       sensors: map[string, SensorPayload]
       navigation: AirNavigation
+      
   MilitaryAirNavigation:
     semantic_role: representation
     parent: AirNavigation

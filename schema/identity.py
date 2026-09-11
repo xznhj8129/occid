@@ -14,7 +14,7 @@ class Identity(OCCIDModel):
 
 class StringName(OCCIDValue[builtins.str]):
     'Human-readable reference for something'
-    __occid_model_id__: ClassVar[int] = 354
+    __occid_model_id__: ClassVar[int] = 352
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Identity'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

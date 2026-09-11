@@ -56,3 +56,10 @@ class Communication(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Interface', 'Link', 'DataRateSpec', 'LinkCapacity', 'Message', 'Network', 'Node', 'Protocol')
+
+class Interface(OCCIDModel):
+    'System or protocol interface through which a component communicates with another endpoint'
+    __occid_model_id__: ClassVar[int] = 172
+    __occid_semantic_role__: ClassVar[str] = 'concept'
+    __occid_parent__: ClassVar[str | None] = 'Communication'
+    __occid_children__: ClassVar[tuple[str, ...]] = ('RemoteControl',)

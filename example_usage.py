@@ -13,9 +13,9 @@ Entity 38, Track 38, and Task 38 are unrelated local IDs because they belong to
 different IntID namespaces. Their UIDs are globally unambiguous. Durable
 cross-object references use UIDs, never IDs.
 
-The scenario walks through identities, organizations, communications, external
-protocol mapping, authority, tasking, dispatch, vehicle action, telemetry,
-observation, execution, tracking, and compact wire.
+The scenario walks through identities, organizations, communications, media
+production, external protocol mapping, authority, tasking, dispatch, vehicle
+action, telemetry, observation, execution, tracking, and compact wire.
 """
 
 from __future__ import annotations
@@ -45,7 +45,10 @@ from occid import (
     CommandAuthority,
     CommandMessage,
     ConfidenceLevel,
+    CaptureSize2D,
     Drone,
+    Duration,
+    EffectDomain,
     EntityState,
     Execution,
     ExecutionCommand,
@@ -54,6 +57,9 @@ from occid import (
     FirmwareInfo,
     GlobalPosition,
     Group,
+    GimbalAxis,
+    ImageSensor,
+    ImagingSensorState,
     InformationIntent,
     InertialReferenceFrame,
     IntelCategory,
@@ -62,6 +68,10 @@ from occid import (
     LinkDataType,
     LinkDirection,
     LinkType,
+    LiveVideoStream,
+    MediaLiveness,
+    MediaProductionCapability,
+    MediaSpectrum,
     MessagePriority,
     MotionCommand,
     MotionOperation,
@@ -73,26 +83,32 @@ from occid import (
     ObservationKind,
     ObservationMessage,
     ObservationTimeBasis,
+    OperationalPlan,
     OrgLevel,
     OrgTopology,
     OrgType,
     OrganizationState,
-    Plan,
     PlanApprovalState,
     Person,
-    PlanStep,
     PropulsionType,
     Record,
     RemoteControl,
     RobotController,
     Role,
     Roster,
+    SensorAICapability,
+    SensorDataFormat,
+    SensorErrorType,
+    SensorRunState,
+    SensorSpectrum,
+    SensorType,
     SpotterOrigin,
     TaskAssignment,
     TaskInformation,
     TaskPhase,
     TaskPriority,
     TaskStatus,
+    TelemetryType,
     Timestamp,
     Track,
     TrackState,
@@ -344,6 +360,7 @@ def main() -> None:
             "Organization": 2,
             "Entity": 37,
             "Node": 5,
+            "MediaItem": 1,
             "Track": 38,
             "Observation": 1,
             "Authority": 1,
@@ -366,6 +383,7 @@ def main() -> None:
     operator_id = registry.allocate("Entity")
     uav_uid = new_uid()
     uav_id = registry.allocate("Entity")
+    imaging_sensor_uid = new_uid()
     hq_node_uid = new_uid()
     hq_node_id = registry.allocate("Node")
     uav_node_uid = new_uid()
@@ -391,6 +409,11 @@ def main() -> None:
     )
 
     uav = Drone(
+        capabilities=[
+            MediaProductionCapability(
+                content_types=[MediaSpectrum.VISUAL],
+            )
+        ],
         record=record(registry, "provisioning"),
         uid=uav_uid,
         id=uav_id,
@@ -403,7 +426,26 @@ def main() -> None:
         propulsion=PropulsionType.ROTARY_WING,
         components=[],
         model="Frog UAV",
-        sensors={},
+        sensors={
+            "eo": ImageSensor(
+                uid=imaging_sensor_uid,
+                name="Frog UAV EO camera",
+                model="EO camera",
+                type=SensorType.EO,
+                effect_domain=EffectDomain.ALL,
+                max_range=0.0,
+                ptz=True,
+                spectrum=SensorSpectrum.VISUAL,
+                all_weather=False,
+                weather_limits=WeatherLimits(),
+                error_margin=0.0,
+                error_type=SensorErrorType.RMS,
+                data_formats=[SensorDataFormat.STILL_IMAGE, SensorDataFormat.VIDEO],
+                ai=[SensorAICapability.DETECTION, SensorAICapability.TRACKING],
+                night_vision=False,
+                gimbal_axes=[GimbalAxis.PITCH, GimbalAxis.YAW],
+            )
+        },
         navigation=AirNavigation(
             flight_type=AirframeType.COPTER,
             control_modes=[],
@@ -425,6 +467,23 @@ def main() -> None:
             ),
         ),
         remote_control=RemoteControl(channel_map=[], mode_ranges=[]),
+        telemetry_type=TelemetryType.MAVLINK,
+    )
+
+    live_video = LiveVideoStream(
+        uid=new_uid(),
+        id=registry.allocate("MediaItem"),
+        path=NetworkAddress(
+            kind=AddressKind.URI,
+            value="rtsp://10.42.0.38/live/eo",
+        ),
+        size=CaptureSize2D(width=1920, height=1080),
+        producer_uid=uav.uid,
+        sensor_uid=imaging_sensor_uid,
+        metadata={},
+        duration=Duration(seconds=0.0),
+        is_live=MediaLiveness.LIVE,
+        has_audio=False,
     )
 
     hq_address = NetworkAddress(kind=AddressKind.IPV4, value="10.42.0.1", port=7447)
@@ -471,8 +530,8 @@ def main() -> None:
     # -----------------------------------------------------------------------
     # 2. Organization
     # -----------------------------------------------------------------------
-    # Organization identity is stable. Mutable membership and roster belong to
-    # OrganizationState observations rather than being embedded in identity.
+    # Organization membership and roster identify the current composition;
+    # changing operational condition remains in OrganizationState observations.
     uas_unit = Unit(
         record=record(registry, "provisioning"),
         uid=uas_unit_uid,
@@ -483,14 +542,14 @@ def main() -> None:
         org_level=OrgLevel.UNIT,
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
+        member_uids=[operator.uid, uav.uid],
+        roster=Roster(roster={}),
     )
 
     uas_unit_state = OrganizationState(
         record=record(registry, "sigma.organization"),
         subject_uid=uas_unit.uid,
         timestamp=timestamp(),
-        member_uids=[operator.uid, uav.uid],
-        roster=Roster(roster={}),
     )
 
     task_force = Group(
@@ -503,14 +562,14 @@ def main() -> None:
         org_level=OrgLevel.GROUP,
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
+        member_uids=[uas_unit.uid],
+        roster=Roster(roster={}),
     )
 
     task_force_state = OrganizationState(
         record=record(registry, "sigma.organization"),
         subject_uid=task_force.uid,
         timestamp=timestamp(),
-        member_uids=[uas_unit.uid],
-        roster=Roster(roster={}),
     )
 
     # -----------------------------------------------------------------------
@@ -535,6 +594,7 @@ def main() -> None:
         uid=new_uid(),
         id=registry.allocate("Observation"),
         track_uid=track.uid,
+        evidence_media_uids=[],
         obs_ts=timestamp(cot.event_ts),
         observation_kind=ObservationKind.TRACK,
         position=reported_position,
@@ -574,6 +634,13 @@ def main() -> None:
         source_observation_ts=timestamp(mavlink.time_boot_ms / 1000.0),
         source_time_basis=ObservationTimeBasis.BOOT,
         received_ts=timestamp(),
+    )
+
+    imaging_sensor_state = ImagingSensorState(
+        record=record(registry, "adapter.camera"),
+        subject_uid=imaging_sensor_uid,
+        timestamp=timestamp(),
+        run_state=SensorRunState.ACTIVE,
     )
 
     external_identity_map = {
@@ -642,7 +709,7 @@ def main() -> None:
         task_uid=task.uid,
     )
 
-    plan = Plan(
+    plan = OperationalPlan(
         record=record(registry, "sigma.control"),
         uid=new_uid(),
         id=registry.allocate("Plan"),
@@ -652,8 +719,6 @@ def main() -> None:
         actor_uids=[uav.uid],
         resource_uids=[],
         assignment_uids=[assignment.uid],
-        steps=[PlanStep(actor_uids=[uav.uid], depends_on=[], sequence=1)],
-        routes=[],
         constraints=[],
         contingencies=[],
         approval_state=PlanApprovalState.APPROVED,
@@ -759,6 +824,9 @@ def main() -> None:
         uid=new_uid(),
         id=registry.allocate("Observation"),
         track_uid=track.uid,
+        observer_entity_uid=uav.uid,
+        sensor_uid=imaging_sensor_uid,
+        evidence_media_uids=[live_video.uid],
         obs_ts=timestamp(),
         observation_kind=ObservationKind.DETECTION,
         category=IntelCategory.IMINT,
@@ -788,6 +856,9 @@ def main() -> None:
         uid=new_uid(),
         id=registry.allocate("Observation"),
         track_uid=track.uid,
+        observer_entity_uid=uav.uid,
+        sensor_uid=imaging_sensor_uid,
+        evidence_media_uids=[live_video.uid],
         obs_ts=timestamp(),
         observation_kind=ObservationKind.TRACK,
         category=IntelCategory.IMINT,
@@ -836,6 +907,8 @@ def main() -> None:
     # 11. Compact OCCID wire
     # -----------------------------------------------------------------------
     wire_payloads = {
+        "live_video": live_video.encode(),
+        "imaging_sensor_state": imaging_sensor_state.encode(),
         "initial_track_update": initial_track_update.encode(),
         "start_execution": start_message.encode(),
         "motion_command": move.encode(),

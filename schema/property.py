@@ -7,13 +7,13 @@ from .common import *
 
 class Property(OCCIDModel):
     'A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition'
-    __occid_model_id__: ClassVar[int] = 297
+    __occid_model_id__: ClassVar[int] = 294
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('Attribute', 'Capability', 'Identity', 'Parameter', 'Version', 'FirmwareInfo', 'MetadataValue', 'Relationship')
+    __occid_children__: ClassVar[tuple[str, ...]] = ('CaptureSize2D', 'CaptureSize3D', 'Attribute', 'Capability', 'Identity', 'Parameter', 'Version', 'FirmwareInfo', 'MetadataValue', 'Relationship')
 
 class Version(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 408
+    __occid_model_id__: ClassVar[int] = 406
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

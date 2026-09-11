@@ -48,7 +48,6 @@ enums:
   - ELLIPTICAL
   - SECTOR
 
-
   PayloadType:
   - EO = 0
   - EO_IR
@@ -77,6 +76,7 @@ models:
     semantic_role: representation
     parent: Payload
     fields:
+      uid: UID
       name: string
       model: string
       type: SensorType
@@ -107,6 +107,8 @@ models:
     parent: SensorPayload
     fields:
       night_vision: bool
+      gimbal_axes: list[GimbalAxis]
+      mount_attitude: optional EulerAngles
 
   RFSensor:
     semantic_role: representation
@@ -150,4 +152,3 @@ models:
       launcher: string = ""
       compat_tags: list[PayloadType]
       loaded: list[PayloadAllocation]
-

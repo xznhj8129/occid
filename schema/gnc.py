@@ -54,7 +54,7 @@ class GNC(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('NavigationValidity', 'GnssSolution', 'AutopilotMissionState', 'FlightControlState')
 
 class NavigationValidity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 248
+    __occid_model_id__: ClassVar[int] = 247
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -79,7 +79,7 @@ class GnssSolution(OCCIDModel):
 
 class AutopilotMissionState(OCCIDModel):
     'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'
-    __occid_model_id__: ClassVar[int] = 31
+    __occid_model_id__: ClassVar[int] = 30
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

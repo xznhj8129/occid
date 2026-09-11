@@ -22,13 +22,13 @@ class CryptoType(IntEnum):
 
 class Protocol(OCCIDModel):
     'Wire format, message id space, payload format, command/result vocabulary, and mapping metadata'
-    __occid_model_id__: ClassVar[int] = 298
+    __occid_model_id__: ClassVar[int] = 295
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ProtocolPayload', 'CryptoKey', 'CryptoProfile', 'LoRaProfile', 'AprsProfile', 'ElrsProfile', 'FpvProfile')
 
 class ProtocolPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 300
+    __occid_model_id__: ClassVar[int] = 297
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -58,7 +58,7 @@ class CryptoProfile(OCCIDModel):
     keys: list[Semantic[CryptoKey]]
 
 class LoRaProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 195
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

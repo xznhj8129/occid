@@ -138,7 +138,7 @@ class Agent(OCCIDModel):
     relations: list[Semantic[DirectedRelationship]]
 
 class Person(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 280
+    __occid_model_id__: ClassVar[int] = 278
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryPerson',)
@@ -161,7 +161,7 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, Semantic[SensorPayload]]
 
 class Machine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 205
+    __occid_model_id__: ClassVar[int] = 204
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Vehicle', 'Platform', 'GroundMachine', 'AirMachine', 'MilitaryMachine', 'Robot')
@@ -182,7 +182,7 @@ class Machine(OCCIDModel):
     components: list[Semantic[EntityComponentRef]]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 406
+    __occid_model_id__: ClassVar[int] = 404
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -203,7 +203,7 @@ class Vehicle(OCCIDModel):
     components: list[Semantic[EntityComponentRef]]
 
 class Platform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 288
+    __occid_model_id__: ClassVar[int] = 285
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

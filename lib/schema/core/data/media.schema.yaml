@@ -5,82 +5,144 @@ root: Media
 tags:
   - core
 
+enums:
+  MediaSpectrum:
+    - VISUAL = 0
+    - AUDIO
+    - RADIO
+    - IR
+    - UV
+    - MOTION
+    - MATTER
+
+  MediaTimeOrigin:
+    - RECORDED = 0
+    - STREAMED
+
+  MediaLiveness:
+    - FINISHED = 0
+    - LIVE
+
+  ImageOrigin:
+    - PHOTO = 0
+    - VIDEO_CAPTURE
+    - SCREEN_CAPTURE
+    - GENERATED
+    - SCAN
+
+  MediaDomain:
+    - SPATIAL = 0
+    - TEMPORAL
+    - FREQUENCY
+    - TIME_FREQUENCY
+
 models:
   Media:
-    description: Recorded, streamed, sampled, or otherwise encoded information used as an operational representation
+    description: Recorded, streamed, sampled, or otherwise encoded non-text information used as an operational representation
     semantic_role: concept
-    parent: IdentifiedRepresentation
+    parent: Data
 
   MediaItem:
-    description: Identified media resource with address, provenance, and common storage metadata; concrete media semantics are expressed by children
+    description: Identified media resource with typed content, address, acquisition provenance, and common storage metadata; concrete media semantics are expressed by children
     semantic_role: concept
     parent: Media
     fields:
+      uid: UID
       id: IntID(MediaItem)
-      uri: string
+      content_type: MediaSpectrum
       size: optional ByteCount
-      content_type: optional string
-      source_uid: optional UID
+      producer_uid: optional UID
+      sensor_uid: optional UID
       captured_ts: optional Timestamp
+      metadata: map[string, MetadataValue]
 
-  ImageMedia:
-    description: Two-dimensional visual media
+  CaptureSize2D:
+    description: 2D media size
+    semantic_role: representation
+    parent: Property
+    fields: 
+      width: int
+      height: int
+
+  CaptureSize3D:
+    description: 2D media size
+    semantic_role: representation
+    parent: Property
+    fields: 
+      length: int
+      width: int
+      height: int
+
+  StillMedia:
+    description: Spatial-domain fixed media
     semantic_role: concept
     parent: MediaItem
 
-  StillImage:
-    description: Time-static image media independent of how the image was produced
+  PointCloudMedia:
+    description: Spatial point-cloud media
     semantic_role: representation
-    parent: ImageMedia
+    parent: StillMedia
+    fields:
+      size: CaptureSize3D
+      content_type: MediaSpectrum = MATTER
 
-  Photograph:
-    description: Still image produced by an imaging sensor or camera
+  StillImage:
+    description: Time-static image frame
     semantic_role: representation
-    parent: StillImage
+    parent: StillMedia
+    fields:
+      origin_type: ImageOrigin
+      size: CaptureSize2D
+      content_type: MediaSpectrum = VISUAL
 
   VideoFrame:
     description: Still image identified as a frame originating from video media
     semantic_role: representation
     parent: StillImage
     fields:
+      origin_type: ImageOrigin = VIDEO_CAPTURE
       video_uid: optional UID
+      frame_n: int
+
+  DurationalMedia:
+    description: Media with a time dimension
+    semantic_role: concept
+    parent: MediaItem
+    fields:
+      duration: Duration
+      start_time: optional Timestamp
+      end_time: optional Timestamp
+      is_live: MediaLiveness
+      time_origin: MediaTimeOrigin
 
   VideoMedia:
     description: Time-varying visual media
     semantic_role: concept
-    parent: MediaItem
-
-  VideoRecording:
-    semantic_role: representation
-    parent: VideoMedia
+    parent: DurationalMedia
     fields:
-      duration: optional Duration
+      size: CaptureSize2D
+      content_type: MediaSpectrum = VISUAL
+      has_audio: bool
 
   LiveVideoStream:
     description: Live or near-live video stream endpoint
     semantic_role: representation
     parent: VideoMedia
+    fields:
+      time_origin: MediaTimeOrigin = STREAMED
+      path: NetworkAddress
 
   AudioMedia:
     description: Acoustic or other audio-band media
     semantic_role: concept
-    parent: MediaItem
-
-  AudioRecording:
-    semantic_role: representation
-    parent: AudioMedia
+    parent: DurationalMedia
     fields:
-      duration: optional Duration
-
-  LiveAudioStream:
-    description: Live or near-live audio stream endpoint
-    semantic_role: representation
-    parent: AudioMedia
+      content_type: MediaSpectrum = AUDIO
 
   SpectrumMedia:
     description: Frequency-domain sampled or recorded media
     semantic_role: concept
-    parent: MediaItem
+    parent: DurationalMedia
 
   SpectrumRecording:
     description: Recorded radio-frequency or other spectrum data over a declared frequency span
@@ -88,19 +150,4 @@ models:
     parent: SpectrumMedia
     fields:
       frequency_range: optional FrequencyRange
-      duration: optional Duration
 
-  PointCloudMedia:
-    description: Spatial point-cloud media
-    semantic_role: representation
-    parent: MediaItem
-
-  DocumentMedia:
-    description: Human- or machine-readable document media
-    semantic_role: representation
-    parent: MediaItem
-
-  BinaryMedia:
-    description: Binary media whose deeper semantics are not yet known or not represented by another MediaItem child
-    semantic_role: representation
-    parent: MediaItem

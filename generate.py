@@ -94,6 +94,12 @@ def validate_identity_field_types() -> None:
     for path in sorted(SCHEMA_ROOT.rglob("*.schema.yaml")):
         document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         for model_name, model_spec in (document.get("models") or {}).items():
+            if not isinstance(model_spec, dict):
+                raise SystemExit(
+                    f"{path}: model {model_name} must be a mapping, not "
+                    f"{type(model_spec).__name__} ({model_spec!r}); "
+                    "the model declaration may be missing its body"
+                )
             for field_name, field_spec in (model_spec.get("fields") or {}).items():
                 type_text = _declared_type(field_spec)
 

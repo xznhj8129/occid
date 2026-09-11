@@ -48,9 +48,14 @@ enums:
   - XRAY
   - YANKEE
   - ZULU
-  
+
 models:
   Communication:
     description: Movement of information between endpoints
     semantic_role: concept
     parent: Root
+
+  Interface:
+    description: System or protocol interface through which a component communicates with another endpoint
+    semantic_role: concept
+    parent: Communication

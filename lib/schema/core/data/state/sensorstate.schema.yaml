@@ -27,9 +27,20 @@ enums:
 models:
 
   SensorState:
-    description: Onboard sensor readings, readiness, calibration, and availability
+    description: Time-indexed readings, readiness, calibration, and availability of an identified sensor
     semantic_role: concept
-    parent: State
+    parent: SubjectState
+
+  ImagingSensorState:
+    description: Current operating and pointing state of an imaging sensor
+    semantic_role: representation
+    parent: SensorState
+    fields:
+      run_state: SensorRunState
+      mode: optional SensorMode
+      gimbal_state: optional GimbalState
+      gimbal_attitude: optional EulerAngles
+      field_of_view: optional SensorFieldOfView
 
   TrackerState:
     semantic_role: representation

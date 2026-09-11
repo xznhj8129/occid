@@ -1,5 +1,20 @@
 # Development log
 
+## 2026-09-11 - Replace the ObserverSource application aggregate
+
+- Removed `ObserverSource`; a media-producing Entity is now expressed through
+  `MediaProductionCapability` rather than a second identity parented as a
+  communication Interface.
+- Added controlled `MediaModality`, typed media addresses and explicit producer
+  and sensor provenance. Image and video pixel dimensions live directly on the
+  corresponding existing media concepts.
+- Made sensor payloads referenceable, added stable image-sensor mounting
+  information and time-indexed imaging-sensor state, and connected concrete
+  observations to observer Entities, sensors and supporting media.
+- Retained the independent `VideoConfig`, `VideoProtocol`, and `GimbalAxis`
+  declarations; removing the obsolete aggregate did not remove those reusable
+  semantics.
+
 ## 2026-09-10 - Flatten non-combat military semantics into core
 
 - Removed military/NATO source-module boundaries for organization/OOB, SIDC and symbology, standard identity/affiliation, tactical graphics, NATO supply classification, NATO communication/radio conventions, and non-combat aviation extensions. These are ordinary OCCID semantics and now compile from their corresponding core packages.

@@ -45,7 +45,7 @@ class NATORadioBands(IntEnum):
 
 class Radio(OCCIDModel):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 303
+    __occid_model_id__: ClassVar[int] = 300
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Link'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FrequencyRange', 'ChannelSpec', 'RadioProfile')
@@ -100,45 +100,16 @@ class ChannelSpec(OCCIDModel):
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
     network_uid: Semantic[UID] | None = None
-    channel_uid: Semantic[UID] | None = None
+    channel_id: builtins.int
     label: builtins.str | None = None
     frequency: Semantic[FrequencyRange] | None = None
     bandwidth_mhz: builtins.float | None = None
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 304
+    __occid_model_id__: ClassVar[int] = 301
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Radio'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryRadioProfile',)
-    name: builtins.str | None = None
-    endpoint_uid: Semantic[UID] | None = None
-    interface_name: builtins.str | None = None
-    address: Semantic[NetworkAddress] | None = None
-    radio_uid: Semantic[UID] | None = None
-    link_type: LinkType | None = None
-    net_type: NetType | None = None
-    data_type: LinkDataType | None = None
-    direction: LinkDirection | None = None
-    rate_spec: Semantic[DataRateSpec] | None = None
-    user_capacity: Semantic[LinkCapacity] | None = None
-    network_uid: Semantic[UID] | None = None
-    service: RadioService | None = None
-    waveform: Waveform | None = None
-    frequency: Semantic[FrequencyRange] | None = None
-    channel_plan: list[Semantic[ChannelSpec]]
-    active_channel_uid: Semantic[UID] | None = None
-    crypto_types: list[CryptoType]
-    crypto_profile: Semantic[CryptoProfile] | None = None
-    lora: Semantic[LoRaProfile] | None = None
-    aprs: Semantic[AprsProfile] | None = None
-    elrs: Semantic[ElrsProfile] | None = None
-    fpv: Semantic[FpvProfile] | None = None
-
-class MilitaryRadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 236
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'RadioProfile'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     name: builtins.str | None = None
     endpoint_uid: Semantic[UID] | None = None
@@ -152,6 +123,7 @@ class MilitaryRadioProfile(OCCIDModel):
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
     network_uid: Semantic[UID] | None = None
+    bands: list[NATORadioBands]
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: Semantic[FrequencyRange] | None = None
@@ -163,4 +135,3 @@ class MilitaryRadioProfile(OCCIDModel):
     aprs: Semantic[AprsProfile] | None = None
     elrs: Semantic[ElrsProfile] | None = None
     fpv: Semantic[FpvProfile] | None = None
-    bands: list[NATORadioBands]
