@@ -1,589 +1,304 @@
-# OCCID2 semantic-product demonstrator specification
+# OCCID2 semantic algebra notes
 
-## 1. Purpose
+## 1. Schema is canonical
 
-This demonstrator tests one architectural claim:
-
-> OCCID can retain its existing authored class/model hierarchy and field inheritance while gaining a second way to address information by semantic meaning rather than exact model and field paths.
-
-The semantic layer must not become another ontology tree.
-
-The semantic layer consists of:
-
-- concepts already present in the OCCID model tree;
-- typed axes and axis values;
-- unordered semantic products;
-- directed relations;
-- legality rules attached primarily to axes;
-- mappings from practical surface vocabulary to deeper semantic products.
-
-The prototype is intentionally bounded. It demonstrates a person, a ground robot, a flying drone, position data, and several Task representations.
+The authored schema (`occid2.schema.yaml`) is the source of truth. The compiler
+and runtime derive everything from it: there is no rules block, no
+`semantic_role`, no hard-coded inheritance logic, and no second hierarchy. When
+this document and the schema disagree, the schema wins and the derivation must
+be fixed.
 
 ---
 
-## 2. One OCCID model tree
+## 2. Two judgments
 
-There is one normal OCCID inheritance mechanism:
+The algebra has exactly two judgments:
 
 ```text
-parent:
+x ⊨ P            satisfaction: the thing x satisfies the product P
+R(a₁, …, aₙ)     relation: a directed link between things
 ```
 
-It provides both:
-
-1. ordinary inherited representation fields; and
-2. semantic ancestry where the parent is a semantic concept.
-
-There is no separate serialization inheritance mechanism.
-
-The demo therefore has ordinary chains such as:
+A **product** `P = f₁ × f₂ × …` is an unordered, idempotent conjunction of
+factors that describes **one** thing:
 
 ```text
-Root
-└── Object
-    └── Entity
-        ├── Actor
-        │   └── Person
-        └── Machine
-            └── Robot
-                ├── GroundRobot
-                └── Drone
-```
-
-and:
-
-```text
-Root
-└── Control
-    └── Directive
-        └── Task
-            ├── TaskManeuver
-            ├── TaskInformation
-            └── TaskEffect
-```
-
-A parent may have fields if those fields truthfully apply to all descendants.
-
-For example `Task` owns only fields that make sense for all Task representations in this demo. Spatial-only fields such as `location_uids` and `target_uids` are intentionally absent from `Task`.
-
----
-
-## 3. Semantic products
-
-A semantic product is an unordered idempotent conjunction of factors.
-
-Conceptually:
-
-```text
-A × B × C = C × A × B
+A × B = B × A
 A × A = A
 ```
 
-No universal wrapper fields such as these exist:
+Meaning is the entailment closure:
 
 ```text
-subject
-property
-role
-focus
-reference
-context
+M(x) = closure{ f | x ⊨ f }
 ```
 
-Factors identify themselves.
+`M(x)` is a product, not a sentence. It is the strongest product x satisfies.
+There is no global wrapper (`subject`, `property`, `role`, `focus`, …); a
+factor identifies its own dimension (`Domain.AIR`, `BloodGroup.A_POS`).
 
-Example:
-
-```text
-Machine
-× MachineKind.ROBOT
-× Domain.AIR
-× Controller.UNMANNED
-× Airframe.MULTIROTOR
-```
-
-The generated `Drone._semantics` is such a product.
-
-The Python application API does not need to expose multiplication syntax. The runtime may normalize queries internally to products.
+A **relation** is not a factor. It is directed and its operands are ordered, so
+`Wags(dog, tail) ≠ Wags(tail, dog)`. Products describe things; relations connect
+things.
 
 ---
 
-## 4. Axes
+## 3. Factors and axes
 
-An axis is a typed semantic dimension whose values answer one coherent semantic question.
-
-Example:
+An axis is one typed semantic dimension; its values are factors:
 
 ```yaml
 Domain:
-  semantic_role: axis
   cardinality: one
-  values:
-    - LAND
-    - AIR
-    - SEA
+  values: [LAND, AIR, SEA, UNDERSEA, SPACE]
 ```
 
-Axis values are semantic factors:
+- **Cardinality** bounds a dimension in a complete description. `cardinality:
+  one` means at most one value; two values contradict automatically. No pairwise
+  disjointness declarations are needed for values of the same axis.
+- **Applicability** says a dimension is meaningful only where a region can
+  hold. It is a satisfiability check and **does not assert** the region.
+- **Requirement** asserts the region into the closure.
 
-```python
-Domain.AIR
-Domain.LAND
-```
-
-An axis is not an enum with semantic ambitions. An ordinary enum remains an ordinary bounded representation vocabulary.
-
-The demo contains semantic axes such as:
-
-- `Substrate`
-- `Domain`
-- `MachineKind`
-- `Controller`
-- `Locomotion`
-- `Airframe`
-- `Frame`
-- `BloodGroup`
-- `Realm`
-- `TemporalMode`
-- `TruthTarget`
-
-### Cardinality
-
-`cardinality: one` means one value is valid in a complete description.
-
-For partial semantic queries, the demonstrator enforces the maximum side only. Therefore:
-
-```text
-Robot
-```
-
-can be a valid partial query without a Domain value, while:
-
-```text
-Robot × Domain.AIR × Domain.LAND
-```
-
-is contradictory.
-
-### Applicability
-
-An axis may be meaningful only inside a semantic region.
-
-Example:
+Both are declared where they belong — on the axis, an axis value, or a concept:
 
 ```yaml
 BloodGroup:
-  applies:
-    all:
-      - Substrate.BIOLOGICAL
-```
+  applies: { all: [Substrate.BIOLOGICAL] }   # meaningful only for biological
+  requires: [Biological]                      # asserting: closure adds it
 
-Selecting a blood-group coordinate therefore requires the biological substrate region.
+Altitude:
+  applies: [Domain.AIR]                       # emerging: no assertion
 
-Because `Machine` contributes `Substrate.MECHANICAL`, this becomes illegal through the single-valued `Substrate` axis:
-
-```text
-Drone × BloodGroup.A_POS
-```
-
-No special `Drone cannot have blood group` rule exists.
-
----
-
-## 5. Concepts, representations, and products
-
-A concept may contribute semantic factors through normal parentage and an optional `product:` declaration.
-
-Example:
-
-```yaml
 Machine:
-  semantic_role: concept
-  parent: Entity
-  product:
-    - Substrate.MECHANICAL
+  disjoint: [Biological]
+  excludes: [[Locomotion.SELF_PROPELLED, Domain.CYBER]]
 ```
 
-`Robot` adds:
+Constraints compose `ALL`, `ANY`, and `NOT`. There is one generic rule per axis
+declaration, never one rule per value.
 
-```yaml
-product:
-  - MachineKind.ROBOT
-```
+### Emergent dimensions
 
-`Drone`, a representation, adds:
+Adding a factor can make a dimension meaningful without creating a class:
 
-```yaml
-product:
-  - Domain.AIR
-  - Controller.UNMANNED
-  - Locomotion.SELF_PROPELLED
-  - Airframe.MULTIROTOR
-```
-
-`product:` is not a record of named semantic fields. It is merely YAML syntax for an unordered product.
-
-The corresponding factors do not need fields named `domain`, `controller`, `locomotion`, or `airframe` unless a concrete wire/representation format independently needs those serialized fields.
-
----
-
-## 6. Representation-specific versus semantic lookup
-
-`GlobalPosition` is a representation under the `Position` concept:
-
-```yaml
-GlobalPosition:
-  semantic_role: representation
-  parent: Position
-  product:
-    - Frame.WGS84
-```
-
-Therefore its static meaning is available directly:
-
-```python
-GlobalPosition._semantics
-```
-
-Application code can request the exact representation:
-
-```python
-drone.get(GlobalPosition)
-```
-
-or request by semantic meaning:
-
-```python
-drone.get(Position, Frame.WGS84)
-```
-
-Those are deliberately different operations.
-
-The second survives a future representation rename or replacement as long as some representation still satisfies the same semantic product.
-
-Discovery is explicit:
-
-```python
-drone.find(Position)
-```
-
-and can return multiple stored values if several representations satisfy the query.
-
-Multiple subjects are not flattened into one product:
-
-```python
-store.get_many([drone1, drone2, drone3], Position)
+```text
+Mission × Domain.AIR      gains Altitude applicability
+AirTask = Task × Domain.AIR
 ```
 
 ---
 
-## 7. Products versus relations
+## 4. Legality, partial products, unknown vs illegal
 
-Products describe one semantic thing.
+The solver has two layers:
 
-Relations connect distinct semantic things and preserve operand order.
+1. `closure(product)` applies requirements and implications whose `when` holds,
+   adding each forced region's semantic ancestry.
+2. `consistent(closed)` rejects axis-cardinality violations, disjointness,
+   exclusions, and unsatisfiable requirements.
 
-The demo defines:
+A partial product is legal without pretending to be complete. A question is
+illegal only when **no completion exists**:
+
+```text
+Mission × Altitude                legal, but unknown
+Mission × Domain.SEA × Altitude   illegal (Altitude is air-only)
+Drone                             legal partial product
+Drone × Domain.SEA                illegal (Domain is single-valued)
+```
+
+This keeps "unknown answer" and "semantically illegal question" distinct.
+
+### Derived contradictions
+
+Consequences are derived, not enumerated:
+
+```text
+Drone entails Machine and Substrate.MECHANICAL
+BloodGroup requires Biological
+Biological entails Substrate.BIOLOGICAL
+Substrate is single-valued
+=> Drone × BloodGroup.A_POS is illegal
+```
+
+No `Drone cannot have a blood group` rule exists.
+
+---
+
+## 5. Names: aliases and codewords
+
+Both are the same primitive: **a name denotes a product**.
+
+- An **alias** is a registry-scoped name for a product:
 
 ```yaml
-Destination:
-  semantic_role: relation
-  signature:
-    - Task
-    - Location
+aliases:
+  UGV: [UnmannedVehicle, Domain.LAND]
+  UAV: [UnmannedVehicle, Domain.AIR]
+  Drone: [UAV, Airframe.MULTIROTOR]
 ```
 
-A move-to-location case is therefore not a `GoHereTask` class.
-
-It is a Task semantic product plus a relation:
-
-```text
-Task
-× Realm.WORLD
-× TemporalMode.ACHIEVE
-× Position
-```
-
-and:
-
-```text
-Destination(task, mark)
-```
-
-In Python:
-
-```python
-store.relate(Destination, task, mark)
-```
-
-`Destination(task, mark)` is not interchangeable with `Destination(mark, task)`.
-
----
-
-## 8. Task semantics
-
-### 8.1 Task concept
-
-The bounded working definition is:
-
-> A Task is a requirement that some proposition become or remain sufficiently true.
-
-`Task` remains intentionally broad.
-
-The demo does not encode every proposition or quantifier structure. It only proves the factorization of a small surface vocabulary.
-
-### 8.2 Why there is no Action axis
-
-The following words do not answer one coherent semantic question:
-
-```text
-MOVE
-CREATE
-IDENTIFY
-CLASSIFY
-REMOVE
-TRACK
-```
-
-Therefore they are not values of one `Action` axis.
-
-They are practical surface codewords that compress different legal products.
-
-### 8.3 General Task axes
-
-The bounded experiment introduces:
+- A **codeword** is an enum-member-scoped name. Enum members are representation
+  vocabulary; they are never semantic factors, they bind to products:
 
 ```yaml
-Realm:
-  values:
-    - WORLD
-    - INFORMATION
+InformationIntent.LOCATE:
+  product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Position]
+  relation: Target
 ```
 
-and:
+Alias resolution is recursive and canonical: `Drone` expands through `UAV` to
+`UnmannedVehicle × Domain.AIR × Airframe.MULTIROTOR`. Unknown terms stay exactly
+as authored; nothing is invented or dropped.
+
+A codeword may also declare the relation it opens. `LOCATE` asks "locate what?";
+the subject is not flattened into the product, it lives in the relation.
+
+---
+
+## 6. Models are named products
+
+Every model is a named region of semantic space:
+
+```text
+semantics(model) = parent's full semantics + model name + product factors
+```
+
+- parentage **entails** (including the parent's `product:` factors);
+- a `product:` entry naming another model expands to that model's full
+  semantics;
+- every model is storable; there is no concept/representation split;
+- exact class lookup remains available, with semantic lookup as the fallback.
+
+Example (`Mark` under `Data`, representing a point):
+
+```text
+Mark = Root × Data × Mark × State × Position × GlobalPosition × Frame.WGS84
+```
+
+Renaming or restructuring a model does not change the meaning of stored data as
+long as the semantic region it denotes is preserved. Fields are representation
+and can reach other things; they are not factors:
+
+```text
+Drone.mission: Mission     is a relation, not Drone × Mission
+```
+
+---
+
+## 7. Values versus referents
+
+A `Position` is a state datum (a value). A `Locality` (village, bridge,
+mountain) and an `Entity` are referents in the world. This distinction is
+semantic, not cosmetic:
+
+- a locality **has** a position: `LocatedAt(locality, position)`; it is not a
+  position;
+- a relation to a value and a relation to a referent are different operand
+  sorts;
+- the two live in different branches (`Data` vs `Object`), so neither can be
+  narrowed into the other.
+
+---
+
+## 8. Relations
+
+A relation declares its own operands: named, ordered, and directed. Operand
+names belong to the relation, not to a global schema.
+
+A relation cannot be derived by multiplying a relation with a factor:
+
+```text
+Destination ≠ Target × factors
+```
+
+`×` conjoins factors of one thing; a relation is a directed link. Reifying a
+relation instance allows qualifier products (`r ⊨ Existence × TruthTarget.TRUE`),
+but that qualifies the link, not the operands.
+
+The only legal relation derivations are:
+
+```text
+R|ᵢ : Pᵢ'    where Pᵢ' ⊆ Pᵢ      operand narrowing
+R ∘ S                              composition
+```
+
+---
+
+## 9. Directed base and specialization
+
+The concept "target of something" is unified at the directed-pair level, not by
+widening one relation's operands:
 
 ```yaml
-TemporalMode:
-  values:
-    - ACHIEVE
-    - MAINTAIN
+relations:
+  Directed:                      # arity and direction declared once
+    operands:
+      source: Root
+      target: Root
+
+  Target:                        # intentional: a directive is about something
+    specializes: Directed
+    operands:
+      source: Task
+      target: Root               # anything may be targeted
+
+  Destination:
+    specializes: Target
+    operands:
+      target: Position           # narrower: the goal is a position value
+
+  Affects:                       # causal: actor/cause -> effect receiver
+    specializes: Directed
+    operands:
+      source: Object             # any object may be a cause, not only an Entity
+      target: Root
 ```
 
-These are genuine axes because each answers one coherent question.
+Consequences:
 
-### 8.4 Surface enums remain enums
+- direction and operand order are inherited; they are never re-declared;
+- a query at `Directed` returns every target of a task; at `Target` it filters
+  by source; at `Destination` it filters by target region — one concept, graded
+  constraints;
+- intent (`Target`, source = `Task`) and causation (`Affects`, source =
+  `Object`) stay separate specializations of `Directed`; a task is not a cause,
+  its execution is;
+- why not one flat `Root/Root` relation with distinctions as factors: a
+  `Position` target is a value, a `Locality`/`Entity` target is a referent.
+  Same shape, different operand sort; flattening erases exactly that.
 
-The existing practical Task families are kept in reduced form:
-
-```yaml
-ManeuverIntent:
-  - MOVE = 0
-  - HOLD
-
-InformationIntent:
-  - LOCATE = 0
-  - TRACK
-  - IDENTIFY
-  - CLASSIFY
-
-EffectIntent:
-  - CREATE = 0
-  - REMOVE
-```
-
-They are ordinary representation enums, not semantic axes.
-
-The compiler associates selected enum members with semantic products.
-
-Examples:
-
-```text
-MOVE
-= Task
-× Realm.WORLD
-× TemporalMode.ACHIEVE
-× Position
-```
-
-```text
-HOLD
-= Task
-× Realm.WORLD
-× TemporalMode.MAINTAIN
-× Position
-```
-
-```text
-LOCATE
-= Task
-× Realm.INFORMATION
-× TemporalMode.ACHIEVE
-× Position
-```
-
-```text
-TRACK
-= Task
-× Realm.INFORMATION
-× TemporalMode.MAINTAIN
-× Position
-```
-
-```text
-IDENTIFY
-= Task
-× Realm.INFORMATION
-× TemporalMode.ACHIEVE
-× Identity
-```
-
-```text
-CLASSIFY
-= Task
-× Realm.INFORMATION
-× TemporalMode.ACHIEVE
-× Classification
-```
-
-`CREATE` and `REMOVE` use a state-specific truth target:
-
-```text
-CREATE
-= Task
-× Realm.WORLD
-× TemporalMode.ACHIEVE
-× Existence
-× TruthTarget.TRUE
-```
-
-```text
-REMOVE
-= Task
-× Realm.WORLD
-× TemporalMode.ACHIEVE
-× Existence
-× TruthTarget.FALSE
-```
-
-No giant verb list is required.
-
-### 8.5 Instance semantics
-
-`TaskManeuver` itself does not mean MOVE because its `intent` varies.
-
-This instance:
-
-```python
-TaskManeuver(
-    uid="task-1",
-    instruction="move there",
-    intent=ManeuverIntent.MOVE,
-)
-```
-
-has instance semantics equal to its representation semantics plus the semantic product attached to `ManeuverIntent.MOVE`.
-
-This lets the schema retain practical surface vocabulary while the semantic layer reasons about the deeper product.
+The engine supports `operands:` and `specializes:` with topological relation
+order, inherited direction, and base-level queries.
 
 ---
 
-## 9. Legality
+## 10. Queries
 
-The demonstrator implements only the subset required by the examples:
-
-- axis cardinality;
-- conjunction-style applicability requirements;
-- partial-product legality;
-- entailment and equivalence after simple applicability closure.
-
-Examples tested:
+A query is a partial semantic product, optionally involving relations:
 
 ```text
-Drone × Domain.LAND
--> illegal
+frog-1 × Position
+frog-1 × Position × Frame:World × Time:T
 ```
 
-```text
-Drone × BloodGroup.A_POS
--> BloodGroup requires Substrate.BIOLOGICAL
--> Drone entails Substrate.MECHANICAL
--> Substrate is single-valued
--> illegal
-```
-
-```text
-Person × BloodGroup.A_POS
--> legal
-```
-
-The full intended rule language remains larger: alternative requirements, higher-order exclusions, contextual profiles, and more general satisfiability are deliberately outside this small implementation.
+More factors narrow the region; an underspecified query may legitimately return
+multiple matches. Ambiguity is resolved by adding factors, not by inventing
+compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 
 ---
 
-## 10. Compiler
+## 11. Schema mapping
 
-The authored source is:
+| Schema | Derivation |
+| --- | --- |
+| `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
+| `enums` + `codewords` | ordinary representation vocabulary; each member binds to a product, optionally opens a relation |
+| `models` | named products: name factor, parent entailment, `product:` expansion |
+| `aliases` | class-free named products, resolved recursively |
+| `relations` | named ordered operands; `specializes` inherits direction |
 
-```text
-occid2.schema.yaml
-```
-
-The deterministic compiler produces:
-
-```text
-generated/occid2.py
-generated/semantic_registry.json
-```
-
-The generated Python contains:
-
-- semantic axis classes and values;
-- ordinary enums;
-- normal inherited dataclass models;
-- `_semantics` on generated model classes;
-- semantic products attached to selected surface enum values;
-- generated relation definitions;
-- a generated semantic registry.
-
-The compiler does not generate a second class hierarchy.
-
----
-
-## 11. Acceptance tests
-
-The demonstrator currently verifies:
-
-1. normal parent field inheritance;
-2. absence of spatial-only fields on base `Task`;
-3. factored `Drone` semantics without semantic payload fields;
-4. Domain cardinality contradiction;
-5. derived BloodGroup/Substrate contradiction;
-6. exact versus semantic position lookup;
-7. multi-subject lookup through `get_many`;
-8. MOVE factorization;
-9. LOCATE factorization;
-10. CREATE factorization;
-11. directed relation validation;
-12. semantic discovery through enum-provided meaning;
-13. `GlobalPosition._semantics` as the static source of representation meaning;
-14. deterministic compiler output.
-
----
-
-## 12. Non-goals
-
-This demonstrator intentionally does not attempt:
-
-- full OCCID migration;
-- a complete theorem prover;
-- arbitrary graph/path resolution;
-- automatic semantic inference from arbitrary legacy fields;
-- Task quantification and nested proposition variables;
-- generic time semantics;
-- representation transforms;
-- contextual doctrine profiles;
-- state history;
-- `EntityState` replacement;
-- complete Task/Command/Plan/Objective formalization.
-
-The only question being tested is whether semantic products, axes, relations, and surface-codeword decompositions can coexist cleanly with ordinary OCCID inheritance.
+`generated/occid2.py` and `generated/semantic_registry.json` are deterministic
+outputs. The compiler produces no rules block, no role flags, and no second
+class hierarchy.

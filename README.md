@@ -1,54 +1,46 @@
-# OCCID2 semantic-product demo
+# OCCID2 semantic algebra prototype
 
-Small executable demonstrator for adding semantic-product addressing to OCCID without replacing OCCID's normal model tree.
+Executable prototype for addressing information by semantic meaning instead of
+exact model and field paths. The authored schema (`occid2.schema.yaml`) is
+canonical; the compiler and runtime derive from it.
 
-## Design boundary
+## Findings
 
-There is one authored OCCID model hierarchy.
+The full algebraic record is in `SPEC.md`. Summary:
 
-`parent:` continues to mean normal OCCID inheritance:
+- **Two judgments.** `x ⊨ P` (a thing satisfies an unordered, idempotent factor
+  product) and `R(a₁, …, aₙ)` (a directed relation with ordered operands).
+  Meaning is the entailment closure `M(x) = closure{f | x ⊨ f}`.
+- **Factors identify their own dimensions.** `Domain.AIR`, `BloodGroup.A_POS`;
+  no `subject/property/role/focus` wrappers.
+- **Constraints are implied by declarations.** Axis cardinality,
+  `applies`/`requires` on axes and values, `disjoint`/`excludes` on concepts.
+  There is no rules block and no per-value enumeration.
+- **Partial products are legal.** A question is illegal only when no completion
+  exists: `Mission × Altitude` is unknown, `Mission × Domain.SEA × Altitude` is
+  illegal. Contradictions are derived (`Drone × BloodGroup.A_POS` via
+  `requires` + substrate cardinality), never listed.
+- **Aliases and codewords are the same primitive** (a name denotes a product);
+  aliases are registry-scoped, codewords are enum-member-scoped and may open a
+  relation (`LOCATE` opens `Target`) without flattening its subject.
+- **Every model is a named product.** Parentage entails the parent's full
+  semantics, `product:` expands model references, and every model is storable.
+  There is no concept/representation split.
+- **Values versus referents.** A `Position` is a datum; a `Locality` or
+  `Entity` is a referent. A locality has a position, it is not a position.
+- **Relations are not factors.** `Destination ≠ Target × factors`. Unify
+  "target of something" with a directed base and specialization:
 
-- descendants inherit fields from parents;
-- concept ancestry remains meaningful;
-- concepts and representations live in the same tree.
+  ```yaml
+  Directed:   operands: {source: Root,   target: Root}
+  Target:     specializes: Directed, operands: {source: Task, target: Root}
+  Destination: specializes: Target,  operands: {target: Position}
+  Affects:    specializes: Directed, operands: {source: Object, target: Root}
+  ```
 
-The semantic-product layer is an additional projection of meaning, not a second type hierarchy.
-
-The demo intentionally does **not** contain:
-
-- `struct`/`extends` serialization hierarchies;
-- a giant `Action` axis;
-- `GoHereTask`;
-- `EntityState`;
-- semantic `subject/property/role/focus/...` wrapper fields;
-- pairwise `Machine disjoint Biological` rules.
-
-## Task experiment
-
-Surface task vocabulary remains ordinary enum vocabulary:
-
-- `ManeuverIntent.MOVE`
-- `ManeuverIntent.HOLD`
-- `InformationIntent.LOCATE`
-- `InformationIntent.TRACK`
-- `InformationIntent.IDENTIFY`
-- `InformationIntent.CLASSIFY`
-- `EffectIntent.CREATE`
-- `EffectIntent.REMOVE`
-
-Those words compile into products of smaller semantic factors.
-
-Example:
-
-```text
-MOVE
-= Task
-× Realm.WORLD
-× TemporalMode.ACHIEVE
-× Position
-```
-
-`TaskManeuver.intent` remains a real representation field because the intent varies per instance. The enum itself is not promoted to a universal semantic axis.
+  Direction is inherited; queries at `Directed` see every target, at
+  `Destination` only position-valued goals. Intent (`Target`, source `Task`) and
+  causation (`Affects`, source `Object`) are separate specializations.
 
 ## Run
 
@@ -58,19 +50,20 @@ python tests.py
 python demo.py
 ```
 
-Expected test result:
+The compiler regenerates `generated/occid2.py` and
+`generated/semantic_registry.json` deterministically. Expected test result:
 
 ```text
-14 tests passed
+13 tests passed
 ```
 
 ## Files
 
-- `occid2.schema.yaml` - authored demo schema
+- `occid2.schema.yaml` - canonical authored schema
 - `compiler.py` - deterministic ahead-of-time compiler
-- `runtime.py` - tiny semantic runtime/store
+- `runtime.py` - product/relation algebra, solver, and store
 - `generated/occid2.py` - generated Python API
-- `generated/semantic_registry.json` - inspectable generated semantic registry
+- `generated/semantic_registry.json` - inspectable generated registry
 - `demo.py` - worked examples
 - `tests.py` - focused acceptance tests
-- `SPEC.md` - standalone design specification
+- `SPEC.md` - algebraic and semantic findings

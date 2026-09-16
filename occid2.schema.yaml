@@ -1,41 +1,31 @@
+# Experimental minimal semantic schema demo
 version: 1
 type: schema
 package: occid2_demo
 root: Root
 
+# Axes are typed semantic dimensions. Values are semantic factors.
+# `applies` is applicability: the axis is meaningful only where the region can
+# hold. Applicability does not assert the region; it only checks meaning.
 axes:
   Substrate:
-    semantic_role: axis
     cardinality: one
     values:
       - BIOLOGICAL
       - MECHANICAL
+      - CYBER
 
-  Domain:
-    description: Operating domains; a machine may operate in several.
-    semantic_role: axis
-    cardinality: many
+  PhysicalDomain:
+    description: Existing domain; a bounded thing operates in exactly one.
+    cardinality: one
     values:
       - LAND
       - AIR
       - SEA
       - UNDERSEA
       - SPACE
-      - CYBER
-
-  MachineKind:
-    description: Overlapping machine categories; a robot may also be a vehicle.
-    semantic_role: axis
-    cardinality: many
-    applies:
-      all:
-        - Machine
-    values:
-      - VEHICLE
-      - ROBOT
 
   Controller:
-    semantic_role: axis
     cardinality: one
     applies:
       all:
@@ -45,7 +35,6 @@ axes:
       - UNMANNED
 
   Locomotion:
-    semantic_role: axis
     cardinality: one
     values:
       - SELF_PROPELLED
@@ -54,18 +43,16 @@ axes:
 
   Airframe:
     description: Simplified airframe construction, independent of takeoff capability.
-    semantic_role: axis
     cardinality: one
     applies:
       all:
         - Machine
-        - Domain.AIR
+        - PhysicalDomain.AIR
     values:
       - MULTIROTOR
       - FIXED_WING
 
   Frame:
-    semantic_role: axis
     cardinality: one
     values:
       - WGS84
@@ -73,16 +60,44 @@ axes:
       - BODY
 
   BloodGroup:
-    semantic_role: axis
     cardinality: one
     applies:
       all:
         - Substrate.BIOLOGICAL
+    # One axis-scoped requirement, never one rule per value.
+    requires:
+      - Biological
     values:
       - A_POS
       - A_NEG
+      - B_POS
+      - B_NEG
+      - AB_POS
+      - AB_NEG
       - O_POS
       - O_NEG
+
+  Realm:
+    cardinality: one
+    values:
+      - WORLD
+      - INFORMATION
+
+  TemporalMode:
+    cardinality: one
+    values:
+      - ACHIEVE
+      - MAINTAIN
+
+  TruthTarget:
+    cardinality: one
+    applies:
+      any:
+        - Existence
+        - Connectivity
+    values:
+      - "TRUE"
+      - "FALSE"
 
 
 enums:
@@ -112,114 +127,148 @@ enums:
     - FAILED
     - CANCELLED
 
+# Surface vocabulary remains ordinary enum members. `product` maps a member to
+# the deeper semantic product it compresses. Model names are expanded to their
+# semantic ancestry by the compiler.
+#
+# `relation` names the directed semantic relation the word opens but does not
+# flatten into the product: a location task still asks "locate what?". The
+# operand lives in a relation and in representation-declared field metadata.
+codewords:
+  ManeuverIntent.MOVE:
+    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Position]
+    relation: Destination
+
+  ManeuverIntent.HOLD:
+    product: [Task, Realm.WORLD, TemporalMode.MAINTAIN, Position]
+    relation: Destination
+
+  InformationIntent.LOCATE:
+    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Position]
+    relation: Target
+
+  InformationIntent.TRACK:
+    product: [Task, Realm.INFORMATION, TemporalMode.MAINTAIN, Position]
+    relation: Target
+
+  InformationIntent.IDENTIFY:
+    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Identity]
+    relation: Target
+
+  InformationIntent.CLASSIFY:
+    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Classification]
+    relation: Target
+
+  EffectIntent.CREATE:
+    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.TRUE]
+    relation: Target
+
+  EffectIntent.REMOVE:
+    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.FALSE]
+    relation: Target
+
+
 models:
   Root:
-    semantic_role: concept
+    description: Everything
 
   Object:
     description: A discrete thing in the operational world.
-    semantic_role: concept
-    parent: Root
+    parent: Root # note: Product always includes parent
+
+  Locality:
+    description: Physical reference place in the world, ie village, bridge, mountain
+    parent: Object
+    fields:
+      name: optional string
 
   Entity:
     description: A discrete participant capable of actions.
-    semantic_role: concept
     parent: Object
     fields:
       uid: UID
       name: optional string
 
-  Actor:
-    semantic_role: concept
+  Biological:
+    description: Living participants. Disjoint from Machine.
     parent: Entity
+    product:
+      - Substrate.BIOLOGICAL
 
   Person:
-    semantic_role: representation
-    parent: Actor
-    product:
-      - Actor
-      - Substrate.BIOLOGICAL
+    parent: Biological
+    fields:
+      name: optional string
+
+  Actor:
+    parent: Person
     fields:
       role: optional string
 
   Machine:
-    semantic_role: concept
     parent: Entity
     product:
       - Substrate.MECHANICAL
     fields:
       serial_number: optional string
 
-  Robot:
-    semantic_role: concept
+  Vehicle:
     parent: Machine
     product:
-      - MachineKind.ROBOT
-
-  GroundRobot:
-    semantic_role: representation
-    parent: Robot
-    product:
-      - Robot
-      - Domain.LAND
-      - Controller.UNMANNED
       - Locomotion.SELF_PROPELLED
+      - Substrate.MECHANICAL
     fields:
       model: optional string
 
-  Drone:
-    semantic_role: representation
-    parent: Robot
+  CrewedVehicle:
+    parent: Vehicle
     product:
-      - Robot
-      - Domain.AIR
-      - Controller.UNMANNED
-      - Locomotion.SELF_PROPELLED
-    fields:
-      model: optional string
+      - Controller.MANNED
 
-  Location:
-    semantic_role: concept
-    parent: Object
+  UnmannedVehicle:
+    parent: Vehicle
+    product:
+      - Controller.UNMANNED
+
+  Data:
+    parent: Root
+
+  State:
+    parent: Data
 
   Mark:
-    semantic_role: representation
-    parent: Location
-    product: [Location]
+    parent: Data
+    description: Simple representation of a selected point in world
+    product: 
+      - GlobalPosition
     fields:
       uid: UID
       name: optional string
 
-  Data:
-    semantic_role: concept
-    parent: Root
-
-  State:
-    semantic_role: concept
-    parent: Data
-
   Position:
-    semantic_role: concept
     parent: State
 
+  Altitude:
+    description: Vertical position above a reference; meaningful only in air.
+    parent: State
+    applies:
+      - PhysicalDomain.AIR
+    fields:
+      m: float
+
   Existence:
-    semantic_role: concept
     parent: State
 
   Connectivity:
-    semantic_role: concept
     parent: State
 
   Identity:
-    semantic_role: concept
     parent: State
 
   Classification:
-    semantic_role: concept
     parent: State
 
   GlobalPosition:
-    semantic_role: representation
     parent: Position
     product:
       - Position
@@ -228,19 +277,15 @@ models:
       lat: float
       lon: float
       alt_m: float
-      observed_at: string
 
   Control:
-    semantic_role: concept
     parent: Root
 
   Directive:
-    semantic_role: concept
     parent: Control
 
   Task:
     description: Requirement that some proposition become or remain sufficiently true
-    semantic_role: concept
     parent: Directive
     fields:
       uid: UID
@@ -249,9 +294,12 @@ models:
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
 
+  Mission:
+    description: A named body of assigned work.
+    parent: Directive
+
   TaskManeuver:
     description: A task concerning movement or maintaining position; intent is ordinary vocabulary.
-    semantic_role: representation
     parent: Task
     product: [Task]
     fields:
@@ -259,7 +307,6 @@ models:
 
   TaskInformation:
     description: Practical surface representation for information-outcome task vocabulary
-    semantic_role: representation
     parent: Task
     product: [Task]
     fields:
@@ -267,50 +314,34 @@ models:
 
   TaskEffect:
     description: Practical surface representation for effect task vocabulary
-    semantic_role: representation
     parent: Task
     product: [Task]
     fields:
       intent: EffectIntent
 
-  ReferencedAssignment:
-    description: Entity representation whose assigned work is stored by task reference.
-    semantic_role: representation
-    parent: Entity
-    product: [Entity]
-    fields:
-      assigned_task:
-        type: optional UID
-        relationship: AssignedWork
-        access: reference
+# Never ever create prefixed "assigned/inline" or other PrefixX models
 
-  InlineAssignment:
-    description: Entity representation carrying its assigned work inline.
-    semantic_role: representation
-    parent: Entity
-    product: [Entity]
-    fields:
-      mission:
-        type: optional InlineWork
-        relationship: AssignedWork
-        access: inline
+# Named classes are optional human aliases for useful semantic products.
+# An alias is a product, not a representation and not a fundamental identity.
+aliases:
+  AirMission: [Mission, PhysicalDomain.AIR]
+  AirTask: [Task, PhysicalDomain.AIR]
+  UGV: [UnmannedVehicle, PhysicalDomain.LAND]
+  UAV: [UnmannedVehicle, PhysicalDomain.AIR]
+  Drone: [UAV, Airframe.MULTIROTOR]
 
-  InlineWork:
-    description: A movement task with its own field layout; semantically still a Task.
-    semantic_role: representation
-    parent: Root
-    product: [Task]
-    fields:
-      instruction: string
-      intent: ManeuverIntent
 
 relations:
   Destination:
-    description: A task has a destination location; operand order is task, location.
-    semantic_role: relation
-    signature: [Task, Location]
+    description: A task has a destination position; operand order is task, position.
+    signature: [Task, Position]
+
+  Target:
+    description: A task acts on a target entity; operand order is task, entity.
+    signature: [Task, Entity]
 
   AssignedWork:
     description: An entity is assigned a task; operand order is entity, task.
-    semantic_role: relation
     signature: [Entity, Task]
+
+

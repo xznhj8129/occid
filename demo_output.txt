@@ -1,31 +1,40 @@
-Drone semantics:
-  Airframe.MULTIROTOR × Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × MachineKind.ROBOT × Object × Robot × Root × Substrate.MECHANICAL
+Aliases are products, not classes:
+  Drone      = Airframe.MULTIROTOR × Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × Object × Root × Substrate.MECHANICAL × UnmannedVehicle × Vehicle
+  UAV        = Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × Object × Root × Substrate.MECHANICAL × UnmannedVehicle × Vehicle
+  AirMission = Control × Directive × Domain.AIR × Mission × Root
+  Drone == UAV × Airframe.MULTIROTOR: True
 
-Semantic position query:
-  GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+Exact and semantic lookup:
+  exact GlobalPosition: GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+  semantic Position   : GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+  Mark answers Position: ['Mark']
 
-Exact representation query:
-  GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+MOVE surface vocabulary entails:
+  Control × Data × Directive × Position × Realm.WORLD × Root × State × Task × TaskManeuver × TemporalMode.ACHIEVE
 
-MOVE surface vocabulary expands to:
-  Control × Data × Directive × Position × Realm.WORLD × Root × State × Task × TemporalMode.ACHIEVE
+LOCATE surface vocabulary entails:
+  Control × Data × Directive × Position × Realm.INFORMATION × Root × State × Task × TaskInformation × TemporalMode.ACHIEVE
 
-LOCATE surface vocabulary expands to:
-  Control × Data × Directive × Position × Realm.INFORMATION × Root × State × Task × TemporalMode.ACHIEVE
+CREATE surface vocabulary entails:
+  Control × Data × Directive × Existence × Realm.WORLD × Root × State × Task × TaskEffect × TemporalMode.ACHIEVE × TruthTarget.TRUE
 
-CREATE surface vocabulary expands to:
-  Control × Data × Directive × Existence × Realm.WORLD × Root × State × Task × TemporalMode.ACHIEVE × TruthTarget.TRUE
-
-Semantic discovery on the MOVE task:
-  ['TaskManeuver']
-
-Relations:
+Relations are directed, operands validated semantically:
   Destination(task-move-1, mark-alpha)
+  Target(task-move-1, uav-1)
 
-Legality:
-  Drone × Domain.LAND: False
+Legality from declared constraints:
   Drone × BloodGroup.A_POS: False
-  Person × BloodGroup.A_POS: True
+  Machine × Actor: False
+  Mission × Domain.AIR × Altitude: True
+  Mission × Domain.SEA × Altitude: False
 
-Human-readable equivalence:
-  MOVE == Task × WORLD × ACHIEVE × Position: True
+Emergent applicability:
+  AirTask = Task × AIR gains Altitude: True
+
+Codeword-opened relations:
+  MOVE  -> Destination
+  LOCATE -> Target
+
+Derived entailment:
+  Drone entails Machine × Controller.UNMANNED × Domain.AIR: True
+  Person entails Biological: True

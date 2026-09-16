@@ -1,18 +1,70 @@
 {
+  "aliases": {
+    "AirMission": [
+      "Root",
+      "Control",
+      "Directive",
+      "Mission",
+      "PhysicalDomain.AIR"
+    ],
+    "AirTask": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "PhysicalDomain.AIR"
+    ],
+    "Drone": [
+      "Root",
+      "Object",
+      "Entity",
+      "Machine",
+      "Substrate.MECHANICAL",
+      "Vehicle",
+      "Locomotion.SELF_PROPELLED",
+      "UnmannedVehicle",
+      "Controller.UNMANNED",
+      "PhysicalDomain.AIR",
+      "Airframe.MULTIROTOR"
+    ],
+    "UAV": [
+      "Root",
+      "Object",
+      "Entity",
+      "Machine",
+      "Substrate.MECHANICAL",
+      "Vehicle",
+      "Locomotion.SELF_PROPELLED",
+      "UnmannedVehicle",
+      "Controller.UNMANNED",
+      "PhysicalDomain.AIR"
+    ],
+    "UGV": [
+      "Root",
+      "Object",
+      "Entity",
+      "Machine",
+      "Substrate.MECHANICAL",
+      "Vehicle",
+      "Locomotion.SELF_PROPELLED",
+      "UnmannedVehicle",
+      "Controller.UNMANNED",
+      "PhysicalDomain.LAND"
+    ]
+  },
   "axes": {
     "Airframe": {
       "applies": {
         "all": [
           "Machine",
-          "Domain.AIR"
+          "PhysicalDomain.AIR"
         ]
       },
       "cardinality": "one",
-      "semantic_role": "axis",
+      "description": "Simplified airframe construction, independent of takeoff capability.",
       "values": [
         "MULTIROTOR",
-        "FIXED_WING",
-        "VTOL"
+        "FIXED_WING"
       ]
     },
     "BloodGroup": {
@@ -22,10 +74,16 @@
         ]
       },
       "cardinality": "one",
-      "semantic_role": "axis",
+      "requires": [
+        "Biological"
+      ],
       "values": [
         "A_POS",
         "A_NEG",
+        "B_POS",
+        "B_NEG",
+        "AB_POS",
+        "AB_NEG",
         "O_POS",
         "O_NEG"
       ]
@@ -37,27 +95,13 @@
         ]
       },
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "MANNED",
         "UNMANNED"
       ]
     },
-    "Domain": {
-      "cardinality": "one",
-      "semantic_role": "axis",
-      "values": [
-        "LAND",
-        "AIR",
-        "SEA",
-        "UNDERSEA",
-        "SPACE",
-        "CYBER"
-      ]
-    },
     "Frame": {
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "WGS84",
         "LOCAL",
@@ -66,29 +110,25 @@
     },
     "Locomotion": {
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "SELF_PROPELLED",
         "EXTERNAL",
         "STATIC"
       ]
     },
-    "MachineKind": {
-      "applies": {
-        "all": [
-          "Machine"
-        ]
-      },
+    "PhysicalDomain": {
       "cardinality": "one",
-      "semantic_role": "axis",
+      "description": "Existing domain; a bounded thing operates in exactly one.",
       "values": [
-        "VEHICLE",
-        "ROBOT"
+        "LAND",
+        "AIR",
+        "SEA",
+        "UNDERSEA",
+        "SPACE"
       ]
     },
     "Realm": {
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "WORLD",
         "INFORMATION"
@@ -96,15 +136,14 @@
     },
     "Substrate": {
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "BIOLOGICAL",
-        "MECHANICAL"
+        "MECHANICAL",
+        "CYBER"
       ]
     },
     "TemporalMode": {
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "ACHIEVE",
         "MAINTAIN"
@@ -118,12 +157,21 @@
         ]
       },
       "cardinality": "one",
-      "semantic_role": "axis",
       "values": [
         "TRUE",
         "FALSE"
       ]
     }
+  },
+  "codeword_relations": {
+    "EffectIntent.CREATE": "Target",
+    "EffectIntent.REMOVE": "Target",
+    "InformationIntent.CLASSIFY": "Target",
+    "InformationIntent.IDENTIFY": "Target",
+    "InformationIntent.LOCATE": "Target",
+    "InformationIntent.TRACK": "Target",
+    "ManeuverIntent.HOLD": "Destination",
+    "ManeuverIntent.MOVE": "Destination"
   },
   "codewords": {
     "EffectIntent.CREATE": [
@@ -219,20 +267,57 @@
   },
   "models": {
     "Actor": {
-      "fields": [],
-      "parent": "Entity",
-      "semantic_role": "concept",
+      "fields": [
+        {
+          "default": null,
+          "name": "role",
+          "type": "optional string"
+        }
+      ],
+      "parent": "Person",
       "semantics": [
         "Root",
         "Object",
         "Entity",
+        "Biological",
+        "Substrate.BIOLOGICAL",
+        "Person",
         "Actor"
+      ]
+    },
+    "Altitude": {
+      "applies": [
+        "PhysicalDomain.AIR"
+      ],
+      "fields": [
+        {
+          "default": null,
+          "name": "m",
+          "type": "float"
+        }
+      ],
+      "parent": "State",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Altitude"
+      ]
+    },
+    "Biological": {
+      "fields": [],
+      "parent": "Entity",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Biological",
+        "Substrate.BIOLOGICAL"
       ]
     },
     "Classification": {
       "fields": [],
       "parent": "State",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -243,7 +328,6 @@
     "Connectivity": {
       "fields": [],
       "parent": "State",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -254,16 +338,29 @@
     "Control": {
       "fields": [],
       "parent": "Root",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Control"
       ]
     },
+    "CrewedVehicle": {
+      "fields": [],
+      "parent": "Vehicle",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Vehicle",
+        "Locomotion.SELF_PROPELLED",
+        "CrewedVehicle",
+        "Controller.MANNED"
+      ]
+    },
     "Data": {
       "fields": [],
       "parent": "Root",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data"
@@ -272,40 +369,26 @@
     "Directive": {
       "fields": [],
       "parent": "Control",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Control",
         "Directive"
       ]
     },
-    "Drone": {
-      "fields": [
-        "model"
-      ],
-      "parent": "Robot",
-      "semantic_role": "representation",
-      "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
-        "Substrate.MECHANICAL",
-        "Robot",
-        "MachineKind.ROBOT",
-        "Domain.AIR",
-        "Controller.UNMANNED",
-        "Locomotion.SELF_PROPELLED",
-        "Airframe.MULTIROTOR"
-      ]
-    },
     "Entity": {
       "fields": [
-        "uid",
-        "name"
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID"
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string"
+        }
       ],
       "parent": "Object",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Object",
@@ -315,7 +398,6 @@
     "Existence": {
       "fields": [],
       "parent": "State",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -325,43 +407,35 @@
     },
     "GlobalPosition": {
       "fields": [
-        "lat",
-        "lon",
-        "alt_m"
+        {
+          "default": null,
+          "name": "lat",
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "lon",
+          "type": "float"
+        },
+        {
+          "default": null,
+          "name": "alt_m",
+          "type": "float"
+        }
       ],
       "parent": "Position",
-      "semantic_role": "representation",
       "semantics": [
         "Root",
         "Data",
         "State",
         "Position",
+        "GlobalPosition",
         "Frame.WGS84"
-      ]
-    },
-    "GroundRobot": {
-      "fields": [
-        "model"
-      ],
-      "parent": "Robot",
-      "semantic_role": "representation",
-      "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
-        "Substrate.MECHANICAL",
-        "Robot",
-        "MachineKind.ROBOT",
-        "Domain.LAND",
-        "Controller.UNMANNED",
-        "Locomotion.SELF_PROPELLED"
       ]
     },
     "Identity": {
       "fields": [],
       "parent": "State",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -369,22 +443,30 @@
         "Identity"
       ]
     },
-    "Location": {
-      "fields": [],
+    "Locality": {
+      "fields": [
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string"
+        }
+      ],
       "parent": "Object",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Object",
-        "Location"
+        "Locality"
       ]
     },
     "Machine": {
       "fields": [
-        "serial_number"
+        {
+          "default": null,
+          "name": "serial_number",
+          "type": "optional string"
+        }
       ],
       "parent": "Entity",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Object",
@@ -395,21 +477,41 @@
     },
     "Mark": {
       "fields": [
-        "uid",
-        "name"
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID"
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string"
+        }
       ],
-      "parent": "Location",
-      "semantic_role": "representation",
+      "parent": "Data",
       "semantics": [
         "Root",
-        "Object",
-        "Location"
+        "Data",
+        "Mark",
+        "State",
+        "Position",
+        "GlobalPosition",
+        "Frame.WGS84"
+      ]
+    },
+    "Mission": {
+      "fields": [],
+      "parent": "Directive",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive",
+        "Mission"
       ]
     },
     "Object": {
       "fields": [],
       "parent": "Root",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Object"
@@ -417,22 +519,25 @@
     },
     "Person": {
       "fields": [
-        "role"
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string"
+        }
       ],
-      "parent": "Actor",
-      "semantic_role": "representation",
+      "parent": "Biological",
       "semantics": [
         "Root",
         "Object",
         "Entity",
-        "Actor",
-        "Substrate.BIOLOGICAL"
+        "Biological",
+        "Substrate.BIOLOGICAL",
+        "Person"
       ]
     },
     "Position": {
       "fields": [],
       "parent": "State",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -440,24 +545,9 @@
         "Position"
       ]
     },
-    "Robot": {
-      "fields": [],
-      "parent": "Machine",
-      "semantic_role": "concept",
-      "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
-        "Substrate.MECHANICAL",
-        "Robot",
-        "MachineKind.ROBOT"
-      ]
-    },
     "Root": {
       "fields": [],
       "parent": null,
-      "semantic_role": "concept",
       "semantics": [
         "Root"
       ]
@@ -465,7 +555,6 @@
     "State": {
       "fields": [],
       "parent": "Data",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Data",
@@ -474,16 +563,33 @@
     },
     "Task": {
       "fields": [
-        "uid",
-        "instruction",
-        "objective_uid",
-        "constraints",
-        "preconditions",
-        "priority",
-        "status"
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID"
+        },
+        {
+          "default": null,
+          "name": "instruction",
+          "type": "string"
+        },
+        {
+          "default": null,
+          "name": "objective_uid",
+          "type": "optional UID"
+        },
+        {
+          "default": "ROUTINE",
+          "name": "priority",
+          "type": "TaskPriority"
+        },
+        {
+          "default": "NEW",
+          "name": "status",
+          "type": "TaskStatus"
+        }
       ],
       "parent": "Directive",
-      "semantic_role": "concept",
       "semantics": [
         "Root",
         "Control",
@@ -493,48 +599,114 @@
     },
     "TaskEffect": {
       "fields": [
-        "intent"
+        {
+          "default": null,
+          "name": "intent",
+          "type": "EffectIntent"
+        }
       ],
       "parent": "Task",
-      "semantic_role": "representation",
       "semantics": [
         "Root",
         "Control",
         "Directive",
-        "Task"
+        "Task",
+        "TaskEffect"
       ]
     },
     "TaskInformation": {
       "fields": [
-        "intent"
+        {
+          "default": null,
+          "name": "intent",
+          "type": "InformationIntent"
+        }
       ],
       "parent": "Task",
-      "semantic_role": "representation",
       "semantics": [
         "Root",
         "Control",
         "Directive",
-        "Task"
+        "Task",
+        "TaskInformation"
       ]
     },
     "TaskManeuver": {
       "fields": [
-        "intent"
+        {
+          "default": null,
+          "name": "intent",
+          "type": "ManeuverIntent"
+        }
       ],
       "parent": "Task",
-      "semantic_role": "representation",
       "semantics": [
         "Root",
         "Control",
         "Directive",
-        "Task"
+        "Task",
+        "TaskManeuver"
+      ]
+    },
+    "UnmannedVehicle": {
+      "fields": [],
+      "parent": "Vehicle",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Vehicle",
+        "Locomotion.SELF_PROPELLED",
+        "UnmannedVehicle",
+        "Controller.UNMANNED"
+      ]
+    },
+    "Vehicle": {
+      "fields": [
+        {
+          "default": null,
+          "name": "model",
+          "type": "optional string"
+        }
+      ],
+      "parent": "Machine",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Vehicle",
+        "Locomotion.SELF_PROPELLED"
       ]
     }
   },
   "relations": {
-    "Destination": [
-      "Task",
-      "Location"
-    ]
+    "AssignedWork": {
+      "operand_names": [],
+      "signature": [
+        "Entity",
+        "Task"
+      ],
+      "specializes": null
+    },
+    "Destination": {
+      "operand_names": [],
+      "signature": [
+        "Task",
+        "Position"
+      ],
+      "specializes": null
+    },
+    "Target": {
+      "operand_names": [],
+      "signature": [
+        "Task",
+        "Entity"
+      ],
+      "specializes": null
+    }
   }
 }

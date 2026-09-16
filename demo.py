@@ -1,49 +1,58 @@
 from runtime import sem, value_semantics
 from generated.occid2 import (
+    Actor,
+    AirMission,
+    AirTask,
+    Airframe,
+    Altitude,
+    Biological,
     BloodGroup,
+    Controller,
     Destination,
-    Domain,
+    PhysicalDomain,
     Drone,
     EffectIntent,
     Frame,
     GlobalPosition,
-    GroundRobot,
     InformationIntent,
+    Machine,
     ManeuverIntent,
     Mark,
+    Mission,
     Person,
     Position,
-    Realm,
-    Task,
+    Target,
     TaskEffect,
     TaskInformation,
     TaskManeuver,
-    TemporalMode,
-    TruthTarget,
+    UAV,
+    UnmannedVehicle,
     new_store,
 )
 
 
 def main() -> None:
     store = new_store()
+    registry = store.registry
 
-    drone = store.ref("drone-1", Drone)
-    rover = store.ref("rover-1", GroundRobot)
+    uav = store.ref("uav-1", UnmannedVehicle)
     mark = store.ref("mark-alpha", Mark)
 
-    drone.set(GlobalPosition(lat=45.30, lon=-74.20, alt_m=125.0))
-    rover.set(GlobalPosition(lat=45.31, lon=-74.22, alt_m=2.0))
+    gp = GlobalPosition(lat=45.30, lon=-74.20, alt_m=125.0)
+    uav.set(gp)
+    mark.set(Mark(uid="mark-alpha", name="alpha"))
 
-    print("Drone semantics:")
-    print(" ", Drone._semantics)
+    print("Aliases are products, not classes:")
+    print("  Drone      =", Drone)
+    print("  UAV        =", UAV)
+    print("  AirMission =", AirMission)
+    print("  Drone == UAV × Airframe.MULTIROTOR:", Drone == sem(UAV, Airframe.MULTIROTOR))
     print()
 
-    print("Semantic position query:")
-    print(" ", drone.get(Position, Frame.WGS84))
-    print()
-
-    print("Exact representation query:")
-    print(" ", drone.get(GlobalPosition))
+    print("Exact and semantic lookup:")
+    print("  exact GlobalPosition:", uav.get(GlobalPosition))
+    print("  semantic Position   :", uav.get(Position, Frame.WGS84))
+    print("  Mark answers Position:", [type(x).__name__ for x in mark.find(Position)])
     print()
 
     move_value = TaskManeuver(
@@ -53,56 +62,58 @@ def main() -> None:
     )
     move = store.ref(move_value.uid, TaskManeuver)
     move.set(move_value)
-    store.relate(Destination, move, mark)
 
-    print("MOVE surface vocabulary expands to:")
+    print("MOVE surface vocabulary entails:")
     print(" ", value_semantics(move_value))
     print()
 
     locate_value = TaskInformation(
         uid="task-locate-1",
-        instruction="locate rover-1",
+        instruction="locate uav-1",
         intent=InformationIntent.LOCATE,
     )
-    locate = store.ref(locate_value.uid, TaskInformation)
-    locate.set(locate_value)
-
-    print("LOCATE surface vocabulary expands to:")
+    print("LOCATE surface vocabulary entails:")
     print(" ", value_semantics(locate_value))
     print()
 
     create_value = TaskEffect(
         uid="task-create-1",
-        instruction="make the required object exist",
+        instruction="make the object exist",
         intent=EffectIntent.CREATE,
     )
-    print("CREATE surface vocabulary expands to:")
+    print("CREATE surface vocabulary entails:")
     print(" ", value_semantics(create_value))
     print()
 
-    print("Semantic discovery on the MOVE task:")
-    print(" ", [type(x).__name__ for x in move.find(Position)])
-    print()
-
-    print("Relations:")
+    print("Relations are directed, operands validated semantically:")
+    store.relate(Destination, move, mark)
+    store.relate(Target, move, uav)
     for relation in store.relations():
         print(" ", relation)
     print()
 
-    print("Legality:")
-    print("  Drone × Domain.LAND:", store.registry.legal(sem(Drone, Domain.LAND)))
-    print("  Drone × BloodGroup.A_POS:", store.registry.legal(sem(Drone, BloodGroup.A_POS)))
-    print("  Person × BloodGroup.A_POS:", store.registry.legal(sem(Person, BloodGroup.A_POS)))
-
+    print("Legality from declared constraints:")
+    print("  Drone × BloodGroup.A_POS:", registry.legal(sem(Drone, BloodGroup.A_POS)))
+    print("  Machine × Actor:", registry.legal(sem(Machine, Actor)))
+    print("  Mission × PhysicalDomain.AIR × Altitude:", registry.legal(sem(Mission, PhysicalDomain.AIR, Altitude)))
+    print("  Mission × PhysicalDomain.SEA × Altitude:", registry.legal(sem(Mission, PhysicalDomain.SEA, Altitude)))
     print()
-    print("Human-readable equivalence:")
+
+    print("Emergent applicability:")
+    print("  AirTask = Task × AIR gains Altitude:", registry.applicable(AirTask, Altitude))
+    print()
+
+    print("Codeword-opened relations:")
+    print("  MOVE  ->", registry.codeword_relation(ManeuverIntent.MOVE))
+    print("  LOCATE ->", registry.codeword_relation(InformationIntent.LOCATE))
+    print()
+
+    print("Derived entailment:")
     print(
-        "  MOVE == Task × WORLD × ACHIEVE × Position:",
-        store.registry.equivalent(
-            ManeuverIntent.MOVE._semantics,
-            sem(Task, Realm.WORLD, TemporalMode.ACHIEVE, Position),
-        ),
+        "  Drone entails Machine × Controller.UNMANNED × PhysicalDomain.AIR:",
+        registry.entails(Drone, sem(Machine, Controller.UNMANNED, PhysicalDomain.AIR)),
     )
+    print("  Person entails Biological:", registry.entails(sem(Person), Biological))
 
 
 if __name__ == "__main__":
