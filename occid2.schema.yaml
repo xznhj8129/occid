@@ -1,0 +1,316 @@
+version: 1
+type: schema
+package: occid2_demo
+root: Root
+
+axes:
+  Substrate:
+    semantic_role: axis
+    cardinality: one
+    values:
+      - BIOLOGICAL
+      - MECHANICAL
+
+  Domain:
+    description: Operating domains; a machine may operate in several.
+    semantic_role: axis
+    cardinality: many
+    values:
+      - LAND
+      - AIR
+      - SEA
+      - UNDERSEA
+      - SPACE
+      - CYBER
+
+  MachineKind:
+    description: Overlapping machine categories; a robot may also be a vehicle.
+    semantic_role: axis
+    cardinality: many
+    applies:
+      all:
+        - Machine
+    values:
+      - VEHICLE
+      - ROBOT
+
+  Controller:
+    semantic_role: axis
+    cardinality: one
+    applies:
+      all:
+        - Machine
+    values:
+      - MANNED
+      - UNMANNED
+
+  Locomotion:
+    semantic_role: axis
+    cardinality: one
+    values:
+      - SELF_PROPELLED
+      - EXTERNAL
+      - STATIC
+
+  Airframe:
+    description: Simplified airframe construction, independent of takeoff capability.
+    semantic_role: axis
+    cardinality: one
+    applies:
+      all:
+        - Machine
+        - Domain.AIR
+    values:
+      - MULTIROTOR
+      - FIXED_WING
+
+  Frame:
+    semantic_role: axis
+    cardinality: one
+    values:
+      - WGS84
+      - LOCAL
+      - BODY
+
+  BloodGroup:
+    semantic_role: axis
+    cardinality: one
+    applies:
+      all:
+        - Substrate.BIOLOGICAL
+    values:
+      - A_POS
+      - A_NEG
+      - O_POS
+      - O_NEG
+
+
+enums:
+  ManeuverIntent:
+    - MOVE = 0
+    - HOLD
+
+  InformationIntent:
+    - LOCATE = 0
+    - TRACK
+    - IDENTIFY
+    - CLASSIFY
+
+  EffectIntent:
+    - CREATE = 0
+    - REMOVE
+
+  TaskPriority:
+    - ROUTINE = 0
+    - HIGH
+    - IMMEDIATE
+
+  TaskStatus:
+    - NEW = 0
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+
+models:
+  Root:
+    semantic_role: concept
+
+  Object:
+    description: A discrete thing in the operational world.
+    semantic_role: concept
+    parent: Root
+
+  Entity:
+    description: A discrete participant capable of actions.
+    semantic_role: concept
+    parent: Object
+    fields:
+      uid: UID
+      name: optional string
+
+  Actor:
+    semantic_role: concept
+    parent: Entity
+
+  Person:
+    semantic_role: representation
+    parent: Actor
+    product:
+      - Actor
+      - Substrate.BIOLOGICAL
+    fields:
+      role: optional string
+
+  Machine:
+    semantic_role: concept
+    parent: Entity
+    product:
+      - Substrate.MECHANICAL
+    fields:
+      serial_number: optional string
+
+  Robot:
+    semantic_role: concept
+    parent: Machine
+    product:
+      - MachineKind.ROBOT
+
+  GroundRobot:
+    semantic_role: representation
+    parent: Robot
+    product:
+      - Robot
+      - Domain.LAND
+      - Controller.UNMANNED
+      - Locomotion.SELF_PROPELLED
+    fields:
+      model: optional string
+
+  Drone:
+    semantic_role: representation
+    parent: Robot
+    product:
+      - Robot
+      - Domain.AIR
+      - Controller.UNMANNED
+      - Locomotion.SELF_PROPELLED
+    fields:
+      model: optional string
+
+  Location:
+    semantic_role: concept
+    parent: Object
+
+  Mark:
+    semantic_role: representation
+    parent: Location
+    product: [Location]
+    fields:
+      uid: UID
+      name: optional string
+
+  Data:
+    semantic_role: concept
+    parent: Root
+
+  State:
+    semantic_role: concept
+    parent: Data
+
+  Position:
+    semantic_role: concept
+    parent: State
+
+  Existence:
+    semantic_role: concept
+    parent: State
+
+  Connectivity:
+    semantic_role: concept
+    parent: State
+
+  Identity:
+    semantic_role: concept
+    parent: State
+
+  Classification:
+    semantic_role: concept
+    parent: State
+
+  GlobalPosition:
+    semantic_role: representation
+    parent: Position
+    product:
+      - Position
+      - Frame.WGS84
+    fields:
+      lat: float
+      lon: float
+      alt_m: float
+      observed_at: string
+
+  Control:
+    semantic_role: concept
+    parent: Root
+
+  Directive:
+    semantic_role: concept
+    parent: Control
+
+  Task:
+    description: Requirement that some proposition become or remain sufficiently true
+    semantic_role: concept
+    parent: Directive
+    fields:
+      uid: UID
+      instruction: string
+      objective_uid: optional UID
+      priority: TaskPriority = ROUTINE
+      status: TaskStatus = NEW
+
+  TaskManeuver:
+    description: A task concerning movement or maintaining position; intent is ordinary vocabulary.
+    semantic_role: representation
+    parent: Task
+    product: [Task]
+    fields:
+      intent: ManeuverIntent
+
+  TaskInformation:
+    description: Practical surface representation for information-outcome task vocabulary
+    semantic_role: representation
+    parent: Task
+    product: [Task]
+    fields:
+      intent: InformationIntent
+
+  TaskEffect:
+    description: Practical surface representation for effect task vocabulary
+    semantic_role: representation
+    parent: Task
+    product: [Task]
+    fields:
+      intent: EffectIntent
+
+  ReferencedAssignment:
+    description: Entity representation whose assigned work is stored by task reference.
+    semantic_role: representation
+    parent: Entity
+    product: [Entity]
+    fields:
+      assigned_task:
+        type: optional UID
+        relationship: AssignedWork
+        access: reference
+
+  InlineAssignment:
+    description: Entity representation carrying its assigned work inline.
+    semantic_role: representation
+    parent: Entity
+    product: [Entity]
+    fields:
+      mission:
+        type: optional InlineWork
+        relationship: AssignedWork
+        access: inline
+
+  InlineWork:
+    description: A movement task with its own field layout; semantically still a Task.
+    semantic_role: representation
+    parent: Root
+    product: [Task]
+    fields:
+      instruction: string
+      intent: ManeuverIntent
+
+relations:
+  Destination:
+    description: A task has a destination location; operand order is task, location.
+    semantic_role: relation
+    signature: [Task, Location]
+
+  AssignedWork:
+    description: An entity is assigned a task; operand order is entity, task.
+    semantic_role: relation
+    signature: [Entity, Task]

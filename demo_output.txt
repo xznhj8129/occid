@@ -1,0 +1,31 @@
+Drone semantics:
+  Airframe.MULTIROTOR × Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × MachineKind.ROBOT × Object × Robot × Root × Substrate.MECHANICAL
+
+Semantic position query:
+  GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+
+Exact representation query:
+  GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
+
+MOVE surface vocabulary expands to:
+  Control × Data × Directive × Position × Realm.WORLD × Root × State × Task × TemporalMode.ACHIEVE
+
+LOCATE surface vocabulary expands to:
+  Control × Data × Directive × Position × Realm.INFORMATION × Root × State × Task × TemporalMode.ACHIEVE
+
+CREATE surface vocabulary expands to:
+  Control × Data × Directive × Existence × Realm.WORLD × Root × State × Task × TemporalMode.ACHIEVE × TruthTarget.TRUE
+
+Semantic discovery on the MOVE task:
+  ['TaskManeuver']
+
+Relations:
+  Destination(task-move-1, mark-alpha)
+
+Legality:
+  Drone × Domain.LAND: False
+  Drone × BloodGroup.A_POS: False
+  Person × BloodGroup.A_POS: True
+
+Human-readable equivalence:
+  MOVE == Task × WORLD × ACHIEVE × Position: True

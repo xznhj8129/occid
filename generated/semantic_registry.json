@@ -1,0 +1,540 @@
+{
+  "axes": {
+    "Airframe": {
+      "applies": {
+        "all": [
+          "Machine",
+          "Domain.AIR"
+        ]
+      },
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "MULTIROTOR",
+        "FIXED_WING",
+        "VTOL"
+      ]
+    },
+    "BloodGroup": {
+      "applies": {
+        "all": [
+          "Substrate.BIOLOGICAL"
+        ]
+      },
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "A_POS",
+        "A_NEG",
+        "O_POS",
+        "O_NEG"
+      ]
+    },
+    "Controller": {
+      "applies": {
+        "all": [
+          "Machine"
+        ]
+      },
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "MANNED",
+        "UNMANNED"
+      ]
+    },
+    "Domain": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "LAND",
+        "AIR",
+        "SEA",
+        "UNDERSEA",
+        "SPACE",
+        "CYBER"
+      ]
+    },
+    "Frame": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "WGS84",
+        "LOCAL",
+        "BODY"
+      ]
+    },
+    "Locomotion": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "SELF_PROPELLED",
+        "EXTERNAL",
+        "STATIC"
+      ]
+    },
+    "MachineKind": {
+      "applies": {
+        "all": [
+          "Machine"
+        ]
+      },
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "VEHICLE",
+        "ROBOT"
+      ]
+    },
+    "Realm": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "WORLD",
+        "INFORMATION"
+      ]
+    },
+    "Substrate": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "BIOLOGICAL",
+        "MECHANICAL"
+      ]
+    },
+    "TemporalMode": {
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "ACHIEVE",
+        "MAINTAIN"
+      ]
+    },
+    "TruthTarget": {
+      "applies": {
+        "any": [
+          "Existence",
+          "Connectivity"
+        ]
+      },
+      "cardinality": "one",
+      "semantic_role": "axis",
+      "values": [
+        "TRUE",
+        "FALSE"
+      ]
+    }
+  },
+  "codewords": {
+    "EffectIntent.CREATE": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.WORLD",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Existence",
+      "TruthTarget.TRUE"
+    ],
+    "EffectIntent.REMOVE": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.WORLD",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Existence",
+      "TruthTarget.FALSE"
+    ],
+    "InformationIntent.CLASSIFY": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.INFORMATION",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Classification"
+    ],
+    "InformationIntent.IDENTIFY": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.INFORMATION",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Identity"
+    ],
+    "InformationIntent.LOCATE": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.INFORMATION",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Position"
+    ],
+    "InformationIntent.TRACK": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.INFORMATION",
+      "TemporalMode.MAINTAIN",
+      "Data",
+      "State",
+      "Position"
+    ],
+    "ManeuverIntent.HOLD": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.WORLD",
+      "TemporalMode.MAINTAIN",
+      "Data",
+      "State",
+      "Position"
+    ],
+    "ManeuverIntent.MOVE": [
+      "Root",
+      "Control",
+      "Directive",
+      "Task",
+      "Realm.WORLD",
+      "TemporalMode.ACHIEVE",
+      "Data",
+      "State",
+      "Position"
+    ]
+  },
+  "models": {
+    "Actor": {
+      "fields": [],
+      "parent": "Entity",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Actor"
+      ]
+    },
+    "Classification": {
+      "fields": [],
+      "parent": "State",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Classification"
+      ]
+    },
+    "Connectivity": {
+      "fields": [],
+      "parent": "State",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Connectivity"
+      ]
+    },
+    "Control": {
+      "fields": [],
+      "parent": "Root",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Control"
+      ]
+    },
+    "Data": {
+      "fields": [],
+      "parent": "Root",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data"
+      ]
+    },
+    "Directive": {
+      "fields": [],
+      "parent": "Control",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive"
+      ]
+    },
+    "Drone": {
+      "fields": [
+        "model"
+      ],
+      "parent": "Robot",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Robot",
+        "MachineKind.ROBOT",
+        "Domain.AIR",
+        "Controller.UNMANNED",
+        "Locomotion.SELF_PROPELLED",
+        "Airframe.MULTIROTOR"
+      ]
+    },
+    "Entity": {
+      "fields": [
+        "uid",
+        "name"
+      ],
+      "parent": "Object",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity"
+      ]
+    },
+    "Existence": {
+      "fields": [],
+      "parent": "State",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Existence"
+      ]
+    },
+    "GlobalPosition": {
+      "fields": [
+        "lat",
+        "lon",
+        "alt_m"
+      ],
+      "parent": "Position",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Position",
+        "Frame.WGS84"
+      ]
+    },
+    "GroundRobot": {
+      "fields": [
+        "model"
+      ],
+      "parent": "Robot",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Robot",
+        "MachineKind.ROBOT",
+        "Domain.LAND",
+        "Controller.UNMANNED",
+        "Locomotion.SELF_PROPELLED"
+      ]
+    },
+    "Identity": {
+      "fields": [],
+      "parent": "State",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Identity"
+      ]
+    },
+    "Location": {
+      "fields": [],
+      "parent": "Object",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object",
+        "Location"
+      ]
+    },
+    "Machine": {
+      "fields": [
+        "serial_number"
+      ],
+      "parent": "Entity",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL"
+      ]
+    },
+    "Mark": {
+      "fields": [
+        "uid",
+        "name"
+      ],
+      "parent": "Location",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Object",
+        "Location"
+      ]
+    },
+    "Object": {
+      "fields": [],
+      "parent": "Root",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object"
+      ]
+    },
+    "Person": {
+      "fields": [
+        "role"
+      ],
+      "parent": "Actor",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Actor",
+        "Substrate.BIOLOGICAL"
+      ]
+    },
+    "Position": {
+      "fields": [],
+      "parent": "State",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State",
+        "Position"
+      ]
+    },
+    "Robot": {
+      "fields": [],
+      "parent": "Machine",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Object",
+        "Entity",
+        "Machine",
+        "Substrate.MECHANICAL",
+        "Robot",
+        "MachineKind.ROBOT"
+      ]
+    },
+    "Root": {
+      "fields": [],
+      "parent": null,
+      "semantic_role": "concept",
+      "semantics": [
+        "Root"
+      ]
+    },
+    "State": {
+      "fields": [],
+      "parent": "Data",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Data",
+        "State"
+      ]
+    },
+    "Task": {
+      "fields": [
+        "uid",
+        "instruction",
+        "objective_uid",
+        "constraints",
+        "preconditions",
+        "priority",
+        "status"
+      ],
+      "parent": "Directive",
+      "semantic_role": "concept",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive",
+        "Task"
+      ]
+    },
+    "TaskEffect": {
+      "fields": [
+        "intent"
+      ],
+      "parent": "Task",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive",
+        "Task"
+      ]
+    },
+    "TaskInformation": {
+      "fields": [
+        "intent"
+      ],
+      "parent": "Task",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive",
+        "Task"
+      ]
+    },
+    "TaskManeuver": {
+      "fields": [
+        "intent"
+      ],
+      "parent": "Task",
+      "semantic_role": "representation",
+      "semantics": [
+        "Root",
+        "Control",
+        "Directive",
+        "Task"
+      ]
+    }
+  },
+  "relations": {
+    "Destination": [
+      "Task",
+      "Location"
+    ]
+  }
+}
