@@ -1,40 +1,44 @@
-Aliases are products, not classes:
-  Drone      = Airframe.MULTIROTOR × Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × Object × Root × Substrate.MECHANICAL × UnmannedVehicle × Vehicle
-  UAV        = Controller.UNMANNED × Domain.AIR × Entity × Locomotion.SELF_PROPELLED × Machine × Object × Root × Substrate.MECHANICAL × UnmannedVehicle × Vehicle
-  AirMission = Control × Directive × Domain.AIR × Mission × Root
-  Drone == UAV × Airframe.MULTIROTOR: True
+A semantic object is a product; an alias is only a name.
+  Drone      = Airframe.MULTIROTOR × Controller.UNMANNED × Locomotion.SELF_PROPELLED × PhysicalDomain.AIR × Substrate.MECHANICAL × UnmannedVehicle
+  Drone == UAV * Airframe.MULTIROTOR: True
+  Geodetic == Representation.Geodetic: True
 
-Exact and semantic lookup:
-  exact GlobalPosition: GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
-  semantic Position   : GlobalPosition(lat=45.3, lon=-74.2, alt_m=125.0)
-  Mark answers Position: ['Mark']
+A chart reduces a quantity in a representation to irreducible variables.
+   chart Position * Representation.Geodetic := lat:float[deg] * lon:float[deg] * h:float[m]
+   chart Position * Representation.LocalCartesian := x:float[m] * y:float[m] * z:float[m]
+   chart Velocity * Representation.LocalCartesian := vx:float[m/s] * vy:float[m/s] * vz:float[m/s]
+   chart Attitude * Representation.LocalEuler := roll:float[rad] * pitch:float[rad] * yaw:float[rad]
+   chart Attitude * Representation.Quaternion := qw:float * qx:float * qy:float * qz:float
+  GlobalPosition: ['lat', 'lon', 'h']
+  VehicleState  : ['uid', 'lat', 'lon', 'h', 'vx', 'vy', 'vz', 'roll', 'pitch', 'yaw']
+  VehicleState units: {'lat': 'deg', 'lon': 'deg', 'h': 'm', 'vx': 'm/s', 'vy': 'm/s', 'vz': 'm/s', 'roll': 'rad', 'pitch': 'rad', 'yaw': 'rad'}
 
-MOVE surface vocabulary entails:
-  Control × Data × Directive × Position × Realm.WORLD × Root × State × Task × TaskManeuver × TemporalMode.ACHIEVE
+Data is stored in a representation and addressed by meaning.
+  uav * Position            -> ['GlobalPosition', 'LocalPosition']
+  uav * Position * Geodetic -> GlobalPosition(lat=45.3, lon=-74.2, h=125.0)
+  uav * Position * Local    -> LocalPosition(x=120.0, y=-40.0, z=15.0)
 
-LOCATE surface vocabulary entails:
-  Control × Data × Directive × Position × Realm.INFORMATION × Root × State × Task × TaskInformation × TemporalMode.ACHIEVE
+A projection is the compiled normal form of chart-selected facts.
+   VehicleState(uid='uav-1', lat=45.3, lon=-74.2, h=125.0, vx=12.0, vy=0.0, vz=-1.5, roll=0.0, pitch=0.0, yaw=1.57)
 
-CREATE surface vocabulary entails:
-  Control × Data × Directive × Existence × Realm.WORLD × Root × State × Task × TaskEffect × TemporalMode.ACHIEVE × TruthTarget.TRUE
+A task is an open expression: fixed factors + typed free variables.
+  MOVE = MOVE(actor: Entity, destination: Position)  { Position(actor) = destination }
+  fixed semantics: Realm.WORLD × Task × TemporalMode.ACHIEVE
+   MOVE(actor=?, destination=?)
+   MOVE(actor=uav-1, destination=?)
+   MOVE(actor=uav-1, destination=mark-alpha) unbound: []
 
-Relations are directed, operands validated semantically:
-  Destination(task-move-1, mark-alpha)
-  Target(task-move-1, uav-1)
+An unbound variable is an unknown, not an error.
+   LOCATE(target=target-42) => position=?
+   no position fact yet -> solve() = {}
+   fact arrives         -> solve() = {'position': GlobalPosition(lat=45.1, lon=-74.4, h=90.0)}
 
-Legality from declared constraints:
-  Drone × BloodGroup.A_POS: False
-  Machine × Actor: False
-  Mission × Domain.AIR × Altitude: True
-  Mission × Domain.SEA × Altitude: False
+Relations connect independent things; roles belong to the relation.
+   AssignedWork(assignee=uav-1, work=task-move-1)
 
-Emergent applicability:
-  AirTask = Task × AIR gains Altitude: True
-
-Codeword-opened relations:
-  MOVE  -> Destination
-  LOCATE -> Target
-
-Derived entailment:
-  Drone entails Machine × Controller.UNMANNED × Domain.AIR: True
-  Person entails Biological: True
+Legality is derived from declared constraints, never enumerated.
+  Drone * BloodGroup.A_POS : False
+  Machine * Actor          : False
+  Mission * AIR * Altitude : True
+  Mission * SEA * Altitude : False
+  Drone entails Machine * Controller.UNMANNED * AIR: True

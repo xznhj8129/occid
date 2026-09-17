@@ -1,51 +1,42 @@
 {
   "aliases": {
     "AirMission": [
-      "Root",
-      "Control",
-      "Directive",
       "Mission",
       "PhysicalDomain.AIR"
     ],
     "AirTask": [
-      "Root",
-      "Control",
-      "Directive",
       "Task",
       "PhysicalDomain.AIR"
     ],
     "Drone": [
-      "Root",
-      "Object",
-      "Entity",
-      "Machine",
       "Substrate.MECHANICAL",
-      "Vehicle",
       "Locomotion.SELF_PROPELLED",
       "UnmannedVehicle",
       "Controller.UNMANNED",
       "PhysicalDomain.AIR",
       "Airframe.MULTIROTOR"
     ],
+    "Geodetic": [
+      "Representation.Geodetic"
+    ],
+    "LocalCartesian": [
+      "Representation.LocalCartesian"
+    ],
+    "LocalEuler": [
+      "Representation.LocalEuler"
+    ],
+    "Quaternion": [
+      "Representation.Quaternion"
+    ],
     "UAV": [
-      "Root",
-      "Object",
-      "Entity",
-      "Machine",
       "Substrate.MECHANICAL",
-      "Vehicle",
       "Locomotion.SELF_PROPELLED",
       "UnmannedVehicle",
       "Controller.UNMANNED",
       "PhysicalDomain.AIR"
     ],
     "UGV": [
-      "Root",
-      "Object",
-      "Entity",
-      "Machine",
       "Substrate.MECHANICAL",
-      "Vehicle",
       "Locomotion.SELF_PROPELLED",
       "UnmannedVehicle",
       "Controller.UNMANNED",
@@ -61,7 +52,7 @@
         ]
       },
       "cardinality": "one",
-      "description": "Simplified airframe construction, independent of takeoff capability.",
+      "description": "Airframe construction, independent of takeoff capability.",
       "values": [
         "MULTIROTOR",
         "FIXED_WING"
@@ -100,14 +91,6 @@
         "UNMANNED"
       ]
     },
-    "Frame": {
-      "cardinality": "one",
-      "values": [
-        "WGS84",
-        "LOCAL",
-        "BODY"
-      ]
-    },
     "Locomotion": {
       "cardinality": "one",
       "values": [
@@ -118,7 +101,7 @@
     },
     "PhysicalDomain": {
       "cardinality": "one",
-      "description": "Existing domain; a bounded thing operates in exactly one.",
+      "description": "A bounded thing operates in exactly one domain.",
       "values": [
         "LAND",
         "AIR",
@@ -132,6 +115,16 @@
       "values": [
         "WORLD",
         "INFORMATION"
+      ]
+    },
+    "Representation": {
+      "cardinality": "many",
+      "description": "How a semantic quantity becomes irreducible data variables.",
+      "values": [
+        "Geodetic",
+        "LocalCartesian",
+        "LocalEuler",
+        "Quaternion"
       ]
     },
     "Substrate": {
@@ -163,110 +156,344 @@
       ]
     }
   },
-  "codeword_relations": {
-    "EffectIntent.CREATE": "Target",
-    "EffectIntent.REMOVE": "Target",
-    "InformationIntent.CLASSIFY": "Target",
-    "InformationIntent.IDENTIFY": "Target",
-    "InformationIntent.LOCATE": "Target",
-    "InformationIntent.TRACK": "Target",
-    "ManeuverIntent.HOLD": "Destination",
-    "ManeuverIntent.MOVE": "Destination"
-  },
-  "codewords": {
-    "EffectIntent.CREATE": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.WORLD",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Existence",
-      "TruthTarget.TRUE"
-    ],
-    "EffectIntent.REMOVE": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.WORLD",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Existence",
-      "TruthTarget.FALSE"
-    ],
-    "InformationIntent.CLASSIFY": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.INFORMATION",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Classification"
-    ],
-    "InformationIntent.IDENTIFY": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.INFORMATION",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Identity"
-    ],
-    "InformationIntent.LOCATE": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.INFORMATION",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Position"
-    ],
-    "InformationIntent.TRACK": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.INFORMATION",
-      "TemporalMode.MAINTAIN",
-      "Data",
-      "State",
-      "Position"
-    ],
-    "ManeuverIntent.HOLD": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.WORLD",
-      "TemporalMode.MAINTAIN",
-      "Data",
-      "State",
-      "Position"
-    ],
-    "ManeuverIntent.MOVE": [
-      "Root",
-      "Control",
-      "Directive",
-      "Task",
-      "Realm.WORLD",
-      "TemporalMode.ACHIEVE",
-      "Data",
-      "State",
-      "Position"
-    ]
+  "charts": [
+    {
+      "coords": [
+        {
+          "name": "lat",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "name": "lon",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "name": "h",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
+      "display": "Position * Representation.Geodetic",
+      "factors": [
+        "Position",
+        "Representation.Geodetic"
+      ]
+    },
+    {
+      "coords": [
+        {
+          "name": "x",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "name": "y",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "name": "z",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
+      "display": "Position * Representation.LocalCartesian",
+      "factors": [
+        "Position",
+        "Representation.LocalCartesian"
+      ]
+    },
+    {
+      "coords": [
+        {
+          "name": "vx",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "name": "vy",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "name": "vz",
+          "type": "float",
+          "unit": "m/s"
+        }
+      ],
+      "display": "Velocity * Representation.LocalCartesian",
+      "factors": [
+        "Velocity",
+        "Representation.LocalCartesian"
+      ]
+    },
+    {
+      "coords": [
+        {
+          "name": "roll",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "name": "pitch",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "name": "yaw",
+          "type": "float",
+          "unit": "rad"
+        }
+      ],
+      "display": "Attitude * Representation.LocalEuler",
+      "factors": [
+        "Attitude",
+        "Representation.LocalEuler"
+      ]
+    },
+    {
+      "coords": [
+        {
+          "name": "qw",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "name": "qx",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "name": "qy",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "name": "qz",
+          "type": "float",
+          "unit": null
+        }
+      ],
+      "display": "Attitude * Representation.Quaternion",
+      "factors": [
+        "Attitude",
+        "Representation.Quaternion"
+      ]
+    }
+  ],
+  "expressions": {
+    "CLASSIFY": {
+      "description": "Solve for the classification of an entity.",
+      "equations": [
+        {
+          "equals": "classification",
+          "of": "target",
+          "quantity": "Classification"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.INFORMATION",
+        "TemporalMode.ACHIEVE"
+      ],
+      "given": {
+        "target": [
+          "Entity"
+        ]
+      },
+      "sought": {
+        "classification": [
+          "Classification"
+        ]
+      },
+      "words": [
+        "InformationIntent.CLASSIFY"
+      ]
+    },
+    "CREATE": {
+      "description": "Make an object exist.",
+      "equations": [],
+      "factors": [
+        "Task",
+        "Realm.WORLD",
+        "TemporalMode.ACHIEVE",
+        "Existence",
+        "TruthTarget.TRUE"
+      ],
+      "given": {
+        "object": [
+          "Object"
+        ]
+      },
+      "sought": {},
+      "words": [
+        "EffectIntent.CREATE"
+      ]
+    },
+    "HOLD": {
+      "description": "Maintain an actor's position at the destination.",
+      "equations": [
+        {
+          "equals": "destination",
+          "of": "actor",
+          "quantity": "Position"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.WORLD",
+        "TemporalMode.MAINTAIN"
+      ],
+      "given": {
+        "actor": [
+          "Entity"
+        ],
+        "destination": [
+          "Position"
+        ]
+      },
+      "sought": {},
+      "words": [
+        "ManeuverIntent.HOLD"
+      ]
+    },
+    "IDENTIFY": {
+      "description": "Solve for the identity of an entity.",
+      "equations": [
+        {
+          "equals": "identity",
+          "of": "target",
+          "quantity": "Identity"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.INFORMATION",
+        "TemporalMode.ACHIEVE"
+      ],
+      "given": {
+        "target": [
+          "Entity"
+        ]
+      },
+      "sought": {
+        "identity": [
+          "Identity"
+        ]
+      },
+      "words": [
+        "InformationIntent.IDENTIFY"
+      ]
+    },
+    "LOCATE": {
+      "description": "Solve for the position of an entity.",
+      "equations": [
+        {
+          "equals": "position",
+          "of": "target",
+          "quantity": "Position"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.INFORMATION",
+        "TemporalMode.ACHIEVE"
+      ],
+      "given": {
+        "target": [
+          "Entity"
+        ]
+      },
+      "sought": {
+        "position": [
+          "Position"
+        ]
+      },
+      "words": [
+        "InformationIntent.LOCATE"
+      ]
+    },
+    "MOVE": {
+      "description": "Move an actor until its position is the destination.",
+      "equations": [
+        {
+          "equals": "destination",
+          "of": "actor",
+          "quantity": "Position"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.WORLD",
+        "TemporalMode.ACHIEVE"
+      ],
+      "given": {
+        "actor": [
+          "Entity"
+        ],
+        "destination": [
+          "Position"
+        ]
+      },
+      "sought": {},
+      "words": [
+        "ManeuverIntent.MOVE"
+      ]
+    },
+    "REMOVE": {
+      "description": "Make an object cease to exist.",
+      "equations": [],
+      "factors": [
+        "Task",
+        "Realm.WORLD",
+        "TemporalMode.ACHIEVE",
+        "Existence",
+        "TruthTarget.FALSE"
+      ],
+      "given": {
+        "object": [
+          "Object"
+        ]
+      },
+      "sought": {},
+      "words": [
+        "EffectIntent.REMOVE"
+      ]
+    },
+    "TRACK": {
+      "description": "Maintain awareness of an entity's position.",
+      "equations": [
+        {
+          "equals": "position",
+          "of": "target",
+          "quantity": "Position"
+        }
+      ],
+      "factors": [
+        "Task",
+        "Realm.INFORMATION",
+        "TemporalMode.MAINTAIN"
+      ],
+      "given": {
+        "target": [
+          "Entity"
+        ]
+      },
+      "sought": {
+        "position": [
+          "Position"
+        ]
+      },
+      "words": [
+        "InformationIntent.TRACK"
+      ]
+    }
   },
   "models": {
     "Actor": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -276,12 +503,7 @@
       ],
       "parent": "Person",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Biological",
         "Substrate.BIOLOGICAL",
-        "Person",
         "Actor"
       ]
     },
@@ -289,6 +511,7 @@
       "applies": [
         "PhysicalDomain.AIR"
       ],
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -298,84 +521,79 @@
       ],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Altitude"
       ]
     },
+    "Attitude": {
+      "chart_fields": [],
+      "fields": [],
+      "parent": "State",
+      "semantics": [
+        "Attitude"
+      ]
+    },
     "Biological": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Entity",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
         "Biological",
         "Substrate.BIOLOGICAL"
       ]
     },
     "Classification": {
+      "chart_fields": [],
       "fields": [],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Classification"
       ]
     },
     "Connectivity": {
+      "chart_fields": [],
       "fields": [],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Connectivity"
       ]
     },
     "Control": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Root",
       "semantics": [
-        "Root",
         "Control"
       ]
     },
     "CrewedVehicle": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Vehicle",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
         "Substrate.MECHANICAL",
-        "Vehicle",
         "Locomotion.SELF_PROPELLED",
         "CrewedVehicle",
         "Controller.MANNED"
       ]
     },
     "Data": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Root",
       "semantics": [
-        "Root",
         "Data"
       ]
     },
     "Directive": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Control",
       "semantics": [
-        "Root",
-        "Control",
         "Directive"
       ]
     },
     "Entity": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -390,60 +608,239 @@
       ],
       "parent": "Object",
       "semantics": [
-        "Root",
-        "Object",
         "Entity"
       ]
     },
     "Existence": {
+      "chart_fields": [],
       "fields": [],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Existence"
       ]
     },
     "GlobalPosition": {
-      "fields": [
+      "chart_fields": [
         {
-          "default": null,
-          "name": "lat",
-          "type": "float"
-        },
-        {
-          "default": null,
-          "name": "lon",
-          "type": "float"
-        },
-        {
-          "default": null,
-          "name": "alt_m",
-          "type": "float"
+          "chart": "Position * Representation.Geodetic",
+          "coords": [
+            {
+              "name": "lat",
+              "type": "float",
+              "unit": "deg"
+            },
+            {
+              "name": "lon",
+              "type": "float",
+              "unit": "deg"
+            },
+            {
+              "name": "h",
+              "type": "float",
+              "unit": "m"
+            }
+          ]
         }
       ],
-      "parent": "Position",
+      "fields": [
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lat",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lon",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "h",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
+      "parent": null,
       "semantics": [
-        "Root",
-        "Data",
-        "State",
-        "Position",
         "GlobalPosition",
-        "Frame.WGS84"
+        "Position",
+        "Representation.Geodetic"
       ]
     },
     "Identity": {
+      "chart_fields": [],
       "fields": [],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Identity"
       ]
     },
+    "LocalAttitude": {
+      "chart_fields": [
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "coords": [
+            {
+              "name": "roll",
+              "type": "float",
+              "unit": "rad"
+            },
+            {
+              "name": "pitch",
+              "type": "float",
+              "unit": "rad"
+            },
+            {
+              "name": "yaw",
+              "type": "float",
+              "unit": "rad"
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "roll",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "pitch",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "yaw",
+          "type": "float",
+          "unit": "rad"
+        }
+      ],
+      "parent": null,
+      "semantics": [
+        "LocalAttitude",
+        "Attitude",
+        "Representation.LocalEuler"
+      ]
+    },
+    "LocalPosition": {
+      "chart_fields": [
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "coords": [
+            {
+              "name": "x",
+              "type": "float",
+              "unit": "m"
+            },
+            {
+              "name": "y",
+              "type": "float",
+              "unit": "m"
+            },
+            {
+              "name": "z",
+              "type": "float",
+              "unit": "m"
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "x",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "y",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "z",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
+      "parent": null,
+      "semantics": [
+        "LocalPosition",
+        "Position",
+        "Representation.LocalCartesian"
+      ]
+    },
+    "LocalVelocity": {
+      "chart_fields": [
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "coords": [
+            {
+              "name": "vx",
+              "type": "float",
+              "unit": "m/s"
+            },
+            {
+              "name": "vy",
+              "type": "float",
+              "unit": "m/s"
+            },
+            {
+              "name": "vz",
+              "type": "float",
+              "unit": "m/s"
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vx",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vy",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vz",
+          "type": "float",
+          "unit": "m/s"
+        }
+      ],
+      "parent": null,
+      "semantics": [
+        "LocalVelocity",
+        "Velocity",
+        "Representation.LocalCartesian"
+      ]
+    },
     "Locality": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -453,12 +850,11 @@
       ],
       "parent": "Object",
       "semantics": [
-        "Root",
-        "Object",
         "Locality"
       ]
     },
     "Machine": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -468,14 +864,33 @@
       ],
       "parent": "Entity",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
         "Machine",
         "Substrate.MECHANICAL"
       ]
     },
     "Mark": {
+      "chart_fields": [
+        {
+          "chart": "Position * Representation.Geodetic",
+          "coords": [
+            {
+              "name": "lat",
+              "type": "float",
+              "unit": "deg"
+            },
+            {
+              "name": "lon",
+              "type": "float",
+              "unit": "deg"
+            },
+            {
+              "name": "h",
+              "type": "float",
+              "unit": "m"
+            }
+          ]
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -486,38 +901,55 @@
           "default": null,
           "name": "name",
           "type": "optional string"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lat",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lon",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "h",
+          "type": "float",
+          "unit": "m"
         }
       ],
       "parent": "Data",
       "semantics": [
-        "Root",
-        "Data",
         "Mark",
-        "State",
-        "Position",
         "GlobalPosition",
-        "Frame.WGS84"
+        "Position",
+        "Representation.Geodetic"
       ]
     },
     "Mission": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Directive",
       "semantics": [
-        "Root",
-        "Control",
-        "Directive",
         "Mission"
       ]
     },
     "Object": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Root",
       "semantics": [
-        "Root",
         "Object"
       ]
     },
     "Person": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -527,25 +959,20 @@
       ],
       "parent": "Biological",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Biological",
         "Substrate.BIOLOGICAL",
         "Person"
       ]
     },
     "Position": {
+      "chart_fields": [],
       "fields": [],
       "parent": "State",
       "semantics": [
-        "Root",
-        "Data",
-        "State",
         "Position"
       ]
     },
     "Root": {
+      "chart_fields": [],
       "fields": [],
       "parent": null,
       "semantics": [
@@ -553,15 +980,15 @@
       ]
     },
     "State": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Data",
       "semantics": [
-        "Root",
-        "Data",
         "State"
       ]
     },
     "Task": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -572,11 +999,6 @@
           "default": null,
           "name": "instruction",
           "type": "string"
-        },
-        {
-          "default": null,
-          "name": "objective_uid",
-          "type": "optional UID"
         },
         {
           "default": "ROUTINE",
@@ -591,13 +1013,11 @@
       ],
       "parent": "Directive",
       "semantics": [
-        "Root",
-        "Control",
-        "Directive",
         "Task"
       ]
     },
     "TaskEffect": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -607,14 +1027,11 @@
       ],
       "parent": "Task",
       "semantics": [
-        "Root",
-        "Control",
-        "Directive",
-        "Task",
         "TaskEffect"
       ]
     },
     "TaskInformation": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -624,14 +1041,11 @@
       ],
       "parent": "Task",
       "semantics": [
-        "Root",
-        "Control",
-        "Directive",
-        "Task",
         "TaskInformation"
       ]
     },
     "TaskManeuver": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -641,29 +1055,22 @@
       ],
       "parent": "Task",
       "semantics": [
-        "Root",
-        "Control",
-        "Directive",
-        "Task",
         "TaskManeuver"
       ]
     },
     "UnmannedVehicle": {
+      "chart_fields": [],
       "fields": [],
       "parent": "Vehicle",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
         "Substrate.MECHANICAL",
-        "Vehicle",
         "Locomotion.SELF_PROPELLED",
         "UnmannedVehicle",
         "Controller.UNMANNED"
       ]
     },
     "Vehicle": {
+      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -673,40 +1080,159 @@
       ],
       "parent": "Machine",
       "semantics": [
-        "Root",
-        "Object",
-        "Entity",
-        "Machine",
         "Substrate.MECHANICAL",
         "Vehicle",
         "Locomotion.SELF_PROPELLED"
       ]
+    },
+    "Velocity": {
+      "chart_fields": [],
+      "fields": [],
+      "parent": "State",
+      "semantics": [
+        "Velocity"
+      ]
+    }
+  },
+  "projections": {
+    "VehicleState": {
+      "charts": [
+        "Position * Representation.Geodetic",
+        "Velocity * Representation.LocalCartesian",
+        "Attitude * Representation.LocalEuler"
+      ],
+      "fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lat",
+          "optional": true,
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lon",
+          "optional": true,
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "h",
+          "optional": true,
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vx",
+          "optional": true,
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vy",
+          "optional": true,
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vz",
+          "optional": true,
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "roll",
+          "optional": true,
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "pitch",
+          "optional": true,
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "yaw",
+          "optional": true,
+          "type": "float",
+          "unit": "rad"
+        }
+      ],
+      "semantics": [
+        "Position",
+        "Representation.Geodetic",
+        "Velocity",
+        "Representation.LocalCartesian",
+        "Attitude",
+        "Representation.LocalEuler"
+      ]
     }
   },
   "relations": {
+    "Affects": {
+      "operand_names": [
+        "source",
+        "target"
+      ],
+      "signature": [
+        "Object",
+        "Root"
+      ],
+      "specializes": "Directed"
+    },
     "AssignedWork": {
-      "operand_names": [],
+      "operand_names": [
+        "assignee",
+        "work"
+      ],
       "signature": [
         "Entity",
         "Task"
       ],
-      "specializes": null
+      "specializes": "Directed"
     },
-    "Destination": {
-      "operand_names": [],
-      "signature": [
-        "Task",
-        "Position"
+    "Directed": {
+      "operand_names": [
+        "source",
+        "target"
       ],
-      "specializes": null
-    },
-    "Target": {
-      "operand_names": [],
       "signature": [
-        "Task",
-        "Entity"
+        "Root",
+        "Root"
       ],
       "specializes": null
     }
+  },
+  "word_expressions": {
+    "EffectIntent.CREATE": "CREATE",
+    "EffectIntent.REMOVE": "REMOVE",
+    "InformationIntent.CLASSIFY": "CLASSIFY",
+    "InformationIntent.IDENTIFY": "IDENTIFY",
+    "InformationIntent.LOCATE": "LOCATE",
+    "InformationIntent.TRACK": "TRACK",
+    "ManeuverIntent.HOLD": "HOLD",
+    "ManeuverIntent.MOVE": "MOVE"
   }
 }

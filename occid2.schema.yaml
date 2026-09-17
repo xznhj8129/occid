@@ -1,12 +1,33 @@
-# Experimental minimal semantic schema demo
-version: 1
+# OCCID2 semantic algebra
+#
+# This file is a set of equations, not a class hierarchy. Read `*` as the
+# product: an unordered, idempotent conjunction of factors of one thing.
+#
+#   factor       one coordinate of an independent semantic dimension
+#   product      f1 * f2 * ... describes one thing; the product is the address
+#   alias        Name := product; naming creates no ontology
+#   chart        Q * C := v1 * v2 * ...; a quantity in a representation
+#                reduces to irreducible typed variables
+#   relation     R(role: region, ...); directed, ordered, role-bearing
+#   expression   fixed factors + typed free variables + equations;
+#                an unbound variable is an unknown, not an error
+#   model        Name := parent * name * product; a named product
+#   projection   a compiled normal form over chart-selected facts
+#
+# YAML is only the transport.
+
+version: 2
 type: schema
 package: occid2_demo
 root: Root
 
-# Axes are typed semantic dimensions. Values are semantic factors.
-# `applies` is applicability: the axis is meaningful only where the region can
-# hold. Applicability does not assert the region; it only checks meaning.
+# ---------------------------------------------------------------------------
+# Axes are typed semantic dimensions. Their values are factors. `applies`
+# checks that a dimension is meaningful in a region; `requires` asserts a
+# region into the closure. Cardinality bounds a dimension in a complete
+# description; per-value disjointness declarations are never needed.
+# ---------------------------------------------------------------------------
+
 axes:
   Substrate:
     cardinality: one
@@ -16,7 +37,7 @@ axes:
       - CYBER
 
   PhysicalDomain:
-    description: Existing domain; a bounded thing operates in exactly one.
+    description: A bounded thing operates in exactly one domain.
     cardinality: one
     values:
       - LAND
@@ -42,7 +63,7 @@ axes:
       - STATIC
 
   Airframe:
-    description: Simplified airframe construction, independent of takeoff capability.
+    description: Airframe construction, independent of takeoff capability.
     cardinality: one
     applies:
       all:
@@ -52,12 +73,14 @@ axes:
       - MULTIROTOR
       - FIXED_WING
 
-  Frame:
-    cardinality: one
+  Representation:
+    description: How a semantic quantity becomes irreducible data variables.
+    cardinality: many
     values:
-      - WGS84
-      - LOCAL
-      - BODY
+      - Geodetic
+      - LocalCartesian
+      - LocalEuler
+      - Quaternion
 
   BloodGroup:
     cardinality: one
@@ -99,6 +122,10 @@ axes:
       - "TRUE"
       - "FALSE"
 
+# ---------------------------------------------------------------------------
+# Surface vocabulary. Enum members are representation, never semantic
+# factors; each word names an expression declared below.
+# ---------------------------------------------------------------------------
 
 enums:
   ManeuverIntent:
@@ -127,46 +154,163 @@ enums:
     - FAILED
     - CANCELLED
 
-# Surface vocabulary remains ordinary enum members. `product` maps a member to
-# the deeper semantic product it compresses. Model names are expanded to their
-# semantic ancestry by the compiler.
+# ---------------------------------------------------------------------------
+# Relations connect independently existing things. Roles and operand order
+# belong to the relation itself; specialization inherits direction
+# positionally and may narrow operand regions and rename roles.
+# ---------------------------------------------------------------------------
+
+relations:
+  Directed:
+    description: Base directed link; source -> target.
+    operands:
+      source: Root
+      target: Root
+
+  Affects:
+    description: A cause acts on an effect receiver.
+    specializes: Directed
+    operands:
+      source: Object
+      target: Root
+
+  AssignedWork:
+    description: An entity carries a task. Role names belong to the relation.
+    specializes: Directed
+    operands:
+      assignee: Entity
+      work: Task
+
+# ---------------------------------------------------------------------------
+# Charts reduce a semantic quantity in a chosen representation to
+# irreducible typed variables:
 #
-# `relation` names the directed semantic relation the word opens but does not
-# flatten into the product: a location task still asks "locate what?". The
-# operand lives in a relation and in representation-declared field metadata.
-codewords:
-  ManeuverIntent.MOVE:
-    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Position]
-    relation: Destination
+#     chart Q * C  :=  v1 * v2 * ... * vn
+#
+# The quantity stays semantic; the representation selects the data.
+# ---------------------------------------------------------------------------
 
-  ManeuverIntent.HOLD:
-    product: [Task, Realm.WORLD, TemporalMode.MAINTAIN, Position]
-    relation: Destination
+charts:
+  Position * Representation.Geodetic:
+    lat: float[deg]
+    lon: float[deg]
+    h: float[m]
 
-  InformationIntent.LOCATE:
-    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Position]
-    relation: Target
+  Position * Representation.LocalCartesian:
+    x: float[m]
+    y: float[m]
+    z: float[m]
 
-  InformationIntent.TRACK:
-    product: [Task, Realm.INFORMATION, TemporalMode.MAINTAIN, Position]
-    relation: Target
+  Velocity * Representation.LocalCartesian:
+    vx: float[m/s]
+    vy: float[m/s]
+    vz: float[m/s]
 
-  InformationIntent.IDENTIFY:
-    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Identity]
-    relation: Target
+  Attitude * Representation.LocalEuler:
+    roll: float[rad]
+    pitch: float[rad]
+    yaw: float[rad]
 
-  InformationIntent.CLASSIFY:
-    product: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE, Classification]
-    relation: Target
+  Attitude * Representation.Quaternion:
+    qw: float
+    qx: float
+    qy: float
+    qz: float
 
-  EffectIntent.CREATE:
-    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.TRUE]
-    relation: Target
+# ---------------------------------------------------------------------------
+# Open expressions:
+#
+#     E := fixed semantic factors + typed free variables + equations
+#
+# `given` variables are inputs; `sought` variables are answers. An unbound
+# variable is an unknown, not an error, so an expression can be recorded
+# before every participant is known.
+# ---------------------------------------------------------------------------
 
-  EffectIntent.REMOVE:
-    product: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.FALSE]
-    relation: Target
+expressions:
+  MOVE:
+    description: Move an actor until its position is the destination.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+    given:
+      actor: Entity
+      destination: Position
+    equations:
+      - Position(actor) = destination
+    words: [ManeuverIntent.MOVE]
 
+  HOLD:
+    description: Maintain an actor's position at the destination.
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
+    given:
+      actor: Entity
+      destination: Position
+    equations:
+      - Position(actor) = destination
+    words: [ManeuverIntent.HOLD]
+
+  LOCATE:
+    description: Solve for the position of an entity.
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
+    given:
+      target: Entity
+    sought:
+      position: Position
+    equations:
+      - Position(target) = position
+    words: [InformationIntent.LOCATE]
+
+  TRACK:
+    description: Maintain awareness of an entity's position.
+    factors: [Task, Realm.INFORMATION, TemporalMode.MAINTAIN]
+    given:
+      target: Entity
+    sought:
+      position: Position
+    equations:
+      - Position(target) = position
+    words: [InformationIntent.TRACK]
+
+  IDENTIFY:
+    description: Solve for the identity of an entity.
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
+    given:
+      target: Entity
+    sought:
+      identity: Identity
+    equations:
+      - Identity(target) = identity
+    words: [InformationIntent.IDENTIFY]
+
+  CLASSIFY:
+    description: Solve for the classification of an entity.
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
+    given:
+      target: Entity
+    sought:
+      classification: Classification
+    equations:
+      - Classification(target) = classification
+    words: [InformationIntent.CLASSIFY]
+
+  CREATE:
+    description: Make an object exist.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.TRUE]
+    given:
+      object: Object
+    words: [EffectIntent.CREATE]
+
+  REMOVE:
+    description: Make an object cease to exist.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.FALSE]
+    given:
+      object: Object
+    words: [EffectIntent.REMOVE]
+
+# ---------------------------------------------------------------------------
+# Models are named products. Parentage entails the parent's full semantics,
+# `product:` entries expand to the semantics they name, and `chart:` entries
+# add the chart's factors and compile the chart's variables as fields.
+# ---------------------------------------------------------------------------
 
 models:
   Root:
@@ -174,7 +318,7 @@ models:
 
   Object:
     description: A discrete thing in the operational world.
-    parent: Root # note: Product always includes parent
+    parent: Root
 
   Locality:
     description: Physical reference place in the world, ie village, bridge, mountain
@@ -231,21 +375,33 @@ models:
       - Controller.UNMANNED
 
   Data:
+    description: Values rather than world referents.
     parent: Root
 
   State:
+    description: A semantic quantity; a chart realizes it as data variables.
     parent: Data
-
-  Mark:
-    parent: Data
-    description: Simple representation of a selected point in world
-    product: 
-      - GlobalPosition
-    fields:
-      uid: UID
-      name: optional string
 
   Position:
+    description: Where something is.
+    parent: State
+
+  Velocity:
+    parent: State
+
+  Attitude:
+    parent: State
+
+  Identity:
+    parent: State
+
+  Classification:
+    parent: State
+
+  Existence:
+    parent: State
+
+  Connectivity:
     parent: State
 
   Altitude:
@@ -256,27 +412,30 @@ models:
     fields:
       m: float
 
-  Existence:
-    parent: State
-
-  Connectivity:
-    parent: State
-
-  Identity:
-    parent: State
-
-  Classification:
-    parent: State
-
   GlobalPosition:
-    parent: Position
+    description: Position compiled through the geodetic chart.
+    chart: Position * Representation.Geodetic
+
+  LocalPosition:
+    description: Position compiled through the local cartesian chart.
+    chart: Position * Representation.LocalCartesian
+
+  LocalVelocity:
+    description: Velocity compiled through the local cartesian chart.
+    chart: Velocity * Representation.LocalCartesian
+
+  LocalAttitude:
+    description: Attitude compiled through the local Euler chart.
+    chart: Attitude * Representation.LocalEuler
+
+  Mark:
+    description: Named point of interest; its semantic form is a position.
+    parent: Data
     product:
-      - Position
-      - Frame.WGS84
+      - GlobalPosition
     fields:
-      lat: float
-      lon: float
-      alt_m: float
+      uid: UID
+      name: optional string
 
   Control:
     parent: Root
@@ -290,7 +449,6 @@ models:
     fields:
       uid: UID
       instruction: string
-      objective_uid: optional UID
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
 
@@ -299,49 +457,51 @@ models:
     parent: Directive
 
   TaskManeuver:
-    description: A task concerning movement or maintaining position; intent is ordinary vocabulary.
+    description: Surface representation of a maneuver expression.
     parent: Task
-    product: [Task]
     fields:
       intent: ManeuverIntent
 
   TaskInformation:
-    description: Practical surface representation for information-outcome task vocabulary
+    description: Surface representation of an information expression.
     parent: Task
-    product: [Task]
     fields:
       intent: InformationIntent
 
   TaskEffect:
-    description: Practical surface representation for effect task vocabulary
+    description: Surface representation of an effect expression.
     parent: Task
-    product: [Task]
     fields:
       intent: EffectIntent
 
-# Never ever create prefixed "assigned/inline" or other PrefixX models
+# ---------------------------------------------------------------------------
+# A projection is a compiled aggregate, not an ontological object. The
+# compiler reduces the listed products to their chart variables and the
+# runtime materializes them from independent facts about one subject.
+# ---------------------------------------------------------------------------
 
-# Named classes are optional human aliases for useful semantic products.
-# An alias is a product, not a representation and not a fundamental identity.
+projections:
+  VehicleState:
+    description: Normal form of a vehicle's position, velocity, and attitude.
+    product:
+      - Position * Representation.Geodetic
+      - Velocity * Representation.LocalCartesian
+      - Attitude * Representation.LocalEuler
+    fields:
+      uid: UID
+
+# ---------------------------------------------------------------------------
+# Aliases name useful products. A named combination and an unnamed equivalent
+# combination have the same semantic normal form.
+# ---------------------------------------------------------------------------
+
 aliases:
   AirMission: [Mission, PhysicalDomain.AIR]
   AirTask: [Task, PhysicalDomain.AIR]
   UGV: [UnmannedVehicle, PhysicalDomain.LAND]
   UAV: [UnmannedVehicle, PhysicalDomain.AIR]
   Drone: [UAV, Airframe.MULTIROTOR]
-
-
-relations:
-  Destination:
-    description: A task has a destination position; operand order is task, position.
-    signature: [Task, Position]
-
-  Target:
-    description: A task acts on a target entity; operand order is task, entity.
-    signature: [Task, Entity]
-
-  AssignedWork:
-    description: An entity is assigned a task; operand order is entity, task.
-    signature: [Entity, Task]
-
-
+  Geodetic: [Representation.Geodetic]
+  LocalCartesian: [Representation.LocalCartesian]
+  LocalEuler: [Representation.LocalEuler]
+  Quaternion: [Representation.Quaternion]

@@ -241,7 +241,12 @@ class RelationFact:
     operands: tuple["ModelRef", ...]
 
     def __str__(self) -> str:
-        return f"{self.relation.name}({', '.join(x.uid for x in self.operands)})"
+        names = self.relation.operand_names
+        if names:
+            parts = (f"{role}={operand.uid}" for role, operand in zip(names, self.operands))
+        else:
+            parts = (operand.uid for operand in self.operands)
+        return f"{self.relation.name}({', '.join(parts)})"
 
 
 @dataclass(frozen=True, slots=True)
@@ -264,14 +269,177 @@ class RelationType:
             raise TypeError(f"{self.name} expects {len(self.signature)} operands")
         for index, (operand, expected) in enumerate(zip(operands, self.signature)):
             # Operand regions are semantic, not class paths: a representation
-            # satisfies the region when it entails the region's product.
-            if not expected._semantics.terms <= operand.semantics.terms:
+            # satisfies the region when its closure entails the region's
+            # product.
+            if not operand.store.registry.entails(operand.semantics, expected._semantics):
                 label = self.operand_names[index] if index < len(self.operand_names) else str(index)
                 raise TypeError(
                     f"{self.name} operand {label!r} expects {expected.__name__}, "
                     f"but {operand.model.__name__} does not entail it"
                 )
         return RelationFact(self, tuple(operands))
+
+
+# ---------------------------------------------------------------------------
+# Charts: quantity * representation reduces to irreducible typed variables.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True, slots=True)
+class Coord:
+    name: str
+    type: str
+    unit: str | None = None
+
+    def __str__(self) -> str:
+        return f"{self.name}:{self.type}" + (f"[{self.unit}]" if self.unit else "")
+
+
+@dataclass(frozen=True, slots=True)
+class ChartType:
+    display: str
+    factors: Product
+    coords: tuple[Coord, ...]
+
+    def __str__(self) -> str:
+        body = " * ".join(str(coord) for coord in self.coords)
+        return f"chart {self.display} := {body}"
+
+
+# ---------------------------------------------------------------------------
+# Open expressions: fixed factors + typed free variables + equations.
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True, slots=True)
+class Equation:
+    quantity: str
+    of: str
+    equals: str
+
+    def __str__(self) -> str:
+        return f"{self.quantity}({self.of}) = {self.equals}"
+
+
+@dataclass(frozen=True, slots=True)
+class ExpressionType:
+    name: str
+    factors: Product
+    given: dict[str, Product]
+    sought: dict[str, Product]
+    equations: tuple[Equation, ...]
+    words: tuple[str, ...]
+
+    @property
+    def variables(self) -> dict[str, Product]:
+        return {**self.given, **self.sought}
+
+    def __str__(self) -> str:
+        given = ", ".join(
+            f"{role}: {' * '.join(sorted(region.terms)) or '∅'}"
+            for role, region in self.given.items()
+        )
+        text = f"{self.name}({given})"
+        if self.sought:
+            sought = ", ".join(
+                f"{role}: {' * '.join(sorted(region.terms)) or '∅'}"
+                for role, region in self.sought.items()
+            )
+            text += f" => {sought}"
+        if self.equations:
+            text += "  { " + "; ".join(str(eq) for eq in self.equations) + " }"
+        return text
+
+
+@dataclass(frozen=True, slots=True)
+class ProjectionSpec:
+    name: str
+    semantics: Product
+    fields: tuple[str, ...]
+    charts: tuple[ChartType, ...]
+
+
+class OpenExpression:
+    """A task that realizes an open expression. Variables may stay unbound.
+
+    A binding is a reference or a value for a typed free variable; an unbound
+    variable is an unknown, not an error. Sought variables are solved from the
+    store through the expression's equations.
+    """
+
+    def __init__(self, store: "Store", ref: "ModelRef", expression: ExpressionType):
+        self.store = store
+        self.ref = ref
+        self.expression = expression
+        self.bindings: dict[str, Any] = {}
+
+    @property
+    def factors(self) -> Product:
+        return self.expression.factors
+
+    def bind(self, name: str, value: Any) -> "OpenExpression":
+        variables = self.expression.variables
+        if name not in variables:
+            raise KeyError(f"{self.expression.name} has no variable {name!r}")
+        region = variables[name]
+        if isinstance(value, ModelRef):
+            if not self.store.registry.entails(value.semantics, region):
+                raise TypeError(
+                    f"{name}: {value.model.__name__} does not satisfy "
+                    f"{' * '.join(sorted(region.terms))}"
+                )
+        elif isinstance(value, SemanticModel):
+            if not self.store.registry.entails(value_semantics(value), region):
+                raise TypeError(
+                    f"{name}: {type(value).__name__} does not satisfy "
+                    f"{' * '.join(sorted(region.terms))}"
+                )
+        else:
+            raise TypeError(f"{name}: not a semantic binding: {value!r}")
+        self.bindings[name] = value
+        return self
+
+    @property
+    def unbound(self) -> list[str]:
+        return [name for name in self.expression.variables if name not in self.bindings]
+
+    def solve(self) -> dict[str, Any]:
+        values: dict[str, Any] = {}
+        for equation in self.expression.equations:
+            if equation.equals not in self.expression.sought:
+                continue
+            if equation.equals in self.bindings:
+                values[equation.equals] = self.bindings[equation.equals]
+                continue
+            source = self.bindings.get(equation.of)
+            if not isinstance(source, ModelRef):
+                continue
+            value = self.store.value_of(source, equation.quantity)
+            if value is not None:
+                values[equation.equals] = value
+        return values
+
+    def __str__(self) -> str:
+        given = ", ".join(
+            f"{name}={_render_binding(self.bindings.get(name))}"
+            for name in self.expression.given
+        )
+        text = f"{self.expression.name}({given})"
+        if self.expression.sought:
+            sought = ", ".join(
+                f"{name}={_render_binding(self.bindings.get(name))}"
+                for name in self.expression.sought
+            )
+            text += f" => {sought}"
+        return text
+
+
+def _render_binding(value: Any) -> str:
+    if value is None:
+        return "?"
+    if isinstance(value, ModelRef):
+        return value.uid
+    return repr(value)
 
 
 # ---------------------------------------------------------------------------
@@ -317,8 +485,63 @@ class SemanticRegistry:
             for name, model in spec.get("models", {}).items()
         }
 
-        self.codeword_relations: dict[str, str] = dict(spec.get("codeword_relations", {}))
         self.aliases: dict[str, list[str]] = dict(spec.get("aliases", {}))
+
+        self.charts: list[ChartType] = []
+        for chart in spec.get("charts", []):
+            self.charts.append(
+                ChartType(
+                    display=str(chart["display"]),
+                    factors=Product(frozenset(chart["factors"])),
+                    coords=tuple(
+                        Coord(
+                            name=coord["name"],
+                            type=coord["type"],
+                            unit=coord.get("unit"),
+                        )
+                        for coord in chart["coords"]
+                    ),
+                )
+            )
+        charts_by_display = {chart.display: chart for chart in self.charts}
+
+        self.expressions: dict[str, ExpressionType] = {}
+        for name, item in spec.get("expressions", {}).items():
+            self.expressions[name] = ExpressionType(
+                name=name,
+                factors=Product(frozenset(item["factors"])),
+                given={
+                    role: Product(frozenset(region))
+                    for role, region in item.get("given", {}).items()
+                },
+                sought={
+                    role: Product(frozenset(region))
+                    for role, region in item.get("sought", {}).items()
+                },
+                equations=tuple(
+                    Equation(
+                        quantity=str(equation["quantity"]),
+                        of=str(equation["of"]),
+                        equals=str(equation["equals"]),
+                    )
+                    for equation in item.get("equations", [])
+                ),
+                words=tuple(item.get("words", [])),
+            )
+        self.word_expressions: dict[str, str] = dict(spec.get("word_expressions", {}))
+
+        self.projections: dict[str, ProjectionSpec] = {}
+        for name, item in spec.get("projections", {}).items():
+            self.projections[name] = ProjectionSpec(
+                name=name,
+                semantics=Product(frozenset(item["semantics"])),
+                fields=tuple(field["name"] for field in item.get("fields", [])),
+                charts=tuple(
+                    charts_by_display[display]
+                    for display in item.get("charts", [])
+                    if display in charts_by_display
+                ),
+            )
 
         # Constraints are implied by declarations. There is no authored rules
         # block: an axis, an axis value, or a concept states applies/requires/
@@ -387,6 +610,19 @@ class SemanticRegistry:
                 )
         for model_name, model in spec.get("models", {}).items():
             add_declarations(model_name, Term(model_name), model)
+            parent = model.get("parent")
+            if parent:
+                # A model's name is a label for its whole meaning. Compiled
+                # semantics carry the inherited factors, not the ancestor
+                # labels; parentage derives those labels in the closure.
+                self.rules.append(
+                    Rule(
+                        name=f"{model_name}.parent",
+                        kind="implication",
+                        when=Term(model_name),
+                        then=Term(parent),
+                    )
+                )
 
         self.active_rules = [
             rule
@@ -403,12 +639,15 @@ class SemanticRegistry:
     def fields_of(self, model: type[SemanticModel]) -> list[dict[str, Any]]:
         return self.model_fields.get(model.__name__, [])
 
-    def codeword_relation(self, codeword: Any) -> str | None:
-        if isinstance(codeword, SemanticEnum):
-            key = f"{type(codeword).__name__}.{codeword.name}"
+    def expression_of(self, word: Any) -> ExpressionType:
+        if isinstance(word, SemanticEnum):
+            key = f"{type(word).__name__}.{word.name}"
         else:
-            key = str(codeword)
-        return self.codeword_relations.get(key)
+            key = str(word)
+        name = self.word_expressions.get(key)
+        if name is None:
+            raise KeyError(f"no expression is named by {key!r}")
+        return self.expressions[name]
 
     # -- closure and legality ----------------------------------------------
 
@@ -629,6 +868,76 @@ class Store:
 
     def get_many(self, subjects: Iterable[ModelRef], *query: Any) -> dict[str, SemanticModel]:
         return {subject.uid: self.get(subject, *query) for subject in subjects}
+
+    def value_of(self, subject: ModelRef, region: Any) -> SemanticModel | ModelRef | None:
+        # An unknown answer is None; a region with several answers is an
+        # ambiguity to be narrowed by adding factors.
+        wanted = sem(region) if not isinstance(region, Product) else region
+        found: list[Any] = []
+        if self.registry.entails(subject.semantics, wanted):
+            found.append(subject)
+        found.extend(subject.find(wanted))
+        unique_found: list[Any] = []
+        for item in found:
+            if item not in unique_found:
+                unique_found.append(item)
+        if not unique_found:
+            return None
+        if len(unique_found) > 1:
+            raise AmbiguousSemanticMatch(
+                f"{subject.uid}: {wanted} -> {[type(x).__name__ for x in unique_found]}"
+            )
+        return unique_found[0]
+
+    def task(self, uid: str, model: type[SemanticModel], word: Any, **values: Any) -> OpenExpression:
+        # A task is a representation of an open expression: the word selects
+        # the expression, the value carries the fixed semantic factors, and
+        # bindings carry the free variables. When the word is a vocabulary
+        # member, it is stored in the representation field that carries it.
+        expression = self.registry.expression_of(word)
+        if isinstance(word, SemanticEnum):
+            for field in fields(model):
+                if field.name in values:
+                    continue
+                if field.type == type(word).__name__ or field.type is type(word):
+                    values[field.name] = word
+        value = model(uid=uid, **values)
+        ref = self.ref(uid, model)
+        self.set(ref, value)
+        if not self.registry.entails(value_semantics(value), expression.factors):
+            raise ValueError(f"{model.__name__} does not realize {expression.name}")
+        return OpenExpression(self, ref, expression)
+
+    def _first_datum(self, subject: ModelRef, factors: Product) -> SemanticModel | None:
+        found = [
+            datum.value
+            for datum in self._data.get(subject.uid, [])
+            if self.registry.entails(datum.semantics, factors)
+        ]
+        if not found:
+            return None
+        if len(found) > 1:
+            raise AmbiguousSemanticMatch(
+                f"{subject.uid}: {factors} -> {[type(x).__name__ for x in found]}"
+            )
+        return found[0]
+
+    def project(self, subject: ModelRef, projection: type[SemanticModel]) -> SemanticModel:
+        # A projection is a compiled normal form: every chart selected by the
+        # projection contributes its coordinates from existing facts.
+        spec = self.registry.projections.get(projection.__name__)
+        if spec is None:
+            raise KeyError(f"unknown projection: {projection.__name__}")
+        kwargs: dict[str, Any] = {}
+        if "uid" in spec.fields:
+            kwargs["uid"] = subject.uid
+        for chart in spec.charts:
+            datum = self._first_datum(subject, chart.factors)
+            if datum is None:
+                continue
+            for coord in chart.coords:
+                kwargs[coord.name] = getattr(datum, coord.name)
+        return projection(**kwargs)
 
     def relate(self, relation: RelationType, *operands: ModelRef) -> RelationFact:
         fact = relation(*operands)

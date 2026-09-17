@@ -2,11 +2,58 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import OrderedDict
 from pathlib import Path
 from typing import Any
 
 import yaml
+
+PRODUCT_SPLIT = re.compile(r"\s*[*\u00d7]\s*")
+UNIT_RE = re.compile(r"^(?P<kind>[A-Za-z_]\w*)\s*\[(?P<unit>[^\]]+)\]\s*$")
+EQUATION_RE = re.compile(
+    r"^\s*(?P<quantity>[A-Za-z_]\w*)\s*\(\s*(?P<of>[A-Za-z_]\w*)\s*\)"
+    r"\s*=\s*(?P<equals>[A-Za-z_]\w*)\s*$"
+)
+CONSTRAINT_KEYS = ("applies", "requires", "disjoint", "excludes")
+
+
+def unique(items: list[str]) -> list[str]:
+    return list(OrderedDict((item, None) for item in items).keys())
+
+
+def split_product(text: Any) -> list[str]:
+    return [part.strip() for part in PRODUCT_SPLIT.split(str(text)) if part.strip()]
+
+
+def term_list(raw: Any) -> list[str]:
+    if raw is None:
+        return []
+    if isinstance(raw, str):
+        return [raw]
+    return [str(item) for item in raw]
+
+
+def product_terms(raw: Any) -> list[str]:
+    terms: list[str] = []
+    for item in term_list(raw):
+        terms.extend(split_product(item))
+    return terms
+
+
+def parse_coordinate(name: str, raw: Any) -> dict[str, Any]:
+    if isinstance(raw, dict):
+        raw = raw.get("type", "")
+    text = str(raw).strip()
+    match = UNIT_RE.match(text)
+    if match:
+        return {"name": name, "type": match.group("kind"), "unit": match.group("unit")}
+    return {"name": name, "type": text, "unit": None}
+
+
+def parse_equation(text: Any) -> dict[str, str] | None:
+    match = EQUATION_RE.match(str(text).strip())
+    return dict(match.groupdict()) if match else None
 
 
 def parse_enum_items(items: list[str]) -> list[tuple[str, int]]:
@@ -116,9 +163,13 @@ def render_default(
 
 
 def model_semantics(models: dict[str, dict[str, Any]], order: list[str]) -> dict[str, list[str]]:
-    # Every model is a named product: its name is a factor, parentage entails
-    # the parent's full resolved semantics, and a product entry naming another
-    # model expands to that model's full semantics.
+    # Every model is a named product: its own name, the factors it inherits,
+    # and its own `product:`/`chart:` factors. Parentage entails the parent's
+    # meaning, but an ancestor's name is a label, not a factor: inheritance
+    # carries the parent's factors and drops its labels, which the solver
+    # re-derives from parentage. Naming a model in `product:` keeps that
+    # model's label, because it is part of this model's own meaning. A
+    # `chart:` key contributes its factors and compiles its variables.
     resolved: dict[str, list[str]] = {}
     resolving: list[str] = []
 
@@ -128,16 +179,21 @@ def model_semantics(models: dict[str, dict[str, Any]], order: list[str]) -> dict
         if name in resolving:
             raise ValueError(f"product cycle: {' -> '.join(resolving + [name])}")
         resolving.append(name)
-        parent = models[name].get("parent")
-        terms = list(resolve(parent)) if parent else []
+        spec = models[name]
+        parent = spec.get("parent")
+        terms = [term for term in resolve(parent) if term not in models] if parent else []
         terms.append(name)
-        for term in models[name].get("product", []):
-            if term in models:
-                terms.extend(resolve(term))
-            else:
-                terms.append(term)
+        raw_products = term_list(spec.get("product"))
+        if spec.get("chart"):
+            raw_products.append(spec["chart"])
+        for raw in raw_products:
+            for term in split_product(raw):
+                if term in models:
+                    terms.extend(resolve(term))
+                else:
+                    terms.append(term)
         resolving.pop()
-        resolved[name] = list(OrderedDict((x, None) for x in terms).keys())
+        resolved[name] = unique(terms)
         return resolved[name]
 
     for name in order:
@@ -152,7 +208,28 @@ def expand_terms(terms: list[str], semantics: dict[str, list[str]]) -> list[str]
             expanded.extend(semantics[term])
         else:
             expanded.append(term)
-    return list(OrderedDict((x, None) for x in expanded).keys())
+    return unique(expanded)
+
+
+def semantic_closure(
+    terms: list[str],
+    semantics: dict[str, list[str]],
+    models: dict[str, dict[str, Any]],
+) -> set[str]:
+    # Entailment closure of model names: a model entails its own factors and,
+    # through parentage, every ancestor name.
+    out: set[str] = set()
+    stack = list(terms)
+    while stack:
+        term = stack.pop()
+        if term in out:
+            continue
+        out.add(term)
+        stack.extend(semantics.get(term, ()))
+        parent = models.get(term, {}).get("parent")
+        if parent:
+            stack.append(parent)
+    return out
 
 
 def resolve_aliases(
@@ -170,15 +247,16 @@ def resolve_aliases(
             raise ValueError(f"alias cycle: {' -> '.join(resolving + [name])}")
         resolving.append(name)
         terms: list[str] = []
-        for term in raw_aliases[name]:
-            if term in raw_aliases:
-                terms.extend(resolve(term))
-            elif term in semantics:
-                terms.extend(semantics[term])
-            else:
-                terms.append(term)
+        for raw in term_list(raw_aliases[name]):
+            for term in split_product(raw):
+                if term in raw_aliases:
+                    terms.extend(resolve(term))
+                elif term in semantics:
+                    terms.extend(semantics[term])
+                else:
+                    terms.append(term)
         resolving.pop()
-        resolved[name] = list(OrderedDict((x, None) for x in terms).keys())
+        resolved[name] = unique(terms)
         return resolved[name]
 
     for alias_name in raw_aliases:
@@ -213,8 +291,8 @@ def normalize_axis(axis: dict[str, Any]) -> dict[str, Any]:
 
 
 def normalize_relation(spec: dict[str, Any]) -> dict[str, Any]:
-    # Positional `signature: [A, B]` or named `operands: {source: A, target: B}`.
-    # Named operands keep order; `specializes` inherits direction from a base.
+    # Named `operands: {role: region}` or positional `signature: [A, B]`.
+    # Roles and order belong to the relation; `specializes` inherits direction.
     operands = spec.get("operands")
     if operands:
         pairs = [(str(name), str(region)) for name, region in operands.items()]
@@ -246,7 +324,39 @@ def order_relations(relations: dict[str, dict[str, Any]]) -> list[str]:
     return result
 
 
-CONSTRAINT_KEYS = ("applies", "requires", "disjoint", "excludes")
+def compile_charts(
+    raw_charts: dict[str, Any], semantics: dict[str, list[str]]
+) -> list[dict[str, Any]]:
+    charts: list[dict[str, Any]] = []
+    for key_text, raw_coords in (raw_charts or {}).items():
+        terms: list[str] = []
+        for term in split_product(key_text):
+            if term in semantics:
+                terms.extend(semantics[term])
+            else:
+                terms.append(term)
+        coords = [
+            parse_coordinate(str(name), raw)
+            for name, raw in (raw_coords or {}).items()
+        ]
+        charts.append(
+            {"display": str(key_text), "factors": unique(terms), "coords": coords}
+        )
+    return charts
+
+
+def charts_entailed(
+    terms: list[str],
+    charts: list[dict[str, Any]],
+    semantics: dict[str, list[str]],
+    models: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    closed = semantic_closure(terms, semantics, models)
+    return [
+        chart
+        for chart in charts
+        if semantic_closure(chart["factors"], semantics, models) <= closed
+    ]
 
 
 def compile_schema(schema_path: Path, output_dir: Path) -> None:
@@ -258,7 +368,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     }
     enums: dict[str, list[str]] = schema.get("enums", {})
     models: dict[str, dict[str, Any]] = schema.get("models", {})
-    codewords: dict[str, dict[str, Any]] = schema.get("codewords", {})
+    projections_raw: dict[str, dict[str, Any]] = schema.get("projections", {})
     relation_specs: dict[str, dict[str, Any]] = {
         name: normalize_relation(spec)
         for name, spec in (schema.get("relations") or {}).items()
@@ -276,17 +386,28 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         base = relation["specializes"]
         if base and base not in relation_specs:
             raise ValueError(f"relation {relation_name}: unknown base relation {base!r}")
-    order_relations(relation_specs)
+    for relation_name in order_relations(relation_specs):
+        relation = relation_specs[relation_name]
+        base = relation["specializes"]
+        if not base:
+            continue
+        base_spec = relation_specs[base]
+        if len(relation["signature"]) != len(base_spec["signature"]):
+            raise ValueError(
+                f"relation {relation_name}: arity differs from base {base}"
+            )
+        for index, (child_region, base_region) in enumerate(
+            zip(relation["signature"], base_spec["signature"])
+        ):
+            base_terms = semantic_closure([base_region], semantics, models)
+            child_terms = semantic_closure([child_region], semantics, models)
+            if not base_terms <= child_terms:
+                raise ValueError(
+                    f"relation {relation_name}: operand {index} region {child_region!r} "
+                    f"does not narrow {base}.{base_region!r}"
+                )
 
-    expanded_codewords = {
-        key: expand_terms(list(value.get('product', [])), semantics)
-        for key, value in codewords.items()
-    }
-    codeword_relations = {
-        key: str(value["relation"])
-        for key, value in codewords.items()
-        if value.get("relation")
-    }
+    charts = compile_charts(schema.get("charts") or {}, semantics)
 
     raw_aliases: dict[str, list[str]] = dict(schema.get("aliases") or {})
     for alias_name in raw_aliases:
@@ -294,33 +415,140 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             raise ValueError(f"alias collides with a class or enum: {alias_name}")
     aliases = resolve_aliases(raw_aliases, semantics)
 
+    expressions: dict[str, dict[str, Any]] = {}
+    word_expressions: dict[str, str] = {}
+    for expression_name, spec in (schema.get("expressions") or {}).items():
+        # Variable regions stay as authored; binding validation compares a
+        # region against the semantic closure of the bound value.
+        given = {
+            str(role): product_terms(region)
+            for role, region in (spec.get("given") or {}).items()
+        }
+        sought = {
+            str(role): product_terms(region)
+            for role, region in (spec.get("sought") or {}).items()
+        }
+        equations: list[dict[str, str]] = []
+        for raw in spec.get("equations") or []:
+            parsed = parse_equation(raw)
+            if parsed is not None:
+                equations.append(parsed)
+        words = [str(word) for word in (spec.get("words") or [])]
+        for word in words:
+            if word in word_expressions:
+                raise ValueError(f"word {word!r} names more than one expression")
+            word_expressions[word] = expression_name
+        expressions[expression_name] = {
+            "description": spec.get("description"),
+            "factors": expand_terms(product_terms(spec.get("factors")), semantics),
+            "given": given,
+            "sought": sought,
+            "equations": equations,
+            "words": words,
+        }
+
+    # -- models ------------------------------------------------------------
+
+    model_entries: dict[str, dict[str, Any]] = {}
+    for name in order:
+        spec = models[name]
+        selected = charts_entailed(semantics[name], charts, semantics, models)
+        fields: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for field_name, raw in (spec.get("fields") or {}).items():
+            fields.append({"name": field_name, **normalize_field(raw)})
+            seen.add(field_name)
+        for chart in selected:
+            for coord in chart["coords"]:
+                if coord["name"] in seen:
+                    raise ValueError(f"{name}: chart field {coord['name']!r} collides")
+                seen.add(coord["name"])
+                fields.append(
+                    {
+                        "name": coord["name"],
+                        "type": coord["type"],
+                        "default": None,
+                        "unit": coord["unit"],
+                        "chart": chart["display"],
+                    }
+                )
+        model_entries[name] = {
+            "parent": spec.get("parent"),
+            "semantics": semantics[name],
+            "fields": fields,
+            "chart_fields": [
+                {"chart": chart["display"], "coords": chart["coords"]}
+                for chart in selected
+            ],
+            **{key: spec[key] for key in CONSTRAINT_KEYS if spec.get(key)},
+        }
+
+    # -- projections -------------------------------------------------------
+
+    projection_entries: dict[str, dict[str, Any]] = {}
+    for name, spec in projections_raw.items():
+        terms: list[str] = []
+        selected: list[dict[str, Any]] = []
+        seen_charts: set[str] = set()
+        for raw in term_list(spec.get("product")):
+            entry_terms: list[str] = []
+            for term in split_product(raw):
+                if term in semantics:
+                    entry_terms.extend(semantics[term])
+                else:
+                    entry_terms.append(term)
+            terms.extend(entry_terms)
+            # Each listed product is one fact; only the charts it entails are
+            # reduced into the projection's normal form.
+            for chart in charts_entailed(entry_terms, charts, semantics, models):
+                if chart["display"] not in seen_charts:
+                    seen_charts.add(chart["display"])
+                    selected.append(chart)
+        terms = unique(terms)
+        fields: list[dict[str, Any]] = []
+        seen: set[str] = set()
+        for field_name, raw in (spec.get("fields") or {}).items():
+            fields.append({"name": field_name, **normalize_field(raw)})
+            seen.add(field_name)
+        for chart in selected:
+            for coord in chart["coords"]:
+                if coord["name"] in seen:
+                    raise ValueError(f"{name}: chart field {coord['name']!r} collides")
+                seen.add(coord["name"])
+                fields.append(
+                    {
+                        "name": coord["name"],
+                        "type": coord["type"],
+                        "default": None,
+                        "unit": coord["unit"],
+                        "chart": chart["display"],
+                        "optional": True,
+                    }
+                )
+        projection_entries[name] = {
+            "semantics": terms,
+            "fields": fields,
+            "charts": [chart["display"] for chart in selected],
+        }
+
+    # -- registry ----------------------------------------------------------
+
     registry = {
         "axes": axes,
-        "models": {
-            name: {
-                "parent": models[name].get("parent"),
-                "semantics": semantics[name],
-                "fields": [
-                    {"name": field_name, **normalize_field(raw)}
-                    for field_name, raw in (models[name].get("fields") or {}).items()
-                ],
-                **{
-                    key: models[name][key]
-                    for key in CONSTRAINT_KEYS
-                    if models[name].get(key)
-                },
-            }
-            for name in order
-        },
-        "codewords": expanded_codewords,
-        "codeword_relations": codeword_relations,
+        "models": model_entries,
+        "charts": charts,
+        "expressions": expressions,
+        "word_expressions": word_expressions,
         "aliases": aliases,
         "relations": relation_specs,
+        "projections": projection_entries,
     }
 
     (output_dir / "semantic_registry.json").write_text(
         json.dumps(registry, indent=2, sort_keys=True) + "\n"
     )
+
+    # -- generated python --------------------------------------------------
 
     lines: list[str] = [
         "# GENERATED FILE - DO NOT EDIT",
@@ -331,6 +559,8 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         "",
         "from runtime import (",
         "    AxisValue,",
+        "    Equation,",
+        "    ExpressionType,",
         "    RelationType,",
         "    SemanticAxis,",
         "    SemanticEnum,",
@@ -341,6 +571,9 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         ")",
         "",
     ]
+
+    def product_literal(terms: list[str]) -> str:
+        return f"product_names({list(terms)!r})"
 
     for axis_name, axis in axes.items():
         lines += [
@@ -367,45 +600,114 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         mapping_lines = []
         for item_name, _ in parsed:
             key = f"{enum_name}.{item_name}"
-            if key in codewords:
+            expression_name = word_expressions.get(key)
+            if expression_name is not None:
                 mapping_lines.append(
-                    f"    {item_name!r}: product_names({expanded_codewords[key]!r}),"
+                    f"    {item_name!r}: {product_literal(expressions[expression_name]['factors'])},"
                 )
         lines += [f"{enum_name}._semantic_map = {{", *mapping_lines, "}", ""]
 
+    for expression_name, expression in expressions.items():
+        lines.append(f"{expression_name} = ExpressionType(")
+        lines.append(f"    {expression_name!r},")
+        lines.append(f"    {product_literal(expression['factors'])}, ")
+        lines.append(
+            "    given={"
+            + ", ".join(
+                f"{role!r}: {product_literal(region)}"
+                for role, region in expression["given"].items()
+            )
+            + "},"
+        )
+        lines.append(
+            "    sought={"
+            + ", ".join(
+                f"{role!r}: {product_literal(region)}"
+                for role, region in expression["sought"].items()
+            )
+            + "},"
+        )
+        equation_items = ", ".join(
+            f"Equation({eq['quantity']!r}, {eq['of']!r}, {eq['equals']!r})"
+            for eq in expression["equations"]
+        )
+        if equation_items:
+            equation_items += ","
+        lines.append(f"    equations=({equation_items}),")
+        lines.append(f"    words={tuple(expression['words'])!r},")
+        lines.append(")")
+        lines.append("")
+
     # Named aliases are products, not classes.
     for alias_name, terms in aliases.items():
-        lines += [f"{alias_name} = product_names({terms!r})", ""]
+        lines += [f"{alias_name} = {product_literal(terms)}", ""]
+
+    def emit_dataclass(
+        name: str,
+        parent: str,
+        semantics_terms: list[str],
+        fields: list[dict[str, Any]],
+        charts: list[str],
+        projection: bool,
+    ) -> None:
+        lines.append("@dataclass(kw_only=True)")
+        lines.append(f"class {name}({parent}):")
+        lines.append(f"    _semantics: ClassVar = {product_literal(semantics_terms)}")
+        lines.append(
+            f"    _declared_fields: ClassVar[tuple[str, ...]] = {tuple(f['name'] for f in fields)!r}"
+        )
+        units = {f["name"]: f["unit"] for f in fields if f.get("unit")}
+        lines.append(f"    _units: ClassVar[dict[str, str]] = {units!r}")
+        lines.append(f"    _charts: ClassVar[tuple[str, ...]] = {tuple(charts)!r}")
+        if projection:
+            lines.append("    _projection: ClassVar[bool] = True")
+        for field_spec in fields:
+            field_name = field_spec["name"]
+            annotation, inferred_default = py_type(
+                field_spec["type"], known_enums, known_models
+            )
+            explicit_default = field_spec.get("default")
+            if field_spec.get("optional"):
+                lines.append(f"    {field_name}: {annotation} | None = None")
+            elif explicit_default is not None:
+                default_py = render_default(
+                    field_spec["type"], explicit_default, known_enums, enum_values
+                )
+                lines.append(f"    {field_name}: {annotation} = {default_py}")
+            elif inferred_default == "factory:list":
+                lines.append(f"    {field_name}: {annotation} = field(default_factory=list)")
+            elif inferred_default == "None":
+                lines.append(f"    {field_name}: {annotation} = None")
+            else:
+                lines.append(f"    {field_name}: {annotation}")
+        lines.append("")
 
     for name in order:
         spec = models[name]
-        parent = spec.get("parent") or "SemanticModel"
-        lines += ["@dataclass(kw_only=True)", f"class {name}({parent}):"]
-        lines.append(f"    _semantics: ClassVar = product_names({semantics[name]!r})")
-        declared = list((spec.get("fields") or {}).keys())
-        lines.append(f"    _declared_fields: ClassVar[tuple[str, ...]] = {tuple(declared)!r}")
-        field_specs = spec.get("fields") or {}
-        for field_name, raw in field_specs.items():
-            try:
-                field_spec = normalize_field(raw)
-                type_expr = field_spec["type"]
-                explicit_default = field_spec["default"]
-                annotation, inferred_default = py_type(type_expr, known_enums, known_models)
-                default = explicit_default if explicit_default is not None else inferred_default
-                if default == "factory:list":
-                    lines.append(f"    {field_name}: {annotation} = field(default_factory=list)")
-                elif default is None:
-                    lines.append(f"    {field_name}: {annotation}")
-                elif default == "None":
-                    lines.append(f"    {field_name}: {annotation} = None")
-                elif explicit_default is not None:
-                    default_py = render_default(type_expr, default, known_enums, enum_values)
-                    lines.append(f"    {field_name}: {annotation} = {default_py}")
-                else:
-                    lines.append(f"    {field_name}: {annotation}")
-            except ValueError as exc:
-                raise ValueError(f"{name}.{field_name}: {exc}") from exc
-        lines.append("")
+        try:
+            emit_dataclass(
+                name,
+                spec.get("parent") or "SemanticModel",
+                semantics[name],
+                model_entries[name]["fields"],
+                [entry["chart"] for entry in model_entries[name]["chart_fields"]],
+                projection=False,
+            )
+        except ValueError as exc:
+            raise ValueError(f"model {name}: {exc}") from exc
+
+    for name, spec in projection_entries.items():
+        try:
+            emit_dataclass(
+                name,
+                "SemanticModel",
+                spec["semantics"],
+                spec["fields"],
+                spec["charts"],
+                projection=True,
+            )
+        except ValueError as exc:
+            raise ValueError(f"projection {name}: {exc}") from exc
 
     for relation_name in order_relations(relation_specs):
         spec = relation_specs[relation_name]
