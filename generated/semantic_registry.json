@@ -122,7 +122,7 @@
     },
     "Representation": {
       "cardinality": "many",
-      "description": "How a semantic quantity becomes irreducible data variables.",
+      "description": "How a semantic quantity becomes data -- its coordinate scheme, datum, unit, or encoding.",
       "values": [
         "Geodetic",
         "LocalCartesian",
@@ -138,8 +138,7 @@
         "MetersPerSecond",
         "MSL",
         "FlightLevel",
-        "Count",
-        "Ordinal",
+        "Boolean",
         "Protocol",
         "Decimal",
         "Integer"
@@ -201,7 +200,8 @@
       "factors": [
         "Position",
         "Representation.Geodetic"
-      ]
+      ],
+      "model": "GlobalPosition"
     },
     {
       "coords": [
@@ -225,7 +225,8 @@
       "factors": [
         "Position",
         "Representation.LocalCartesian"
-      ]
+      ],
+      "model": "LocalPosition"
     },
     {
       "coords": [
@@ -249,7 +250,8 @@
       "factors": [
         "Velocity",
         "Representation.LocalCartesian"
-      ]
+      ],
+      "model": "LocalVelocity"
     },
     {
       "coords": [
@@ -273,7 +275,8 @@
       "factors": [
         "Attitude",
         "Representation.LocalEuler"
-      ]
+      ],
+      "model": "LocalAttitude"
     },
     {
       "coords": [
@@ -302,7 +305,8 @@
       "factors": [
         "Attitude",
         "Representation.Quaternion"
-      ]
+      ],
+      "model": "QuaternionAttitude"
     },
     {
       "coords": [
@@ -310,18 +314,14 @@
           "name": "utime",
           "type": "float",
           "unit": "s"
-        },
-        {
-          "name": "tz",
-          "type": "int",
-          "unit": null
         }
       ],
       "display": "Time * Representation.Epoch",
       "factors": [
         "Time",
         "Representation.Epoch"
-      ]
+      ],
+      "model": "Timestamp"
     },
     {
       "coords": [
@@ -335,7 +335,8 @@
       "factors": [
         "Identity",
         "Representation.UID"
-      ]
+      ],
+      "model": "UID"
     },
     {
       "coords": [
@@ -349,7 +350,8 @@
       "factors": [
         "Identity",
         "Representation.IntID"
-      ]
+      ],
+      "model": "IntID"
     },
     {
       "coords": [
@@ -363,7 +365,8 @@
       "factors": [
         "Text",
         "Representation.PlainText"
-      ]
+      ],
+      "model": "PlainText"
     },
     {
       "coords": [
@@ -377,7 +380,8 @@
       "factors": [
         "Duration",
         "Representation.Seconds"
-      ]
+      ],
+      "model": "DurationSeconds"
     },
     {
       "coords": [
@@ -391,7 +395,8 @@
       "factors": [
         "Angle",
         "Representation.Radians"
-      ]
+      ],
+      "model": "AngleRadians"
     },
     {
       "coords": [
@@ -405,7 +410,8 @@
       "factors": [
         "Distance",
         "Representation.Meters"
-      ]
+      ],
+      "model": "DistanceMeters"
     },
     {
       "coords": [
@@ -419,7 +425,8 @@
       "factors": [
         "Speed",
         "Representation.MetersPerSecond"
-      ]
+      ],
+      "model": "SpeedMetersPerSecond"
     },
     {
       "coords": [
@@ -433,7 +440,8 @@
       "factors": [
         "Altitude",
         "Representation.MSL"
-      ]
+      ],
+      "model": "AltitudeMSL"
     },
     {
       "coords": [
@@ -447,7 +455,8 @@
       "factors": [
         "Altitude",
         "Representation.FlightLevel"
-      ]
+      ],
+      "model": "AltitudeFlightLevel"
     },
     {
       "coords": [
@@ -457,11 +466,12 @@
           "unit": null
         }
       ],
-      "display": "Count * Representation.Count",
+      "display": "Count * Representation.Integer",
       "factors": [
         "Count",
-        "Representation.Count"
-      ]
+        "Representation.Integer"
+      ],
+      "model": "ItemCount"
     },
     {
       "coords": [
@@ -471,11 +481,27 @@
           "unit": null
         }
       ],
-      "display": "Ordinal * Representation.Ordinal",
+      "display": "Ordinal * Representation.Integer",
       "factors": [
         "Ordinal",
-        "Representation.Ordinal"
-      ]
+        "Representation.Integer"
+      ],
+      "model": "OrdinalValue"
+    },
+    {
+      "coords": [
+        {
+          "name": "holds",
+          "type": "bool",
+          "unit": null
+        }
+      ],
+      "display": "Truth * Representation.Boolean",
+      "factors": [
+        "Truth",
+        "Representation.Boolean"
+      ],
+      "model": "TruthBoolean"
     },
     {
       "coords": [
@@ -489,7 +515,8 @@
       "factors": [
         "Code",
         "Representation.Protocol"
-      ]
+      ],
+      "model": "ProtocolCode"
     },
     {
       "coords": [
@@ -503,7 +530,8 @@
       "factors": [
         "Scalar",
         "Representation.Decimal"
-      ]
+      ],
+      "model": "ScalarDecimal"
     },
     {
       "coords": [
@@ -517,7 +545,8 @@
       "factors": [
         "Scalar",
         "Representation.Integer"
-      ]
+      ],
+      "model": "ScalarInteger"
     }
   ],
   "expressions": {
@@ -528,6 +557,9 @@
         "Command"
       ],
       "given": {
+        "quantity": [
+          "Count"
+        ],
         "resource": [
           "Resource"
         ],
@@ -569,7 +601,7 @@
       ]
     },
     "CREATE": {
-      "description": "Make an object exist.",
+      "description": "An object's existence is asserted true or false.",
       "equations": [],
       "factors": [
         "Task",
@@ -628,8 +660,17 @@
         "path": [
           "GeoPath"
         ],
+        "radius": [
+          "Distance"
+        ],
+        "speed": [
+          "Speed"
+        ],
         "target": [
           "Object"
+        ],
+        "yaw": [
+          "Angle"
         ]
       },
       "sought": {},
@@ -638,7 +679,7 @@
       ]
     },
     "DISENGAGE": {
-      "description": "Assert the target state false.",
+      "description": "Assert the target state true or false.",
       "equations": [],
       "factors": [
         "Command",
@@ -655,7 +696,7 @@
       ]
     },
     "ENGAGE": {
-      "description": "Assert the target state true.",
+      "description": "Assert the target state true or false.",
       "equations": [],
       "factors": [
         "Command",
@@ -693,7 +734,7 @@
       ]
     },
     "HOLD": {
-      "description": "Maintain an actor's position at the destination.",
+      "description": "An actor's position is the destination, achieved or maintained.",
       "equations": [
         {
           "equals": "destination",
@@ -754,8 +795,14 @@
         "Command"
       ],
       "given": {
+        "parameter": [
+          "Text"
+        ],
         "target": [
           "Object"
+        ],
+        "value": [
+          "Scalar"
         ]
       },
       "sought": {},
@@ -764,7 +811,7 @@
       ]
     },
     "LOCATE": {
-      "description": "Solve for the position of an entity.",
+      "description": "An entity's position is the answer, achieved or maintained.",
       "equations": [
         {
           "equals": "position",
@@ -814,7 +861,7 @@
       ]
     },
     "MODIFY": {
-      "description": "Change an object's state.",
+      "description": "An object's state is changed, or kept as it is.",
       "equations": [],
       "factors": [
         "Task",
@@ -832,7 +879,7 @@
       ]
     },
     "MOVE": {
-      "description": "Move an actor until its position is the destination.",
+      "description": "An actor's position is the destination, achieved or maintained.",
       "equations": [
         {
           "equals": "destination",
@@ -859,7 +906,7 @@
       ]
     },
     "PAUSE": {
-      "description": "Hold a running process paused.",
+      "description": "Assert a running process paused, or release it.",
       "equations": [],
       "factors": [
         "Command",
@@ -867,6 +914,9 @@
         "TruthTarget.TRUE"
       ],
       "given": {
+        "process": [
+          "Text"
+        ],
         "target": [
           "Object"
         ]
@@ -877,7 +927,7 @@
       ]
     },
     "PROTECT": {
-      "description": "Keep an object in its current state.",
+      "description": "An object's state is changed, or kept as it is.",
       "equations": [],
       "factors": [
         "Task",
@@ -895,7 +945,7 @@
       ]
     },
     "REMOVE": {
-      "description": "Make an object cease to exist.",
+      "description": "An object's existence is asserted true or false.",
       "equations": [],
       "factors": [
         "Task",
@@ -949,7 +999,7 @@
       ]
     },
     "RESUME": {
-      "description": "Release a process from paused.",
+      "description": "Assert a running process paused, or release it.",
       "equations": [],
       "factors": [
         "Command",
@@ -957,6 +1007,9 @@
         "TruthTarget.FALSE"
       ],
       "given": {
+        "process": [
+          "Text"
+        ],
         "target": [
           "Object"
         ]
@@ -973,8 +1026,14 @@
         "Command"
       ],
       "given": {
+        "property": [
+          "Text"
+        ],
         "target": [
           "Object"
+        ],
+        "value": [
+          "Scalar"
         ]
       },
       "sought": {},
@@ -983,7 +1042,7 @@
       ]
     },
     "TRACK": {
-      "description": "Maintain awareness of an entity's position.",
+      "description": "An entity's position is the answer, achieved or maintained.",
       "equations": [
         {
           "equals": "position",
@@ -1017,6 +1076,9 @@
         "Command"
       ],
       "given": {
+        "quantity": [
+          "Count"
+        ],
         "resource": [
           "Resource"
         ],
@@ -1272,6 +1334,11 @@
           "default": null,
           "name": "uid",
           "type": "UID"
+        },
+        {
+          "default": null,
+          "name": "operation",
+          "type": "CommandOperation"
         }
       ],
       "parent": "Directive",
@@ -1285,30 +1352,6 @@
       "parent": "Data",
       "semantics": [
         "Condition"
-      ]
-    },
-    "ConfigurationCommand": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "operation",
-          "type": "CommandOperation"
-        },
-        {
-          "default": null,
-          "name": "parameter_name",
-          "type": "optional PlainText"
-        },
-        {
-          "default": null,
-          "name": "value",
-          "type": "optional MetadataValue"
-        }
-      ],
-      "parent": "Command",
-      "semantics": [
-        "ConfigurationCommand"
       ]
     },
     "Connectivity": {
@@ -1600,7 +1643,7 @@
     "ItemCount": {
       "chart_fields": [
         {
-          "chart": "Count * Representation.Count",
+          "chart": "Count * Representation.Integer",
           "coords": [
             {
               "name": "count",
@@ -1612,7 +1655,7 @@
       ],
       "fields": [
         {
-          "chart": "Count * Representation.Count",
+          "chart": "Count * Representation.Integer",
           "default": null,
           "name": "count",
           "type": "int",
@@ -1623,7 +1666,7 @@
       "semantics": [
         "ItemCount",
         "Count",
-        "Representation.Count"
+        "Representation.Integer"
       ]
     },
     "Lease": {
@@ -1897,81 +1940,12 @@
         "Representation.Geodetic"
       ]
     },
-    "MetadataValue": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "str",
-          "type": "optional PlainText"
-        },
-        {
-          "default": null,
-          "name": "int",
-          "type": "optional ScalarInteger"
-        },
-        {
-          "default": null,
-          "name": "float",
-          "type": "optional ScalarDecimal"
-        },
-        {
-          "default": null,
-          "name": "bool",
-          "type": "optional bool"
-        }
-      ],
-      "parent": "Data",
-      "semantics": [
-        "MetadataValue"
-      ]
-    },
     "Mission": {
       "chart_fields": [],
       "fields": [],
       "parent": "Directive",
       "semantics": [
         "Mission"
-      ]
-    },
-    "MotionCommand": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "operation",
-          "type": "CommandOperation"
-        },
-        {
-          "default": null,
-          "name": "destination",
-          "type": "optional GlobalPosition"
-        },
-        {
-          "default": null,
-          "name": "path",
-          "type": "optional GeoPath"
-        },
-        {
-          "default": null,
-          "name": "radius_m",
-          "type": "optional DistanceMeters"
-        },
-        {
-          "default": null,
-          "name": "speed_ms",
-          "type": "optional SpeedMetersPerSecond"
-        },
-        {
-          "default": null,
-          "name": "yaw_rad",
-          "type": "optional AngleRadians"
-        }
-      ],
-      "parent": "Command",
-      "semantics": [
-        "MotionCommand",
-        "Position"
       ]
     },
     "NumericRange": {
@@ -2026,18 +2000,13 @@
         },
         {
           "default": null,
-          "name": "intent",
-          "type": "PlainText"
+          "name": "condition",
+          "type": "optional Condition"
         },
         {
           "default": null,
-          "name": "desired_state",
-          "type": "PlainText"
-        },
-        {
-          "default": null,
-          "name": "success_criteria",
-          "type": "list[SuccessCriterion]"
+          "name": "criteria",
+          "type": "list[Condition]"
         },
         {
           "default": "ROUTINE",
@@ -2076,7 +2045,7 @@
     "OrdinalValue": {
       "chart_fields": [
         {
-          "chart": "Ordinal * Representation.Ordinal",
+          "chart": "Ordinal * Representation.Integer",
           "coords": [
             {
               "name": "n",
@@ -2088,7 +2057,7 @@
       ],
       "fields": [
         {
-          "chart": "Ordinal * Representation.Ordinal",
+          "chart": "Ordinal * Representation.Integer",
           "default": null,
           "name": "n",
           "type": "int",
@@ -2099,7 +2068,7 @@
       "semantics": [
         "OrdinalValue",
         "Ordinal",
-        "Representation.Ordinal"
+        "Representation.Integer"
       ]
     },
     "Paused": {
@@ -2215,33 +2184,23 @@
       "fields": [
         {
           "default": null,
-          "name": "subject_ref",
+          "name": "subject",
           "type": "optional UID"
+        },
+        {
+          "default": null,
+          "name": "quantity",
+          "type": "optional PlainText"
+        },
+        {
+          "default": null,
+          "name": "value",
+          "type": "optional Scalar"
         }
       ],
       "parent": "Condition",
       "semantics": [
         "Predicate"
-      ]
-    },
-    "ProcessControlCommand": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "operation",
-          "type": "CommandOperation"
-        },
-        {
-          "default": null,
-          "name": "process_name",
-          "type": "optional PlainText"
-        }
-      ],
-      "parent": "Command",
-      "semantics": [
-        "ProcessControlCommand",
-        "Activity"
       ]
     },
     "ProtocolCode": {
@@ -2271,6 +2230,71 @@
         "ProtocolCode",
         "Code",
         "Representation.Protocol"
+      ]
+    },
+    "QuaternionAttitude": {
+      "chart_fields": [
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "coords": [
+            {
+              "name": "qw",
+              "type": "float",
+              "unit": null
+            },
+            {
+              "name": "qx",
+              "type": "float",
+              "unit": null
+            },
+            {
+              "name": "qy",
+              "type": "float",
+              "unit": null
+            },
+            {
+              "name": "qz",
+              "type": "float",
+              "unit": null
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qw",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qx",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qy",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qz",
+          "type": "float",
+          "unit": null
+        }
+      ],
+      "parent": null,
+      "semantics": [
+        "QuaternionAttitude",
+        "Attitude",
+        "Representation.Quaternion"
       ]
     },
     "Range": {
@@ -2342,26 +2366,6 @@
       "parent": "Object",
       "semantics": [
         "Resource"
-      ]
-    },
-    "ResourceCommand": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "operation",
-          "type": "CommandOperation"
-        },
-        {
-          "default": null,
-          "name": "quantity",
-          "type": "optional ItemCount"
-        }
-      ],
-      "parent": "Command",
-      "semantics": [
-        "ResourceCommand",
-        "Hold"
       ]
     },
     "Role": {
@@ -2497,55 +2501,6 @@
         "State"
       ]
     },
-    "StateChangeCommand": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "operation",
-          "type": "CommandOperation"
-        },
-        {
-          "default": null,
-          "name": "property_name",
-          "type": "optional PlainText"
-        },
-        {
-          "default": null,
-          "name": "value",
-          "type": "optional MetadataValue"
-        }
-      ],
-      "parent": "Command",
-      "semantics": [
-        "StateChangeCommand",
-        "Engagement"
-      ]
-    },
-    "SuccessCriterion": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "statement",
-          "type": "PlainText"
-        },
-        {
-          "default": null,
-          "name": "metric",
-          "type": "optional PlainText"
-        },
-        {
-          "default": null,
-          "name": "target_value",
-          "type": "optional MetadataValue"
-        }
-      ],
-      "parent": "Data",
-      "semantics": [
-        "SuccessCriterion"
-      ]
-    },
     "Task": {
       "chart_fields": [],
       "fields": [
@@ -2558,6 +2513,11 @@
           "default": null,
           "name": "instruction",
           "type": "PlainText"
+        },
+        {
+          "default": null,
+          "name": "intent",
+          "type": "TaskIntent"
         },
         {
           "default": "ROUTINE",
@@ -2573,48 +2533,6 @@
       "parent": "Directive",
       "semantics": [
         "Task"
-      ]
-    },
-    "TaskEffect": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "intent",
-          "type": "TaskIntent"
-        }
-      ],
-      "parent": "Task",
-      "semantics": [
-        "TaskEffect"
-      ]
-    },
-    "TaskInformation": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "intent",
-          "type": "TaskIntent"
-        }
-      ],
-      "parent": "Task",
-      "semantics": [
-        "TaskInformation"
-      ]
-    },
-    "TaskManeuver": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "intent",
-          "type": "TaskIntent"
-        }
-      ],
-      "parent": "Task",
-      "semantics": [
-        "TaskManeuver"
       ]
     },
     "TaskTimeWindow": {
@@ -2634,20 +2552,6 @@
       "parent": "Constraint",
       "semantics": [
         "TaskTimeWindow"
-      ]
-    },
-    "TaskTransport": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "intent",
-          "type": "TaskIntent"
-        }
-      ],
-      "parent": "Task",
-      "semantics": [
-        "TaskTransport"
       ]
     },
     "Text": {
@@ -2675,11 +2579,6 @@
               "name": "utime",
               "type": "float",
               "unit": "s"
-            },
-            {
-              "name": "tz",
-              "type": "int",
-              "unit": null
             }
           ]
         }
@@ -2691,13 +2590,6 @@
           "name": "utime",
           "type": "float",
           "unit": "s"
-        },
-        {
-          "chart": "Time * Representation.Epoch",
-          "default": null,
-          "name": "tz",
-          "type": "int",
-          "unit": null
         }
       ],
       "parent": null,
@@ -2705,6 +2597,43 @@
         "Timestamp",
         "Time",
         "Representation.Epoch"
+      ]
+    },
+    "Truth": {
+      "chart_fields": [],
+      "fields": [],
+      "parent": "State",
+      "semantics": [
+        "Truth"
+      ]
+    },
+    "TruthBoolean": {
+      "chart_fields": [
+        {
+          "chart": "Truth * Representation.Boolean",
+          "coords": [
+            {
+              "name": "holds",
+              "type": "bool",
+              "unit": null
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "chart": "Truth * Representation.Boolean",
+          "default": null,
+          "name": "holds",
+          "type": "bool",
+          "unit": null
+        }
+      ],
+      "parent": null,
+      "semantics": [
+        "TruthBoolean",
+        "Truth",
+        "Representation.Boolean"
       ]
     },
     "UID": {
@@ -2777,12 +2706,12 @@
         {
           "default": null,
           "name": "ifr",
-          "type": "optional bool"
+          "type": "optional TruthBoolean"
         },
         {
           "default": null,
           "name": "night",
-          "type": "optional bool"
+          "type": "optional TruthBoolean"
         },
         {
           "default": null,
@@ -2812,108 +2741,12 @@
         {
           "default": null,
           "name": "icing",
-          "type": "optional bool"
+          "type": "optional TruthBoolean"
         }
       ],
       "parent": "Constraint",
       "semantics": [
         "WeatherLimits"
-      ]
-    }
-  },
-  "projections": {
-    "VehicleState": {
-      "charts": [
-        "Position * Representation.Geodetic",
-        "Velocity * Representation.LocalCartesian",
-        "Attitude * Representation.LocalEuler"
-      ],
-      "fields": [
-        {
-          "default": null,
-          "name": "uid",
-          "type": "UID"
-        },
-        {
-          "chart": "Position * Representation.Geodetic",
-          "default": null,
-          "name": "lat",
-          "optional": true,
-          "type": "float",
-          "unit": "deg"
-        },
-        {
-          "chart": "Position * Representation.Geodetic",
-          "default": null,
-          "name": "lon",
-          "optional": true,
-          "type": "float",
-          "unit": "deg"
-        },
-        {
-          "chart": "Position * Representation.Geodetic",
-          "default": null,
-          "name": "h",
-          "optional": true,
-          "type": "float",
-          "unit": "m"
-        },
-        {
-          "chart": "Velocity * Representation.LocalCartesian",
-          "default": null,
-          "name": "vx",
-          "optional": true,
-          "type": "float",
-          "unit": "m/s"
-        },
-        {
-          "chart": "Velocity * Representation.LocalCartesian",
-          "default": null,
-          "name": "vy",
-          "optional": true,
-          "type": "float",
-          "unit": "m/s"
-        },
-        {
-          "chart": "Velocity * Representation.LocalCartesian",
-          "default": null,
-          "name": "vz",
-          "optional": true,
-          "type": "float",
-          "unit": "m/s"
-        },
-        {
-          "chart": "Attitude * Representation.LocalEuler",
-          "default": null,
-          "name": "roll",
-          "optional": true,
-          "type": "float",
-          "unit": "rad"
-        },
-        {
-          "chart": "Attitude * Representation.LocalEuler",
-          "default": null,
-          "name": "pitch",
-          "optional": true,
-          "type": "float",
-          "unit": "rad"
-        },
-        {
-          "chart": "Attitude * Representation.LocalEuler",
-          "default": null,
-          "name": "yaw",
-          "optional": true,
-          "type": "float",
-          "unit": "rad"
-        }
-      ],
-      "semantics": [
-        "Position",
-        "Representation.Geodetic",
-        "Velocity",
-        "Representation.LocalCartesian",
-        "Attitude",
-        "Representation.LocalEuler"
       ]
     }
   },

@@ -21,7 +21,9 @@ The full algebraic record is in `SPEC.md`. Summary:
 - **Charts reduce quantity × representation to variables.** `chart Position ×
   Representation.Geodetic := lat × lon × h`. Chart produces the primitives;
   units stay metadata; the same quantity may exist in several representations
-  and be narrowed by factors.
+  and be narrowed by factors. A chart names the data model it compiles
+  (`model: GlobalPosition`), so chart applications are derived artifacts and
+  the `models` section holds only semantic carriers and named products.
 - **Tasks are open expressions.** Fixed semantic factors + typed free
   variables + equations. An unbound variable is an unknown, not an error:
   `MOVE(actor=uav-1, destination=?)`. Sought variables are solved from the
@@ -29,21 +31,23 @@ The full algebraic record is in `SPEC.md`. Summary:
 - **Relations have named roles.** `AssignedWork(assignee=uav-1,
   work=task-move-1)`; specialization inherits direction positionally. A
   destination is not a relation — it is a variable.
-- **Projections are compiled normal forms.** `VehicleState` compiles to
-  `uid × lat × lon × h × vx × vy × vz × roll × pitch × yaw` and is
-  materialized from whatever facts exist; missing facts leave coordinates
-  unset rather than illegal.
+- **Aggregates are not declared.** Entity state packets, telemetry snapshots,
+  task views, map markers, and protocol payloads are materialized at the edge
+  from semantic queries. `uav * Position * Geodetic` and `uav * Velocity *
+  LocalCartesian` are questions about independent facts; nothing that exists
+  only to be a packet becomes ontology.
 - **Aliases are products, not classes.** `Drone := UAV × Airframe.MULTIROTOR`.
   A named and an unnamed equivalent product have the same normal form.
 - **Unknown vs illegal.** No datum is unknown, not illegal
   (`empty.find(Position) == []`); `Mission × SEA × Altitude` is illegal.
-- **The control package is ported.** `occid2.schema.yaml` now carries
-  `../occid/lib/schema/core/control` (tasks, commands, constraints,
-  objectives, authority, assignment, plans, aerial control). Work participants
-  are the typed free variables of expressions; only links that are genuinely
-  relations (assignment, authority, control, plan containment) are declared,
-  with named roles. Embedded structs became value models and every scalar is a
-  charted representation. Label `maps` were dropped as presentation.
+- **Control is expressed, not ported.** A verb is a word: `Task.intent` and
+  `Command.operation` carry the vocabulary member that names an expression, and
+  the expression entails its factors. Twins such as MOVE/HOLD are one form with
+  `TemporalMode` bound by the word, and `TaskIntent`/`CommandOperation` are
+  compiled from the words the expressions declare. There are no per-verb
+  subclasses, no parameter columns, no proto-style `MetadataValue` oneof, and
+  no duplicate status vocabularies: former verb parameters are the expressions'
+  typed free variables, and goals and success criteria are `Condition`s.
 
 ## Run
 
@@ -57,7 +61,7 @@ The compiler regenerates `generated/occid2.py` and
 `generated/semantic_registry.json` deterministically. Expected test result:
 
 ```text
-18 tests passed
+17 tests passed
 ```
 
 ## Files

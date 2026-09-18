@@ -143,19 +143,23 @@ semantics(model) = inherited factors + model name + product factors
 - a `product:` entry naming another model expands to that model's semantics,
   keeping its label, because that name is part of this model's own meaning;
 - a `chart:` entry contributes the chart's factors and compiles its variables
-  into the model's fields;
+  into the model's fields; a chart that names a model compiles that model
+  directly (section 7) — a chart application is never authored as a model;
 - every model is storable; there is no concept/representation split.
 
 Example:
 
 ```yaml
-GlobalPosition:
-  chart: Position * Representation.Geodetic
+Mark:
+  parent: Data
+  product:
+    - GlobalPosition
+  fields: {uid: UID, name: optional PlainText}
 ```
 
 ```text
-GlobalPosition = GlobalPosition × Position × Representation.Geodetic
-               ≅ lat:float[deg] × lon:float[deg] × h:float[m]
+Mark = Mark × GlobalPosition × Position × Representation.Geodetic
+     ≅ uid × name × lat:float[deg] × lon:float[deg] × h:float[m]
 ```
 
 A product surfaces at its first level: the most specific model name plus all
@@ -190,11 +194,13 @@ chart Q × C  ≅  v₁ × v₂ × … × vₙ
 ```yaml
 charts:
   Position * Representation.Geodetic:
+    model: GlobalPosition
     lat: float[deg]
     lon: float[deg]
     h: float[m]
 
   Position * Representation.LocalCartesian:
+    model: LocalPosition
     x: float[m]
     y: float[m]
     z: float[m]
@@ -203,7 +209,9 @@ charts:
 **Chart produces the primitives.** `Position` stays semantic; the
 representation selects how it becomes data; the coordinates emerge only after
 that selection. A coordinate's unit is algebraic metadata (`_units`), not its
-Python type.
+Python type. A chart names the data model its variables compile into; that
+model is a compiled artifact of the chart, so chart applications never sit
+among the semantic models.
 
 The same quantity may be stored in several representations. Each is a separate
 datum; each answers `entity × Position`, and a representation factor narrows to
@@ -241,7 +249,7 @@ Consequences:
 - participant roles of work are **not** relations; they are the typed free
   variables of the work's expression (section 9), and binding a reference to a
   variable is the link;
-- aggregates such as plans are projections over facts, not pointer columns;
+- aggregates such as plans are queries over facts, not pointer columns;
 - roles are part of the fact's spelling: `AssignedWork(assignee=uav-1,
   work=task-move-1)`.
 
@@ -261,18 +269,24 @@ E := fixed semantic factors + typed free variables + equations
 
 ```yaml
 expressions:
-  MOVE:
-    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+  POSITION_GOAL:
+    factors: [Task, Realm.WORLD]
     given: {actor: Entity, destination: Position}
     equations: ["Position(actor) = destination"]
-
-  LOCATE:
-    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
-    given: {target: Entity}
-    sought: {position: Position}
-    equations: ["Position(target) = position"]
+    words:
+      TaskIntent.MOVE: [TemporalMode.ACHIEVE]
+      TaskIntent.HOLD: [TemporalMode.MAINTAIN]
 ```
 
+- a **form** declares the invariant structure of an expression; a `words:`
+  mapping binds the remaining dimensions per vocabulary member and the
+  compiler expands each word into its compiled expression (`MOVE` is the
+  position form at `ACHIEVE`, `HOLD` at `MAINTAIN`);
+- members that differ only in one axis value are one form at different
+  coordinates; a **synonym or antonym** in a vocabulary is a red flag for a
+  form that has not been factored;
+- a word vocabulary (`TaskIntent`, `CommandOperation`) is compiled from the
+  words the expressions declare, not authored alongside them;
 - `given` variables are inputs; `sought` variables are answers;
 - an **unbound variable is an unknown, not an error**:
 
@@ -303,33 +317,17 @@ is a word, and the expression carries the meaning.
 
 ---
 
-## 10. Projections
+## 10. Aggregates are not declared
 
-A projection is a compiled aggregate over independent facts, not an
-ontological object:
+Entity state packets, telemetry snapshots, task views, map markers, and
+protocol payloads are not ontology and are not schema declarations. A position, a velocity, an attitude, an assignment, a fuel level, and a classification are independent facts with independent lifetimes and provenance, and they do not become one object merely because some consumer wants them in one packet.
 
-```yaml
-projections:
-  VehicleState:
-    product:
-      - Position * Representation.Geodetic
-      - Velocity * Representation.LocalCartesian
-      - Attitude * Representation.LocalEuler
-    fields: {uid: UID}
-```
-
-The compiler reduces each listed product through its chart and emits the
-concrete typed coordinates; the runtime materializes them from whatever facts
-exist:
-
-```text
-VehicleState ≅ uid × lat × lon × h × vx × vy × vz × roll × pitch × yaw
-```
-
-A projection may be partial: a fact that does not exist leaves its coordinates
-unset rather than illegal. `EntityState`, `TelemetrySnapshot`, `TaskView`, map
-markers, and protocol payloads are all projections in this sense — useful
-aggregations that do not become ontology.
+Such aggregates are materialized at the edge — by the caller or the protocol
+adapter — from semantic queries (section 11). What the algebra owes a consumer
+is the ability to ask `uav × Position × Geodetic` or `uav × Velocity ×
+LocalCartesian` without knowing the representation topology; assembling the
+answers into a struct is compilation, not meaning, and is nobody's declaration
+but the consumer's.
 
 ---
 
@@ -354,12 +352,11 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 | Schema | Derivation |
 | --- | --- |
 | `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
-| `enums` + expression `words` | surface vocabulary; each member names an expression and entails its factors |
-| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form |
+| `enums` + expression `words` | authored enums are closed value vocabularies; word vocabularies compile from the words expressions declare, and each word entails its expression's factors |
+| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form; a chart that names a model compiles that model as a derived artifact |
 | `relations` | named ordered operands; declared once, no specialization |
-| `expressions` | fixed factors + typed free variables + equations |
-| `models` | named products; parent entailment; `product:`/`chart:` expansion |
-| `projections` | compiled aggregates over chart-selected facts |
+| `expressions` | fixed factors + typed free variables + equations; `words:` binds dimensions and compiles one expression per word |
+| `models` | named products and carriers; parent entailment; `product:` expansion; chart applications are compiled, not authored |
 | `aliases` | class-free named products, resolved recursively |
 
 `generated/occid2.py` and `generated/semantic_registry.json` are deterministic

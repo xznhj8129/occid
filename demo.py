@@ -3,6 +3,7 @@ from dataclasses import fields
 from runtime import sem
 from generated.occid2 import (
     Actor,
+    Attitude,
     Airframe,
     Altitude,
     AssignedWork,
@@ -11,12 +12,10 @@ from generated.occid2 import (
     Drone,
     Geodetic,
     GlobalPosition,
-    TaskIntent,
     LocalAttitude,
     LocalPosition,
     LocalVelocity,
     Machine,
-    TaskIntent,
     Mark,
     Mission,
     MOVE,
@@ -24,14 +23,13 @@ from generated.occid2 import (
     PlainText,
     Position,
     Representation,
-    TaskInformation,
+    Task,
     TaskIntent,
-    TaskManeuver,
     TemporalMode,
     UAV,
     UID,
     UnmannedVehicle,
-    VehicleState,
+    Velocity,
     new_store,
 )
 
@@ -50,8 +48,6 @@ def main() -> None:
     for chart in registry.charts:
         print(f"   {chart}")
     print("  GlobalPosition:", [field.name for field in fields(GlobalPosition)])
-    print("  VehicleState  :", [field.name for field in fields(VehicleState)])
-    print("  VehicleState units:", dict(VehicleState._units))
     print()
 
     print("Data is stored in a representation and addressed by meaning.")
@@ -63,17 +59,18 @@ def main() -> None:
     print("  uav * Position * Local    ->", uav.get(Position, Representation.LocalCartesian))
     print()
 
-    print("A projection is the compiled normal form of chart-selected facts.")
+    print("Facts are independent; no aggregate type covers them.")
     uav.set(LocalVelocity(vx=12.0, vy=0.0, vz=-1.5))
     uav.set(LocalAttitude(roll=0.0, pitch=0.0, yaw=1.57))
-    print(f"   {store.project(uav, VehicleState)}")
+    print("   uav * Velocity * LocalCartesian ->", uav.get(Velocity, Representation.LocalCartesian))
+    print("   uav * Attitude * LocalEuler     ->", uav.get(Attitude, Representation.LocalEuler))
     print()
 
     print("A task is an open expression: fixed factors + typed free variables.")
     print("  MOVE =", MOVE)
     move = store.task(
         "task-move-1",
-        TaskManeuver,
+        Task,
         TaskIntent.MOVE,
         instruction="move to mark alpha",
     )
@@ -91,7 +88,7 @@ def main() -> None:
     target = store.ref("target-42", UnmannedVehicle)
     locate = store.task(
         "task-locate-1",
-        TaskInformation,
+        Task,
         TaskIntent.LOCATE,
         instruction="locate target-42",
     )

@@ -81,8 +81,7 @@ Representation.Meters = AxisValue('Representation', 'Meters')
 Representation.MetersPerSecond = AxisValue('Representation', 'MetersPerSecond')
 Representation.MSL = AxisValue('Representation', 'MSL')
 Representation.FlightLevel = AxisValue('Representation', 'FlightLevel')
-Representation.Count = AxisValue('Representation', 'Count')
-Representation.Ordinal = AxisValue('Representation', 'Ordinal')
+Representation.Boolean = AxisValue('Representation', 'Boolean')
 Representation.Protocol = AxisValue('Representation', 'Protocol')
 Representation.Decimal = AxisValue('Representation', 'Decimal')
 Representation.Integer = AxisValue('Representation', 'Integer')
@@ -125,41 +124,6 @@ class TruthTarget(SemanticAxis):
 TruthTarget.TRUE = AxisValue('TruthTarget', 'TRUE')
 TruthTarget.FALSE = AxisValue('TruthTarget', 'FALSE')
 
-class TaskIntent(SemanticEnum):
-    MOVE = 0
-    HOLD = 1
-    FOLLOW = 2
-    LOCATE = 3
-    TRACK = 4
-    IDENTIFY = 5
-    CLASSIFY = 6
-    MEASURE = 7
-    CREATE = 8
-    REMOVE = 9
-    MODIFY = 10
-    RESTORE = 11
-    PROTECT = 12
-    DENY = 13
-    TRANSPORT = 14
-
-TaskIntent._semantic_map = {
-    'MOVE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
-    'HOLD': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
-    'FOLLOW': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
-    'LOCATE': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
-    'TRACK': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.MAINTAIN']),
-    'IDENTIFY': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
-    'CLASSIFY': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
-    'MEASURE': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
-    'CREATE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.TRUE']),
-    'REMOVE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.FALSE']),
-    'MODIFY': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
-    'RESTORE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
-    'PROTECT': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
-    'DENY': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN', 'Connectivity', 'TruthTarget.FALSE']),
-    'TRANSPORT': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
-}
-
 class TaskPriority(SemanticEnum):
     ROUTINE = 0
     HIGH = 1
@@ -177,43 +141,6 @@ class TaskStatus(SemanticEnum):
     ACCEPTED = 5
 
 TaskStatus._semantic_map = {
-}
-
-class TaskPhase(SemanticEnum):
-    CREATED = 0
-    DISPATCHED = 1
-    ASSIGNED = 2
-    RUNNING = 3
-    DONE_OK = 4
-    DONE_FAIL = 5
-    CANCELLED = 6
-
-TaskPhase._semantic_map = {
-}
-
-class CommandOperation(SemanticEnum):
-    ENGAGE = 0
-    DISENGAGE = 1
-    PAUSE = 2
-    RESUME = 3
-    SET = 4
-    MOVE = 5
-    ALLOCATE = 6
-    TRANSFER = 7
-    LOAD_CONFIGURATION = 8
-    RESET = 9
-
-CommandOperation._semantic_map = {
-    'ENGAGE': product_names(['Command', 'TruthTarget.TRUE']),
-    'DISENGAGE': product_names(['Command', 'TruthTarget.FALSE']),
-    'PAUSE': product_names(['Command', 'Paused', 'TruthTarget.TRUE']),
-    'RESUME': product_names(['Command', 'Paused', 'TruthTarget.FALSE']),
-    'SET': product_names(['Command']),
-    'MOVE': product_names(['Command', 'TemporalMode.ACHIEVE']),
-    'ALLOCATE': product_names(['Command']),
-    'TRANSFER': product_names(['Command']),
-    'LOAD_CONFIGURATION': product_names(['Command']),
-    'RESET': product_names(['Command']),
 }
 
 class ControlLevel(SemanticEnum):
@@ -246,6 +173,66 @@ class BooleanOperator(SemanticEnum):
     XNOR = 7
 
 BooleanOperator._semantic_map = {
+}
+
+class TaskIntent(SemanticEnum):
+    MOVE = 0
+    HOLD = 1
+    LOCATE = 2
+    TRACK = 3
+    IDENTIFY = 4
+    CLASSIFY = 5
+    CREATE = 6
+    REMOVE = 7
+    FOLLOW = 8
+    MEASURE = 9
+    MODIFY = 10
+    PROTECT = 11
+    RESTORE = 12
+    DENY = 13
+    TRANSPORT = 14
+
+TaskIntent._semantic_map = {
+    'MOVE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
+    'HOLD': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
+    'LOCATE': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
+    'TRACK': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.MAINTAIN']),
+    'IDENTIFY': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
+    'CLASSIFY': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
+    'CREATE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.TRUE']),
+    'REMOVE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.FALSE']),
+    'FOLLOW': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
+    'MEASURE': product_names(['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE']),
+    'MODIFY': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
+    'PROTECT': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']),
+    'RESTORE': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
+    'DENY': product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN', 'Connectivity', 'TruthTarget.FALSE']),
+    'TRANSPORT': product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']),
+}
+
+class CommandOperation(SemanticEnum):
+    ENGAGE = 0
+    DISENGAGE = 1
+    PAUSE = 2
+    RESUME = 3
+    SET = 4
+    MOVE = 5
+    ALLOCATE = 6
+    TRANSFER = 7
+    LOAD_CONFIGURATION = 8
+    RESET = 9
+
+CommandOperation._semantic_map = {
+    'ENGAGE': product_names(['Command', 'TruthTarget.TRUE']),
+    'DISENGAGE': product_names(['Command', 'TruthTarget.FALSE']),
+    'PAUSE': product_names(['Command', 'Paused', 'TruthTarget.TRUE']),
+    'RESUME': product_names(['Command', 'Paused', 'TruthTarget.FALSE']),
+    'SET': product_names(['Command']),
+    'MOVE': product_names(['Command', 'TemporalMode.ACHIEVE']),
+    'ALLOCATE': product_names(['Command']),
+    'TRANSFER': product_names(['Command']),
+    'LOAD_CONFIGURATION': product_names(['Command']),
+    'RESET': product_names(['Command']),
 }
 
 MOVE = ExpressionType(
@@ -347,15 +334,6 @@ MODIFY = ExpressionType(
     words=('TaskIntent.MODIFY',),
 )
 
-RESTORE = ExpressionType(
-    'RESTORE',
-    product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']), 
-    given={'object': product_names(['Object'])},
-    sought={},
-    equations=(),
-    words=('TaskIntent.RESTORE',),
-)
-
 PROTECT = ExpressionType(
     'PROTECT',
     product_names(['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN']), 
@@ -363,6 +341,15 @@ PROTECT = ExpressionType(
     sought={},
     equations=(),
     words=('TaskIntent.PROTECT',),
+)
+
+RESTORE = ExpressionType(
+    'RESTORE',
+    product_names(['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE']), 
+    given={'object': product_names(['Object'])},
+    sought={},
+    equations=(),
+    words=('TaskIntent.RESTORE',),
 )
 
 DENY = ExpressionType(
@@ -404,7 +391,7 @@ DISENGAGE = ExpressionType(
 PAUSE = ExpressionType(
     'PAUSE',
     product_names(['Command', 'Paused', 'TruthTarget.TRUE']), 
-    given={'target': product_names(['Object'])},
+    given={'target': product_names(['Object']), 'process': product_names(['Text'])},
     sought={},
     equations=(),
     words=('CommandOperation.PAUSE',),
@@ -413,7 +400,7 @@ PAUSE = ExpressionType(
 RESUME = ExpressionType(
     'RESUME',
     product_names(['Command', 'Paused', 'TruthTarget.FALSE']), 
-    given={'target': product_names(['Object'])},
+    given={'target': product_names(['Object']), 'process': product_names(['Text'])},
     sought={},
     equations=(),
     words=('CommandOperation.RESUME',),
@@ -422,7 +409,7 @@ RESUME = ExpressionType(
 SET = ExpressionType(
     'SET',
     product_names(['Command']), 
-    given={'target': product_names(['Object'])},
+    given={'target': product_names(['Object']), 'property': product_names(['Text']), 'value': product_names(['Scalar'])},
     sought={},
     equations=(),
     words=('CommandOperation.SET',),
@@ -431,7 +418,7 @@ SET = ExpressionType(
 DIRECT = ExpressionType(
     'DIRECT',
     product_names(['Command', 'TemporalMode.ACHIEVE']), 
-    given={'target': product_names(['Object']), 'destination': product_names(['Position']), 'path': product_names(['GeoPath'])},
+    given={'target': product_names(['Object']), 'destination': product_names(['Position']), 'path': product_names(['GeoPath']), 'radius': product_names(['Distance']), 'speed': product_names(['Speed']), 'yaw': product_names(['Angle'])},
     sought={},
     equations=(Equation('Position', 'target', 'destination'),),
     words=('CommandOperation.MOVE',),
@@ -440,7 +427,7 @@ DIRECT = ExpressionType(
 ALLOCATE = ExpressionType(
     'ALLOCATE',
     product_names(['Command']), 
-    given={'target': product_names(['Object']), 'resource': product_names(['Resource'])},
+    given={'target': product_names(['Object']), 'resource': product_names(['Resource']), 'quantity': product_names(['Count'])},
     sought={},
     equations=(),
     words=('CommandOperation.ALLOCATE',),
@@ -449,7 +436,7 @@ ALLOCATE = ExpressionType(
 TRANSFER = ExpressionType(
     'TRANSFER',
     product_names(['Command']), 
-    given={'target': product_names(['Object']), 'resource': product_names(['Resource'])},
+    given={'target': product_names(['Object']), 'resource': product_names(['Resource']), 'quantity': product_names(['Count'])},
     sought={},
     equations=(),
     words=('CommandOperation.TRANSFER',),
@@ -458,7 +445,7 @@ TRANSFER = ExpressionType(
 LOAD_CONFIGURATION = ExpressionType(
     'LOAD_CONFIGURATION',
     product_names(['Command']), 
-    given={'target': product_names(['Object'])},
+    given={'target': product_names(['Object']), 'parameter': product_names(['Text']), 'value': product_names(['Scalar'])},
     sought={},
     equations=(),
     words=('CommandOperation.LOAD_CONFIGURATION',),
@@ -669,6 +656,13 @@ class Hold(State):
     _charts: ClassVar[tuple[str, ...]] = ()
 
 @dataclass(kw_only=True)
+class Truth(State):
+    _semantics: ClassVar = product_names(['Truth'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
 class Text(State):
     _semantics: ClassVar = product_names(['Text'])
     _declared_fields: ClassVar[tuple[str, ...]] = ()
@@ -739,6 +733,237 @@ class Altitude(State):
     _charts: ClassVar[tuple[str, ...]] = ()
 
 @dataclass(kw_only=True)
+class Mark(Data):
+    _semantics: ClassVar = product_names(['Mark', 'GlobalPosition', 'Position', 'Representation.Geodetic'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'name', 'lat', 'lon', 'h')
+    _units: ClassVar[dict[str, str]] = {'lat': 'deg', 'lon': 'deg', 'h': 'm'}
+    _charts: ClassVar[tuple[str, ...]] = ('Position * Representation.Geodetic',)
+    uid: UID
+    name: PlainText | None = None
+    lat: float
+    lon: float
+    h: float
+
+@dataclass(kw_only=True)
+class Control(Root):
+    _semantics: ClassVar = product_names(['Control'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class Directive(Control):
+    _semantics: ClassVar = product_names(['Directive'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class Task(Directive):
+    _semantics: ClassVar = product_names(['Task'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'instruction', 'intent', 'priority', 'status')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    uid: UID
+    instruction: PlainText
+    intent: TaskIntent
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
+
+@dataclass(kw_only=True)
+class Mission(Directive):
+    _semantics: ClassVar = product_names(['Mission'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class Record(Data):
+    _semantics: ClassVar = product_names(['Record'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'id', 'revision', 'created_ts', 'updated_ts', 'origin_system', 'provenance')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    uid: UID
+    id: IntID | None = None
+    revision: ItemCount | None = None
+    created_ts: Timestamp
+    updated_ts: Timestamp
+    origin_system: PlainText
+    provenance: list[PlainText] = field(default_factory=list)
+
+@dataclass(kw_only=True)
+class Time(State):
+    _semantics: ClassVar = product_names(['Time'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class Range(Data):
+    _semantics: ClassVar = product_names(['Range'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class NumericRange(Range):
+    _semantics: ClassVar = product_names(['NumericRange'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('min_value', 'max_value')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    min_value: ScalarDecimal | None = None
+    max_value: ScalarDecimal | None = None
+
+@dataclass(kw_only=True)
+class Condition(Data):
+    _semantics: ClassVar = product_names(['Condition'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ()
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+
+@dataclass(kw_only=True)
+class Predicate(Condition):
+    _semantics: ClassVar = product_names(['Predicate'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('subject', 'quantity', 'value')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    subject: UID | None = None
+    quantity: PlainText | None = None
+    value: Scalar | None = None
+
+@dataclass(kw_only=True)
+class BooleanLogic(Condition):
+    _semantics: ClassVar = product_names(['BooleanLogic'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('operator', 'terms')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    operator: BooleanOperator
+    terms: list[Condition] = field(default_factory=list)
+
+@dataclass(kw_only=True)
+class GeoPath(Data):
+    _semantics: ClassVar = product_names(['GeoPath'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('points',)
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    points: list[GlobalPosition] = field(default_factory=list)
+
+@dataclass(kw_only=True)
+class Role(Data):
+    _semantics: ClassVar = product_names(['Role'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('name',)
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    name: PlainText | None = None
+
+@dataclass(kw_only=True)
+class Resource(Object):
+    _semantics: ClassVar = product_names(['Resource'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'name')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    uid: UID | None = None
+    name: PlainText | None = None
+
+@dataclass(kw_only=True)
+class Constraint(Control):
+    _semantics: ClassVar = product_names(['Constraint'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('condition',)
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    condition: Condition | None = None
+
+@dataclass(kw_only=True)
+class TaskTimeWindow(Constraint):
+    _semantics: ClassVar = product_names(['TaskTimeWindow'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('earliest_start', 'latest_finish')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    earliest_start: Timestamp | None = None
+    latest_finish: Timestamp | None = None
+
+@dataclass(kw_only=True)
+class WeatherLimits(Constraint):
+    _semantics: ClassVar = product_names(['WeatherLimits'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('ifr', 'night', 'rain', 'snow', 'temp', 'wind', 'vis', 'icing')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    ifr: TruthBoolean | None = None
+    night: TruthBoolean | None = None
+    rain: NumericRange | None = None
+    snow: NumericRange | None = None
+    temp: NumericRange | None = None
+    wind: NumericRange | None = None
+    vis: NumericRange | None = None
+    icing: TruthBoolean | None = None
+
+@dataclass(kw_only=True)
+class Objective(Control):
+    _semantics: ClassVar = product_names(['Objective'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'name', 'condition', 'criteria', 'priority', 'status', 'start_time', 'deadline')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    record: Record | None = None
+    uid: UID
+    id: IntID | None = None
+    name: PlainText
+    condition: Condition | None = None
+    criteria: list[Condition] = field(default_factory=list)
+    priority: TaskPriority = TaskPriority.ROUTINE
+    status: TaskStatus = TaskStatus.NEW
+    start_time: Timestamp | None = None
+    deadline: Timestamp | None = None
+
+@dataclass(kw_only=True)
+class Command(Directive):
+    _semantics: ClassVar = product_names(['Command'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'operation')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    uid: UID
+    operation: CommandOperation
+
+@dataclass(kw_only=True)
+class Authority(Control):
+    _semantics: ClassVar = product_names(['Authority'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'role')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    record: Record | None = None
+    uid: UID
+    id: IntID | None = None
+    role: Role | None = None
+
+@dataclass(kw_only=True)
+class Lease(Authority):
+    _semantics: ClassVar = product_names(['Lease'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('bound', 'control_level')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    bound: Condition | None = None
+    control_level: ControlLevel | None = None
+
+@dataclass(kw_only=True)
+class Plan(Control):
+    _semantics: ClassVar = product_names(['Plan'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'name', 'approval_state')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    record: Record | None = None
+    uid: UID
+    id: IntID | None = None
+    name: PlainText | None = None
+    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
+
+@dataclass(kw_only=True)
+class PlanContingency(Data):
+    _semantics: ClassVar = product_names(['PlanContingency'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('condition',)
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ()
+    condition: Condition
+
+@dataclass(kw_only=True)
 class GlobalPosition(SemanticModel):
     _semantics: ClassVar = product_names(['GlobalPosition', 'Position', 'Representation.Geodetic'])
     _declared_fields: ClassVar[tuple[str, ...]] = ('lat', 'lon', 'h')
@@ -777,6 +1002,25 @@ class LocalAttitude(SemanticModel):
     roll: float
     pitch: float
     yaw: float
+
+@dataclass(kw_only=True)
+class QuaternionAttitude(SemanticModel):
+    _semantics: ClassVar = product_names(['QuaternionAttitude', 'Attitude', 'Representation.Quaternion'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('qw', 'qx', 'qy', 'qz')
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ('Attitude * Representation.Quaternion',)
+    qw: float
+    qx: float
+    qy: float
+    qz: float
+
+@dataclass(kw_only=True)
+class Timestamp(SemanticModel):
+    _semantics: ClassVar = product_names(['Timestamp', 'Time', 'Representation.Epoch'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('utime',)
+    _units: ClassVar[dict[str, str]] = {'utime': 's'}
+    _charts: ClassVar[tuple[str, ...]] = ('Time * Representation.Epoch',)
+    utime: float
 
 @dataclass(kw_only=True)
 class UID(SemanticModel):
@@ -852,19 +1096,27 @@ class AltitudeFlightLevel(SemanticModel):
 
 @dataclass(kw_only=True)
 class ItemCount(SemanticModel):
-    _semantics: ClassVar = product_names(['ItemCount', 'Count', 'Representation.Count'])
+    _semantics: ClassVar = product_names(['ItemCount', 'Count', 'Representation.Integer'])
     _declared_fields: ClassVar[tuple[str, ...]] = ('count',)
     _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ('Count * Representation.Count',)
+    _charts: ClassVar[tuple[str, ...]] = ('Count * Representation.Integer',)
     count: int
 
 @dataclass(kw_only=True)
 class OrdinalValue(SemanticModel):
-    _semantics: ClassVar = product_names(['OrdinalValue', 'Ordinal', 'Representation.Ordinal'])
+    _semantics: ClassVar = product_names(['OrdinalValue', 'Ordinal', 'Representation.Integer'])
     _declared_fields: ClassVar[tuple[str, ...]] = ('n',)
     _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ('Ordinal * Representation.Ordinal',)
+    _charts: ClassVar[tuple[str, ...]] = ('Ordinal * Representation.Integer',)
     n: int
+
+@dataclass(kw_only=True)
+class TruthBoolean(SemanticModel):
+    _semantics: ClassVar = product_names(['TruthBoolean', 'Truth', 'Representation.Boolean'])
+    _declared_fields: ClassVar[tuple[str, ...]] = ('holds',)
+    _units: ClassVar[dict[str, str]] = {}
+    _charts: ClassVar[tuple[str, ...]] = ('Truth * Representation.Boolean',)
+    holds: bool
 
 @dataclass(kw_only=True)
 class ProtocolCode(SemanticModel):
@@ -890,365 +1142,6 @@ class ScalarInteger(SemanticModel):
     _charts: ClassVar[tuple[str, ...]] = ('Scalar * Representation.Integer',)
     value: int
 
-@dataclass(kw_only=True)
-class Mark(Data):
-    _semantics: ClassVar = product_names(['Mark', 'GlobalPosition', 'Position', 'Representation.Geodetic'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'name', 'lat', 'lon', 'h')
-    _units: ClassVar[dict[str, str]] = {'lat': 'deg', 'lon': 'deg', 'h': 'm'}
-    _charts: ClassVar[tuple[str, ...]] = ('Position * Representation.Geodetic',)
-    uid: UID
-    name: PlainText | None = None
-    lat: float
-    lon: float
-    h: float
-
-@dataclass(kw_only=True)
-class Control(Root):
-    _semantics: ClassVar = product_names(['Control'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class Directive(Control):
-    _semantics: ClassVar = product_names(['Directive'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class Task(Directive):
-    _semantics: ClassVar = product_names(['Task'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'instruction', 'priority', 'status')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    uid: UID
-    instruction: PlainText
-    priority: TaskPriority = TaskPriority.ROUTINE
-    status: TaskStatus = TaskStatus.NEW
-
-@dataclass(kw_only=True)
-class TaskManeuver(Task):
-    _semantics: ClassVar = product_names(['TaskManeuver'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('intent',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    intent: TaskIntent
-
-@dataclass(kw_only=True)
-class TaskInformation(Task):
-    _semantics: ClassVar = product_names(['TaskInformation'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('intent',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    intent: TaskIntent
-
-@dataclass(kw_only=True)
-class TaskEffect(Task):
-    _semantics: ClassVar = product_names(['TaskEffect'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('intent',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    intent: TaskIntent
-
-@dataclass(kw_only=True)
-class TaskTransport(Task):
-    _semantics: ClassVar = product_names(['TaskTransport'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('intent',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    intent: TaskIntent
-
-@dataclass(kw_only=True)
-class Mission(Directive):
-    _semantics: ClassVar = product_names(['Mission'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class Record(Data):
-    _semantics: ClassVar = product_names(['Record'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'id', 'revision', 'created_ts', 'updated_ts', 'origin_system', 'provenance')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    uid: UID
-    id: IntID | None = None
-    revision: ItemCount | None = None
-    created_ts: Timestamp
-    updated_ts: Timestamp
-    origin_system: PlainText
-    provenance: list[PlainText] = field(default_factory=list)
-
-@dataclass(kw_only=True)
-class Time(State):
-    _semantics: ClassVar = product_names(['Time'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class Timestamp(SemanticModel):
-    _semantics: ClassVar = product_names(['Timestamp', 'Time', 'Representation.Epoch'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('utime', 'tz')
-    _units: ClassVar[dict[str, str]] = {'utime': 's'}
-    _charts: ClassVar[tuple[str, ...]] = ('Time * Representation.Epoch',)
-    utime: float
-    tz: int
-
-@dataclass(kw_only=True)
-class Range(Data):
-    _semantics: ClassVar = product_names(['Range'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class NumericRange(Range):
-    _semantics: ClassVar = product_names(['NumericRange'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('min_value', 'max_value')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    min_value: ScalarDecimal | None = None
-    max_value: ScalarDecimal | None = None
-
-@dataclass(kw_only=True)
-class MetadataValue(Data):
-    _semantics: ClassVar = product_names(['MetadataValue'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('str', 'int', 'float', 'bool')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    str: PlainText | None = None
-    int: ScalarInteger | None = None
-    float: ScalarDecimal | None = None
-    bool: bool | None = None
-
-@dataclass(kw_only=True)
-class Condition(Data):
-    _semantics: ClassVar = product_names(['Condition'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ()
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-
-@dataclass(kw_only=True)
-class Predicate(Condition):
-    _semantics: ClassVar = product_names(['Predicate'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('subject_ref',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    subject_ref: UID | None = None
-
-@dataclass(kw_only=True)
-class BooleanLogic(Condition):
-    _semantics: ClassVar = product_names(['BooleanLogic'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operator', 'terms')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operator: BooleanOperator
-    terms: list[Condition] = field(default_factory=list)
-
-@dataclass(kw_only=True)
-class GeoPath(Data):
-    _semantics: ClassVar = product_names(['GeoPath'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('points',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    points: list[GlobalPosition] = field(default_factory=list)
-
-@dataclass(kw_only=True)
-class SuccessCriterion(Data):
-    _semantics: ClassVar = product_names(['SuccessCriterion'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('statement', 'metric', 'target_value')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    statement: PlainText
-    metric: PlainText | None = None
-    target_value: MetadataValue | None = None
-
-@dataclass(kw_only=True)
-class Role(Data):
-    _semantics: ClassVar = product_names(['Role'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('name',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    name: PlainText | None = None
-
-@dataclass(kw_only=True)
-class Resource(Object):
-    _semantics: ClassVar = product_names(['Resource'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'name')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    uid: UID | None = None
-    name: PlainText | None = None
-
-@dataclass(kw_only=True)
-class Constraint(Control):
-    _semantics: ClassVar = product_names(['Constraint'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('condition',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    condition: Condition | None = None
-
-@dataclass(kw_only=True)
-class TaskTimeWindow(Constraint):
-    _semantics: ClassVar = product_names(['TaskTimeWindow'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('earliest_start', 'latest_finish')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    earliest_start: Timestamp | None = None
-    latest_finish: Timestamp | None = None
-
-@dataclass(kw_only=True)
-class WeatherLimits(Constraint):
-    _semantics: ClassVar = product_names(['WeatherLimits'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('ifr', 'night', 'rain', 'snow', 'temp', 'wind', 'vis', 'icing')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    ifr: bool | None = None
-    night: bool | None = None
-    rain: NumericRange | None = None
-    snow: NumericRange | None = None
-    temp: NumericRange | None = None
-    wind: NumericRange | None = None
-    vis: NumericRange | None = None
-    icing: bool | None = None
-
-@dataclass(kw_only=True)
-class Objective(Control):
-    _semantics: ClassVar = product_names(['Objective'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'name', 'intent', 'desired_state', 'success_criteria', 'priority', 'status', 'start_time', 'deadline')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    record: Record | None = None
-    uid: UID
-    id: IntID | None = None
-    name: PlainText
-    intent: PlainText
-    desired_state: PlainText
-    success_criteria: list[SuccessCriterion] = field(default_factory=list)
-    priority: TaskPriority = TaskPriority.ROUTINE
-    status: TaskStatus = TaskStatus.NEW
-    start_time: Timestamp | None = None
-    deadline: Timestamp | None = None
-
-@dataclass(kw_only=True)
-class Command(Directive):
-    _semantics: ClassVar = product_names(['Command'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    uid: UID
-
-@dataclass(kw_only=True)
-class StateChangeCommand(Command):
-    _semantics: ClassVar = product_names(['StateChangeCommand', 'Engagement'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operation', 'property_name', 'value')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operation: CommandOperation
-    property_name: PlainText | None = None
-    value: MetadataValue | None = None
-
-@dataclass(kw_only=True)
-class ProcessControlCommand(Command):
-    _semantics: ClassVar = product_names(['ProcessControlCommand', 'Activity'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operation', 'process_name')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operation: CommandOperation
-    process_name: PlainText | None = None
-
-@dataclass(kw_only=True)
-class ConfigurationCommand(Command):
-    _semantics: ClassVar = product_names(['ConfigurationCommand'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operation', 'parameter_name', 'value')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operation: CommandOperation
-    parameter_name: PlainText | None = None
-    value: MetadataValue | None = None
-
-@dataclass(kw_only=True)
-class MotionCommand(Command):
-    _semantics: ClassVar = product_names(['MotionCommand', 'Position'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operation', 'destination', 'path', 'radius_m', 'speed_ms', 'yaw_rad')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operation: CommandOperation
-    destination: GlobalPosition | None = None
-    path: GeoPath | None = None
-    radius_m: DistanceMeters | None = None
-    speed_ms: SpeedMetersPerSecond | None = None
-    yaw_rad: AngleRadians | None = None
-
-@dataclass(kw_only=True)
-class ResourceCommand(Command):
-    _semantics: ClassVar = product_names(['ResourceCommand', 'Hold'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('operation', 'quantity')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    operation: CommandOperation
-    quantity: ItemCount | None = None
-
-@dataclass(kw_only=True)
-class Authority(Control):
-    _semantics: ClassVar = product_names(['Authority'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'role')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    record: Record | None = None
-    uid: UID
-    id: IntID | None = None
-    role: Role | None = None
-
-@dataclass(kw_only=True)
-class Lease(Authority):
-    _semantics: ClassVar = product_names(['Lease'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('bound', 'control_level')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    bound: Condition | None = None
-    control_level: ControlLevel | None = None
-
-@dataclass(kw_only=True)
-class Plan(Control):
-    _semantics: ClassVar = product_names(['Plan'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('record', 'uid', 'id', 'name', 'approval_state')
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    record: Record | None = None
-    uid: UID
-    id: IntID | None = None
-    name: PlainText | None = None
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-
-@dataclass(kw_only=True)
-class PlanContingency(Data):
-    _semantics: ClassVar = product_names(['PlanContingency'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('condition',)
-    _units: ClassVar[dict[str, str]] = {}
-    _charts: ClassVar[tuple[str, ...]] = ()
-    condition: Condition
-
-@dataclass(kw_only=True)
-class VehicleState(SemanticModel):
-    _semantics: ClassVar = product_names(['Position', 'Representation.Geodetic', 'Velocity', 'Representation.LocalCartesian', 'Attitude', 'Representation.LocalEuler'])
-    _declared_fields: ClassVar[tuple[str, ...]] = ('uid', 'lat', 'lon', 'h', 'vx', 'vy', 'vz', 'roll', 'pitch', 'yaw')
-    _units: ClassVar[dict[str, str]] = {'lat': 'deg', 'lon': 'deg', 'h': 'm', 'vx': 'm/s', 'vy': 'm/s', 'vz': 'm/s', 'roll': 'rad', 'pitch': 'rad', 'yaw': 'rad'}
-    _charts: ClassVar[tuple[str, ...]] = ('Position * Representation.Geodetic', 'Velocity * Representation.LocalCartesian', 'Attitude * Representation.LocalEuler')
-    _projection: ClassVar[bool] = True
-    uid: UID
-    lat: float | None = None
-    lon: float | None = None
-    h: float | None = None
-    vx: float | None = None
-    vy: float | None = None
-    vz: float | None = None
-    roll: float | None = None
-    pitch: float | None = None
-    yaw: float | None = None
-
 AssignedWork = RelationType('AssignedWork', (Entity, Task), operand_names=('assignee', 'work'))
 ConstrainedBy = RelationType('ConstrainedBy', (Control, Constraint), operand_names=('subject', 'constraint'))
 OwnedBy = RelationType('OwnedBy', (Objective, Entity), operand_names=('objective', 'owner'))
@@ -1257,7 +1150,7 @@ GrantedBy = RelationType('GrantedBy', (Authority, Entity), operand_names=('autho
 Controls = RelationType('Controls', (Lease, Object), operand_names=('lease', 'asset'))
 Contains = RelationType('Contains', (Plan, Root), operand_names=('plan', 'item'))
 
-REGISTRY_SPEC = {'axes': {'Substrate': {'cardinality': 'one', 'values': ['BIOLOGICAL', 'MECHANICAL', 'CYBER']}, 'PhysicalDomain': {'description': 'A bounded thing operates in exactly one domain.', 'cardinality': 'one', 'values': ['LAND', 'AIR', 'SEA', 'UNDERSEA', 'SPACE']}, 'Controller': {'cardinality': 'one', 'applies': {'all': ['Machine']}, 'values': ['MANNED', 'UNMANNED']}, 'Locomotion': {'cardinality': 'one', 'values': ['SELF_PROPELLED', 'EXTERNAL', 'STATIC']}, 'Airframe': {'description': 'Airframe construction, independent of takeoff capability.', 'cardinality': 'one', 'applies': {'all': ['Machine', 'PhysicalDomain.AIR']}, 'values': ['MULTIROTOR', 'FIXED_WING']}, 'Representation': {'description': 'How a semantic quantity becomes irreducible data variables.', 'cardinality': 'many', 'values': ['Geodetic', 'LocalCartesian', 'LocalEuler', 'Quaternion', 'Epoch', 'UID', 'IntID', 'PlainText', 'Seconds', 'Radians', 'Meters', 'MetersPerSecond', 'MSL', 'FlightLevel', 'Count', 'Ordinal', 'Protocol', 'Decimal', 'Integer']}, 'BloodGroup': {'cardinality': 'one', 'applies': {'all': ['Substrate.BIOLOGICAL']}, 'requires': ['Biological'], 'values': ['A_POS', 'A_NEG', 'B_POS', 'B_NEG', 'AB_POS', 'AB_NEG', 'O_POS', 'O_NEG']}, 'Realm': {'cardinality': 'one', 'values': ['WORLD', 'INFORMATION']}, 'TemporalMode': {'cardinality': 'one', 'values': ['ACHIEVE', 'MAINTAIN']}, 'TruthTarget': {'cardinality': 'one', 'applies': {'any': ['Existence', 'Connectivity', 'Engagement', 'Activity', 'Paused', 'Hold']}, 'values': ['TRUE', 'FALSE']}}, 'models': {'Root': {'parent': None, 'semantics': ['Root'], 'fields': [], 'chart_fields': []}, 'Object': {'parent': 'Root', 'semantics': ['Object'], 'fields': [], 'chart_fields': []}, 'Locality': {'parent': 'Object', 'semantics': ['Locality'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Entity': {'parent': 'Object', 'semantics': ['Entity'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Biological': {'parent': 'Entity', 'semantics': ['Biological', 'Substrate.BIOLOGICAL'], 'fields': [], 'chart_fields': []}, 'Person': {'parent': 'Biological', 'semantics': ['Substrate.BIOLOGICAL', 'Person'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Actor': {'parent': 'Person', 'semantics': ['Substrate.BIOLOGICAL', 'Actor'], 'fields': [{'name': 'role', 'type': 'optional Role', 'default': None}], 'chart_fields': []}, 'Machine': {'parent': 'Entity', 'semantics': ['Machine', 'Substrate.MECHANICAL'], 'fields': [{'name': 'serial_number', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Vehicle': {'parent': 'Machine', 'semantics': ['Substrate.MECHANICAL', 'Vehicle', 'Locomotion.SELF_PROPELLED'], 'fields': [{'name': 'model', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'CrewedVehicle': {'parent': 'Vehicle', 'semantics': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'CrewedVehicle', 'Controller.MANNED'], 'fields': [], 'chart_fields': []}, 'UnmannedVehicle': {'parent': 'Vehicle', 'semantics': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED'], 'fields': [], 'chart_fields': []}, 'Data': {'parent': 'Root', 'semantics': ['Data'], 'fields': [], 'chart_fields': []}, 'State': {'parent': 'Data', 'semantics': ['State'], 'fields': [], 'chart_fields': []}, 'Position': {'parent': 'State', 'semantics': ['Position'], 'fields': [], 'chart_fields': []}, 'Velocity': {'parent': 'State', 'semantics': ['Velocity'], 'fields': [], 'chart_fields': []}, 'Attitude': {'parent': 'State', 'semantics': ['Attitude'], 'fields': [], 'chart_fields': []}, 'Identity': {'parent': 'State', 'semantics': ['Identity'], 'fields': [], 'chart_fields': []}, 'Classification': {'parent': 'State', 'semantics': ['Classification'], 'fields': [], 'chart_fields': []}, 'Existence': {'parent': 'State', 'semantics': ['Existence'], 'fields': [], 'chart_fields': []}, 'Connectivity': {'parent': 'State', 'semantics': ['Connectivity'], 'fields': [], 'chart_fields': []}, 'Engagement': {'parent': 'State', 'semantics': ['Engagement'], 'fields': [], 'chart_fields': []}, 'Activity': {'parent': 'State', 'semantics': ['Activity'], 'fields': [], 'chart_fields': []}, 'Paused': {'parent': 'State', 'semantics': ['Paused'], 'fields': [], 'chart_fields': []}, 'Hold': {'parent': 'State', 'semantics': ['Hold'], 'fields': [], 'chart_fields': []}, 'Text': {'parent': 'State', 'semantics': ['Text'], 'fields': [], 'chart_fields': []}, 'Duration': {'parent': 'State', 'semantics': ['Duration'], 'fields': [], 'chart_fields': []}, 'Angle': {'parent': 'State', 'semantics': ['Angle'], 'fields': [], 'chart_fields': []}, 'Distance': {'parent': 'State', 'semantics': ['Distance'], 'fields': [], 'chart_fields': []}, 'Speed': {'parent': 'State', 'semantics': ['Speed'], 'fields': [], 'chart_fields': []}, 'Count': {'parent': 'State', 'semantics': ['Count'], 'fields': [], 'chart_fields': []}, 'Ordinal': {'parent': 'State', 'semantics': ['Ordinal'], 'fields': [], 'chart_fields': []}, 'Code': {'parent': 'State', 'semantics': ['Code'], 'fields': [], 'chart_fields': []}, 'Scalar': {'parent': 'State', 'semantics': ['Scalar'], 'fields': [], 'chart_fields': []}, 'Altitude': {'parent': 'State', 'semantics': ['Altitude'], 'fields': [], 'chart_fields': [], 'applies': ['PhysicalDomain.AIR']}, 'GlobalPosition': {'parent': None, 'semantics': ['GlobalPosition', 'Position', 'Representation.Geodetic'], 'fields': [{'name': 'lat', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'lon', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'h', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.Geodetic'}], 'chart_fields': [{'chart': 'Position * Representation.Geodetic', 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}]}]}, 'LocalPosition': {'parent': None, 'semantics': ['LocalPosition', 'Position', 'Representation.LocalCartesian'], 'fields': [{'name': 'x', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}, {'name': 'y', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}, {'name': 'z', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}], 'chart_fields': [{'chart': 'Position * Representation.LocalCartesian', 'coords': [{'name': 'x', 'type': 'float', 'unit': 'm'}, {'name': 'y', 'type': 'float', 'unit': 'm'}, {'name': 'z', 'type': 'float', 'unit': 'm'}]}]}, 'LocalVelocity': {'parent': None, 'semantics': ['LocalVelocity', 'Velocity', 'Representation.LocalCartesian'], 'fields': [{'name': 'vx', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}, {'name': 'vy', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}, {'name': 'vz', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}], 'chart_fields': [{'chart': 'Velocity * Representation.LocalCartesian', 'coords': [{'name': 'vx', 'type': 'float', 'unit': 'm/s'}, {'name': 'vy', 'type': 'float', 'unit': 'm/s'}, {'name': 'vz', 'type': 'float', 'unit': 'm/s'}]}]}, 'LocalAttitude': {'parent': None, 'semantics': ['LocalAttitude', 'Attitude', 'Representation.LocalEuler'], 'fields': [{'name': 'roll', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}, {'name': 'pitch', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}, {'name': 'yaw', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}], 'chart_fields': [{'chart': 'Attitude * Representation.LocalEuler', 'coords': [{'name': 'roll', 'type': 'float', 'unit': 'rad'}, {'name': 'pitch', 'type': 'float', 'unit': 'rad'}, {'name': 'yaw', 'type': 'float', 'unit': 'rad'}]}]}, 'UID': {'parent': None, 'semantics': ['UID', 'Identity', 'Representation.UID'], 'fields': [{'name': 'uid', 'type': 'string', 'default': None, 'unit': None, 'chart': 'Identity * Representation.UID'}], 'chart_fields': [{'chart': 'Identity * Representation.UID', 'coords': [{'name': 'uid', 'type': 'string', 'unit': None}]}]}, 'IntID': {'parent': None, 'semantics': ['IntID', 'Identity', 'Representation.IntID'], 'fields': [{'name': 'id', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Identity * Representation.IntID'}], 'chart_fields': [{'chart': 'Identity * Representation.IntID', 'coords': [{'name': 'id', 'type': 'int', 'unit': None}]}]}, 'PlainText': {'parent': None, 'semantics': ['PlainText', 'Text', 'Representation.PlainText'], 'fields': [{'name': 'value', 'type': 'string', 'default': None, 'unit': None, 'chart': 'Text * Representation.PlainText'}], 'chart_fields': [{'chart': 'Text * Representation.PlainText', 'coords': [{'name': 'value', 'type': 'string', 'unit': None}]}]}, 'DurationSeconds': {'parent': None, 'semantics': ['DurationSeconds', 'Duration', 'Representation.Seconds'], 'fields': [{'name': 'seconds', 'type': 'float', 'default': None, 'unit': 's', 'chart': 'Duration * Representation.Seconds'}], 'chart_fields': [{'chart': 'Duration * Representation.Seconds', 'coords': [{'name': 'seconds', 'type': 'float', 'unit': 's'}]}]}, 'AngleRadians': {'parent': None, 'semantics': ['AngleRadians', 'Angle', 'Representation.Radians'], 'fields': [{'name': 'rad', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Angle * Representation.Radians'}], 'chart_fields': [{'chart': 'Angle * Representation.Radians', 'coords': [{'name': 'rad', 'type': 'float', 'unit': 'rad'}]}]}, 'DistanceMeters': {'parent': None, 'semantics': ['DistanceMeters', 'Distance', 'Representation.Meters'], 'fields': [{'name': 'm', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Distance * Representation.Meters'}], 'chart_fields': [{'chart': 'Distance * Representation.Meters', 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}]}, 'SpeedMetersPerSecond': {'parent': None, 'semantics': ['SpeedMetersPerSecond', 'Speed', 'Representation.MetersPerSecond'], 'fields': [{'name': 'mps', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Speed * Representation.MetersPerSecond'}], 'chart_fields': [{'chart': 'Speed * Representation.MetersPerSecond', 'coords': [{'name': 'mps', 'type': 'float', 'unit': 'm/s'}]}]}, 'AltitudeMSL': {'parent': None, 'semantics': ['AltitudeMSL', 'Altitude', 'Representation.MSL'], 'fields': [{'name': 'm', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Altitude * Representation.MSL'}], 'chart_fields': [{'chart': 'Altitude * Representation.MSL', 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}]}, 'AltitudeFlightLevel': {'parent': None, 'semantics': ['AltitudeFlightLevel', 'Altitude', 'Representation.FlightLevel'], 'fields': [{'name': 'fl', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Altitude * Representation.FlightLevel'}], 'chart_fields': [{'chart': 'Altitude * Representation.FlightLevel', 'coords': [{'name': 'fl', 'type': 'float', 'unit': None}]}]}, 'ItemCount': {'parent': None, 'semantics': ['ItemCount', 'Count', 'Representation.Count'], 'fields': [{'name': 'count', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Count * Representation.Count'}], 'chart_fields': [{'chart': 'Count * Representation.Count', 'coords': [{'name': 'count', 'type': 'int', 'unit': None}]}]}, 'OrdinalValue': {'parent': None, 'semantics': ['OrdinalValue', 'Ordinal', 'Representation.Ordinal'], 'fields': [{'name': 'n', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Ordinal * Representation.Ordinal'}], 'chart_fields': [{'chart': 'Ordinal * Representation.Ordinal', 'coords': [{'name': 'n', 'type': 'int', 'unit': None}]}]}, 'ProtocolCode': {'parent': None, 'semantics': ['ProtocolCode', 'Code', 'Representation.Protocol'], 'fields': [{'name': 'code', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Code * Representation.Protocol'}], 'chart_fields': [{'chart': 'Code * Representation.Protocol', 'coords': [{'name': 'code', 'type': 'int', 'unit': None}]}]}, 'ScalarDecimal': {'parent': None, 'semantics': ['ScalarDecimal', 'Scalar', 'Representation.Decimal'], 'fields': [{'name': 'value', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Scalar * Representation.Decimal'}], 'chart_fields': [{'chart': 'Scalar * Representation.Decimal', 'coords': [{'name': 'value', 'type': 'float', 'unit': None}]}]}, 'ScalarInteger': {'parent': None, 'semantics': ['ScalarInteger', 'Scalar', 'Representation.Integer'], 'fields': [{'name': 'value', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Scalar * Representation.Integer'}], 'chart_fields': [{'chart': 'Scalar * Representation.Integer', 'coords': [{'name': 'value', 'type': 'int', 'unit': None}]}]}, 'Mark': {'parent': 'Data', 'semantics': ['Mark', 'GlobalPosition', 'Position', 'Representation.Geodetic'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}, {'name': 'lat', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'lon', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'h', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.Geodetic'}], 'chart_fields': [{'chart': 'Position * Representation.Geodetic', 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}]}]}, 'Control': {'parent': 'Root', 'semantics': ['Control'], 'fields': [], 'chart_fields': []}, 'Directive': {'parent': 'Control', 'semantics': ['Directive'], 'fields': [], 'chart_fields': []}, 'Task': {'parent': 'Directive', 'semantics': ['Task'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'instruction', 'type': 'PlainText', 'default': None}, {'name': 'priority', 'type': 'TaskPriority', 'default': 'ROUTINE'}, {'name': 'status', 'type': 'TaskStatus', 'default': 'NEW'}], 'chart_fields': []}, 'TaskManeuver': {'parent': 'Task', 'semantics': ['TaskManeuver'], 'fields': [{'name': 'intent', 'type': 'TaskIntent', 'default': None}], 'chart_fields': []}, 'TaskInformation': {'parent': 'Task', 'semantics': ['TaskInformation'], 'fields': [{'name': 'intent', 'type': 'TaskIntent', 'default': None}], 'chart_fields': []}, 'TaskEffect': {'parent': 'Task', 'semantics': ['TaskEffect'], 'fields': [{'name': 'intent', 'type': 'TaskIntent', 'default': None}], 'chart_fields': []}, 'TaskTransport': {'parent': 'Task', 'semantics': ['TaskTransport'], 'fields': [{'name': 'intent', 'type': 'TaskIntent', 'default': None}], 'chart_fields': []}, 'Mission': {'parent': 'Directive', 'semantics': ['Mission'], 'fields': [], 'chart_fields': []}, 'Record': {'parent': 'Data', 'semantics': ['Record'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'revision', 'type': 'optional ItemCount', 'default': None}, {'name': 'created_ts', 'type': 'Timestamp', 'default': None}, {'name': 'updated_ts', 'type': 'Timestamp', 'default': None}, {'name': 'origin_system', 'type': 'PlainText', 'default': None}, {'name': 'provenance', 'type': 'list[PlainText]', 'default': None}], 'chart_fields': []}, 'Time': {'parent': 'State', 'semantics': ['Time'], 'fields': [], 'chart_fields': []}, 'Timestamp': {'parent': None, 'semantics': ['Timestamp', 'Time', 'Representation.Epoch'], 'fields': [{'name': 'utime', 'type': 'float', 'default': None, 'unit': 's', 'chart': 'Time * Representation.Epoch'}, {'name': 'tz', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Time * Representation.Epoch'}], 'chart_fields': [{'chart': 'Time * Representation.Epoch', 'coords': [{'name': 'utime', 'type': 'float', 'unit': 's'}, {'name': 'tz', 'type': 'int', 'unit': None}]}]}, 'Range': {'parent': 'Data', 'semantics': ['Range'], 'fields': [], 'chart_fields': []}, 'NumericRange': {'parent': 'Range', 'semantics': ['NumericRange'], 'fields': [{'name': 'min_value', 'type': 'optional ScalarDecimal', 'default': None}, {'name': 'max_value', 'type': 'optional ScalarDecimal', 'default': None}], 'chart_fields': []}, 'MetadataValue': {'parent': 'Data', 'semantics': ['MetadataValue'], 'fields': [{'name': 'str', 'type': 'optional PlainText', 'default': None}, {'name': 'int', 'type': 'optional ScalarInteger', 'default': None}, {'name': 'float', 'type': 'optional ScalarDecimal', 'default': None}, {'name': 'bool', 'type': 'optional bool', 'default': None}], 'chart_fields': []}, 'Condition': {'parent': 'Data', 'semantics': ['Condition'], 'fields': [], 'chart_fields': []}, 'Predicate': {'parent': 'Condition', 'semantics': ['Predicate'], 'fields': [{'name': 'subject_ref', 'type': 'optional UID', 'default': None}], 'chart_fields': []}, 'BooleanLogic': {'parent': 'Condition', 'semantics': ['BooleanLogic'], 'fields': [{'name': 'operator', 'type': 'BooleanOperator', 'default': None}, {'name': 'terms', 'type': 'list[Condition]', 'default': None}], 'chart_fields': []}, 'GeoPath': {'parent': 'Data', 'semantics': ['GeoPath'], 'fields': [{'name': 'points', 'type': 'list[GlobalPosition]', 'default': None}], 'chart_fields': []}, 'SuccessCriterion': {'parent': 'Data', 'semantics': ['SuccessCriterion'], 'fields': [{'name': 'statement', 'type': 'PlainText', 'default': None}, {'name': 'metric', 'type': 'optional PlainText', 'default': None}, {'name': 'target_value', 'type': 'optional MetadataValue', 'default': None}], 'chart_fields': []}, 'Role': {'parent': 'Data', 'semantics': ['Role'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Resource': {'parent': 'Object', 'semantics': ['Resource'], 'fields': [{'name': 'uid', 'type': 'optional UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Constraint': {'parent': 'Control', 'semantics': ['Constraint'], 'fields': [{'name': 'condition', 'type': 'optional Condition', 'default': None}], 'chart_fields': []}, 'TaskTimeWindow': {'parent': 'Constraint', 'semantics': ['TaskTimeWindow'], 'fields': [{'name': 'earliest_start', 'type': 'optional Timestamp', 'default': None}, {'name': 'latest_finish', 'type': 'optional Timestamp', 'default': None}], 'chart_fields': []}, 'WeatherLimits': {'parent': 'Constraint', 'semantics': ['WeatherLimits'], 'fields': [{'name': 'ifr', 'type': 'optional bool', 'default': None}, {'name': 'night', 'type': 'optional bool', 'default': None}, {'name': 'rain', 'type': 'optional NumericRange', 'default': None}, {'name': 'snow', 'type': 'optional NumericRange', 'default': None}, {'name': 'temp', 'type': 'optional NumericRange', 'default': None}, {'name': 'wind', 'type': 'optional NumericRange', 'default': None}, {'name': 'vis', 'type': 'optional NumericRange', 'default': None}, {'name': 'icing', 'type': 'optional bool', 'default': None}], 'chart_fields': []}, 'Objective': {'parent': 'Control', 'semantics': ['Objective'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'name', 'type': 'PlainText', 'default': None}, {'name': 'intent', 'type': 'PlainText', 'default': None}, {'name': 'desired_state', 'type': 'PlainText', 'default': None}, {'name': 'success_criteria', 'type': 'list[SuccessCriterion]', 'default': None}, {'name': 'priority', 'type': 'TaskPriority', 'default': 'ROUTINE'}, {'name': 'status', 'type': 'TaskStatus', 'default': 'NEW'}, {'name': 'start_time', 'type': 'optional Timestamp', 'default': None}, {'name': 'deadline', 'type': 'optional Timestamp', 'default': None}], 'chart_fields': []}, 'Command': {'parent': 'Directive', 'semantics': ['Command'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}], 'chart_fields': []}, 'StateChangeCommand': {'parent': 'Command', 'semantics': ['StateChangeCommand', 'Engagement'], 'fields': [{'name': 'operation', 'type': 'CommandOperation', 'default': None}, {'name': 'property_name', 'type': 'optional PlainText', 'default': None}, {'name': 'value', 'type': 'optional MetadataValue', 'default': None}], 'chart_fields': []}, 'ProcessControlCommand': {'parent': 'Command', 'semantics': ['ProcessControlCommand', 'Activity'], 'fields': [{'name': 'operation', 'type': 'CommandOperation', 'default': None}, {'name': 'process_name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'ConfigurationCommand': {'parent': 'Command', 'semantics': ['ConfigurationCommand'], 'fields': [{'name': 'operation', 'type': 'CommandOperation', 'default': None}, {'name': 'parameter_name', 'type': 'optional PlainText', 'default': None}, {'name': 'value', 'type': 'optional MetadataValue', 'default': None}], 'chart_fields': []}, 'MotionCommand': {'parent': 'Command', 'semantics': ['MotionCommand', 'Position'], 'fields': [{'name': 'operation', 'type': 'CommandOperation', 'default': None}, {'name': 'destination', 'type': 'optional GlobalPosition', 'default': None}, {'name': 'path', 'type': 'optional GeoPath', 'default': None}, {'name': 'radius_m', 'type': 'optional DistanceMeters', 'default': None}, {'name': 'speed_ms', 'type': 'optional SpeedMetersPerSecond', 'default': None}, {'name': 'yaw_rad', 'type': 'optional AngleRadians', 'default': None}], 'chart_fields': []}, 'ResourceCommand': {'parent': 'Command', 'semantics': ['ResourceCommand', 'Hold'], 'fields': [{'name': 'operation', 'type': 'CommandOperation', 'default': None}, {'name': 'quantity', 'type': 'optional ItemCount', 'default': None}], 'chart_fields': []}, 'Authority': {'parent': 'Control', 'semantics': ['Authority'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'role', 'type': 'optional Role', 'default': None}], 'chart_fields': []}, 'Lease': {'parent': 'Authority', 'semantics': ['Lease'], 'fields': [{'name': 'bound', 'type': 'optional Condition', 'default': None}, {'name': 'control_level', 'type': 'optional ControlLevel', 'default': None}], 'chart_fields': []}, 'Plan': {'parent': 'Control', 'semantics': ['Plan'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}, {'name': 'approval_state', 'type': 'PlanApprovalState', 'default': 'DRAFT'}], 'chart_fields': []}, 'PlanContingency': {'parent': 'Data', 'semantics': ['PlanContingency'], 'fields': [{'name': 'condition', 'type': 'Condition', 'default': None}], 'chart_fields': []}}, 'charts': [{'display': 'Position * Representation.Geodetic', 'factors': ['Position', 'Representation.Geodetic'], 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}]}, {'display': 'Position * Representation.LocalCartesian', 'factors': ['Position', 'Representation.LocalCartesian'], 'coords': [{'name': 'x', 'type': 'float', 'unit': 'm'}, {'name': 'y', 'type': 'float', 'unit': 'm'}, {'name': 'z', 'type': 'float', 'unit': 'm'}]}, {'display': 'Velocity * Representation.LocalCartesian', 'factors': ['Velocity', 'Representation.LocalCartesian'], 'coords': [{'name': 'vx', 'type': 'float', 'unit': 'm/s'}, {'name': 'vy', 'type': 'float', 'unit': 'm/s'}, {'name': 'vz', 'type': 'float', 'unit': 'm/s'}]}, {'display': 'Attitude * Representation.LocalEuler', 'factors': ['Attitude', 'Representation.LocalEuler'], 'coords': [{'name': 'roll', 'type': 'float', 'unit': 'rad'}, {'name': 'pitch', 'type': 'float', 'unit': 'rad'}, {'name': 'yaw', 'type': 'float', 'unit': 'rad'}]}, {'display': 'Attitude * Representation.Quaternion', 'factors': ['Attitude', 'Representation.Quaternion'], 'coords': [{'name': 'qw', 'type': 'float', 'unit': None}, {'name': 'qx', 'type': 'float', 'unit': None}, {'name': 'qy', 'type': 'float', 'unit': None}, {'name': 'qz', 'type': 'float', 'unit': None}]}, {'display': 'Time * Representation.Epoch', 'factors': ['Time', 'Representation.Epoch'], 'coords': [{'name': 'utime', 'type': 'float', 'unit': 's'}, {'name': 'tz', 'type': 'int', 'unit': None}]}, {'display': 'Identity * Representation.UID', 'factors': ['Identity', 'Representation.UID'], 'coords': [{'name': 'uid', 'type': 'string', 'unit': None}]}, {'display': 'Identity * Representation.IntID', 'factors': ['Identity', 'Representation.IntID'], 'coords': [{'name': 'id', 'type': 'int', 'unit': None}]}, {'display': 'Text * Representation.PlainText', 'factors': ['Text', 'Representation.PlainText'], 'coords': [{'name': 'value', 'type': 'string', 'unit': None}]}, {'display': 'Duration * Representation.Seconds', 'factors': ['Duration', 'Representation.Seconds'], 'coords': [{'name': 'seconds', 'type': 'float', 'unit': 's'}]}, {'display': 'Angle * Representation.Radians', 'factors': ['Angle', 'Representation.Radians'], 'coords': [{'name': 'rad', 'type': 'float', 'unit': 'rad'}]}, {'display': 'Distance * Representation.Meters', 'factors': ['Distance', 'Representation.Meters'], 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}, {'display': 'Speed * Representation.MetersPerSecond', 'factors': ['Speed', 'Representation.MetersPerSecond'], 'coords': [{'name': 'mps', 'type': 'float', 'unit': 'm/s'}]}, {'display': 'Altitude * Representation.MSL', 'factors': ['Altitude', 'Representation.MSL'], 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}, {'display': 'Altitude * Representation.FlightLevel', 'factors': ['Altitude', 'Representation.FlightLevel'], 'coords': [{'name': 'fl', 'type': 'float', 'unit': None}]}, {'display': 'Count * Representation.Count', 'factors': ['Count', 'Representation.Count'], 'coords': [{'name': 'count', 'type': 'int', 'unit': None}]}, {'display': 'Ordinal * Representation.Ordinal', 'factors': ['Ordinal', 'Representation.Ordinal'], 'coords': [{'name': 'n', 'type': 'int', 'unit': None}]}, {'display': 'Code * Representation.Protocol', 'factors': ['Code', 'Representation.Protocol'], 'coords': [{'name': 'code', 'type': 'int', 'unit': None}]}, {'display': 'Scalar * Representation.Decimal', 'factors': ['Scalar', 'Representation.Decimal'], 'coords': [{'name': 'value', 'type': 'float', 'unit': None}]}, {'display': 'Scalar * Representation.Integer', 'factors': ['Scalar', 'Representation.Integer'], 'coords': [{'name': 'value', 'type': 'int', 'unit': None}]}], 'expressions': {'MOVE': {'description': 'Move an actor until its position is the destination.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'actor': ['Entity'], 'destination': ['Position']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'actor', 'equals': 'destination'}], 'words': ['TaskIntent.MOVE']}, 'HOLD': {'description': "Maintain an actor's position at the destination.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'actor': ['Entity'], 'destination': ['Position']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'actor', 'equals': 'destination'}], 'words': ['TaskIntent.HOLD']}, 'LOCATE': {'description': 'Solve for the position of an entity.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'position': ['Position']}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'position'}], 'words': ['TaskIntent.LOCATE']}, 'TRACK': {'description': "Maintain awareness of an entity's position.", 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.MAINTAIN'], 'given': {'target': ['Entity']}, 'sought': {'position': ['Position']}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'position'}], 'words': ['TaskIntent.TRACK']}, 'IDENTIFY': {'description': 'Solve for the identity of an entity.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'identity': ['Identity']}, 'equations': [{'quantity': 'Identity', 'of': 'target', 'equals': 'identity'}], 'words': ['TaskIntent.IDENTIFY']}, 'CLASSIFY': {'description': 'Solve for the classification of an entity.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'classification': ['Classification']}, 'equations': [{'quantity': 'Classification', 'of': 'target', 'equals': 'classification'}], 'words': ['TaskIntent.CLASSIFY']}, 'CREATE': {'description': 'Make an object exist.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.TRUE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.CREATE']}, 'REMOVE': {'description': 'Make an object cease to exist.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.FALSE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.REMOVE']}, 'FOLLOW': {'description': 'Follow a path.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'actor': ['Entity'], 'path': ['GeoPath']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.FOLLOW']}, 'MEASURE': {'description': 'Measure a state of a target.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'measurement': ['State']}, 'equations': [], 'words': ['TaskIntent.MEASURE']}, 'MODIFY': {'description': "Change an object's state.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.MODIFY']}, 'RESTORE': {'description': 'Return an object to a prior state.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.RESTORE']}, 'PROTECT': {'description': 'Keep an object in its current state.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.PROTECT']}, 'DENY': {'description': 'Prevent connectivity to an object.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN', 'Connectivity', 'TruthTarget.FALSE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.DENY']}, 'TRANSPORT': {'description': 'Move a thing between places; which end and what moves are bindings.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'cargo': ['Object'], 'origin': ['Position'], 'destination': ['Position']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.TRANSPORT']}, 'ENGAGE': {'description': 'Assert the target state true.', 'factors': ['Command', 'TruthTarget.TRUE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.ENGAGE']}, 'DISENGAGE': {'description': 'Assert the target state false.', 'factors': ['Command', 'TruthTarget.FALSE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.DISENGAGE']}, 'PAUSE': {'description': 'Hold a running process paused.', 'factors': ['Command', 'Paused', 'TruthTarget.TRUE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.PAUSE']}, 'RESUME': {'description': 'Release a process from paused.', 'factors': ['Command', 'Paused', 'TruthTarget.FALSE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.RESUME']}, 'SET': {'description': 'Set a declared state property on the target.', 'factors': ['Command'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.SET']}, 'DIRECT': {'description': 'Direct the target to a destination or along a path.', 'factors': ['Command', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Object'], 'destination': ['Position'], 'path': ['GeoPath']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'destination'}], 'words': ['CommandOperation.MOVE']}, 'ALLOCATE': {'description': 'Allocate a referenced resource.', 'factors': ['Command'], 'given': {'target': ['Object'], 'resource': ['Resource']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.ALLOCATE']}, 'TRANSFER': {'description': 'Transfer a referenced resource.', 'factors': ['Command'], 'given': {'target': ['Object'], 'resource': ['Resource']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.TRANSFER']}, 'LOAD_CONFIGURATION': {'description': 'Load a referenced configuration on the target.', 'factors': ['Command'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.LOAD_CONFIGURATION']}, 'RESET': {'description': 'Reset the target to its initial state.', 'factors': ['Command'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.RESET']}}, 'word_expressions': {'TaskIntent.MOVE': 'MOVE', 'TaskIntent.HOLD': 'HOLD', 'TaskIntent.LOCATE': 'LOCATE', 'TaskIntent.TRACK': 'TRACK', 'TaskIntent.IDENTIFY': 'IDENTIFY', 'TaskIntent.CLASSIFY': 'CLASSIFY', 'TaskIntent.CREATE': 'CREATE', 'TaskIntent.REMOVE': 'REMOVE', 'TaskIntent.FOLLOW': 'FOLLOW', 'TaskIntent.MEASURE': 'MEASURE', 'TaskIntent.MODIFY': 'MODIFY', 'TaskIntent.RESTORE': 'RESTORE', 'TaskIntent.PROTECT': 'PROTECT', 'TaskIntent.DENY': 'DENY', 'TaskIntent.TRANSPORT': 'TRANSPORT', 'CommandOperation.ENGAGE': 'ENGAGE', 'CommandOperation.DISENGAGE': 'DISENGAGE', 'CommandOperation.PAUSE': 'PAUSE', 'CommandOperation.RESUME': 'RESUME', 'CommandOperation.SET': 'SET', 'CommandOperation.MOVE': 'DIRECT', 'CommandOperation.ALLOCATE': 'ALLOCATE', 'CommandOperation.TRANSFER': 'TRANSFER', 'CommandOperation.LOAD_CONFIGURATION': 'LOAD_CONFIGURATION', 'CommandOperation.RESET': 'RESET'}, 'aliases': {'AirMission': ['Mission', 'PhysicalDomain.AIR'], 'AirTask': ['Task', 'PhysicalDomain.AIR'], 'UGV': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.LAND'], 'UAV': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.AIR'], 'Drone': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.AIR', 'Airframe.MULTIROTOR'], 'Geodetic': ['Representation.Geodetic'], 'LocalCartesian': ['Representation.LocalCartesian'], 'LocalEuler': ['Representation.LocalEuler'], 'Quaternion': ['Representation.Quaternion'], 'Epoch': ['Representation.Epoch']}, 'relations': {'AssignedWork': {'signature': ['Entity', 'Task'], 'operand_names': ['assignee', 'work']}, 'ConstrainedBy': {'signature': ['Control', 'Constraint'], 'operand_names': ['subject', 'constraint']}, 'OwnedBy': {'signature': ['Objective', 'Entity'], 'operand_names': ['objective', 'owner']}, 'Holds': {'signature': ['Authority', 'Entity'], 'operand_names': ['authority', 'holder']}, 'GrantedBy': {'signature': ['Authority', 'Entity'], 'operand_names': ['authority', 'grantor']}, 'Controls': {'signature': ['Lease', 'Object'], 'operand_names': ['lease', 'asset']}, 'Contains': {'signature': ['Plan', 'Root'], 'operand_names': ['plan', 'item']}}, 'projections': {'VehicleState': {'semantics': ['Position', 'Representation.Geodetic', 'Velocity', 'Representation.LocalCartesian', 'Attitude', 'Representation.LocalEuler'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'lat', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic', 'optional': True}, {'name': 'lon', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic', 'optional': True}, {'name': 'h', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.Geodetic', 'optional': True}, {'name': 'vx', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian', 'optional': True}, {'name': 'vy', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian', 'optional': True}, {'name': 'vz', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian', 'optional': True}, {'name': 'roll', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler', 'optional': True}, {'name': 'pitch', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler', 'optional': True}, {'name': 'yaw', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler', 'optional': True}], 'charts': ['Position * Representation.Geodetic', 'Velocity * Representation.LocalCartesian', 'Attitude * Representation.LocalEuler']}}}
+REGISTRY_SPEC = {'axes': {'Substrate': {'cardinality': 'one', 'values': ['BIOLOGICAL', 'MECHANICAL', 'CYBER']}, 'PhysicalDomain': {'description': 'A bounded thing operates in exactly one domain.', 'cardinality': 'one', 'values': ['LAND', 'AIR', 'SEA', 'UNDERSEA', 'SPACE']}, 'Controller': {'cardinality': 'one', 'applies': {'all': ['Machine']}, 'values': ['MANNED', 'UNMANNED']}, 'Locomotion': {'cardinality': 'one', 'values': ['SELF_PROPELLED', 'EXTERNAL', 'STATIC']}, 'Airframe': {'description': 'Airframe construction, independent of takeoff capability.', 'cardinality': 'one', 'applies': {'all': ['Machine', 'PhysicalDomain.AIR']}, 'values': ['MULTIROTOR', 'FIXED_WING']}, 'Representation': {'description': 'How a semantic quantity becomes data -- its coordinate scheme, datum, unit, or encoding.', 'cardinality': 'many', 'values': ['Geodetic', 'LocalCartesian', 'LocalEuler', 'Quaternion', 'Epoch', 'UID', 'IntID', 'PlainText', 'Seconds', 'Radians', 'Meters', 'MetersPerSecond', 'MSL', 'FlightLevel', 'Boolean', 'Protocol', 'Decimal', 'Integer']}, 'BloodGroup': {'cardinality': 'one', 'applies': {'all': ['Substrate.BIOLOGICAL']}, 'requires': ['Biological'], 'values': ['A_POS', 'A_NEG', 'B_POS', 'B_NEG', 'AB_POS', 'AB_NEG', 'O_POS', 'O_NEG']}, 'Realm': {'cardinality': 'one', 'values': ['WORLD', 'INFORMATION']}, 'TemporalMode': {'cardinality': 'one', 'values': ['ACHIEVE', 'MAINTAIN']}, 'TruthTarget': {'cardinality': 'one', 'applies': {'any': ['Existence', 'Connectivity', 'Engagement', 'Activity', 'Paused', 'Hold']}, 'values': ['TRUE', 'FALSE']}}, 'models': {'Root': {'parent': None, 'semantics': ['Root'], 'fields': [], 'chart_fields': []}, 'Object': {'parent': 'Root', 'semantics': ['Object'], 'fields': [], 'chart_fields': []}, 'Locality': {'parent': 'Object', 'semantics': ['Locality'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Entity': {'parent': 'Object', 'semantics': ['Entity'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Biological': {'parent': 'Entity', 'semantics': ['Biological', 'Substrate.BIOLOGICAL'], 'fields': [], 'chart_fields': []}, 'Person': {'parent': 'Biological', 'semantics': ['Substrate.BIOLOGICAL', 'Person'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Actor': {'parent': 'Person', 'semantics': ['Substrate.BIOLOGICAL', 'Actor'], 'fields': [{'name': 'role', 'type': 'optional Role', 'default': None}], 'chart_fields': []}, 'Machine': {'parent': 'Entity', 'semantics': ['Machine', 'Substrate.MECHANICAL'], 'fields': [{'name': 'serial_number', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Vehicle': {'parent': 'Machine', 'semantics': ['Substrate.MECHANICAL', 'Vehicle', 'Locomotion.SELF_PROPELLED'], 'fields': [{'name': 'model', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'CrewedVehicle': {'parent': 'Vehicle', 'semantics': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'CrewedVehicle', 'Controller.MANNED'], 'fields': [], 'chart_fields': []}, 'UnmannedVehicle': {'parent': 'Vehicle', 'semantics': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED'], 'fields': [], 'chart_fields': []}, 'Data': {'parent': 'Root', 'semantics': ['Data'], 'fields': [], 'chart_fields': []}, 'State': {'parent': 'Data', 'semantics': ['State'], 'fields': [], 'chart_fields': []}, 'Position': {'parent': 'State', 'semantics': ['Position'], 'fields': [], 'chart_fields': []}, 'Velocity': {'parent': 'State', 'semantics': ['Velocity'], 'fields': [], 'chart_fields': []}, 'Attitude': {'parent': 'State', 'semantics': ['Attitude'], 'fields': [], 'chart_fields': []}, 'Identity': {'parent': 'State', 'semantics': ['Identity'], 'fields': [], 'chart_fields': []}, 'Classification': {'parent': 'State', 'semantics': ['Classification'], 'fields': [], 'chart_fields': []}, 'Existence': {'parent': 'State', 'semantics': ['Existence'], 'fields': [], 'chart_fields': []}, 'Connectivity': {'parent': 'State', 'semantics': ['Connectivity'], 'fields': [], 'chart_fields': []}, 'Engagement': {'parent': 'State', 'semantics': ['Engagement'], 'fields': [], 'chart_fields': []}, 'Activity': {'parent': 'State', 'semantics': ['Activity'], 'fields': [], 'chart_fields': []}, 'Paused': {'parent': 'State', 'semantics': ['Paused'], 'fields': [], 'chart_fields': []}, 'Hold': {'parent': 'State', 'semantics': ['Hold'], 'fields': [], 'chart_fields': []}, 'Truth': {'parent': 'State', 'semantics': ['Truth'], 'fields': [], 'chart_fields': []}, 'Text': {'parent': 'State', 'semantics': ['Text'], 'fields': [], 'chart_fields': []}, 'Duration': {'parent': 'State', 'semantics': ['Duration'], 'fields': [], 'chart_fields': []}, 'Angle': {'parent': 'State', 'semantics': ['Angle'], 'fields': [], 'chart_fields': []}, 'Distance': {'parent': 'State', 'semantics': ['Distance'], 'fields': [], 'chart_fields': []}, 'Speed': {'parent': 'State', 'semantics': ['Speed'], 'fields': [], 'chart_fields': []}, 'Count': {'parent': 'State', 'semantics': ['Count'], 'fields': [], 'chart_fields': []}, 'Ordinal': {'parent': 'State', 'semantics': ['Ordinal'], 'fields': [], 'chart_fields': []}, 'Code': {'parent': 'State', 'semantics': ['Code'], 'fields': [], 'chart_fields': []}, 'Scalar': {'parent': 'State', 'semantics': ['Scalar'], 'fields': [], 'chart_fields': []}, 'Altitude': {'parent': 'State', 'semantics': ['Altitude'], 'fields': [], 'chart_fields': [], 'applies': ['PhysicalDomain.AIR']}, 'Mark': {'parent': 'Data', 'semantics': ['Mark', 'GlobalPosition', 'Position', 'Representation.Geodetic'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}, {'name': 'lat', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'lon', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'h', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.Geodetic'}], 'chart_fields': [{'chart': 'Position * Representation.Geodetic', 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}]}]}, 'Control': {'parent': 'Root', 'semantics': ['Control'], 'fields': [], 'chart_fields': []}, 'Directive': {'parent': 'Control', 'semantics': ['Directive'], 'fields': [], 'chart_fields': []}, 'Task': {'parent': 'Directive', 'semantics': ['Task'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'instruction', 'type': 'PlainText', 'default': None}, {'name': 'intent', 'type': 'TaskIntent', 'default': None}, {'name': 'priority', 'type': 'TaskPriority', 'default': 'ROUTINE'}, {'name': 'status', 'type': 'TaskStatus', 'default': 'NEW'}], 'chart_fields': []}, 'Mission': {'parent': 'Directive', 'semantics': ['Mission'], 'fields': [], 'chart_fields': []}, 'Record': {'parent': 'Data', 'semantics': ['Record'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'revision', 'type': 'optional ItemCount', 'default': None}, {'name': 'created_ts', 'type': 'Timestamp', 'default': None}, {'name': 'updated_ts', 'type': 'Timestamp', 'default': None}, {'name': 'origin_system', 'type': 'PlainText', 'default': None}, {'name': 'provenance', 'type': 'list[PlainText]', 'default': None}], 'chart_fields': []}, 'Time': {'parent': 'State', 'semantics': ['Time'], 'fields': [], 'chart_fields': []}, 'Range': {'parent': 'Data', 'semantics': ['Range'], 'fields': [], 'chart_fields': []}, 'NumericRange': {'parent': 'Range', 'semantics': ['NumericRange'], 'fields': [{'name': 'min_value', 'type': 'optional ScalarDecimal', 'default': None}, {'name': 'max_value', 'type': 'optional ScalarDecimal', 'default': None}], 'chart_fields': []}, 'Condition': {'parent': 'Data', 'semantics': ['Condition'], 'fields': [], 'chart_fields': []}, 'Predicate': {'parent': 'Condition', 'semantics': ['Predicate'], 'fields': [{'name': 'subject', 'type': 'optional UID', 'default': None}, {'name': 'quantity', 'type': 'optional PlainText', 'default': None}, {'name': 'value', 'type': 'optional Scalar', 'default': None}], 'chart_fields': []}, 'BooleanLogic': {'parent': 'Condition', 'semantics': ['BooleanLogic'], 'fields': [{'name': 'operator', 'type': 'BooleanOperator', 'default': None}, {'name': 'terms', 'type': 'list[Condition]', 'default': None}], 'chart_fields': []}, 'GeoPath': {'parent': 'Data', 'semantics': ['GeoPath'], 'fields': [{'name': 'points', 'type': 'list[GlobalPosition]', 'default': None}], 'chart_fields': []}, 'Role': {'parent': 'Data', 'semantics': ['Role'], 'fields': [{'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Resource': {'parent': 'Object', 'semantics': ['Resource'], 'fields': [{'name': 'uid', 'type': 'optional UID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}], 'chart_fields': []}, 'Constraint': {'parent': 'Control', 'semantics': ['Constraint'], 'fields': [{'name': 'condition', 'type': 'optional Condition', 'default': None}], 'chart_fields': []}, 'TaskTimeWindow': {'parent': 'Constraint', 'semantics': ['TaskTimeWindow'], 'fields': [{'name': 'earliest_start', 'type': 'optional Timestamp', 'default': None}, {'name': 'latest_finish', 'type': 'optional Timestamp', 'default': None}], 'chart_fields': []}, 'WeatherLimits': {'parent': 'Constraint', 'semantics': ['WeatherLimits'], 'fields': [{'name': 'ifr', 'type': 'optional TruthBoolean', 'default': None}, {'name': 'night', 'type': 'optional TruthBoolean', 'default': None}, {'name': 'rain', 'type': 'optional NumericRange', 'default': None}, {'name': 'snow', 'type': 'optional NumericRange', 'default': None}, {'name': 'temp', 'type': 'optional NumericRange', 'default': None}, {'name': 'wind', 'type': 'optional NumericRange', 'default': None}, {'name': 'vis', 'type': 'optional NumericRange', 'default': None}, {'name': 'icing', 'type': 'optional TruthBoolean', 'default': None}], 'chart_fields': []}, 'Objective': {'parent': 'Control', 'semantics': ['Objective'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'name', 'type': 'PlainText', 'default': None}, {'name': 'condition', 'type': 'optional Condition', 'default': None}, {'name': 'criteria', 'type': 'list[Condition]', 'default': None}, {'name': 'priority', 'type': 'TaskPriority', 'default': 'ROUTINE'}, {'name': 'status', 'type': 'TaskStatus', 'default': 'NEW'}, {'name': 'start_time', 'type': 'optional Timestamp', 'default': None}, {'name': 'deadline', 'type': 'optional Timestamp', 'default': None}], 'chart_fields': []}, 'Command': {'parent': 'Directive', 'semantics': ['Command'], 'fields': [{'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'operation', 'type': 'CommandOperation', 'default': None}], 'chart_fields': []}, 'Authority': {'parent': 'Control', 'semantics': ['Authority'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'role', 'type': 'optional Role', 'default': None}], 'chart_fields': []}, 'Lease': {'parent': 'Authority', 'semantics': ['Lease'], 'fields': [{'name': 'bound', 'type': 'optional Condition', 'default': None}, {'name': 'control_level', 'type': 'optional ControlLevel', 'default': None}], 'chart_fields': []}, 'Plan': {'parent': 'Control', 'semantics': ['Plan'], 'fields': [{'name': 'record', 'type': 'optional Record', 'default': None}, {'name': 'uid', 'type': 'UID', 'default': None}, {'name': 'id', 'type': 'optional IntID', 'default': None}, {'name': 'name', 'type': 'optional PlainText', 'default': None}, {'name': 'approval_state', 'type': 'PlanApprovalState', 'default': 'DRAFT'}], 'chart_fields': []}, 'PlanContingency': {'parent': 'Data', 'semantics': ['PlanContingency'], 'fields': [{'name': 'condition', 'type': 'Condition', 'default': None}], 'chart_fields': []}, 'GlobalPosition': {'parent': None, 'semantics': ['GlobalPosition', 'Position', 'Representation.Geodetic'], 'fields': [{'name': 'lat', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'lon', 'type': 'float', 'default': None, 'unit': 'deg', 'chart': 'Position * Representation.Geodetic'}, {'name': 'h', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.Geodetic'}], 'chart_fields': [{'chart': 'Position * Representation.Geodetic', 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}]}]}, 'LocalPosition': {'parent': None, 'semantics': ['LocalPosition', 'Position', 'Representation.LocalCartesian'], 'fields': [{'name': 'x', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}, {'name': 'y', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}, {'name': 'z', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Position * Representation.LocalCartesian'}], 'chart_fields': [{'chart': 'Position * Representation.LocalCartesian', 'coords': [{'name': 'x', 'type': 'float', 'unit': 'm'}, {'name': 'y', 'type': 'float', 'unit': 'm'}, {'name': 'z', 'type': 'float', 'unit': 'm'}]}]}, 'LocalVelocity': {'parent': None, 'semantics': ['LocalVelocity', 'Velocity', 'Representation.LocalCartesian'], 'fields': [{'name': 'vx', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}, {'name': 'vy', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}, {'name': 'vz', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Velocity * Representation.LocalCartesian'}], 'chart_fields': [{'chart': 'Velocity * Representation.LocalCartesian', 'coords': [{'name': 'vx', 'type': 'float', 'unit': 'm/s'}, {'name': 'vy', 'type': 'float', 'unit': 'm/s'}, {'name': 'vz', 'type': 'float', 'unit': 'm/s'}]}]}, 'LocalAttitude': {'parent': None, 'semantics': ['LocalAttitude', 'Attitude', 'Representation.LocalEuler'], 'fields': [{'name': 'roll', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}, {'name': 'pitch', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}, {'name': 'yaw', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Attitude * Representation.LocalEuler'}], 'chart_fields': [{'chart': 'Attitude * Representation.LocalEuler', 'coords': [{'name': 'roll', 'type': 'float', 'unit': 'rad'}, {'name': 'pitch', 'type': 'float', 'unit': 'rad'}, {'name': 'yaw', 'type': 'float', 'unit': 'rad'}]}]}, 'QuaternionAttitude': {'parent': None, 'semantics': ['QuaternionAttitude', 'Attitude', 'Representation.Quaternion'], 'fields': [{'name': 'qw', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Attitude * Representation.Quaternion'}, {'name': 'qx', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Attitude * Representation.Quaternion'}, {'name': 'qy', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Attitude * Representation.Quaternion'}, {'name': 'qz', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Attitude * Representation.Quaternion'}], 'chart_fields': [{'chart': 'Attitude * Representation.Quaternion', 'coords': [{'name': 'qw', 'type': 'float', 'unit': None}, {'name': 'qx', 'type': 'float', 'unit': None}, {'name': 'qy', 'type': 'float', 'unit': None}, {'name': 'qz', 'type': 'float', 'unit': None}]}]}, 'Timestamp': {'parent': None, 'semantics': ['Timestamp', 'Time', 'Representation.Epoch'], 'fields': [{'name': 'utime', 'type': 'float', 'default': None, 'unit': 's', 'chart': 'Time * Representation.Epoch'}], 'chart_fields': [{'chart': 'Time * Representation.Epoch', 'coords': [{'name': 'utime', 'type': 'float', 'unit': 's'}]}]}, 'UID': {'parent': None, 'semantics': ['UID', 'Identity', 'Representation.UID'], 'fields': [{'name': 'uid', 'type': 'string', 'default': None, 'unit': None, 'chart': 'Identity * Representation.UID'}], 'chart_fields': [{'chart': 'Identity * Representation.UID', 'coords': [{'name': 'uid', 'type': 'string', 'unit': None}]}]}, 'IntID': {'parent': None, 'semantics': ['IntID', 'Identity', 'Representation.IntID'], 'fields': [{'name': 'id', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Identity * Representation.IntID'}], 'chart_fields': [{'chart': 'Identity * Representation.IntID', 'coords': [{'name': 'id', 'type': 'int', 'unit': None}]}]}, 'PlainText': {'parent': None, 'semantics': ['PlainText', 'Text', 'Representation.PlainText'], 'fields': [{'name': 'value', 'type': 'string', 'default': None, 'unit': None, 'chart': 'Text * Representation.PlainText'}], 'chart_fields': [{'chart': 'Text * Representation.PlainText', 'coords': [{'name': 'value', 'type': 'string', 'unit': None}]}]}, 'DurationSeconds': {'parent': None, 'semantics': ['DurationSeconds', 'Duration', 'Representation.Seconds'], 'fields': [{'name': 'seconds', 'type': 'float', 'default': None, 'unit': 's', 'chart': 'Duration * Representation.Seconds'}], 'chart_fields': [{'chart': 'Duration * Representation.Seconds', 'coords': [{'name': 'seconds', 'type': 'float', 'unit': 's'}]}]}, 'AngleRadians': {'parent': None, 'semantics': ['AngleRadians', 'Angle', 'Representation.Radians'], 'fields': [{'name': 'rad', 'type': 'float', 'default': None, 'unit': 'rad', 'chart': 'Angle * Representation.Radians'}], 'chart_fields': [{'chart': 'Angle * Representation.Radians', 'coords': [{'name': 'rad', 'type': 'float', 'unit': 'rad'}]}]}, 'DistanceMeters': {'parent': None, 'semantics': ['DistanceMeters', 'Distance', 'Representation.Meters'], 'fields': [{'name': 'm', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Distance * Representation.Meters'}], 'chart_fields': [{'chart': 'Distance * Representation.Meters', 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}]}, 'SpeedMetersPerSecond': {'parent': None, 'semantics': ['SpeedMetersPerSecond', 'Speed', 'Representation.MetersPerSecond'], 'fields': [{'name': 'mps', 'type': 'float', 'default': None, 'unit': 'm/s', 'chart': 'Speed * Representation.MetersPerSecond'}], 'chart_fields': [{'chart': 'Speed * Representation.MetersPerSecond', 'coords': [{'name': 'mps', 'type': 'float', 'unit': 'm/s'}]}]}, 'AltitudeMSL': {'parent': None, 'semantics': ['AltitudeMSL', 'Altitude', 'Representation.MSL'], 'fields': [{'name': 'm', 'type': 'float', 'default': None, 'unit': 'm', 'chart': 'Altitude * Representation.MSL'}], 'chart_fields': [{'chart': 'Altitude * Representation.MSL', 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}]}]}, 'AltitudeFlightLevel': {'parent': None, 'semantics': ['AltitudeFlightLevel', 'Altitude', 'Representation.FlightLevel'], 'fields': [{'name': 'fl', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Altitude * Representation.FlightLevel'}], 'chart_fields': [{'chart': 'Altitude * Representation.FlightLevel', 'coords': [{'name': 'fl', 'type': 'float', 'unit': None}]}]}, 'ItemCount': {'parent': None, 'semantics': ['ItemCount', 'Count', 'Representation.Integer'], 'fields': [{'name': 'count', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Count * Representation.Integer'}], 'chart_fields': [{'chart': 'Count * Representation.Integer', 'coords': [{'name': 'count', 'type': 'int', 'unit': None}]}]}, 'OrdinalValue': {'parent': None, 'semantics': ['OrdinalValue', 'Ordinal', 'Representation.Integer'], 'fields': [{'name': 'n', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Ordinal * Representation.Integer'}], 'chart_fields': [{'chart': 'Ordinal * Representation.Integer', 'coords': [{'name': 'n', 'type': 'int', 'unit': None}]}]}, 'TruthBoolean': {'parent': None, 'semantics': ['TruthBoolean', 'Truth', 'Representation.Boolean'], 'fields': [{'name': 'holds', 'type': 'bool', 'default': None, 'unit': None, 'chart': 'Truth * Representation.Boolean'}], 'chart_fields': [{'chart': 'Truth * Representation.Boolean', 'coords': [{'name': 'holds', 'type': 'bool', 'unit': None}]}]}, 'ProtocolCode': {'parent': None, 'semantics': ['ProtocolCode', 'Code', 'Representation.Protocol'], 'fields': [{'name': 'code', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Code * Representation.Protocol'}], 'chart_fields': [{'chart': 'Code * Representation.Protocol', 'coords': [{'name': 'code', 'type': 'int', 'unit': None}]}]}, 'ScalarDecimal': {'parent': None, 'semantics': ['ScalarDecimal', 'Scalar', 'Representation.Decimal'], 'fields': [{'name': 'value', 'type': 'float', 'default': None, 'unit': None, 'chart': 'Scalar * Representation.Decimal'}], 'chart_fields': [{'chart': 'Scalar * Representation.Decimal', 'coords': [{'name': 'value', 'type': 'float', 'unit': None}]}]}, 'ScalarInteger': {'parent': None, 'semantics': ['ScalarInteger', 'Scalar', 'Representation.Integer'], 'fields': [{'name': 'value', 'type': 'int', 'default': None, 'unit': None, 'chart': 'Scalar * Representation.Integer'}], 'chart_fields': [{'chart': 'Scalar * Representation.Integer', 'coords': [{'name': 'value', 'type': 'int', 'unit': None}]}]}}, 'charts': [{'display': 'Position * Representation.Geodetic', 'factors': ['Position', 'Representation.Geodetic'], 'coords': [{'name': 'lat', 'type': 'float', 'unit': 'deg'}, {'name': 'lon', 'type': 'float', 'unit': 'deg'}, {'name': 'h', 'type': 'float', 'unit': 'm'}], 'model': 'GlobalPosition'}, {'display': 'Position * Representation.LocalCartesian', 'factors': ['Position', 'Representation.LocalCartesian'], 'coords': [{'name': 'x', 'type': 'float', 'unit': 'm'}, {'name': 'y', 'type': 'float', 'unit': 'm'}, {'name': 'z', 'type': 'float', 'unit': 'm'}], 'model': 'LocalPosition'}, {'display': 'Velocity * Representation.LocalCartesian', 'factors': ['Velocity', 'Representation.LocalCartesian'], 'coords': [{'name': 'vx', 'type': 'float', 'unit': 'm/s'}, {'name': 'vy', 'type': 'float', 'unit': 'm/s'}, {'name': 'vz', 'type': 'float', 'unit': 'm/s'}], 'model': 'LocalVelocity'}, {'display': 'Attitude * Representation.LocalEuler', 'factors': ['Attitude', 'Representation.LocalEuler'], 'coords': [{'name': 'roll', 'type': 'float', 'unit': 'rad'}, {'name': 'pitch', 'type': 'float', 'unit': 'rad'}, {'name': 'yaw', 'type': 'float', 'unit': 'rad'}], 'model': 'LocalAttitude'}, {'display': 'Attitude * Representation.Quaternion', 'factors': ['Attitude', 'Representation.Quaternion'], 'coords': [{'name': 'qw', 'type': 'float', 'unit': None}, {'name': 'qx', 'type': 'float', 'unit': None}, {'name': 'qy', 'type': 'float', 'unit': None}, {'name': 'qz', 'type': 'float', 'unit': None}], 'model': 'QuaternionAttitude'}, {'display': 'Time * Representation.Epoch', 'factors': ['Time', 'Representation.Epoch'], 'coords': [{'name': 'utime', 'type': 'float', 'unit': 's'}], 'model': 'Timestamp'}, {'display': 'Identity * Representation.UID', 'factors': ['Identity', 'Representation.UID'], 'coords': [{'name': 'uid', 'type': 'string', 'unit': None}], 'model': 'UID'}, {'display': 'Identity * Representation.IntID', 'factors': ['Identity', 'Representation.IntID'], 'coords': [{'name': 'id', 'type': 'int', 'unit': None}], 'model': 'IntID'}, {'display': 'Text * Representation.PlainText', 'factors': ['Text', 'Representation.PlainText'], 'coords': [{'name': 'value', 'type': 'string', 'unit': None}], 'model': 'PlainText'}, {'display': 'Duration * Representation.Seconds', 'factors': ['Duration', 'Representation.Seconds'], 'coords': [{'name': 'seconds', 'type': 'float', 'unit': 's'}], 'model': 'DurationSeconds'}, {'display': 'Angle * Representation.Radians', 'factors': ['Angle', 'Representation.Radians'], 'coords': [{'name': 'rad', 'type': 'float', 'unit': 'rad'}], 'model': 'AngleRadians'}, {'display': 'Distance * Representation.Meters', 'factors': ['Distance', 'Representation.Meters'], 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}], 'model': 'DistanceMeters'}, {'display': 'Speed * Representation.MetersPerSecond', 'factors': ['Speed', 'Representation.MetersPerSecond'], 'coords': [{'name': 'mps', 'type': 'float', 'unit': 'm/s'}], 'model': 'SpeedMetersPerSecond'}, {'display': 'Altitude * Representation.MSL', 'factors': ['Altitude', 'Representation.MSL'], 'coords': [{'name': 'm', 'type': 'float', 'unit': 'm'}], 'model': 'AltitudeMSL'}, {'display': 'Altitude * Representation.FlightLevel', 'factors': ['Altitude', 'Representation.FlightLevel'], 'coords': [{'name': 'fl', 'type': 'float', 'unit': None}], 'model': 'AltitudeFlightLevel'}, {'display': 'Count * Representation.Integer', 'factors': ['Count', 'Representation.Integer'], 'coords': [{'name': 'count', 'type': 'int', 'unit': None}], 'model': 'ItemCount'}, {'display': 'Ordinal * Representation.Integer', 'factors': ['Ordinal', 'Representation.Integer'], 'coords': [{'name': 'n', 'type': 'int', 'unit': None}], 'model': 'OrdinalValue'}, {'display': 'Truth * Representation.Boolean', 'factors': ['Truth', 'Representation.Boolean'], 'coords': [{'name': 'holds', 'type': 'bool', 'unit': None}], 'model': 'TruthBoolean'}, {'display': 'Code * Representation.Protocol', 'factors': ['Code', 'Representation.Protocol'], 'coords': [{'name': 'code', 'type': 'int', 'unit': None}], 'model': 'ProtocolCode'}, {'display': 'Scalar * Representation.Decimal', 'factors': ['Scalar', 'Representation.Decimal'], 'coords': [{'name': 'value', 'type': 'float', 'unit': None}], 'model': 'ScalarDecimal'}, {'display': 'Scalar * Representation.Integer', 'factors': ['Scalar', 'Representation.Integer'], 'coords': [{'name': 'value', 'type': 'int', 'unit': None}], 'model': 'ScalarInteger'}], 'expressions': {'MOVE': {'description': "An actor's position is the destination, achieved or maintained.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'actor': ['Entity'], 'destination': ['Position']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'actor', 'equals': 'destination'}], 'words': ['TaskIntent.MOVE']}, 'HOLD': {'description': "An actor's position is the destination, achieved or maintained.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'actor': ['Entity'], 'destination': ['Position']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'actor', 'equals': 'destination'}], 'words': ['TaskIntent.HOLD']}, 'LOCATE': {'description': "An entity's position is the answer, achieved or maintained.", 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'position': ['Position']}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'position'}], 'words': ['TaskIntent.LOCATE']}, 'TRACK': {'description': "An entity's position is the answer, achieved or maintained.", 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.MAINTAIN'], 'given': {'target': ['Entity']}, 'sought': {'position': ['Position']}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'position'}], 'words': ['TaskIntent.TRACK']}, 'IDENTIFY': {'description': 'Solve for the identity of an entity.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'identity': ['Identity']}, 'equations': [{'quantity': 'Identity', 'of': 'target', 'equals': 'identity'}], 'words': ['TaskIntent.IDENTIFY']}, 'CLASSIFY': {'description': 'Solve for the classification of an entity.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'classification': ['Classification']}, 'equations': [{'quantity': 'Classification', 'of': 'target', 'equals': 'classification'}], 'words': ['TaskIntent.CLASSIFY']}, 'CREATE': {'description': "An object's existence is asserted true or false.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.TRUE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.CREATE']}, 'REMOVE': {'description': "An object's existence is asserted true or false.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE', 'Existence', 'TruthTarget.FALSE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.REMOVE']}, 'FOLLOW': {'description': 'Follow a path.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'actor': ['Entity'], 'path': ['GeoPath']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.FOLLOW']}, 'MEASURE': {'description': 'Measure a state of a target.', 'factors': ['Task', 'Realm.INFORMATION', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Entity']}, 'sought': {'measurement': ['State']}, 'equations': [], 'words': ['TaskIntent.MEASURE']}, 'MODIFY': {'description': "An object's state is changed, or kept as it is.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.MODIFY']}, 'PROTECT': {'description': "An object's state is changed, or kept as it is.", 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.PROTECT']}, 'RESTORE': {'description': 'Return an object to a prior state.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.RESTORE']}, 'DENY': {'description': 'Prevent connectivity to an object.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.MAINTAIN', 'Connectivity', 'TruthTarget.FALSE'], 'given': {'object': ['Object']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.DENY']}, 'TRANSPORT': {'description': 'Move a thing between places; which end and what moves are bindings.', 'factors': ['Task', 'Realm.WORLD', 'TemporalMode.ACHIEVE'], 'given': {'cargo': ['Object'], 'origin': ['Position'], 'destination': ['Position']}, 'sought': {}, 'equations': [], 'words': ['TaskIntent.TRANSPORT']}, 'ENGAGE': {'description': 'Assert the target state true or false.', 'factors': ['Command', 'TruthTarget.TRUE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.ENGAGE']}, 'DISENGAGE': {'description': 'Assert the target state true or false.', 'factors': ['Command', 'TruthTarget.FALSE'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.DISENGAGE']}, 'PAUSE': {'description': 'Assert a running process paused, or release it.', 'factors': ['Command', 'Paused', 'TruthTarget.TRUE'], 'given': {'target': ['Object'], 'process': ['Text']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.PAUSE']}, 'RESUME': {'description': 'Assert a running process paused, or release it.', 'factors': ['Command', 'Paused', 'TruthTarget.FALSE'], 'given': {'target': ['Object'], 'process': ['Text']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.RESUME']}, 'SET': {'description': 'Set a declared state property on the target.', 'factors': ['Command'], 'given': {'target': ['Object'], 'property': ['Text'], 'value': ['Scalar']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.SET']}, 'DIRECT': {'description': 'Direct the target to a destination or along a path.', 'factors': ['Command', 'TemporalMode.ACHIEVE'], 'given': {'target': ['Object'], 'destination': ['Position'], 'path': ['GeoPath'], 'radius': ['Distance'], 'speed': ['Speed'], 'yaw': ['Angle']}, 'sought': {}, 'equations': [{'quantity': 'Position', 'of': 'target', 'equals': 'destination'}], 'words': ['CommandOperation.MOVE']}, 'ALLOCATE': {'description': 'Allocate a referenced resource.', 'factors': ['Command'], 'given': {'target': ['Object'], 'resource': ['Resource'], 'quantity': ['Count']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.ALLOCATE']}, 'TRANSFER': {'description': 'Transfer a referenced resource.', 'factors': ['Command'], 'given': {'target': ['Object'], 'resource': ['Resource'], 'quantity': ['Count']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.TRANSFER']}, 'LOAD_CONFIGURATION': {'description': 'Load a referenced configuration on the target.', 'factors': ['Command'], 'given': {'target': ['Object'], 'parameter': ['Text'], 'value': ['Scalar']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.LOAD_CONFIGURATION']}, 'RESET': {'description': 'Reset the target to its initial state.', 'factors': ['Command'], 'given': {'target': ['Object']}, 'sought': {}, 'equations': [], 'words': ['CommandOperation.RESET']}}, 'word_expressions': {'TaskIntent.MOVE': 'MOVE', 'TaskIntent.HOLD': 'HOLD', 'TaskIntent.LOCATE': 'LOCATE', 'TaskIntent.TRACK': 'TRACK', 'TaskIntent.IDENTIFY': 'IDENTIFY', 'TaskIntent.CLASSIFY': 'CLASSIFY', 'TaskIntent.CREATE': 'CREATE', 'TaskIntent.REMOVE': 'REMOVE', 'TaskIntent.FOLLOW': 'FOLLOW', 'TaskIntent.MEASURE': 'MEASURE', 'TaskIntent.MODIFY': 'MODIFY', 'TaskIntent.PROTECT': 'PROTECT', 'TaskIntent.RESTORE': 'RESTORE', 'TaskIntent.DENY': 'DENY', 'TaskIntent.TRANSPORT': 'TRANSPORT', 'CommandOperation.ENGAGE': 'ENGAGE', 'CommandOperation.DISENGAGE': 'DISENGAGE', 'CommandOperation.PAUSE': 'PAUSE', 'CommandOperation.RESUME': 'RESUME', 'CommandOperation.SET': 'SET', 'CommandOperation.MOVE': 'DIRECT', 'CommandOperation.ALLOCATE': 'ALLOCATE', 'CommandOperation.TRANSFER': 'TRANSFER', 'CommandOperation.LOAD_CONFIGURATION': 'LOAD_CONFIGURATION', 'CommandOperation.RESET': 'RESET'}, 'aliases': {'AirMission': ['Mission', 'PhysicalDomain.AIR'], 'AirTask': ['Task', 'PhysicalDomain.AIR'], 'UGV': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.LAND'], 'UAV': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.AIR'], 'Drone': ['Substrate.MECHANICAL', 'Locomotion.SELF_PROPELLED', 'UnmannedVehicle', 'Controller.UNMANNED', 'PhysicalDomain.AIR', 'Airframe.MULTIROTOR'], 'Geodetic': ['Representation.Geodetic'], 'LocalCartesian': ['Representation.LocalCartesian'], 'LocalEuler': ['Representation.LocalEuler'], 'Quaternion': ['Representation.Quaternion'], 'Epoch': ['Representation.Epoch']}, 'relations': {'AssignedWork': {'signature': ['Entity', 'Task'], 'operand_names': ['assignee', 'work']}, 'ConstrainedBy': {'signature': ['Control', 'Constraint'], 'operand_names': ['subject', 'constraint']}, 'OwnedBy': {'signature': ['Objective', 'Entity'], 'operand_names': ['objective', 'owner']}, 'Holds': {'signature': ['Authority', 'Entity'], 'operand_names': ['authority', 'holder']}, 'GrantedBy': {'signature': ['Authority', 'Entity'], 'operand_names': ['authority', 'grantor']}, 'Controls': {'signature': ['Lease', 'Object'], 'operand_names': ['lease', 'asset']}, 'Contains': {'signature': ['Plan', 'Root'], 'operand_names': ['plan', 'item']}}}
 REGISTRY = SemanticRegistry(REGISTRY_SPEC)
 
 def new_store() -> Store:

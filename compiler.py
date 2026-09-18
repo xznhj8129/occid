@@ -338,10 +338,16 @@ def compile_charts(
         coords = [
             parse_coordinate(str(name), raw)
             for name, raw in (raw_coords or {}).items()
+            if str(name) != "model"
         ]
-        charts.append(
-            {"display": str(key_text), "factors": unique(terms), "coords": coords}
-        )
+        chart: dict[str, Any] = {
+            "display": str(key_text),
+            "factors": unique(terms),
+            "coords": coords,
+        }
+        if isinstance(raw_coords, dict) and raw_coords.get("model"):
+            chart["model"] = str(raw_coords["model"])
+        charts.append(chart)
     return charts
 
 
@@ -368,7 +374,19 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     }
     enums: dict[str, list[str]] = schema.get("enums", {})
     models: dict[str, dict[str, Any]] = schema.get("models", {})
-    projections_raw: dict[str, dict[str, Any]] = schema.get("projections", {})
+    # A chart may name the data model its variables compile into. That model
+    # is a chart application, not a semantic declaration: it is derived here
+    # and never authored in `models`.
+    raw_charts: dict[str, Any] = dict(schema.get("charts") or {})
+    for chart_key, chart_spec in raw_charts.items():
+        if not isinstance(chart_spec, dict) or "model" not in chart_spec:
+            continue
+        model_name = str(chart_spec["model"])
+        if model_name in models or model_name in enums:
+            raise ValueError(
+                f"chart model {model_name!r} collides with a declared model or enum"
+            )
+        models[model_name] = {"chart": str(chart_key)}
     relation_specs: dict[str, dict[str, Any]] = {
         name: normalize_relation(spec)
         for name, spec in (schema.get("relations") or {}).items()
@@ -394,7 +412,13 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
 
     expressions: dict[str, dict[str, Any]] = {}
     word_expressions: dict[str, str] = {}
-    for expression_name, spec in (schema.get("expressions") or {}).items():
+
+    def compile_expression(
+        name: str,
+        spec: dict[str, Any],
+        bound_factors: list[str],
+        words: list[str],
+    ) -> None:
         # Variable regions stay as authored; binding validation compares a
         # region against the semantic closure of the bound value.
         given = {
@@ -410,26 +434,47 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             parsed = parse_equation(raw)
             if parsed is not None:
                 equations.append(parsed)
-        words = [str(word) for word in (spec.get("words") or [])]
         for word in words:
             if word in word_expressions:
                 raise ValueError(f"word {word!r} names more than one expression")
-            word_expressions[word] = expression_name
-        expressions[expression_name] = {
+            word_expressions[word] = name
+        expressions[name] = {
             "description": spec.get("description"),
-            "factors": expand_terms(product_terms(spec.get("factors")), semantics),
+            "factors": expand_terms(
+                product_terms(spec.get("factors")) + product_terms(bound_factors),
+                semantics,
+            ),
             "given": given,
             "sought": sought,
             "equations": equations,
             "words": words,
         }
 
-    # A word must name a declared enum member or axis value; the compiler
-    # never silently drops a misspelled word.
+    for expression_name, spec in (schema.get("expressions") or {}).items():
+        # A form is one expression. A `words:` mapping binds the dimensions
+        # each word fixes and compiles one expression per word; an unmapped
+        # form is one expression named by its own words.
+        raw_words = spec.get("words") or []
+        if isinstance(raw_words, dict):
+            for word, bound in raw_words.items():
+                word = str(word)
+                name = word.partition(".")[2] or word
+                if name in expressions:
+                    raise ValueError(f"word {word!r} compiles to duplicate expression {name!r}")
+                compile_expression(name, spec, term_list(bound), [word])
+        else:
+            compile_expression(
+                expression_name, spec, [], [str(word) for word in raw_words]
+            )
+
+    # A word is only a name for the expression it is compiled with. An
+    # authored enum is a closed vocabulary the word must already belong to; a
+    # vocabulary that is not authored is compiled from the words themselves.
     enum_members = {
         name: {member for member, _ in parse_enum_items(items)}
         for name, items in enums.items()
     }
+    compiled_enums: dict[str, list[str]] = {}
     for word in word_expressions:
         owner, _, member = word.partition(".")
         if owner in enum_members:
@@ -439,7 +484,13 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             if member not in axes[owner]["values"]:
                 raise ValueError(f"word {word!r} is not a value of axis {owner}")
         else:
-            raise ValueError(f"word {word!r} names neither an enum nor an axis")
+            members = compiled_enums.setdefault(owner, [])
+            if member not in members:
+                members.append(member)
+    for owner, members in compiled_enums.items():
+        enums[owner] = list(members)
+        enum_members[owner] = set(members)
+    known_enums = set(enums)
 
     # Generated names share one module namespace; two declarations with the
     # same name would silently overwrite each other.
@@ -456,15 +507,35 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     declare("model", models)
     declare("alias", raw_aliases)
     declare("expression", expressions)
-    declare("projection", projections_raw)
     declare("relation", relation_specs)
 
     # -- models ------------------------------------------------------------
 
+    charts_by_display = {chart["display"]: chart for chart in charts}
     model_entries: dict[str, dict[str, Any]] = {}
     for name in order:
         spec = models[name]
-        selected = charts_entailed(semantics[name], charts, semantics, models)
+        # A chart compiles into a model only where a product entry demands it,
+        # or where the parent already compiled it. Reducing the whole semantics
+        # at once would let one entry's representation leak into another
+        # quantity's chart.
+        displays: list[str] = []
+        entries = list(term_list(spec.get("product")))
+        if spec.get("chart"):
+            entries.append(spec["chart"])
+        for entry in entries:
+            entry_terms: list[str] = []
+            for term in split_product(entry):
+                entry_terms.extend(semantics[term] if term in semantics else [term])
+            for chart in charts_entailed(entry_terms, charts, semantics, models):
+                if chart["display"] not in displays:
+                    displays.append(chart["display"])
+        parent = spec.get("parent")
+        if parent and parent in model_entries:
+            for chart_field in model_entries[parent]["chart_fields"]:
+                if chart_field["chart"] not in displays:
+                    displays.append(chart_field["chart"])
+        selected = [charts_by_display[display] for display in displays]
         fields: list[dict[str, Any]] = []
         seen: set[str] = set()
         for field_name, raw in (spec.get("fields") or {}).items():
@@ -495,54 +566,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             **{key: spec[key] for key in CONSTRAINT_KEYS if spec.get(key)},
         }
 
-    # -- projections -------------------------------------------------------
-
-    projection_entries: dict[str, dict[str, Any]] = {}
-    for name, spec in projections_raw.items():
-        terms: list[str] = []
-        selected: list[dict[str, Any]] = []
-        seen_charts: set[str] = set()
-        for raw in term_list(spec.get("product")):
-            entry_terms: list[str] = []
-            for term in split_product(raw):
-                if term in semantics:
-                    entry_terms.extend(semantics[term])
-                else:
-                    entry_terms.append(term)
-            terms.extend(entry_terms)
-            # Each listed product is one fact; only the charts it entails are
-            # reduced into the projection's normal form.
-            for chart in charts_entailed(entry_terms, charts, semantics, models):
-                if chart["display"] not in seen_charts:
-                    seen_charts.add(chart["display"])
-                    selected.append(chart)
-        terms = unique(terms)
-        fields: list[dict[str, Any]] = []
-        seen: set[str] = set()
-        for field_name, raw in (spec.get("fields") or {}).items():
-            fields.append({"name": field_name, **normalize_field(raw)})
-            seen.add(field_name)
-        for chart in selected:
-            for coord in chart["coords"]:
-                if coord["name"] in seen:
-                    raise ValueError(f"{name}: chart field {coord['name']!r} collides")
-                seen.add(coord["name"])
-                fields.append(
-                    {
-                        "name": coord["name"],
-                        "type": coord["type"],
-                        "default": None,
-                        "unit": coord["unit"],
-                        "chart": chart["display"],
-                        "optional": True,
-                    }
-                )
-        projection_entries[name] = {
-            "semantics": terms,
-            "fields": fields,
-            "charts": [chart["display"] for chart in selected],
-        }
-
     # -- registry ----------------------------------------------------------
 
     registry = {
@@ -553,7 +576,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         "word_expressions": word_expressions,
         "aliases": aliases,
         "relations": relation_specs,
-        "projections": projection_entries,
     }
 
     (output_dir / "semantic_registry.json").write_text(
@@ -660,7 +682,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         semantics_terms: list[str],
         fields: list[dict[str, Any]],
         charts: list[str],
-        projection: bool,
     ) -> None:
         lines.append("@dataclass(kw_only=True)")
         lines.append(f"class {name}({parent}):")
@@ -671,8 +692,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         units = {f["name"]: f["unit"] for f in fields if f.get("unit")}
         lines.append(f"    _units: ClassVar[dict[str, str]] = {units!r}")
         lines.append(f"    _charts: ClassVar[tuple[str, ...]] = {tuple(charts)!r}")
-        if projection:
-            lines.append("    _projection: ClassVar[bool] = True")
         for field_spec in fields:
             field_name = field_spec["name"]
             annotation, inferred_default = py_type(
@@ -704,23 +723,9 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
                 semantics[name],
                 model_entries[name]["fields"],
                 [entry["chart"] for entry in model_entries[name]["chart_fields"]],
-                projection=False,
             )
         except ValueError as exc:
             raise ValueError(f"model {name}: {exc}") from exc
-
-    for name, spec in projection_entries.items():
-        try:
-            emit_dataclass(
-                name,
-                "SemanticModel",
-                spec["semantics"],
-                spec["fields"],
-                spec["charts"],
-                projection=True,
-            )
-        except ValueError as exc:
-            raise ValueError(f"projection {name}: {exc}") from exc
 
     for relation_name, spec in relation_specs.items():
         signature = ", ".join(spec["signature"])

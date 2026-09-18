@@ -7,12 +7,12 @@
 #   product      f1 * f2 * ... describes one thing; the product is the address
 #   alias        Name := product; naming creates no ontology
 #   chart        Q * C := v1 * v2 * ...; a quantity in a representation
-#                reduces to irreducible typed variables
+#                reduces to irreducible typed variables and names the data
+#                model it compiles
 #   relation     R(role: region, ...); directed, ordered, role-bearing
 #   expression   fixed factors + typed free variables + equations;
 #                an unbound variable is an unknown, not an error
 #   model        Name := parent * name * product; a named product
-#   projection   a compiled normal form over chart-selected facts
 #
 # YAML is only the transport.
 
@@ -74,7 +74,7 @@ axes:
       - FIXED_WING
 
   Representation:
-    description: How a semantic quantity becomes irreducible data variables.
+    description: How a semantic quantity becomes data -- its coordinate scheme, datum, unit, or encoding.
     cardinality: many
     values:
       - Geodetic
@@ -91,8 +91,7 @@ axes:
       - MetersPerSecond
       - MSL
       - FlightLevel
-      - Count
-      - Ordinal
+      - Boolean
       - Protocol
       - Decimal
       - Integer
@@ -142,28 +141,14 @@ axes:
       - "FALSE"
 
 # ---------------------------------------------------------------------------
-# Surface vocabulary. Enum members are representation, never semantic
-# factors; each word names an expression declared below.
+# Surface vocabulary. Enum members are representation, never semantic factors.
+# The verb vocabularies (TaskIntent, CommandOperation) are not authored here:
+# a word is only a name for an expression, the expressions declare the words
+# that name them, and the vocabulary is compiled from those declarations.
+# What remains below are standalone value vocabularies.
 # ---------------------------------------------------------------------------
 
 enums:
-  TaskIntent:
-    - MOVE = 0
-    - HOLD
-    - FOLLOW
-    - LOCATE
-    - TRACK
-    - IDENTIFY
-    - CLASSIFY
-    - MEASURE
-    - CREATE
-    - REMOVE
-    - MODIFY
-    - RESTORE
-    - PROTECT
-    - DENY
-    - TRANSPORT
-
   TaskPriority:
     - ROUTINE = 0
     - HIGH
@@ -176,31 +161,6 @@ enums:
     - FAILED
     - CANCELLED
     - ACCEPTED
-
-  TaskPhase:
-    - CREATED = 0
-    - DISPATCHED
-    - ASSIGNED
-    - RUNNING
-    - DONE_OK
-    - DONE_FAIL
-    - CANCELLED
-
-  # --- ported from core/control/command.schema.yaml -------------------------
-
-  CommandOperation:
-    - ENGAGE = 0
-    - DISENGAGE
-    - PAUSE
-    - RESUME
-    - SET
-    - MOVE
-    - ALLOCATE
-    - TRANSFER
-    - LOAD_CONFIGURATION
-    - RESET
-
-  # --- ported from core/control/authority.schema.yaml ------------------------
 
   ControlLevel:
     - NONE = 0
@@ -215,8 +175,6 @@ enums:
     - REJECTED
     - SUPERSEDED
 
-  # --- ported value vocabularies the control package references --------------
-
   BooleanOperator:
     - NONE = 0
     - NOT
@@ -226,8 +184,6 @@ enums:
     - NAND
     - NOR
     - XNOR
-
-  # --- ported from core/control/aerialcontrol/aerial.schema.yaml -------------
 
 
 
@@ -288,80 +244,105 @@ relations:
 #
 #     chart Q * C  :=  v1 * v2 * ... * vn
 #
-# The quantity stays semantic; the representation selects the data.
+# The quantity stays semantic; the representation selects the data. A chart
+# names the data model its variables compile into, so a field type is a chart
+# application, never a hand-authored model.
 # ---------------------------------------------------------------------------
 
 charts:
   Position * Representation.Geodetic:
+    model: GlobalPosition
     lat: float[deg]
     lon: float[deg]
     h: float[m]
 
   Position * Representation.LocalCartesian:
+    model: LocalPosition
     x: float[m]
     y: float[m]
     z: float[m]
 
   Velocity * Representation.LocalCartesian:
+    model: LocalVelocity
     vx: float[m/s]
     vy: float[m/s]
     vz: float[m/s]
 
   Attitude * Representation.LocalEuler:
+    model: LocalAttitude
     roll: float[rad]
     pitch: float[rad]
     yaw: float[rad]
 
   Attitude * Representation.Quaternion:
+    model: QuaternionAttitude
     qw: float
     qx: float
     qy: float
     qz: float
 
   Time * Representation.Epoch:
+    model: Timestamp
     utime: float[s]
-    tz: int
 
   Identity * Representation.UID:
+    model: UID
     uid: string
 
   Identity * Representation.IntID:
+    model: IntID
     id: int
 
   Text * Representation.PlainText:
+    model: PlainText
     value: string
 
   Duration * Representation.Seconds:
+    model: DurationSeconds
     seconds: float[s]
 
   Angle * Representation.Radians:
+    model: AngleRadians
     rad: float[rad]
 
   Distance * Representation.Meters:
+    model: DistanceMeters
     m: float[m]
 
   Speed * Representation.MetersPerSecond:
+    model: SpeedMetersPerSecond
     mps: float[m/s]
 
   Altitude * Representation.MSL:
+    model: AltitudeMSL
     m: float[m]
 
   Altitude * Representation.FlightLevel:
+    model: AltitudeFlightLevel
     fl: float
 
-  Count * Representation.Count:
+  Count * Representation.Integer:
+    model: ItemCount
     count: int
 
-  Ordinal * Representation.Ordinal:
+  Ordinal * Representation.Integer:
+    model: OrdinalValue
     n: int
 
+  Truth * Representation.Boolean:
+    model: TruthBoolean
+    holds: bool
+
   Code * Representation.Protocol:
+    model: ProtocolCode
     code: int
 
   Scalar * Representation.Decimal:
+    model: ScalarDecimal
     value: float
 
   Scalar * Representation.Integer:
+    model: ScalarInteger
     value: int
 
 # ---------------------------------------------------------------------------
@@ -372,50 +353,39 @@ charts:
 # `given` variables are inputs; `sought` variables are answers. An unbound
 # variable is an unknown, not an error, so an expression can be recorded
 # before every participant is known.
+#
+# A form declares the invariant structure; `words:` binds the remaining
+# dimensions per vocabulary member and the compiler expands each word into its
+# compiled expression. MOVE and HOLD are one form at TemporalMode.ACHIEVE and
+# TemporalMode.MAINTAIN -- a synonym or antonym in a vocabulary is a red flag
+# for a form that has not been factored.
 # ---------------------------------------------------------------------------
 
 expressions:
-  MOVE:
-    description: Move an actor until its position is the destination.
-    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+  POSITION_GOAL:
+    description: An actor's position is the destination, achieved or maintained.
+    factors: [Task, Realm.WORLD]
     given:
       actor: Entity
       destination: Position
     equations:
       - Position(actor) = destination
-    words: [TaskIntent.MOVE]
+    words:
+      TaskIntent.MOVE: [TemporalMode.ACHIEVE]
+      TaskIntent.HOLD: [TemporalMode.MAINTAIN]
 
-  HOLD:
-    description: Maintain an actor's position at the destination.
-    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
-    given:
-      actor: Entity
-      destination: Position
-    equations:
-      - Position(actor) = destination
-    words: [TaskIntent.HOLD]
-
-  LOCATE:
-    description: Solve for the position of an entity.
-    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
+  POSITION_QUERY:
+    description: An entity's position is the answer, achieved or maintained.
+    factors: [Task, Realm.INFORMATION]
     given:
       target: Entity
     sought:
       position: Position
     equations:
       - Position(target) = position
-    words: [TaskIntent.LOCATE]
-
-  TRACK:
-    description: Maintain awareness of an entity's position.
-    factors: [Task, Realm.INFORMATION, TemporalMode.MAINTAIN]
-    given:
-      target: Entity
-    sought:
-      position: Position
-    equations:
-      - Position(target) = position
-    words: [TaskIntent.TRACK]
+    words:
+      TaskIntent.LOCATE: [TemporalMode.ACHIEVE]
+      TaskIntent.TRACK: [TemporalMode.MAINTAIN]
 
   IDENTIFY:
     description: Solve for the identity of an entity.
@@ -439,21 +409,14 @@ expressions:
       - Classification(target) = classification
     words: [TaskIntent.CLASSIFY]
 
-  CREATE:
-    description: Make an object exist.
-    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.TRUE]
+  EXISTENCE_GOAL:
+    description: An object's existence is asserted true or false.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence]
     given:
       object: Object
-    words: [TaskIntent.CREATE]
-
-  REMOVE:
-    description: Make an object cease to exist.
-    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.FALSE]
-    given:
-      object: Object
-    words: [TaskIntent.REMOVE]
-
-  # --- ported from core/control/task.schema.yaml -----------------------------
+    words:
+      TaskIntent.CREATE: [TruthTarget.TRUE]
+      TaskIntent.REMOVE: [TruthTarget.FALSE]
 
   FOLLOW:
     description: Follow a path.
@@ -472,12 +435,14 @@ expressions:
       measurement: State
     words: [TaskIntent.MEASURE]
 
-  MODIFY:
-    description: Change an object's state.
-    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+  OBJECT_STATE_GOAL:
+    description: An object's state is changed, or kept as it is.
+    factors: [Task, Realm.WORLD]
     given:
       object: Object
-    words: [TaskIntent.MODIFY]
+    words:
+      TaskIntent.MODIFY: [TemporalMode.ACHIEVE]
+      TaskIntent.PROTECT: [TemporalMode.MAINTAIN]
 
   RESTORE:
     description: Return an object to a prior state.
@@ -485,13 +450,6 @@ expressions:
     given:
       object: Object
     words: [TaskIntent.RESTORE]
-
-  PROTECT:
-    description: Keep an object in its current state.
-    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
-    given:
-      object: Object
-    words: [TaskIntent.PROTECT]
 
   DENY:
     description: Prevent connectivity to an object.
@@ -509,44 +467,35 @@ expressions:
       destination: Position
     words: [TaskIntent.TRANSPORT]
 
-  # --- ported from core/control/command.schema.yaml --------------------------
-  # A command's twins are one direction over a state: ENGAGE/DISENGAGE assert
-  # TRUE/FALSE of the state its child denotes; PAUSE/RESUME assert Paused; the
-  # remaining operations are undirected.
+  # A command's twins are one form over a state: TruthTarget selects the
+  # direction. A parameter that matters is a typed free variable, not a column.
 
-  ENGAGE:
-    description: Assert the target state true.
-    factors: [Command, TruthTarget.TRUE]
+  ENGAGEMENT_COMMAND:
+    description: Assert the target state true or false.
+    factors: [Command]
     given:
       target: Object
-    words: [CommandOperation.ENGAGE]
+    words:
+      CommandOperation.ENGAGE: [TruthTarget.TRUE]
+      CommandOperation.DISENGAGE: [TruthTarget.FALSE]
 
-  DISENGAGE:
-    description: Assert the target state false.
-    factors: [Command, TruthTarget.FALSE]
+  PROCESS_COMMAND:
+    description: Assert a running process paused, or release it.
+    factors: [Command, Paused]
     given:
       target: Object
-    words: [CommandOperation.DISENGAGE]
-
-  PAUSE:
-    description: Hold a running process paused.
-    factors: [Command, Paused, TruthTarget.TRUE]
-    given:
-      target: Object
-    words: [CommandOperation.PAUSE]
-
-  RESUME:
-    description: Release a process from paused.
-    factors: [Command, Paused, TruthTarget.FALSE]
-    given:
-      target: Object
-    words: [CommandOperation.RESUME]
+      process: Text
+    words:
+      CommandOperation.PAUSE: [TruthTarget.TRUE]
+      CommandOperation.RESUME: [TruthTarget.FALSE]
 
   SET:
     description: Set a declared state property on the target.
     factors: [Command]
     given:
       target: Object
+      property: Text
+      value: Scalar
     words: [CommandOperation.SET]
 
   DIRECT:
@@ -556,6 +505,9 @@ expressions:
       target: Object
       destination: Position
       path: GeoPath
+      radius: Distance
+      speed: Speed
+      yaw: Angle
     equations:
       - Position(target) = destination
     words: [CommandOperation.MOVE]
@@ -566,6 +518,7 @@ expressions:
     given:
       target: Object
       resource: Resource
+      quantity: Count
     words: [CommandOperation.ALLOCATE]
 
   TRANSFER:
@@ -574,6 +527,7 @@ expressions:
     given:
       target: Object
       resource: Resource
+      quantity: Count
     words: [CommandOperation.TRANSFER]
 
   LOAD_CONFIGURATION:
@@ -581,6 +535,8 @@ expressions:
     factors: [Command]
     given:
       target: Object
+      parameter: Text
+      value: Scalar
     words: [CommandOperation.LOAD_CONFIGURATION]
 
   RESET:
@@ -591,10 +547,10 @@ expressions:
     words: [CommandOperation.RESET]
 
 # ---------------------------------------------------------------------------
-# Models are named products. Parentage entails the parent's meaning; compiled
-# semantics carry inherited factors and derive ancestor labels by closure.
-# `product:` entries expand to the semantics they name, and `chart:` entries
-# add the chart's factors and compile the chart's variables as fields.
+# Models are named products and carriers. Parentage entails the parent's
+# meaning; compiled semantics carry inherited factors and derive ancestor
+# labels by closure. `product:` entries expand to the semantics they name.
+# Chart applications are not models: a chart compiles its own data model.
 # ---------------------------------------------------------------------------
 
 models:
@@ -705,6 +661,10 @@ models:
     description: Whether a resource is held by its holder.
     parent: State
 
+  Truth:
+    description: Whether a proposition holds.
+    parent: State
+
   Text:
     description: Human-authored textual content whose encoding is not itself domain meaning.
     parent: State
@@ -744,80 +704,6 @@ models:
     applies:
       - PhysicalDomain.AIR
 
-  GlobalPosition:
-    description: Position compiled through the geodetic chart.
-    chart: Position * Representation.Geodetic
-
-  LocalPosition:
-    description: Position compiled through the local cartesian chart.
-    chart: Position * Representation.LocalCartesian
-
-  LocalVelocity:
-    description: Velocity compiled through the local cartesian chart.
-    chart: Velocity * Representation.LocalCartesian
-
-  LocalAttitude:
-    description: Attitude compiled through the local Euler chart.
-    chart: Attitude * Representation.LocalEuler
-
-  # --- representations: every scalar field reduces through one of these ------
-
-  UID:
-    description: Identity reduced to a globally unique string.
-    chart: Identity * Representation.UID
-
-  IntID:
-    description: Identity reduced to a class-local integer.
-    chart: Identity * Representation.IntID
-
-  PlainText:
-    description: Text reduced to a plain string.
-    chart: Text * Representation.PlainText
-
-  DurationSeconds:
-    description: Duration in seconds.
-    chart: Duration * Representation.Seconds
-
-  AngleRadians:
-    description: Angle in radians.
-    chart: Angle * Representation.Radians
-
-  DistanceMeters:
-    description: Distance in meters.
-    chart: Distance * Representation.Meters
-
-  SpeedMetersPerSecond:
-    description: Speed in meters per second.
-    chart: Speed * Representation.MetersPerSecond
-
-  AltitudeMSL:
-    description: Altitude above mean sea level.
-    chart: Altitude * Representation.MSL
-
-  AltitudeFlightLevel:
-    description: Altitude expressed as a flight level code.
-    chart: Altitude * Representation.FlightLevel
-
-  ItemCount:
-    description: A discrete count.
-    chart: Count * Representation.Count
-
-  OrdinalValue:
-    description: An ordinal index.
-    chart: Ordinal * Representation.Ordinal
-
-  ProtocolCode:
-    description: An opaque protocol code.
-    chart: Code * Representation.Protocol
-
-  ScalarDecimal:
-    description: A decimal scalar with no unit semantics.
-    chart: Scalar * Representation.Decimal
-
-  ScalarInteger:
-    description: An integer scalar with no unit semantics.
-    chart: Scalar * Representation.Integer
-
   Mark:
     description: Named point of interest; its semantic form is a position.
     parent: Data
@@ -834,58 +720,30 @@ models:
     parent: Control
 
   Task:
-    description: Requirement that some proposition become or remain sufficiently true
+    description: Requirement that some proposition become or remain sufficiently true.
     parent: Directive
     fields:
       uid: UID
       instruction: PlainText
+      intent: TaskIntent
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
-
-  TaskManeuver:
-    description: A task whose expression is movement, position, or spatial persistence.
-    parent: Task
-    fields:
-      intent: TaskIntent
-
-  TaskInformation:
-    description: A task whose expression is search, observation, identification, or assessment.
-    parent: Task
-    fields:
-      intent: TaskIntent
-
-  TaskEffect:
-    description: A task whose expression is creation, removal, modification, restoration, protection, or denial.
-    parent: Task
-    fields:
-      intent: TaskIntent
-
-  TaskTransport:
-    description: A task whose expression is movement of cargo, personnel, supplies, or recoverable assets.
-    parent: Task
-    fields:
-      intent: TaskIntent
 
   Mission:
     description: A named body of assigned work.
     parent: Directive
 
   # ===========================================================================
-  # Port of ../occid/lib/schema/core/control.
+  # Controlled work, expressed rather than transcribed.
   #
-  # Rules applied in the port:
-  #   - `semantic_role` is gone; there is no concept/representation split.
-  #   - `parent:` is the only is-a edge; inherited factors are compiled in and
-  #     ancestor labels are derived by the solver closure.
-  #   - `*_uid` / `list[UID]` reference fields became relations with named roles,
-  #     because the new system addresses things by meaning, not by pointer.
-  #   - embedded `Struct`/`SpatialStruct` values stayed fields or became Data
-  #     models; maps and label lookups were dropped as adapter concerns.
-  #   - `record: Record` and `IntID(X)` are identity/provenance representation;
-  #     they stay fields and never become factors.
+  # The word is the whole verb taxonomy: `Task.intent` and `Command.operation`
+  # carry a vocabulary member, the member names an expression, and the
+  # expression entails its factors. Verb parameters are typed free variables;
+  # records, constraints, objectives, authorities, and plans are value models;
+  # links between independently existing things are relations with named roles.
   # ===========================================================================
 
-  # --- value models the control package references ---------------------------
+  # --- value models ----------------------------------------------------------
 
   Record:
     description: Provenance and revision metadata for a stored thing.
@@ -903,10 +761,6 @@ models:
     description: A point on the time line.
     parent: State
 
-  Timestamp:
-    description: Time compiled through the epoch chart.
-    chart: Time * Representation.Epoch
-
   Range:
     parent: Data
 
@@ -916,24 +770,17 @@ models:
       min_value: optional ScalarDecimal
       max_value: optional ScalarDecimal
 
-  MetadataValue:
-    description: A scalar metadata value in one of several representations.
-    parent: Data
-    fields:
-      str: optional PlainText
-      int: optional ScalarInteger
-      float: optional ScalarDecimal
-      bool: optional bool
-
   Condition:
     description: Predicate logic; it describes logic, not the state of evaluating it.
     parent: Data
 
   Predicate:
-    description: Atomic condition leaf.
+    description: Atomic condition; a quantity of a subject compared against a value.
     parent: Condition
     fields:
-      subject_ref: optional UID
+      subject: optional UID
+      quantity: optional PlainText
+      value: optional Scalar
 
   BooleanLogic:
     description: Boolean composition of conditions.
@@ -946,14 +793,6 @@ models:
     parent: Data
     fields:
       points: list[GlobalPosition]
-
-  SuccessCriterion:
-    description: Typed, human-readable condition used to decide whether an objective succeeded.
-    parent: Data
-    fields:
-      statement: PlainText
-      metric: optional PlainText
-      target_value: optional MetadataValue
 
   Role:
     description: An organizational function; authority attaches to the role, not to its current holder.
@@ -968,7 +807,7 @@ models:
       uid: optional UID
       name: optional PlainText
 
-  # --- constraint.schema.yaml ------------------------------------------------
+  # --- constraints ------------------------------------------------------------
 
   Constraint:
     description: Limit, rule, or time/resource bound applied to directed work.
@@ -985,88 +824,46 @@ models:
   WeatherLimits:
     parent: Constraint
     fields:
-      ifr: optional bool
-      night: optional bool
+      ifr: optional TruthBoolean
+      night: optional TruthBoolean
       rain: optional NumericRange
       snow: optional NumericRange
       temp: optional NumericRange
       wind: optional NumericRange
       vis: optional NumericRange
-      icing: optional bool
+      icing: optional TruthBoolean
 
-  # --- objective.schema.yaml -------------------------------------------------
+  # --- objectives -------------------------------------------------------------
+  # A desired end state is a condition, and success is decided by conditions;
+  # `Condition` is the common atom, not a species per criterion.
 
   Objective:
-    description: Desired end state with intent, success rule, target, priority, and deadline.
+    description: Desired end state; the condition that should hold, the criteria that decide it, priority, and deadline.
     parent: Control
     fields:
       record: optional Record
       uid: UID
       id: optional IntID
       name: PlainText
-      intent: PlainText
-      desired_state: PlainText
-      success_criteria: list[SuccessCriterion]
+      condition: optional Condition
+      criteria: list[Condition]
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
       start_time: optional Timestamp
       deadline: optional Timestamp
 
-  # --- command.schema.yaml ---------------------------------------------------
-  # Each operation family is its own child carrying exactly the parameters that
-  # family needs; the vocabulary names the expression.
+  # --- commands ---------------------------------------------------------------
+  # The operation word selects the expression and nothing else: there is no
+  # per-operation command class, and a verb's parameters are its variables.
 
   Command:
     description: Immediate bounded imperative applied to a concrete target.
     parent: Directive
     fields:
       uid: UID
-
-  StateChangeCommand:
-    parent: Command
-    product:
-      - Engagement
-    fields:
       operation: CommandOperation
-      property_name: optional PlainText
-      value: optional MetadataValue
 
-  ProcessControlCommand:
-    parent: Command
-    product:
-      - Activity
-    fields:
-      operation: CommandOperation
-      process_name: optional PlainText
-
-  ConfigurationCommand:
-    parent: Command
-    fields:
-      operation: CommandOperation
-      parameter_name: optional PlainText
-      value: optional MetadataValue
-
-  MotionCommand:
-    parent: Command
-    product:
-      - Position
-    fields:
-      operation: CommandOperation
-      destination: optional GlobalPosition
-      path: optional GeoPath
-      radius_m: optional DistanceMeters
-      speed_ms: optional SpeedMetersPerSecond
-      yaw_rad: optional AngleRadians
-
-  ResourceCommand:
-    parent: Command
-    product:
-      - Hold
-    fields:
-      operation: CommandOperation
-      quantity: optional ItemCount
-
-  # --- authority.schema.yaml -------------------------------------------------
+  # --- authorities ------------------------------------------------------------
 
   Authority:
     description: Command, permission, delegation, or control-right context for directed work.
@@ -1084,7 +881,7 @@ models:
       bound: optional Condition
       control_level: optional ControlLevel
 
-  # --- plan.schema.yaml ------------------------------------------------------
+  # --- plans ------------------------------------------------------------------
   # Membership and assignment are relations (AssignedWork, Contains); a plan
   # record is representation of approval state, not a tree of pointers.
 
@@ -1103,22 +900,6 @@ models:
     parent: Data
     fields:
       condition: Condition
-
-# ---------------------------------------------------------------------------
-# A projection is a compiled aggregate, not an ontological object. The
-# compiler reduces the listed products to their chart variables and the
-# runtime materializes them from independent facts about one subject.
-# ---------------------------------------------------------------------------
-
-projections:
-  VehicleState:
-    description: Normal form of a vehicle's position, velocity, and attitude.
-    product:
-      - Position * Representation.Geodetic
-      - Velocity * Representation.LocalCartesian
-      - Attitude * Representation.LocalEuler
-    fields:
-      uid: UID
 
 # ---------------------------------------------------------------------------
 # Aliases name useful products. A named combination and an unnamed equivalent

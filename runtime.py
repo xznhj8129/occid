@@ -342,14 +342,6 @@ class ExpressionType:
         return text
 
 
-@dataclass(frozen=True, slots=True)
-class ProjectionSpec:
-    name: str
-    semantics: Product
-    fields: tuple[str, ...]
-    charts: tuple[ChartType, ...]
-
-
 class OpenExpression:
     """A task that realizes an open expression. Variables may stay unbound.
 
@@ -494,7 +486,6 @@ class SemanticRegistry:
                     ),
                 )
             )
-        charts_by_display = {chart.display: chart for chart in self.charts}
 
         self.expressions: dict[str, ExpressionType] = {}
         for name, item in spec.get("expressions", {}).items():
@@ -520,19 +511,6 @@ class SemanticRegistry:
                 words=tuple(item.get("words", [])),
             )
         self.word_expressions: dict[str, str] = dict(spec.get("word_expressions", {}))
-
-        self.projections: dict[str, ProjectionSpec] = {}
-        for name, item in spec.get("projections", {}).items():
-            self.projections[name] = ProjectionSpec(
-                name=name,
-                semantics=Product(frozenset(item["semantics"])),
-                fields=tuple(field["name"] for field in item.get("fields", [])),
-                charts=tuple(
-                    charts_by_display[display]
-                    for display in item.get("charts", [])
-                    if display in charts_by_display
-                ),
-            )
 
         # Constraints are implied by declarations. There is no authored rules
         # block: an axis, an axis value, or a concept states applies/requires/
@@ -901,20 +879,6 @@ class Store:
             raise ValueError(f"{model.__name__} does not realize {expression.name}")
         return OpenExpression(self, ref, expression)
 
-    def _first_datum(self, subject: ModelRef, factors: Product) -> SemanticModel | None:
-        found = [
-            datum.value
-            for datum in self._data.get(subject.uid, [])
-            if self.registry.entails(datum.semantics, factors)
-        ]
-        if not found:
-            return None
-        if len(found) > 1:
-            raise AmbiguousSemanticMatch(
-                f"{subject.uid}: {factors} -> {[type(x).__name__ for x in found]}"
-            )
-        return found[0]
-
     def _identity_value(self, model: type[SemanticModel], uid: str) -> Any:
         # A model's `uid` field is an identity representation (a chart model),
         # not a bare string; wrap the pointer value before construction.
@@ -924,23 +888,6 @@ class Store:
             if len(coordinate_names) == 1:
                 return annotation(**{coordinate_names[0]: uid})
         return uid
-
-    def project(self, subject: ModelRef, projection: type[SemanticModel]) -> SemanticModel:
-        # A projection is a compiled normal form: every chart selected by the
-        # projection contributes its coordinates from existing facts.
-        spec = self.registry.projections.get(projection.__name__)
-        if spec is None:
-            raise KeyError(f"unknown projection: {projection.__name__}")
-        kwargs: dict[str, Any] = {}
-        if "uid" in spec.fields:
-            kwargs["uid"] = self._identity_value(projection, subject.uid)
-        for chart in spec.charts:
-            datum = self._first_datum(subject, chart.factors)
-            if datum is None:
-                continue
-            for coord in chart.coords:
-                kwargs[coord.name] = getattr(datum, coord.name)
-        return projection(**kwargs)
 
     def relate(self, relation: RelationType, *operands: ModelRef) -> RelationFact:
         fact = relation(*operands)
