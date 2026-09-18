@@ -1,0 +1,85 @@
+version: 1
+type: schema
+package: gnc
+root: GNC
+tags:
+  - core
+
+enums:
+  AirFailsafeMode:
+    - HOLD = 0
+    - RTB
+    - LAND
+    - LOITER
+    - CONTINUE_LAST
+
+  StandardFlightMode:
+    - NON_STANDARD = 0
+    - POSITION_HOLD
+    - ORBIT
+    - CRUISE
+    - ALTITUDE_HOLD
+    - SAFE_RECOVERY
+    - MISSION
+    - LAND
+    - TAKEOFF
+    - EXTERNAL_CONTROL
+
+  FlightPhase:
+    - PREFLIGHT = 0
+    - TAKEOFF
+    - CRUISE
+    - LOITER
+    - PLAN_OPERATION
+    - RTB
+    - LANDING
+    - POSTFLIGHT
+    - ABORT
+
+  GnssFixType:
+    - NONE = 0
+    - NO_FIX
+    - FIX_2D
+    - FIX_3D
+    - DGPS
+    - RTK_FLOAT
+    - RTK_FIXED
+
+models:
+  GNC:
+    description: Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state
+    semantic_role: concept
+    parent: State
+
+  NavigationValidity:
+    semantic_role: representation
+    parent: GNC
+    fields:
+      local_position_ok: optional bool
+      global_position_ok: optional bool
+      home_position_ok: optional bool
+
+  GnssSolution:
+    semantic_role: representation
+    parent: GNC
+    fields:
+      fix_type: optional GnssFixType
+      satellites_used: optional int
+      position: optional GlobalPosition
+      altitude: optional AltitudeState
+      ground_speed_ms: optional float
+      ground_course_deg: optional float
+      hdop: optional float
+      vdop: optional float
+      yaw_deg: optional float
+
+  AutopilotMissionState:
+    description: State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state
+    semantic_role: representation
+    parent: GNC
+    fields:
+      valid: optional bool
+      current_waypoint_index: optional int
+      waypoint_count: optional int
+      max_waypoints: optional int
+      waypoints_remaining: optional int

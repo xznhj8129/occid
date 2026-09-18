@@ -1,0 +1,31 @@
+version: 1
+type: module
+package: military_entities
+description: "Weapon/effects-bearing entity specializations for combat loadouts and attack capability."
+tags:
+- military
+requires:
+- core
+- military_effects
+models:
+  MilitaryPerson:
+    semantic_role: representation
+    parent: Person
+    fields:
+      attack_modes: list[AttackMode]
+      weapons: list[ItemCount]
+      ammo: list[ItemCount]
+
+  MilitaryGroundMachine:
+    semantic_role: representation
+    parent: GroundMachine
+    fields:
+      payload: Payload
+      effects: GroundEffects
+
+  MilitaryAirMachine:
+    semantic_role: representation
+    parent: AirMachine
+    fields:
+      payload: Payload
+      effects: AirEffects

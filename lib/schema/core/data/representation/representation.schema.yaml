@@ -1,0 +1,363 @@
+version: 1
+type: schema
+package: representation
+root: Representation
+tags:
+- core
+
+enums:
+  GraphicLengthUnit:
+  - PIXEL = 0
+  - METER
+
+  StrokePattern:
+  - SOLID = 0
+  - DASHED
+  - DOTTED
+  - DASH_DOT
+
+  FillPattern:
+  - NONE = 0
+  - SOLID
+  - DIAGONAL
+  - CROSSHATCH
+  - DOTS
+
+  TextAlignment:
+  - LEFT = 0
+  - CENTER
+  - RIGHT
+
+  RepresentationFormat:
+  - GEOJSON = 0
+  - KML
+  - KMZ
+  - GPX
+  - MILX
+  - PMTILES
+  - MAPBUNDLE
+  - TILEJSON
+  - XYZ_TILES
+  - VECTOR_TILES
+  - RASTER_IMAGE
+
+  Hemisphere:
+  - NORTH = 0
+  - SOUTH
+
+  TacticalGraphicStatus:
+  - PRESENT = 0
+  - PLANNED
+
+models:
+  Representation:
+    description: An authored or shared depiction, presentation, organization, or view of operational information; representation changes do not alter the represented subject itself
+    semantic_role: concept
+    parent: Data
+
+  IdentifiedRepresentation:
+    description: Persisted shared representation with durable OCCID identity, distinct from transient renderer or session state
+    semantic_role: concept
+    parent: Representation
+    fields:
+      record: Record
+      uid: UID
+      name: optional string
+      description: optional PlainText
+
+  ColorComponent:
+    description: Component of a declared graphic color value
+    semantic_role: concept
+    parent: Struct
+
+  ColorChannel:
+    semantic_role: representation
+    parent: ColorComponent
+    type: uint8
+
+  Opacity:
+    description: Graphic opacity ratio where zero is fully transparent and one is fully opaque
+    semantic_role: representation
+    parent: Ratio
+    type: float
+
+  ColorRGBA:
+    description: Device-independent sRGB color components used for authored graphic portrayal
+    semantic_role: representation
+    parent: Struct
+    fields:
+      red: ColorChannel
+      green: ColorChannel
+      blue: ColorChannel
+      alpha: optional Opacity
+
+  GraphicLength:
+    description: Length used by a graphic portrayal, explicitly distinguishing screen-space and world-space values
+    semantic_role: representation
+    parent: Measurement
+    fields:
+      value: float
+      unit: GraphicLengthUnit
+
+  StrokeStyle:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      color: optional ColorRGBA
+      width: optional GraphicLength
+      pattern: optional StrokePattern
+
+  FillStyle:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      color: optional ColorRGBA
+      pattern: optional FillPattern
+
+  TextStyle:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      color: optional ColorRGBA
+      background: optional ColorRGBA
+      size: optional GraphicLength
+      alignment: optional TextAlignment
+
+  GraphicStyle:
+    description: Renderer-independent authored portrayal of a graphic
+    semantic_role: representation
+    parent: Struct
+    fields:
+      stroke: optional StrokeStyle
+      fill: optional FillStyle
+      text: optional TextStyle
+
+  AnnotationAnchor:
+    description: Semantic anchor for an annotation graphic
+    semantic_role: concept
+    parent: Struct
+
+  PositionAnchor:
+    semantic_role: representation
+    parent: AnnotationAnchor
+    fields:
+      position: GlobalPosition
+
+  SubjectAnchor:
+    semantic_role: representation
+    parent: AnnotationAnchor
+    fields:
+      subject_uid: UID
+
+  PathAnchor:
+    semantic_role: representation
+    parent: AnnotationAnchor
+    fields:
+      path_uid: UID
+      distance_from_start: DistanceMeters
+
+  RepresentationSource:
+    description: Source used to construct a reference or data representation
+    semantic_role: concept
+    parent: Struct
+
+  ExternalRepresentationSource:
+    semantic_role: representation
+    parent: RepresentationSource
+    fields:
+      uri: string
+      format: RepresentationFormat
+
+  GeoRegistration:
+    description: Geographic footprint used to register media or an external representation to the operational map
+    semantic_role: representation
+    parent: Struct
+    fields:
+      footprint: GeoArea
+
+  MediaRepresentationSource:
+    semantic_role: representation
+    parent: RepresentationSource
+    fields:
+      media_uid: UID
+      registration: optional GeoRegistration
+
+  Graphic:
+    description: Persisted graphical representation of one or more operational subjects or spatial constructs
+    semantic_role: concept
+    parent: IdentifiedRepresentation
+    fields:
+      id: IntID(Graphic)
+      style: optional GraphicStyle
+      temporal_extent: optional TimeRange
+
+  GeometryGraphic:
+    description: Graphic portrayal of an identified Location; the underlying geometry remains on the Location rather than on the graphic style object
+    semantic_role: representation
+    parent: Graphic
+    fields:
+      location_uid: UID
+
+  SymbolGraphic:
+    description: Symbolic portrayal of an operational subject using a declared symbology
+    semantic_role: representation
+    parent: Graphic
+    fields:
+      subject_uid: UID
+      symbology: Symbology
+
+  AnnotationGraphic:
+    description: Human-authored annotation anchored to space or another operational object
+    semantic_role: concept
+    parent: Graphic
+    fields:
+      anchor: AnnotationAnchor
+
+  LabelGraphic:
+    semantic_role: representation
+    parent: AnnotationGraphic
+    fields:
+      text: PlainText
+
+  NoteGraphic:
+    semantic_role: representation
+    parent: AnnotationGraphic
+    fields:
+      text: Text
+
+  CalloutGraphic:
+    semantic_role: representation
+    parent: AnnotationGraphic
+    fields:
+      text: Text
+
+  MediaGraphic:
+    semantic_role: representation
+    parent: AnnotationGraphic
+    fields:
+      media_uid: UID
+
+  GeoreferencedMediaGraphic:
+    description: Graphic portrayal of media registered directly to geographic space
+    semantic_role: representation
+    parent: Graphic
+    fields:
+      media_uid: UID
+      registration: GeoRegistration
+
+  MeasurementGraphic:
+    description: Graphic portrayal of a semantic measurement object; the measurement result is not encoded in the graphic itself
+    semantic_role: representation
+    parent: Graphic
+    fields:
+      measurement_uid: UID
+
+  Layer:
+    description: Shared organization of representations; visibility choices for a particular operator or saved map view are modeled separately
+    semantic_role: concept
+    parent: IdentifiedRepresentation
+    fields:
+      id: IntID(Layer)
+      temporal_extent: optional TimeRange
+
+  OverlayLayer:
+    description: Layer whose membership consists of authored graphics
+    semantic_role: representation
+    parent: Layer
+    fields:
+      graphic_uids: list[UID]
+
+  ReferenceLayer:
+    description: Layer backed by an external or media-derived geospatial representation source
+    semantic_role: representation
+    parent: Layer
+    fields:
+      source: RepresentationSource
+
+  DataLayer:
+    description: Layer backed by a structured external representation source
+    semantic_role: representation
+    parent: Layer
+    fields:
+      source: RepresentationSource
+
+  LayerView:
+    description: Presentation of one shared layer inside one saved view
+    semantic_role: representation
+    parent: Struct
+    fields:
+      layer_uid: UID
+      visible: bool
+      opacity: optional Opacity
+
+  MapGrid:
+    description: Coordinate-reference grid definition used by a saved map representation; renderer appearance is optional representation data
+    semantic_role: concept
+    parent: Struct
+    fields:
+      style: optional GraphicStyle
+
+  UTMZone:
+    description: Universal Transverse Mercator longitudinal zone code
+    semantic_role: representation
+    parent: Struct
+    type: int
+
+  UTMMapGrid:
+    description: Fixed Universal Transverse Mercator grid
+    semantic_role: representation
+    parent: MapGrid
+    fields:
+      zone: UTMZone
+      hemisphere: Hemisphere
+      interval: DistanceMeters
+
+  MGRSMapGrid:
+    description: Military Grid Reference System display grid
+    semantic_role: representation
+    parent: MapGrid
+    fields:
+      interval: DistanceMeters
+
+  LatitudeLongitudeMapGrid:
+    description: Geographic latitude/longitude grid with angular spacing
+    semantic_role: representation
+    parent: MapGrid
+    fields:
+      interval: AngleDegrees
+
+  LocalMapGrid:
+    description: Pinned local metric grid whose positive north axis is rotated clockwise from true north
+    semantic_role: representation
+    parent: MapGrid
+    fields:
+      origin: GlobalPosition
+      interval: DistanceMeters
+      bearing: AngleDegrees
+
+  MapView:
+    description: Named saved operational map view over shared layers; transient browser viewport state need not be persisted as a MapView
+    semantic_role: representation
+    parent: IdentifiedRepresentation
+    fields:
+      id: IntID(MapView)
+      focus: optional GlobalPosition
+      extent: optional GeoArea
+      layers: list[LayerView]
+      grid: optional MapGrid
+      bearing: optional AngleDegrees
+  MilitarySymbolGraphic:
+    description: Military-standard symbolic portrayal of an identified operational subject
+    semantic_role: representation
+    parent: SymbolGraphic
+    fields:
+      symbology: MilitarySymbology
+
+  TacticalGraphic:
+    description: Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified SIDC rather than an application-local string kind
+    semantic_role: representation
+    parent: Graphic
+    fields:
+      sidc: SIDC
+      control_points: list[GlobalPosition]
+      status: TacticalGraphicStatus = PRESENT

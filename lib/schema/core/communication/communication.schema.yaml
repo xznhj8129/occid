@@ -1,0 +1,61 @@
+version: 1
+type: schema
+package: communication
+root: Communication
+tags:
+- core
+
+enums:
+  SyncState:
+  - IN_SYNC = 0
+  - PARTIAL
+  - STALE
+  - DIVERGED
+
+  AddressingMode:
+  - UNICAST = 0
+  - MULTICAST
+  - BROADCAST
+
+  ExchangePattern:
+  - PUSH = 0
+  - REQUEST_RESPONSE
+
+  NATOAlphabet:
+  - ALPHA = 0
+  - BRAVO
+  - CHARLIE
+  - DELTA
+  - ECHO
+  - FOXTROT
+  - GOLF
+  - HOTEL
+  - INDIA
+  - JULIETT
+  - KILO
+  - LIMA
+  - MIKE
+  - NOVEMBER
+  - OSCAR
+  - PAPA
+  - QUEBEC
+  - ROMEO
+  - SIERRA
+  - TANGO
+  - UNIFORM
+  - VICTOR
+  - WHISKEY
+  - XRAY
+  - YANKEE
+  - ZULU
+
+models:
+  Communication:
+    description: Movement of information between endpoints
+    semantic_role: concept
+    parent: Root
+
+  Interface:
+    description: System or protocol interface through which a component communicates with another endpoint
+    semantic_role: concept
+    parent: Communication

@@ -1,0 +1,154 @@
+version: 1
+type: schema
+package: robot
+root: Robot
+tags:
+  - core
+
+enums:
+  VideoProtocol:
+    - RTSP = 0
+    - RTMP
+    - SRT
+    - HLS
+    - UDP
+    - TCP
+    - WEBRTC
+
+  TelemetryType:
+    - NONE = 0
+    - MSP
+    - MAVLINK
+    - CRSF
+
+  RCType:
+    - PWM = 0
+    - CRSF
+    - MAVLINK
+    - MSP
+
+  UAVRadioType:
+    - ELRS = 0
+    - MLRS
+    - SIK
+    - WIFI_DUALBAND
+    - MESHTASTIC
+    - WIFI_915
+
+  AutopilotType:
+    - BETAFLIGHT = 0
+    - INAV
+    - ARDUPILOT
+    - PX4
+    - CUSTOM
+
+  RobotControlMode:
+    - MANUAL = 0
+    - REMOTE
+    - ASSISTED
+    - PROGRAMMED
+    - AUTONOMOUS
+    - ROGUE
+
+  ControlAxis:
+    - ROLL = 0
+    - PITCH
+    - YAW
+    - THROTTLE
+    - AUX
+
+  GimbalAxis:
+    - ROLL = 0
+    - PITCH
+    - YAW
+
+models:
+  Robot:
+    semantic_role: representation
+    parent: Machine
+    description: Robot entities and control surfaces
+    fields:
+      robot_control: optional RobotController
+      remote_control: RemoteControl
+
+  GroundRobot:
+    semantic_role: representation
+    parent: GroundMachine
+    fields:
+      machine_type: MachineType = ROBOT
+
+  VideoConfig:
+    semantic_role: representation
+    parent: Parameter
+    fields:
+      protocol: optional VideoProtocol
+      port: optional int
+      stream_url: optional string
+      overlay_url: optional string
+      webrtc_url: optional string
+      overlay_webrtc_url: optional string
+      hls_url: optional string
+
+  ReceiverConfig:
+    semantic_role: representation
+    parent: Parameter
+    fields:
+      rx_min_usec: int
+      rx_max_usec: int
+      rx_center_usec: int
+
+  ChannelMapEntry:
+    semantic_role: representation
+    parent: Parameter
+    fields:
+      axis: ControlAxis
+      source_channel: int
+      output_channel: optional int
+      label: optional string
+
+  ModeRange:
+    semantic_role: representation
+    parent: Parameter
+    fields:
+      mode_id: int
+      mode_name: optional string
+      channel: int
+      range: NumericRange
+
+  RobotController:
+    semantic_role: representation
+    parent: Parameter
+    fields:
+      control_modes: optional RobotControlMode
+      autopilot_type: AutopilotType
+      autopilot_firmware: FirmwareInfo
+
+  RemoteControl:
+    semantic_role: representation
+    parent: Interface
+    fields:
+      rc_link: string = ""
+      vid_link: string = ""
+      ctrl_video_sep: optional bool
+      rc_telemetry: optional ControlAxisSet
+      control_input: optional ControlAxisSet
+      control_output: optional ControlAxisSet
+      control_override: optional ControlOverride
+      receiver_config: optional ReceiverConfig
+      channel_map: list[ChannelMapEntry]
+      mode_ranges: list[ModeRange]
+
+  FlightControlState:
+    description: Portable flight-controller operational state independent of endpoint-specific mode identifiers
+    semantic_role: representation
+    parent: GNC
+    fields:
+      armed: optional bool
+      in_air: optional bool
+      override_active: optional bool
+      failsafe: optional bool
+      standard_mode: optional StandardFlightMode
+      attitude_setpoint: optional ControlAttitudeSetpoint
+      navigation_validity: optional NavigationValidity
+      readiness: optional NavReadinessState
+      runtime_load: optional RuntimeLoadState

@@ -1,0 +1,83 @@
+version: 1
+type: schema
+package: plan
+root: Plan
+tags:
+  - core
+
+enums:
+  PlanApprovalState:
+    - DRAFT = 0
+    - PROPOSED
+    - APPROVED
+    - REJECTED
+    - SUPERSEDED
+
+  PlanStepStatus:
+    - PENDING = 0
+    - READY
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - SKIPPED
+
+
+models:
+  Plan:
+    description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
+    semantic_role: concept
+    parent: Control
+
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Plan)
+      name: optional string
+      approval_state: PlanApprovalState = DRAFT
+
+  OperationalPlan:
+    description: Task-based
+    semantic_role: concept
+    parent: Plan
+    fields:
+      objective_uids: list[UID]
+      task_uids: list[UID]
+      actor_uids: list[UID]
+      resource_uids: list[UID]
+      assignment_uids: list[UID]
+      constraints: list[Constraint]
+      contingencies: list[PlanContingency]
+
+
+  RoutePlan:
+    description: Plan of routed movement along waypoints or routes
+    semantic_role: concept
+    parent: Plan
+
+  PlanContingency: # conditional plans or tasks?
+    semantic_role: representation
+    parent: Struct
+    fields:
+      condition: Condition
+      task_uids: list[UID]
+
+  AutopilotMission:
+    semantic_role: representation
+    parent: RoutePlan
+    fields:
+      waypoints: list[AutopilotMissionWaypoint]
+
+  AutopilotMissionWaypoint:
+    description: Embedded autopilot waypoint value used by a plan or protocol mapping
+    semantic_role: representation
+    parent: SpatialStruct
+    fields:
+      waypoint_index: int
+      position: GlobalPosition
+      # these need formalizing
+      action_code: optional int
+      param1: optional int
+      param2: optional int
+      param3: optional int
+      flag: optional int
+

@@ -1,0 +1,205 @@
+version: 1
+type: schema
+package: entities
+root: Entity
+tags:
+- core
+
+enums:
+  EntityType:
+  - PERSON = 0
+  - MACHINE
+  - SYSTEM
+
+  EntitySubtype:
+  - PERSON = 0
+  - PLATFORM
+  - VEHICLE
+  - GROUND_ROBOT
+  - AIR_ROBOT
+  - SURFACE_ROBOT
+
+  MachineType:
+  - VEHICLE = 0
+  - ROBOT
+
+  SystemType:
+  - PLATFORM = 0
+  - EQUIPMENT
+
+  EntityOperationalState:
+  - UNKNOWN = 0
+  - READY
+  - ACTIVE
+  - DEGRADED
+  - MAINTENANCE
+  - DAMAGED
+  - DESTROYED
+  - OFFLINE
+
+  EntityLifecycleStatus:
+  - ACTIVE = 0
+  - INACTIVE
+  - UNKNOWN
+
+  AirframeType:
+  - FIXED_WING = 0
+  - COPTER
+  - VTOL
+  - TAILSITTER
+  - FLYING_WING
+
+  CopterType:
+  - X = 0
+  - Y
+  - HEXA
+  - OCTO
+  - DECA
+  - HELICOPTER
+
+  VTOLType:
+  - NONE = 0
+  - QUADPLANE
+  - TILT
+  - VECTORING
+  - TAILSITTER
+
+  NavAids:
+  - NONE = 0
+  - GNSS
+  - INS
+  - TERRAIN_MATCH
+  - CELESTIAL
+  - VISUAL
+
+  PropulsionType:
+  - FOOT = 0
+  - WHEELED
+  - TRACKED
+  - ROTARY_WING
+  - FIXED_WING
+  - JET
+  - MARITIME
+  - STATIC
+
+models:
+  Entity:
+    description: One discrete "atom" capable of actions
+    semantic_role: concept
+    parent: Object
+
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Entity)
+      node_uids: list[UID]
+      name: optional string
+      callsign: optional string
+      entity_type: optional EntityType
+      tags: list[string]
+      metadata: map[string, MetadataValue]
+      relations: list[DirectedRelationship]
+
+  Actor:
+    semantic_role: concept
+    parent: Entity
+
+  Agent:
+    semantic_role: representation
+    parent: Actor
+
+  Person:
+    semantic_role: representation
+    parent: Actor
+
+    fields:
+      entity_type: EntityType = PERSON
+      role: string
+      op_domain: OperationalDomain = LAND
+      propulsion: PropulsionType = FOOT
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      sensors: map[string, SensorPayload]
+
+  Machine:
+    semantic_role: concept
+    parent: Entity
+
+    fields:
+      entity_type: EntityType = MACHINE
+      serial_number: optional string
+      propulsion: PropulsionType
+      machine_type: optional MachineType
+      components: list[EntityComponentRef]
+
+  Vehicle:
+    semantic_role: representation
+    parent: Machine
+
+  Platform:
+    semantic_role: representation
+    parent: Machine
+
+  GroundNavigation:
+    semantic_role: representation
+    parent: Attribute
+    fields:
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      max_range: float
+      max_spd: float
+
+  AirNavigation:
+    semantic_role: representation
+    parent: Attribute
+
+    fields:
+      flight_type: AirframeType
+      control_modes: list[StandardFlightMode]
+      failsafe_mode: optional AirFailsafeMode
+      weather_limits: WeatherLimits
+      ifr: optional bool
+      propulsion: PropulsionType
+      navigation: NavigationMode
+      navaids: list[NavAids]
+      max_range: float
+      max_flight_t: float
+      max_spd: float
+      cruise_spd: float
+      max_alt: float
+
+  GroundMachine:
+    semantic_role: representation
+    parent: Machine
+    fields:
+      machine_type: MachineType
+      op_domain: OperationalDomain = LAND
+      model: string
+      role: string
+      sensors: map[string, SensorPayload]
+      navigation: GroundNavigation
+
+  AirMachine:
+    semantic_role: representation
+    parent: Machine
+    fields:
+      airframe: AirframeType
+      machine_type: optional MachineType
+      op_domain: OperationalDomain = AIR
+      model: string
+      sensors: map[string, SensorPayload]
+      navigation: AirNavigation
+      
+  MilitaryAirNavigation:
+    semantic_role: representation
+    parent: AirNavigation
+    fields:
+      roles: list[AirRole]
+
+  MilitaryMachine:
+    semantic_role: representation
+    parent: Machine
+    fields:
+      category: optional NATOUnitCategory
+

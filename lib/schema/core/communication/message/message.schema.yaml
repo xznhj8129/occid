@@ -1,0 +1,110 @@
+version: 1
+type: schema
+package: message
+root: Message
+tags:
+  - core
+
+enums:
+  DeliveryState:
+    - QUEUED = 0
+    - SENT
+    - RECEIVED
+    - ACKED
+    - NACKED
+    - EXECUTED
+    - EXPIRED
+    - DROPPED
+    - READ
+
+  MessageType:
+    - BROADCAST = 0
+    - REQUEST
+    - REPLY
+
+  ReplyAck:
+    - ACK = 0
+    - RECEIVED
+    - WILCO
+
+  AckMode:
+    - NONE = 0
+    - RECEIPT
+    - EXECUTION
+    - BOTH
+
+  QosTier:
+    - BULK = 0
+    - ROUTINE
+    - URGENT
+    - CRITICAL
+
+  MessagePriority:
+    - ROUTINE = 0
+    - PRIORITY
+    - IMMEDIATE
+    - FLASH
+
+  RouteMode:
+    - DIRECT = 0
+    - RELAY
+    - STORE_FORWARD
+    - FLOOD
+
+  ConflictPolicy:
+    - LAST_WRITE = 0
+    - AUTHORITY_WINS
+    - VECTOR_CLOCK
+    - MANUAL
+
+models:
+
+  Message:
+    description: Transmitted envelope plus payload
+    semantic_role: concept
+    parent: Communication
+
+    fields:
+      src: UID
+      dst: UID
+      ts: Timestamp
+      priority: MessagePriority
+      seq: int
+
+  Delta:
+    description: K:V mapped delta of stored data to signal a change
+    semantic_role: representation
+    parent: Message
+    fields:
+      entity_uid: UID
+      record: UID # note: placeholder, needs to refer to "delta of what"
+      changed_fields: map[string, State]
+      updated_ts: Timestamp
+
+  ResponseMessage:
+    description: Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors
+    semantic_role: concept
+    parent: Message
+
+    fields:
+      seq_reply: optional int
+      response_to: UID
+
+  DeliveryReceipt:
+    semantic_role: representation
+    parent: ResponseMessage
+    fields:
+      node_uid: UID
+      delivery_state: DeliveryState
+      seen_ts: optional Timestamp
+      exec_ts: optional Timestamp
+      error_code: optional string
+
+  MessageTransferResult:
+    semantic_role: representation
+    parent: ResponseMessage
+    fields:
+      target_count: int = 0
+      bytes_sent: int = 0
+      delivery_state: optional DeliveryState
+      error: optional string

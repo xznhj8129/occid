@@ -1,0 +1,153 @@
+version: 1
+type: schema
+package: media
+root: Media
+tags:
+  - core
+
+enums:
+  MediaSpectrum:
+    - VISUAL = 0
+    - AUDIO
+    - RADIO
+    - IR
+    - UV
+    - MOTION
+    - MATTER
+
+  MediaTimeOrigin:
+    - RECORDED = 0
+    - STREAMED
+
+  MediaLiveness:
+    - FINISHED = 0
+    - LIVE
+
+  ImageOrigin:
+    - PHOTO = 0
+    - VIDEO_CAPTURE
+    - SCREEN_CAPTURE
+    - GENERATED
+    - SCAN
+
+  MediaDomain:
+    - SPATIAL = 0
+    - TEMPORAL
+    - FREQUENCY
+    - TIME_FREQUENCY
+
+models:
+  Media:
+    description: Recorded, streamed, sampled, or otherwise encoded non-text information used as an operational representation
+    semantic_role: concept
+    parent: Data
+
+  MediaItem:
+    description: Identified media resource with typed content, address, acquisition provenance, and common storage metadata; concrete media semantics are expressed by children
+    semantic_role: concept
+    parent: Media
+    fields:
+      uid: UID
+      id: IntID(MediaItem)
+      content_type: MediaSpectrum
+      size: optional ByteCount
+      producer_uid: optional UID
+      sensor_uid: optional UID
+      captured_ts: optional Timestamp
+      metadata: map[string, MetadataValue]
+
+  CaptureSize2D:
+    description: 2D media size
+    semantic_role: representation
+    parent: Property
+    fields: 
+      width: int
+      height: int
+
+  CaptureSize3D:
+    description: 2D media size
+    semantic_role: representation
+    parent: Property
+    fields: 
+      length: int
+      width: int
+      height: int
+
+  StillMedia:
+    description: Spatial-domain fixed media
+    semantic_role: concept
+    parent: MediaItem
+
+  PointCloudMedia:
+    description: Spatial point-cloud media
+    semantic_role: representation
+    parent: StillMedia
+    fields:
+      size: CaptureSize3D
+      content_type: MediaSpectrum = MATTER
+
+  StillImage:
+    description: Time-static image frame
+    semantic_role: representation
+    parent: StillMedia
+    fields:
+      origin_type: ImageOrigin
+      size: CaptureSize2D
+      content_type: MediaSpectrum = VISUAL
+
+  VideoFrame:
+    description: Still image identified as a frame originating from video media
+    semantic_role: representation
+    parent: StillImage
+    fields:
+      origin_type: ImageOrigin = VIDEO_CAPTURE
+      video_uid: optional UID
+      frame_n: int
+
+  DurationalMedia:
+    description: Media with a time dimension
+    semantic_role: concept
+    parent: MediaItem
+    fields:
+      duration: Duration
+      start_time: optional Timestamp
+      end_time: optional Timestamp
+      is_live: MediaLiveness
+      time_origin: MediaTimeOrigin
+
+  VideoMedia:
+    description: Time-varying visual media
+    semantic_role: concept
+    parent: DurationalMedia
+    fields:
+      size: CaptureSize2D
+      content_type: MediaSpectrum = VISUAL
+      has_audio: bool
+
+  LiveVideoStream:
+    description: Live or near-live video stream endpoint
+    semantic_role: representation
+    parent: VideoMedia
+    fields:
+      time_origin: MediaTimeOrigin = STREAMED
+      path: NetworkAddress
+
+  AudioMedia:
+    description: Acoustic or other audio-band media
+    semantic_role: concept
+    parent: DurationalMedia
+    fields:
+      content_type: MediaSpectrum = AUDIO
+
+  SpectrumMedia:
+    description: Frequency-domain sampled or recorded media
+    semantic_role: concept
+    parent: DurationalMedia
+
+  SpectrumRecording:
+    description: Recorded radio-frequency or other spectrum data over a declared frequency span
+    semantic_role: representation
+    parent: SpectrumMedia
+    fields:
+      frequency_range: optional FrequencyRange
+

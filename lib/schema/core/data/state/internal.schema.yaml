@@ -1,0 +1,19 @@
+version: 1
+type: schema
+package: internal
+root: Internal
+tags:
+  - core
+
+models:
+  Internal:
+    description: Diagnostic internals of a machine or system.
+    semantic_role: concept
+    parent: State
+
+  RuntimeLoadState:
+    semantic_role: representation
+    parent: Internal
+    fields:
+      cpu_load: optional int
+      cycle_time_us: optional int

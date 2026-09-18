@@ -1,0 +1,45 @@
+version: 1
+type: module
+package: military_tasks
+description: "Combat, attack, and munition-allocation semantics attached to generic OCCID Tasks."
+tags:
+- military
+requires:
+- core
+- military_effects
+
+enums:
+  TaskCombat:
+  - DEFEND = 0
+  - ATTACK
+  - PROTECT
+  - COMBAT_SUPPORT
+  - COMBAT_RESERVE
+
+  AirCombatTask:
+  - STRIKE = 0
+  - CAS
+  - CAP
+  - INTERCEPT
+  - HK
+
+models:
+  MunitionAllocation:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      munition_type: string
+      qty: int = 0
+
+  CombatTaskProfile:
+    description: Military domain detail associated with a generic Task without creating a Task subtype
+    semantic_role: representation
+    parent: Struct
+    fields:
+      task_uid: UID
+      combat_task: optional TaskCombat
+      target_category: optional TargetCategory
+      target_point: optional GlobalPosition
+      munitions: list[MunitionAllocation]
+      effect: optional string
+      desired_bda: bool = false

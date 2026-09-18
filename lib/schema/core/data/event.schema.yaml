@@ -1,0 +1,70 @@
+version: 1
+type: schema
+package: event
+root: Event
+tags:
+  - core
+
+enums:
+  AirMissionEvent:
+    - ONLINE = 0
+    - PREPARED
+    - LOADED
+    - READY_TAKEOFF
+    - TAKEOFF_COMPLETE
+    - ASSEMBLY
+    - ENROUTE
+    - HOLDING
+    - ACTING
+    - PROCEEDING
+    - RESUMING
+    - BINGO
+    - RTB
+    - LANDING
+    - LANDED
+    - SHUTDOWN
+    - ABORTING
+    - FAILING
+
+models:
+  Event:
+    description: A discrete occurrence; concrete event representations define the subject, time, vocabulary, and event-specific data appropriate to that semantic branch
+    semantic_role: concept
+    parent: Data
+
+    fields:
+      record: Record
+
+  SubjectEvent:
+    description: Event concerning one identified operational subject at one semantic timestamp
+    semantic_role: concept
+    parent: Event
+    fields:
+      subject_uid: UID
+      timestamp: Timestamp
+
+  FlightEvent:
+    description: Flight or air-mission lifecycle occurrence for an identified subject
+    semantic_role: representation
+    parent: SubjectEvent
+    fields:
+      event: AirMissionEvent
+
+  MissionEvent:
+    semantic_role: representation
+    parent: SubjectEvent
+
+  TimelineEvent:
+    description: Human-authored or imported operational timeline occurrence used for scenario, rehearsal, planning, and historical presentation
+    semantic_role: representation
+    parent: Event
+    fields:
+      uid: UID
+      id: IntID(Event)
+      name: optional string
+      description: optional Text
+      temporal_extent: TimeRange
+      context_uid: optional UID
+      subject_uids: list[UID]
+      location_uids: list[UID]
+      media_uids: list[UID]

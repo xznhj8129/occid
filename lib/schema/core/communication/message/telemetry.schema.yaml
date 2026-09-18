@@ -1,0 +1,45 @@
+version: 1
+type: schema
+package: telemetry
+root: TelemetryMessage
+tags:
+  - core
+
+models:
+  TelemetryMessage:
+    description: Message whose payload reports sender or asset state
+    semantic_role: concept
+    parent: Message
+
+  UAVTelemetryMessage:
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      state: EntityState
+
+  CapabilityAdvert:
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      node_uid: UID
+      roles: list[CapabilityRole]
+      link_refs: list[string]
+      sensor_refs: list[string]
+      payload_refs: list[string]
+
+  TransportCounters: # not a telemetry message
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      rx_count: int = 0
+      tx_count: int = 0
+      parse_error_count: int = 0
+      dropped_count: int = 0
+
+  TransportError: # not a telemetry message
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      error: NetworkError
+      source_address: optional NetworkAddress
+      payload: optional ProtocolPayload

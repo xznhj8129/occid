@@ -1,0 +1,31 @@
+# The actual communications endpoint equipment of an entity
+version: 1
+type: schema
+package: node
+root: Node
+tags:
+  - core
+
+enums:
+  CapabilityRole:
+    - CONTROLLER = 1 << 0
+    - RELAY
+    - SENSOR
+    - EFFECTOR
+    - GATEWAY
+    - RECORDER
+
+models:
+  Node:
+    description: Deployed compute and communications endpoint participating in OCCID on behalf of an Entity
+    semantic_role: concept
+    parent: Communication
+    fields:
+      uid: UID
+      id: IntID(Node)
+      entity_uid: optional UID
+      roles: list[CapabilityRole]
+      addresses: list[NetworkAddress]
+      links: map[string, Link]
+      radios: map[string, RadioProfile]
+      protocols: map[string, Protocol]

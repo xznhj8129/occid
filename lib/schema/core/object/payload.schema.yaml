@@ -1,0 +1,154 @@
+version: 1
+type: schema
+package: payload
+root: Payload
+tags:
+- core
+
+enums:
+
+  SensorType:
+  - EO = 0
+  - EO_MULTISPECTRAL
+  - RADAR
+  - ELINT
+  - LIDAR
+
+  SensorSpectrum:
+  - VISUAL = 0
+  - SWIR
+  - MWIR
+  - LWIR
+  - RF
+  - UV
+
+  SensorErrorType:
+  - CEP = 0
+  - RMS
+
+  SensorDataFormat:
+  - TEXT = 0
+  - STILL_IMAGE
+  - VIDEO
+  - TRACK
+  - RANGE
+  - POINT_CLOUD
+
+  SensorAICapability:
+  - DETECTION = 0
+  - TRACKING
+  - CLASSIFICATION
+  - IDENTIFICATION
+  - OCR
+  - CHANGE_DETECTION
+
+  SensorFrustumShape:
+  - CONICAL = 0
+  - RECTANGULAR
+  - ELLIPTICAL
+  - SECTOR
+
+  PayloadType:
+  - EO = 0
+  - EO_IR
+  - RADAR
+  - ELINT
+  - RELAY
+  - WEAPON
+  - CARGO
+  - JAMMER
+
+  PayloadState:
+  - OFF = 0
+  - READY
+  - ACTIVE
+  - DEGRADED
+  - FAILED
+
+models:
+
+  Payload:
+    description: Object-carried sensor, effector, cargo, or other mounted payload
+    semantic_role: concept
+    parent: Item
+
+  SensorPayload:
+    semantic_role: representation
+    parent: Payload
+    fields:
+      uid: UID
+      name: string
+      model: string
+      type: SensorType
+      serial_number: optional string
+      effect_domain: EffectDomain
+      max_range: float
+      ptz: bool
+      spectrum: SensorSpectrum
+      all_weather: bool
+      weather_limits: WeatherLimits
+      error_margin: float
+      error_type: SensorErrorType
+      data_formats: list[SensorDataFormat]
+      ai: list[SensorAICapability]
+      field_of_view: optional SensorFieldOfView
+      zoom_range: optional NumericRange
+
+  MeasurementQuality:
+    semantic_role: representation
+    parent: MetadataValue
+    fields:
+      lat_err_m: optional float
+      az_err_deg: optional float
+      range_err_m: optional float
+
+  ImageSensor:
+    semantic_role: representation
+    parent: SensorPayload
+    fields:
+      night_vision: bool
+      gimbal_axes: list[GimbalAxis]
+      mount_attitude: optional EulerAngles
+
+  RFSensor:
+    semantic_role: representation
+    parent: SensorPayload
+    fields:
+      frustum_shape: optional SensorFrustumShape
+      freq_span: optional NumericRange
+      chan_bw: optional float
+
+  SensorFieldOfView:
+    semantic_role: representation
+    parent: Attribute
+    description: Sensor field-of-view angular limits in degrees
+    fields:
+      horizontal_deg: optional NumericRange
+      vertical_deg: optional NumericRange
+  PayloadAllocation:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      payload_type: PayloadType
+      qty: int = 0
+
+  PayloadPlan:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      requested: list[PayloadAllocation]
+      approved: list[PayloadAllocation]
+      loaded: list[PayloadAllocation]
+      notes: optional string
+
+  PayloadMount:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      mount_ref: string
+      item_ref: string
+      qty: int = 0
+      pylons: string = ""
+      launcher: string = ""
+      compat_tags: list[PayloadType]
+      loaded: list[PayloadAllocation]

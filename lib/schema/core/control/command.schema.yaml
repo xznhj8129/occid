@@ -1,0 +1,114 @@
+version: 1
+type: schema
+package: command
+root: Command
+tags:
+  - core
+
+enums:
+  CommandResult:
+    - ACCEPTED = 0
+    - TEMPORARILY_REJECTED
+    - DENIED
+    - UNSUPPORTED
+    - FAILED
+    - IN_PROGRESS
+    - CANCELLED
+
+  StateChangeOperation:
+    - SET = 0
+    - ENABLE
+    - DISABLE
+
+  ProcessControlOperation:
+    - START = 0
+    - STOP
+    - PAUSE
+    - RESUME
+    - CANCEL
+
+  ConfigurationOperation:
+    - SET_PARAMETER = 0
+    - LOAD_CONFIGURATION
+
+  MotionOperation:
+    - MOVE_TO = 0
+    - FOLLOW_PATH
+    - MAINTAIN
+    - STOP
+
+  ResourceOperation:
+    - ACQUIRE = 0
+    - RELEASE
+    - ALLOCATE
+    - TRANSFER
+
+  ExecutionOperation:
+    - EXECUTE = 0
+    - ABORT
+    - RESET
+
+models:
+  Command:
+    description: Immediate bounded imperative applied to a concrete target without redefining task lifecycle semantics
+    semantic_role: concept
+    parent: Directive
+
+    fields:
+      target_uid: UID
+      constraints: list[Constraint]
+
+  StateChangeCommand:
+    description: Change, enable, or disable one declared state property on the target
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: StateChangeOperation
+      property_name: optional string
+      value: optional MetadataValue
+
+  ProcessControlCommand:
+    description: Start, stop, pause, resume, or cancel a named process on the target
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: ProcessControlOperation
+      process_name: optional string
+
+  ConfigurationCommand:
+    description: Set a configuration parameter or load a referenced configuration on the target
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: ConfigurationOperation
+      parameter_name: optional string
+      value: optional MetadataValue
+      configuration_uid: optional UID
+
+  MotionCommand:
+    description: Direct immediate target motion using a destination, path, or maintained spatial condition
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: MotionOperation
+      destination: optional GlobalPosition
+      path: optional GeoPath
+      radius_m: optional float
+      speed_ms: optional float
+      yaw_rad: optional float
+
+  ResourceCommand:
+    description: Acquire, release, allocate, or transfer a referenced resource
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: ResourceOperation
+      resource_uid: optional UID
+      quantity: optional float
+
+  ExecutionCommand:
+    description: Execute, abort, or reset a referenced plan, execution, or executable object
+    semantic_role: concept
+    parent: Command
+    fields:
+      operation: ExecutionOperation

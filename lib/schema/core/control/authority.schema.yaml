@@ -1,0 +1,75 @@
+version: 1
+type: schema
+package: authority
+root: Authority
+tags:
+  - core
+
+enums:
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
+models:
+  Authority:
+    description: Command, permission, delegation, authorization, or control-right context under which directed work may be assigned or exercised
+    semantic_role: concept
+    parent: Control
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Authority)
+      holder_uid: UID
+      granted_by_uid: optional UID
+      scope_uids: list[UID]
+      constraints: list[Constraint]
+
+  # Command authority belongs to a ROLE WITHIN AN ORGANIZATION.
+  # It does not belong permanently to Alice, Bob, Hermes-7, etc.
+  #
+  # The roster tells us which actor currently occupies that role.
+  #
+  # Therefore command authority survives replacement of the actor.
+  #
+  # Role alone does not imply authority:
+  #
+  #   Commander Role
+  #
+  # means "organizational function named Commander".
+  #
+  #   CommandAuthority(Organization X, Commander)
+  #
+  # means "the Commander role of Organization X actually possesses
+  # command authority over Organization X."
+  CommandAuthority:
+    semantic_role: concept
+    parent: Authority
+    fields:
+      organization_uid: UID
+      role: Role
+
+  Lease:
+    description: Bounded control right issued under an Authority record
+    semantic_role: representation
+    parent: Authority
+    fields:
+      asset_uid: UID
+      bound: Condition
+
+  AttachmentLease:
+    description: Authority lease to an organization
+    semantic_role: representation
+    parent: Lease
+    fields:
+      parent_uid: UID
+      attachment_uid: UID
+
+  ControlLease:
+    description: Temporary direct control access
+    semantic_role: representation
+    parent: Lease
+    fields:
+      controller: UID
+      control_level: ControlLevel

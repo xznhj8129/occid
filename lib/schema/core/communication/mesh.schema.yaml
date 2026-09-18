@@ -1,0 +1,82 @@
+version: 1
+type: schema
+package: mesh
+root: MeshView
+tags:
+  - core
+
+enums:
+  MeshNodeState:
+    - UNKNOWN = 0
+    - ACTIVE
+    - DEGRADED
+    - LOST
+
+  MeshtasticPort:
+    - TEXT_MESSAGE = 0
+    - POSITION
+    - PRIVATE
+
+models:
+  MeshLink:
+    description: Observed state of a link between two mesh nodes
+    semantic_role: representation
+    parent: LinkState
+    fields:
+      src_uid: UID
+      dst_uid: UID
+      updated_ts: optional Timestamp
+
+  MeshNode:
+    semantic_role: representation
+    parent: Node
+    fields:
+      state: optional MeshNodeState
+      last_seen_ts: optional Timestamp
+      position: optional GlobalPosition
+      link_state: optional LinkState
+      roles: list[CapabilityRole]
+
+  MeshView:
+    description: Current observed mesh topology and node/link state
+    semantic_role: representation
+    parent: Network
+    fields:
+      epoch: int = 0
+      nodes: list[MeshNode]
+      links: list[MeshLink]
+
+  MeshtasticMessage:
+    semantic_role: representation
+    parent: Message
+    fields:
+      sender_node_num: uint32
+      sender_name: optional string
+      destination_node_num: uint32
+      port: optional MeshtasticPort
+      private_port_num: optional int
+      text: optional string
+      payload: optional bytes
+      position: optional MeshPositionSample
+      metrics: optional MeshReceiveMetrics
+
+  MeshReceiveMetrics:
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      state: LinkState
+
+  MeshPositionSample:
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      state: LocationState
+
+  NodeHeartbeat:
+    semantic_role: representation
+    parent: TelemetryMessage
+    fields:
+      node_uid: UID
+      last_seen_ts: Timestamp
+      node_state: optional MeshNodeState
+      state: LinkState

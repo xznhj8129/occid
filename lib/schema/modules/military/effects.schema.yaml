@@ -1,0 +1,278 @@
+version: 1
+type: module
+package: military_effects
+description: "Weapons, munitions, targeting, fires, ESAD, attack effects, and battle-damage semantics."
+tags:
+- military
+requires:
+- core
+enums:
+  GuidanceType:
+  - UNGUIDED = 0
+  - INERTIAL
+  - FPV
+  - MCLOS
+  - SACLOS
+  - OPTICAL
+  - IR
+  - RADAR
+  - LASER
+  - RF
+
+  AttackMode:
+  - DIRECT_FIRE = 0
+  - INDIRECT_FIRE
+  - STANDOFF
+
+  ThreatLevel:
+  - NONE = 0
+  - LOW
+  - MEDIUM
+  - HIGH
+  - CRITICAL
+
+  ArmingStatus:
+  - DISARMED = 0
+  - ARMED
+  - FAULT
+
+  EsadMunitionStatus:
+  - NOT_PRESENT = 0
+  - PRESENT
+  - READY
+  - FAULT
+
+  EsadIgnitionStatus:
+  - OPEN = 0
+  - CLOSED
+  - FIRED
+  - FAULT
+
+  EsadFaultFlag:
+  - NONE = 0
+  - WIRING = 1
+  - POWER_GLITCH = 2
+  - SIGNAL_INTEGRITY = 4
+  - SENSOR_ACC = 8
+  - SENSOR_LIDAR = 16
+
+  EsadArmingRequest:
+  - DISARM = 0
+  - ARM
+
+  RwsArmingState:
+  - SAFE = 0
+  - ARMED
+  - FAULT
+
+  WarheadType:
+  - INERT = 0
+  - HE
+  - HEAT
+  - FRAG
+  - INC
+  - SMOKE
+  - AP
+  - EFP
+  - CRW
+
+  TargetCategory:
+  - OBJECT = 0
+  - LOCATION
+  - AREA
+
+  AirAttackMode:
+  - ONEWAY = 0
+  - DROPPER
+  - DIVE
+  - STRAFE
+  - STANDOFF_LAUNCH
+
+models:
+  EffectsPayload:
+    semantic_role: representation
+    parent: Payload
+    fields:
+      item_type: PayloadType
+      state: optional PayloadState
+      weapons: list[ItemCount]
+      ammo: list[ItemCount]
+      ordnance: list[ItemCount]
+      payload_mounts: map[string, PayloadMount]
+      payload_plan: optional PayloadPlan
+
+  Effects:
+    semantic_role: representation
+    parent: Struct
+
+    fields:
+      has_launchers: bool
+      esad: optional EsadMunitionStatus
+      payload_mounts: map[string, PayloadMount]
+      effect_domain: OperationalDomain
+      launch_domain: OperationalDomain
+      guidance: GuidanceType
+      warhead: WarheadType
+      pylon_format: string = ""
+
+  GroundEffects:
+    semantic_role: representation
+    parent: Effects
+    fields:
+      attack_modes: list[AttackMode]
+
+  AirEffects:
+    semantic_role: representation
+    parent: Effects
+    fields:
+      reusable: optional bool
+      attack_modes: list[AirAttackMode]
+
+  TargetPriority:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      threat: optional ThreatLevel
+      is_high_value: bool = false
+      note: optional string
+
+  TargetKinematics:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      location_state: LocationState
+      velocity: optional VelocityVector
+      velocity_covariance: optional VelocityVector
+
+  TargetSet:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      id: IntID(TargetSet)
+      name: string
+
+  TargetSetCoord:
+    semantic_role: representation
+    parent: TargetSet
+    fields:
+      center: GlobalPosition
+      radius_m: float
+      time_start_usec: int
+      time_end_usec: int
+
+  TargetBoxCoord:
+    semantic_role: representation
+    parent: TargetSet
+    fields:
+      corners: list[GlobalPosition]
+      time_start_usec: int
+      time_end_usec: int
+
+  TargetCoord:
+    semantic_role: representation
+    parent: TargetSet
+    fields:
+      kinematics: TargetKinematics
+      cep_desired_m: float
+      cep_max_m: float
+      target_class: ObservedObjectType
+      target_force: StandardIdentity
+
+  Fires:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      time_impact_usec: int
+      target_position: GlobalPosition
+      effector_id: IntID(Entity)
+      sequence: int
+      cep_expected_m: float
+
+  SplashCorrection:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      splash_position: GlobalPosition
+      sequence: int
+      type_detected: int
+      cep_expected_m: float
+
+  TargetHandover:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      detected_first_usec: int
+      valid_until_usec: int
+      kinematics: TargetKinematics
+      target_set_id: IntID(TargetSet)
+      target_name: string
+      match_media_url: string
+      confidence_score: float
+      authorization: list[int]
+      target_class: ObservedObjectType
+      target_force: StandardIdentity
+      match_media_type: SensorDataFormat
+
+  BattleDamageAssessment:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      kinematics: TargetKinematics
+      target_set_id: IntID(TargetSet)
+      target_name: string
+      authorization: list[int]
+      destruction_pct: int
+      confidence_pct: int
+      target_class: ObservedObjectType
+      target_force: StandardIdentity
+
+  EsadState:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      arming_challenge_hash: int
+      fault_flags: EsadFaultFlag
+      input_1: float
+      input_2: float
+      sw_version_hash: list[int]
+      arming_status: ArmingStatus
+      munition_status: EsadMunitionStatus
+      ignition_status: EsadIgnitionStatus
+      munition_type: int
+
+  EsadArming:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      arming_challenge_hash: int
+      arming_request: EsadArmingRequest
+
+  RwsPose:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      kinematics: TargetKinematics
+      offset_x_m: float
+      offset_y_m: float
+      offset_z_m: float
+      orientation_quaternion: tuple[float, float, float, float]
+      accuracy_roll_rad: float
+      accuracy_pitch_rad: float
+      accuracy_yaw_rad: float
+      coordinate_frame: int
+
+  RwsState:
+    semantic_role: representation
+    parent: Struct
+    fields:
+      time_usec: int
+      weapon_string: string
+      arming_state: RwsArmingState

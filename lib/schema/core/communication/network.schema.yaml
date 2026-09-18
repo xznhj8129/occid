@@ -1,0 +1,32 @@
+version: 1
+type: schema
+package: network
+root: Network
+tags:
+  - core
+
+enums:
+  AddressKind:
+    - IPV4 = 0
+    - IPV6
+    - MAC
+    - CALLSIGN
+    - URI
+
+  NetworkError:
+    - PLACEHOLDER1 = 0
+    - PLACEHOLDER2
+
+models:
+  Network:
+    description: Connectivity topology and routing state
+    semantic_role: concept
+    parent: Communication
+
+  NetworkAddress:
+    semantic_role: representation
+    parent: Network
+    fields:
+      kind: AddressKind
+      value: string
+      port: optional int

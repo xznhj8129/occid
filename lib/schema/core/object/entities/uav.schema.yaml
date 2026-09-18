@@ -1,0 +1,27 @@
+version: 1
+type: schema
+root: AirRobot
+package: uav
+tags:
+  - core
+
+models:
+  AirRobot:
+    semantic_role: representation
+    parent: AirMachine
+    description: "Any type of flying drone"
+    fields:
+      machine_type: MachineType = ROBOT
+      controller: RobotController
+      remote_control: RemoteControl
+      telemetry_type: TelemetryType
+
+  Drone:
+    semantic_role: representation
+    parent: AirRobot
+    fields:
+      airframe: AirframeType = COPTER
+      op_domain: OperationalDomain = AIR
+      model: string
+      sensors: map[string, SensorPayload]
+      navigation: AirNavigation

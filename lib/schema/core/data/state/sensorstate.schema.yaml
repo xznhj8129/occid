@@ -1,0 +1,65 @@
+version: 1
+type: schema
+package: sensorstate
+root: SensorState
+tags:
+  - core
+
+enums:
+  SensorMode:
+    - OFF = 0
+    - LOOK
+    - SCAN
+    - TRACK
+
+  SensorRunState:
+    - OFFLINE = 0
+    - READY
+    - ACTIVE
+    - DEGRADED
+
+  GimbalState:
+    - STOWED = 0
+    - STABILIZED
+    - SCANNING
+    - TRACKING
+
+models:
+
+  SensorState:
+    description: Time-indexed readings, readiness, calibration, and availability of an identified sensor
+    semantic_role: concept
+    parent: SubjectState
+
+  ImagingSensorState:
+    description: Current operating and pointing state of an imaging sensor
+    semantic_role: representation
+    parent: SensorState
+    fields:
+      run_state: SensorRunState
+      mode: optional SensorMode
+      gimbal_state: optional GimbalState
+      gimbal_attitude: optional EulerAngles
+      field_of_view: optional SensorFieldOfView
+
+  TrackerState:
+    semantic_role: representation
+    parent: SensorState
+    fields:
+      locked: optional bool
+      target_uid: optional UID
+      angular_error: optional LocalDirection
+      search_box_size: optional int
+      detections: optional VisionDetectionFrame
+
+  FlightSensorConfiguration:
+    description: Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers
+    semantic_role: representation
+    parent: SensorState
+    fields:
+      accelerometer: optional string
+      barometer: optional string
+      magnetometer: optional string
+      airspeed: optional string
+      rangefinder: optional string
+      optical_flow: optional string

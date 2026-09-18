@@ -1,0 +1,109 @@
+version: 1
+type: schema
+package: task
+root: Task
+tags:
+  - core
+
+enums:
+  ManeuverIntent:
+    - MOVE = 0
+    - HOLD
+    - FOLLOW
+    - TRANSIT
+    - POSITION
+
+  EffectIntent:
+    - CREATE = 0
+    - REMOVE
+    - MODIFY
+    - RESTORE
+    - PROTECT
+    - DENY
+
+  InformationIntent:
+    - SEARCH = 0
+    - OBSERVE
+    - IDENTIFY
+    - CLASSIFY
+    - MEASURE
+    - ASSESS
+    - MONITOR
+
+  TransportIntent:
+    - CARGO = 0
+    - PERSONNEL
+    - SUPPLY
+    - EVACUATE
+    - RECOVER
+
+  TaskPhase:
+    - CREATED = 0
+    - DISPATCHED
+    - ASSIGNED
+    - RUNNING
+    - DONE_OK
+    - DONE_FAIL
+    - CANCELLED
+
+  TaskPriority:
+    - ROUTINE = 0
+    - HIGH
+    - IMMEDIATE
+
+  TaskStatus:
+    - NEW = 0
+    - ACCEPTED
+    - ACTIVE
+    - COMPLETE
+    - FAILED
+    - CANCELLED
+
+models:
+  Task:
+    description: Directed work that must be accomplished in support of an optional objective
+    semantic_role: concept
+    parent: Directive
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Task)
+      instruction: string
+      target_uids: list[UID]
+      location_uids: list[UID]
+      objective_uid: optional UID
+      constraints: list[Constraint]
+      preconditions: optional list[Condition]
+      start_time: optional float
+      deadline: optional float
+      priority: TaskPriority = ROUTINE
+      status: TaskStatus = NEW
+      phase: TaskPhase
+
+  TaskManeuver:
+    description: Practical Task schema for desired movement, position, or spatial persistence
+    semantic_role: representation
+    parent: Task
+    fields:
+      intent: ManeuverIntent
+
+  TaskEffect:
+    description: Practical Task schema for desired creation, removal, modification, restoration, protection, or denial
+    semantic_role: representation
+    parent: Task
+    fields:
+      intent: EffectIntent
+
+  TaskInformation:
+    description: Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring
+    semantic_role: representation
+    parent: Task
+    fields:
+      intent: InformationIntent
+
+  TaskTransport:
+    description: Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets
+    semantic_role: representation
+    parent: Task
+    fields:
+      intent: TransportIntent

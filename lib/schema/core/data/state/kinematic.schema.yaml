@@ -1,0 +1,39 @@
+version: 1
+type: schema
+package: kinematic
+root: Kinematic
+tags:
+  - core
+
+enums:
+  AirspeedReference:
+    - UNSPECIFIED = 0
+    - INDICATED
+    - CALIBRATED
+    - TAS
+    - EQUIVALENT
+
+models:
+  Kinematic:
+    description: Motion and derived movement state.
+    semantic_role: concept
+    parent: State
+
+  ImuSample:
+    semantic_role: representation
+    parent: Kinematic
+    fields:
+      acceleration: optional LocalVector
+      angular_velocity: optional AngularVelocityVector
+      magnetic_field: optional LocalVector
+      temperature_deg_c: optional float
+      timestamp_us: optional int
+      frame: optional BodyReferenceFrame
+
+  Airspeed:
+    description: Air-relative vehicle speed with explicit interpretation when known
+    semantic_role: representation
+    parent: Measurement
+    fields:
+      speed_ms: float
+      reference: AirspeedReference = UNSPECIFIED

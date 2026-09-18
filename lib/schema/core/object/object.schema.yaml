@@ -1,0 +1,80 @@
+version: 1
+type: schema
+package: object
+root: Object
+tags:
+  - core
+models:
+  Object:
+    description: Atoms
+    semantic_role: concept
+    parent: Root
+
+    fields:
+      capabilities: optional list[Capability]
+
+  Set:
+    semantic_role: concept
+    parent: Object
+
+  Collection:
+    description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal
+    semantic_role: concept
+    parent: Set
+
+  Cluster:
+    description: A set of objects united only by criterion
+    semantic_role: concept
+    parent: Set
+
+  Item:
+    description: A discrete bounded non-agent object
+    semantic_role: concept
+    parent: Object
+
+  Equipment:
+    semantic_role: concept
+    parent: Item
+
+  Component:
+    semantic_role: concept
+    parent: Item
+
+  Location:
+    description: Identified physical-world spatial reference, place, feature, site, course, area, or delimiter
+    semantic_role: concept
+    parent: Object
+
+    fields:
+      record: Record
+      uid: UID
+      id: IntID(Location)
+      name: optional string
+
+  Mark:
+    description: Identified point reference in physical space
+    semantic_role: representation
+    parent: Location
+    fields:
+      position: GlobalPosition
+
+  Path:
+    description: Identified ordered spatial course or trace
+    semantic_role: representation
+    parent: Location
+    fields:
+      path: GeoPath
+
+  Region:
+    description: Identified bounded spatial area
+    semantic_role: representation
+    parent: Location
+    fields:
+      area: GeoArea
+
+  Boundary:
+    description: Identified spatial line that delimits, separates, or gates space
+    semantic_role: representation
+    parent: Location
+    fields:
+      path: GeoPath

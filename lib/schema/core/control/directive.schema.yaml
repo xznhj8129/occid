@@ -1,0 +1,12 @@
+version: 1
+type: schema
+package: directive
+root: Directive
+tags:
+  - core
+
+models:
+  Directive:
+    description: Directed work or an immediate imperative issued under control authority
+    semantic_role: concept
+    parent: Control

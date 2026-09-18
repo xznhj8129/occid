@@ -1,0 +1,49 @@
+version: 1
+type: schema
+package: state
+root: State
+tags:
+  - core
+
+enums:
+  ObservationTimeBasis:
+    - UNKNOWN = 0
+    - UNIX
+    - BOOT
+
+models:
+  State:
+    description: Changing condition of an object, node, link, task, system, or process
+    semantic_role: concept
+    parent: Data
+
+  SubjectState:
+    description: Persisted time-indexed state of an identified OCCID subject; semantic state history uses typed state records rather than generic object revision snapshots
+    semantic_role: concept
+    parent: State
+    fields:
+      record: Record
+      subject_uid: UID
+      timestamp: Timestamp
+
+  EntityState:
+    description: Time-indexed mutable condition reported for an entity independently of its identity and specification
+    semantic_role: representation
+    parent: SubjectState
+    fields:
+      position: optional LocationState
+      motion: optional VelocityVector
+      angular_velocity: optional AngularVelocityVector
+      airspeed: optional Airspeed
+      flight_control: optional FlightControlState
+      power: optional PowerState
+      operational_status: optional EntityOperationalState
+      lifecycle_status: optional EntityLifecycleStatus
+      health: optional HealthSnapshot
+      resources: optional InventoryState
+      link_states: map[string, LinkState]
+      control_state: optional ControlLevel
+      source_observation_ts: optional Timestamp
+      source_time_basis: optional ObservationTimeBasis
+      received_ts: optional Timestamp
+      published_ts: optional Timestamp

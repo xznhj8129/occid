@@ -1,0 +1,19 @@
+version: 1
+type: schema
+package: cue
+root: Cue
+tags:
+  - core
+
+models:
+  Cue:
+    description: Spatial cue toward a target or point of interest, distinct from vehicle guidance, navigation, and control state
+    semantic_role: concept
+    parent: State
+    fields:
+      source_uid: optional UID
+      target_uid: optional UID
+      bearing_rad: optional float
+      elevation_rad: optional float
+      distance_m: optional float
+      label: optional string

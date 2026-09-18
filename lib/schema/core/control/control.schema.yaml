@@ -1,0 +1,13 @@
+version: 1
+type: schema
+package: control
+root: Control
+tags:
+  - core
+
+
+models:
+  Control:
+    description: Desired outcomes and directed work
+    semantic_role: concept
+    parent: Root

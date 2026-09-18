@@ -1,0 +1,31 @@
+version: 1
+type: schema
+package: isr
+root: ObservationMessage
+tags:
+  - core
+
+models:
+  ObservationMessage:
+    description: Message whose payload reports external objects, events, environment, or intelligence
+    semantic_role: concept
+    parent: Message
+    fields:
+      observation: Observation
+
+  ProtocolEventMessage: # clearly something specific to a protocol (COT?) that was shoehorned in here
+    semantic_role: representation
+    parent: ObservationMessage
+    fields:
+      event_ref: string
+      event_type: string
+      event_method: optional string
+      callsign: optional string
+      time_text: optional string
+      start_text: optional string
+      stale_text: optional string
+      position: optional GlobalPosition
+      uncertainty: optional LocationUncertainty
+      detail: optional ProtocolPayload
+      source_address: optional NetworkAddress
+      targets: list[UID]
