@@ -8,25 +8,28 @@ from generated.occid2 import (
     AssignedWork,
     BloodGroup,
     Controller,
-    Directed,
     Drone,
     Geodetic,
     GlobalPosition,
-    InformationIntent,
+    TaskIntent,
     LocalAttitude,
     LocalPosition,
     LocalVelocity,
     Machine,
-    ManeuverIntent,
+    TaskIntent,
     Mark,
     Mission,
     MOVE,
     PhysicalDomain,
+    PlainText,
     Position,
     Representation,
     TaskInformation,
+    TaskIntent,
     TaskManeuver,
+    TemporalMode,
     UAV,
+    UID,
     UnmannedVehicle,
     VehicleState,
     new_store,
@@ -71,7 +74,7 @@ def main() -> None:
     move = store.task(
         "task-move-1",
         TaskManeuver,
-        ManeuverIntent.MOVE,
+        TaskIntent.MOVE,
         instruction="move to mark alpha",
     )
     print("  fixed semantics:", move.factors)
@@ -79,7 +82,7 @@ def main() -> None:
     move.bind("actor", uav)
     print(f"   {move}")
     mark = store.ref("mark-alpha", Mark)
-    mark.set(Mark(uid="mark-alpha", name="alpha", lat=45.28, lon=-74.18, h=110.0))
+    mark.set(Mark(uid=UID(uid="mark-alpha"), name=PlainText(value="alpha"), lat=45.28, lon=-74.18, h=110.0))
     move.bind("destination", mark)
     print(f"   {move} unbound: {move.unbound}")
     print()
@@ -89,7 +92,7 @@ def main() -> None:
     locate = store.task(
         "task-locate-1",
         TaskInformation,
-        InformationIntent.LOCATE,
+        TaskIntent.LOCATE,
         instruction="locate target-42",
     )
     locate.bind("target", target)
@@ -101,7 +104,7 @@ def main() -> None:
 
     print("Relations connect independent things; roles belong to the relation.")
     store.relate(AssignedWork, uav, move.ref)
-    for fact in store.relations(Directed):
+    for fact in store.relations():
         print(f"   {fact}")
     print()
 

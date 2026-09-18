@@ -9,6 +9,21 @@ A chart reduces a quantity in a representation to irreducible variables.
    chart Velocity * Representation.LocalCartesian := vx:float[m/s] * vy:float[m/s] * vz:float[m/s]
    chart Attitude * Representation.LocalEuler := roll:float[rad] * pitch:float[rad] * yaw:float[rad]
    chart Attitude * Representation.Quaternion := qw:float * qx:float * qy:float * qz:float
+   chart Time * Representation.Epoch := utime:float[s] * tz:int
+   chart Identity * Representation.UID := uid:string
+   chart Identity * Representation.IntID := id:int
+   chart Text * Representation.PlainText := value:string
+   chart Duration * Representation.Seconds := seconds:float[s]
+   chart Angle * Representation.Radians := rad:float[rad]
+   chart Distance * Representation.Meters := m:float[m]
+   chart Speed * Representation.MetersPerSecond := mps:float[m/s]
+   chart Altitude * Representation.MSL := m:float[m]
+   chart Altitude * Representation.FlightLevel := fl:float
+   chart Count * Representation.Count := count:int
+   chart Ordinal * Representation.Ordinal := n:int
+   chart Code * Representation.Protocol := code:int
+   chart Scalar * Representation.Decimal := value:float
+   chart Scalar * Representation.Integer := value:int
   GlobalPosition: ['lat', 'lon', 'h']
   VehicleState  : ['uid', 'lat', 'lon', 'h', 'vx', 'vy', 'vz', 'roll', 'pitch', 'yaw']
   VehicleState units: {'lat': 'deg', 'lon': 'deg', 'h': 'm', 'vx': 'm/s', 'vy': 'm/s', 'vz': 'm/s', 'roll': 'rad', 'pitch': 'rad', 'yaw': 'rad'}
@@ -19,7 +34,7 @@ Data is stored in a representation and addressed by meaning.
   uav * Position * Local    -> LocalPosition(x=120.0, y=-40.0, z=15.0)
 
 A projection is the compiled normal form of chart-selected facts.
-   VehicleState(uid='uav-1', lat=45.3, lon=-74.2, h=125.0, vx=12.0, vy=0.0, vz=-1.5, roll=0.0, pitch=0.0, yaw=1.57)
+   VehicleState(uid=UID(uid='uav-1'), lat=45.3, lon=-74.2, h=125.0, vx=12.0, vy=0.0, vz=-1.5, roll=0.0, pitch=0.0, yaw=1.57)
 
 A task is an open expression: fixed factors + typed free variables.
   MOVE = MOVE(actor: Entity, destination: Position)  { Position(actor) = destination }

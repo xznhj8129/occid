@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, fields, is_dataclass
 from enum import Enum
-from typing import Any, ClassVar, Iterable
+from typing import Any, ClassVar, Iterable, get_type_hints
 
 MAX_SOLVER_DEPTH = 48
 MAX_CANDIDATES = 128
@@ -254,15 +254,6 @@ class RelationType:
     name: str
     signature: tuple[type[SemanticModel], ...]
     operand_names: tuple[str, ...] = ()
-    base: "RelationType | None" = None
-
-    def specializes(self, other: "RelationType") -> bool:
-        current: RelationType | None = self
-        while current is not None:
-            if current is other:
-                return True
-            current = current.base
-        return False
 
     def __call__(self, *operands: "ModelRef") -> RelationFact:
         if len(operands) != len(self.signature):
@@ -896,12 +887,14 @@ class Store:
         # member, it is stored in the representation field that carries it.
         expression = self.registry.expression_of(word)
         if isinstance(word, SemanticEnum):
+            wanted = type(word).__name__
+            optional_types = (f"{wanted} | None", f"optional {wanted}")
             for field in fields(model):
                 if field.name in values:
                     continue
-                if field.type == type(word).__name__ or field.type is type(word):
+                if field.type == wanted or field.type in optional_types:
                     values[field.name] = word
-        value = model(uid=uid, **values)
+        value = model(**{**values, "uid": self._identity_value(model, uid)})
         ref = self.ref(uid, model)
         self.set(ref, value)
         if not self.registry.entails(value_semantics(value), expression.factors):
@@ -922,6 +915,16 @@ class Store:
             )
         return found[0]
 
+    def _identity_value(self, model: type[SemanticModel], uid: str) -> Any:
+        # A model's `uid` field is an identity representation (a chart model),
+        # not a bare string; wrap the pointer value before construction.
+        annotation = get_type_hints(model).get("uid")
+        if isinstance(annotation, type) and issubclass(annotation, SemanticModel):
+            coordinate_names = [field.name for field in fields(annotation)]
+            if len(coordinate_names) == 1:
+                return annotation(**{coordinate_names[0]: uid})
+        return uid
+
     def project(self, subject: ModelRef, projection: type[SemanticModel]) -> SemanticModel:
         # A projection is a compiled normal form: every chart selected by the
         # projection contributes its coordinates from existing facts.
@@ -930,7 +933,7 @@ class Store:
             raise KeyError(f"unknown projection: {projection.__name__}")
         kwargs: dict[str, Any] = {}
         if "uid" in spec.fields:
-            kwargs["uid"] = subject.uid
+            kwargs["uid"] = self._identity_value(projection, subject.uid)
         for chart in spec.charts:
             datum = self._first_datum(subject, chart.factors)
             if datum is None:
@@ -945,11 +948,9 @@ class Store:
         return fact
 
     def relations(self, relation: RelationType | None = None) -> list[RelationFact]:
-        # Querying a base relation returns every fact whose relation
-        # specializes it; direction is inherited, so operand order holds.
         if relation is None:
             return list(self._relations)
-        return [fact for fact in self._relations if fact.relation.specializes(relation)]
+        return [fact for fact in self._relations if fact.relation is relation]
 
 
 def value_semantics(value: SemanticModel, _seen: frozenset[int] | None = None) -> Product:

@@ -7,39 +7,56 @@ from pathlib import Path
 
 from compiler import compile_schema
 from runtime import Product, sem, value_semantics
+import generated.occid2 as occid2
 from generated.occid2 import (
     AirTask,
     Airframe,
     Altitude,
     Actor,
     AssignedWork,
+    Authority,
     Biological,
     BloodGroup,
-    Directed,
+    Condition,
+    ConstrainedBy,
     Drone,
     Geodetic,
     GlobalPosition,
-    InformationIntent,
+    Holds,
+    TaskIntent,
     LocalAttitude,
     LocalPosition,
     LocalVelocity,
     Machine,
-    ManeuverIntent,
+    TaskIntent,
     Mark,
     Mission,
+    Command,
+    CommandOperation,
     MOVE,
+    MotionCommand,
     Person,
     PhysicalDomain,
+    Plan,
+    PlainText,
     Position,
+    Predicate,
     Realm,
+    REGISTRY_SPEC,
     Representation,
     Task,
     TaskInformation,
+    TaskIntent,
     TaskManeuver,
+    TaskTimeWindow,
     TemporalMode,
+    Time,
+    Timestamp,
     UAV,
+    UID,
     UnmannedVehicle,
     VehicleState,
+    WeatherLimits,
     new_store,
 )
 
@@ -99,7 +116,7 @@ def main() -> None:
     uav.set(LocalVelocity(vx=12.0, vy=0.0, vz=-1.5))
     uav.set(LocalAttitude(roll=0.0, pitch=0.0, yaw=1.57))
     full = store.project(uav, VehicleState)
-    check(full.uid == "uav-1" and (full.lat, full.vy, full.yaw) == (45.30, 0.0, 1.57), "projection materialization failed")
+    check(full.uid.uid == "uav-1" and (full.lat, full.vy, full.yaw) == (45.30, 0.0, 1.57), "projection materialization failed")
 
     # 8. The representation is selected by factors, not by class paths.
     uav.set(LocalPosition(x=120.0, y=-40.0, z=15.0))
@@ -112,15 +129,15 @@ def main() -> None:
 
     # 10. A word names an expression; the task realizes it.
     move = store.task(
-        "task-move-1", TaskManeuver, ManeuverIntent.MOVE, instruction="move to mark alpha"
+        "task-move-1", TaskManeuver, TaskIntent.MOVE, instruction="move to mark alpha"
     )
-    check(registry.expression_of(ManeuverIntent.MOVE) == MOVE, "MOVE word must name MOVE expression")
+    check(registry.expression_of(TaskIntent.MOVE) == MOVE, "MOVE word must name MOVE expression")
     check(
         MOVE.factors == sem(Task, Realm.WORLD, TemporalMode.ACHIEVE),
         "MOVE factors must be the declared product",
     )
     check(move.expression.name == "MOVE", "task must realize MOVE")
-    check(move.ref.get(TaskManeuver).intent is ManeuverIntent.MOVE, "the word stores the vocabulary member")
+    check(move.ref.get(TaskManeuver).intent is TaskIntent.MOVE, "the word stores the vocabulary member")
     check(
         registry.entails(value_semantics(move.ref.get(TaskManeuver)), MOVE.factors),
         "task value must entail the expression factors",
@@ -134,14 +151,14 @@ def main() -> None:
     else:
         raise AssertionError("a vehicle does not satisfy the Position region")
     mark_ref = store.ref("mark-alpha", Mark)
-    mark_ref.set(Mark(uid="mark-alpha", name="alpha", lat=45.28, lon=-74.18, h=110.0))
+    mark_ref.set(Mark(uid=UID(uid="mark-alpha"), name=PlainText(value="alpha"), lat=45.28, lon=-74.18, h=110.0))
     move.bind("destination", mark_ref)
     check(move.unbound == [], "all variables bound")
 
     # 11. An unbound variable is an unknown, not an error.
     target = store.ref("target-42", UnmannedVehicle)
     locate = store.task(
-        "task-locate-1", TaskInformation, InformationIntent.LOCATE, instruction="locate target-42"
+        "task-locate-1", TaskInformation, TaskIntent.LOCATE, instruction="locate target-42"
     )
     locate.bind("target", target)
     check(locate.solve() == {}, "an entity without a position has an unknown answer")
@@ -160,8 +177,7 @@ def main() -> None:
         pass
     else:
         raise AssertionError("reversed AssignedWork must fail")
-    check(AssignedWork.specializes(Directed), "relation specialization failed")
-    check(fact in store.relations(Directed), "base relation query must see specializations")
+    check(fact in store.relations(AssignedWork), "relation query must see facts")
 
     # 13. Applicability is emergent and never asserts.
     check(not registry.entails(sem(Altitude), PhysicalDomain.AIR), "applicability must not assert")
@@ -179,7 +195,42 @@ def main() -> None:
             hb = hashlib.sha256((Path(b) / filename).read_bytes()).digest()
             check(ha == hb, f"nondeterministic compiler output: {filename}")
 
-    print("14 tests passed")
+    # 15. Every ported word resolves to an expression; a command is a task.
+    for word in REGISTRY_SPEC["word_expressions"]:
+        enum_name, member = word.split(".", 1)
+        registry.expression_of(getattr(getattr(occid2, enum_name), member))
+    cmd = store.task("task-cmd-1", MotionCommand, CommandOperation.MOVE)
+    check(cmd.expression.name == "DIRECT", "MOVE word must name the DIRECT expression")
+    cmd.bind("target", uav)
+    cmd.bind("destination", mark_ref)
+    check(cmd.unbound == ["path"], "an unbound path is an unknown, not an error")
+
+    # 16. Ported value models keep their charts and stay legal.
+    check({field.name for field in fields(Timestamp)} == {"utime", "tz"}, "epoch chart fields")
+    check(registry.entails(sem(Timestamp), Time), "Timestamp must entail Time")
+    check(registry.legal(sem(WeatherLimits, PhysicalDomain.AIR)), "weather limits are meaningful")
+
+    # 17. The surviving relations validate their roles.
+    window = store.ref("window-1", TaskTimeWindow)
+    window.set(TaskTimeWindow(earliest_start=Timestamp(utime=1.0, tz=0)))
+    store.relate(ConstrainedBy, cmd.ref, window)
+    authority = store.ref("auth-1", Authority)
+    authority.set(Authority(uid=UID(uid="auth-1")))
+    store.relate(Holds, authority, uav)
+    check(len(store.relations()) >= 3, "facts are queryable")
+    try:
+        ConstrainedBy(uav, window)
+    except TypeError:
+        pass
+    else:
+        raise AssertionError("a vehicle is not directed work")
+
+    # 18. Ported parentage is still entailed by closure.
+    check(registry.entails(sem(TaskManeuver), Task), "a maneuver task is a task")
+    check(registry.entails(sem(MotionCommand), Command), "a motion command is a command")
+    check(registry.entails(sem(Predicate), Condition), "a predicate is a condition")
+
+    print("18 tests passed")
 
 
 if __name__ == "__main__":

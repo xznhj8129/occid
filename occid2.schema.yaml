@@ -81,6 +81,21 @@ axes:
       - LocalCartesian
       - LocalEuler
       - Quaternion
+      - Epoch
+      - UID
+      - IntID
+      - PlainText
+      - Seconds
+      - Radians
+      - Meters
+      - MetersPerSecond
+      - MSL
+      - FlightLevel
+      - Count
+      - Ordinal
+      - Protocol
+      - Decimal
+      - Integer
 
   BloodGroup:
     cardinality: one
@@ -118,6 +133,10 @@ axes:
       any:
         - Existence
         - Connectivity
+        - Engagement
+        - Activity
+        - Paused
+        - Hold
     values:
       - "TRUE"
       - "FALSE"
@@ -128,19 +147,22 @@ axes:
 # ---------------------------------------------------------------------------
 
 enums:
-  ManeuverIntent:
+  TaskIntent:
     - MOVE = 0
     - HOLD
-
-  InformationIntent:
-    - LOCATE = 0
+    - FOLLOW
+    - LOCATE
     - TRACK
     - IDENTIFY
     - CLASSIFY
-
-  EffectIntent:
-    - CREATE = 0
+    - MEASURE
+    - CREATE
     - REMOVE
+    - MODIFY
+    - RESTORE
+    - PROTECT
+    - DENY
+    - TRANSPORT
 
   TaskPriority:
     - ROUTINE = 0
@@ -153,33 +175,112 @@ enums:
     - COMPLETE
     - FAILED
     - CANCELLED
+    - ACCEPTED
+
+  TaskPhase:
+    - CREATED = 0
+    - DISPATCHED
+    - ASSIGNED
+    - RUNNING
+    - DONE_OK
+    - DONE_FAIL
+    - CANCELLED
+
+  # --- ported from core/control/command.schema.yaml -------------------------
+
+  CommandOperation:
+    - ENGAGE = 0
+    - DISENGAGE
+    - PAUSE
+    - RESUME
+    - SET
+    - MOVE
+    - ALLOCATE
+    - TRANSFER
+    - LOAD_CONFIGURATION
+    - RESET
+
+  # --- ported from core/control/authority.schema.yaml ------------------------
+
+  ControlLevel:
+    - NONE = 0
+    - MONITOR
+    - GUIDE
+    - FULL
+
+  PlanApprovalState:
+    - DRAFT = 0
+    - PROPOSED
+    - APPROVED
+    - REJECTED
+    - SUPERSEDED
+
+  # --- ported value vocabularies the control package references --------------
+
+  BooleanOperator:
+    - NONE = 0
+    - NOT
+    - AND
+    - OR
+    - XOR
+    - NAND
+    - NOR
+    - XNOR
+
+  # --- ported from core/control/aerialcontrol/aerial.schema.yaml -------------
+
+
+
 
 # ---------------------------------------------------------------------------
-# Relations connect independently existing things. Roles and operand order
-# belong to the relation itself; specialization inherits direction
-# positionally and may narrow operand regions and rename roles.
+# Relations connect independently existing things. Only links that are neither
+# factors of one thing nor variables of an expression are relations: work
+# participants are expression variables, plans aggregate, and these are the
+# links that remain. Each is declared once; roles belong to the relation.
 # ---------------------------------------------------------------------------
 
 relations:
-  Directed:
-    description: Base directed link; source -> target.
-    operands:
-      source: Root
-      target: Root
-
-  Affects:
-    description: A cause acts on an effect receiver.
-    specializes: Directed
-    operands:
-      source: Object
-      target: Root
-
   AssignedWork:
-    description: An entity carries a task. Role names belong to the relation.
-    specializes: Directed
+    description: An entity carries work.
     operands:
       assignee: Entity
       work: Task
+
+  ConstrainedBy:
+    description: A constraint bounds directed work.
+    operands:
+      subject: Control
+      constraint: Constraint
+
+  OwnedBy:
+    description: An objective is owned by an entity.
+    operands:
+      objective: Objective
+      owner: Entity
+
+  Holds:
+    description: An entity holds an authority.
+    operands:
+      authority: Authority
+      holder: Entity
+
+  GrantedBy:
+    description: An authority was granted by an entity.
+    operands:
+      authority: Authority
+      grantor: Entity
+
+  Controls:
+    description: A lease controls an asset.
+    operands:
+      lease: Lease
+      asset: Object
+
+  Contains:
+    description: A plan contains an item of work, a participant, or a resource.
+    operands:
+      plan: Plan
+      item: Root
 
 # ---------------------------------------------------------------------------
 # Charts reduce a semantic quantity in a chosen representation to
@@ -217,6 +318,52 @@ charts:
     qy: float
     qz: float
 
+  Time * Representation.Epoch:
+    utime: float[s]
+    tz: int
+
+  Identity * Representation.UID:
+    uid: string
+
+  Identity * Representation.IntID:
+    id: int
+
+  Text * Representation.PlainText:
+    value: string
+
+  Duration * Representation.Seconds:
+    seconds: float[s]
+
+  Angle * Representation.Radians:
+    rad: float[rad]
+
+  Distance * Representation.Meters:
+    m: float[m]
+
+  Speed * Representation.MetersPerSecond:
+    mps: float[m/s]
+
+  Altitude * Representation.MSL:
+    m: float[m]
+
+  Altitude * Representation.FlightLevel:
+    fl: float
+
+  Count * Representation.Count:
+    count: int
+
+  Ordinal * Representation.Ordinal:
+    n: int
+
+  Code * Representation.Protocol:
+    code: int
+
+  Scalar * Representation.Decimal:
+    value: float
+
+  Scalar * Representation.Integer:
+    value: int
+
 # ---------------------------------------------------------------------------
 # Open expressions:
 #
@@ -236,7 +383,7 @@ expressions:
       destination: Position
     equations:
       - Position(actor) = destination
-    words: [ManeuverIntent.MOVE]
+    words: [TaskIntent.MOVE]
 
   HOLD:
     description: Maintain an actor's position at the destination.
@@ -246,7 +393,7 @@ expressions:
       destination: Position
     equations:
       - Position(actor) = destination
-    words: [ManeuverIntent.HOLD]
+    words: [TaskIntent.HOLD]
 
   LOCATE:
     description: Solve for the position of an entity.
@@ -257,7 +404,7 @@ expressions:
       position: Position
     equations:
       - Position(target) = position
-    words: [InformationIntent.LOCATE]
+    words: [TaskIntent.LOCATE]
 
   TRACK:
     description: Maintain awareness of an entity's position.
@@ -268,7 +415,7 @@ expressions:
       position: Position
     equations:
       - Position(target) = position
-    words: [InformationIntent.TRACK]
+    words: [TaskIntent.TRACK]
 
   IDENTIFY:
     description: Solve for the identity of an entity.
@@ -279,7 +426,7 @@ expressions:
       identity: Identity
     equations:
       - Identity(target) = identity
-    words: [InformationIntent.IDENTIFY]
+    words: [TaskIntent.IDENTIFY]
 
   CLASSIFY:
     description: Solve for the classification of an entity.
@@ -290,24 +437,162 @@ expressions:
       classification: Classification
     equations:
       - Classification(target) = classification
-    words: [InformationIntent.CLASSIFY]
+    words: [TaskIntent.CLASSIFY]
 
   CREATE:
     description: Make an object exist.
     factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.TRUE]
     given:
       object: Object
-    words: [EffectIntent.CREATE]
+    words: [TaskIntent.CREATE]
 
   REMOVE:
     description: Make an object cease to exist.
     factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence, TruthTarget.FALSE]
     given:
       object: Object
-    words: [EffectIntent.REMOVE]
+    words: [TaskIntent.REMOVE]
+
+  # --- ported from core/control/task.schema.yaml -----------------------------
+
+  FOLLOW:
+    description: Follow a path.
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
+    given:
+      actor: Entity
+      path: GeoPath
+    words: [TaskIntent.FOLLOW]
+
+  MEASURE:
+    description: Measure a state of a target.
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
+    given:
+      target: Entity
+    sought:
+      measurement: State
+    words: [TaskIntent.MEASURE]
+
+  MODIFY:
+    description: Change an object's state.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+    given:
+      object: Object
+    words: [TaskIntent.MODIFY]
+
+  RESTORE:
+    description: Return an object to a prior state.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+    given:
+      object: Object
+    words: [TaskIntent.RESTORE]
+
+  PROTECT:
+    description: Keep an object in its current state.
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
+    given:
+      object: Object
+    words: [TaskIntent.PROTECT]
+
+  DENY:
+    description: Prevent connectivity to an object.
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN, Connectivity, TruthTarget.FALSE]
+    given:
+      object: Object
+    words: [TaskIntent.DENY]
+
+  TRANSPORT:
+    description: Move a thing between places; which end and what moves are bindings.
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
+    given:
+      cargo: Object
+      origin: Position
+      destination: Position
+    words: [TaskIntent.TRANSPORT]
+
+  # --- ported from core/control/command.schema.yaml --------------------------
+  # A command's twins are one direction over a state: ENGAGE/DISENGAGE assert
+  # TRUE/FALSE of the state its child denotes; PAUSE/RESUME assert Paused; the
+  # remaining operations are undirected.
+
+  ENGAGE:
+    description: Assert the target state true.
+    factors: [Command, TruthTarget.TRUE]
+    given:
+      target: Object
+    words: [CommandOperation.ENGAGE]
+
+  DISENGAGE:
+    description: Assert the target state false.
+    factors: [Command, TruthTarget.FALSE]
+    given:
+      target: Object
+    words: [CommandOperation.DISENGAGE]
+
+  PAUSE:
+    description: Hold a running process paused.
+    factors: [Command, Paused, TruthTarget.TRUE]
+    given:
+      target: Object
+    words: [CommandOperation.PAUSE]
+
+  RESUME:
+    description: Release a process from paused.
+    factors: [Command, Paused, TruthTarget.FALSE]
+    given:
+      target: Object
+    words: [CommandOperation.RESUME]
+
+  SET:
+    description: Set a declared state property on the target.
+    factors: [Command]
+    given:
+      target: Object
+    words: [CommandOperation.SET]
+
+  DIRECT:
+    description: Direct the target to a destination or along a path.
+    factors: [Command, TemporalMode.ACHIEVE]
+    given:
+      target: Object
+      destination: Position
+      path: GeoPath
+    equations:
+      - Position(target) = destination
+    words: [CommandOperation.MOVE]
+
+  ALLOCATE:
+    description: Allocate a referenced resource.
+    factors: [Command]
+    given:
+      target: Object
+      resource: Resource
+    words: [CommandOperation.ALLOCATE]
+
+  TRANSFER:
+    description: Transfer a referenced resource.
+    factors: [Command]
+    given:
+      target: Object
+      resource: Resource
+    words: [CommandOperation.TRANSFER]
+
+  LOAD_CONFIGURATION:
+    description: Load a referenced configuration on the target.
+    factors: [Command]
+    given:
+      target: Object
+    words: [CommandOperation.LOAD_CONFIGURATION]
+
+  RESET:
+    description: Reset the target to its initial state.
+    factors: [Command]
+    given:
+      target: Object
+    words: [CommandOperation.RESET]
 
 # ---------------------------------------------------------------------------
-# Models are named products. Parentage entails the parent's full semantics,
+# Models are named products. Parentage entails the parent's meaning; compiled
+# semantics carry inherited factors and derive ancestor labels by closure.
 # `product:` entries expand to the semantics they name, and `chart:` entries
 # add the chart's factors and compile the chart's variables as fields.
 # ---------------------------------------------------------------------------
@@ -324,14 +609,14 @@ models:
     description: Physical reference place in the world, ie village, bridge, mountain
     parent: Object
     fields:
-      name: optional string
+      name: optional PlainText
 
   Entity:
     description: A discrete participant capable of actions.
     parent: Object
     fields:
       uid: UID
-      name: optional string
+      name: optional PlainText
 
   Biological:
     description: Living participants. Disjoint from Machine.
@@ -342,19 +627,19 @@ models:
   Person:
     parent: Biological
     fields:
-      name: optional string
+      name: optional PlainText
 
   Actor:
     parent: Person
     fields:
-      role: optional string
+      role: optional Role
 
   Machine:
     parent: Entity
     product:
       - Substrate.MECHANICAL
     fields:
-      serial_number: optional string
+      serial_number: optional PlainText
 
   Vehicle:
     parent: Machine
@@ -362,7 +647,7 @@ models:
       - Locomotion.SELF_PROPELLED
       - Substrate.MECHANICAL
     fields:
-      model: optional string
+      model: optional PlainText
 
   CrewedVehicle:
     parent: Vehicle
@@ -404,13 +689,60 @@ models:
   Connectivity:
     parent: State
 
+  Engagement:
+    description: Whether a declared property or function is engaged.
+    parent: State
+
+  Activity:
+    description: Whether a process or execution is running.
+    parent: State
+
+  Paused:
+    description: Whether a running process is held paused.
+    parent: State
+
+  Hold:
+    description: Whether a resource is held by its holder.
+    parent: State
+
+  Text:
+    description: Human-authored textual content whose encoding is not itself domain meaning.
+    parent: State
+
+  Duration:
+    description: An interval of time.
+    parent: State
+
+  Angle:
+    parent: State
+
+  Distance:
+    parent: State
+
+  Speed:
+    parent: State
+
+  Count:
+    description: Discrete quantity.
+    parent: State
+
+  Ordinal:
+    description: Position in an ordered sequence.
+    parent: State
+
+  Code:
+    description: Opaque protocol or enumeration code.
+    parent: State
+
+  Scalar:
+    description: A bare scalar with no further unit semantics.
+    parent: State
+
   Altitude:
     description: Vertical position above a reference; meaningful only in air.
     parent: State
     applies:
       - PhysicalDomain.AIR
-    fields:
-      m: float
 
   GlobalPosition:
     description: Position compiled through the geodetic chart.
@@ -428,6 +760,64 @@ models:
     description: Attitude compiled through the local Euler chart.
     chart: Attitude * Representation.LocalEuler
 
+  # --- representations: every scalar field reduces through one of these ------
+
+  UID:
+    description: Identity reduced to a globally unique string.
+    chart: Identity * Representation.UID
+
+  IntID:
+    description: Identity reduced to a class-local integer.
+    chart: Identity * Representation.IntID
+
+  PlainText:
+    description: Text reduced to a plain string.
+    chart: Text * Representation.PlainText
+
+  DurationSeconds:
+    description: Duration in seconds.
+    chart: Duration * Representation.Seconds
+
+  AngleRadians:
+    description: Angle in radians.
+    chart: Angle * Representation.Radians
+
+  DistanceMeters:
+    description: Distance in meters.
+    chart: Distance * Representation.Meters
+
+  SpeedMetersPerSecond:
+    description: Speed in meters per second.
+    chart: Speed * Representation.MetersPerSecond
+
+  AltitudeMSL:
+    description: Altitude above mean sea level.
+    chart: Altitude * Representation.MSL
+
+  AltitudeFlightLevel:
+    description: Altitude expressed as a flight level code.
+    chart: Altitude * Representation.FlightLevel
+
+  ItemCount:
+    description: A discrete count.
+    chart: Count * Representation.Count
+
+  OrdinalValue:
+    description: An ordinal index.
+    chart: Ordinal * Representation.Ordinal
+
+  ProtocolCode:
+    description: An opaque protocol code.
+    chart: Code * Representation.Protocol
+
+  ScalarDecimal:
+    description: A decimal scalar with no unit semantics.
+    chart: Scalar * Representation.Decimal
+
+  ScalarInteger:
+    description: An integer scalar with no unit semantics.
+    chart: Scalar * Representation.Integer
+
   Mark:
     description: Named point of interest; its semantic form is a position.
     parent: Data
@@ -435,7 +825,7 @@ models:
       - GlobalPosition
     fields:
       uid: UID
-      name: optional string
+      name: optional PlainText
 
   Control:
     parent: Root
@@ -448,31 +838,271 @@ models:
     parent: Directive
     fields:
       uid: UID
-      instruction: string
+      instruction: PlainText
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
+
+  TaskManeuver:
+    description: A task whose expression is movement, position, or spatial persistence.
+    parent: Task
+    fields:
+      intent: TaskIntent
+
+  TaskInformation:
+    description: A task whose expression is search, observation, identification, or assessment.
+    parent: Task
+    fields:
+      intent: TaskIntent
+
+  TaskEffect:
+    description: A task whose expression is creation, removal, modification, restoration, protection, or denial.
+    parent: Task
+    fields:
+      intent: TaskIntent
+
+  TaskTransport:
+    description: A task whose expression is movement of cargo, personnel, supplies, or recoverable assets.
+    parent: Task
+    fields:
+      intent: TaskIntent
 
   Mission:
     description: A named body of assigned work.
     parent: Directive
 
-  TaskManeuver:
-    description: Surface representation of a maneuver expression.
-    parent: Task
-    fields:
-      intent: ManeuverIntent
+  # ===========================================================================
+  # Port of ../occid/lib/schema/core/control.
+  #
+  # Rules applied in the port:
+  #   - `semantic_role` is gone; there is no concept/representation split.
+  #   - `parent:` is the only is-a edge; inherited factors are compiled in and
+  #     ancestor labels are derived by the solver closure.
+  #   - `*_uid` / `list[UID]` reference fields became relations with named roles,
+  #     because the new system addresses things by meaning, not by pointer.
+  #   - embedded `Struct`/`SpatialStruct` values stayed fields or became Data
+  #     models; maps and label lookups were dropped as adapter concerns.
+  #   - `record: Record` and `IntID(X)` are identity/provenance representation;
+  #     they stay fields and never become factors.
+  # ===========================================================================
 
-  TaskInformation:
-    description: Surface representation of an information expression.
-    parent: Task
-    fields:
-      intent: InformationIntent
+  # --- value models the control package references ---------------------------
 
-  TaskEffect:
-    description: Surface representation of an effect expression.
-    parent: Task
+  Record:
+    description: Provenance and revision metadata for a stored thing.
+    parent: Data
     fields:
-      intent: EffectIntent
+      uid: UID
+      id: optional IntID
+      revision: optional ItemCount
+      created_ts: Timestamp
+      updated_ts: Timestamp
+      origin_system: PlainText
+      provenance: list[PlainText]
+
+  Time:
+    description: A point on the time line.
+    parent: State
+
+  Timestamp:
+    description: Time compiled through the epoch chart.
+    chart: Time * Representation.Epoch
+
+  Range:
+    parent: Data
+
+  NumericRange:
+    parent: Range
+    fields:
+      min_value: optional ScalarDecimal
+      max_value: optional ScalarDecimal
+
+  MetadataValue:
+    description: A scalar metadata value in one of several representations.
+    parent: Data
+    fields:
+      str: optional PlainText
+      int: optional ScalarInteger
+      float: optional ScalarDecimal
+      bool: optional bool
+
+  Condition:
+    description: Predicate logic; it describes logic, not the state of evaluating it.
+    parent: Data
+
+  Predicate:
+    description: Atomic condition leaf.
+    parent: Condition
+    fields:
+      subject_ref: optional UID
+
+  BooleanLogic:
+    description: Boolean composition of conditions.
+    parent: Condition
+    fields:
+      operator: BooleanOperator
+      terms: list[Condition]
+
+  GeoPath:
+    parent: Data
+    fields:
+      points: list[GlobalPosition]
+
+  SuccessCriterion:
+    description: Typed, human-readable condition used to decide whether an objective succeeded.
+    parent: Data
+    fields:
+      statement: PlainText
+      metric: optional PlainText
+      target_value: optional MetadataValue
+
+  Role:
+    description: An organizational function; authority attaches to the role, not to its current holder.
+    parent: Data
+    fields:
+      name: optional PlainText
+
+  Resource:
+    description: A thing that can be acquired, allocated, or transferred.
+    parent: Object
+    fields:
+      uid: optional UID
+      name: optional PlainText
+
+  # --- constraint.schema.yaml ------------------------------------------------
+
+  Constraint:
+    description: Limit, rule, or time/resource bound applied to directed work.
+    parent: Control
+    fields:
+      condition: optional Condition
+
+  TaskTimeWindow:
+    parent: Constraint
+    fields:
+      earliest_start: optional Timestamp
+      latest_finish: optional Timestamp
+
+  WeatherLimits:
+    parent: Constraint
+    fields:
+      ifr: optional bool
+      night: optional bool
+      rain: optional NumericRange
+      snow: optional NumericRange
+      temp: optional NumericRange
+      wind: optional NumericRange
+      vis: optional NumericRange
+      icing: optional bool
+
+  # --- objective.schema.yaml -------------------------------------------------
+
+  Objective:
+    description: Desired end state with intent, success rule, target, priority, and deadline.
+    parent: Control
+    fields:
+      record: optional Record
+      uid: UID
+      id: optional IntID
+      name: PlainText
+      intent: PlainText
+      desired_state: PlainText
+      success_criteria: list[SuccessCriterion]
+      priority: TaskPriority = ROUTINE
+      status: TaskStatus = NEW
+      start_time: optional Timestamp
+      deadline: optional Timestamp
+
+  # --- command.schema.yaml ---------------------------------------------------
+  # Each operation family is its own child carrying exactly the parameters that
+  # family needs; the vocabulary names the expression.
+
+  Command:
+    description: Immediate bounded imperative applied to a concrete target.
+    parent: Directive
+    fields:
+      uid: UID
+
+  StateChangeCommand:
+    parent: Command
+    product:
+      - Engagement
+    fields:
+      operation: CommandOperation
+      property_name: optional PlainText
+      value: optional MetadataValue
+
+  ProcessControlCommand:
+    parent: Command
+    product:
+      - Activity
+    fields:
+      operation: CommandOperation
+      process_name: optional PlainText
+
+  ConfigurationCommand:
+    parent: Command
+    fields:
+      operation: CommandOperation
+      parameter_name: optional PlainText
+      value: optional MetadataValue
+
+  MotionCommand:
+    parent: Command
+    product:
+      - Position
+    fields:
+      operation: CommandOperation
+      destination: optional GlobalPosition
+      path: optional GeoPath
+      radius_m: optional DistanceMeters
+      speed_ms: optional SpeedMetersPerSecond
+      yaw_rad: optional AngleRadians
+
+  ResourceCommand:
+    parent: Command
+    product:
+      - Hold
+    fields:
+      operation: CommandOperation
+      quantity: optional ItemCount
+
+  # --- authority.schema.yaml -------------------------------------------------
+
+  Authority:
+    description: Command, permission, delegation, or control-right context for directed work.
+    parent: Control
+    fields:
+      record: optional Record
+      uid: UID
+      id: optional IntID
+      role: optional Role
+
+  Lease:
+    description: Bounded control right issued under an Authority.
+    parent: Authority
+    fields:
+      bound: optional Condition
+      control_level: optional ControlLevel
+
+  # --- plan.schema.yaml ------------------------------------------------------
+  # Membership and assignment are relations (AssignedWork, Contains); a plan
+  # record is representation of approval state, not a tree of pointers.
+
+  Plan:
+    description: Proposed or approved method for accomplishing work.
+    parent: Control
+    fields:
+      record: optional Record
+      uid: UID
+      id: optional IntID
+      name: optional PlainText
+      approval_state: PlanApprovalState = DRAFT
+
+  PlanContingency:
+    description: Conditional work that applies when a condition holds.
+    parent: Data
+    fields:
+      condition: Condition
 
 # ---------------------------------------------------------------------------
 # A projection is a compiled aggregate, not an ontological object. The
@@ -505,3 +1135,4 @@ aliases:
   LocalCartesian: [Representation.LocalCartesian]
   LocalEuler: [Representation.LocalEuler]
   Quaternion: [Representation.Quaternion]
+  Epoch: [Representation.Epoch]

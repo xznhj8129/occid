@@ -37,6 +37,13 @@ The full algebraic record is in `SPEC.md`. Summary:
   A named and an unnamed equivalent product have the same normal form.
 - **Unknown vs illegal.** No datum is unknown, not illegal
   (`empty.find(Position) == []`); `Mission × SEA × Altitude` is illegal.
+- **The control package is ported.** `occid2.schema.yaml` now carries
+  `../occid/lib/schema/core/control` (tasks, commands, constraints,
+  objectives, authority, assignment, plans, aerial control). Work participants
+  are the typed free variables of expressions; only links that are genuinely
+  relations (assignment, authority, control, plan containment) are declared,
+  with named roles. Embedded structs became value models and every scalar is a
+  charted representation. Label `maps` were dropped as presentation.
 
 ## Run
 
@@ -50,7 +57,7 @@ The compiler regenerates `generated/occid2.py` and
 `generated/semantic_registry.json` deterministically. Expected test result:
 
 ```text
-14 tests passed
+18 tests passed
 ```
 
 ## Files

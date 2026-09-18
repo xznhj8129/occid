@@ -104,14 +104,19 @@ def normalize_field(raw: Any) -> dict[str, Any]:
     return {"type": text, "default": None}
 
 
-def py_type(type_expr: str, known_enums: set[str], known_models: set[str]) -> tuple[str, str | None]:
+def py_type(
+    type_expr: str,
+    known_enums: set[str],
+    known_models: set[str],
+    declared: bool = True,
+) -> tuple[str, str | None]:
     type_expr = type_expr.strip()
     if type_expr.startswith("optional "):
-        inner, _ = py_type(type_expr[len("optional "):], known_enums, known_models)
+        inner, _ = py_type(type_expr[len("optional "):], known_enums, known_models, declared)
         return f"{inner} | None", "None"
     if type_expr.startswith("list[") and type_expr.endswith("]"):
         inner_text = type_expr[5:-1]
-        inner, _ = py_type(inner_text, known_enums, known_models)
+        inner, _ = py_type(inner_text, known_enums, known_models, declared)
         return f"list[{inner}]", "factory:list"
     primitive = {
         "string": "str",
@@ -120,6 +125,18 @@ def py_type(type_expr: str, known_enums: set[str], known_models: set[str]) -> tu
         "bool": "bool",
         "UID": "str",
     }
+    if declared:
+        # Declared fields are subject matter, not data: a plain scalar must be
+        # reduced through a chart representation. A named model shadows any
+        # same-named primitive. Only `bool` survives as an irreducible leaf.
+        if type_expr in known_enums or type_expr in known_models:
+            return type_expr, None
+        if type_expr == "bool":
+            return "bool", None
+        raise ValueError(
+            f"declared field type {type_expr!r} must be a model or enum; "
+            f"plain primitives are chart variables"
+        )
     if type_expr in primitive:
         return primitive[type_expr], None
     if type_expr in known_enums or type_expr in known_models:
@@ -292,7 +309,7 @@ def normalize_axis(axis: dict[str, Any]) -> dict[str, Any]:
 
 def normalize_relation(spec: dict[str, Any]) -> dict[str, Any]:
     # Named `operands: {role: region}` or positional `signature: [A, B]`.
-    # Roles and order belong to the relation; `specializes` inherits direction.
+    # Roles and order belong to the relation itself.
     operands = spec.get("operands")
     if operands:
         pairs = [(str(name), str(region)) for name, region in operands.items()]
@@ -304,24 +321,7 @@ def normalize_relation(spec: dict[str, Any]) -> dict[str, Any]:
     return {
         "signature": signature,
         "operand_names": operand_names,
-        "specializes": spec.get("specializes"),
     }
-
-
-def order_relations(relations: dict[str, dict[str, Any]]) -> list[str]:
-    result: list[str] = []
-    pending = list(relations)
-    while pending:
-        progressed = False
-        for name in list(pending):
-            base = relations[name].get("specializes")
-            if not base or base in result:
-                result.append(name)
-                pending.remove(name)
-                progressed = True
-        if not progressed:
-            raise ValueError(f"relation specialization cycle or missing base among: {pending}")
-    return result
 
 
 def compile_charts(
@@ -383,29 +383,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         for region in relation["signature"]:
             if region not in models:
                 raise ValueError(f"relation {relation_name}: unknown operand region {region!r}")
-        base = relation["specializes"]
-        if base and base not in relation_specs:
-            raise ValueError(f"relation {relation_name}: unknown base relation {base!r}")
-    for relation_name in order_relations(relation_specs):
-        relation = relation_specs[relation_name]
-        base = relation["specializes"]
-        if not base:
-            continue
-        base_spec = relation_specs[base]
-        if len(relation["signature"]) != len(base_spec["signature"]):
-            raise ValueError(
-                f"relation {relation_name}: arity differs from base {base}"
-            )
-        for index, (child_region, base_region) in enumerate(
-            zip(relation["signature"], base_spec["signature"])
-        ):
-            base_terms = semantic_closure([base_region], semantics, models)
-            child_terms = semantic_closure([child_region], semantics, models)
-            if not base_terms <= child_terms:
-                raise ValueError(
-                    f"relation {relation_name}: operand {index} region {child_region!r} "
-                    f"does not narrow {base}.{base_region!r}"
-                )
 
     charts = compile_charts(schema.get("charts") or {}, semantics)
 
@@ -446,6 +423,41 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             "equations": equations,
             "words": words,
         }
+
+    # A word must name a declared enum member or axis value; the compiler
+    # never silently drops a misspelled word.
+    enum_members = {
+        name: {member for member, _ in parse_enum_items(items)}
+        for name, items in enums.items()
+    }
+    for word in word_expressions:
+        owner, _, member = word.partition(".")
+        if owner in enum_members:
+            if member not in enum_members[owner]:
+                raise ValueError(f"word {word!r} is not a member of enum {owner}")
+        elif owner in axes:
+            if member not in axes[owner]["values"]:
+                raise ValueError(f"word {word!r} is not a value of axis {owner}")
+        else:
+            raise ValueError(f"word {word!r} names neither an enum nor an axis")
+
+    # Generated names share one module namespace; two declarations with the
+    # same name would silently overwrite each other.
+    declared: dict[str, str] = {}
+
+    def declare(kind: str, names: Any) -> None:
+        for name in names:
+            other = declared.setdefault(str(name), kind)
+            if other != kind:
+                raise ValueError(f"{name!r} is declared as both {other} and {kind}")
+
+    declare("axis", axes)
+    declare("enum", enums)
+    declare("model", models)
+    declare("alias", raw_aliases)
+    declare("expression", expressions)
+    declare("projection", projections_raw)
+    declare("relation", relation_specs)
 
     # -- models ------------------------------------------------------------
 
@@ -664,7 +676,8 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         for field_spec in fields:
             field_name = field_spec["name"]
             annotation, inferred_default = py_type(
-                field_spec["type"], known_enums, known_models
+                field_spec["type"], known_enums, known_models,
+                declared=not field_spec.get("chart"),
             )
             explicit_default = field_spec.get("default")
             if field_spec.get("optional"):
@@ -709,16 +722,13 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         except ValueError as exc:
             raise ValueError(f"projection {name}: {exc}") from exc
 
-    for relation_name in order_relations(relation_specs):
-        spec = relation_specs[relation_name]
+    for relation_name, spec in relation_specs.items():
         signature = ", ".join(spec["signature"])
         if len(spec["signature"]) == 1:
             signature += ","
         kwargs = ""
         if spec["operand_names"]:
             kwargs += f", operand_names={tuple(spec['operand_names'])!r}"
-        if spec["specializes"]:
-            kwargs += f", base={spec['specializes']}"
         lines.append(
             f"{relation_name} = RelationType({relation_name!r}, ({signature}){kwargs})"
         )

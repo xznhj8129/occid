@@ -222,35 +222,32 @@ changing the product.
 
 ## 8. Relations
 
-A relation declares its own operands: named, ordered, and directed. Operand
-roles belong to the relation, not to a global schema:
+A relation connects independently existing things. Only links that are neither
+factors of one thing nor variables of an expression are relations:
 
 ```yaml
 relations:
-  Directed:                       # arity and direction declared once
-    operands: {source: Root, target: Root}
-
-  Affects:                        # causal: object -> receiver
-    specializes: Directed
-    operands: {source: Object, target: Root}
-
   AssignedWork:                   # intentional: entity -> task
-    specializes: Directed
     operands: {assignee: Entity, work: Task}
+
+  ConstrainedBy:                  # a bound on directed work
+    operands: {subject: Control, constraint: Constraint}
 ```
 
 Consequences:
 
-- direction and operand order are inherited positionally; a specialization may
-  narrow operand regions and rename roles;
-- a query at `Directed` returns every fact whose relation specializes it;
+- roles and operand order belong to the relation; there is no base relation
+  and no specialization: a link is declared once;
+- participant roles of work are **not** relations; they are the typed free
+  variables of the work's expression (section 9), and binding a reference to a
+  variable is the link;
+- aggregates such as plans are projections over facts, not pointer columns;
 - roles are part of the fact's spelling: `AssignedWork(assignee=uav-1,
   work=task-move-1)`.
 
 A relation cannot be derived by multiplying a relation with a factor:
 `Destination ≠ Target × factors`. `×` conjoins factors of one thing; a relation
-is a directed link. Destination-like holes in tasks are not relations at all;
-they are free variables of an open expression (section 9).
+is a directed link, and a destination is not a relation at all.
 
 ---
 
@@ -359,7 +356,7 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 | `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
 | `enums` + expression `words` | surface vocabulary; each member names an expression and entails its factors |
 | `charts` | `Q * C` reduces to typed variables; a quantity's data normal form |
-| `relations` | named ordered operands; `specializes` inherits direction positionally |
+| `relations` | named ordered operands; declared once, no specialization |
 | `expressions` | fixed factors + typed free variables + equations |
 | `models` | named products; parent entailment; `product:`/`chart:` expansion |
 | `projections` | compiled aggregates over chart-selected facts |
