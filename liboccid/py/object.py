@@ -7,14 +7,14 @@ from .common import *
 
 class Object(OCCIDModel):
     'Atoms'
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 256
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Entity', 'Set', 'Item', 'Location')
     capabilities: list[Semantic[Capability]] | None = None
 
 class Set(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 337
+    __occid_model_id__: ClassVar[int] = 338
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Collection', 'Cluster', 'Organization', 'Side')
@@ -38,7 +38,7 @@ class Cluster(OCCIDModel):
 
 class Item(OCCIDModel):
     'A discrete bounded non-agent object'
-    __occid_model_id__: ClassVar[int] = 178
+    __occid_model_id__: ClassVar[int] = 179
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Equipment', 'Component', 'Payload')
@@ -60,7 +60,7 @@ class Component(OCCIDModel):
 
 class Location(OCCIDModel):
     'Identified physical-world spatial reference, place, feature, site, course, area, or delimiter'
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 200
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Mark', 'Path', 'Region', 'Boundary')
@@ -72,7 +72,7 @@ class Location(OCCIDModel):
 
 class Mark(OCCIDModel):
     'Identified point reference in physical space'
-    __occid_model_id__: ClassVar[int] = 208
+    __occid_model_id__: ClassVar[int] = 209
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -85,7 +85,7 @@ class Mark(OCCIDModel):
 
 class Path(OCCIDModel):
     'Identified ordered spatial course or trace'
-    __occid_model_id__: ClassVar[int] = 272
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -98,7 +98,7 @@ class Path(OCCIDModel):
 
 class Region(OCCIDModel):
     'Identified bounded spatial area'
-    __occid_model_id__: ClassVar[int] = 308
+    __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

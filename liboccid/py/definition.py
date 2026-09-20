@@ -88,7 +88,7 @@ class Definition(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('ResourceTemplate', 'Frame', 'Coordinate', 'Geometry', 'DefinitionRelationship', 'SemanticType', 'OrgTemplate')
 
 class Frame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 128
+    __occid_model_id__: ClassVar[int] = 129
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -100,7 +100,7 @@ class Coordinate(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Geometry(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 143
+    __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -112,7 +112,7 @@ class DefinitionRelationship(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class SemanticType(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 333
+    __occid_model_id__: ClassVar[int] = 334
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Category', 'Role', 'Function', 'Domain')
@@ -124,13 +124,13 @@ class Category(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Role(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 322
+    __occid_model_id__: ClassVar[int] = 323
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Function(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 132
+    __occid_model_id__: ClassVar[int] = 133
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

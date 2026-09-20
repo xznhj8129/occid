@@ -117,7 +117,7 @@ class Effects(OCCIDModel):
     pylon_format: builtins.str = ''
 
 class GroundEffects(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 152
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Effects'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -148,7 +148,7 @@ class AirEffects(OCCIDModel):
     attack_modes: list[AirAttackMode]
 
 class TargetPriority(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 370
+    __occid_model_id__: ClassVar[int] = 371
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -157,7 +157,7 @@ class TargetPriority(OCCIDModel):
     note: builtins.str | None = None
 
 class TargetKinematics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 369
+    __occid_model_id__: ClassVar[int] = 370
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -166,7 +166,7 @@ class TargetKinematics(OCCIDModel):
     velocity_covariance: Semantic[VelocityVector] | None = None
 
 class TargetSet(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 371
+    __occid_model_id__: ClassVar[int] = 372
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TargetSetCoord', 'TargetBoxCoord', 'TargetCoord')
@@ -175,7 +175,7 @@ class TargetSet(OCCIDModel):
     name: builtins.str
 
 class TargetSetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 372
+    __occid_model_id__: ClassVar[int] = 373
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -188,7 +188,7 @@ class TargetSetCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetBoxCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 366
+    __occid_model_id__: ClassVar[int] = 367
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -200,7 +200,7 @@ class TargetBoxCoord(OCCIDModel):
     time_end_usec: builtins.int
 
 class TargetCoord(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 367
+    __occid_model_id__: ClassVar[int] = 368
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -214,7 +214,7 @@ class TargetCoord(OCCIDModel):
     target_force: StandardIdentity
 
 class Fires(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 118
+    __occid_model_id__: ClassVar[int] = 119
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -226,7 +226,7 @@ class Fires(OCCIDModel):
     cep_expected_m: builtins.float
 
 class SplashCorrection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 346
+    __occid_model_id__: ClassVar[int] = 347
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -237,7 +237,7 @@ class SplashCorrection(OCCIDModel):
     cep_expected_m: builtins.float
 
 class TargetHandover(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 368
+    __occid_model_id__: ClassVar[int] = 369
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -295,7 +295,7 @@ class EsadArming(OCCIDModel):
     arming_request: EsadArmingRequest
 
 class RwsPose(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 329
+    __occid_model_id__: ClassVar[int] = 330
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -311,7 +311,7 @@ class RwsPose(OCCIDModel):
     coordinate_frame: builtins.int
 
 class RwsState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 330
+    __occid_model_id__: ClassVar[int] = 331
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

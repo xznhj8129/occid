@@ -49,7 +49,7 @@ class NetType(IntEnum):
 
 class Link(OCCIDModel):
     'Communication capability or connection kind a node can use; mutable condition is reported separately as LinkState'
-    __occid_model_id__: ClassVar[int] = 189
+    __occid_model_id__: ClassVar[int] = 190
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Radio',)
@@ -76,7 +76,7 @@ class DataRateSpec(OCCIDModel):
     burst_bps: builtins.float | None = None
 
 class LinkCapacity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 190
+    __occid_model_id__: ClassVar[int] = 191
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -86,7 +86,7 @@ class LinkCapacity(OCCIDModel):
 
 class SignalQuality(OCCIDModel):
     'Protocol-neutral observed receive-signal quality; values are present only when the source defines their physical or normalized meaning'
-    __occid_model_id__: ClassVar[int] = 340
+    __occid_model_id__: ClassVar[int] = 341
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -106,7 +106,7 @@ class DeliveryQuality(OCCIDModel):
 
 class LinkCounters(OCCIDModel):
     'Monotonic observed communication-link event counters'
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 192
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

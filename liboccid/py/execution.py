@@ -34,3 +34,16 @@ class Execution(OCCIDModel):
     result: Semantic[MetadataValue] | None = None
     failure: builtins.str | None = None
     external_job_refs: list[builtins.str]
+
+class ExecutionStatus(OCCIDModel):
+    'Reported status of one execution attempt at a point in time; durable evidence that a remote executor progressed or completed work'
+    __occid_model_id__: ClassVar[int] = 116
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'SubjectState'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    record: Semantic[Record]
+    subject_uid: Semantic[UID]
+    timestamp: Semantic[Timestamp]
+    phase: ExecutionPhase
+    progress: builtins.float | None = None
+    failure: builtins.str | None = None

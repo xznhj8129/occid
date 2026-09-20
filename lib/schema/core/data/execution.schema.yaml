@@ -34,4 +34,11 @@ models:
       failure: optional string
       external_job_refs: list[string]
 
-  # Acceptance and StatusReport are Deltas
+  ExecutionStatus:
+    description: Reported status of one execution attempt at a point in time; durable evidence that a remote executor progressed or completed work
+    semantic_role: representation
+    parent: SubjectState
+    fields:
+      phase: ExecutionPhase
+      progress: optional float
+      failure: optional string

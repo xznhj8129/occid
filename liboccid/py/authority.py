@@ -44,7 +44,7 @@ class CommandAuthority(OCCIDModel):
 
 class Lease(OCCIDModel):
     'Bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 186
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AttachmentLease', 'ControlLease')

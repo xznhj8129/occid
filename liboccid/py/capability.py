@@ -14,7 +14,7 @@ class Capability(OCCIDModel):
 
 class MediaProductionCapability(OCCIDModel):
     'Ability of an Object to originate media in the declared modalities'
-    __occid_model_id__: ClassVar[int] = 216
+    __occid_model_id__: ClassVar[int] = 217
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Capability'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -7,7 +7,7 @@ from .common import *
 
 class Input(OCCIDModel):
     'Current operator or receiver input state and control mapping.'
-    __occid_model_id__: ClassVar[int] = 170
+    __occid_model_id__: ClassVar[int] = 171
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ControlAxisSet', 'ControlChannelValue', 'ControlOverride', 'ControlAttitudeSetpoint')

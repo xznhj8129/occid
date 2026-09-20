@@ -60,7 +60,7 @@ class ConflictPolicy(IntEnum):
 
 class Message(OCCIDModel):
     'Transmitted envelope plus payload'
-    __occid_model_id__: ClassVar[int] = 224
+    __occid_model_id__: ClassVar[int] = 225
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshtasticMessage', 'CommandMessage', 'HumanTextMessage', 'ObservationMessage', 'Delta', 'ResponseMessage', 'TelemetryMessage')
@@ -88,7 +88,7 @@ class Delta(OCCIDModel):
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 318
+    __occid_model_id__: ClassVar[int] = 319
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DeliveryReceipt', 'MessageTransferResult')
@@ -119,7 +119,7 @@ class DeliveryReceipt(OCCIDModel):
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResponseMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

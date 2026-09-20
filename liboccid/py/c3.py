@@ -19,7 +19,7 @@ class CommandMessage(OCCIDModel):
     command: Semantic[Command]
 
 class HumanTextMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 162
+    __occid_model_id__: ClassVar[int] = 163
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
