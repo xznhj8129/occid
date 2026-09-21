@@ -60,7 +60,7 @@ A timestamp may mean wall-clock time, boot-relative time, source observation tim
 
 An identifier may mean global object identity, a short class-local operational ID, a protocol address, a MAVLink system/component pair, a CoT UID, a database record key, or a transient correlation token.
 
-A state update may describe the changing condition of a thing, while another record describes the stable identity and definition of that thing. A symbol shown on a map may be a **representation** of an entity rather than part of the entity itself.
+A state update may describe the changing condition of a thing, while another record describes the stable identity and definition of that thing. A standard-qualified symbol coding may be an operational attribute of an entity, while how a renderer draws it remains a presentation concern outside OCCID.
 
 OCCID therefore starts with meaning.
 
@@ -98,7 +98,7 @@ Vocabulary       a closed set of controlled values
 
 A **Concept** says what kind of thing something is in the semantic model.
 
-A **Representation** gives concrete structure to information: records, values, measurements, messages, states, graphics, media, locations, identifiers, and other data-bearing forms.
+A **Representation** gives concrete structure to information: records, values, measurements, messages, states, media, locations, identifiers, and other data-bearing forms.
 
 A **Vocabulary** is a controlled enum or flag set used where a bounded set of meanings is appropriate.
 
@@ -144,7 +144,6 @@ Root
 │   ├── Event
 │   ├── Execution
 │   ├── Observation
-│   ├── Representation
 │   ├── State
 │   ├── Context
 │   └── Property
@@ -253,32 +252,19 @@ Current structures cover:
 
 A route point embedded in a plan is not automatically a persistent named Location. Conversely, a named operational place that must be independently referenced can be a Location with its own identity.
 
-OCCID distinguishes semantic geometry from graphics used to draw that geometry.
+OCCID carries the semantic geometry and, where one is declared, the standard-qualified `Symbology` of the operational object itself. It does not carry a parallel graphical object model.
 
-### Representation and graphics
+### Display, maps, and symbology
 
-A Representation is an authored or shared depiction, view, presentation, or organization of operational information.
+OCCID does not model maps, layers, map grids, saved views, graphic styles, or graphic objects. Those are presentation and application concerns:
 
-This branch exists specifically so that presentation does not contaminate the represented subject.
+- Sigma owns map state, projections, and read models;
+- the browser owns rendering;
+- OCCID owns the operational object that is displayed.
 
-Examples include:
+An Entity, Mark, Path, Region, Boundary, or IsrObservation is displayed directly from its own fields and canonical UID. A marker is a projection of an operational object, not an independently persisted graphical object with a second identity.
 
-- `Graphic` and `GeometryGraphic`;
-- `SymbolGraphic` and `MilitarySymbolGraphic`;
-- annotation, label, note, callout, and media graphics;
-- georeferenced media graphics;
-- measurement graphics;
-- layers and layer views;
-- saved map views;
-- map-grid representations such as UTM, MGRS, latitude/longitude, and local grids;
-- style values for stroke, fill, text, color, and opacity;
-- tactical graphics.
-
-An Entity does not become a military symbol because it is drawn as one. The symbol is a separate Representation referring to the Entity.
-
-A Mark does not own renderer symbology. A Graphic can depict that Mark.
-
-This separation allows different users, systems, or views to represent the same semantic subject differently without mutating the subject itself.
+`Symbology` remains OCCID data because the standard-qualified symbolic coding of an operational subject is operationally meaningful: it can be authored, exchanged, and validated. It is carried as an optional attribute on the operational objects that can be displayed (`Entity`, `Location`, `IsrObservation`). Renderer-specific appearance such as stroke, fill, color, opacity, and text style does not belong in OCCID.
 
 ### Observation, ISR, tracks, and assessment
 
@@ -295,7 +281,15 @@ Current structures include:
 - track updates and ISR results;
 - evidence and confidence-related vocabulary.
 
-A `Track` is a maintained correlated identity for an observed object or phenomenon. It is not automatically identical to the real-world Entity it may eventually be associated with.
+A `Track` is a maintained correlated identity for an observed object or phenomenon. It is not automatically identical to the real-world Entity it may eventually be associated with, so it links to that subject through `subject_uid` only once correlation is established.
+
+The intended identity chain is:
+
+```text
+IsrObservation -> Track -> Entity -> Side
+```
+
+An observation may also reference a known `subject_uid` directly. The Entity remains current operational truth, the Track remains maintained correlation state, and the IsrObservation remains time-indexed evidence. `Side` membership and `StandardIdentity` affiliation stay canonical on the Entity rather than being duplicated into tracks or observations.
 
 Observation semantics keep source, evidence, uncertainty, and time basis explicit instead of flattening everything into generic telemetry.
 
@@ -330,7 +324,7 @@ Media resources carry a controlled `MediaModality`, use typed network addresses,
 identify their producing Entity and acquisition sensor when known, and put pixel
 dimensions directly on image and video media.
 
-Media itself is also separate from how that media is displayed. A photograph can exist as media, while a `MediaGraphic` or `GeoreferencedMediaGraphic` represents how it is placed in a visual product or map.
+Media itself is also separate from how that media is displayed. A photograph can exist as media; placing it on a visual product or map is a presentation concern owned by the consuming application.
 
 ### Communication
 
@@ -460,7 +454,7 @@ OCCID includes semantic operational context without forcing every object partici
 
 OCCID is not defined as a military-only model, but military C2, ISR, symbology, organization, supply, aviation, effects, and tasking provide demanding interoperability requirements.
 
-Generic operational semantics are kept in core even when a common standard originated in military practice. The current source layout intentionally moved broadly useful organization/OOB, SIDC/symbology, standard identity/affiliation, tactical graphics, NATO supply classification, radio conventions, and non-combat aviation semantics into their appropriate core packages.
+Generic operational semantics are kept in core even when a common standard originated in military practice. The current source layout intentionally moved broadly useful organization/OOB, standard-qualified symbology, standard identity/affiliation, NATO supply classification, radio conventions, and non-combat aviation semantics into their appropriate core packages.
 
 The remaining `modules/military/` area is for genuinely effects/combat-specific semantics such as weapons, munitions, fires, targeting/attack, and directly effects-bearing specializations.
 

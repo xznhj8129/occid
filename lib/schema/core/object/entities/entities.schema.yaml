@@ -99,8 +99,9 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      side: UID
+      side: optional UID
       identity: StandardIdentity
+      symbology: optional Symbology
 
   Actor:
     semantic_role: concept

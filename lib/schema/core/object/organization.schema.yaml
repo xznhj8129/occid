@@ -314,7 +314,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
-      side: UID
+      side: optional UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -368,7 +368,7 @@ models:
       support_elements: list[OrgComposition]
 
   Side:
-    description: Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership
+    description: Named operational side or alignment grouping; membership is declared by the member through its side reference, and relative friendly/hostile identity is modeled separately
     semantic_role: concept
     parent: Set
     fields:
@@ -377,7 +377,6 @@ models:
       id: IntID(Side)
       name: optional string
       description: optional PlainText
-      member_uids: list[UID]
 
   Coalition:
     description: Operational side composed of multiple organizations or other sides acting together

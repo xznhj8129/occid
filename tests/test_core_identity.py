@@ -17,6 +17,7 @@ from occid import (
     OrgLevel,
     Record,
     SensorPayload,
+    StandardIdentity,
     Timestamp,
 )
 
@@ -25,6 +26,7 @@ ENTITY_UID = bytes.fromhex("6beaac7772304c9eb5780ed9e62355f4")
 NODE_UID = bytes.fromhex("0d456ae4fdd34c298c86d9c26fc380e4")
 ORG_UID = bytes.fromhex("8538fb17bcf249e4926161ac9e2be633")
 LOCATION_UID = bytes.fromhex("a2f5826e0d6749e48ce36415d9f4c01b")
+SIDE_UID = bytes.fromhex("9b5b1f6d3a7c4d8f9e0a1b2c3d4e5f60")
 RECORD_UID = bytes.fromhex("c1a7312e46b74b9c8ba78c457e23ab11")
 
 
@@ -53,6 +55,8 @@ class CoreIdentityTests(unittest.TestCase):
             tags=[],
             metadata={},
             relations=[],
+            side=SIDE_UID,
+            identity=StandardIdentity.OURS,
         )
         node = Node(
             uid=NODE_UID,
@@ -72,6 +76,7 @@ class CoreIdentityTests(unittest.TestCase):
             name="Example Unit",
             unit_code="EXAMPLE",
             callsign="EXAMPLE-3",
+            side=SIDE_UID,
         )
 
         self.assertEqual(entity.uid.root, ENTITY_UID)

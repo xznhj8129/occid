@@ -25,8 +25,9 @@ class AirRobot(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType = MachineType.ROBOT
@@ -41,7 +42,7 @@ class AirRobot(OCCIDModel):
     telemetry_type: TelemetryType
 
 class Drone(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 91
+    __occid_model_id__: ClassVar[int] = 85
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirRobot'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -56,8 +57,9 @@ class Drone(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType = MachineType.ROBOT

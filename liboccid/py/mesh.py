@@ -20,7 +20,7 @@ class MeshtasticPort(IntEnum):
 
 class MeshLink(OCCIDModel):
     'Observed state of a link between two mesh nodes'
-    __occid_model_id__: ClassVar[int] = 215
+    __occid_model_id__: ClassVar[int] = 191
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'LinkState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -35,7 +35,7 @@ class MeshLink(OCCIDModel):
     updated_ts: Semantic[Timestamp] | None = None
 
 class MeshNode(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 216
+    __occid_model_id__: ClassVar[int] = 192
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Node'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -54,7 +54,7 @@ class MeshNode(OCCIDModel):
 
 class MeshView(OCCIDModel):
     'Current observed mesh topology and node/link state'
-    __occid_model_id__: ClassVar[int] = 219
+    __occid_model_id__: ClassVar[int] = 195
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Network'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -63,7 +63,7 @@ class MeshView(OCCIDModel):
     links: list[Semantic[MeshLink]]
 
 class MeshtasticMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 220
+    __occid_model_id__: ClassVar[int] = 196
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -83,7 +83,7 @@ class MeshtasticMessage(OCCIDModel):
     metrics: Semantic[MeshReceiveMetrics] | None = None
 
 class MeshReceiveMetrics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 218
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -95,7 +95,7 @@ class MeshReceiveMetrics(OCCIDModel):
     state: Semantic[LinkState]
 
 class MeshPositionSample(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 217
+    __occid_model_id__: ClassVar[int] = 193
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -107,7 +107,7 @@ class MeshPositionSample(OCCIDModel):
     state: Semantic[LocationState]
 
 class NodeHeartbeat(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 221
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

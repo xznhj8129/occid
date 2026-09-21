@@ -87,7 +87,7 @@ class PropulsionType(IntEnum):
 
 class Entity(OCCIDModel):
     'One discrete "atom" capable of actions'
-    __occid_model_id__: ClassVar[int] = 103
+    __occid_model_id__: ClassVar[int] = 97
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Actor', 'Machine')
@@ -102,8 +102,9 @@ class Entity(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
 
 class Actor(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 2
@@ -121,8 +122,9 @@ class Actor(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
 
 class Agent(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 3
@@ -140,11 +142,12 @@ class Agent(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
 
 class Person(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 271
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryPerson',)
@@ -159,8 +162,9 @@ class Person(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     role: builtins.str
     op_domain: OperationalDomain = OperationalDomain.LAND
     propulsion: PropulsionType = PropulsionType.FOOT
@@ -169,7 +173,7 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, Semantic[SensorPayload]]
 
 class Machine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 182
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Vehicle', 'Platform', 'GroundMachine', 'AirMachine', 'MilitaryMachine', 'Robot')
@@ -184,15 +188,16 @@ class Machine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[Semantic[EntityComponentRef]]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 397
+    __occid_model_id__: ClassVar[int] = 358
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -207,15 +212,16 @@ class Vehicle(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[Semantic[EntityComponentRef]]
 
 class Platform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 278
+    __occid_model_id__: ClassVar[int] = 251
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -230,15 +236,16 @@ class Platform(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
     components: list[Semantic[EntityComponentRef]]
 
 class GroundNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 138
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -268,7 +275,7 @@ class AirNavigation(OCCIDModel):
     max_alt: builtins.float
 
 class GroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 150
+    __occid_model_id__: ClassVar[int] = 137
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroundRobot', 'MilitaryGroundMachine')
@@ -283,8 +290,9 @@ class GroundMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType
@@ -311,8 +319,9 @@ class AirMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
@@ -324,7 +333,7 @@ class AirMachine(OCCIDModel):
     navigation: Semantic[AirNavigation]
 
 class MilitaryAirNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 201
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirNavigation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -344,7 +353,7 @@ class MilitaryAirNavigation(OCCIDModel):
     roles: list[AirRole]
 
 class MilitaryMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 203
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -359,8 +368,9 @@ class MilitaryMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID]
+    side: Semantic[UID] | None = None
     identity: StandardIdentity
+    symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None

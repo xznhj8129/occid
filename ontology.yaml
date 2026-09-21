@@ -62,18 +62,6 @@ Root:
       description: Primitive reusable low-level struct families.
       children:
 
-        ColorComponent:
-          description: Component of a declared graphic color value
-
-        AnnotationAnchor:
-          description: Semantic anchor for an annotation graphic
-
-        RepresentationSource:
-          description: Source used to construct a reference or data representation
-
-        MapGrid:
-          description: Coordinate-reference grid definition used by a saved map representation; renderer appearance is optional representation data
-
         ID: {}
 
         Text:
@@ -257,27 +245,6 @@ Root:
               description: Assessment that something exists or occurred
 
 
-        Representation:
-          description: An authored or shared depiction, presentation, organization, or view of operational information; representation changes do not alter the represented subject itself
-          children:
-
-            IdentifiedRepresentation:
-              description: Persisted shared representation with durable OCCID identity, distinct from transient renderer or session state
-              children:
-
-                Graphic:
-                  description: Persisted graphical representation of one or more operational subjects or spatial constructs
-                  children:
-
-                    AnnotationGraphic:
-                      description: Human-authored annotation anchored to space or another operational object
-
-
-                Layer:
-                  description: Shared organization of representations; visibility choices for a particular operator or saved map view are modeled separately
-
-
-
         State:
           description: Changing condition of an object, node, link, task, system, or process
           children:
@@ -375,7 +342,7 @@ Root:
               description: A structured collection of organized entities and/or subordinate organizations with common command and control
 
             Side:
-              description: Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership
+              description: Named operational side or alignment grouping; membership is declared by the member through its side reference, and relative friendly/hostile identity is modeled separately
 
             Collection:
               description: Informal, adhoc grouping of objects with common purpose, appartnance, affinity or goal

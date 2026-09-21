@@ -7,14 +7,14 @@ from .common import *
 
 class Context(OCCIDModel):
     'Semantic context that bounds the interpretation of operational objects without embedding those objects into one document aggregate'
-    __occid_model_id__: ClassVar[int] = 63
+    __occid_model_id__: ClassVar[int] = 58
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('OperationalContext',)
 
 class OperationalContext(OCCIDModel):
     'Identified operational context with declared reality and temporal extent'
-    __occid_model_id__: ClassVar[int] = 254
+    __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Context'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Operation', 'Scenario')
@@ -29,7 +29,7 @@ class OperationalContext(OCCIDModel):
 
 class Operation(OCCIDModel):
     'Operational context describing an undertaking conducted by participating actors or organizations'
-    __occid_model_id__: ClassVar[int] = 253
+    __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -44,7 +44,7 @@ class Operation(OCCIDModel):
 
 class Scenario(OCCIDModel):
     'Operational context used to describe, rehearse, simulate, or replay a bounded situation'
-    __occid_model_id__: ClassVar[int] = 324
+    __occid_model_id__: ClassVar[int] = 293
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

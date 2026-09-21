@@ -1,5 +1,16 @@
 # Development log
 
+## 2026-09-21 - Remove the graphical pseudo-language; display operational objects directly
+
+- Removed the authored `representation` package: `Representation`, `IdentifiedRepresentation`, `Graphic` and its descendants, `GraphicStyle` and style values, `AnnotationAnchor`, `RepresentationSource`, `Layer`, `LayerView`, `MapView`, `MapGrid`, and `TacticalGraphic`. Maps, layers, grids, saved views, and renderer appearance are presentation/application concerns, not shared operational meaning.
+- Kept `Symbology` and `SymbologyStandard` because a standard-qualified symbolic coding of an operational subject is operational data that must be authorable and exchangeable. It is now an optional attribute carried directly by the canonical displayable objects (`Entity`, `Location`, `IsrObservation`) instead of by a separate graphic object with its own identity.
+- Kept the standard derivation maps (`SIDC_*`) as declared encodings so consumers can construct a standard code from semantic facts without re-authoring the standard themselves.
+- A map marker is now a projection of the operational object and its canonical UID. One logical object creates one canonical OCCID object; no secondary graphical UID or subject-to-graphic join is required.
+- Completed the observation identity chain: `Track.subject_uid` links maintained correlation state to the known Entity, and `IsrObservation.subject_uid` links evidence directly to the known subject while `track_uid` continues to identify the maintained track. The canonical chain is `IsrObservation -> Track -> Entity -> Side`, with side membership and standard identity remaining Entity facts.
+- Kept `side` optional on `Entity`, `Organization`, and `IsrObservation`. A known side is a membership reference; absence truthfully means membership is unknown. `identity: StandardIdentity` remains required because `UNKNOWN` is an explicit value. Requiring a side UID forced every adapter and application to invent a fake side for contacts whose membership is not known.
+- Removed `Side.member_uids`. Membership now has one canonical direction: the member declares its side through `Entity.side` / `Organization.side`. Keeping a second writable member list on the side would have allowed the two facts to diverge.
+- Fixed the named boundary codec for atomic values whose generated root is `Annotated[bytes, ...]` so UID hex text round-trips again.
+
 ## 2026-09-11 - Replace the ObserverSource application aggregate
 
 - Removed `ObserverSource`; a media-producing Entity is now expressed through

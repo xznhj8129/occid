@@ -82,61 +82,61 @@ class Reality(IntEnum):
 
 class Definition(OCCIDModel):
     'Abstract structure used to define how values, space, geometry, time, or relations are interpreted; semantic descriptors.'
-    __occid_model_id__: ClassVar[int] = 78
+    __occid_model_id__: ClassVar[int] = 72
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Root'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ResourceTemplate', 'Frame', 'Coordinate', 'Geometry', 'DefinitionRelationship', 'SemanticType', 'OrgTemplate')
 
 class Frame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 127
+    __occid_model_id__: ClassVar[int] = 119
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Coordinate(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 70
+    __occid_model_id__: ClassVar[int] = 65
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Geometry(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 141
+    __occid_model_id__: ClassVar[int] = 133
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class DefinitionRelationship(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 79
+    __occid_model_id__: ClassVar[int] = 73
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class SemanticType(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 325
+    __occid_model_id__: ClassVar[int] = 294
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Category', 'Role', 'Function', 'Domain')
 
 class Category(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 44
+    __occid_model_id__: ClassVar[int] = 42
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Role(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 315
+    __occid_model_id__: ClassVar[int] = 284
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Function(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 131
+    __occid_model_id__: ClassVar[int] = 123
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Domain(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 90
+    __occid_model_id__: ClassVar[int] = 84
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SemanticType'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

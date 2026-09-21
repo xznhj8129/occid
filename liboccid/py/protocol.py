@@ -22,13 +22,13 @@ class CryptoType(IntEnum):
 
 class Protocol(OCCIDModel):
     'Wire format, message id space, payload format, command/result vocabulary, and mapping metadata'
-    __occid_model_id__: ClassVar[int] = 288
+    __occid_model_id__: ClassVar[int] = 260
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ProtocolPayload', 'CryptoKey', 'CryptoProfile', 'LoRaProfile', 'AprsProfile', 'ElrsProfile', 'FpvProfile')
 
 class ProtocolPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 290
+    __occid_model_id__: ClassVar[int] = 262
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -38,7 +38,7 @@ class ProtocolPayload(OCCIDModel):
     data: builtins.bytes | None = None
 
 class CryptoKey(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 72
+    __occid_model_id__: ClassVar[int] = 67
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -49,7 +49,7 @@ class CryptoKey(OCCIDModel):
     fill_ts: Semantic[Timestamp] | None = None
 
 class CryptoProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 73
+    __occid_model_id__: ClassVar[int] = 68
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -58,7 +58,7 @@ class CryptoProfile(OCCIDModel):
     keys: list[Semantic[CryptoKey]]
 
 class LoRaProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 174
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -67,7 +67,7 @@ class LoRaProfile(OCCIDModel):
     coding_rate: builtins.str | None = None
 
 class AprsProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 19
+    __occid_model_id__: ClassVar[int] = 17
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -75,7 +75,7 @@ class AprsProfile(OCCIDModel):
     path: builtins.str | None = None
 
 class ElrsProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 101
+    __occid_model_id__: ClassVar[int] = 95
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -83,7 +83,7 @@ class ElrsProfile(OCCIDModel):
     telemetry_ratio: builtins.str | None = None
 
 class FpvProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 126
+    __occid_model_id__: ClassVar[int] = 118
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Protocol'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

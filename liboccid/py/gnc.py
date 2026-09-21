@@ -48,13 +48,13 @@ class GnssFixType(IntEnum):
 
 class GNC(OCCIDModel):
     'Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state'
-    __occid_model_id__: ClassVar[int] = 132
+    __occid_model_id__: ClassVar[int] = 124
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('NavigationValidity', 'GnssSolution', 'AutopilotMissionState', 'FlightControlState')
 
 class NavigationValidity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 217
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -63,7 +63,7 @@ class NavigationValidity(OCCIDModel):
     home_position_ok: builtins.bool | None = None
 
 class GnssSolution(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 145
+    __occid_model_id__: ClassVar[int] = 135
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -79,7 +79,7 @@ class GnssSolution(OCCIDModel):
 
 class AutopilotMissionState(OCCIDModel):
     'State and storage capacity of an onboard autopilot waypoint mission; distinct from OCCID Task, Plan, Assignment, and Execution lifecycle state'
-    __occid_model_id__: ClassVar[int] = 30
+    __occid_model_id__: ClassVar[int] = 28
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

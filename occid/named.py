@@ -9,7 +9,7 @@ import json
 import math
 import re
 from enum import Enum, IntFlag
-from typing import Annotated
+from typing import Annotated, get_args, get_origin
 
 from pydantic import BeforeValidator, PlainSerializer, TypeAdapter, ValidationError, WithJsonSchema
 
@@ -78,6 +78,13 @@ def _hex(value):
     return bytes.fromhex(value)
 
 
+def _root_type(model):
+    annotation = model.model_fields["root"].annotation
+    while get_origin(annotation) is Annotated:
+        annotation = get_args(annotation)[0]
+    return annotation
+
+
 def from_data(data):
     """Decode named data, then validate every model with the installed OCCID."""
     if type(data) is list:
@@ -99,7 +106,7 @@ def from_data(data):
             raise CodecError(f"unknown OCCID model {data['model']!r}")
         raw = data["value"]
         if issubclass(model, OCCIDValue):
-            value = _hex(raw) if model.model_fields["root"].annotation is bytes else from_data(raw)
+            value = _hex(raw) if _root_type(model) is bytes else from_data(raw)
         else:
             if type(raw) is not dict:
                 raise CodecError(f"{model.__name__} requires named fields")

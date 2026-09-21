@@ -39,14 +39,14 @@ class MediaDomain(IntEnum):
 
 class Media(OCCIDModel):
     'Recorded, streamed, sampled, or otherwise encoded non-text information used as an operational representation'
-    __occid_model_id__: ClassVar[int] = 210
+    __occid_model_id__: ClassVar[int] = 188
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MediaItem',)
 
 class MediaItem(OCCIDModel):
     'Identified media resource with typed content, address, acquisition provenance, and common storage metadata; concrete media semantics are expressed by children'
-    __occid_model_id__: ClassVar[int] = 212
+    __occid_model_id__: ClassVar[int] = 189
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Media'
     __occid_children__: ClassVar[tuple[str, ...]] = ('StillMedia', 'DurationalMedia')
@@ -61,7 +61,7 @@ class MediaItem(OCCIDModel):
 
 class CaptureSize2D(OCCIDModel):
     '2D media size'
-    __occid_model_id__: ClassVar[int] = 42
+    __occid_model_id__: ClassVar[int] = 40
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -70,7 +70,7 @@ class CaptureSize2D(OCCIDModel):
 
 class CaptureSize3D(OCCIDModel):
     '2D media size'
-    __occid_model_id__: ClassVar[int] = 43
+    __occid_model_id__: ClassVar[int] = 41
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -80,7 +80,7 @@ class CaptureSize3D(OCCIDModel):
 
 class StillMedia(OCCIDModel):
     'Spatial-domain fixed media'
-    __occid_model_id__: ClassVar[int] = 343
+    __occid_model_id__: ClassVar[int] = 312
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'MediaItem'
     __occid_children__: ClassVar[tuple[str, ...]] = ('PointCloudMedia', 'StillImage')
@@ -95,7 +95,7 @@ class StillMedia(OCCIDModel):
 
 class PointCloudMedia(OCCIDModel):
     'Spatial point-cloud media'
-    __occid_model_id__: ClassVar[int] = 279
+    __occid_model_id__: ClassVar[int] = 252
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -110,7 +110,7 @@ class PointCloudMedia(OCCIDModel):
 
 class StillImage(OCCIDModel):
     'Time-static image frame'
-    __occid_model_id__: ClassVar[int] = 342
+    __occid_model_id__: ClassVar[int] = 311
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('VideoFrame',)
@@ -126,7 +126,7 @@ class StillImage(OCCIDModel):
 
 class VideoFrame(OCCIDModel):
     'Still image identified as a frame originating from video media'
-    __occid_model_id__: ClassVar[int] = 401
+    __occid_model_id__: ClassVar[int] = 362
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillImage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -144,7 +144,7 @@ class VideoFrame(OCCIDModel):
 
 class DurationalMedia(OCCIDModel):
     'Media with a time dimension'
-    __occid_model_id__: ClassVar[int] = 93
+    __occid_model_id__: ClassVar[int] = 87
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'MediaItem'
     __occid_children__: ClassVar[tuple[str, ...]] = ('VideoMedia', 'AudioMedia', 'SpectrumMedia')
@@ -164,7 +164,7 @@ class DurationalMedia(OCCIDModel):
 
 class VideoMedia(OCCIDModel):
     'Time-varying visual media'
-    __occid_model_id__: ClassVar[int] = 402
+    __occid_model_id__: ClassVar[int] = 363
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LiveVideoStream',)
@@ -185,7 +185,7 @@ class VideoMedia(OCCIDModel):
 
 class LiveVideoStream(OCCIDModel):
     'Live or near-live video stream endpoint'
-    __occid_model_id__: ClassVar[int] = 190
+    __occid_model_id__: ClassVar[int] = 173
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'VideoMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -207,7 +207,7 @@ class LiveVideoStream(OCCIDModel):
 
 class AudioMedia(OCCIDModel):
     'Acoustic or other audio-band media'
-    __occid_model_id__: ClassVar[int] = 27
+    __occid_model_id__: ClassVar[int] = 25
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -227,7 +227,7 @@ class AudioMedia(OCCIDModel):
 
 class SpectrumMedia(OCCIDModel):
     'Frequency-domain sampled or recorded media'
-    __occid_model_id__: ClassVar[int] = 336
+    __occid_model_id__: ClassVar[int] = 305
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SpectrumRecording',)
@@ -247,7 +247,7 @@ class SpectrumMedia(OCCIDModel):
 
 class SpectrumRecording(OCCIDModel):
     'Recorded radio-frequency or other spectrum data over a declared frequency span'
-    __occid_model_id__: ClassVar[int] = 337
+    __occid_model_id__: ClassVar[int] = 306
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpectrumMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

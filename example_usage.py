@@ -49,6 +49,7 @@ from occid import (
     Drone,
     Duration,
     EffectDomain,
+    Entity,
     EntityState,
     Execution,
     ExecutionCommand,
@@ -102,7 +103,11 @@ from occid import (
     SensorRunState,
     SensorSpectrum,
     SensorType,
+    Side,
     SpotterOrigin,
+    StandardIdentity,
+    Symbology,
+    SymbologyStandard,
     TaskAssignment,
     TaskInformation,
     TaskPhase,
@@ -357,6 +362,7 @@ def main() -> None:
     # Track and Task have independent sequences.
     registry = ClassIDRegistry(
         next_id={
+            "Side": 1,
             "Organization": 2,
             "Entity": 37,
             "Node": 5,
@@ -375,6 +381,8 @@ def main() -> None:
 
     # Allocate stable identities before constructing objects that refer to one
     # another. This is ordinary OCCID identity, not a separate bootstrap model.
+    side_uid = new_uid()
+    side_id = registry.allocate("Side")
     task_force_uid = new_uid()
     task_force_id = registry.allocate("Organization")
     uas_unit_uid = new_uid()
@@ -402,6 +410,8 @@ def main() -> None:
         tags=["OPERATOR"],
         metadata={},
         relations=[],
+        side=side_uid,
+        identity=StandardIdentity.OURS,
         role="operator",
         navigation=NavigationMode.MANUAL,
         navaids=[],
@@ -423,6 +433,12 @@ def main() -> None:
         tags=["UAV", "ISR"],
         metadata={},
         relations=[],
+        side=side_uid,
+        identity=StandardIdentity.OURS,
+        symbology=Symbology(
+            standard=SymbologyStandard.MIL_STD_2525D,
+            value="SFAPMFQR--*****",
+        ),
         propulsion=PropulsionType.ROTARY_WING,
         components=[],
         model="Frog UAV",
@@ -528,8 +544,18 @@ def main() -> None:
     )
 
     # -----------------------------------------------------------------------
-    # 2. Organization
+    # 2. Organization and side
     # -----------------------------------------------------------------------
+    # A Side is a canonical operational grouping. Entity and Organization
+    # membership reference it by UID; relative friend/hostile identity remains
+    # a separate StandardIdentity attribute rather than a property of the side.
+    side = Side(
+        record=record(registry, "provisioning"),
+        uid=side_uid,
+        id=side_id,
+        name="Frog Task Force",
+    )
+
     # Organization membership and roster identify the current composition;
     # changing operational condition remains in OrganizationState observations.
     uas_unit = Unit(
@@ -543,6 +569,7 @@ def main() -> None:
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
         member_uids=[operator.uid, uav.uid],
+        side=side_uid,
         roster=Roster(roster={}),
     )
 
@@ -563,6 +590,7 @@ def main() -> None:
         org_type=OrgType.GOVT,
         topology=OrgTopology.HIERARCHICAL,
         member_uids=[uas_unit.uid],
+        side=side_uid,
         roster=Roster(roster={}),
     )
 
@@ -583,17 +611,44 @@ def main() -> None:
         raise ValueError("CoT point conversion did not produce a global position")
     reported_position = cot_location.position
 
+    # The reported contact is a distinct operational subject. Once known, it is
+    # an ordinary Entity; the Track and its observations point at that subject
+    # instead of inventing a second identity for the same thing.
+    contact = Entity(
+        record=record(registry, "adapter.cot"),
+        uid=new_uid(),
+        id=registry.allocate("Entity"),
+        node_uids=[],
+        name="Route 6 contact",
+        callsign="CONTACT-1",
+        tags=["CONTACT"],
+        metadata={},
+        relations=[],
+        side=side_uid,
+        identity=StandardIdentity.HOSTILE,
+        symbology=Symbology(
+            standard=SymbologyStandard.MIL_STD_2525D,
+            value="SHGPU----------",
+        ),
+    )
+
+    # Track is maintained correlation state for the observed subject.
     track = Track(
         record=record(registry, "sigma.track"),
         uid=new_uid(),
         id=registry.allocate("Track"),
+        subject_uid=contact.uid,
     )
 
+    # IsrObservation is time-indexed evidence about that subject.
     source_observation = IsrObservation(
         record=record(registry, "adapter.cot"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
+        side=side_uid,
+        identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
+        subject_uid=contact.uid,
         evidence_media_uids=[],
         obs_ts=timestamp(cot.event_ts),
         observation_kind=ObservationKind.TRACK,
@@ -823,7 +878,10 @@ def main() -> None:
         record=record(registry, "mpfc.observation"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
+        side=side_uid,
+        identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
+        subject_uid=contact.uid,
         observer_entity_uid=uav.uid,
         sensor_uid=imaging_sensor_uid,
         evidence_media_uids=[live_video.uid],
@@ -855,7 +913,10 @@ def main() -> None:
         record=record(registry, "mpfc.observation"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
+        side=side_uid,
+        identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
+        subject_uid=contact.uid,
         observer_entity_uid=uav.uid,
         sensor_uid=imaging_sensor_uid,
         evidence_media_uids=[live_video.uid],
@@ -927,9 +988,10 @@ def main() -> None:
     print(f"   Task   {local_id(task.id):>2}: UID {uid_str(task.uid)}")
     print("   Equal local IDs are valid across different IntID namespaces.")
 
-    print("\n2. Organization")
+    print("\n2. Organization and side")
     print(f"   {task_force.name}: Organization {local_id(task_force.id)} -> Unit {local_id(uas_unit.id)}")
     print(f"   {uas_unit.name}: Entity {local_id(operator.id)}, Entity {local_id(uav.id)}")
+    print(f"   Side {local_id(side.id)}: {side.name}")
 
     print("\n3. Communications")
     print(f"   HQ Node {local_id(hq_node.id)}:  {uid_str(hq_node.uid)} @ {hq_node.addresses[0].value}")
@@ -983,6 +1045,10 @@ def main() -> None:
     print(f"   Observation {local_id(tracking_observation.id)}: {tracking_observation.observation_kind.name}")
     print(f"   Track {local_id(track.id)}: {track_update.track_state.name}, {track_update.confidence.name}")
     print(f"   Evidence count: {len(track_observations)}")
+    print(
+        f"   Subject chain: observation -> Track {local_id(track.id)} -> "
+        f"Entity {local_id(contact.id)} -> Side {local_id(side.id)}"
+    )
 
     print("\n11. Execution occurrence")
     print(f"   Execution {local_id(execution.id)}: {uid_str(execution.uid)}")

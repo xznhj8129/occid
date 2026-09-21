@@ -45,7 +45,6 @@ from .protocol import *
 from .radio import *
 from .record import *
 from .relationship import *
-from .representation import *
 from .resource import *
 from .root import *
 from .sensorstate import *

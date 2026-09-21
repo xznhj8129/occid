@@ -143,14 +143,14 @@ SIDC_CODES: dict[builtins.str, Any] = {
 
 class Attribute(OCCIDModel):
     'Fundamental characteristics, type, form'
-    __occid_model_id__: ClassVar[int] = 26
+    __occid_model_id__: ClassVar[int] = 24
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Symbology', 'GroundNavigation', 'AirNavigation', 'SensorFieldOfView')
 
 class Symbology(OCCIDModel):
     'Symbolic coding according to a declared standard'
-    __occid_model_id__: ClassVar[int] = 356
+    __occid_model_id__: ClassVar[int] = 322
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -62,6 +62,7 @@ models:
       record: Record
       uid: UID
       id: IntID(Track)
+      subject_uid: optional UID
 
   Assessment:
     semantic_role: concept
@@ -110,9 +111,11 @@ models:
       record: Record
       uid: UID
       id: IntID(Observation)
-      side: UID
+      side: optional UID
       identity: StandardIdentity
+      symbology: optional Symbology
       track_uid: optional UID
+      subject_uid: optional UID
       observer_entity_uid: optional UID
       sensor_uid: optional UID
       evidence_media_uids: list[UID]
