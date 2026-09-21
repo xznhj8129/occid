@@ -45,10 +45,6 @@ enums:
   - NORTH = 0
   - SOUTH
 
-  TacticalGraphicStatus:
-  - PRESENT = 0
-  - PLANNED
-
 models:
   Representation:
     description: An authored or shared depiction, presentation, organization, or view of operational information; representation changes do not alter the represented subject itself
@@ -328,13 +324,6 @@ models:
       layers: list[LayerView]
       grid: optional MapGrid
       bearing: optional AngleDegrees
-      
-  MilitarySymbolGraphic:
-    description: Military-standard symbolic portrayal of an identified operational subject at a geographic position
-    semantic_role: representation
-    parent: SymbolGraphic
-    fields:
-      symbology: MilitarySymbology
 
   TacticalGraphic:
     description: Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified SIDC rather than an application-local string kind
@@ -343,4 +332,3 @@ models:
     fields:
       sidc: SIDC
       control_points: list[GlobalPosition]
-      status: TacticalGraphicStatus = PRESENT
