@@ -13,30 +13,12 @@ models:
     parent: Property
 
   Symbology:
-    description: Semantic family for symbolic codings associated with an operational subject; concrete standards are represented by children
-    semantic_role: concept
+    description: Symbolic coding according to a declared standard
+    semantic_role: representation
     parent: Attribute
-
-  CoTSymbology:
-    description: Cursor-on-Target symbolic type coding retained as an explicit external-standard representation
-    semantic_role: representation
-    parent: Symbology
     fields:
-      cot: string
-  SIDC:
-    description: Standard identity and symbol code encoded according to an explicitly declared military symbology standard
-    semantic_role: representation
-    parent: Struct
-    fields:
-      value: string
       standard: SymbologyStandard
-
-  MilitarySymbology:
-    description: Military symbolic coding of an operational subject
-    semantic_role: representation
-    parent: Symbology
-    fields:
-      sidc: SIDC
+      value: string
 
 enums:
   SymbologyStandard:
