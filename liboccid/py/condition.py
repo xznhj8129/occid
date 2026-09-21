@@ -19,14 +19,14 @@ class BooleanOperator(IntEnum):
 
 class Condition(OCCIDModel):
     'Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic'
-    __occid_model_id__: ClassVar[int] = 62
+    __occid_model_id__: ClassVar[int] = 60
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Predicate', 'BooleanLogic')
 
 class Predicate(OCCIDModel):
     'Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions'
-    __occid_model_id__: ClassVar[int] = 293
+    __occid_model_id__: ClassVar[int] = 286
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Condition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

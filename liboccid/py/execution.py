@@ -17,7 +17,7 @@ class ExecutionPhase(IntEnum):
 
 class Execution(OCCIDModel):
     'One execution attempt for an assignment, independently tracked across local and external executors'
-    __occid_model_id__: ClassVar[int] = 114
+    __occid_model_id__: ClassVar[int] = 112
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -37,7 +37,7 @@ class Execution(OCCIDModel):
 
 class ExecutionStatus(OCCIDModel):
     'Reported status of one execution attempt at a point in time; durable evidence that a remote executor progressed or completed work'
-    __occid_model_id__: ClassVar[int] = 116
+    __occid_model_id__: ClassVar[int] = 114
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

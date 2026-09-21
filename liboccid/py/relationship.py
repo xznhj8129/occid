@@ -25,14 +25,14 @@ class SpatialRelationKind(IntEnum):
 
 class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 310
+    __occid_model_id__: ClassVar[int] = 303
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DirectedRelationship', 'EntityComponentRef', 'SpatialRelationship', 'MilitaryAffiliation')
 
 class DirectedRelationship(OCCIDModel):
     'Typed directed semantic relationship between two OCCID objects'
-    __occid_model_id__: ClassVar[int] = 87
+    __occid_model_id__: ClassVar[int] = 85
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -45,7 +45,7 @@ class DirectedRelationship(OCCIDModel):
     source: builtins.str | None = None
 
 class EntityComponentRef(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 106
+    __occid_model_id__: ClassVar[int] = 104
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -55,7 +55,7 @@ class EntityComponentRef(OCCIDModel):
 
 class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 343
+    __occid_model_id__: ClassVar[int] = 335
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -68,7 +68,7 @@ class SpatialRelationship(OCCIDModel):
 
 class MilitaryAffiliation(OCCIDModel):
     'Relative military standard identity assigned to a subject from the perspective of an observer, organization, or operational context'
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 224
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

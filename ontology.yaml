@@ -340,11 +340,6 @@ Root:
 
             Attribute:
               description: Fundamental characteristics, type, form
-              children:
-
-                Symbology:
-                  description: Semantic family for symbolic codings associated with an operational subject; concrete standards are represented by children
-
 
             Relationship:
               description: Nature of relations, ownership, provenance, link

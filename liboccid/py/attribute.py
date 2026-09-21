@@ -148,33 +148,10 @@ class Attribute(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('Symbology', 'GroundNavigation', 'AirNavigation', 'SensorFieldOfView')
 
 class Symbology(OCCIDModel):
-    'Semantic family for symbolic codings associated with an operational subject; concrete standards are represented by children'
-    __occid_model_id__: ClassVar[int] = 365
-    __occid_semantic_role__: ClassVar[str] = 'concept'
+    'Symbolic coding according to a declared standard'
+    __occid_model_id__: ClassVar[int] = 357
+    __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('CoTSymbology', 'MilitarySymbology')
-
-class CoTSymbology(OCCIDModel):
-    'Cursor-on-Target symbolic type coding retained as an explicit external-standard representation'
-    __occid_model_id__: ClassVar[int] = 50
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Symbology'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    cot: builtins.str
-
-class SIDC(OCCIDModel):
-    'Standard identity and symbol code encoded according to an explicitly declared military symbology standard'
-    __occid_model_id__: ClassVar[int] = 332
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Struct'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    value: builtins.str
     standard: SymbologyStandard
-
-class MilitarySymbology(OCCIDModel):
-    'Military symbolic coding of an operational subject'
-    __occid_model_id__: ClassVar[int] = 240
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Symbology'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    sidc: Semantic[SIDC]
+    value: builtins.str

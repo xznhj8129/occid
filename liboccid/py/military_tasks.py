@@ -22,7 +22,7 @@ class AirCombatTask(IntEnum):
 ### Models
 
 class MunitionAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 246
+    __occid_model_id__: ClassVar[int] = 240
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -31,7 +31,7 @@ class MunitionAllocation(OCCIDModel):
 
 class CombatTaskProfile(OCCIDModel):
     'Military domain detail associated with a generic Task without creating a Task subtype'
-    __occid_model_id__: ClassVar[int] = 56
+    __occid_model_id__: ClassVar[int] = 54
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

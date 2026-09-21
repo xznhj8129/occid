@@ -133,7 +133,7 @@ class AirPlan(OCCIDModel):
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class GroupFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 155
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -153,7 +153,7 @@ class GroupFlightPlan(OCCIDModel):
     formation_3d: AirGroupFormation3DType | None = None
 
 class UnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 401
+    __occid_model_id__: ClassVar[int] = 394
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryUnitFlightPlan',)
@@ -175,7 +175,7 @@ class UnitFlightPlan(OCCIDModel):
 
 class PlannedAirMission(OCCIDModel):
     'Saved operator mission plan - the planner inputs, restorable for editing'
-    __occid_model_id__: ClassVar[int] = 284
+    __occid_model_id__: ClassVar[int] = 277
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -193,7 +193,7 @@ class PlannedAirMission(OCCIDModel):
 
 class FlightLevelBand(OCCIDModel):
     'Embedded flight-level band value used by plans rather than an independently identified control reference'
-    __occid_model_id__: ClassVar[int] = 124
+    __occid_model_id__: ClassVar[int] = 122
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -202,7 +202,7 @@ class FlightLevelBand(OCCIDModel):
 
 class LoiterOrbit(OCCIDModel):
     'Embedded orbit geometry and timing value'
-    __occid_model_id__: ClassVar[int] = 203
+    __occid_model_id__: ClassVar[int] = 199
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -213,7 +213,7 @@ class LoiterOrbit(OCCIDModel):
 
 class MissionRouteGeometry(OCCIDModel):
     'Embedded route geometry used by a mission plan'
-    __occid_model_id__: ClassVar[int] = 243
+    __occid_model_id__: ClassVar[int] = 237
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -223,7 +223,7 @@ class MissionRouteGeometry(OCCIDModel):
     route_out: Semantic[GeoPath]
 
 class FlightMissionPoint(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 125
+    __occid_model_id__: ClassVar[int] = 123
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AutopilotMissionWaypoint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -239,7 +239,7 @@ class FlightMissionPoint(OCCIDModel):
 
 class PlannedRoutePoints(OCCIDModel):
     'Embedded set of planner points defining mission-plan route segments'
-    __occid_model_id__: ClassVar[int] = 285
+    __occid_model_id__: ClassVar[int] = 278
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -249,7 +249,7 @@ class PlannedRoutePoints(OCCIDModel):
     end: Semantic[FlightMissionPoint]
 
 class MilitaryUnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 235
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'UnitFlightPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

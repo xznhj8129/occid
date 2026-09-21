@@ -7,28 +7,28 @@ from .common import *
 
 class Constraint(OCCIDModel):
     'Limit, rule, or time/resource bound applied to directed work'
-    __occid_model_id__: ClassVar[int] = 64
+    __occid_model_id__: ClassVar[int] = 62
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Restriction', 'Limitation', 'TaskTimeWindow', 'WeatherLimits')
     condition: Semantic[Condition] | None = None
 
 class Restriction(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 320
+    __occid_model_id__: ClassVar[int] = 313
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     condition: Semantic[Condition] | None = None
 
 class Limitation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 188
+    __occid_model_id__: ClassVar[int] = 184
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     condition: Semantic[Condition] | None = None
 
 class TaskTimeWindow(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 379
+    __occid_model_id__: ClassVar[int] = 371
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -37,7 +37,7 @@ class TaskTimeWindow(OCCIDModel):
     latest_finish: builtins.float | None = None
 
 class WeatherLimits(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 417
+    __occid_model_id__: ClassVar[int] = 410
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

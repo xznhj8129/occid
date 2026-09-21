@@ -326,9 +326,9 @@ models:
       bearing: optional AngleDegrees
 
   TacticalGraphic:
-    description: Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified SIDC rather than an application-local string kind
+    description: Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified symbology code rather than an application-local string kind
     semantic_role: representation
     parent: Graphic
     fields:
-      sidc: SIDC
+      symbology: Symbology
       control_points: list[GlobalPosition]

@@ -24,7 +24,7 @@ class PlanStepStatus(IntEnum):
 
 class Plan(OCCIDModel):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
-    __occid_model_id__: ClassVar[int] = 282
+    __occid_model_id__: ClassVar[int] = 275
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirPlan', 'OperationalPlan', 'RoutePlan')
@@ -36,7 +36,7 @@ class Plan(OCCIDModel):
 
 class OperationalPlan(OCCIDModel):
     'Task-based'
-    __occid_model_id__: ClassVar[int] = 263
+    __occid_model_id__: ClassVar[int] = 256
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -55,7 +55,7 @@ class OperationalPlan(OCCIDModel):
 
 class RoutePlan(OCCIDModel):
     'Plan of routed movement along waypoints or routes'
-    __occid_model_id__: ClassVar[int] = 328
+    __occid_model_id__: ClassVar[int] = 321
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AutopilotMission',)
@@ -66,7 +66,7 @@ class RoutePlan(OCCIDModel):
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class PlanContingency(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 283
+    __occid_model_id__: ClassVar[int] = 276
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

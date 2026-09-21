@@ -70,14 +70,14 @@ class WaypointType(IntEnum):
 
 class SpatialStruct(OCCIDModel):
     'Spatial struct support models'
-    __occid_model_id__: ClassVar[int] = 344
+    __occid_model_id__: ClassVar[int] = 336
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LoiterOrbit', 'MissionRouteGeometry', 'PlannedRoutePoints', 'AutopilotMissionWaypoint')
 
 class EulerAngles(OCCIDModel):
     'Euler attitude in radians; frame metadata is optional in the record but consumers performing transforms or control must require the frames they depend on'
-    __occid_model_id__: ClassVar[int] = 112
+    __occid_model_id__: ClassVar[int] = 110
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Pose'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -89,7 +89,7 @@ class EulerAngles(OCCIDModel):
 
 class LocalDirection(OCCIDModel):
     'Local bearing/azimuth/elevation angles in radians; slant_range is an optional distance in meters when range is known'
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 192
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Bearing'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -99,7 +99,7 @@ class LocalDirection(OCCIDModel):
     slant_range: builtins.float | None = None
 
 class LocalVector(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 195
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Vector'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -109,7 +109,7 @@ class LocalVector(OCCIDModel):
     frame: InertialReferenceFrame
 
 class GlobalPosition(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 147
+    __occid_model_id__: ClassVar[int] = 144
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GeoPos'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -121,14 +121,14 @@ class GlobalPosition(OCCIDModel):
     alt_frame: AltitudeDatum
 
 class GeoPath(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 141
+    __occid_model_id__: ClassVar[int] = 139
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StructPath'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     points: list[Semantic[GlobalPosition]]
 
 class GeoArea(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 135
+    __occid_model_id__: ClassVar[int] = 133
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Shape'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -136,7 +136,7 @@ class GeoArea(OCCIDModel):
 
 class GeoCircle(OCCIDModel):
     'Circular geographic area defined by a center and metric radius'
-    __occid_model_id__: ClassVar[int] = 136
+    __occid_model_id__: ClassVar[int] = 134
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Shape'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -145,7 +145,7 @@ class GeoCircle(OCCIDModel):
 
 class GeoMultiPoint(OCCIDModel):
     'Aggregate of geographic points without introducing a new point semantics'
-    __occid_model_id__: ClassVar[int] = 140
+    __occid_model_id__: ClassVar[int] = 138
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Shape'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -153,7 +153,7 @@ class GeoMultiPoint(OCCIDModel):
 
 class GeoMultiPath(OCCIDModel):
     'Aggregate of independent geographic paths'
-    __occid_model_id__: ClassVar[int] = 139
+    __occid_model_id__: ClassVar[int] = 137
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StructPath'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -161,7 +161,7 @@ class GeoMultiPath(OCCIDModel):
 
 class GeoMultiArea(OCCIDModel):
     'Aggregate of independent geographic areas'
-    __occid_model_id__: ClassVar[int] = 138
+    __occid_model_id__: ClassVar[int] = 136
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Shape'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -169,7 +169,7 @@ class GeoMultiArea(OCCIDModel):
 
 class GeoGeometryCollection(OCCIDModel):
     'Heterogeneous geographic geometry aggregate expressed through existing semantic geometry primitives'
-    __occid_model_id__: ClassVar[int] = 137
+    __occid_model_id__: ClassVar[int] = 135
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Shape'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -192,7 +192,7 @@ class BoundingBox(OCCIDModel):
 
 class VelocityVector(OCCIDModel):
     'Linear velocity with optional explicit inertial reference frame'
-    __occid_model_id__: ClassVar[int] = 406
+    __occid_model_id__: ClassVar[int] = 399
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Vector'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -224,7 +224,7 @@ class AltitudeState(OCCIDModel):
     relative_datum: AltitudeDatum | None = None
 
 class LocationUncertainty(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 202
+    __occid_model_id__: ClassVar[int] = 198
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Uncertainty'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -236,13 +236,13 @@ class LocationUncertainty(OCCIDModel):
 
 class Position(OCCIDModel):
     'Position in space, address or placement'
-    __occid_model_id__: ClassVar[int] = 289
+    __occid_model_id__: ClassVar[int] = 282
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LocationState', 'SpotterOrigin')
 
 class LocationState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 197
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Position'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -258,7 +258,7 @@ class LocationState(OCCIDModel):
     gnss: Semantic[GnssSolution] | None = None
 
 class SpotterOrigin(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 348
+    __occid_model_id__: ClassVar[int] = 340
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Position'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

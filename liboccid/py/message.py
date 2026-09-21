@@ -60,7 +60,7 @@ class ConflictPolicy(IntEnum):
 
 class Message(OCCIDModel):
     'Transmitted envelope plus payload'
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 221
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshtasticMessage', 'CommandMessage', 'HumanTextMessage', 'ObservationMessage', 'Delta', 'ResponseMessage', 'TelemetryMessage')
@@ -72,7 +72,7 @@ class Message(OCCIDModel):
 
 class Delta(OCCIDModel):
     'K:V mapped delta of stored data to signal a change'
-    __occid_model_id__: ClassVar[int] = 85
+    __occid_model_id__: ClassVar[int] = 83
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -88,7 +88,7 @@ class Delta(OCCIDModel):
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 319
+    __occid_model_id__: ClassVar[int] = 312
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DeliveryReceipt', 'MessageTransferResult')
@@ -101,7 +101,7 @@ class ResponseMessage(OCCIDModel):
     response_to: Semantic[UID]
 
 class DeliveryReceipt(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 84
+    __occid_model_id__: ClassVar[int] = 82
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResponseMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -119,7 +119,7 @@ class DeliveryReceipt(OCCIDModel):
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 226
+    __occid_model_id__: ClassVar[int] = 222
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResponseMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

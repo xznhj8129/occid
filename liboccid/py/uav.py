@@ -39,7 +39,7 @@ class AirRobot(OCCIDModel):
     telemetry_type: TelemetryType
 
 class Drone(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 93
+    __occid_model_id__: ClassVar[int] = 91
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirRobot'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

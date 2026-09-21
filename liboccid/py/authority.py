@@ -28,7 +28,7 @@ class Authority(OCCIDModel):
     constraints: list[Semantic[Constraint]]
 
 class CommandAuthority(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 58
+    __occid_model_id__: ClassVar[int] = 56
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -44,7 +44,7 @@ class CommandAuthority(OCCIDModel):
 
 class Lease(OCCIDModel):
     'Bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 186
+    __occid_model_id__: ClassVar[int] = 182
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AttachmentLease', 'ControlLease')
@@ -78,7 +78,7 @@ class AttachmentLease(OCCIDModel):
 
 class ControlLease(OCCIDModel):
     'Temporary direct control access'
-    __occid_model_id__: ClassVar[int] = 70
+    __occid_model_id__: ClassVar[int] = 68
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

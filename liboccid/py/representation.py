@@ -44,22 +44,18 @@ class Hemisphere(IntEnum):
     NORTH = 0
     SOUTH = auto()
 
-class TacticalGraphicStatus(IntEnum):
-    PRESENT = 0
-    PLANNED = auto()
-
 ### Models
 
 class Representation(OCCIDModel):
     'An authored or shared depiction, presentation, organization, or view of operational information; representation changes do not alter the represented subject itself'
-    __occid_model_id__: ClassVar[int] = 312
+    __occid_model_id__: ClassVar[int] = 305
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('IdentifiedRepresentation',)
 
 class IdentifiedRepresentation(OCCIDModel):
     'Persisted shared representation with durable OCCID identity, distinct from transient renderer or session state'
-    __occid_model_id__: ClassVar[int] = 165
+    __occid_model_id__: ClassVar[int] = 162
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Representation'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Graphic', 'Layer', 'MapView')
@@ -70,27 +66,27 @@ class IdentifiedRepresentation(OCCIDModel):
 
 class ColorComponent(OCCIDModel):
     'Component of a declared graphic color value'
-    __occid_model_id__: ClassVar[int] = 54
+    __occid_model_id__: ClassVar[int] = 52
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ColorChannel',)
 
 class ColorChannel(OCCIDValue[builtins.int]):
-    __occid_model_id__: ClassVar[int] = 53
+    __occid_model_id__: ClassVar[int] = 51
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ColorComponent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Opacity(OCCIDValue[builtins.float]):
     'Graphic opacity ratio where zero is fully transparent and one is fully opaque'
-    __occid_model_id__: ClassVar[int] = 260
+    __occid_model_id__: ClassVar[int] = 253
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Ratio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class ColorRGBA(OCCIDModel):
     'Device-independent sRGB color components used for authored graphic portrayal'
-    __occid_model_id__: ClassVar[int] = 55
+    __occid_model_id__: ClassVar[int] = 53
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -101,7 +97,7 @@ class ColorRGBA(OCCIDModel):
 
 class GraphicLength(OCCIDModel):
     'Length used by a graphic portrayal, explicitly distinguishing screen-space and world-space values'
-    __occid_model_id__: ClassVar[int] = 150
+    __occid_model_id__: ClassVar[int] = 147
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Measurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -109,7 +105,7 @@ class GraphicLength(OCCIDModel):
     unit: GraphicLengthUnit
 
 class StrokeStyle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 354
+    __occid_model_id__: ClassVar[int] = 346
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -118,7 +114,7 @@ class StrokeStyle(OCCIDModel):
     pattern: StrokePattern | None = None
 
 class FillStyle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 118
+    __occid_model_id__: ClassVar[int] = 116
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -126,7 +122,7 @@ class FillStyle(OCCIDModel):
     pattern: FillPattern | None = None
 
 class TextStyle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 384
+    __occid_model_id__: ClassVar[int] = 377
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -137,7 +133,7 @@ class TextStyle(OCCIDModel):
 
 class GraphicStyle(OCCIDModel):
     'Renderer-independent authored portrayal of a graphic'
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 148
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -153,21 +149,21 @@ class AnnotationAnchor(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('PositionAnchor', 'SubjectAnchor', 'PathAnchor')
 
 class PositionAnchor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 290
+    __occid_model_id__: ClassVar[int] = 283
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AnnotationAnchor'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     position: Semantic[GlobalPosition]
 
 class SubjectAnchor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 357
+    __occid_model_id__: ClassVar[int] = 349
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AnnotationAnchor'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     subject_uid: Semantic[UID]
 
 class PathAnchor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 274
+    __occid_model_id__: ClassVar[int] = 267
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AnnotationAnchor'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -176,38 +172,30 @@ class PathAnchor(OCCIDModel):
 
 class RepresentationSource(OCCIDModel):
     'Source used to construct a reference or data representation'
-    __occid_model_id__: ClassVar[int] = 313
+    __occid_model_id__: ClassVar[int] = 306
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ExternalRepresentationSource', 'MediaRepresentationSource')
 
 class ExternalRepresentationSource(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 117
+    __occid_model_id__: ClassVar[int] = 115
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RepresentationSource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     uri: builtins.str
     format: RepresentationFormat
 
-class GeoRegistration(OCCIDModel):
-    'Geographic footprint used to register media or an external representation to the operational map'
-    __occid_model_id__: ClassVar[int] = 143
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Struct'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    footprint: Semantic[GeoArea]
-
 class MediaRepresentationSource(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 218
+    __occid_model_id__: ClassVar[int] = 214
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RepresentationSource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     media_uid: Semantic[UID]
-    registration: Semantic[GeoRegistration] | None = None
+    registration: Semantic[GeoArea] | None = None
 
 class Graphic(OCCIDModel):
     'Persisted graphical representation of one or more operational subjects or spatial constructs'
-    __occid_model_id__: ClassVar[int] = 149
+    __occid_model_id__: ClassVar[int] = 146
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'IdentifiedRepresentation'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GeometryGraphic', 'SymbolGraphic', 'AnnotationGraphic', 'GeoreferencedMediaGraphic', 'MeasurementGraphic', 'TacticalGraphic')
@@ -221,7 +209,7 @@ class Graphic(OCCIDModel):
 
 class GeometryGraphic(OCCIDModel):
     'Graphic portrayal of an identified Location; the underlying geometry remains on the Location rather than on the graphic style object'
-    __occid_model_id__: ClassVar[int] = 145
+    __occid_model_id__: ClassVar[int] = 142
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -235,11 +223,11 @@ class GeometryGraphic(OCCIDModel):
     location_uid: Semantic[UID]
 
 class SymbolGraphic(OCCIDModel):
-    'Symbolic portrayal of an operational subject using a declared symbology'
-    __occid_model_id__: ClassVar[int] = 364
+    'Symbolic portrayal of an identified operational subject at a geographic position using a declared symbology'
+    __occid_model_id__: ClassVar[int] = 356
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('MilitarySymbolGraphic',)
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
     record: Semantic[Record]
     uid: Semantic[UID]
     name: builtins.str | None = None
@@ -248,6 +236,7 @@ class SymbolGraphic(OCCIDModel):
     style: Semantic[GraphicStyle] | None = None
     temporal_extent: Semantic[TimeRange] | None = None
     subject_uid: Semantic[UID]
+    position: Semantic[GlobalPosition]
     symbology: Semantic[Symbology]
 
 class AnnotationGraphic(OCCIDModel):
@@ -255,7 +244,7 @@ class AnnotationGraphic(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 18
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('LabelGraphic', 'NoteGraphic', 'CalloutGraphic', 'MediaGraphic')
+    __occid_children__: ClassVar[tuple[str, ...]] = ('TextGraphic', 'MediaGraphic')
     record: Semantic[Record]
     uid: Semantic[UID]
     name: builtins.str | None = None
@@ -265,8 +254,8 @@ class AnnotationGraphic(OCCIDModel):
     temporal_extent: Semantic[TimeRange] | None = None
     anchor: Semantic[AnnotationAnchor]
 
-class LabelGraphic(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 182
+class TextGraphic(OCCIDModel):
+    __occid_model_id__: ClassVar[int] = 376
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AnnotationGraphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -280,38 +269,8 @@ class LabelGraphic(OCCIDModel):
     anchor: Semantic[AnnotationAnchor]
     text: Semantic[PlainText]
 
-class NoteGraphic(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 254
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AnnotationGraphic'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
-    uid: Semantic[UID]
-    name: builtins.str | None = None
-    description: Semantic[PlainText] | None = None
-    id: Annotated[IntID, IDNamespace('Graphic')]
-    style: Semantic[GraphicStyle] | None = None
-    temporal_extent: Semantic[TimeRange] | None = None
-    anchor: Semantic[AnnotationAnchor]
-    text: Semantic[Text]
-
-class CalloutGraphic(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 40
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AnnotationGraphic'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
-    uid: Semantic[UID]
-    name: builtins.str | None = None
-    description: Semantic[PlainText] | None = None
-    id: Annotated[IntID, IDNamespace('Graphic')]
-    style: Semantic[GraphicStyle] | None = None
-    temporal_extent: Semantic[TimeRange] | None = None
-    anchor: Semantic[AnnotationAnchor]
-    text: Semantic[Text]
-
 class MediaGraphic(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 215
+    __occid_model_id__: ClassVar[int] = 211
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AnnotationGraphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -327,7 +286,7 @@ class MediaGraphic(OCCIDModel):
 
 class GeoreferencedMediaGraphic(OCCIDModel):
     'Graphic portrayal of media registered directly to geographic space'
-    __occid_model_id__: ClassVar[int] = 146
+    __occid_model_id__: ClassVar[int] = 143
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -339,11 +298,11 @@ class GeoreferencedMediaGraphic(OCCIDModel):
     style: Semantic[GraphicStyle] | None = None
     temporal_extent: Semantic[TimeRange] | None = None
     media_uid: Semantic[UID]
-    registration: Semantic[GeoRegistration]
+    registration: Semantic[GeoArea]
 
 class MeasurementGraphic(OCCIDModel):
     'Graphic portrayal of a semantic measurement object; the measurement result is not encoded in the graphic itself'
-    __occid_model_id__: ClassVar[int] = 212
+    __occid_model_id__: ClassVar[int] = 208
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -358,7 +317,7 @@ class MeasurementGraphic(OCCIDModel):
 
 class Layer(OCCIDModel):
     'Shared organization of representations; visibility choices for a particular operator or saved map view are modeled separately'
-    __occid_model_id__: ClassVar[int] = 184
+    __occid_model_id__: ClassVar[int] = 180
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'IdentifiedRepresentation'
     __occid_children__: ClassVar[tuple[str, ...]] = ('OverlayLayer', 'ReferenceLayer', 'DataLayer')
@@ -371,7 +330,7 @@ class Layer(OCCIDModel):
 
 class OverlayLayer(OCCIDModel):
     'Layer whose membership consists of authored graphics'
-    __occid_model_id__: ClassVar[int] = 271
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Layer'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -385,7 +344,7 @@ class OverlayLayer(OCCIDModel):
 
 class ReferenceLayer(OCCIDModel):
     'Layer backed by an external or media-derived geospatial representation source'
-    __occid_model_id__: ClassVar[int] = 308
+    __occid_model_id__: ClassVar[int] = 301
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Layer'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -399,7 +358,7 @@ class ReferenceLayer(OCCIDModel):
 
 class DataLayer(OCCIDModel):
     'Layer backed by a structured external representation source'
-    __occid_model_id__: ClassVar[int] = 78
+    __occid_model_id__: ClassVar[int] = 76
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Layer'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -413,7 +372,7 @@ class DataLayer(OCCIDModel):
 
 class LayerView(OCCIDModel):
     'Presentation of one shared layer inside one saved view'
-    __occid_model_id__: ClassVar[int] = 185
+    __occid_model_id__: ClassVar[int] = 181
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -423,7 +382,7 @@ class LayerView(OCCIDModel):
 
 class MapGrid(OCCIDModel):
     'Coordinate-reference grid definition used by a saved map representation; renderer appearance is optional representation data'
-    __occid_model_id__: ClassVar[int] = 207
+    __occid_model_id__: ClassVar[int] = 203
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('UTMMapGrid', 'MGRSMapGrid', 'LatitudeLongitudeMapGrid', 'LocalMapGrid')
@@ -431,14 +390,14 @@ class MapGrid(OCCIDModel):
 
 class UTMZone(OCCIDValue[builtins.int]):
     'Universal Transverse Mercator longitudinal zone code'
-    __occid_model_id__: ClassVar[int] = 398
+    __occid_model_id__: ClassVar[int] = 391
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class UTMMapGrid(OCCIDModel):
     'Fixed Universal Transverse Mercator grid'
-    __occid_model_id__: ClassVar[int] = 397
+    __occid_model_id__: ClassVar[int] = 390
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MapGrid'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -449,7 +408,7 @@ class UTMMapGrid(OCCIDModel):
 
 class MGRSMapGrid(OCCIDModel):
     'Military Grid Reference System display grid'
-    __occid_model_id__: ClassVar[int] = 204
+    __occid_model_id__: ClassVar[int] = 200
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MapGrid'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -458,7 +417,7 @@ class MGRSMapGrid(OCCIDModel):
 
 class LatitudeLongitudeMapGrid(OCCIDModel):
     'Geographic latitude/longitude grid with angular spacing'
-    __occid_model_id__: ClassVar[int] = 183
+    __occid_model_id__: ClassVar[int] = 179
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MapGrid'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -467,7 +426,7 @@ class LatitudeLongitudeMapGrid(OCCIDModel):
 
 class LocalMapGrid(OCCIDModel):
     'Pinned local metric grid whose positive north axis is rotated clockwise from true north'
-    __occid_model_id__: ClassVar[int] = 197
+    __occid_model_id__: ClassVar[int] = 193
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MapGrid'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -478,7 +437,7 @@ class LocalMapGrid(OCCIDModel):
 
 class MapView(OCCIDModel):
     'Named saved operational map view over shared layers; transient browser viewport state need not be persisted as a MapView'
-    __occid_model_id__: ClassVar[int] = 208
+    __occid_model_id__: ClassVar[int] = 204
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'IdentifiedRepresentation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -493,25 +452,9 @@ class MapView(OCCIDModel):
     grid: Semantic[MapGrid] | None = None
     bearing: Semantic[AngleDegrees] | None = None
 
-class MilitarySymbolGraphic(OCCIDModel):
-    'Military-standard symbolic portrayal of an identified operational subject'
-    __occid_model_id__: ClassVar[int] = 239
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'SymbolGraphic'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
-    uid: Semantic[UID]
-    name: builtins.str | None = None
-    description: Semantic[PlainText] | None = None
-    id: Annotated[IntID, IDNamespace('Graphic')]
-    style: Semantic[GraphicStyle] | None = None
-    temporal_extent: Semantic[TimeRange] | None = None
-    subject_uid: Semantic[UID]
-    symbology: Semantic[MilitarySymbology]
-
 class TacticalGraphic(OCCIDModel):
-    'Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified SIDC rather than an application-local string kind'
-    __occid_model_id__: ClassVar[int] = 366
+    'Doctrinal military tactical graphic or control measure; exact graphic meaning is carried by a standard-qualified symbology code rather than an application-local string kind'
+    __occid_model_id__: ClassVar[int] = 358
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Graphic'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -522,6 +465,5 @@ class TacticalGraphic(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Graphic')]
     style: Semantic[GraphicStyle] | None = None
     temporal_extent: Semantic[TimeRange] | None = None
-    sidc: Semantic[SIDC]
+    symbology: Semantic[Symbology]
     control_points: list[Semantic[GlobalPosition]]
-    status: TacticalGraphicStatus = TacticalGraphicStatus.PRESENT
