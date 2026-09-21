@@ -296,7 +296,7 @@ ENEMY_CALLSIGN_TEMPLATES: dict[OOBSize, builtins.str] = {
 
 class Organization(OCCIDModel):
     'A structured collection of organized entities and/or subordinate organizations with common command and control'
-    __occid_model_id__: ClassVar[int] = 262
+    __occid_model_id__: ClassVar[int] = 261
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Set'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Group', 'Unit', 'MilitaryOrg')
@@ -306,6 +306,7 @@ class Organization(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel
     org_type: OrgType | None = None
@@ -325,6 +326,7 @@ class Group(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel = OrgLevel.GROUP
     org_type: OrgType | None = None
@@ -334,7 +336,7 @@ class Group(OCCIDModel):
     roster: Semantic[Roster] | None = None
 
 class Unit(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 393
+    __occid_model_id__: ClassVar[int] = 392
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Organization'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -344,6 +346,7 @@ class Unit(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel = OrgLevel.UNIT
     org_type: OrgType | None = None
@@ -354,7 +357,7 @@ class Unit(OCCIDModel):
 
 class OrgTemplate(OCCIDModel):
     'Reusable definition or template for an organization, distinct from a concrete Organization and its changing state'
-    __occid_model_id__: ClassVar[int] = 261
+    __occid_model_id__: ClassVar[int] = 260
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryOrgTemplate',)
@@ -368,7 +371,7 @@ class OrgTemplate(OCCIDModel):
 
 class OrgComposition(OCCIDModel):
     'Required or doctrinal quantity of subordinate organizations defined by reusable organization definitions'
-    __occid_model_id__: ClassVar[int] = 259
+    __occid_model_id__: ClassVar[int] = 258
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -377,7 +380,7 @@ class OrgComposition(OCCIDModel):
 
 class MilitaryOrgTemplate(OCCIDModel):
     'Reusable military organizational definition or template, including doctrinal structure and authorized resources'
-    __occid_model_id__: ClassVar[int] = 230
+    __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OrgTemplate'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -396,7 +399,7 @@ class MilitaryOrgTemplate(OCCIDModel):
 
 class Side(OCCIDModel):
     'Named operational side or alignment grouping; relative friendly/hostile identity is modeled separately from side membership'
-    __occid_model_id__: ClassVar[int] = 332
+    __occid_model_id__: ClassVar[int] = 331
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Set'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Coalition',)
@@ -423,7 +426,7 @@ class Coalition(OCCIDModel):
     member_uids: list[Semantic[UID]]
 
 class OrgRole(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 260
+    __occid_model_id__: ClassVar[int] = 259
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -432,7 +435,7 @@ class OrgRole(OCCIDModel):
     assignment: Semantic[Assignment]
 
 class Roster(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 319
+    __occid_model_id__: ClassVar[int] = 318
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -440,7 +443,7 @@ class Roster(OCCIDModel):
 
 class OrganizationState(OCCIDModel):
     'Time-indexed mutable organizational condition, membership, location, readiness, holdings, and roster separated from organization identity'
-    __occid_model_id__: ClassVar[int] = 263
+    __occid_model_id__: ClassVar[int] = 262
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryOrganizationState',)
@@ -454,7 +457,7 @@ class OrganizationState(OCCIDModel):
     health: Semantic[HealthSnapshot] | None = None
 
 class MilitaryOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 229
+    __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Organization'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlyingOrg', 'OrbatOrg')
@@ -464,6 +467,7 @@ class MilitaryOrg(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel
     org_type: OrgType | None = None
@@ -485,6 +489,7 @@ class FlyingOrg(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel
     org_type: OrgType | None = None
@@ -497,7 +502,7 @@ class FlyingOrg(OCCIDModel):
     op_domain: OperationalDomain = OperationalDomain.AIR
 
 class OrbatOrg(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 257
+    __occid_model_id__: ClassVar[int] = 256
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MilitaryOrg'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroundOrbatOrg',)
@@ -507,6 +512,7 @@ class OrbatOrg(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel
     org_type: OrgType | None = None
@@ -533,6 +539,7 @@ class GroundOrbatOrg(OCCIDModel):
     id: Annotated[IntID, IDNamespace('Organization')]
     name: builtins.str | None = None
     unit_code: builtins.str | None = None
+    side: Semantic[UID]
     callsign: builtins.str | None = None
     org_level: OrgLevel
     org_type: OrgType | None = None
@@ -551,7 +558,7 @@ class GroundOrbatOrg(OCCIDModel):
 
 class MilitaryStrength(OCCIDModel):
     'Reported qualitative military strength when exact resource holdings are unavailable or inappropriate; exact counts remain ResourceHolding data'
-    __occid_model_id__: ClassVar[int] = 233
+    __occid_model_id__: ClassVar[int] = 232
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -561,7 +568,7 @@ class MilitaryStrength(OCCIDModel):
 
 class MilitaryOrganizationState(OCCIDModel):
     'Military-specific changing organization state layered on generic OrganizationState'
-    __occid_model_id__: ClassVar[int] = 231
+    __occid_model_id__: ClassVar[int] = 230
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OrganizationState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -26,7 +26,7 @@ class Condition(OCCIDModel):
 
 class Predicate(OCCIDModel):
     'Atomic condition leaf; concrete predicate schemas define operands and comparison semantics instead of embedding free-form expressions'
-    __occid_model_id__: ClassVar[int] = 286
+    __occid_model_id__: ClassVar[int] = 285
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Condition'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

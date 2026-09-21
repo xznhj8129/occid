@@ -176,7 +176,6 @@ models:
       kinematics: TargetKinematics
       cep_desired_m: float
       cep_max_m: float
-      target_class: ObservedObjectType
       target_force: StandardIdentity
 
   Fires:
@@ -213,7 +212,6 @@ models:
       match_media_url: string
       confidence_score: float
       authorization: list[int]
-      target_class: ObservedObjectType
       target_force: StandardIdentity
       match_media_type: SensorDataFormat
 
@@ -228,7 +226,6 @@ models:
       authorization: list[int]
       destruction_pct: int
       confidence_pct: int
-      target_class: ObservedObjectType
       target_force: StandardIdentity
 
   EsadState:

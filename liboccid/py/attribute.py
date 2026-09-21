@@ -11,11 +11,12 @@ class SymbologyStandard(IntEnum):
     APP_6D = auto()
 
 class StandardIdentity(IntEnum):
-    PENDING = 0
-    UNKNOWN = auto()
-    ASSUMED_FRIEND = auto()
-    FRIEND = auto()
+    OURS = 0
     NEUTRAL = auto()
+    UNKNOWN = auto()
+    PENDING = auto()
+    FRIEND = auto()
+    ASSUMED_FRIEND = auto()
     SUSPECT = auto()
     HOSTILE = auto()
     JOKER = auto()
@@ -149,7 +150,7 @@ class Attribute(OCCIDModel):
 
 class Symbology(OCCIDModel):
     'Symbolic coding according to a declared standard'
-    __occid_model_id__: ClassVar[int] = 357
+    __occid_model_id__: ClassVar[int] = 356
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -60,13 +60,3 @@ models:
       subject_uid: UID
       reference_uid: UID
       relation: SpatialRelationKind
-  MilitaryAffiliation:
-    description: Relative military standard identity assigned to a subject from the perspective of an observer, organization, or operational context
-    semantic_role: representation
-    parent: Relationship
-    fields:
-      observer_uid: UID
-      subject_uid: UID
-      identity: StandardIdentity
-      since_ts: optional Timestamp
-      until_ts: optional Timestamp

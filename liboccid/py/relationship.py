@@ -25,10 +25,10 @@ class SpatialRelationKind(IntEnum):
 
 class Relationship(OCCIDModel):
     'Nature of relations, ownership, provenance, link'
-    __occid_model_id__: ClassVar[int] = 303
+    __occid_model_id__: ClassVar[int] = 302
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Property'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('DirectedRelationship', 'EntityComponentRef', 'SpatialRelationship', 'MilitaryAffiliation')
+    __occid_children__: ClassVar[tuple[str, ...]] = ('DirectedRelationship', 'EntityComponentRef', 'SpatialRelationship')
 
 class DirectedRelationship(OCCIDModel):
     'Typed directed semantic relationship between two OCCID objects'
@@ -55,7 +55,7 @@ class EntityComponentRef(OCCIDModel):
 
 class SpatialRelationship(OCCIDModel):
     'Persisted asserted topological relationship between identified spatial objects; subject is related to reference by relation'
-    __occid_model_id__: ClassVar[int] = 335
+    __occid_model_id__: ClassVar[int] = 334
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Relationship'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -65,15 +65,3 @@ class SpatialRelationship(OCCIDModel):
     subject_uid: Semantic[UID]
     reference_uid: Semantic[UID]
     relation: SpatialRelationKind
-
-class MilitaryAffiliation(OCCIDModel):
-    'Relative military standard identity assigned to a subject from the perspective of an observer, organization, or operational context'
-    __occid_model_id__: ClassVar[int] = 224
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'Relationship'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    observer_uid: Semantic[UID]
-    subject_uid: Semantic[UID]
-    identity: StandardIdentity
-    since_ts: Semantic[Timestamp] | None = None
-    until_ts: Semantic[Timestamp] | None = None

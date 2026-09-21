@@ -45,7 +45,7 @@ class NATORadioBands(IntEnum):
 
 class Radio(OCCIDModel):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 294
+    __occid_model_id__: ClassVar[int] = 293
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Link'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FrequencyRange', 'ChannelSpec', 'RadioProfile')
@@ -107,7 +107,7 @@ class ChannelSpec(OCCIDModel):
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 295
+    __occid_model_id__: ClassVar[int] = 294
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Radio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

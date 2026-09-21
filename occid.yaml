@@ -652,17 +652,6 @@ vocabulary:
     - IDENTIFICATION
     - CLASSIFICATION
 
-  ObservedObjectType:
-    package: observation
-    values:
-    - PERSONNEL = 0
-    - VEHICLES
-    - AIRCRAFT
-    - INSTALLATION
-    - WATERCRAFT
-    - ROUTE
-    - TRACE_SIGNATURE
-
   IsrFocusType:
     package: observation
     values:
@@ -707,11 +696,12 @@ vocabulary:
   StandardIdentity:
     package: attribute
     values:
-    - PENDING = 0
-    - UNKNOWN
-    - ASSUMED_FRIEND
-    - FRIEND
+    - OURS = 0
     - NEUTRAL
+    - UNKNOWN
+    - PENDING
+    - FRIEND
+    - ASSUMED_FRIEND
     - SUSPECT
     - HOSTILE
     - JOKER
@@ -1730,7 +1720,7 @@ models:
       max_streams: optional int
 
   SignalQuality:
-    model_id: 333
+    model_id: 332
     package: link
     semantic_role: representation
     parent: Measurement
@@ -1857,7 +1847,7 @@ models:
       state: LocationState
 
   NodeHeartbeat:
-    model_id: 246
+    model_id: 245
     package: mesh
     semantic_role: representation
     parent: TelemetryMessage
@@ -1910,7 +1900,7 @@ models:
       targets: list[UID]
 
   ObservationMessage:
-    model_id: 252
+    model_id: 251
     package: isr
     semantic_role: concept
     parent: Message
@@ -1926,7 +1916,7 @@ models:
       observation: Observation
 
   ProtocolEventMessage:
-    model_id: 290
+    model_id: 289
     package: isr
     semantic_role: representation
     parent: ObservationMessage
@@ -1989,7 +1979,7 @@ models:
       updated_ts: Timestamp
 
   ResponseMessage:
-    model_id: 312
+    model_id: 311
     package: message
     semantic_role: concept
     parent: Message
@@ -2044,7 +2034,7 @@ models:
       error: optional string
 
   TelemetryMessage:
-    model_id: 373
+    model_id: 372
     package: telemetry
     semantic_role: concept
     parent: Message
@@ -2065,7 +2055,7 @@ models:
       seq: int
 
   UAVTelemetryMessage:
-    model_id: 388
+    model_id: 387
     package: telemetry
     semantic_role: representation
     parent: TelemetryMessage
@@ -2095,7 +2085,7 @@ models:
       payload_refs: list[string]
 
   TransportCounters:
-    model_id: 386
+    model_id: 385
     package: telemetry
     semantic_role: representation
     parent: TelemetryMessage
@@ -2111,7 +2101,7 @@ models:
       dropped_count: int = 0
 
   TransportError:
-    model_id: 387
+    model_id: 386
     package: telemetry
     semantic_role: representation
     parent: TelemetryMessage
@@ -2126,7 +2116,7 @@ models:
       payload: optional ProtocolPayload
 
   Network:
-    model_id: 243
+    model_id: 242
     package: network
     semantic_role: concept
     parent: Communication
@@ -2136,7 +2126,7 @@ models:
     description: Connectivity topology and routing state
 
   NetworkAddress:
-    model_id: 244
+    model_id: 243
     package: network
     semantic_role: representation
     parent: Network
@@ -2146,7 +2136,7 @@ models:
       port: optional int
 
   Node:
-    model_id: 245
+    model_id: 244
     package: node
     semantic_role: concept
     parent: Communication
@@ -2164,7 +2154,7 @@ models:
       protocols: map[string, Protocol]
 
   Protocol:
-    model_id: 289
+    model_id: 288
     package: protocol
     semantic_role: concept
     parent: Communication
@@ -2179,7 +2169,7 @@ models:
     description: Wire format, message id space, payload format, command/result vocabulary, and mapping metadata
 
   ProtocolPayload:
-    model_id: 291
+    model_id: 290
     package: protocol
     semantic_role: representation
     parent: Protocol
@@ -2249,7 +2239,7 @@ models:
       low_latency: optional bool
 
   Radio:
-    model_id: 294
+    model_id: 293
     package: radio
     semantic_role: representation
     parent: Link
@@ -2319,7 +2309,7 @@ models:
       spacing_mhz: optional float
 
   RadioProfile:
-    model_id: 295
+    model_id: 294
     package: radio
     semantic_role: representation
     parent: Radio
@@ -2388,7 +2378,7 @@ models:
       formation_3d: optional AirGroupFormation3DType
 
   UnitFlightPlan:
-    model_id: 394
+    model_id: 393
     package: aerial
     semantic_role: representation
     parent: AirPlan
@@ -2412,7 +2402,7 @@ models:
       wp: GeoPath
 
   PlannedAirMission:
-    model_id: 277
+    model_id: 276
     package: aerial
     semantic_role: representation
     parent: AirPlan
@@ -2453,7 +2443,7 @@ models:
       pattern: OrbitPattern
 
   MissionRouteGeometry:
-    model_id: 237
+    model_id: 236
     package: aerial
     semantic_role: representation
     parent: SpatialStruct
@@ -2481,7 +2471,7 @@ models:
       category: PlannerPointCategory
 
   PlannedRoutePoints:
-    model_id: 278
+    model_id: 277
     package: aerial
     semantic_role: representation
     parent: SpatialStruct
@@ -2493,7 +2483,7 @@ models:
       end: FlightMissionPoint
 
   MilitaryUnitFlightPlan:
-    model_id: 235
+    model_id: 234
     package: aerial
     semantic_role: representation
     parent: UnitFlightPlan
@@ -2535,7 +2525,7 @@ models:
       constraints: list[Constraint]
 
   TaskAssignment:
-    model_id: 367
+    model_id: 366
     package: assignment
     semantic_role: representation
     parent: Assignment
@@ -2552,7 +2542,7 @@ models:
       task_uid: UID
 
   RoleAssignment:
-    model_id: 317
+    model_id: 316
     package: assignment
     semantic_role: representation
     parent: Assignment
@@ -2701,7 +2691,7 @@ models:
       constraints: list[Constraint]
 
   StateChangeCommand:
-    model_id: 342
+    model_id: 341
     package: command
     semantic_role: concept
     parent: Command
@@ -2714,7 +2704,7 @@ models:
       value: optional MetadataValue
 
   ProcessControlCommand:
-    model_id: 287
+    model_id: 286
     package: command
     semantic_role: concept
     parent: Command
@@ -2740,7 +2730,7 @@ models:
       configuration_uid: optional UID
 
   MotionCommand:
-    model_id: 239
+    model_id: 238
     package: command
     semantic_role: concept
     parent: Command
@@ -2756,7 +2746,7 @@ models:
       yaw_rad: optional float
 
   ResourceCommand:
-    model_id: 308
+    model_id: 307
     package: command
     semantic_role: concept
     parent: Command
@@ -2794,7 +2784,7 @@ models:
       condition: optional Condition
 
   Restriction:
-    model_id: 313
+    model_id: 312
     package: constraint
     semantic_role: representation
     parent: Constraint
@@ -2810,7 +2800,7 @@ models:
       condition: optional Condition
 
   TaskTimeWindow:
-    model_id: 371
+    model_id: 370
     package: constraint
     semantic_role: representation
     parent: Constraint
@@ -2820,7 +2810,7 @@ models:
       latest_finish: optional float
 
   WeatherLimits:
-    model_id: 410
+    model_id: 409
     package: constraint
     semantic_role: representation
     parent: Constraint
@@ -2862,7 +2852,7 @@ models:
     description: Directed work or an immediate imperative issued under control authority
 
   SuccessCriterion:
-    model_id: 353
+    model_id: 352
     package: objective
     semantic_role: representation
     parent: Struct
@@ -2873,7 +2863,7 @@ models:
       target_value: optional MetadataValue
 
   Objective:
-    model_id: 250
+    model_id: 249
     package: objective
     semantic_role: concept
     parent: Control
@@ -2895,7 +2885,7 @@ models:
       deadline: optional float
 
   Plan:
-    model_id: 275
+    model_id: 274
     package: plan
     semantic_role: concept
     parent: Control
@@ -2912,7 +2902,7 @@ models:
       approval_state: PlanApprovalState = DRAFT
 
   OperationalPlan:
-    model_id: 256
+    model_id: 255
     package: plan
     semantic_role: concept
     parent: Plan
@@ -2932,7 +2922,7 @@ models:
       contingencies: list[PlanContingency]
 
   RoutePlan:
-    model_id: 321
+    model_id: 320
     package: plan
     semantic_role: concept
     parent: Plan
@@ -2947,7 +2937,7 @@ models:
       approval_state: PlanApprovalState = DRAFT
 
   PlanContingency:
-    model_id: 276
+    model_id: 275
     package: plan
     semantic_role: representation
     parent: Struct
@@ -2986,7 +2976,7 @@ models:
       flag: optional int
 
   Task:
-    model_id: 366
+    model_id: 365
     package: task
     semantic_role: concept
     parent: Directive
@@ -3013,7 +3003,7 @@ models:
       phase: TaskPhase
 
   TaskManeuver:
-    model_id: 370
+    model_id: 369
     package: task
     semantic_role: representation
     parent: Task
@@ -3036,7 +3026,7 @@ models:
       intent: ManeuverIntent
 
   TaskEffect:
-    model_id: 368
+    model_id: 367
     package: task
     semantic_role: representation
     parent: Task
@@ -3059,7 +3049,7 @@ models:
       intent: EffectIntent
 
   TaskInformation:
-    model_id: 369
+    model_id: 368
     package: task
     semantic_role: representation
     parent: Task
@@ -3082,7 +3072,7 @@ models:
       intent: InformationIntent
 
   TaskTransport:
-    model_id: 372
+    model_id: 371
     package: task
     semantic_role: representation
     parent: Task
@@ -3115,7 +3105,7 @@ models:
     description: Reusable predicate logic evaluated against object, system, or process facts; it describes logic rather than the mutable state of evaluating that logic
 
   Predicate:
-    model_id: 286
+    model_id: 285
     package: condition
     semantic_role: concept
     parent: Condition
@@ -3143,7 +3133,7 @@ models:
     description: Semantic context that bounds the interpretation of operational objects without embedding those objects into one document aggregate
 
   OperationalContext:
-    model_id: 255
+    model_id: 254
     package: context
     semantic_role: concept
     parent: Context
@@ -3162,7 +3152,7 @@ models:
       member_uids: list[UID]
 
   Operation:
-    model_id: 254
+    model_id: 253
     package: context
     semantic_role: representation
     parent: OperationalContext
@@ -3178,7 +3168,7 @@ models:
       member_uids: list[UID]
 
   Scenario:
-    model_id: 325
+    model_id: 324
     package: context
     semantic_role: representation
     parent: OperationalContext
@@ -3224,7 +3214,7 @@ models:
       record: Record
 
   SubjectEvent:
-    model_id: 350
+    model_id: 349
     package: event
     semantic_role: concept
     parent: Event
@@ -3250,7 +3240,7 @@ models:
       event: AirMissionEvent
 
   MissionEvent:
-    model_id: 236
+    model_id: 235
     package: event
     semantic_role: representation
     parent: SubjectEvent
@@ -3260,7 +3250,7 @@ models:
       timestamp: Timestamp
 
   TimelineEvent:
-    model_id: 380
+    model_id: 379
     package: event
     semantic_role: representation
     parent: Event
@@ -3320,7 +3310,7 @@ models:
     description: Current stage in existence or execution.
 
   SpatialMeasurement:
-    model_id: 334
+    model_id: 333
     package: measurement
     semantic_role: concept
     parent: Data
@@ -3384,7 +3374,7 @@ models:
       reference: BearingReference
 
   RadiusMeasurement:
-    model_id: 296
+    model_id: 295
     package: measurement
     semantic_role: representation
     parent: SpatialMeasurement
@@ -3398,7 +3388,7 @@ models:
       radius: DistanceMeters
 
   RouteMeasurement:
-    model_id: 320
+    model_id: 319
     package: measurement
     semantic_role: representation
     parent: SpatialMeasurement
@@ -3461,7 +3451,7 @@ models:
       height: int
 
   StillMedia:
-    model_id: 344
+    model_id: 343
     package: media
     semantic_role: concept
     parent: MediaItem
@@ -3480,7 +3470,7 @@ models:
       metadata: map[string, MetadataValue]
 
   PointCloudMedia:
-    model_id: 280
+    model_id: 279
     package: media
     semantic_role: representation
     parent: StillMedia
@@ -3496,7 +3486,7 @@ models:
       metadata: map[string, MetadataValue]
 
   StillImage:
-    model_id: 343
+    model_id: 342
     package: media
     semantic_role: representation
     parent: StillMedia
@@ -3515,7 +3505,7 @@ models:
       origin_type: ImageOrigin
 
   VideoFrame:
-    model_id: 402
+    model_id: 401
     package: media
     semantic_role: representation
     parent: StillImage
@@ -3559,7 +3549,7 @@ models:
       time_origin: MediaTimeOrigin
 
   VideoMedia:
-    model_id: 403
+    model_id: 402
     package: media
     semantic_role: concept
     parent: DurationalMedia
@@ -3627,7 +3617,7 @@ models:
       time_origin: MediaTimeOrigin
 
   SpectrumMedia:
-    model_id: 337
+    model_id: 336
     package: media
     semantic_role: concept
     parent: DurationalMedia
@@ -3650,7 +3640,7 @@ models:
       time_origin: MediaTimeOrigin
 
   SpectrumRecording:
-    model_id: 338
+    model_id: 337
     package: media
     semantic_role: representation
     parent: SpectrumMedia
@@ -3672,7 +3662,7 @@ models:
       frequency_range: optional FrequencyRange
 
   Observation:
-    model_id: 251
+    model_id: 250
     package: observation
     semantic_role: concept
     parent: Data
@@ -3692,7 +3682,7 @@ models:
     parent: Observation
 
   Track:
-    model_id: 382
+    model_id: 381
     package: observation
     semantic_role: concept
     parent: Observation
@@ -3722,7 +3712,7 @@ models:
     description: Assessment that something exists or occurred
 
   VisionBox:
-    model_id: 404
+    model_id: 403
     package: observation
     semantic_role: representation
     parent: Detection
@@ -3731,7 +3721,7 @@ models:
       bounds: BoundingBox
 
   VisionDetection:
-    model_id: 405
+    model_id: 404
     package: observation
     semantic_role: representation
     parent: Detection
@@ -3746,7 +3736,7 @@ models:
       attributes: map[string, MetadataValue]
 
   VisionDetectionFrame:
-    model_id: 406
+    model_id: 405
     package: observation
     semantic_role: representation
     parent: Detection
@@ -3767,6 +3757,8 @@ models:
       record: Record
       uid: UID
       id: IntID(Observation)
+      side: UID
+      identity: StandardIdentity
       track_uid: optional UID
       observer_entity_uid: optional UID
       sensor_uid: optional UID
@@ -3795,7 +3787,7 @@ models:
       evidence_level: optional EvidenceLevel
 
   TrackUpdate:
-    model_id: 383
+    model_id: 382
     package: observation
     semantic_role: representation
     parent: Observation
@@ -3832,7 +3824,7 @@ models:
     description: Fundamental characteristics, type, form
 
   Symbology:
-    model_id: 357
+    model_id: 356
     package: attribute
     semantic_role: representation
     parent: Attribute
@@ -3870,7 +3862,7 @@ models:
     description: Identity bindings and identity-related properties
 
   StringName:
-    model_id: 345
+    model_id: 344
     package: identity
     semantic_role: representation
     parent: Identity
@@ -3892,7 +3884,7 @@ models:
       organization_id: IntID(Organization)
 
   Parameter:
-    model_id: 265
+    model_id: 264
     package: parameter
     semantic_role: concept
     parent: Property
@@ -3908,7 +3900,7 @@ models:
       value: optional MetadataValue
 
   Property:
-    model_id: 288
+    model_id: 287
     package: property
     semantic_role: concept
     parent: Data
@@ -3926,7 +3918,7 @@ models:
     description: A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition
 
   Version:
-    model_id: 400
+    model_id: 399
     package: property
     semantic_role: representation
     parent: Property
@@ -3959,7 +3951,7 @@ models:
       bool: optional bool
 
   Relationship:
-    model_id: 303
+    model_id: 302
     package: relationship
     semantic_role: concept
     parent: Property
@@ -3967,7 +3959,6 @@ models:
     - DirectedRelationship
     - EntityComponentRef
     - SpatialRelationship
-    - MilitaryAffiliation
     description: Nature of relations, ownership, provenance, link
 
   DirectedRelationship:
@@ -3996,7 +3987,7 @@ models:
       label: optional string
 
   SpatialRelationship:
-    model_id: 335
+    model_id: 334
     package: relationship
     semantic_role: representation
     parent: Relationship
@@ -4009,21 +4000,8 @@ models:
       reference_uid: UID
       relation: SpatialRelationKind
 
-  MilitaryAffiliation:
-    model_id: 224
-    package: relationship
-    semantic_role: representation
-    parent: Relationship
-    description: Relative military standard identity assigned to a subject from the perspective of an observer, organization, or operational context
-    fields:
-      observer_uid: UID
-      subject_uid: UID
-      identity: StandardIdentity
-      since_ts: optional Timestamp
-      until_ts: optional Timestamp
-
   Representation:
-    model_id: 305
+    model_id: 304
     package: representation
     semantic_role: concept
     parent: Data
@@ -4064,7 +4042,7 @@ models:
     type: uint8
 
   Opacity:
-    model_id: 253
+    model_id: 252
     package: representation
     semantic_role: representation
     parent: Ratio
@@ -4094,7 +4072,7 @@ models:
       unit: GraphicLengthUnit
 
   StrokeStyle:
-    model_id: 346
+    model_id: 345
     package: representation
     semantic_role: representation
     parent: Struct
@@ -4113,7 +4091,7 @@ models:
       pattern: optional FillPattern
 
   TextStyle:
-    model_id: 377
+    model_id: 376
     package: representation
     semantic_role: representation
     parent: Struct
@@ -4146,7 +4124,7 @@ models:
     description: Semantic anchor for an annotation graphic
 
   PositionAnchor:
-    model_id: 283
+    model_id: 282
     package: representation
     semantic_role: representation
     parent: AnnotationAnchor
@@ -4154,7 +4132,7 @@ models:
       position: GlobalPosition
 
   SubjectAnchor:
-    model_id: 349
+    model_id: 348
     package: representation
     semantic_role: representation
     parent: AnnotationAnchor
@@ -4162,7 +4140,7 @@ models:
       subject_uid: UID
 
   PathAnchor:
-    model_id: 267
+    model_id: 266
     package: representation
     semantic_role: representation
     parent: AnnotationAnchor
@@ -4171,7 +4149,7 @@ models:
       distance_from_start: DistanceMeters
 
   RepresentationSource:
-    model_id: 306
+    model_id: 305
     package: representation
     semantic_role: concept
     parent: Struct
@@ -4237,7 +4215,7 @@ models:
       location_uid: UID
 
   SymbolGraphic:
-    model_id: 356
+    model_id: 355
     package: representation
     semantic_role: representation
     parent: Graphic
@@ -4274,7 +4252,7 @@ models:
       anchor: AnnotationAnchor
 
   TextGraphic:
-    model_id: 376
+    model_id: 375
     package: representation
     semantic_role: representation
     parent: AnnotationGraphic
@@ -4357,7 +4335,7 @@ models:
       temporal_extent: optional TimeRange
 
   OverlayLayer:
-    model_id: 264
+    model_id: 263
     package: representation
     semantic_role: representation
     parent: Layer
@@ -4372,7 +4350,7 @@ models:
       graphic_uids: list[UID]
 
   ReferenceLayer:
-    model_id: 301
+    model_id: 300
     package: representation
     semantic_role: representation
     parent: Layer
@@ -4427,7 +4405,7 @@ models:
       style: optional GraphicStyle
 
   UTMZone:
-    model_id: 391
+    model_id: 390
     package: representation
     semantic_role: representation
     parent: Struct
@@ -4435,7 +4413,7 @@ models:
     type: int
 
   UTMMapGrid:
-    model_id: 390
+    model_id: 389
     package: representation
     semantic_role: representation
     parent: MapGrid
@@ -4497,7 +4475,7 @@ models:
       bearing: optional AngleDegrees
 
   TacticalGraphic:
-    model_id: 358
+    model_id: 357
     package: representation
     semantic_role: representation
     parent: Graphic
@@ -4550,7 +4528,7 @@ models:
     description: Guidance, navigation, and control state including arming, mode, plan progress, readiness, failsafe, and estimator state
 
   NavigationValidity:
-    model_id: 242
+    model_id: 241
     package: gnc
     semantic_role: representation
     parent: GNC
@@ -4630,7 +4608,7 @@ models:
       counters: optional LinkCounters
 
   SubsystemHealth:
-    model_id: 352
+    model_id: 351
     package: health
     semantic_role: representation
     parent: Health
@@ -4667,7 +4645,7 @@ models:
       note: optional string
 
   NavReadinessState:
-    model_id: 241
+    model_id: 240
     package: health
     semantic_role: representation
     parent: Health
@@ -4759,7 +4737,7 @@ models:
     description: Diagnostic internals of a machine or system.
 
   RuntimeLoadState:
-    model_id: 322
+    model_id: 321
     package: internal
     semantic_role: representation
     parent: Internal
@@ -4800,7 +4778,7 @@ models:
       reference: AirspeedReference = UNSPECIFIED
 
   Resource:
-    model_id: 307
+    model_id: 306
     package: resource
     semantic_role: concept
     parent: State
@@ -4814,7 +4792,7 @@ models:
     description: Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.
 
   ResourceHolding:
-    model_id: 309
+    model_id: 308
     package: resource
     semantic_role: representation
     parent: Resource
@@ -4848,7 +4826,7 @@ models:
       remaining: optional Quantity
 
   Supplies:
-    model_id: 354
+    model_id: 353
     package: resource
     semantic_role: representation
     parent: InventoryState
@@ -4858,7 +4836,7 @@ models:
       fuel: optional FuelState
 
   PowerSource:
-    model_id: 284
+    model_id: 283
     package: resource
     semantic_role: representation
     parent: Resource
@@ -4869,7 +4847,7 @@ models:
       remaining_ratio: optional NormalizedRatio
 
   PowerState:
-    model_id: 285
+    model_id: 284
     package: resource
     semantic_role: representation
     parent: Resource
@@ -4897,7 +4875,7 @@ models:
       temperature: optional DegreesCelsius
 
   ResourceTemplate:
-    model_id: 311
+    model_id: 310
     package: resource
     semantic_role: concept
     parent: Definition
@@ -4927,7 +4905,7 @@ models:
       description: optional PlainText
 
   PersonnelTemplate:
-    model_id: 273
+    model_id: 272
     package: resource
     semantic_role: representation
     parent: ResourceTemplate
@@ -4940,7 +4918,7 @@ models:
       description: optional PlainText
 
   SupplyTemplate:
-    model_id: 355
+    model_id: 354
     package: resource
     semantic_role: representation
     parent: ResourceTemplate
@@ -4956,7 +4934,7 @@ models:
       quantity_unit: optional QuantityUnit
 
   ResourceRequirement:
-    model_id: 310
+    model_id: 309
     package: resource
     semantic_role: representation
     parent: Struct
@@ -4966,7 +4944,7 @@ models:
       quantity: Quantity
 
   MilitarySupplyTemplate:
-    model_id: 234
+    model_id: 233
     package: resource
     semantic_role: representation
     parent: SupplyTemplate
@@ -4981,7 +4959,7 @@ models:
       supply_class: NATOSupplyClass
 
   SensorState:
-    model_id: 329
+    model_id: 328
     package: sensorstate
     semantic_role: concept
     parent: SubjectState
@@ -5012,7 +4990,7 @@ models:
       field_of_view: optional SensorFieldOfView
 
   TrackerState:
-    model_id: 384
+    model_id: 383
     package: sensorstate
     semantic_role: representation
     parent: SensorState
@@ -5044,7 +5022,7 @@ models:
       optical_flow: optional string
 
   State:
-    model_id: 341
+    model_id: 340
     package: state
     semantic_role: concept
     parent: Data
@@ -5064,7 +5042,7 @@ models:
     description: Changing condition of an object, node, link, task, system, or process
 
   SubjectState:
-    model_id: 351
+    model_id: 350
     package: state
     semantic_role: concept
     parent: State
@@ -5107,7 +5085,7 @@ models:
       published_ts: optional Timestamp
 
   Validation:
-    model_id: 396
+    model_id: 395
     package: validation
     semantic_role: concept
     parent: State
@@ -5157,7 +5135,7 @@ models:
     parent: Definition
 
   SemanticType:
-    model_id: 326
+    model_id: 325
     package: definition
     semantic_role: concept
     parent: Definition
@@ -5174,7 +5152,7 @@ models:
     parent: SemanticType
 
   Role:
-    model_id: 316
+    model_id: 315
     package: definition
     semantic_role: representation
     parent: SemanticType
@@ -5212,6 +5190,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
 
   Actor:
     model_id: 2
@@ -5233,6 +5213,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
 
   Agent:
     model_id: 3
@@ -5251,9 +5233,11 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
 
   Person:
-    model_id: 272
+    model_id: 271
     package: entities
     semantic_role: representation
     parent: Actor
@@ -5271,6 +5255,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       role: string
       op_domain: OperationalDomain = LAND
       propulsion: PropulsionType = FOOT
@@ -5302,13 +5288,15 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
       components: list[EntityComponentRef]
 
   Vehicle:
-    model_id: 398
+    model_id: 397
     package: entities
     semantic_role: representation
     parent: Machine
@@ -5324,13 +5312,15 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
       components: list[EntityComponentRef]
 
   Platform:
-    model_id: 279
+    model_id: 278
     package: entities
     semantic_role: representation
     parent: Machine
@@ -5346,6 +5336,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
@@ -5405,6 +5397,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: MachineType
@@ -5435,6 +5429,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
@@ -5446,7 +5442,7 @@ models:
       navigation: AirNavigation
 
   MilitaryAirNavigation:
-    model_id: 226
+    model_id: 225
     package: entities
     semantic_role: representation
     parent: AirNavigation
@@ -5467,7 +5463,7 @@ models:
       roles: list[AirRole]
 
   MilitaryMachine:
-    model_id: 228
+    model_id: 227
     package: entities
     semantic_role: representation
     parent: Machine
@@ -5483,6 +5479,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
@@ -5490,7 +5488,7 @@ models:
       category: optional NATOUnitCategory
 
   Robot:
-    model_id: 314
+    model_id: 313
     package: robot
     semantic_role: representation
     parent: Machine
@@ -5507,6 +5505,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
@@ -5531,6 +5531,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: MachineType = ROBOT
@@ -5542,7 +5544,7 @@ models:
       navigation: GroundNavigation
 
   VideoConfig:
-    model_id: 401
+    model_id: 400
     package: robot
     semantic_role: representation
     parent: Parameter
@@ -5558,7 +5560,7 @@ models:
       hls_url: optional string
 
   ReceiverConfig:
-    model_id: 299
+    model_id: 298
     package: robot
     semantic_role: representation
     parent: Parameter
@@ -5583,7 +5585,7 @@ models:
       label: optional string
 
   ModeRange:
-    model_id: 238
+    model_id: 237
     package: robot
     semantic_role: representation
     parent: Parameter
@@ -5596,7 +5598,7 @@ models:
       range: NumericRange
 
   RobotController:
-    model_id: 315
+    model_id: 314
     package: robot
     semantic_role: representation
     parent: Parameter
@@ -5608,7 +5610,7 @@ models:
       autopilot_firmware: FirmwareInfo
 
   RemoteControl:
-    model_id: 304
+    model_id: 303
     package: robot
     semantic_role: representation
     parent: Interface
@@ -5661,6 +5663,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: MachineType = ROBOT
@@ -5691,6 +5695,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: MachineType = ROBOT
@@ -5705,7 +5711,7 @@ models:
       telemetry_type: TelemetryType
 
   Object:
-    model_id: 249
+    model_id: 248
     package: object
     semantic_role: concept
     parent: Root
@@ -5719,7 +5725,7 @@ models:
       capabilities: optional list[Capability]
 
   Set:
-    model_id: 330
+    model_id: 329
     package: object
     semantic_role: concept
     parent: Object
@@ -5811,7 +5817,7 @@ models:
       position: GlobalPosition
 
   Path:
-    model_id: 266
+    model_id: 265
     package: object
     semantic_role: representation
     parent: Location
@@ -5825,7 +5831,7 @@ models:
       path: GeoPath
 
   Region:
-    model_id: 302
+    model_id: 301
     package: object
     semantic_role: representation
     parent: Location
@@ -5853,7 +5859,7 @@ models:
       path: GeoPath
 
   Organization:
-    model_id: 262
+    model_id: 261
     package: organization
     semantic_role: concept
     parent: Set
@@ -5869,6 +5875,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -5889,6 +5896,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel = GROUP
       org_type: optional OrgType
@@ -5898,7 +5906,7 @@ models:
       roster: optional Roster
 
   Unit:
-    model_id: 393
+    model_id: 392
     package: organization
     semantic_role: representation
     parent: Organization
@@ -5909,6 +5917,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel = UNIT
       org_type: optional OrgType
@@ -5918,7 +5927,7 @@ models:
       roster: optional Roster
 
   OrgTemplate:
-    model_id: 261
+    model_id: 260
     package: organization
     semantic_role: concept
     parent: Definition
@@ -5935,7 +5944,7 @@ models:
       resource_requirements: list[ResourceRequirement]
 
   OrgComposition:
-    model_id: 259
+    model_id: 258
     package: organization
     semantic_role: representation
     parent: Struct
@@ -5945,7 +5954,7 @@ models:
       quantity: Count
 
   MilitaryOrgTemplate:
-    model_id: 230
+    model_id: 229
     package: organization
     semantic_role: representation
     parent: OrgTemplate
@@ -5965,7 +5974,7 @@ models:
       support_elements: list[OrgComposition]
 
   Side:
-    model_id: 332
+    model_id: 331
     package: organization
     semantic_role: concept
     parent: Set
@@ -5997,7 +6006,7 @@ models:
       member_uids: list[UID]
 
   OrgRole:
-    model_id: 260
+    model_id: 259
     package: organization
     semantic_role: representation
     parent: Control
@@ -6007,7 +6016,7 @@ models:
       assignment: Assignment
 
   Roster:
-    model_id: 319
+    model_id: 318
     package: organization
     semantic_role: representation
     parent: Control
@@ -6015,7 +6024,7 @@ models:
       roster: map[UID, OrgRole]
 
   OrganizationState:
-    model_id: 263
+    model_id: 262
     package: organization
     semantic_role: representation
     parent: SubjectState
@@ -6033,7 +6042,7 @@ models:
       health: optional HealthSnapshot
 
   MilitaryOrg:
-    model_id: 229
+    model_id: 228
     package: organization
     semantic_role: representation
     parent: Organization
@@ -6047,6 +6056,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -6069,6 +6079,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -6081,7 +6092,7 @@ models:
       op_domain: OperationalDomain = AIR
 
   OrbatOrg:
-    model_id: 257
+    model_id: 256
     package: organization
     semantic_role: representation
     parent: MilitaryOrg
@@ -6094,6 +6105,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -6121,6 +6133,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
@@ -6138,7 +6151,7 @@ models:
       combat_domain: OperationalDomain
 
   MilitaryStrength:
-    model_id: 233
+    model_id: 232
     package: organization
     semantic_role: representation
     parent: Struct
@@ -6149,7 +6162,7 @@ models:
       equipment: optional StrengthCondition
 
   MilitaryOrganizationState:
-    model_id: 231
+    model_id: 230
     package: organization
     semantic_role: representation
     parent: OrganizationState
@@ -6167,7 +6180,7 @@ models:
       strength: optional MilitaryStrength
 
   Payload:
-    model_id: 268
+    model_id: 267
     package: payload
     semantic_role: concept
     parent: Item
@@ -6179,7 +6192,7 @@ models:
       capabilities: optional list[Capability]
 
   SensorPayload:
-    model_id: 328
+    model_id: 327
     package: payload
     semantic_role: representation
     parent: Payload
@@ -6249,7 +6262,7 @@ models:
       mount_attitude: optional EulerAngles
 
   RFSensor:
-    model_id: 293
+    model_id: 292
     package: payload
     semantic_role: representation
     parent: SensorPayload
@@ -6277,7 +6290,7 @@ models:
       chan_bw: optional float
 
   SensorFieldOfView:
-    model_id: 327
+    model_id: 326
     package: payload
     semantic_role: representation
     parent: Attribute
@@ -6287,7 +6300,7 @@ models:
       vertical_deg: optional NumericRange
 
   PayloadAllocation:
-    model_id: 269
+    model_id: 268
     package: payload
     semantic_role: representation
     parent: Struct
@@ -6296,7 +6309,7 @@ models:
       qty: int = 0
 
   PayloadPlan:
-    model_id: 271
+    model_id: 270
     package: payload
     semantic_role: representation
     parent: Struct
@@ -6307,7 +6320,7 @@ models:
       notes: optional string
 
   PayloadMount:
-    model_id: 270
+    model_id: 269
     package: payload
     semantic_role: representation
     parent: Struct
@@ -6321,7 +6334,7 @@ models:
       loaded: list[PayloadAllocation]
 
   Record:
-    model_id: 300
+    model_id: 299
     package: record
     semantic_role: representation
     parent: Struct
@@ -6336,7 +6349,7 @@ models:
       provenance: list[string]
 
   Root:
-    model_id: 318
+    model_id: 317
     package: root
     semantic_role: concept
     children:
@@ -6349,7 +6362,7 @@ models:
     description: Any distinct part of the overall framework that can be identified, described, or referenced
 
   SpatialStruct:
-    model_id: 336
+    model_id: 335
     package: spatial
     semantic_role: representation
     parent: Struct
@@ -6488,7 +6501,7 @@ models:
       z2: float
 
   VelocityVector:
-    model_id: 399
+    model_id: 398
     package: spatial
     semantic_role: representation
     parent: Vector
@@ -6536,7 +6549,7 @@ models:
       ellipse_bearing_deg: optional float
 
   Position:
-    model_id: 282
+    model_id: 281
     package: spatial
     semantic_role: concept
     parent: State
@@ -6563,7 +6576,7 @@ models:
       gnss: optional GnssSolution
 
   SpotterOrigin:
-    model_id: 340
+    model_id: 339
     package: spatial
     semantic_role: representation
     parent: Position
@@ -6573,7 +6586,7 @@ models:
       look_vector: optional LocalDirection
 
   Struct:
-    model_id: 347
+    model_id: 346
     package: struct
     semantic_role: concept
     parent: Root
@@ -6651,14 +6664,14 @@ models:
     type: int
 
   UID:
-    model_id: 389
+    model_id: 388
     package: struct
     semantic_role: representation
     parent: ID
     type: bytes[16]
 
   Text:
-    model_id: 375
+    model_id: 374
     package: struct
     semantic_role: concept
     parent: Struct
@@ -6668,7 +6681,7 @@ models:
     description: Human-authored textual content whose encoding is not itself domain meaning
 
   PlainText:
-    model_id: 274
+    model_id: 273
     package: struct
     semantic_role: representation
     parent: Text
@@ -6682,7 +6695,7 @@ models:
     type: string
 
   Vector:
-    model_id: 397
+    model_id: 396
     package: struct
     semantic_role: concept
     parent: Struct
@@ -6720,7 +6733,7 @@ models:
     - Timestamp
 
   Quantity:
-    model_id: 292
+    model_id: 291
     package: struct
     semantic_role: concept
     parent: Measurement
@@ -6747,7 +6760,7 @@ models:
     type: int
 
   UnitQuantity:
-    model_id: 395
+    model_id: 394
     package: struct
     semantic_role: representation
     parent: Quantity
@@ -6810,7 +6823,7 @@ models:
     type: float
 
   Ratio:
-    model_id: 298
+    model_id: 297
     package: struct
     semantic_role: concept
     parent: Measurement
@@ -6819,7 +6832,7 @@ models:
     - NormalizedRatio
 
   NormalizedRatio:
-    model_id: 247
+    model_id: 246
     package: struct
     semantic_role: representation
     parent: Ratio
@@ -6851,7 +6864,7 @@ models:
     description: Electric potential difference
 
   Volts:
-    model_id: 407
+    model_id: 406
     package: struct
     semantic_role: representation
     parent: ElectricPotential
@@ -6883,7 +6896,7 @@ models:
     description: Electrical power
 
   Watts:
-    model_id: 409
+    model_id: 408
     package: struct
     semantic_role: representation
     parent: ElectricPower
@@ -6915,14 +6928,14 @@ models:
     description: Energy quantity
 
   WattHours:
-    model_id: 408
+    model_id: 407
     package: struct
     semantic_role: representation
     parent: Energy
     type: float
 
   Temperature:
-    model_id: 374
+    model_id: 373
     package: struct
     semantic_role: concept
     parent: Measurement
@@ -6965,7 +6978,7 @@ models:
     parent: Struct
 
   StructPath:
-    model_id: 348
+    model_id: 347
     package: struct
     semantic_role: representation
     parent: Struct
@@ -6974,7 +6987,7 @@ models:
     - GeoMultiPath
 
   Shape:
-    model_id: 331
+    model_id: 330
     package: struct
     semantic_role: representation
     parent: Struct
@@ -6994,7 +7007,7 @@ models:
     - BoundingBox
 
   Uncertainty:
-    model_id: 392
+    model_id: 391
     package: struct
     semantic_role: concept
     parent: Struct
@@ -7002,7 +7015,7 @@ models:
     - LocationUncertainty
 
   Pose:
-    model_id: 281
+    model_id: 280
     package: struct
     semantic_role: representation
     parent: Struct
@@ -7010,7 +7023,7 @@ models:
     - EulerAngles
 
   Range:
-    model_id: 297
+    model_id: 296
     package: struct
     semantic_role: representation
     parent: Struct
@@ -7019,19 +7032,19 @@ models:
     - NumericRange
 
   Transform:
-    model_id: 385
+    model_id: 384
     package: struct
     semantic_role: representation
     parent: Struct
 
   Orbital:
-    model_id: 258
+    model_id: 257
     package: struct
     semantic_role: representation
     parent: Struct
 
   Time:
-    model_id: 378
+    model_id: 377
     package: struct
     semantic_role: concept
     parent: Measurement
@@ -7053,7 +7066,7 @@ models:
       years: optional int
 
   Timestamp:
-    model_id: 381
+    model_id: 380
     package: struct
     semantic_role: representation
     parent: Measurement
@@ -7062,7 +7075,7 @@ models:
       tz: int
 
   TimeRange:
-    model_id: 379
+    model_id: 378
     package: struct
     semantic_role: representation
     parent: Range
@@ -7082,7 +7095,7 @@ models:
       qty: Count
 
   NumericRange:
-    model_id: 248
+    model_id: 247
     package: struct
     semantic_role: representation
     parent: Range
@@ -7157,7 +7170,7 @@ models:
       attack_modes: list[AirAttackMode]
 
   TargetPriority:
-    model_id: 363
+    model_id: 362
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7167,7 +7180,7 @@ models:
       note: optional string
 
   TargetKinematics:
-    model_id: 362
+    model_id: 361
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7177,7 +7190,7 @@ models:
       velocity_covariance: optional VelocityVector
 
   TargetSet:
-    model_id: 364
+    model_id: 363
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7191,7 +7204,7 @@ models:
       name: string
 
   TargetSetCoord:
-    model_id: 365
+    model_id: 364
     package: military_effects
     semantic_role: representation
     parent: TargetSet
@@ -7205,7 +7218,7 @@ models:
       time_end_usec: int
 
   TargetBoxCoord:
-    model_id: 359
+    model_id: 358
     package: military_effects
     semantic_role: representation
     parent: TargetSet
@@ -7218,7 +7231,7 @@ models:
       time_end_usec: int
 
   TargetCoord:
-    model_id: 360
+    model_id: 359
     package: military_effects
     semantic_role: representation
     parent: TargetSet
@@ -7229,7 +7242,6 @@ models:
       kinematics: TargetKinematics
       cep_desired_m: float
       cep_max_m: float
-      target_class: ObservedObjectType
       target_force: StandardIdentity
 
   Fires:
@@ -7246,7 +7258,7 @@ models:
       cep_expected_m: float
 
   SplashCorrection:
-    model_id: 339
+    model_id: 338
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7258,7 +7270,7 @@ models:
       cep_expected_m: float
 
   TargetHandover:
-    model_id: 361
+    model_id: 360
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7272,7 +7284,6 @@ models:
       match_media_url: string
       confidence_score: float
       authorization: list[int]
-      target_class: ObservedObjectType
       target_force: StandardIdentity
       match_media_type: SensorDataFormat
 
@@ -7289,7 +7300,6 @@ models:
       authorization: list[int]
       destruction_pct: int
       confidence_pct: int
-      target_class: ObservedObjectType
       target_force: StandardIdentity
 
   EsadState:
@@ -7320,7 +7330,7 @@ models:
       arming_request: EsadArmingRequest
 
   RwsPose:
-    model_id: 323
+    model_id: 322
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7337,7 +7347,7 @@ models:
       coordinate_frame: int
 
   RwsState:
-    model_id: 324
+    model_id: 323
     package: military_effects
     semantic_role: representation
     parent: Struct
@@ -7347,7 +7357,7 @@ models:
       arming_state: RwsArmingState
 
   MilitaryPerson:
-    model_id: 232
+    model_id: 231
     package: military_entities
     semantic_role: representation
     parent: Person
@@ -7363,6 +7373,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       role: string
       op_domain: OperationalDomain = LAND
       propulsion: PropulsionType = FOOT
@@ -7374,7 +7386,7 @@ models:
       ammo: list[ItemCount]
 
   MilitaryGroundMachine:
-    model_id: 227
+    model_id: 226
     package: military_entities
     semantic_role: representation
     parent: GroundMachine
@@ -7390,6 +7402,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: MachineType
@@ -7403,7 +7417,7 @@ models:
       effects: GroundEffects
 
   MilitaryAirMachine:
-    model_id: 225
+    model_id: 224
     package: military_entities
     semantic_role: representation
     parent: AirMachine
@@ -7419,6 +7433,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
       serial_number: optional string
       propulsion: PropulsionType
       machine_type: optional MachineType
@@ -7432,7 +7448,7 @@ models:
       effects: AirEffects
 
   MunitionAllocation:
-    model_id: 240
+    model_id: 239
     package: military_tasks
     semantic_role: representation
     parent: Struct

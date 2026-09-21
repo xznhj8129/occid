@@ -107,7 +107,7 @@ class MeshPositionSample(OCCIDModel):
     state: Semantic[LocationState]
 
 class NodeHeartbeat(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 246
+    __occid_model_id__: ClassVar[int] = 245
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

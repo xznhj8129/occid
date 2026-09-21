@@ -27,11 +27,12 @@ enums:
   - APP_6D
 
   StandardIdentity:
-  - PENDING = 0
-  - UNKNOWN
-  - ASSUMED_FRIEND
-  - FRIEND
+  - OURS = 0
   - NEUTRAL
+  - UNKNOWN
+  - PENDING
+  - FRIEND
+  - ASSUMED_FRIEND
   - SUSPECT
   - HOSTILE
   - JOKER

@@ -84,7 +84,7 @@ class LinkState(OCCIDModel):
     counters: Semantic[LinkCounters] | None = None
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 352
+    __occid_model_id__: ClassVar[int] = 351
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -118,7 +118,7 @@ class MaintenanceStatus(OCCIDModel):
     note: builtins.str | None = None
 
 class NavReadinessState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 240
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

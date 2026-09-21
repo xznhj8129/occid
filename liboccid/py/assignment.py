@@ -33,7 +33,7 @@ class Assignment(OCCIDModel):
 
 class TaskAssignment(OCCIDModel):
     'Assignment of a Task to an assignee'
-    __occid_model_id__: ClassVar[int] = 367
+    __occid_model_id__: ClassVar[int] = 366
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -49,7 +49,7 @@ class TaskAssignment(OCCIDModel):
 
 class RoleAssignment(OCCIDModel):
     'Assignment of an organizational Role to an actor'
-    __occid_model_id__: ClassVar[int] = 317
+    __occid_model_id__: ClassVar[int] = 316
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

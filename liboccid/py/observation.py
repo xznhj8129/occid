@@ -17,15 +17,6 @@ class ObservationKind(IntEnum):
     IDENTIFICATION = auto()
     CLASSIFICATION = auto()
 
-class ObservedObjectType(IntEnum):
-    PERSONNEL = 0
-    VEHICLES = auto()
-    AIRCRAFT = auto()
-    INSTALLATION = auto()
-    WATERCRAFT = auto()
-    ROUTE = auto()
-    TRACE_SIGNATURE = auto()
-
 class IsrFocusType(IntEnum):
     POINT = 0
     AREA = auto()
@@ -56,7 +47,7 @@ class DetectionBoxSpace(IntEnum):
 
 class Observation(OCCIDModel):
     'External detection, classification, track, signal, spot report, threat, or assessment data'
-    __occid_model_id__: ClassVar[int] = 251
+    __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Classification', 'Track', 'Assessment', 'Detection', 'IsrObservation', 'TrackUpdate')
@@ -69,7 +60,7 @@ class Classification(OCCIDModel):
 
 class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 382
+    __occid_model_id__: ClassVar[int] = 381
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -91,7 +82,7 @@ class Detection(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('VisionBox', 'VisionDetection', 'VisionDetectionFrame')
 
 class VisionBox(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 404
+    __occid_model_id__: ClassVar[int] = 403
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -99,7 +90,7 @@ class VisionBox(OCCIDModel):
     bounds: Semantic[BoundingBox]
 
 class VisionDetection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 405
+    __occid_model_id__: ClassVar[int] = 404
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -113,7 +104,7 @@ class VisionDetection(OCCIDModel):
     attributes: dict[builtins.str, Semantic[MetadataValue]]
 
 class VisionDetectionFrame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 406
+    __occid_model_id__: ClassVar[int] = 405
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -132,6 +123,8 @@ class IsrObservation(OCCIDModel):
     record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Observation')]
+    side: Semantic[UID]
+    identity: StandardIdentity
     track_uid: Semantic[UID] | None = None
     observer_entity_uid: Semantic[UID] | None = None
     sensor_uid: Semantic[UID] | None = None
@@ -160,7 +153,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 383
+    __occid_model_id__: ClassVar[int] = 382
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -14,14 +14,14 @@ class ObservationTimeBasis(IntEnum):
 
 class State(OCCIDModel):
     'Changing condition of an object, node, link, task, system, or process'
-    __occid_model_id__: ClassVar[int] = 341
+    __occid_model_id__: ClassVar[int] = 340
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Lifecycle', 'Activation', 'Cue', 'GNC', 'Health', 'Input', 'Internal', 'Kinematic', 'Resource', 'SubjectState', 'Validation', 'Position')
 
 class SubjectState(OCCIDModel):
     'Persisted time-indexed state of an identified OCCID subject; semantic state history uses typed state records rather than generic object revision snapshots'
-    __occid_model_id__: ClassVar[int] = 351
+    __occid_model_id__: ClassVar[int] = 350
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ExecutionStatus', 'SensorState', 'EntityState', 'OrganizationState')

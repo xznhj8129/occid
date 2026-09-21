@@ -18,15 +18,6 @@ enums:
     - IDENTIFICATION
     - CLASSIFICATION
 
-  ObservedObjectType:
-    - PERSONNEL = 0
-    - VEHICLES
-    - AIRCRAFT
-    - INSTALLATION
-    - WATERCRAFT
-    - ROUTE
-    - TRACE_SIGNATURE
-
   IsrFocusType:
     - POINT = 0
     - AREA
@@ -119,6 +110,8 @@ models:
       record: Record
       uid: UID
       id: IntID(Observation)
+      side: UID
+      identity: StandardIdentity
       track_uid: optional UID
       observer_entity_uid: optional UID
       sensor_uid: optional UID

@@ -99,6 +99,8 @@ models:
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
+      side: UID
+      identity: StandardIdentity
 
   Actor:
     semantic_role: concept

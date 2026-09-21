@@ -314,6 +314,7 @@ models:
       id: IntID(Organization)
       name: optional string
       unit_code: optional string
+      side: UID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType

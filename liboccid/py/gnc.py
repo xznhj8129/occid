@@ -54,7 +54,7 @@ class GNC(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('NavigationValidity', 'GnssSolution', 'AutopilotMissionState', 'FlightControlState')
 
 class NavigationValidity(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 241
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GNC'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

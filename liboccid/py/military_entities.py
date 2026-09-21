@@ -9,7 +9,7 @@ from .entities import EntityType, PropulsionType
 ### Models
 
 class MilitaryPerson(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 232
+    __occid_model_id__: ClassVar[int] = 231
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Person'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -24,6 +24,8 @@ class MilitaryPerson(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
+    side: Semantic[UID]
+    identity: StandardIdentity
     role: builtins.str
     op_domain: OperationalDomain = OperationalDomain.LAND
     propulsion: PropulsionType = PropulsionType.FOOT
@@ -35,7 +37,7 @@ class MilitaryPerson(OCCIDModel):
     ammo: list[Semantic[ItemCount]]
 
 class MilitaryGroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -50,6 +52,8 @@ class MilitaryGroundMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
+    side: Semantic[UID]
+    identity: StandardIdentity
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType
@@ -63,7 +67,7 @@ class MilitaryGroundMachine(OCCIDModel):
     effects: Semantic[GroundEffects]
 
 class MilitaryAirMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 224
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -78,6 +82,8 @@ class MilitaryAirMachine(OCCIDModel):
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
+    side: Semantic[UID]
+    identity: StandardIdentity
     serial_number: builtins.str | None = None
     propulsion: PropulsionType
     machine_type: MachineType | None = None
