@@ -168,19 +168,12 @@ models:
       uri: string
       format: RepresentationFormat
 
-  GeoRegistration:
-    description: Geographic footprint used to register media or an external representation to the operational map
-    semantic_role: representation
-    parent: Struct
-    fields:
-      footprint: GeoArea
-
   MediaRepresentationSource:
     semantic_role: representation
     parent: RepresentationSource
     fields:
       media_uid: UID
-      registration: optional GeoRegistration
+      registration: optional GeoArea
 
   Graphic:
     description: Persisted graphical representation of one or more operational subjects or spatial constructs
@@ -199,11 +192,12 @@ models:
       location_uid: UID
 
   SymbolGraphic:
-    description: Symbolic portrayal of an operational subject using a declared symbology
+    description: Symbolic portrayal of an identified operational subject at a geographic position using a declared symbology
     semantic_role: representation
     parent: Graphic
     fields:
       subject_uid: UID
+      position: GlobalPosition
       symbology: Symbology
 
   AnnotationGraphic:
@@ -213,23 +207,11 @@ models:
     fields:
       anchor: AnnotationAnchor
 
-  LabelGraphic:
+  TextGraphic:
     semantic_role: representation
     parent: AnnotationGraphic
     fields:
       text: PlainText
-
-  NoteGraphic:
-    semantic_role: representation
-    parent: AnnotationGraphic
-    fields:
-      text: Text
-
-  CalloutGraphic:
-    semantic_role: representation
-    parent: AnnotationGraphic
-    fields:
-      text: Text
 
   MediaGraphic:
     semantic_role: representation
@@ -243,7 +225,7 @@ models:
     parent: Graphic
     fields:
       media_uid: UID
-      registration: GeoRegistration
+      registration: GeoArea
 
   MeasurementGraphic:
     description: Graphic portrayal of a semantic measurement object; the measurement result is not encoded in the graphic itself
@@ -346,8 +328,9 @@ models:
       layers: list[LayerView]
       grid: optional MapGrid
       bearing: optional AngleDegrees
+      
   MilitarySymbolGraphic:
-    description: Military-standard symbolic portrayal of an identified operational subject
+    description: Military-standard symbolic portrayal of an identified operational subject at a geographic position
     semantic_role: representation
     parent: SymbolGraphic
     fields:
