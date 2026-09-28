@@ -20,7 +20,6 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      record: Record
       uid: UID
       id: IntID(Objective)
       name: string

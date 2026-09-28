@@ -92,7 +92,6 @@ class Entity(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Actor', 'Machine')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -112,7 +111,6 @@ class Actor(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Agent', 'Person')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -132,7 +130,6 @@ class Agent(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -152,7 +149,6 @@ class Person(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryPerson',)
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -178,7 +174,6 @@ class Machine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Vehicle', 'Platform', 'GroundMachine', 'AirMachine', 'MilitaryMachine', 'Robot')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -197,12 +192,11 @@ class Machine(OCCIDModel):
     components: list[Semantic[EntityComponentRef]]
 
 class Vehicle(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 358
+    __occid_model_id__: ClassVar[int] = 357
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -226,7 +220,6 @@ class Platform(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -280,7 +273,6 @@ class GroundMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroundRobot', 'MilitaryGroundMachine')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -309,7 +301,6 @@ class AirMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirRobot', 'MilitaryAirMachine')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -358,7 +349,6 @@ class MilitaryMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]

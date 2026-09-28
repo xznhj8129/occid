@@ -33,15 +33,13 @@ class Event(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SubjectEvent', 'TimelineEvent')
-    record: Semantic[Record]
 
 class SubjectEvent(OCCIDModel):
     'Event concerning one identified operational subject at one semantic timestamp'
-    __occid_model_id__: ClassVar[int] = 316
+    __occid_model_id__: ClassVar[int] = 315
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlightEvent', 'MissionEvent')
-    record: Semantic[Record]
     subject_uid: Semantic[UID]
     timestamp: Semantic[Timestamp]
 
@@ -51,7 +49,6 @@ class FlightEvent(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     subject_uid: Semantic[UID]
     timestamp: Semantic[Timestamp]
     event: AirMissionEvent
@@ -61,17 +58,15 @@ class MissionEvent(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     subject_uid: Semantic[UID]
     timestamp: Semantic[Timestamp]
 
 class TimelineEvent(OCCIDModel):
     'Human-authored or imported operational timeline occurrence used for scenario, rehearsal, planning, and historical presentation'
-    __occid_model_id__: ClassVar[int] = 342
+    __occid_model_id__: ClassVar[int] = 341
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Event')]
     name: builtins.str | None = None

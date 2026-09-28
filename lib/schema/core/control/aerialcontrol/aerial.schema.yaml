@@ -53,13 +53,7 @@ enums:
   - SURVEY_AREA
   - ROUTE_OUT
 
-  AirGroupFormation3DType:
-  - NONE = 0
-  - BOX
-  - SEP_2D_PER_FL
-  - SEP_2D_SPACED
-
-  AirGroupFormation2DType:
+  AirFormationXY:
   - NONE = 0
   - LINE
   - ECHELON
@@ -67,6 +61,7 @@ enums:
   - SQUARE
   - DIAMOND
   - VEE
+  - MISSING_MAN
   - HEAVY_LEFT
   - HEAVY_RIGHT
   - ECHELON_LEFT
@@ -113,8 +108,7 @@ models:
       delay_s: optional float
       airspeed: optional float
       path_offset: optional LocalDirection
-      formation_2d: optional AirGroupFormation2DType
-      formation_3d: optional AirGroupFormation3DType
+      formation: optional AirFormationXY
 
   UnitFlightPlan:
     semantic_role: representation
@@ -188,11 +182,13 @@ models:
       route_in: list[FlightMissionPoint]
       route_out: list[FlightMissionPoint]
       end: FlightMissionPoint
+
   MilitaryUnitFlightPlan:
     semantic_role: representation
     parent: UnitFlightPlan
     fields:
       target: FlightMissionPoint
+      
 maps:
   AIR_ROLE_LABELS:
     type: map[AirRole, string]

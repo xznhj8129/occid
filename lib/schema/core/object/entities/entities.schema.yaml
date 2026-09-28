@@ -89,7 +89,6 @@ models:
     parent: Object
 
     fields:
-      record: Record
       uid: UID
       id: IntID(Entity)
       node_uids: list[UID]

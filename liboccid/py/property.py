@@ -13,7 +13,7 @@ class Property(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('CaptureSize2D', 'CaptureSize3D', 'Attribute', 'Capability', 'Identity', 'Parameter', 'Version', 'FirmwareInfo', 'MetadataValue', 'Relationship')
 
 class Version(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 360
+    __occid_model_id__: ClassVar[int] = 359
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

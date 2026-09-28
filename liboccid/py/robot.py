@@ -68,12 +68,11 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 282
+    __occid_model_id__: ClassVar[int] = 281
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -99,7 +98,6 @@ class GroundRobot(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -123,7 +121,7 @@ class GroundRobot(OCCIDModel):
     navigation: Semantic[GroundNavigation]
 
 class VideoConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 361
+    __occid_model_id__: ClassVar[int] = 360
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -173,7 +171,7 @@ class ModeRange(OCCIDModel):
     range: Semantic[NumericRange]
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 283
+    __occid_model_id__: ClassVar[int] = 282
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -184,7 +182,7 @@ class RobotController(OCCIDModel):
     autopilot_firmware: Semantic[FirmwareInfo]
 
 class RemoteControl(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 274
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Interface'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

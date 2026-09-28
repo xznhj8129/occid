@@ -13,9 +13,10 @@ Entity 38, Track 38, and Task 38 are unrelated local IDs because they belong to
 different IntID namespaces. Their UIDs are globally unambiguous. Durable
 cross-object references use UIDs, never IDs.
 
-The scenario walks through identities, organizations, communications, media
-production, external protocol mapping, authority, tasking, dispatch, vehicle
-action, telemetry, observation, execution, tracking, and compact wire.
+The scenario walks through identities, ORBAT organizations, communications,
+media production, external protocol mapping, authority, formation tasking,
+dispatch, vehicle action, telemetry, observation, execution, tracking, and
+compact wire.
 """
 
 from __future__ import annotations
@@ -46,6 +47,7 @@ from occid import (
     CommandMessage,
     ConfidenceLevel,
     CaptureSize2D,
+    DistanceMeters,
     Drone,
     Duration,
     EffectDomain,
@@ -57,7 +59,6 @@ from occid import (
     ExecutionPhase,
     FirmwareInfo,
     GlobalPosition,
-    Group,
     GimbalAxis,
     ImageSensor,
     ImagingSensorState,
@@ -70,21 +71,26 @@ from occid import (
     LinkDirection,
     LinkType,
     LiveVideoStream,
+    Mark,
     MediaLiveness,
     MediaProductionCapability,
     MediaSpectrum,
     MessagePriority,
     MotionCommand,
     MotionOperation,
+    NATOUnitCategory,
     NavAids,
     NavigationMode,
     NetworkAddress,
     Node,
+    OOBSize,
     Objective,
     ObservationKind,
     ObservationMessage,
     ObservationTimeBasis,
+    OperationalDomain,
     OperationalPlan,
+    OrbatOrg,
     OrgLevel,
     OrgTopology,
     OrgType,
@@ -92,7 +98,6 @@ from occid import (
     PlanApprovalState,
     Person,
     PropulsionType,
-    Record,
     RemoteControl,
     RobotController,
     Role,
@@ -120,10 +125,10 @@ from occid import (
     TrackUpdate,
     UID,
     UAVTelemetryMessage,
-    Unit,
     VelocityVector,
     Version,
     WeatherLimits,
+    is_a,
 )
 
 
@@ -205,17 +210,6 @@ class ClassIDRegistry:
 def timestamp(value: float | None = None) -> Timestamp:
     return Timestamp(utime=time.time() if value is None else value, tz=0)
 
-
-def record(registry: ClassIDRegistry, origin: str) -> Record:
-    now = timestamp()
-    return Record(
-        uid=new_uid(),
-        id=registry.allocate("Record"),
-        created_ts=now,
-        updated_ts=now,
-        origin_system=origin,
-        provenance=[],
-    )
 
 
 @dataclass(frozen=True)
@@ -352,14 +346,49 @@ def parse_mavlink_global_position(frame: bytes) -> ParsedMavlinkPosition:
 
 
 # ---------------------------------------------------------------------------
+# ORBAT chart
+# ---------------------------------------------------------------------------
+# The chart is a read-side view over ordinary Organization.member_uids.
+# Nothing here is persisted: the ORBAT is the organizations themselves, and a
+# displayed unit or platform keeps its canonical OCCID identity.
+
+
+def _org_chart_label(member) -> str:
+    name = member.name or uid_str(member.uid)
+    if is_a(member, "Organization"):
+        echelon = getattr(member, "size", None)
+        kind = echelon.name if echelon is not None else type(member).__name__
+        return f"{name} ({kind})"
+    return f"{name} ({type(member).__name__})"
+
+
+def print_org_chart(org, members: dict[bytes, object], indent: str = "") -> None:
+    """Print one organization and its subordinates the way ``tree`` does."""
+    print(f"{indent}{_org_chart_label(org)}")
+    _print_org_branches(org, members, indent)
+
+
+def _print_org_branches(org, members: dict[bytes, object], prefix: str) -> None:
+    member_uids = list(org.member_uids or [])
+    for index, member_uid in enumerate(member_uids):
+        is_last = index == len(member_uids) - 1
+        member = members.get(member_uid.root)
+        label = _org_chart_label(member) if member is not None else uid_str(member_uid)
+        print(f"{prefix}{'└── ' if is_last else '├── '}{label}")
+        if member is not None and is_a(member, "Organization"):
+            branch = prefix + ("    " if is_last else "│   ")
+            _print_org_branches(member, members, branch)
+
+
+# ---------------------------------------------------------------------------
 # Complete OCCID walkthrough
 # ---------------------------------------------------------------------------
 
 
 def main() -> None:
-    # ID allocation follows the namespace declared by IntID(...). Group and Unit
-    # therefore share Organization IDs, Person and Drone share Entity IDs, while
-    # Track and Task have independent sequences.
+    # ID allocation follows the namespace declared by IntID(...). Group, Unit,
+    # and OrbatOrg therefore share Organization IDs, Person and Drone share
+    # Entity IDs, while Track and Task have independent sequences.
     registry = ClassIDRegistry(
         next_id={
             "Side": 1,
@@ -367,6 +396,7 @@ def main() -> None:
             "Entity": 37,
             "Node": 5,
             "MediaItem": 1,
+            "Location": 1,
             "Track": 38,
             "Observation": 1,
             "Authority": 1,
@@ -374,8 +404,7 @@ def main() -> None:
             "Task": 38,
             "Assignment": 1,
             "Plan": 1,
-            "Execution": 1,
-            "Record": 1,
+            "Execution": 1
         }
     )
 
@@ -383,10 +412,12 @@ def main() -> None:
     # another. This is ordinary OCCID identity, not a separate bootstrap model.
     side_uid = new_uid()
     side_id = registry.allocate("Side")
-    task_force_uid = new_uid()
-    task_force_id = registry.allocate("Organization")
-    uas_unit_uid = new_uid()
-    uas_unit_id = registry.allocate("Organization")
+    company_uid = new_uid()
+    company_id = registry.allocate("Organization")
+    platoon_uid = new_uid()
+    platoon_id = registry.allocate("Organization")
+    section_uid = new_uid()
+    section_id = registry.allocate("Organization")
     operator_uid = new_uid()
     operator_id = registry.allocate("Entity")
     uav_uid = new_uid()
@@ -401,7 +432,6 @@ def main() -> None:
     # 1. Entities and communications endpoints
     # -----------------------------------------------------------------------
     operator = Person(
-        record=record(registry, "provisioning"),
         uid=operator_uid,
         id=operator_id,
         node_uids=[hq_node_uid],
@@ -424,7 +454,6 @@ def main() -> None:
                 content_types=[MediaSpectrum.VISUAL],
             )
         ],
-        record=record(registry, "provisioning"),
         uid=uav_uid,
         id=uav_id,
         node_uids=[uav_node_uid],
@@ -550,20 +579,59 @@ def main() -> None:
     # membership reference it by UID; relative friend/hostile identity remains
     # a separate StandardIdentity attribute rather than a property of the side.
     side = Side(
-        record=record(registry, "provisioning"),
         uid=side_uid,
         id=side_id,
         name="Frog Task Force",
     )
 
-    # Organization membership and roster identify the current composition;
-    # changing operational condition remains in OrganizationState observations.
-    uas_unit = Unit(
-        record=record(registry, "provisioning"),
-        uid=uas_unit_uid,
-        id=uas_unit_id,
-        name="UAS Section",
-        unit_code="UAS",
+    # An ORBAT is operational composition, not a display structure. Each echelon
+    # declares its subordinate organizations and assigned entities once through
+    # member_uids; members carry no reverse parent copy that could diverge.
+    # OrbatOrg supplies the doctrinal echelon, category, domain, and spacing that
+    # make the formation meaningful for tasking.
+    company = OrbatOrg(
+        uid=company_uid,
+        id=company_id,
+        name="1st Robotic Company",
+        unit_code="1ROB",
+        callsign="ROBOT-6",
+        org_level=OrgLevel.UNIT,
+        org_type=OrgType.GOVT,
+        topology=OrgTopology.HIERARCHICAL,
+        member_uids=[platoon_uid],
+        side=side_uid,
+        roster=Roster(roster={}),
+        category=NATOUnitCategory.UAV,
+        size=OOBSize.COY,
+        op_domain=OperationalDomain.AIR,
+        resource_requirements=[],
+        spacing=DistanceMeters(80.0),
+    )
+
+    platoon = OrbatOrg(
+        uid=platoon_uid,
+        id=platoon_id,
+        name="UAV Platoon Alpha",
+        unit_code="UAV-PLT-A",
+        callsign="ALPHA",
+        org_level=OrgLevel.UNIT,
+        org_type=OrgType.GOVT,
+        topology=OrgTopology.HIERARCHICAL,
+        member_uids=[section_uid],
+        side=side_uid,
+        roster=Roster(roster={}),
+        category=NATOUnitCategory.UAV,
+        size=OOBSize.PLT,
+        op_domain=OperationalDomain.AIR,
+        resource_requirements=[],
+        spacing=DistanceMeters(50.0),
+    )
+
+    section = OrbatOrg(
+        uid=section_uid,
+        id=section_id,
+        name="UAV Section 1",
+        unit_code="UAV-SEC-1",
         callsign="FROG-UAS",
         org_level=OrgLevel.UNIT,
         org_type=OrgType.GOVT,
@@ -571,34 +639,28 @@ def main() -> None:
         member_uids=[operator.uid, uav.uid],
         side=side_uid,
         roster=Roster(roster={}),
+        category=NATOUnitCategory.UAV,
+        size=OOBSize.SEC,
+        op_domain=OperationalDomain.AIR,
+        resource_requirements=[],
+        spacing=DistanceMeters(30.0),
     )
 
-    uas_unit_state = OrganizationState(
-        record=record(registry, "sigma.organization"),
-        subject_uid=uas_unit.uid,
-        timestamp=timestamp(),
-    )
+    # Identity is stable; OrganizationState carries each echelon's changing
+    # condition rather than overloading the Organization itself.
+    org_states = [
+        OrganizationState(
+            subject_uid=org.uid,
+            timestamp=timestamp(),
+        )
+        for org in (company, platoon, section)
+    ]
 
-    task_force = Group(
-        record=record(registry, "provisioning"),
-        uid=task_force_uid,
-        id=task_force_id,
-        name="Task Force Frog",
-        unit_code="TFF",
-        callsign="FROG-HQ",
-        org_level=OrgLevel.GROUP,
-        org_type=OrgType.GOVT,
-        topology=OrgTopology.HIERARCHICAL,
-        member_uids=[uas_unit.uid],
-        side=side_uid,
-        roster=Roster(roster={}),
-    )
-
-    task_force_state = OrganizationState(
-        record=record(registry, "sigma.organization"),
-        subject_uid=task_force.uid,
-        timestamp=timestamp(),
-    )
+    # UID values are unhashable, so the chart indexes members by raw identity
+    # bytes. This mapping is read-side only; the ORBAT is member_uids itself.
+    orbat_members = {
+        node.uid.root: node for node in (company, platoon, section, operator, uav)
+    }
 
     # -----------------------------------------------------------------------
     # 3. External protocols become OCCID observations and state
@@ -615,7 +677,6 @@ def main() -> None:
     # an ordinary Entity; the Track and its observations point at that subject
     # instead of inventing a second identity for the same thing.
     contact = Entity(
-        record=record(registry, "adapter.cot"),
         uid=new_uid(),
         id=registry.allocate("Entity"),
         node_uids=[],
@@ -634,7 +695,6 @@ def main() -> None:
 
     # Track is maintained correlation state for the observed subject.
     track = Track(
-        record=record(registry, "sigma.track"),
         uid=new_uid(),
         id=registry.allocate("Track"),
         subject_uid=contact.uid,
@@ -642,7 +702,6 @@ def main() -> None:
 
     # IsrObservation is time-indexed evidence about that subject.
     source_observation = IsrObservation(
-        record=record(registry, "adapter.cot"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
         side=side_uid,
@@ -658,7 +717,6 @@ def main() -> None:
     )
 
     initial_track_update = TrackUpdate(
-        record=record(registry, "adapter.cot"),
         track_uid=track.uid,
         track_state=TrackState.NEW,
         updated_ts=timestamp(),
@@ -675,7 +733,6 @@ def main() -> None:
     )
 
     initial_uav_state = EntityState(
-        record=record(registry, "adapter.mavlink"),
         subject_uid=uav.uid,
         timestamp=timestamp(),
         position=mavlink_location,
@@ -692,7 +749,6 @@ def main() -> None:
     )
 
     imaging_sensor_state = ImagingSensorState(
-        record=record(registry, "adapter.camera"),
         subject_uid=imaging_sensor_uid,
         timestamp=timestamp(),
         run_state=SensorRunState.ACTIVE,
@@ -707,22 +763,35 @@ def main() -> None:
     # 4. Organizational authority
     # -----------------------------------------------------------------------
     command_authority = CommandAuthority(
-        record=record(registry, "sigma.authority"),
         uid=new_uid(),
         id=registry.allocate("Authority"),
         holder_uid=operator.uid,
-        granted_by_uid=task_force.uid,
-        scope_uids=[uas_unit.uid, uav.uid],
+        granted_by_uid=company.uid,
+        scope_uids=[section.uid, uav.uid],
         constraints=[],
-        organization_uid=uas_unit.uid,
+        organization_uid=section.uid,
         role=Role(),
     )
 
     # -----------------------------------------------------------------------
     # 5. Objective -> Task -> Assignment -> Plan
     # -----------------------------------------------------------------------
+    # The overwatch point is ordinary operational spatial data. It is referenced
+    # by UID like any other object; no graphic or display object is created for
+    # it and no second identity is invented.
+    overwatch = Mark(
+        uid=new_uid(),
+        id=registry.allocate("Location"),
+        name="Overwatch FROG",
+        position=GlobalPosition(
+            lat=reported_position.lat + 0.0015,
+            lon=reported_position.lon - 0.0010,
+            alt=reported_position.alt + 40.0,
+            alt_frame=reported_position.alt_frame,
+        ),
+    )
+
     objective = Objective(
-        record=record(registry, "sigma.control"),
         uid=new_uid(),
         id=registry.allocate("Objective"),
         name="Inspect reported contact",
@@ -737,13 +806,12 @@ def main() -> None:
     )
 
     task = TaskInformation(
-        record=record(registry, "sigma.control"),
         uid=new_uid(),
         id=registry.allocate("Task"),
-        instruction="Inspect the reported contact and update its status.",
+        instruction="Move to Overwatch FROG, inspect the contact, and update its status.",
         intent=InformationIntent.OBSERVE,
         target_uids=[track.uid],
-        location_uids=[],
+        location_uids=[overwatch.uid],
         objective_uid=objective.uid,
         constraints=[],
         start_time=time.time(),
@@ -752,11 +820,12 @@ def main() -> None:
         phase=TaskPhase.ASSIGNED,
     )
 
+    # Tasking binds to the formation in the ORBAT, not to a single platform. The
+    # platform that physically executes remains a separate Execution fact.
     assignment = TaskAssignment(
-        record=record(registry, "sigma.control"),
         uid=new_uid(),
         id=registry.allocate("Assignment"),
-        assignee_uid=uav.uid,
+        assignee_uid=section.uid,
         authority_uid=command_authority.uid,
         assigned_by_uid=operator.uid,
         status=AssignmentStatus.ACTIVE,
@@ -765,7 +834,6 @@ def main() -> None:
     )
 
     plan = OperationalPlan(
-        record=record(registry, "sigma.control"),
         uid=new_uid(),
         id=registry.allocate("Plan"),
         name="Inspect Route 6 contact",
@@ -834,7 +902,6 @@ def main() -> None:
     )
 
     uav_state = EntityState(
-        record=record(registry, "adapter.mavlink"),
         subject_uid=uav.uid,
         timestamp=timestamp(),
         position=moving_location,
@@ -875,7 +942,6 @@ def main() -> None:
     )
 
     first_spot = IsrObservation(
-        record=record(registry, "mpfc.observation"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
         side=side_uid,
@@ -910,7 +976,6 @@ def main() -> None:
     )
 
     tracking_observation = IsrObservation(
-        record=record(registry, "mpfc.observation"),
         uid=new_uid(),
         id=registry.allocate("Observation"),
         side=side_uid,
@@ -929,7 +994,6 @@ def main() -> None:
     )
 
     track_update = TrackUpdate(
-        record=record(registry, "mpfc.tracker"),
         track_uid=track.uid,
         track_state=TrackState.ACTIVE,
         updated_ts=timestamp(),
@@ -951,7 +1015,6 @@ def main() -> None:
     # 10. Execution is the occurrence itself
     # -----------------------------------------------------------------------
     execution = Execution(
-        record=record(registry, "sigma.execution"),
         uid=new_uid(),
         id=registry.allocate("Execution"),
         assignment_uid=assignment.uid,
@@ -989,8 +1052,8 @@ def main() -> None:
     print("   Equal local IDs are valid across different IntID namespaces.")
 
     print("\n2. Organization and side")
-    print(f"   {task_force.name}: Organization {local_id(task_force.id)} -> Unit {local_id(uas_unit.id)}")
-    print(f"   {uas_unit.name}: Entity {local_id(operator.id)}, Entity {local_id(uav.id)}")
+    print_org_chart(company, orbat_members, indent="   ")
+    print(f"   Organization states recorded: {len(org_states)}")
     print(f"   Side {local_id(side.id)}: {side.name}")
 
     print("\n3. Communications")
@@ -1018,7 +1081,9 @@ def main() -> None:
     print(f"   Task {local_id(task.id)}:       {uid_str(task.uid)}")
     print(f"   Assignment {local_id(assignment.id)}: {uid_str(assignment.uid)}")
     print(f"   Plan {local_id(plan.id)}:       {uid_str(plan.uid)}")
-    print(f"   Assigned Entity: {uid_str(assignment.assignee_uid)}")
+    print(f"   Tasked unit:      {section.name} -> {uid_str(assignment.assignee_uid)}")
+    print(f"   Overwatch Mark:   {overwatch.name} -> {uid_str(overwatch.uid)}")
+    print(f"   Executing entity: {uav.name} -> {uid_str(uav.uid)}")
 
     print("\n7. Dispatch")
     print(f"   {uid_str(start_message.src)} -> {uid_str(start_message.dst)}")

@@ -29,7 +29,6 @@ models:
     parent: Control
 
     fields:
-      record: Record
       uid: UID
       id: IntID(Plan)
       name: optional string

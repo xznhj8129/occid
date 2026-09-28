@@ -14,7 +14,6 @@ class MilitaryPerson(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Person'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -43,7 +42,6 @@ class MilitaryGroundMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -74,7 +72,6 @@ class MilitaryAirMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]

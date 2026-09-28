@@ -28,7 +28,6 @@ class Plan(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirPlan', 'OperationalPlan', 'RoutePlan')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -40,7 +39,6 @@ class OperationalPlan(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -55,11 +53,10 @@ class OperationalPlan(OCCIDModel):
 
 class RoutePlan(OCCIDModel):
     'Plan of routed movement along waypoints or routes'
-    __occid_model_id__: ClassVar[int] = 289
+    __occid_model_id__: ClassVar[int] = 288
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AutopilotMission',)
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -78,7 +75,6 @@ class AutopilotMission(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RoutePlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None

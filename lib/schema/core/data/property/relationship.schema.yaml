@@ -54,7 +54,6 @@ models:
     semantic_role: representation
     parent: Relationship
     fields:
-      record: Record
       uid: UID
       id: IntID(Relationship)
       subject_uid: UID

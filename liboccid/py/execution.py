@@ -21,7 +21,6 @@ class Execution(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Execution')]
     assignment_uid: Semantic[UID]
@@ -41,7 +40,6 @@ class ExecutionStatus(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     subject_uid: Semantic[UID]
     timestamp: Semantic[Timestamp]
     phase: ExecutionPhase

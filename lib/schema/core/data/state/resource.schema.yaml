@@ -95,7 +95,6 @@ models:
     semantic_role: concept
     parent: Definition
     fields:
-      record: Record
       uid: UID
       id: IntID(ResourceTemplate)
       name: optional string

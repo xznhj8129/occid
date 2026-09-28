@@ -62,11 +62,10 @@ class TaskStatus(IntEnum):
 
 class Task(OCCIDModel):
     'Directed work that must be accomplished in support of an optional objective'
-    __occid_model_id__: ClassVar[int] = 330
+    __occid_model_id__: ClassVar[int] = 329
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Directive'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TaskManeuver', 'TaskEffect', 'TaskInformation', 'TaskTransport')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
@@ -83,11 +82,10 @@ class Task(OCCIDModel):
 
 class TaskManeuver(OCCIDModel):
     'Practical Task schema for desired movement, position, or spatial persistence'
-    __occid_model_id__: ClassVar[int] = 334
+    __occid_model_id__: ClassVar[int] = 333
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
@@ -105,11 +103,10 @@ class TaskManeuver(OCCIDModel):
 
 class TaskEffect(OCCIDModel):
     'Practical Task schema for desired creation, removal, modification, restoration, protection, or denial'
-    __occid_model_id__: ClassVar[int] = 332
+    __occid_model_id__: ClassVar[int] = 331
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
@@ -127,11 +124,10 @@ class TaskEffect(OCCIDModel):
 
 class TaskInformation(OCCIDModel):
     'Practical Task schema for desired search, observation, identification, classification, measurement, assessment, or monitoring'
-    __occid_model_id__: ClassVar[int] = 333
+    __occid_model_id__: ClassVar[int] = 332
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str
@@ -149,11 +145,10 @@ class TaskInformation(OCCIDModel):
 
 class TaskTransport(OCCIDModel):
     'Practical Task schema for desired movement of cargo, personnel, supplies, casualties, or recoverable assets'
-    __occid_model_id__: ClassVar[int] = 336
+    __occid_model_id__: ClassVar[int] = 335
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Task')]
     instruction: builtins.str

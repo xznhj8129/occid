@@ -14,7 +14,7 @@ class Constraint(OCCIDModel):
     condition: Semantic[Condition] | None = None
 
 class Restriction(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 281
+    __occid_model_id__: ClassVar[int] = 280
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -28,7 +28,7 @@ class Limitation(OCCIDModel):
     condition: Semantic[Condition] | None = None
 
 class TaskTimeWindow(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 335
+    __occid_model_id__: ClassVar[int] = 334
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -37,7 +37,7 @@ class TaskTimeWindow(OCCIDModel):
     latest_finish: builtins.float | None = None
 
 class WeatherLimits(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 370
+    __occid_model_id__: ClassVar[int] = 369
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

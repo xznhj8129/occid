@@ -309,7 +309,6 @@ models:
     parent: Set
 
     fields:
-      record: Record
       uid: UID
       id: IntID(Organization)
       name: optional string
@@ -340,7 +339,6 @@ models:
     semantic_role: concept
     parent: Definition
     fields:
-      record: Record
       uid: UID
       id: IntID(OrgTemplate)
       name: optional string
@@ -372,7 +370,6 @@ models:
     semantic_role: concept
     parent: Set
     fields:
-      record: Record
       uid: UID
       id: IntID(Side)
       name: optional string

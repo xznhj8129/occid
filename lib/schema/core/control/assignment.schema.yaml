@@ -21,7 +21,6 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      record: Record
       uid: UID
       id: IntID(Assignment)
       assignee_uid: UID

@@ -20,7 +20,6 @@ models:
     semantic_role: concept
     parent: Data
     fields:
-      record: Record
       uid: UID
       id: IntID(Execution)
       assignment_uid: UID

@@ -18,7 +18,6 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      record: Record
       uid: UID
       id: IntID(Authority)
       holder_uid: UID

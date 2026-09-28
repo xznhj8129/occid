@@ -22,7 +22,6 @@ class Assignment(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TaskAssignment', 'RoleAssignment', 'FlightAssignment')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Assignment')]
     assignee_uid: Semantic[UID]
@@ -33,11 +32,10 @@ class Assignment(OCCIDModel):
 
 class TaskAssignment(OCCIDModel):
     'Assignment of a Task to an assignee'
-    __occid_model_id__: ClassVar[int] = 331
+    __occid_model_id__: ClassVar[int] = 330
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Assignment')]
     assignee_uid: Semantic[UID]
@@ -49,11 +47,10 @@ class TaskAssignment(OCCIDModel):
 
 class RoleAssignment(OCCIDModel):
     'Assignment of an organizational Role to an actor'
-    __occid_model_id__: ClassVar[int] = 285
+    __occid_model_id__: ClassVar[int] = 284
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Assignment')]
     assignee_uid: Semantic[UID]
@@ -69,7 +66,6 @@ class FlightAssignment(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Assignment')]
     assignee_uid: Semantic[UID]

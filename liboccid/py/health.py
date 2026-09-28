@@ -84,7 +84,7 @@ class LinkState(OCCIDModel):
     counters: Semantic[LinkCounters] | None = None
 
 class SubsystemHealth(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 318
+    __occid_model_id__: ClassVar[int] = 317
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Health'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

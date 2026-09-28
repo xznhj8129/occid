@@ -18,7 +18,6 @@ class OperationalContext(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Context'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Operation', 'Scenario')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('OperationalContext')]
     name: builtins.str | None = None
@@ -33,7 +32,6 @@ class Operation(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('OperationalContext')]
     name: builtins.str | None = None
@@ -44,11 +42,10 @@ class Operation(OCCIDModel):
 
 class Scenario(OCCIDModel):
     'Operational context used to describe, rehearse, simulate, or replay a bounded situation'
-    __occid_model_id__: ClassVar[int] = 293
+    __occid_model_id__: ClassVar[int] = 292
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('OperationalContext')]
     name: builtins.str | None = None

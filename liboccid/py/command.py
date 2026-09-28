@@ -60,7 +60,7 @@ class Command(OCCIDModel):
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 310
+    __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -111,7 +111,7 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 276
+    __occid_model_id__: ClassVar[int] = 275
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -19,7 +19,6 @@ class Authority(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CommandAuthority', 'Lease')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: Semantic[UID]
@@ -32,7 +31,6 @@ class CommandAuthority(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: Semantic[UID]
@@ -48,7 +46,6 @@ class Lease(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AttachmentLease', 'ControlLease')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: Semantic[UID]
@@ -64,7 +61,6 @@ class AttachmentLease(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: Semantic[UID]
@@ -82,7 +78,6 @@ class ControlLease(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Authority')]
     holder_uid: Semantic[UID]

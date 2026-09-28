@@ -16,7 +16,6 @@ models:
     semantic_role: concept
     parent: Context
     fields:
-      record: Record
       uid: UID
       id: IntID(OperationalContext)
       name: optional string

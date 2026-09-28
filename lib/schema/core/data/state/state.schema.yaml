@@ -22,7 +22,6 @@ models:
     semantic_role: concept
     parent: State
     fields:
-      record: Record
       subject_uid: UID
       timestamp: Timestamp
 

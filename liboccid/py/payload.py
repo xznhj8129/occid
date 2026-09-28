@@ -74,7 +74,7 @@ class Payload(OCCIDModel):
     capabilities: list[Semantic[Capability]] | None = None
 
 class SensorPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 296
+    __occid_model_id__: ClassVar[int] = 295
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Payload'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImageSensor', 'RFSensor')
@@ -166,7 +166,7 @@ class RFSensor(OCCIDModel):
 
 class SensorFieldOfView(OCCIDModel):
     'Sensor field-of-view angular limits in degrees'
-    __occid_model_id__: ClassVar[int] = 295
+    __occid_model_id__: ClassVar[int] = 294
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

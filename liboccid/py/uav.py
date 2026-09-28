@@ -15,7 +15,6 @@ class AirRobot(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Drone',)
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]
@@ -47,7 +46,6 @@ class Drone(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'AirRobot'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Entity')]
     node_uids: list[Semantic[UID]]

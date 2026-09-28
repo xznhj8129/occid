@@ -60,11 +60,10 @@ class Classification(OCCIDModel):
 
 class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 344
+    __occid_model_id__: ClassVar[int] = 343
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Track')]
     subject_uid: Semantic[UID] | None = None
@@ -83,7 +82,7 @@ class Detection(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ('VisionBox', 'VisionDetection', 'VisionDetectionFrame')
 
 class VisionBox(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 364
+    __occid_model_id__: ClassVar[int] = 363
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -91,7 +90,7 @@ class VisionBox(OCCIDModel):
     bounds: Semantic[BoundingBox]
 
 class VisionDetection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 365
+    __occid_model_id__: ClassVar[int] = 364
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -105,11 +104,10 @@ class VisionDetection(OCCIDModel):
     attributes: dict[builtins.str, Semantic[MetadataValue]]
 
 class VisionDetectionFrame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 366
+    __occid_model_id__: ClassVar[int] = 365
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     media_uid: Semantic[UID] | None = None
     observer_entity_uid: Semantic[UID] | None = None
     sensor_uid: Semantic[UID] | None = None
@@ -121,7 +119,6 @@ class IsrObservation(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Observation')]
     side: Semantic[UID] | None = None
@@ -156,11 +153,10 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 345
+    __occid_model_id__: ClassVar[int] = 344
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     track_uid: Semantic[UID]
     track_state: TrackState | None = None
     updated_ts: Semantic[Timestamp]

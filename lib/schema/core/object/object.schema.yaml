@@ -46,7 +46,6 @@ models:
     parent: Object
 
     fields:
-      record: Record
       uid: UID
       id: IntID(Location)
       name: optional string

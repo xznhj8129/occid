@@ -43,7 +43,6 @@ from .plan import *
 from .property import *
 from .protocol import *
 from .radio import *
-from .record import *
 from .relationship import *
 from .resource import *
 from .root import *

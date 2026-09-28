@@ -14,7 +14,7 @@ class Object(OCCIDModel):
     capabilities: list[Semantic[Capability]] | None = None
 
 class Set(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 298
+    __occid_model_id__: ClassVar[int] = 297
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Collection', 'Cluster', 'Organization', 'Side')
@@ -65,7 +65,6 @@ class Location(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Mark', 'Path', 'Region', 'Boundary')
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
@@ -78,7 +77,6 @@ class Mark(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
@@ -92,7 +90,6 @@ class Path(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
@@ -101,12 +98,11 @@ class Path(OCCIDModel):
 
 class Region(OCCIDModel):
     'Identified bounded spatial area'
-    __occid_model_id__: ClassVar[int] = 272
+    __occid_model_id__: ClassVar[int] = 271
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None
@@ -120,7 +116,6 @@ class Boundary(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Location'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Location')]
     name: builtins.str | None = None

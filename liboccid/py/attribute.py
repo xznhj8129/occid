@@ -150,7 +150,7 @@ class Attribute(OCCIDModel):
 
 class Symbology(OCCIDModel):
     'Symbolic coding according to a declared standard'
-    __occid_model_id__: ClassVar[int] = 322
+    __occid_model_id__: ClassVar[int] = 321
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

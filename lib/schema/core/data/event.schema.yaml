@@ -33,7 +33,6 @@ models:
     parent: Data
 
     fields:
-      record: Record
 
   SubjectEvent:
     description: Event concerning one identified operational subject at one semantic timestamp

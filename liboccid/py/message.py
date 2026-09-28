@@ -88,7 +88,7 @@ class Delta(OCCIDModel):
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 280
+    __occid_model_id__: ClassVar[int] = 279
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DeliveryReceipt', 'MessageTransferResult')

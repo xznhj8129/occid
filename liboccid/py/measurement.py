@@ -14,11 +14,10 @@ class BearingReference(IntEnum):
 
 class SpatialMeasurement(OCCIDModel):
     'Persisted spatial measurement whose measured quantity is distinct from any graphic used to display it'
-    __occid_model_id__: ClassVar[int] = 302
+    __occid_model_id__: ClassVar[int] = 301
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DistanceMeasurement', 'AreaMeasurement', 'BearingMeasurement', 'RadiusMeasurement', 'RouteMeasurement')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None
@@ -29,7 +28,6 @@ class DistanceMeasurement(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialMeasurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None
@@ -43,7 +41,6 @@ class AreaMeasurement(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialMeasurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None
@@ -56,7 +53,6 @@ class BearingMeasurement(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialMeasurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None
@@ -71,7 +67,6 @@ class RadiusMeasurement(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialMeasurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None
@@ -80,11 +75,10 @@ class RadiusMeasurement(OCCIDModel):
     radius: Semantic[DistanceMeters]
 
 class RouteMeasurement(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 288
+    __occid_model_id__: ClassVar[int] = 287
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpatialMeasurement'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('SpatialMeasurement')]
     name: builtins.str | None = None

@@ -54,13 +54,7 @@ class PlannerPointCategory(IntEnum):
     SURVEY_AREA = auto()
     ROUTE_OUT = auto()
 
-class AirGroupFormation3DType(IntEnum):
-    NONE = 0
-    BOX = auto()
-    SEP_2D_PER_FL = auto()
-    SEP_2D_SPACED = auto()
-
-class AirGroupFormation2DType(IntEnum):
+class AirFormationXY(IntEnum):
     NONE = 0
     LINE = auto()
     ECHELON = auto()
@@ -68,6 +62,7 @@ class AirGroupFormation2DType(IntEnum):
     SQUARE = auto()
     DIAMOND = auto()
     VEE = auto()
+    MISSING_MAN = auto()
     HEAVY_LEFT = auto()
     HEAVY_RIGHT = auto()
     ECHELON_LEFT = auto()
@@ -126,7 +121,6 @@ class AirPlan(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroupFlightPlan', 'UnitFlightPlan', 'PlannedAirMission')
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -137,7 +131,6 @@ class GroupFlightPlan(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -149,15 +142,13 @@ class GroupFlightPlan(OCCIDModel):
     delay_s: builtins.float | None = None
     airspeed: builtins.float | None = None
     path_offset: Semantic[LocalDirection] | None = None
-    formation_2d: AirGroupFormation2DType | None = None
-    formation_3d: AirGroupFormation3DType | None = None
+    formation: AirFormationXY | None = None
 
 class UnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 354
+    __occid_model_id__: ClassVar[int] = 353
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryUnitFlightPlan',)
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -179,7 +170,6 @@ class PlannedAirMission(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None
@@ -253,7 +243,6 @@ class MilitaryUnitFlightPlan(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'UnitFlightPlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    record: Semantic[Record]
     uid: Semantic[UID]
     id: Annotated[IntID, IDNamespace('Plan')]
     name: builtins.str | None = None

@@ -59,7 +59,6 @@ models:
     semantic_role: concept
     parent: Observation
     fields:
-      record: Record
       uid: UID
       id: IntID(Track)
       subject_uid: optional UID
@@ -97,7 +96,6 @@ models:
     semantic_role: representation
     parent: Detection
     fields:
-      record: Record
       media_uid: optional UID
       observer_entity_uid: optional UID
       sensor_uid: optional UID
@@ -108,7 +106,6 @@ models:
     semantic_role: representation
     parent: Observation
     fields:
-      record: Record
       uid: UID
       id: IntID(Observation)
       side: optional UID
@@ -145,7 +142,6 @@ models:
     semantic_role: representation
     parent: Observation
     fields:
-      record: Record
       track_uid: UID
       track_state: optional TrackState
       updated_ts: Timestamp

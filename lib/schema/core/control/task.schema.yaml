@@ -65,7 +65,6 @@ models:
     semantic_role: concept
     parent: Directive
     fields:
-      record: Record
       uid: UID
       id: IntID(Task)
       instruction: string

@@ -17,7 +17,6 @@ models:
     semantic_role: concept
     parent: Data
     fields:
-      record: Record
       uid: UID
       id: IntID(SpatialMeasurement)
       name: optional string

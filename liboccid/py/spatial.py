@@ -70,7 +70,7 @@ class WaypointType(IntEnum):
 
 class SpatialStruct(OCCIDModel):
     'Spatial struct support models'
-    __occid_model_id__: ClassVar[int] = 304
+    __occid_model_id__: ClassVar[int] = 303
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LoiterOrbit', 'MissionRouteGeometry', 'PlannedRoutePoints', 'AutopilotMissionWaypoint')
@@ -192,7 +192,7 @@ class BoundingBox(OCCIDModel):
 
 class VelocityVector(OCCIDModel):
     'Linear velocity with optional explicit inertial reference frame'
-    __occid_model_id__: ClassVar[int] = 359
+    __occid_model_id__: ClassVar[int] = 358
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Vector'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -258,7 +258,7 @@ class LocationState(OCCIDModel):
     gnss: Semantic[GnssSolution] | None = None
 
 class SpotterOrigin(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 308
+    __occid_model_id__: ClassVar[int] = 307
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Position'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
