@@ -27,7 +27,7 @@ class GimbalState(IntEnum):
 
 class SensorState(OCCIDModel):
     'Time-indexed readings, readiness, calibration, and availability of an identified sensor'
-    __occid_model_id__: ClassVar[int] = 295
+    __occid_model_id__: ClassVar[int] = 292
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImagingSensorState', 'TrackerState', 'FlightSensorConfiguration')
@@ -36,7 +36,7 @@ class SensorState(OCCIDModel):
 
 class ImagingSensorState(OCCIDModel):
     'Current operating and pointing state of an imaging sensor'
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 152
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -49,7 +49,7 @@ class ImagingSensorState(OCCIDModel):
     field_of_view: Semantic[SensorFieldOfView] | None = None
 
 class TrackerState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 345
+    __occid_model_id__: ClassVar[int] = 342
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -63,7 +63,7 @@ class TrackerState(OCCIDModel):
 
 class FlightSensorConfiguration(OCCIDModel):
     'Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers'
-    __occid_model_id__: ClassVar[int] = 115
+    __occid_model_id__: ClassVar[int] = 111
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

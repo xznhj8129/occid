@@ -126,14 +126,11 @@ Root:
           description: Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies
           children:
 
-            AirPlan:
-              description: Plan applicable to aerial operations and flight
-
             OperationalPlan:
               description: Task-based
 
             RoutePlan:
-              description: Plan of routed movement along waypoints or routes
+              description: Plan of routed movement along an ordered sequence of movement points
 
 
         Constraint:

@@ -21,6 +21,24 @@ enums:
     - FAILED
     - SKIPPED
 
+  WaypointRole:
+    - HOME = 0
+    - TAKEOFF
+    - LANDING
+    - HOLD
+    - WAYPOINT
+    - ASSEMBLY
+    - POI
+    - ROI
+    - SURVEY
+    - INGRESS
+    - EGRESS
+
+  OrbitPattern:
+    - CIRCLE = 0
+    - RACETRACK
+    - FIGURE_EIGHT
+
 
 models:
   Plan:
@@ -48,9 +66,36 @@ models:
 
 
   RoutePlan:
-    description: Plan of routed movement along waypoints or routes
+    description: Plan of routed movement along an ordered sequence of movement points
     semantic_role: concept
     parent: Plan
+    fields:
+      waypoints: list[Waypoint]
+
+  Waypoint:
+    description: A point of movement on a route, with its role and movement constraints
+    semantic_role: representation
+    parent: SpatialStruct
+    fields:
+      position: GlobalPosition
+      role: WaypointRole = WAYPOINT
+      capture_radius: optional DistanceMeters
+      hold_time: optional Duration
+      heading_rad: optional float
+      speed_ms: optional float
+      velocity: optional VelocityVector
+      orbit: optional LoiterOrbit
+      area: optional GeoArea
+
+  LoiterOrbit:
+    description: Embedded orbit geometry and timing value
+    semantic_role: representation
+    parent: SpatialStruct
+    fields:
+      orbit_direction_ccw: bool
+      orbit_radius: DistanceMeters
+      loiter_time: Duration
+      pattern: OrbitPattern
 
   PlanContingency: # conditional plans or tasks?
     semantic_role: representation
@@ -58,24 +103,3 @@ models:
     fields:
       condition: Condition
       task_uids: list[ID]
-
-  AutopilotMission:
-    semantic_role: representation
-    parent: RoutePlan
-    fields:
-      waypoints: list[AutopilotMissionWaypoint]
-
-  AutopilotMissionWaypoint:
-    description: Embedded autopilot waypoint value used by a plan or protocol mapping
-    semantic_role: representation
-    parent: SpatialStruct
-    fields:
-      waypoint_index: int
-      position: GlobalPosition
-      # these need formalizing
-      action_code: optional int
-      param1: optional int
-      param2: optional int
-      param3: optional int
-      flag: optional int
-

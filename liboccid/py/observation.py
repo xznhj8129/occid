@@ -47,20 +47,20 @@ class DetectionBoxSpace(IntEnum):
 
 class Observation(OCCIDModel):
     'External detection, classification, track, signal, spot report, threat, or assessment data'
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 224
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Classification', 'Track', 'Assessment', 'Detection', 'IsrObservation', 'TrackUpdate')
 
 class Classification(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 45
+    __occid_model_id__: ClassVar[int] = 42
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
 
 class Track(OCCIDModel):
     'Persistent maintained identity for one correlated observed object or phenomenon'
-    __occid_model_id__: ClassVar[int] = 343
+    __occid_model_id__: ClassVar[int] = 340
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -68,20 +68,20 @@ class Track(OCCIDModel):
     subject_uid: Semantic[ID] | None = None
 
 class Assessment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 21
+    __occid_model_id__: ClassVar[int] = 20
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ('IsrResult',)
 
 class Detection(OCCIDModel):
     'Assessment that something exists or occurred'
-    __occid_model_id__: ClassVar[int] = 78
+    __occid_model_id__: ClassVar[int] = 75
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ('VisionBox', 'VisionDetection', 'VisionDetectionFrame')
 
 class VisionBox(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 363
+    __occid_model_id__: ClassVar[int] = 359
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -89,7 +89,7 @@ class VisionBox(OCCIDModel):
     bounds: Semantic[BoundingBox]
 
 class VisionDetection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 364
+    __occid_model_id__: ClassVar[int] = 360
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -103,7 +103,7 @@ class VisionDetection(OCCIDModel):
     attributes: dict[builtins.str, Semantic[MetadataValue]]
 
 class VisionDetectionFrame(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 365
+    __occid_model_id__: ClassVar[int] = 361
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Detection'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -114,7 +114,7 @@ class VisionDetectionFrame(OCCIDModel):
     detections: list[Semantic[VisionDetection]]
 
 class IsrObservation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 159
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -136,7 +136,7 @@ class IsrObservation(OCCIDModel):
     confidence: ConfidenceLevel | None = None
 
 class IsrParameters(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 159
+    __occid_model_id__: ClassVar[int] = 160
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -151,7 +151,7 @@ class IsrParameters(OCCIDModel):
 
 class TrackUpdate(OCCIDModel):
     'State update about an existing Track; does not define Track identity'
-    __occid_model_id__: ClassVar[int] = 344
+    __occid_model_id__: ClassVar[int] = 341
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Observation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -161,7 +161,7 @@ class TrackUpdate(OCCIDModel):
     confidence: ConfidenceLevel | None = None
 
 class IsrResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 160
+    __occid_model_id__: ClassVar[int] = 161
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assessment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

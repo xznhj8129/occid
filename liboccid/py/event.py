@@ -29,14 +29,14 @@ class AirMissionEvent(IntEnum):
 
 class Event(OCCIDModel):
     'A discrete occurrence; concrete event representations define the subject, time, vocabulary, and event-specific data appropriate to that semantic branch'
-    __occid_model_id__: ClassVar[int] = 105
+    __occid_model_id__: ClassVar[int] = 102
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SubjectEvent', 'TimelineEvent')
 
 class SubjectEvent(OCCIDModel):
     'Event concerning one identified operational subject at one semantic timestamp'
-    __occid_model_id__: ClassVar[int] = 315
+    __occid_model_id__: ClassVar[int] = 312
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlightEvent', 'MissionEvent')
@@ -45,7 +45,7 @@ class SubjectEvent(OCCIDModel):
 
 class FlightEvent(OCCIDModel):
     'Flight or air-mission lifecycle occurrence for an identified subject'
-    __occid_model_id__: ClassVar[int] = 113
+    __occid_model_id__: ClassVar[int] = 110
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -63,7 +63,7 @@ class MissionEvent(OCCIDModel):
 
 class TimelineEvent(OCCIDModel):
     'Human-authored or imported operational timeline occurrence used for scenario, rehearsal, planning, and historical presentation'
-    __occid_model_id__: ClassVar[int] = 341
+    __occid_model_id__: ClassVar[int] = 338
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

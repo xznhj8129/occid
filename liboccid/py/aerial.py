@@ -7,6 +7,41 @@ from .plan import PlanApprovalState
 
 ### Enums
 
+class AirRole(IntEnum):
+    GROUND = 0
+    AIR_DEFENSE = auto()
+    FIGHTER = auto()
+    GROUND_ATTACK = auto()
+    ISR = auto()
+    MINE = auto()
+    CARGO = auto()
+
+class FormationPattern(IntEnum):
+    LINE = 0
+    ECHELON = auto()
+    TRAIL = auto()
+    SQUARE = auto()
+    DIAMOND = auto()
+    VEE = auto()
+    MISSING_MAN = auto()
+    HEAVY_LEFT = auto()
+    HEAVY_RIGHT = auto()
+    ECHELON_LEFT = auto()
+    ECHELON_RIGHT = auto()
+    STAGGERED_TRAIL_LEFT = auto()
+    STAGGERED_TRAIL_RIGHT = auto()
+
+class FormationRole(IntEnum):
+    LEAD = 0
+    FOLLOWER = auto()
+
+class FormationJoinState(IntEnum):
+    UNKNOWN = 0
+    JOINING = auto()
+    JOINED = auto()
+    LEAVING = auto()
+    ABSENT = auto()
+
 class FlightPlanPhase(IntEnum):
     ONLINE = 0
     PREPARING = auto()
@@ -27,40 +62,6 @@ class AirPlanAction(IntEnum):
     AIR_DROP = auto()
     RECOVERY = auto()
 
-class OrbitPattern(IntEnum):
-    CIRCLE = 0
-    RACETRACK = auto()
-    FIGURE_EIGHT = auto()
-
-class FlightPlanPointType(IntEnum):
-    HOME = 0
-    TAKEOFF = auto()
-    LANDING = auto()
-    HOLD = auto()
-    WAYPOINT = auto()
-    ASSEMBLY = auto()
-    POI = auto()
-    ROI = auto()
-    SURVEY = auto()
-    INGRESS = auto()
-    EGRESS = auto()
-
-class AirFormationXY(IntEnum):
-    NONE = 0
-    LINE = auto()
-    ECHELON = auto()
-    TRAIL = auto()
-    SQUARE = auto()
-    DIAMOND = auto()
-    VEE = auto()
-    MISSING_MAN = auto()
-    HEAVY_LEFT = auto()
-    HEAVY_RIGHT = auto()
-    ECHELON_LEFT = auto()
-    ECHELON_RIGHT = auto()
-    STAGG_TRAIL_LEFT = auto()
-    STAGG_TRAIL_RIGHT = auto()
-
 class MilitaryAirTask(IntEnum):
     ISR = 0
     CLOSE_AIR_SUPPORT = auto()
@@ -68,168 +69,88 @@ class MilitaryAirTask(IntEnum):
     STRIKE = auto()
     SEAD = auto()
 
-class AirRole(IntEnum):
-    GROUND = 0
-    AIR_DEFENSE = auto()
-    FIGHTER = auto()
-    GROUND_ATTACK = auto()
-    ISR = auto()
-    MINE = auto()
-    CARGO = auto()
-
 class AirISRType(IntEnum):
     OVERFLY = 0
     FLYBY = auto()
     ORBIT = auto()
 
-### Mappings
-
-AIR_ROLE_LABELS: dict[AirRole, builtins.str] = {
-    AirRole.GROUND: 'Ground',
-    AirRole.AIR_DEFENSE: 'Air Defense',
-    AirRole.FIGHTER: 'Fighter',
-    AirRole.GROUND_ATTACK: 'Ground Attack',
-    AirRole.ISR: 'ISR',
-    AirRole.MINE: 'Mine',
-    AirRole.CARGO: 'Cargo',
-}
-
-AIR_ROLE_NAMES: dict[AirRole, builtins.str] = {
-    AirRole.GROUND: 'Ground',
-    AirRole.AIR_DEFENSE: 'Air Defense',
-    AirRole.FIGHTER: 'Fighter',
-    AirRole.GROUND_ATTACK: 'Ground Attack',
-    AirRole.ISR: 'ISR',
-    AirRole.MINE: 'Mine',
-    AirRole.CARGO: 'Cargo',
-}
-
 ### Models
 
-class LoiterOrbit(OCCIDModel):
-    'Embedded orbit geometry and timing value'
-    __occid_model_id__: ClassVar[int] = 180
+class FormationStation(OCCIDModel):
+    "One element's station, role, and timing within a formation"
+    __occid_model_id__: ClassVar[int] = 117
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    orbit_direction_ccw: builtins.bool
-    orbit_radius_m: builtins.int
-    loiter_time_s: builtins.int
-    pattern: OrbitPattern
+    element_uid: Semantic[ID]
+    role: FormationRole
+    station_index: builtins.int | None = None
+    lateral_offset: Semantic[DistanceMeters] | None = None
+    vertical_offset: Semantic[DistanceMeters] | None = None
+    longitudinal_offset: Semantic[DistanceMeters] | None = None
+    altitude_offset: Semantic[DistanceMeters] | None = None
+    delay: Semantic[Duration] | None = None
 
-class AirPlan(OCCIDModel):
-    'Plan applicable to aerial operations and flight'
-    __occid_model_id__: ClassVar[int] = 7
-    __occid_semantic_role__: ClassVar[str] = 'concept'
-    __occid_parent__: ClassVar[str | None] = 'Plan'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('GroupFlightPlan', 'UnitFlightPlan', 'PlannedAirMission')
-    uid: Semantic[ID]
-    name: builtins.str | None = None
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-
-class GroupFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 141
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AirPlan'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[ID]
-    name: builtins.str | None = None
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-    plan_phase: FlightPlanPhase
-    flight_level: Semantic[NumericRange]
-    alt_sep_m: builtins.float
-    alt_frame: AltitudeDatum | None = None
-    h_sep_m: builtins.float | None = None
-    delay_s: builtins.float | None = None
-    airspeed: builtins.float | None = None
-    path_offset: Semantic[LocalDirection] | None = None
-    formation: AirFormationXY | None = None
-
-class UnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 353
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AirPlan'
-    __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryUnitFlightPlan',)
-    uid: Semantic[ID]
-    name: builtins.str | None = None
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-    unit_num: builtins.int
-    callsign: builtins.str
-    fl: builtins.float
-    route_in: Semantic[GeoPath]
-    target: Semantic[FlightMissionPoint]
-    route_out: Semantic[GeoPath]
-    home: Semantic[GlobalPosition]
-    land_pos: Semantic[GlobalPosition]
-    ip_wait_delay: builtins.float = 0.0
-    wp: Semantic[GeoPath]
-
-class PlannedAirMission(OCCIDModel):
-    'Saved operator mission plan - the planner inputs, restorable for editing'
-    __occid_model_id__: ClassVar[int] = 248
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AirPlan'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[ID]
-    name: builtins.str | None = None
-    approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-    air_action: AirPlanAction = AirPlanAction.FLY
-    manual: builtins.bool = False
-    points: Semantic[PlannedRoutePoints]
-    config: dict[builtins.str, builtins.float]
-    saved_ts: Semantic[Timestamp] | None = None
-
-class MissionRouteGeometry(OCCIDModel):
-    'Embedded route geometry used by a mission plan'
-    __occid_model_id__: ClassVar[int] = 211
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    route_in: Semantic[GeoPath]
-    survey: Semantic[GeoPath]
-    survey_area: Semantic[GeoArea]
-    route_out: Semantic[GeoPath]
-
-class FlightMissionPoint(OCCIDModel):
+class Formation(OCCIDModel):
+    'Formation definition for a group, including member stations and stream timing'
     __occid_model_id__: ClassVar[int] = 114
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'AutopilotMissionWaypoint'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    waypoint_index: builtins.int
-    position: Semantic[GlobalPosition]
-    action_code: builtins.int | None = None
-    param1: builtins.int | None = None
-    param2: builtins.int | None = None
-    param3: builtins.int | None = None
-    flag: builtins.int | None = None
-    point_type: FlightPlanPointType
+    pattern: FormationPattern
+    lateral_separation: Semantic[DistanceMeters]
+    vertical_separation: Semantic[DistanceMeters] | None = None
+    altitude_offset: Semantic[DistanceMeters] | None = None
+    altitude_datum: AltitudeDatum | None = None
+    element_interval: Semantic[Duration] | None = None
+    stations: list[Semantic[FormationStation]]
 
-class PlannedRoutePoints(OCCIDModel):
-    'Embedded set of planner points defining mission-plan route segments'
-    __occid_model_id__: ClassVar[int] = 249
+class GroupFlightPlan(OCCIDModel):
+    'Flight plan for a group flying a route in formation'
+    __occid_model_id__: ClassVar[int] = 142
     __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'SpatialStruct'
-    __occid_children__: ClassVar[tuple[str, ...]] = ()
-    start: Semantic[FlightMissionPoint]
-    route_in: list[Semantic[FlightMissionPoint]]
-    route_out: list[Semantic[FlightMissionPoint]]
-    end: Semantic[FlightMissionPoint]
-
-class MilitaryUnitFlightPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 209
-    __occid_semantic_role__: ClassVar[str] = 'representation'
-    __occid_parent__: ClassVar[str | None] = 'UnitFlightPlan'
+    __occid_parent__: ClassVar[str | None] = 'RoutePlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     uid: Semantic[ID]
     name: builtins.str | None = None
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-    unit_num: builtins.int
-    callsign: builtins.str
-    fl: builtins.float
-    route_in: Semantic[GeoPath]
-    target: Semantic[FlightMissionPoint]
-    route_out: Semantic[GeoPath]
-    home: Semantic[GlobalPosition]
-    land_pos: Semantic[GlobalPosition]
-    ip_wait_delay: builtins.float = 0.0
-    wp: Semantic[GeoPath]
+    waypoints: list[Semantic[Waypoint]]
+    action: AirPlanAction = AirPlanAction.FLY
+    home: Semantic[GlobalPosition] | None = None
+    flight_level: Semantic[NumericRange] | None = None
+    cruise_airspeed: Semantic[Airspeed] | None = None
+    formation: Semantic[Formation] | None = None
+
+class FormationElementState(OCCIDModel):
+    "One element's observed position, deviation, and join state within a formation"
+    __occid_model_id__: ClassVar[int] = 115
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'Struct'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    element_uid: Semantic[ID]
+    join_state: FormationJoinState
+    position: Semantic[GlobalPosition] | None = None
+    lateral_offset: Semantic[DistanceMeters] | None = None
+    vertical_offset: Semantic[DistanceMeters] | None = None
+    longitudinal_offset: Semantic[DistanceMeters] | None = None
+
+class FormationState(OCCIDModel):
+    'Time-indexed formation condition for one plan, one entry per element'
+    __occid_model_id__: ClassVar[int] = 116
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'SubjectState'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    subject_uid: Semantic[ID]
+    timestamp: Semantic[Timestamp]
+    elements: list[Semantic[FormationElementState]]
+
+class FlightState(OCCIDModel):
+    'Time-indexed flight phase and active waypoint for one plan'
+    __occid_model_id__: ClassVar[int] = 112
+    __occid_semantic_role__: ClassVar[str] = 'representation'
+    __occid_parent__: ClassVar[str | None] = 'SubjectState'
+    __occid_children__: ClassVar[tuple[str, ...]] = ()
+    subject_uid: Semantic[ID]
+    timestamp: Semantic[Timestamp]
+    phase: FlightPlanPhase
+    active_waypoint_index: builtins.int | None = None

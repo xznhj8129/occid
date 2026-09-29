@@ -1,5 +1,21 @@
 # Development log
 
+## 2026-09-29 - One movement-point waypoint in the plan schema
+
+- `AutopilotMissionWaypoint` was protocol-shaped (`waypoint_index`, `action_code`, `param1-3`, `flag`). It is replaced by the semantic `Waypoint`: a point of movement with `position`, `role` (`WaypointRole`), `capture_radius`, `hold_time`, `heading_rad`, `speed_ms`, `velocity`, `orbit`, and `area`. The speed constraint is a generic scalar; `Airspeed` stays air-plan-specific (`GroupFlightPlan.cruise_airspeed`).
+- `AutopilotMission` is removed; `RoutePlan` owns the ordered `waypoints` sequence directly.
+- Firmware mission-item mechanics — command codes, action parameters, jumps, autocontinue — are protocol mapping concerns, not OCCID waypoint semantics, and are deliberately absent.
+- Aerial no longer defines its own waypoint: `GroupFlightPlan` inherits the route waypoints and keeps the formation/swarm and air-plan facts (`action`, `home`, `flight_level`, `cruise_airspeed`, `formation`). `LoiterOrbit`/`OrbitPattern` and the waypoint role vocabulary moved with the movement point into the plan schema.
+- `WaypointType` in `spatial.schema.yaml` (GLOBAL/LOCAL/OBJECT) remains the coordinate-basis vocabulary; the waypoint does not yet carry that discrimination.
+- Formation and flight state remain separate time-indexed records: `FormationState` with per-element `FormationElementState`, and `FlightState`.
+
+## 2026-09-29 - Collapse the aerial-control schema
+
+- Replaced the aerial plan/route/point model pyramid with four models that carry the same meanings: `Formation` (pattern and separations), `LoiterOrbit` (orbit geometry and timing), `FlightWaypoint` (an autopilot waypoint with a flight role and optional orbit), and `GroupFlightPlan` (a `RoutePlan` with an action, an optional formation, and flight waypoints).
+- Kept every genuine vocabulary: `AirRole`, `FormationPattern`, `FlightPlanPhase`, `AirPlanAction`, `OrbitPattern`, `FlightPlanPointType`, `MilitaryAirTask`, `AirISRType`. Removed the duplicate `AIR_ROLE_LABELS`/`AIR_ROLE_NAMES` maps.
+- Removed `AirPlan`, `UnitFlightPlan`, `MilitaryUnitFlightPlan`, `PlannedAirMission`, `MissionRouteGeometry`, `PlannedRoutePoints`, and `FlightMissionPoint`. Their facts are expressible through the kept models; planner UI state (`manual`, `saved_ts`, `config`) is application concern, flight phase is execution state, and per-unit identity belongs to identity/assignment.
+- Separations and orbit radius use `DistanceMeters`; loiter time uses `Duration`.
+
 ## 2026-09-29 - Contextual ID identity
 
 - OCCID identity fields are `uid`, `*_uid`, and `*_uids`, typed `ID`. `ID` is the abstract OCCID identity; its concrete representation is contextual. `UID` remains the UUID-backed representation used by the field manual.

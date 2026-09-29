@@ -9,7 +9,7 @@ from .entities import EntityType, PropulsionType
 ### Models
 
 class MilitaryPerson(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 206
+    __occid_model_id__: ClassVar[int] = 207
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Person'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -36,7 +36,7 @@ class MilitaryPerson(OCCIDModel):
     ammo: list[Semantic[ItemCount]]
 
 class MilitaryGroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 202
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -65,7 +65,7 @@ class MilitaryGroundMachine(OCCIDModel):
     effects: Semantic[GroundEffects]
 
 class MilitaryAirMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 200
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

@@ -3,192 +3,138 @@ type: schema
 package: aerial
 root: Control
 tags:
-- core
+  - core
 
 enums:
+  AirRole:
+    - GROUND = 0
+    - AIR_DEFENSE
+    - FIGHTER
+    - GROUND_ATTACK
+    - ISR
+    - MINE
+    - CARGO
+
+  FormationPattern:
+    - LINE = 0
+    - ECHELON
+    - TRAIL
+    - SQUARE
+    - DIAMOND
+    - VEE
+    - MISSING_MAN
+    - HEAVY_LEFT
+    - HEAVY_RIGHT
+    - ECHELON_LEFT
+    - ECHELON_RIGHT
+    - STAGGERED_TRAIL_LEFT
+    - STAGGERED_TRAIL_RIGHT
+
+  FormationRole:
+    - LEAD = 0
+    - FOLLOWER
+
+  FormationJoinState:
+    - UNKNOWN = 0
+    - JOINING
+    - JOINED
+    - LEAVING
+    - ABSENT
+
   FlightPlanPhase:
-  - ONLINE = 0
-  - PREPARING
-  - TAKEOFF
-  - ASSEMBLY
-  - HOLDING
-  - ENROUTE
-  - INITIAL
-  - OBJECTIVE
-  - EGRESS
-  - RETURN
-  - APPROACH
-  - LANDING
-  - SHUTDOWN
+    - ONLINE = 0
+    - PREPARING
+    - TAKEOFF
+    - ASSEMBLY
+    - HOLDING
+    - ENROUTE
+    - INITIAL
+    - OBJECTIVE
+    - EGRESS
+    - RETURN
+    - APPROACH
+    - LANDING
+    - SHUTDOWN
 
   AirPlanAction:
-  - FLY = 0
-  - AIR_DROP
-  - RECOVERY
-
-  OrbitPattern:
-  - CIRCLE = 0
-  - RACETRACK
-  - FIGURE_EIGHT
-
-  FlightPlanPointType:
-  - HOME = 0
-  - TAKEOFF
-  - LANDING
-  - HOLD
-  - WAYPOINT
-  - ASSEMBLY
-  - POI
-  - ROI
-  - SURVEY
-  - INGRESS
-  - EGRESS
-
-  AirFormationXY:
-  - NONE = 0
-  - LINE
-  - ECHELON
-  - TRAIL
-  - SQUARE
-  - DIAMOND
-  - VEE
-  - MISSING_MAN
-  - HEAVY_LEFT
-  - HEAVY_RIGHT
-  - ECHELON_LEFT
-  - ECHELON_RIGHT
-  - STAGG_TRAIL_LEFT
-  - STAGG_TRAIL_RIGHT
+    - FLY = 0
+    - AIR_DROP
+    - RECOVERY
 
   MilitaryAirTask:
-  - ISR = 0
-  - CLOSE_AIR_SUPPORT
-  - ELECTRONIC_WARFARE
-  - STRIKE
-  - SEAD
-
-  AirRole:
-  - GROUND = 0
-  - AIR_DEFENSE
-  - FIGHTER
-  - GROUND_ATTACK
-  - ISR
-  - MINE
-  - CARGO
+    - ISR = 0
+    - CLOSE_AIR_SUPPORT
+    - ELECTRONIC_WARFARE
+    - STRIKE
+    - SEAD
 
   AirISRType:
-  - OVERFLY = 0
-  - FLYBY
-  - ORBIT
+    - OVERFLY = 0
+    - FLYBY
+    - ORBIT
 
 models:
-
-  LoiterOrbit:
-    description: Embedded orbit geometry and timing value
+  FormationStation:
+    description: One element's station, role, and timing within a formation
     semantic_role: representation
-    parent: SpatialStruct
+    parent: Struct
     fields:
-      orbit_direction_ccw: bool
-      orbit_radius_m: int
-      loiter_time_s: int
-      pattern: OrbitPattern
-      
-  AirPlan:
-    description: Plan applicable to aerial operations and flight
-    semantic_role: concept
-    parent: Plan
+      element_uid: ID
+      role: FormationRole
+      station_index: optional int
+      lateral_offset: optional DistanceMeters
+      vertical_offset: optional DistanceMeters
+      longitudinal_offset: optional DistanceMeters
+      altitude_offset: optional DistanceMeters
+      delay: optional Duration
+
+  Formation:
+    description: Formation definition for a group, including member stations and stream timing
+    semantic_role: representation
+    parent: Struct
+    fields:
+      pattern: FormationPattern
+      lateral_separation: DistanceMeters
+      vertical_separation: optional DistanceMeters
+      altitude_offset: optional DistanceMeters
+      altitude_datum: optional AltitudeDatum
+      element_interval: optional Duration
+      stations: list[FormationStation]
 
   GroupFlightPlan:
+    description: Flight plan for a group flying a route in formation
     semantic_role: representation
-    parent: AirPlan
+    parent: RoutePlan
     fields:
-      plan_phase: FlightPlanPhase
-      flight_level: NumericRange
-      alt_sep_m: float
-      alt_frame: optional AltitudeDatum
-      h_sep_m: optional float
-      delay_s: optional float
-      airspeed: optional float
-      path_offset: optional LocalDirection
-      formation: optional AirFormationXY
+      action: AirPlanAction = FLY
+      home: optional GlobalPosition
+      flight_level: optional NumericRange
+      cruise_airspeed: optional Airspeed
+      formation: optional Formation
 
-  UnitFlightPlan:
+  FormationElementState:
+    description: One element's observed position, deviation, and join state within a formation
     semantic_role: representation
-    parent: AirPlan
+    parent: Struct
     fields:
-      unit_num: int
-      callsign: string
-      fl: float
-      route_in: GeoPath
-      target: FlightMissionPoint
-      route_out: GeoPath
-      home: GlobalPosition
-      land_pos: GlobalPosition
-      ip_wait_delay: float = 0.0
-      wp: GeoPath
+      element_uid: ID
+      join_state: FormationJoinState
+      position: optional GlobalPosition
+      lateral_offset: optional DistanceMeters
+      vertical_offset: optional DistanceMeters
+      longitudinal_offset: optional DistanceMeters
 
-  PlannedAirMission:
+  FormationState:
+    description: Time-indexed formation condition for one plan, one entry per element
     semantic_role: representation
-    parent: AirPlan
-    description: Saved operator mission plan - the planner inputs, restorable for editing
+    parent: SubjectState
     fields:
-      air_action: AirPlanAction = FLY
-      manual: bool = false
-      points: PlannedRoutePoints
-      config: map[string, float] #??????????
-      saved_ts: optional Timestamp
+      elements: list[FormationElementState]
 
-  MissionRouteGeometry: # too general name
-    description: Embedded route geometry used by a mission plan
+  FlightState:
+    description: Time-indexed flight phase and active waypoint for one plan
     semantic_role: representation
-    parent: SpatialStruct
+    parent: SubjectState
     fields:
-      route_in: GeoPath
-      survey: GeoPath
-      survey_area: GeoArea
-      route_out: GeoPath
-
-  FlightMissionPoint:
-    semantic_role: representation
-    parent: AutopilotMissionWaypoint
-    fields:
-      point_type: FlightPlanPointType
-
-  PlannedRoutePoints:
-    description: Embedded set of planner points defining mission-plan route segments
-    semantic_role: representation
-    parent: SpatialStruct
-    fields:
-      start: FlightMissionPoint
-      route_in: list[FlightMissionPoint]
-      route_out: list[FlightMissionPoint]
-      end: FlightMissionPoint
-
-  MilitaryUnitFlightPlan:
-    semantic_role: representation
-    parent: UnitFlightPlan
-    fields:
-      target: FlightMissionPoint
-      
-maps:
-  AIR_ROLE_LABELS:
-    type: map[AirRole, string]
-    value:
-      GROUND: Ground
-      AIR_DEFENSE: Air Defense
-      FIGHTER: Fighter
-      GROUND_ATTACK: Ground Attack
-      ISR: ISR
-      MINE: Mine
-      CARGO: Cargo
-
-  AIR_ROLE_NAMES:
-    type: map[AirRole, string]
-    value:
-      GROUND: Ground
-      AIR_DEFENSE: Air Defense
-      FIGHTER: Fighter
-      GROUND_ATTACK: Ground Attack
-      ISR: ISR
-      MINE: Mine
-      CARGO: Cargo
+      phase: FlightPlanPhase
+      active_waypoint_index: optional int

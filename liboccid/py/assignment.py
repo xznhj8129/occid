@@ -18,7 +18,7 @@ class AssignmentStatus(IntEnum):
 
 class Assignment(OCCIDModel):
     'Deliberate binding of an assignee to a subject under stated authority and constraints'
-    __occid_model_id__: ClassVar[int] = 22
+    __occid_model_id__: ClassVar[int] = 21
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TaskAssignment', 'RoleAssignment', 'FlightAssignment')
@@ -31,7 +31,7 @@ class Assignment(OCCIDModel):
 
 class TaskAssignment(OCCIDModel):
     'Assignment of a Task to an assignee'
-    __occid_model_id__: ClassVar[int] = 330
+    __occid_model_id__: ClassVar[int] = 327
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -45,7 +45,7 @@ class TaskAssignment(OCCIDModel):
 
 class RoleAssignment(OCCIDModel):
     'Assignment of an organizational Role to an actor'
-    __occid_model_id__: ClassVar[int] = 283
+    __occid_model_id__: ClassVar[int] = 280
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -59,7 +59,7 @@ class RoleAssignment(OCCIDModel):
     role: Semantic[OrgRole]
 
 class FlightAssignment(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 111
+    __occid_model_id__: ClassVar[int] = 108
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
