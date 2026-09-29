@@ -22,9 +22,6 @@ models:
     semantic_role: representation
     parent: Identity
     fields:
-      node_uid: UID
-      node_id: IntID(Node)
-      entity_uid: UID
-      entity_id: IntID(Entity)
-      organization_uid: UID
-      organization_id: IntID(Organization)
+      node_uid: ID
+      entity_uid: ID
+      organization_uid: ID

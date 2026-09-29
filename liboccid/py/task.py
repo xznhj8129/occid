@@ -66,12 +66,11 @@ class Task(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Directive'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TaskManeuver', 'TaskEffect', 'TaskInformation', 'TaskTransport')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Task')]
+    uid: Semantic[ID]
     instruction: builtins.str
-    target_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    objective_uid: Semantic[UID] | None = None
+    target_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    objective_uid: Semantic[ID] | None = None
     constraints: list[Semantic[Constraint]]
     preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
@@ -86,12 +85,11 @@ class TaskManeuver(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Task')]
+    uid: Semantic[ID]
     instruction: builtins.str
-    target_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    objective_uid: Semantic[UID] | None = None
+    target_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    objective_uid: Semantic[ID] | None = None
     constraints: list[Semantic[Constraint]]
     preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
@@ -107,12 +105,11 @@ class TaskEffect(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Task')]
+    uid: Semantic[ID]
     instruction: builtins.str
-    target_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    objective_uid: Semantic[UID] | None = None
+    target_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    objective_uid: Semantic[ID] | None = None
     constraints: list[Semantic[Constraint]]
     preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
@@ -128,12 +125,11 @@ class TaskInformation(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Task')]
+    uid: Semantic[ID]
     instruction: builtins.str
-    target_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    objective_uid: Semantic[UID] | None = None
+    target_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    objective_uid: Semantic[ID] | None = None
     constraints: list[Semantic[Constraint]]
     preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None
@@ -149,12 +145,11 @@ class TaskTransport(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Task'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Task')]
+    uid: Semantic[ID]
     instruction: builtins.str
-    target_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    objective_uid: Semantic[UID] | None = None
+    target_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    objective_uid: Semantic[ID] | None = None
     constraints: list[Semantic[Constraint]]
     preconditions: list[Semantic[Condition]] | None = None
     start_time: builtins.float | None = None

@@ -21,7 +21,7 @@ models:
     semantic_role: representation
     parent: TelemetryMessage
     fields:
-      node_uid: UID
+      node_uid: ID
       roles: list[CapabilityRole]
       link_refs: list[string]
       sensor_refs: list[string]

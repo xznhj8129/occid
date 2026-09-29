@@ -21,25 +21,25 @@ class NATOSupplyClass(IntEnum):
 
 class Resource(OCCIDModel):
     'Power, fuel, supply, inventory, payload loadout, capacity, and consumption state.'
-    __occid_model_id__: ClassVar[int] = 274
+    __occid_model_id__: ClassVar[int] = 273
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ResourceHolding', 'InventoryState', 'FuelState', 'PowerSource', 'PowerState', 'ElectricalResourceState')
 
 class ResourceHolding(OCCIDModel):
     'Current quantity of an identified resource definition held by a subject, separated from authorized or required quantity'
-    __occid_model_id__: ClassVar[int] = 276
+    __occid_model_id__: ClassVar[int] = 275
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    resource_definition_uid: Semantic[UID]
+    resource_definition_uid: Semantic[ID]
     on_hand: Semantic[Quantity]
     available: Semantic[Quantity] | None = None
     committed: Semantic[Quantity] | None = None
 
 class InventoryState(OCCIDModel):
     'Current holdings of independently defined resources'
-    __occid_model_id__: ClassVar[int] = 158
+    __occid_model_id__: ClassVar[int] = 157
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Supplies',)
@@ -47,7 +47,7 @@ class InventoryState(OCCIDModel):
 
 class FuelState(OCCIDModel):
     'Current amount and capacity of a consumable fuel resource in an explicitly declared quantity representation'
-    __occid_model_id__: ClassVar[int] = 122
+    __occid_model_id__: ClassVar[int] = 121
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -65,17 +65,17 @@ class Supplies(OCCIDModel):
     fuel: Semantic[FuelState] | None = None
 
 class PowerSource(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 255
+    __occid_model_id__: ClassVar[int] = 254
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    source_uid: Semantic[UID] | None = None
+    source_uid: Semantic[ID] | None = None
     power_type: PowerType
     status: PowerStatus
     remaining_ratio: Semantic[NormalizedRatio] | None = None
 
 class PowerState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 256
+    __occid_model_id__: ClassVar[int] = 255
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -89,7 +89,7 @@ class ElectricalResourceState(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Resource'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    source_uid: Semantic[UID] | None = None
+    source_uid: Semantic[ID] | None = None
     potential: Semantic[Volts] | None = None
     current: Semantic[Amperes] | None = None
     power: Semantic[Watts] | None = None
@@ -102,12 +102,11 @@ class ElectricalResourceState(OCCIDModel):
 
 class ResourceTemplate(OCCIDModel):
     'Identified definition of a resource kind that can be required, authorized, held, consumed, or assigned'
-    __occid_model_id__: ClassVar[int] = 278
+    __occid_model_id__: ClassVar[int] = 277
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Definition'
     __occid_children__: ClassVar[tuple[str, ...]] = ('EquipmentTemplate', 'PersonnelTemplate', 'SupplyTemplate')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ResourceTemplate')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
 
@@ -117,19 +116,17 @@ class EquipmentTemplate(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResourceTemplate'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ResourceTemplate')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
 
 class PersonnelTemplate(OCCIDModel):
     'Template of a personnel category used for strength, staffing, or resource planning'
-    __occid_model_id__: ClassVar[int] = 245
+    __occid_model_id__: ClassVar[int] = 244
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResourceTemplate'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ResourceTemplate')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
 
@@ -139,29 +136,27 @@ class SupplyTemplate(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResourceTemplate'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitarySupplyTemplate',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ResourceTemplate')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
     quantity_unit: QuantityUnit | None = None
 
 class ResourceRequirement(OCCIDModel):
     'Required or authorized quantity of one resource definition'
-    __occid_model_id__: ClassVar[int] = 277
+    __occid_model_id__: ClassVar[int] = 276
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    resource_definition_uid: Semantic[UID]
+    resource_definition_uid: Semantic[ID]
     quantity: Semantic[Quantity]
 
 class MilitarySupplyTemplate(OCCIDModel):
     'Military supply definition classified by NATO-style supply class while retaining the generic resource identity and quantity unit'
-    __occid_model_id__: ClassVar[int] = 209
+    __occid_model_id__: ClassVar[int] = 208
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SupplyTemplate'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('ResourceTemplate')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
     quantity_unit: QuantityUnit | None = None

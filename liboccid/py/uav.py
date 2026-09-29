@@ -15,16 +15,15 @@ class AirRobot(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'AirMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Drone',)
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -46,16 +45,15 @@ class Drone(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'AirRobot'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None

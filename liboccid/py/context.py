@@ -14,42 +14,39 @@ class Context(OCCIDModel):
 
 class OperationalContext(OCCIDModel):
     'Identified operational context with declared reality and temporal extent'
-    __occid_model_id__: ClassVar[int] = 229
+    __occid_model_id__: ClassVar[int] = 228
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Context'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Operation', 'Scenario')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('OperationalContext')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
     reality: Reality
     temporal_extent: Semantic[TimeRange] | None = None
-    member_uids: list[Semantic[UID]]
+    member_uids: list[Semantic[ID]]
 
 class Operation(OCCIDModel):
     'Operational context describing an undertaking conducted by participating actors or organizations'
-    __occid_model_id__: ClassVar[int] = 228
+    __occid_model_id__: ClassVar[int] = 227
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('OperationalContext')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
     reality: Reality
     temporal_extent: Semantic[TimeRange] | None = None
-    member_uids: list[Semantic[UID]]
+    member_uids: list[Semantic[ID]]
 
 class Scenario(OCCIDModel):
     'Operational context used to describe, rehearse, simulate, or replay a bounded situation'
-    __occid_model_id__: ClassVar[int] = 292
+    __occid_model_id__: ClassVar[int] = 291
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'OperationalContext'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('OperationalContext')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[PlainText] | None = None
     reality: Reality
     temporal_extent: Semantic[TimeRange] | None = None
-    member_uids: list[Semantic[UID]]
+    member_uids: list[Semantic[ID]]

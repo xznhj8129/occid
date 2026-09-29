@@ -20,28 +20,27 @@ class MeshtasticPort(IntEnum):
 
 class MeshLink(OCCIDModel):
     'Observed state of a link between two mesh nodes'
-    __occid_model_id__: ClassVar[int] = 191
+    __occid_model_id__: ClassVar[int] = 190
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'LinkState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    link_uid: Semantic[UID] | None = None
+    link_uid: Semantic[ID] | None = None
     condition: LinkCondition | None = None
     connection_status: ConnectionStatus | None = None
     signal: Semantic[SignalQuality] | None = None
     delivery: Semantic[DeliveryQuality] | None = None
     counters: Semantic[LinkCounters] | None = None
-    src_uid: Semantic[UID]
-    dst_uid: Semantic[UID]
+    src_uid: Semantic[ID]
+    dst_uid: Semantic[ID]
     updated_ts: Semantic[Timestamp] | None = None
 
 class MeshNode(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 192
+    __occid_model_id__: ClassVar[int] = 191
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Node'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Node')]
-    entity_uid: Semantic[UID] | None = None
+    uid: Semantic[ID]
+    entity_uid: Semantic[ID] | None = None
     roles: list[CapabilityRole]
     addresses: list[Semantic[NetworkAddress]]
     links: dict[builtins.str, Semantic[Link]]
@@ -54,7 +53,7 @@ class MeshNode(OCCIDModel):
 
 class MeshView(OCCIDModel):
     'Current observed mesh topology and node/link state'
-    __occid_model_id__: ClassVar[int] = 195
+    __occid_model_id__: ClassVar[int] = 194
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Network'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -63,12 +62,12 @@ class MeshView(OCCIDModel):
     links: list[Semantic[MeshLink]]
 
 class MeshtasticMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 196
+    __occid_model_id__: ClassVar[int] = 195
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -83,40 +82,40 @@ class MeshtasticMessage(OCCIDModel):
     metrics: Semantic[MeshReceiveMetrics] | None = None
 
 class MeshReceiveMetrics(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 194
+    __occid_model_id__: ClassVar[int] = 193
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     state: Semantic[LinkState]
 
 class MeshPositionSample(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 193
+    __occid_model_id__: ClassVar[int] = 192
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     state: Semantic[LocationState]
 
 class NodeHeartbeat(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 221
+    __occid_model_id__: ClassVar[int] = 220
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    node_uid: Semantic[UID]
+    node_uid: Semantic[ID]
     last_seen_ts: Semantic[Timestamp]
     node_state: MeshNodeState | None = None
     state: Semantic[LinkState]

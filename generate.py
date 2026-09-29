@@ -89,7 +89,7 @@ def _is_integer_id_list(type_text: str) -> bool:
 
 
 def validate_identity_field_types() -> None:
-    """Enforce OCCID's UID and integer ID naming law."""
+    """Enforce OCCID's identity naming law."""
     violations: list[str] = []
     for path in sorted(SCHEMA_ROOT.rglob("*.schema.yaml")):
         document = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
@@ -104,17 +104,17 @@ def validate_identity_field_types() -> None:
                 type_text = _declared_type(field_spec)
 
                 if field_name == "uid" or field_name.endswith("_uid"):
-                    if type_text != "UID":
+                    if type_text != "ID":
                         violations.append(
-                            f"{path}: {model_name}.{field_name} must be UID, not {type_text}; "
-                            "strings, protocol identifiers, and local references are not OCCID UIDs"
+                            f"{path}: {model_name}.{field_name} must be ID, not {type_text}; "
+                            "strings, protocol identifiers, and local references are not OCCID identities"
                         )
                     continue
 
                 if field_name.endswith("_uids"):
-                    if type_text != "list[UID]":
+                    if type_text != "list[ID]":
                         violations.append(
-                            f"{path}: {model_name}.{field_name} must be list[UID], not {type_text}"
+                            f"{path}: {model_name}.{field_name} must be list[ID], not {type_text}"
                         )
                     continue
 
@@ -129,7 +129,7 @@ def validate_identity_field_types() -> None:
                 if field_name.endswith("_ids") and not _is_integer_id_list(type_text):
                     violations.append(
                         f"{path}: {model_name}.{field_name} must be a list of integer IDs, not {type_text}; "
-                        "use *_uids for UID references or rename non-identity values"
+                        "use *_uids for identity references or rename non-identity values"
                     )
 
     if violations:

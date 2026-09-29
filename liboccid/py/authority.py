@@ -8,7 +8,7 @@ from .common import *
 class ControlLevel(IntEnum):
     NONE = 0
     MONITOR = auto()
-    GUIDE = auto()
+    GIDE = auto()
     FULL = auto()
 
 ### Models
@@ -19,11 +19,10 @@ class Authority(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CommandAuthority', 'Lease')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Authority')]
-    holder_uid: Semantic[UID]
-    granted_by_uid: Semantic[UID] | None = None
-    scope_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    holder_uid: Semantic[ID]
+    granted_by_uid: Semantic[ID] | None = None
+    scope_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
 
 class CommandAuthority(OCCIDModel):
@@ -31,28 +30,26 @@ class CommandAuthority(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Authority')]
-    holder_uid: Semantic[UID]
-    granted_by_uid: Semantic[UID] | None = None
-    scope_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    holder_uid: Semantic[ID]
+    granted_by_uid: Semantic[ID] | None = None
+    scope_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
-    organization_uid: Semantic[UID]
+    organization_uid: Semantic[ID]
     role: Semantic[Role]
 
 class Lease(OCCIDModel):
     'Bounded control right issued under an Authority record'
-    __occid_model_id__: ClassVar[int] = 165
+    __occid_model_id__: ClassVar[int] = 164
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Authority'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AttachmentLease', 'ControlLease')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Authority')]
-    holder_uid: Semantic[UID]
-    granted_by_uid: Semantic[UID] | None = None
-    scope_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    holder_uid: Semantic[ID]
+    granted_by_uid: Semantic[ID] | None = None
+    scope_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
-    asset_uid: Semantic[UID]
+    asset_uid: Semantic[ID]
     bound: Semantic[Condition]
 
 class AttachmentLease(OCCIDModel):
@@ -61,16 +58,15 @@ class AttachmentLease(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Authority')]
-    holder_uid: Semantic[UID]
-    granted_by_uid: Semantic[UID] | None = None
-    scope_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    holder_uid: Semantic[ID]
+    granted_by_uid: Semantic[ID] | None = None
+    scope_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
-    asset_uid: Semantic[UID]
+    asset_uid: Semantic[ID]
     bound: Semantic[Condition]
-    parent_uid: Semantic[UID]
-    attachment_uid: Semantic[UID]
+    parent_uid: Semantic[ID]
+    attachment_uid: Semantic[ID]
 
 class ControlLease(OCCIDModel):
     'Temporary direct control access'
@@ -78,13 +74,12 @@ class ControlLease(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Lease'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Authority')]
-    holder_uid: Semantic[UID]
-    granted_by_uid: Semantic[UID] | None = None
-    scope_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    holder_uid: Semantic[ID]
+    granted_by_uid: Semantic[ID] | None = None
+    scope_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
-    asset_uid: Semantic[UID]
+    asset_uid: Semantic[ID]
     bound: Semantic[Condition]
-    controller: Semantic[UID]
+    controller: Semantic[ID]
     control_level: ControlLevel

@@ -22,11 +22,10 @@ class Assignment(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TaskAssignment', 'RoleAssignment', 'FlightAssignment')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Assignment')]
-    assignee_uid: Semantic[UID]
-    authority_uid: Semantic[UID]
-    assigned_by_uid: Semantic[UID]
+    uid: Semantic[ID]
+    assignee_uid: Semantic[ID]
+    authority_uid: Semantic[ID]
+    assigned_by_uid: Semantic[ID]
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Semantic[Constraint]]
 
@@ -36,29 +35,27 @@ class TaskAssignment(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Assignment')]
-    assignee_uid: Semantic[UID]
-    authority_uid: Semantic[UID]
-    assigned_by_uid: Semantic[UID]
+    uid: Semantic[ID]
+    assignee_uid: Semantic[ID]
+    authority_uid: Semantic[ID]
+    assigned_by_uid: Semantic[ID]
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Semantic[Constraint]]
-    task_uid: Semantic[UID]
+    task_uid: Semantic[ID]
 
 class RoleAssignment(OCCIDModel):
     'Assignment of an organizational Role to an actor'
-    __occid_model_id__: ClassVar[int] = 284
+    __occid_model_id__: ClassVar[int] = 283
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Assignment')]
-    assignee_uid: Semantic[UID]
-    authority_uid: Semantic[UID]
-    assigned_by_uid: Semantic[UID]
+    uid: Semantic[ID]
+    assignee_uid: Semantic[ID]
+    authority_uid: Semantic[ID]
+    assigned_by_uid: Semantic[ID]
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Semantic[Constraint]]
-    organization_uid: Semantic[UID]
+    organization_uid: Semantic[ID]
     role: Semantic[OrgRole]
 
 class FlightAssignment(OCCIDModel):
@@ -66,15 +63,14 @@ class FlightAssignment(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Assignment'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Assignment')]
-    assignee_uid: Semantic[UID]
-    authority_uid: Semantic[UID]
-    assigned_by_uid: Semantic[UID]
+    uid: Semantic[ID]
+    assignee_uid: Semantic[ID]
+    authority_uid: Semantic[ID]
+    assigned_by_uid: Semantic[ID]
     status: AssignmentStatus = AssignmentStatus.PROPOSED
     constraints: list[Semantic[Constraint]]
     num: builtins.int
-    unit_uid: Semantic[UID] | None = None
+    unit_uid: Semantic[ID] | None = None
     callsign: builtins.str | None = None
     objective_assign: builtins.int | None = None
     wave_n: builtins.int = 0

@@ -21,11 +21,10 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      uid: UID
-      id: IntID(Assignment)
-      assignee_uid: UID
-      authority_uid: UID
-      assigned_by_uid: UID
+      uid: ID
+      assignee_uid: ID
+      authority_uid: ID
+      assigned_by_uid: ID
       status: AssignmentStatus = PROPOSED
       constraints: list[Constraint]
 
@@ -34,14 +33,14 @@ models:
     semantic_role: representation
     parent: Assignment
     fields:
-      task_uid: UID
+      task_uid: ID
 
   RoleAssignment:
     description: Assignment of an organizational Role to an actor
     semantic_role: representation
     parent: Assignment
     fields:
-      organization_uid: UID
+      organization_uid: ID
       role: OrgRole
 
   FlightAssignment:
@@ -49,7 +48,7 @@ models:
     parent: Assignment
     fields:
       num: int
-      unit_uid: optional UID
+      unit_uid: optional ID
       callsign: optional string
       objective_assign: optional int
       wave_n: int = 0 #?

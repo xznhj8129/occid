@@ -89,16 +89,15 @@ models:
     parent: Object
 
     fields:
-      uid: UID
-      id: IntID(Entity)
-      node_uids: list[UID]
+      uid: ID
+      node_uids: list[ID]
       name: optional string
       callsign: optional string
       entity_type: optional EntityType
       tags: list[string]
       metadata: map[string, MetadataValue]
       relations: list[DirectedRelationship]
-      side: optional UID
+      side: optional ID
       identity: StandardIdentity
       symbology: optional Symbology
 

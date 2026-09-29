@@ -72,7 +72,7 @@ models:
     semantic_role: concept
     parent: Health
     fields:
-      link_uid: optional UID
+      link_uid: optional ID
       condition: optional LinkCondition
       connection_status: optional ConnectionStatus
       signal: optional SignalQuality

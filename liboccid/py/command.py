@@ -55,16 +55,16 @@ class Command(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Directive'
     __occid_children__: ClassVar[tuple[str, ...]] = ('StateChangeCommand', 'ProcessControlCommand', 'ConfigurationCommand', 'MotionCommand', 'ResourceCommand', 'ExecutionCommand')
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
 
 class StateChangeCommand(OCCIDModel):
     'Change, enable, or disable one declared state property on the target'
-    __occid_model_id__: ClassVar[int] = 309
+    __occid_model_id__: ClassVar[int] = 308
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: StateChangeOperation
     property_name: builtins.str | None = None
@@ -72,11 +72,11 @@ class StateChangeCommand(OCCIDModel):
 
 class ProcessControlCommand(OCCIDModel):
     'Start, stop, pause, resume, or cancel a named process on the target'
-    __occid_model_id__: ClassVar[int] = 258
+    __occid_model_id__: ClassVar[int] = 257
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: ProcessControlOperation
     process_name: builtins.str | None = None
@@ -87,20 +87,20 @@ class ConfigurationCommand(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: ConfigurationOperation
     parameter_name: builtins.str | None = None
     value: Semantic[MetadataValue] | None = None
-    configuration_uid: Semantic[UID] | None = None
+    configuration_uid: Semantic[ID] | None = None
 
 class MotionCommand(OCCIDModel):
     'Direct immediate target motion using a destination, path, or maintained spatial condition'
-    __occid_model_id__: ClassVar[int] = 214
+    __occid_model_id__: ClassVar[int] = 213
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: MotionOperation
     destination: Semantic[GlobalPosition] | None = None
@@ -111,14 +111,14 @@ class MotionCommand(OCCIDModel):
 
 class ResourceCommand(OCCIDModel):
     'Acquire, release, allocate, or transfer a referenced resource'
-    __occid_model_id__: ClassVar[int] = 275
+    __occid_model_id__: ClassVar[int] = 274
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: ResourceOperation
-    resource_uid: Semantic[UID] | None = None
+    resource_uid: Semantic[ID] | None = None
     quantity: builtins.float | None = None
 
 class ExecutionCommand(OCCIDModel):
@@ -127,6 +127,6 @@ class ExecutionCommand(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Command'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    target_uid: Semantic[UID]
+    target_uid: Semantic[ID]
     constraints: list[Semantic[Constraint]]
     operation: ExecutionOperation

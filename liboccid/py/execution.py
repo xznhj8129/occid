@@ -21,10 +21,9 @@ class Execution(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Execution')]
-    assignment_uid: Semantic[UID]
-    executor_uid: Semantic[UID]
+    uid: Semantic[ID]
+    assignment_uid: Semantic[ID]
+    executor_uid: Semantic[ID]
     attempt: builtins.int = 0
     phase: ExecutionPhase = ExecutionPhase.CREATED
     progress: builtins.float | None = None
@@ -40,7 +39,7 @@ class ExecutionStatus(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     phase: ExecutionPhase
     progress: builtins.float | None = None

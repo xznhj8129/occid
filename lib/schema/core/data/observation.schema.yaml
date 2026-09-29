@@ -59,9 +59,8 @@ models:
     semantic_role: concept
     parent: Observation
     fields:
-      uid: UID
-      id: IntID(Track)
-      subject_uid: optional UID
+      uid: ID
+      subject_uid: optional ID
 
   Assessment:
     semantic_role: concept
@@ -83,7 +82,7 @@ models:
     semantic_role: representation
     parent: Detection
     fields:
-      detection_id: IntID(Detection)
+      uid: ID
       label: optional string
       class_index: optional int
       confidence: optional float
@@ -96,9 +95,9 @@ models:
     semantic_role: representation
     parent: Detection
     fields:
-      media_uid: optional UID
-      observer_entity_uid: optional UID
-      sensor_uid: optional UID
+      media_uid: optional ID
+      observer_entity_uid: optional ID
+      sensor_uid: optional ID
       timestamp_us: optional int
       detections: list[VisionDetection]
 
@@ -106,16 +105,15 @@ models:
     semantic_role: representation
     parent: Observation
     fields:
-      uid: UID
-      id: IntID(Observation)
-      side: optional UID
+      uid: ID
+      side: optional ID
       identity: StandardIdentity
       symbology: optional Symbology
-      track_uid: optional UID
-      subject_uid: optional UID
-      observer_entity_uid: optional UID
-      sensor_uid: optional UID
-      evidence_media_uids: list[UID]
+      track_uid: optional ID
+      subject_uid: optional ID
+      observer_entity_uid: optional ID
+      sensor_uid: optional ID
+      evidence_media_uids: list[ID]
       obs_ts: Timestamp
       observation_kind: optional ObservationKind
       category: optional IntelCategory
@@ -142,7 +140,7 @@ models:
     semantic_role: representation
     parent: Observation
     fields:
-      track_uid: UID
+      track_uid: ID
       track_state: optional TrackState
       updated_ts: Timestamp
       confidence: optional ConfidenceLevel

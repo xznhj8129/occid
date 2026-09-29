@@ -47,7 +47,7 @@ models:
     parent: SensorState
     fields:
       locked: optional bool
-      target_uid: optional UID
+      target_uid: optional ID
       angular_error: optional LocalDirection
       search_box_size: optional int
       detections: optional VisionDetectionFrame

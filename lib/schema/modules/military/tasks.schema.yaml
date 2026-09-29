@@ -36,7 +36,7 @@ models:
     semantic_role: representation
     parent: Struct
     fields:
-      task_uid: UID
+      task_uid: ID
       combat_task: optional TaskCombat
       target_category: optional TargetCategory
       target_point: optional GlobalPosition

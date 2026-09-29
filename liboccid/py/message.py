@@ -60,12 +60,12 @@ class ConflictPolicy(IntEnum):
 
 class Message(OCCIDModel):
     'Transmitted envelope plus payload'
-    __occid_model_id__: ClassVar[int] = 197
+    __occid_model_id__: ClassVar[int] = 196
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshtasticMessage', 'CommandMessage', 'HumanTextMessage', 'ObservationMessage', 'Delta', 'ResponseMessage', 'TelemetryMessage')
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -76,60 +76,60 @@ class Delta(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    entity_uid: Semantic[UID]
-    record: Semantic[UID]
+    entity_uid: Semantic[ID]
+    record: Semantic[ID]
     changed_fields: dict[builtins.str, Semantic[State]]
     updated_ts: Semantic[Timestamp]
 
 class ResponseMessage(OCCIDModel):
     'Message whose payload acknowledges, rejects, reports delivery, returns data, or reports errors'
-    __occid_model_id__: ClassVar[int] = 279
+    __occid_model_id__: ClassVar[int] = 278
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('DeliveryReceipt', 'MessageTransferResult')
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: Semantic[UID]
+    response_to: Semantic[ID]
 
 class DeliveryReceipt(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 76
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResponseMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: Semantic[UID]
-    node_uid: Semantic[UID]
+    response_to: Semantic[ID]
+    node_uid: Semantic[ID]
     delivery_state: DeliveryState
     seen_ts: Semantic[Timestamp] | None = None
     exec_ts: Semantic[Timestamp] | None = None
     error_code: builtins.str | None = None
 
 class MessageTransferResult(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 198
+    __occid_model_id__: ClassVar[int] = 197
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ResponseMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     seq_reply: builtins.int | None = None
-    response_to: Semantic[UID]
+    response_to: Semantic[ID]
     target_count: builtins.int = 0
     bytes_sent: builtins.int = 0
     delivery_state: DeliveryState | None = None

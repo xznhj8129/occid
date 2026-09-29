@@ -76,7 +76,7 @@ models:
       waveform: optional Waveform
       frequency: optional FrequencyRange
       channel_plan: list[ChannelSpec]
-      active_channel_uid: optional UID
+      active_channel_uid: optional ID
       crypto_types: list[CryptoType]
       crypto_profile: optional CryptoProfile
       lora: optional LoRaProfile

@@ -46,8 +46,7 @@ models:
     parent: Object
 
     fields:
-      uid: UID
-      id: IntID(Location)
+      uid: ID
       name: optional string
       symbology: optional Symbology
 

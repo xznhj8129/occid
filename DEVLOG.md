@@ -1,5 +1,13 @@
 # Development log
 
+## 2026-09-29 - Contextual ID identity
+
+- OCCID identity fields are `uid`, `*_uid`, and `*_uids`, typed `ID`. `ID` is the abstract OCCID identity; its concrete representation is contextual. `UID` remains the UUID-backed representation used by the field manual.
+- Removed every `IntID(...)` field: object handles `id: IntID(...)`, `IdentityBootstrap.*_id`, `Fires.effector_id`, `VisionDetection.detection_id`, `TargetSet.id`, and the `target_set_id` references. Replacements are identity fields (`effector_uid`, `uid`, `target_set_uid`); `IdentityBootstrap` keeps its three `*_uid` bindings. The `IntID` declaration remains in `struct.schema.yaml` but no schema field uses it.
+- Updated the compiler identity naming law in `generate.py`: `*_uid` must be `ID`, `*_uids` must be `list[ID]`.
+- Updated `example_usage.py` to the `ID` doctrine. One `IdentityStore` owns UID minting, assigns each identity's incrementing IntID in one assignment space, and holds the lookup maps; the walkthrough routes every identity through it and its compact wire demonstrates `intid(uid)` / `uid(intid)` translation. It executes. Regenerated `occid.yaml`, Python/TypeScript bindings, and contract markers.
+- `README.md`, `docs/development.md`, `AGENTS.md`, `idl_spec.md`, and the compiler/generator IntID syntax support are not yet updated to the contextual-ID wording.
+
 ## 2026-09-21 - Remove the graphical pseudo-language; display operational objects directly
 
 - Removed the authored `representation` package: `Representation`, `IdentifiedRepresentation`, `Graphic` and its descendants, `GraphicStyle` and style values, `AnnotationAnchor`, `RepresentationSource`, `Layer`, `LayerView`, `MapView`, `MapGrid`, and `TacticalGraphic`. Maps, layers, grids, saved views, and renderer appearance are presentation/application concerns, not shared operational meaning.

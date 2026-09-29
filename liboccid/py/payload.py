@@ -67,19 +67,19 @@ class PayloadState(IntEnum):
 
 class Payload(OCCIDModel):
     'Object-carried sensor, effector, cargo, or other mounted payload'
-    __occid_model_id__: ClassVar[int] = 240
+    __occid_model_id__: ClassVar[int] = 239
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Item'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SensorPayload', 'EffectsPayload')
     capabilities: list[Semantic[Capability]] | None = None
 
 class SensorPayload(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 295
+    __occid_model_id__: ClassVar[int] = 294
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Payload'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImageSensor', 'RFSensor')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
+    uid: Semantic[ID]
     name: builtins.str
     model: builtins.str
     type: SensorType
@@ -98,7 +98,7 @@ class SensorPayload(OCCIDModel):
     zoom_range: Semantic[NumericRange] | None = None
 
 class MeasurementQuality(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 187
+    __occid_model_id__: ClassVar[int] = 186
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'MetadataValue'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -111,12 +111,12 @@ class MeasurementQuality(OCCIDModel):
     range_err_m: builtins.float | None = None
 
 class ImageSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 151
+    __occid_model_id__: ClassVar[int] = 150
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
+    uid: Semantic[ID]
     name: builtins.str
     model: builtins.str
     type: SensorType
@@ -138,12 +138,12 @@ class ImageSensor(OCCIDModel):
     mount_attitude: Semantic[EulerAngles] | None = None
 
 class RFSensor(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 264
+    __occid_model_id__: ClassVar[int] = 263
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorPayload'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
+    uid: Semantic[ID]
     name: builtins.str
     model: builtins.str
     type: SensorType
@@ -166,7 +166,7 @@ class RFSensor(OCCIDModel):
 
 class SensorFieldOfView(OCCIDModel):
     'Sensor field-of-view angular limits in degrees'
-    __occid_model_id__: ClassVar[int] = 294
+    __occid_model_id__: ClassVar[int] = 293
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -174,7 +174,7 @@ class SensorFieldOfView(OCCIDModel):
     vertical_deg: Semantic[NumericRange] | None = None
 
 class PayloadAllocation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 241
+    __occid_model_id__: ClassVar[int] = 240
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -182,7 +182,7 @@ class PayloadAllocation(OCCIDModel):
     qty: builtins.int = 0
 
 class PayloadPlan(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 243
+    __occid_model_id__: ClassVar[int] = 242
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -192,7 +192,7 @@ class PayloadPlan(OCCIDModel):
     notes: builtins.str | None = None
 
 class PayloadMount(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 242
+    __occid_model_id__: ClassVar[int] = 241
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

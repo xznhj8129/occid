@@ -20,10 +20,9 @@ models:
     semantic_role: concept
     parent: Data
     fields:
-      uid: UID
-      id: IntID(Execution)
-      assignment_uid: UID
-      executor_uid: UID
+      uid: ID
+      assignment_uid: ID
+      executor_uid: ID
       attempt: int = 0
       phase: ExecutionPhase = CREATED
       progress: optional float

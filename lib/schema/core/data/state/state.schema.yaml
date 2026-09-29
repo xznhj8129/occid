@@ -22,7 +22,7 @@ models:
     semantic_role: concept
     parent: State
     fields:
-      subject_uid: UID
+      subject_uid: ID
       timestamp: Timestamp
 
   EntityState:

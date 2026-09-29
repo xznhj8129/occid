@@ -23,8 +23,8 @@ models:
     semantic_role: representation
     parent: LinkState
     fields:
-      src_uid: UID
-      dst_uid: UID
+      src_uid: ID
+      dst_uid: ID
       updated_ts: optional Timestamp
 
   MeshNode:
@@ -76,7 +76,7 @@ models:
     semantic_role: representation
     parent: TelemetryMessage
     fields:
-      node_uid: UID
+      node_uid: ID
       last_seen_ts: Timestamp
       node_state: optional MeshNodeState
       state: LinkState

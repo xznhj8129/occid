@@ -27,20 +27,20 @@ class GimbalState(IntEnum):
 
 class SensorState(OCCIDModel):
     'Time-indexed readings, readiness, calibration, and availability of an identified sensor'
-    __occid_model_id__: ClassVar[int] = 296
+    __occid_model_id__: ClassVar[int] = 295
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ImagingSensorState', 'TrackerState', 'FlightSensorConfiguration')
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
 
 class ImagingSensorState(OCCIDModel):
     'Current operating and pointing state of an imaging sensor'
-    __occid_model_id__: ClassVar[int] = 152
+    __occid_model_id__: ClassVar[int] = 151
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     run_state: SensorRunState
     mode: SensorMode | None = None
@@ -53,21 +53,21 @@ class TrackerState(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     locked: builtins.bool | None = None
-    target_uid: Semantic[UID] | None = None
+    target_uid: Semantic[ID] | None = None
     angular_error: Semantic[LocalDirection] | None = None
     search_box_size: builtins.int | None = None
     detections: Semantic[VisionDetectionFrame] | None = None
 
 class FlightSensorConfiguration(OCCIDModel):
     'Selected onboard flight/navigation sensor hardware as reported by a flight controller; native hardware names remain opaque identifiers'
-    __occid_model_id__: ClassVar[int] = 116
+    __occid_model_id__: ClassVar[int] = 115
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SensorState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     accelerometer: builtins.str | None = None
     barometer: builtins.str | None = None

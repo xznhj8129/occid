@@ -26,11 +26,6 @@ enums:
   - AIR_DROP
   - RECOVERY
 
-  FlightType:
-  - SURVEY_POINT = 0
-  - SURVEY_AREA
-  - ONE_WAY
-
   OrbitPattern:
   - CIRCLE = 0
   - RACETRACK
@@ -46,12 +41,8 @@ enums:
   - POI
   - ROI
   - SURVEY
-
-  PlannerPointCategory:
-  - ROUTE_IN = 0
-  - SURVEY
-  - SURVEY_AREA
-  - ROUTE_OUT
+  - INGRESS
+  - EGRESS
 
   AirFormationXY:
   - NONE = 0
@@ -92,6 +83,16 @@ enums:
 
 models:
 
+  LoiterOrbit:
+    description: Embedded orbit geometry and timing value
+    semantic_role: representation
+    parent: SpatialStruct
+    fields:
+      orbit_direction_ccw: bool
+      orbit_radius_m: int
+      loiter_time_s: int
+      pattern: OrbitPattern
+      
   AirPlan:
     description: Plan applicable to aerial operations and flight
     semantic_role: concept
@@ -102,7 +103,8 @@ models:
     parent: AirPlan
     fields:
       plan_phase: FlightPlanPhase
-      flight_level: optional FlightLevelBand
+      flight_level: NumericRange
+      alt_sep_m: float
       alt_frame: optional AltitudeDatum
       h_sep_m: optional float
       delay_s: optional float
@@ -113,7 +115,6 @@ models:
   UnitFlightPlan:
     semantic_role: representation
     parent: AirPlan
-
     fields:
       unit_num: int
       callsign: string
@@ -131,30 +132,11 @@ models:
     parent: AirPlan
     description: Saved operator mission plan - the planner inputs, restorable for editing
     fields:
-      flight_type: FlightType = SURVEY_POINT #??????????
       air_action: AirPlanAction = FLY
       manual: bool = false
       points: PlannedRoutePoints
       config: map[string, float] #??????????
       saved_ts: optional Timestamp
-
-  FlightLevelBand:
-    description: Embedded flight-level band value used by plans rather than an independently identified control reference
-    semantic_role: representation
-    parent: Struct
-    fields:
-      altitude_range_m: NumericRange
-      alt_sep_m: float
-
-  LoiterOrbit:
-    description: Embedded orbit geometry and timing value
-    semantic_role: representation
-    parent: SpatialStruct
-    fields:
-      orbit_direction_ccw: bool
-      orbit_radius_m: int
-      loiter_time_s: int
-      pattern: OrbitPattern
 
   MissionRouteGeometry: # too general name
     description: Embedded route geometry used by a mission plan
@@ -171,7 +153,6 @@ models:
     parent: AutopilotMissionWaypoint
     fields:
       point_type: FlightPlanPointType
-      category: PlannerPointCategory
 
   PlannedRoutePoints:
     description: Embedded set of planner points defining mission-plan route segments

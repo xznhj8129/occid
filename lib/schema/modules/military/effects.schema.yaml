@@ -149,7 +149,7 @@ models:
     parent: Struct
     fields:
       time_usec: int
-      id: IntID(TargetSet)
+      uid: ID
       name: string
 
   TargetSetCoord:
@@ -185,7 +185,7 @@ models:
       time_usec: int
       time_impact_usec: int
       target_position: GlobalPosition
-      effector_id: IntID(Entity)
+      effector_uid: ID
       sequence: int
       cep_expected_m: float
 
@@ -207,7 +207,7 @@ models:
       detected_first_usec: int
       valid_until_usec: int
       kinematics: TargetKinematics
-      target_set_id: IntID(TargetSet)
+      target_set_uid: ID
       target_name: string
       match_media_url: string
       confidence_score: float
@@ -221,7 +221,7 @@ models:
     fields:
       time_usec: int
       kinematics: TargetKinematics
-      target_set_id: IntID(TargetSet)
+      target_set_uid: ID
       target_name: string
       authorization: list[int]
       destruction_pct: int

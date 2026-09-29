@@ -21,9 +21,8 @@ models:
     semantic_role: concept
     parent: Communication
     fields:
-      uid: UID
-      id: IntID(Node)
-      entity_uid: optional UID
+      uid: ID
+      entity_uid: optional ID
       roles: list[CapabilityRole]
       addresses: list[NetworkAddress]
       links: map[string, Link]

@@ -6,12 +6,12 @@ as code in one small operational scenario.
 
 Identity rule:
 
-    UID = exact 16-byte OCCID identity value; this example allocates it with UUIDv4
-    ID  = sequential integer scoped to its declared IntID namespace/family
+    ID = OCCID identity; its concrete representation is contextual. One
+    IdentityStore mints every UUIDv4-backed UID and assigns that identity's
+    incrementing compact IntID. Wires translate with `intid` and resolve
+    with `uid`.
 
-Entity 38, Track 38, and Task 38 are unrelated local IDs because they belong to
-different IntID namespaces. Their UIDs are globally unambiguous. Durable
-cross-object references use UIDs, never IDs.
+Cross-object references use the identity fields (`*_uid`, `*_uids`).
 
 The scenario walks through identities, ORBAT organizations, communications,
 media production, external protocol mapping, authority, formation tasking,
@@ -25,7 +25,7 @@ import struct
 import time
 import uuid
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
@@ -65,6 +65,7 @@ from occid import (
     InformationIntent,
     InertialReferenceFrame,
     IntelCategory,
+    IntID,
     IsrObservation,
     Link,
     LinkDataType,
@@ -128,6 +129,7 @@ from occid import (
     VelocityVector,
     Version,
     WeatherLimits,
+    decode_model,
     is_a,
 )
 
@@ -174,32 +176,39 @@ MAVLINK_GLOBAL_POSITION_INT_CRC_EXTRA = 104
 
 
 # ---------------------------------------------------------------------------
-# UID globally, ID inside an IntID namespace/family
+# Identity store: one identity per object, compact IntID handles for wires
 # ---------------------------------------------------------------------------
 
 
-def new_uid() -> UID:
-    return UID(uuid.uuid4().bytes)
+class IdentityStore:
+    """Owns UID creation and the compact IntID assignment for every identity.
+
+    Every identity is minted here exactly once. The store assigns the next
+    incrementing IntID and keeps both lookup maps, so a wire can translate a
+    UID with ``intid`` and resolve it back with ``uid``.
+    """
+
+    def __init__(self) -> None:
+        self._next = 1
+        self._intid_by_uid: dict[bytes, int] = {}
+        self._uid_by_intid: dict[int, bytes] = {}
+
+    def new_uid(self) -> UID:
+        uid = UID(root=uuid.uuid4().bytes)
+        self._intid_by_uid[bytes(uid.root)] = self._next
+        self._uid_by_intid[self._next] = bytes(uid.root)
+        self._next += 1
+        return uid
+
+    def intid(self, uid: UID) -> IntID:
+        return IntID(root=self._intid_by_uid[bytes(uid.root)])
+
+    def uid(self, intid: IntID) -> UID:
+        return UID(root=self._uid_by_intid[intid.root])
 
 
 def uid_str(uid: UID) -> str:
     return str(UUID(bytes=uid.root))
-
-
-def local_id(value) -> int:
-    return int(value.root)
-
-
-@dataclass
-class ClassIDRegistry:
-    """Small human IDs have one independent sequence per IntID namespace."""
-
-    next_id: dict[str, int] = field(default_factory=dict)
-
-    def allocate(self, object_class: str) -> int:
-        value = self.next_id.get(object_class, 1)
-        self.next_id[object_class] = value + 1
-        return value
 
 
 # ---------------------------------------------------------------------------
@@ -386,54 +395,25 @@ def _print_org_branches(org, members: dict[bytes, object], prefix: str) -> None:
 
 
 def main() -> None:
-    # ID allocation follows the namespace declared by IntID(...). Group, Unit,
-    # and OrbatOrg therefore share Organization IDs, Person and Drone share
-    # Entity IDs, while Track and Task have independent sequences.
-    registry = ClassIDRegistry(
-        next_id={
-            "Side": 1,
-            "Organization": 2,
-            "Entity": 37,
-            "Node": 5,
-            "MediaItem": 1,
-            "Location": 1,
-            "Track": 38,
-            "Observation": 1,
-            "Authority": 1,
-            "Objective": 1,
-            "Task": 38,
-            "Assignment": 1,
-            "Plan": 1,
-            "Execution": 1
-        }
-    )
-
-    # Allocate stable identities before constructing objects that refer to one
-    # another. This is ordinary OCCID identity, not a separate bootstrap model.
-    side_uid = new_uid()
-    side_id = registry.allocate("Side")
-    company_uid = new_uid()
-    company_id = registry.allocate("Organization")
-    platoon_uid = new_uid()
-    platoon_id = registry.allocate("Organization")
-    section_uid = new_uid()
-    section_id = registry.allocate("Organization")
-    operator_uid = new_uid()
-    operator_id = registry.allocate("Entity")
-    uav_uid = new_uid()
-    uav_id = registry.allocate("Entity")
-    imaging_sensor_uid = new_uid()
-    hq_node_uid = new_uid()
-    hq_node_id = registry.allocate("Node")
-    uav_node_uid = new_uid()
-    uav_node_id = registry.allocate("Node")
+    # One assignment store owns every identity: it mints the UUIDv4-backed UID
+    # and assigns that identity's incrementing compact IntID. Wires translate
+    # with ids.intid(uid) and resolve back with ids.uid(intid).
+    ids = IdentityStore()
+    side_uid = ids.new_uid()
+    company_uid = ids.new_uid()
+    platoon_uid = ids.new_uid()
+    section_uid = ids.new_uid()
+    operator_uid = ids.new_uid()
+    uav_uid = ids.new_uid()
+    imaging_sensor_uid = ids.new_uid()
+    hq_node_uid = ids.new_uid()
+    uav_node_uid = ids.new_uid()
 
     # -----------------------------------------------------------------------
     # 1. Entities and communications endpoints
     # -----------------------------------------------------------------------
     operator = Person(
         uid=operator_uid,
-        id=operator_id,
         node_uids=[hq_node_uid],
         name="Mission Operator",
         callsign="FROG-OPS",
@@ -455,7 +435,6 @@ def main() -> None:
             )
         ],
         uid=uav_uid,
-        id=uav_id,
         node_uids=[uav_node_uid],
         name="Frog UAV 38",
         callsign="FROG-38",
@@ -516,8 +495,7 @@ def main() -> None:
     )
 
     live_video = LiveVideoStream(
-        uid=new_uid(),
-        id=registry.allocate("MediaItem"),
+        uid=ids.new_uid(),
         path=NetworkAddress(
             kind=AddressKind.URI,
             value="rtsp://10.42.0.38/live/eo",
@@ -536,7 +514,6 @@ def main() -> None:
 
     hq_node = Node(
         uid=hq_node_uid,
-        id=hq_node_id,
         entity_uid=operator.uid,
         roles=[CapabilityRole.CONTROLLER, CapabilityRole.GATEWAY],
         addresses=[hq_address],
@@ -555,7 +532,6 @@ def main() -> None:
 
     uav_node = Node(
         uid=uav_node_uid,
-        id=uav_node_id,
         entity_uid=uav.uid,
         roles=[CapabilityRole.SENSOR, CapabilityRole.EFFECTOR, CapabilityRole.RELAY],
         addresses=[uav_address],
@@ -576,11 +552,10 @@ def main() -> None:
     # 2. Organization and side
     # -----------------------------------------------------------------------
     # A Side is a canonical operational grouping. Entity and Organization
-    # membership reference it by UID; relative friend/hostile identity remains
+    # membership reference it by ID; relative friend/hostile identity remains
     # a separate StandardIdentity attribute rather than a property of the side.
     side = Side(
         uid=side_uid,
-        id=side_id,
         name="Frog Task Force",
     )
 
@@ -591,7 +566,6 @@ def main() -> None:
     # make the formation meaningful for tasking.
     company = OrbatOrg(
         uid=company_uid,
-        id=company_id,
         name="1st Robotic Company",
         unit_code="1ROB",
         callsign="ROBOT-6",
@@ -610,7 +584,6 @@ def main() -> None:
 
     platoon = OrbatOrg(
         uid=platoon_uid,
-        id=platoon_id,
         name="UAV Platoon Alpha",
         unit_code="UAV-PLT-A",
         callsign="ALPHA",
@@ -629,7 +602,6 @@ def main() -> None:
 
     section = OrbatOrg(
         uid=section_uid,
-        id=section_id,
         name="UAV Section 1",
         unit_code="UAV-SEC-1",
         callsign="FROG-UAS",
@@ -677,8 +649,7 @@ def main() -> None:
     # an ordinary Entity; the Track and its observations point at that subject
     # instead of inventing a second identity for the same thing.
     contact = Entity(
-        uid=new_uid(),
-        id=registry.allocate("Entity"),
+        uid=ids.new_uid(),
         node_uids=[],
         name="Route 6 contact",
         callsign="CONTACT-1",
@@ -695,15 +666,13 @@ def main() -> None:
 
     # Track is maintained correlation state for the observed subject.
     track = Track(
-        uid=new_uid(),
-        id=registry.allocate("Track"),
+        uid=ids.new_uid(),
         subject_uid=contact.uid,
     )
 
     # IsrObservation is time-indexed evidence about that subject.
     source_observation = IsrObservation(
-        uid=new_uid(),
-        id=registry.allocate("Observation"),
+        uid=ids.new_uid(),
         side=side_uid,
         identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
@@ -763,8 +732,7 @@ def main() -> None:
     # 4. Organizational authority
     # -----------------------------------------------------------------------
     command_authority = CommandAuthority(
-        uid=new_uid(),
-        id=registry.allocate("Authority"),
+        uid=ids.new_uid(),
         holder_uid=operator.uid,
         granted_by_uid=company.uid,
         scope_uids=[section.uid, uav.uid],
@@ -777,11 +745,10 @@ def main() -> None:
     # 5. Objective -> Task -> Assignment -> Plan
     # -----------------------------------------------------------------------
     # The overwatch point is ordinary operational spatial data. It is referenced
-    # by UID like any other object; no graphic or display object is created for
+    # by ID like any other object; no graphic or display object is created for
     # it and no second identity is invented.
     overwatch = Mark(
-        uid=new_uid(),
-        id=registry.allocate("Location"),
+        uid=ids.new_uid(),
         name="Overwatch FROG",
         position=GlobalPosition(
             lat=reported_position.lat + 0.0015,
@@ -792,8 +759,7 @@ def main() -> None:
     )
 
     objective = Objective(
-        uid=new_uid(),
-        id=registry.allocate("Objective"),
+        uid=ids.new_uid(),
         name="Inspect reported contact",
         intent="Determine the current status of the reported Route 6 contact.",
         desired_state="The contact has been inspected and the track is updated.",
@@ -806,8 +772,7 @@ def main() -> None:
     )
 
     task = TaskInformation(
-        uid=new_uid(),
-        id=registry.allocate("Task"),
+        uid=ids.new_uid(),
         instruction="Move to Overwatch FROG, inspect the contact, and update its status.",
         intent=InformationIntent.OBSERVE,
         target_uids=[track.uid],
@@ -823,8 +788,7 @@ def main() -> None:
     # Tasking binds to the formation in the ORBAT, not to a single platform. The
     # platform that physically executes remains a separate Execution fact.
     assignment = TaskAssignment(
-        uid=new_uid(),
-        id=registry.allocate("Assignment"),
+        uid=ids.new_uid(),
         assignee_uid=section.uid,
         authority_uid=command_authority.uid,
         assigned_by_uid=operator.uid,
@@ -834,8 +798,7 @@ def main() -> None:
     )
 
     plan = OperationalPlan(
-        uid=new_uid(),
-        id=registry.allocate("Plan"),
+        uid=ids.new_uid(),
         name="Inspect Route 6 contact",
         objective_uids=[objective.uid],
         task_uids=[task.uid],
@@ -942,8 +905,7 @@ def main() -> None:
     )
 
     first_spot = IsrObservation(
-        uid=new_uid(),
-        id=registry.allocate("Observation"),
+        uid=ids.new_uid(),
         side=side_uid,
         identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
@@ -976,8 +938,7 @@ def main() -> None:
     )
 
     tracking_observation = IsrObservation(
-        uid=new_uid(),
-        id=registry.allocate("Observation"),
+        uid=ids.new_uid(),
         side=side_uid,
         identity=StandardIdentity.HOSTILE,
         track_uid=track.uid,
@@ -1015,8 +976,7 @@ def main() -> None:
     # 10. Execution is the occurrence itself
     # -----------------------------------------------------------------------
     execution = Execution(
-        uid=new_uid(),
-        id=registry.allocate("Execution"),
+        uid=ids.new_uid(),
         assignment_uid=assignment.uid,
         executor_uid=uav_node.uid,
         attempt=1,
@@ -1045,42 +1005,41 @@ def main() -> None:
     # -----------------------------------------------------------------------
     # Human-readable walkthrough summary
     # -----------------------------------------------------------------------
-    print("1. UID and IntID namespaces")
-    print(f"   Entity {local_id(uav.id):>2}: UID {uid_str(uav.uid)}")
-    print(f"   Track  {local_id(track.id):>2}: UID {uid_str(track.uid)}")
-    print(f"   Task   {local_id(task.id):>2}: UID {uid_str(task.uid)}")
-    print("   Equal local IDs are valid across different IntID namespaces.")
+    print("1. Contextual OCCID identity")
+    print(f"   Entity: {uid_str(uav.uid)}")
+    print(f"   Track:  {uid_str(track.uid)}")
+    print(f"   Task:   {uid_str(task.uid)}")
+    print("   Every object has one OCCID ID; one IdentityStore owns each UID and its IntID handle.")
 
     print("\n2. Organization and side")
     print_org_chart(company, orbat_members, indent="   ")
     print(f"   Organization states recorded: {len(org_states)}")
-    print(f"   Side {local_id(side.id)}: {side.name}")
+    print(f"   Side: {side.name} -> {uid_str(side.uid)}")
 
     print("\n3. Communications")
-    print(f"   HQ Node {local_id(hq_node.id)}:  {uid_str(hq_node.uid)} @ {hq_node.addresses[0].value}")
-    print(f"   UAV Node {local_id(uav_node.id)}: {uid_str(uav_node.uid)} @ {uav_node.addresses[0].value}")
+    print(f"   HQ Node:  {uid_str(hq_node.uid)} @ {hq_node.addresses[0].value}")
+    print(f"   UAV Node: {uid_str(uav_node.uid)} @ {uav_node.addresses[0].value}")
 
     print("\n4. External identity mapping")
     print(
-        f"   CoT uid {cot.uid} -> Track {local_id(track.id)} / "
-        f"{uid_str(external_identity_map[f'cot.uid:{cot.uid}'])}"
+        f"   CoT uid {cot.uid} -> {uid_str(external_identity_map[f'cot.uid:{cot.uid}'])}"
     )
     print(
-        f"   MAVLink {mavlink.system_id}:{mavlink.component_id} -> Entity {local_id(uav.id)} / "
+        f"   MAVLink {mavlink.system_id}:{mavlink.component_id} -> "
         f"{uid_str(external_identity_map[f'mavlink:{mavlink.system_id}:{mavlink.component_id}'])}"
     )
     print(f"   Initial UAV subject: {uid_str(initial_uav_state.subject_uid)}")
 
     print("\n5. Organizational authority")
-    print(f"   Authority {local_id(command_authority.id)}: {uid_str(command_authority.uid)}")
+    print(f"   Authority: {uid_str(command_authority.uid)}")
     print(f"   Organization UID: {uid_str(command_authority.organization_uid)}")
     print(f"   Holder UID:       {uid_str(command_authority.holder_uid)}")
 
     print("\n6. Control graph")
-    print(f"   Objective {local_id(objective.id)}:  {uid_str(objective.uid)}")
-    print(f"   Task {local_id(task.id)}:       {uid_str(task.uid)}")
-    print(f"   Assignment {local_id(assignment.id)}: {uid_str(assignment.uid)}")
-    print(f"   Plan {local_id(plan.id)}:       {uid_str(plan.uid)}")
+    print(f"   Objective:  {uid_str(objective.uid)}")
+    print(f"   Task:       {uid_str(task.uid)}")
+    print(f"   Assignment: {uid_str(assignment.uid)}")
+    print(f"   Plan:       {uid_str(plan.uid)}")
     print(f"   Tasked unit:      {section.name} -> {uid_str(assignment.assignee_uid)}")
     print(f"   Overwatch Mark:   {overwatch.name} -> {uid_str(overwatch.uid)}")
     print(f"   Executing entity: {uav.name} -> {uid_str(uav.uid)}")
@@ -1103,24 +1062,46 @@ def main() -> None:
         f"{mavlink_moving.latitude_deg:.6f}, {mavlink_moving.longitude_deg:.6f}"
     )
     print(f"   OCCID subject:    {uid_str(uav_state.subject_uid)}")
-    print(f"   Telemetry route:  Node {local_id(uav_node.id)} -> Node {local_id(hq_node.id)}")
+    print(f"   Telemetry route:  Node {uid_str(uav_node.uid)} -> Node {uid_str(hq_node.uid)}")
 
     print("\n10. Observation and tracking")
-    print(f"   Observation {local_id(first_spot.id)}: {first_spot.observation_kind.name}")
-    print(f"   Observation {local_id(tracking_observation.id)}: {tracking_observation.observation_kind.name}")
-    print(f"   Track {local_id(track.id)}: {track_update.track_state.name}, {track_update.confidence.name}")
+    print(f"   Observation: {first_spot.observation_kind.name}")
+    print(f"   Observation: {tracking_observation.observation_kind.name}")
+    print(f"   Track: {track_update.track_state.name}, {track_update.confidence.name}")
     print(f"   Evidence count: {len(track_observations)}")
     print(
-        f"   Subject chain: observation -> Track {local_id(track.id)} -> "
-        f"Entity {local_id(contact.id)} -> Side {local_id(side.id)}"
+        f"   Subject chain: observation -> Track {uid_str(track.uid)} -> "
+        f"Entity {uid_str(contact.uid)} -> Side {uid_str(side.uid)}"
     )
 
     print("\n11. Execution occurrence")
-    print(f"   Execution {local_id(execution.id)}: {uid_str(execution.uid)}")
+    print(f"   Execution: {uid_str(execution.uid)}")
     print(f"   Assignment UID: {uid_str(execution.assignment_uid)}")
     print(f"   Phase: {execution.phase.name}, progress {execution.progress:.0%}")
 
     print("\n12. Compact OCCID wire")
+    alias_telemetry = UAVTelemetryMessage(
+        src=ids.intid(uav_node.uid),
+        dst=ids.intid(hq_node.uid),
+        ts=timestamp(),
+        priority=MessagePriority.ROUTINE,
+        seq=2,
+        state=uav_state.model_copy(update={"subject_uid": ids.intid(uav.uid)}),
+    )
+    alias_bytes = alias_telemetry.encode()
+    alias_decoded = decode_model(alias_bytes)
+    print(
+        f"   Node alias {ids.intid(uav_node.uid).root} -> "
+        f"{uid_str(ids.uid(alias_decoded.src))}"
+    )
+    print(
+        f"   Entity alias {ids.intid(uav.uid).root} -> "
+        f"{uid_str(ids.uid(alias_decoded.state.subject_uid))}"
+    )
+    print(
+        f"   uav_telemetry uid-backed {len(wire_payloads['uav_telemetry'])} bytes, "
+        f"alias-backed {len(alias_bytes)} bytes"
+    )
     for name, payload in wire_payloads.items():
         print(f"   {name:20s} {len(payload):4d} bytes  {payload.hex()}")
 

@@ -7,24 +7,24 @@ from .common import *
 
 class ObservationMessage(OCCIDModel):
     'Message whose payload reports external objects, events, environment, or intelligence'
-    __occid_model_id__: ClassVar[int] = 227
+    __occid_model_id__: ClassVar[int] = 226
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ProtocolEventMessage',)
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     observation: Semantic[Observation]
 
 class ProtocolEventMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 261
+    __occid_model_id__: ClassVar[int] = 260
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'ObservationMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -40,4 +40,4 @@ class ProtocolEventMessage(OCCIDModel):
     uncertainty: Semantic[LocationUncertainty] | None = None
     detail: Semantic[ProtocolPayload] | None = None
     source_address: Semantic[NetworkAddress] | None = None
-    targets: list[Semantic[UID]]
+    targets: list[Semantic[ID]]

@@ -92,16 +92,15 @@ class Entity(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Object'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Actor', 'Machine')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
 
@@ -111,16 +110,15 @@ class Actor(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Agent', 'Person')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
 
@@ -130,35 +128,33 @@ class Agent(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType | None = None
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
 
 class Person(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 244
+    __occid_model_id__: ClassVar[int] = 243
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Actor'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MilitaryPerson',)
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.PERSON
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     role: builtins.str
@@ -169,21 +165,20 @@ class Person(OCCIDModel):
     sensors: dict[builtins.str, Semantic[SensorPayload]]
 
 class Machine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 182
+    __occid_model_id__: ClassVar[int] = 181
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Entity'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Vehicle', 'Platform', 'GroundMachine', 'AirMachine', 'MilitaryMachine', 'Robot')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -197,16 +192,15 @@ class Vehicle(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -215,21 +209,20 @@ class Vehicle(OCCIDModel):
     components: list[Semantic[EntityComponentRef]]
 
 class Platform(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 251
+    __occid_model_id__: ClassVar[int] = 250
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -238,7 +231,7 @@ class Platform(OCCIDModel):
     components: list[Semantic[EntityComponentRef]]
 
 class GroundNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 138
+    __occid_model_id__: ClassVar[int] = 137
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Attribute'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -268,21 +261,20 @@ class AirNavigation(OCCIDModel):
     max_alt: builtins.float
 
 class GroundMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 137
+    __occid_model_id__: ClassVar[int] = 136
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('GroundRobot', 'MilitaryGroundMachine')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -301,16 +293,15 @@ class AirMachine(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirRobot', 'MilitaryAirMachine')
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -324,7 +315,7 @@ class AirMachine(OCCIDModel):
     navigation: Semantic[AirNavigation]
 
 class MilitaryAirNavigation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 201
+    __occid_model_id__: ClassVar[int] = 200
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'AirNavigation'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -344,21 +335,20 @@ class MilitaryAirNavigation(OCCIDModel):
     roles: list[AirRole]
 
 class MilitaryMachine(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 203
+    __occid_model_id__: ClassVar[int] = 202
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None

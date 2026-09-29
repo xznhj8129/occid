@@ -24,59 +24,55 @@ class PlanStepStatus(IntEnum):
 
 class Plan(OCCIDModel):
     'Proposed or approved method for accomplishing one or more tasks using actors, resources, sequencing, routes, constraints, and contingencies'
-    __occid_model_id__: ClassVar[int] = 247
+    __occid_model_id__: ClassVar[int] = 246
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AirPlan', 'OperationalPlan', 'RoutePlan')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Plan')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class OperationalPlan(OCCIDModel):
     'Task-based'
-    __occid_model_id__: ClassVar[int] = 230
+    __occid_model_id__: ClassVar[int] = 229
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Plan')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
-    objective_uids: list[Semantic[UID]]
-    task_uids: list[Semantic[UID]]
-    actor_uids: list[Semantic[UID]]
-    resource_uids: list[Semantic[UID]]
-    assignment_uids: list[Semantic[UID]]
+    objective_uids: list[Semantic[ID]]
+    task_uids: list[Semantic[ID]]
+    actor_uids: list[Semantic[ID]]
+    resource_uids: list[Semantic[ID]]
+    assignment_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
     contingencies: list[Semantic[PlanContingency]]
 
 class RoutePlan(OCCIDModel):
     'Plan of routed movement along waypoints or routes'
-    __occid_model_id__: ClassVar[int] = 288
+    __occid_model_id__: ClassVar[int] = 287
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Plan'
     __occid_children__: ClassVar[tuple[str, ...]] = ('AutopilotMission',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Plan')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
 
 class PlanContingency(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 248
+    __occid_model_id__: ClassVar[int] = 247
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     condition: Semantic[Condition]
-    task_uids: list[Semantic[UID]]
+    task_uids: list[Semantic[ID]]
 
 class AutopilotMission(OCCIDModel):
     __occid_model_id__: ClassVar[int] = 27
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'RoutePlan'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Plan')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     approval_state: PlanApprovalState = PlanApprovalState.DRAFT
     waypoints: list[Semantic[AutopilotMissionWaypoint]]

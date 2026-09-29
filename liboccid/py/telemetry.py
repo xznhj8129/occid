@@ -11,8 +11,8 @@ class TelemetryMessage(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshReceiveMetrics', 'MeshPositionSample', 'NodeHeartbeat', 'UAVTelemetryMessage', 'CapabilityAdvert', 'TransportCounters', 'TransportError')
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -22,8 +22,8 @@ class UAVTelemetryMessage(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -34,12 +34,12 @@ class CapabilityAdvert(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    node_uid: Semantic[UID]
+    node_uid: Semantic[ID]
     roles: list[CapabilityRole]
     link_refs: list[builtins.str]
     sensor_refs: list[builtins.str]
@@ -50,8 +50,8 @@ class TransportCounters(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
@@ -65,8 +65,8 @@ class TransportError(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'TelemetryMessage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int

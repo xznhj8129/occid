@@ -65,12 +65,11 @@ models:
     semantic_role: concept
     parent: Directive
     fields:
-      uid: UID
-      id: IntID(Task)
+      uid: ID
       instruction: string
-      target_uids: list[UID]
-      location_uids: list[UID]
-      objective_uid: optional UID
+      target_uids: list[ID]
+      location_uids: list[ID]
+      objective_uid: optional ID
       constraints: list[Constraint]
       preconditions: optional list[Condition]
       start_time: optional float

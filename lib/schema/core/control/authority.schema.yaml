@@ -9,7 +9,7 @@ enums:
   ControlLevel:
     - NONE = 0
     - MONITOR
-    - GUIDE
+    - GIDE
     - FULL
 
 models:
@@ -18,11 +18,10 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      uid: UID
-      id: IntID(Authority)
-      holder_uid: UID
-      granted_by_uid: optional UID
-      scope_uids: list[UID]
+      uid: ID
+      holder_uid: ID
+      granted_by_uid: optional ID
+      scope_uids: list[ID]
       constraints: list[Constraint]
 
   # Command authority belongs to a ROLE WITHIN AN ORGANIZATION.
@@ -46,7 +45,7 @@ models:
     semantic_role: concept
     parent: Authority
     fields:
-      organization_uid: UID
+      organization_uid: ID
       role: Role
 
   Lease:
@@ -54,7 +53,7 @@ models:
     semantic_role: representation
     parent: Authority
     fields:
-      asset_uid: UID
+      asset_uid: ID
       bound: Condition
 
   AttachmentLease:
@@ -62,13 +61,13 @@ models:
     semantic_role: representation
     parent: Lease
     fields:
-      parent_uid: UID
-      attachment_uid: UID
+      parent_uid: ID
+      attachment_uid: ID
 
   ControlLease:
     description: Temporary direct control access
     semantic_role: representation
     parent: Lease
     fields:
-      controller: UID
+      controller: ID
       control_level: ControlLevel

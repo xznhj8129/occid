@@ -17,8 +17,7 @@ models:
     semantic_role: concept
     parent: Data
     fields:
-      uid: UID
-      id: IntID(SpatialMeasurement)
+      uid: ID
       name: optional string
       measured_ts: optional Timestamp
 
@@ -26,23 +25,23 @@ models:
     semantic_role: representation
     parent: SpatialMeasurement
     fields:
-      origin_uid: UID
-      target_uid: UID
+      origin_uid: ID
+      target_uid: ID
       distance: DistanceMeters
 
   AreaMeasurement:
     semantic_role: representation
     parent: SpatialMeasurement
     fields:
-      location_uid: UID
+      location_uid: ID
       area: AreaSquareMeters
 
   BearingMeasurement:
     semantic_role: representation
     parent: SpatialMeasurement
     fields:
-      origin_uid: UID
-      target_uid: UID
+      origin_uid: ID
+      target_uid: ID
       bearing: AngleDegrees
       reference: BearingReference
 
@@ -50,12 +49,12 @@ models:
     semantic_role: representation
     parent: SpatialMeasurement
     fields:
-      center_uid: UID
+      center_uid: ID
       radius: DistanceMeters
 
   RouteMeasurement:
     semantic_role: representation
     parent: SpatialMeasurement
     fields:
-      path_uid: UID
+      path_uid: ID
       distance: DistanceMeters

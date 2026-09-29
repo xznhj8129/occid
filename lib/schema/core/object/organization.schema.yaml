@@ -309,17 +309,16 @@ models:
     parent: Set
 
     fields:
-      uid: UID
-      id: IntID(Organization)
+      uid: ID
       name: optional string
       unit_code: optional string
-      side: optional UID
+      side: optional ID
       callsign: optional string
       org_level: OrgLevel
       org_type: optional OrgType
       topology: optional OrgTopology
-      definition_uid: optional UID
-      member_uids: optional list[UID]
+      definition_uid: optional ID
+      member_uids: optional list[ID]
       roster: optional Roster
 
   Group:
@@ -339,8 +338,7 @@ models:
     semantic_role: concept
     parent: Definition
     fields:
-      uid: UID
-      id: IntID(OrgTemplate)
+      uid: ID
       name: optional string
       description: optional PlainText
       topology: optional OrgTopology
@@ -351,7 +349,7 @@ models:
     semantic_role: representation
     parent: Struct
     fields:
-      org_template_uid: UID
+      org_template_uid: ID
       quantity: Count
       
   MilitaryOrgTemplate:
@@ -370,8 +368,7 @@ models:
     semantic_role: concept
     parent: Set
     fields:
-      uid: UID
-      id: IntID(Side)
+      uid: ID
       name: optional string
       description: optional PlainText
 
@@ -392,7 +389,7 @@ models:
     semantic_role: representation
     parent: Control
     fields:
-      roster: map[UID, OrgRole]
+      roster: map[ID, OrgRole]
 
   OrganizationState:
     description: Time-indexed mutable organizational condition, membership, location, readiness, holdings, and roster separated from organization identity

@@ -47,12 +47,11 @@ models:
     semantic_role: concept
     parent: Media
     fields:
-      uid: UID
-      id: IntID(MediaItem)
+      uid: ID
       content_type: MediaSpectrum
       size: optional ByteCount
-      producer_uid: optional UID
-      sensor_uid: optional UID
+      producer_uid: optional ID
+      sensor_uid: optional ID
       captured_ts: optional Timestamp
       metadata: map[string, MetadataValue]
 
@@ -101,7 +100,7 @@ models:
     parent: StillImage
     fields:
       origin_type: ImageOrigin = VIDEO_CAPTURE
-      video_uid: optional UID
+      video_uid: optional ID
       frame_n: int
 
   DurationalMedia:

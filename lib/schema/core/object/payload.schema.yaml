@@ -76,7 +76,7 @@ models:
     semantic_role: representation
     parent: Payload
     fields:
-      uid: UID
+      uid: ID
       name: string
       model: string
       type: SensorType

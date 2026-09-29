@@ -55,7 +55,7 @@ models:
     parent: Directive
 
     fields:
-      target_uid: UID
+      target_uid: ID
       constraints: list[Constraint]
 
   StateChangeCommand:
@@ -83,7 +83,7 @@ models:
       operation: ConfigurationOperation
       parameter_name: optional string
       value: optional MetadataValue
-      configuration_uid: optional UID
+      configuration_uid: optional ID
 
   MotionCommand:
     description: Direct immediate target motion using a destination, path, or maintained spatial condition
@@ -103,7 +103,7 @@ models:
     parent: Command
     fields:
       operation: ResourceOperation
-      resource_uid: optional UID
+      resource_uid: optional ID
       quantity: optional float
 
   ExecutionCommand:

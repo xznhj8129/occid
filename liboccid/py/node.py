@@ -17,13 +17,12 @@ class CapabilityRole(IntFlag):
 
 class Node(OCCIDModel):
     'Deployed compute and communications endpoint participating in OCCID on behalf of an Entity'
-    __occid_model_id__: ClassVar[int] = 220
+    __occid_model_id__: ClassVar[int] = 219
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Communication'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeshNode',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Node')]
-    entity_uid: Semantic[UID] | None = None
+    uid: Semantic[ID]
+    entity_uid: Semantic[ID] | None = None
     roles: list[CapabilityRole]
     addresses: list[Semantic[NetworkAddress]]
     links: dict[builtins.str, Semantic[Link]]

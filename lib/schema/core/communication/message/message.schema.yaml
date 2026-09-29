@@ -65,8 +65,8 @@ models:
     parent: Communication
 
     fields:
-      src: UID
-      dst: UID
+      src: ID
+      dst: ID
       ts: Timestamp
       priority: MessagePriority
       seq: int
@@ -76,8 +76,8 @@ models:
     semantic_role: representation
     parent: Message
     fields:
-      entity_uid: UID
-      record: UID # note: placeholder, needs to refer to "delta of what"
+      entity_uid: ID
+      record: ID # note: placeholder, needs to refer to "delta of what"
       changed_fields: map[string, State]
       updated_ts: Timestamp
 
@@ -88,13 +88,13 @@ models:
 
     fields:
       seq_reply: optional int
-      response_to: UID
+      response_to: ID
 
   DeliveryReceipt:
     semantic_role: representation
     parent: ResponseMessage
     fields:
-      node_uid: UID
+      node_uid: ID
       delivery_state: DeliveryState
       seen_ts: optional Timestamp
       exec_ts: optional Timestamp

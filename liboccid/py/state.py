@@ -14,7 +14,7 @@ class ObservationTimeBasis(IntEnum):
 
 class State(OCCIDModel):
     'Changing condition of an object, node, link, task, system, or process'
-    __occid_model_id__: ClassVar[int] = 308
+    __occid_model_id__: ClassVar[int] = 307
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('Lifecycle', 'Activation', 'Cue', 'GNC', 'Health', 'Input', 'Internal', 'Kinematic', 'Resource', 'SubjectState', 'Validation', 'Position')
@@ -25,7 +25,7 @@ class SubjectState(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ('ExecutionStatus', 'SensorState', 'EntityState', 'OrganizationState')
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
 
 class EntityState(OCCIDModel):
@@ -34,7 +34,7 @@ class EntityState(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectState'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     position: Semantic[LocationState] | None = None
     motion: Semantic[VelocityVector] | None = None

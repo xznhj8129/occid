@@ -11,31 +11,27 @@ class CommandMessage(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
     command: Semantic[Command]
 
 class HumanTextMessage(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 147
+    __occid_model_id__: ClassVar[int] = 146
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Message'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    src: Semantic[UID]
-    dst: Semantic[UID]
+    src: Semantic[ID]
+    dst: Semantic[ID]
     ts: Semantic[Timestamp]
     priority: MessagePriority
     seq: builtins.int
-    message_uid: Semantic[UID] | None = None
-    conversation_uid: Semantic[UID] | None = None
-    reply_to_uid: Semantic[UID] | None = None
-    sender_uid: Semantic[UID] | None = None
+    message_uid: Semantic[ID]
+    conversation_uid: Semantic[ID]
+    reply_to_uid: Semantic[ID]
+    sender_uid: Semantic[ID]
     sender_name: builtins.str | None = None
-    destination_uid: Semantic[UID] | None = None
-    destination_group: builtins.str | None = None
-    kind: builtins.str | None = None
+    destination_uid: Semantic[ID]
     message: builtins.str
-    position: Semantic[GlobalPosition] | None = None
-    targets: list[Semantic[UID]]

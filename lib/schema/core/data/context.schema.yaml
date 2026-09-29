@@ -16,13 +16,12 @@ models:
     semantic_role: concept
     parent: Context
     fields:
-      uid: UID
-      id: IntID(OperationalContext)
+      uid: ID
       name: optional string
       description: optional PlainText
       reality: Reality
       temporal_extent: optional TimeRange
-      member_uids: list[UID]
+      member_uids: list[ID]
 
   Operation:
     description: Operational context describing an undertaking conducted by participating actors or organizations

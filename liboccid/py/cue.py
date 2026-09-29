@@ -11,8 +11,8 @@ class Cue(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'State'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    source_uid: Semantic[UID] | None = None
-    target_uid: Semantic[UID] | None = None
+    source_uid: Semantic[ID] | None = None
+    target_uid: Semantic[ID] | None = None
     bearing_rad: builtins.float | None = None
     elevation_rad: builtins.float | None = None
     distance_m: builtins.float | None = None

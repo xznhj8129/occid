@@ -29,8 +29,7 @@ models:
     parent: Control
 
     fields:
-      uid: UID
-      id: IntID(Plan)
+      uid: ID
       name: optional string
       approval_state: PlanApprovalState = DRAFT
 
@@ -39,11 +38,11 @@ models:
     semantic_role: concept
     parent: Plan
     fields:
-      objective_uids: list[UID]
-      task_uids: list[UID]
-      actor_uids: list[UID]
-      resource_uids: list[UID]
-      assignment_uids: list[UID]
+      objective_uids: list[ID]
+      task_uids: list[ID]
+      actor_uids: list[ID]
+      resource_uids: list[ID]
+      assignment_uids: list[ID]
       constraints: list[Constraint]
       contingencies: list[PlanContingency]
 
@@ -58,7 +57,7 @@ models:
     parent: Struct
     fields:
       condition: Condition
-      task_uids: list[UID]
+      task_uids: list[ID]
 
   AutopilotMission:
     semantic_role: representation

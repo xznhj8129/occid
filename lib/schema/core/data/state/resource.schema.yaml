@@ -29,7 +29,7 @@ models:
     semantic_role: representation
     parent: Resource
     fields:
-      resource_definition_uid: UID
+      resource_definition_uid: ID
       on_hand: Quantity
       available: optional Quantity
       committed: optional Quantity
@@ -61,7 +61,7 @@ models:
     semantic_role: representation
     parent: Resource
     fields:
-      source_uid: optional UID
+      source_uid: optional ID
       power_type: PowerType
       status: PowerStatus
       remaining_ratio: optional NormalizedRatio
@@ -79,7 +79,7 @@ models:
     semantic_role: representation
     parent: Resource
     fields:
-      source_uid: optional UID
+      source_uid: optional ID
       potential: optional Volts
       current: optional Amperes
       power: optional Watts
@@ -95,8 +95,7 @@ models:
     semantic_role: concept
     parent: Definition
     fields:
-      uid: UID
-      id: IntID(ResourceTemplate)
+      uid: ID
       name: optional string
       description: optional PlainText
 
@@ -122,7 +121,7 @@ models:
     semantic_role: representation
     parent: Struct
     fields:
-      resource_definition_uid: UID
+      resource_definition_uid: ID
       quantity: Quantity
       
   MilitarySupplyTemplate:

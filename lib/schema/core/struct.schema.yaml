@@ -31,15 +31,20 @@ models:
     semantic_role: concept
     parent: Struct
 
-  IntID:
+  UID: # Primary default
+    semantic_role: representation
+    parent: ID
+    type: bytes[16]
+
+  IntID: # Optional for compact wire formats, not used in schema
     semantic_role: representation
     parent: ID
     type: int
 
-  UID:
+  StrID: # Optional for compact wire formats, 10 Crockford Base32 characters, not used in schema
     semantic_role: representation
     parent: ID
-    type: bytes[16]
+    type: bytes[8]
 
   Text:
     description: Human-authored textual content whose encoding is not itself domain meaning
@@ -285,7 +290,7 @@ models:
     semantic_role: representation
     parent: Struct
     fields:
-      item_uid: UID
+      item_uid: ID
       qty: Count
 
   NumericRange:

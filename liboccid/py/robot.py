@@ -68,21 +68,20 @@ class GimbalAxis(IntEnum):
 
 class Robot(OCCIDModel):
     'Robot entities and control surfaces'
-    __occid_model_id__: ClassVar[int] = 281
+    __occid_model_id__: ClassVar[int] = 280
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Machine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -93,21 +92,20 @@ class Robot(OCCIDModel):
     remote_control: Semantic[RemoteControl]
 
 class GroundRobot(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 140
+    __occid_model_id__: ClassVar[int] = 139
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'GroundMachine'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     capabilities: list[Semantic[Capability]] | None = None
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Entity')]
-    node_uids: list[Semantic[UID]]
+    uid: Semantic[ID]
+    node_uids: list[Semantic[ID]]
     name: builtins.str | None = None
     callsign: builtins.str | None = None
     entity_type: EntityType = EntityType.MACHINE
     tags: list[builtins.str]
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     relations: list[Semantic[DirectedRelationship]]
-    side: Semantic[UID] | None = None
+    side: Semantic[ID] | None = None
     identity: StandardIdentity
     symbology: Semantic[Symbology] | None = None
     serial_number: builtins.str | None = None
@@ -136,7 +134,7 @@ class VideoConfig(OCCIDModel):
     hls_url: builtins.str | None = None
 
 class ReceiverConfig(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 270
+    __occid_model_id__: ClassVar[int] = 269
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -159,7 +157,7 @@ class ChannelMapEntry(OCCIDModel):
     label: builtins.str | None = None
 
 class ModeRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 213
+    __occid_model_id__: ClassVar[int] = 212
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -171,7 +169,7 @@ class ModeRange(OCCIDModel):
     range: Semantic[NumericRange]
 
 class RobotController(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 282
+    __occid_model_id__: ClassVar[int] = 281
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Parameter'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -182,7 +180,7 @@ class RobotController(OCCIDModel):
     autopilot_firmware: Semantic[FirmwareInfo]
 
 class RemoteControl(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 273
+    __occid_model_id__: ClassVar[int] = 272
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Interface'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

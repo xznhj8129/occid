@@ -40,7 +40,7 @@ class SubjectEvent(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FlightEvent', 'MissionEvent')
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
 
 class FlightEvent(OCCIDModel):
@@ -49,16 +49,16 @@ class FlightEvent(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
     event: AirMissionEvent
 
 class MissionEvent(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 211
+    __occid_model_id__: ClassVar[int] = 210
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SubjectEvent'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    subject_uid: Semantic[UID]
+    subject_uid: Semantic[ID]
     timestamp: Semantic[Timestamp]
 
 class TimelineEvent(OCCIDModel):
@@ -67,12 +67,11 @@ class TimelineEvent(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Event'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Event')]
+    uid: Semantic[ID]
     name: builtins.str | None = None
     description: Semantic[Text] | None = None
     temporal_extent: Semantic[TimeRange]
-    context_uid: Semantic[UID] | None = None
-    subject_uids: list[Semantic[UID]]
-    location_uids: list[Semantic[UID]]
-    media_uids: list[Semantic[UID]]
+    context_uid: Semantic[ID] | None = None
+    subject_uids: list[Semantic[ID]]
+    location_uids: list[Semantic[ID]]
+    media_uids: list[Semantic[ID]]

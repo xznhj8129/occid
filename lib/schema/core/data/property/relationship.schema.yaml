@@ -33,8 +33,8 @@ models:
     semantic_role: representation
     parent: Relationship
     fields:
-      subject_uid: UID
-      object_uid: UID
+      subject_uid: ID
+      object_uid: ID
       relation: RelationshipKind
       since_ts: optional Timestamp
       until_ts: optional Timestamp
@@ -54,8 +54,7 @@ models:
     semantic_role: representation
     parent: Relationship
     fields:
-      uid: UID
-      id: IntID(Relationship)
-      subject_uid: UID
-      reference_uid: UID
+      uid: ID
+      subject_uid: ID
+      reference_uid: ID
       relation: SpatialRelationKind

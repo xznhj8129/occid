@@ -45,40 +45,40 @@ class NATORadioBands(IntEnum):
 
 class Radio(OCCIDModel):
     'What messages are transmitted over'
-    __occid_model_id__: ClassVar[int] = 265
+    __occid_model_id__: ClassVar[int] = 264
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Link'
     __occid_children__: ClassVar[tuple[str, ...]] = ('FrequencyRange', 'ChannelSpec', 'RadioProfile')
     name: builtins.str | None = None
-    endpoint_uid: Semantic[UID] | None = None
+    endpoint_uid: Semantic[ID] | None = None
     interface_name: builtins.str | None = None
     address: Semantic[NetworkAddress] | None = None
-    radio_uid: Semantic[UID] | None = None
+    radio_uid: Semantic[ID] | None = None
     link_type: LinkType | None = None
     net_type: NetType | None = None
     data_type: LinkDataType | None = None
     direction: LinkDirection | None = None
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
-    network_uid: Semantic[UID] | None = None
+    network_uid: Semantic[ID] | None = None
 
 class FrequencyRange(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 121
+    __occid_model_id__: ClassVar[int] = 120
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Radio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     name: builtins.str | None = None
-    endpoint_uid: Semantic[UID] | None = None
+    endpoint_uid: Semantic[ID] | None = None
     interface_name: builtins.str | None = None
     address: Semantic[NetworkAddress] | None = None
-    radio_uid: Semantic[UID] | None = None
+    radio_uid: Semantic[ID] | None = None
     link_type: LinkType | None = None
     net_type: NetType | None = None
     data_type: LinkDataType | None = None
     direction: LinkDirection | None = None
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
-    network_uid: Semantic[UID] | None = None
+    network_uid: Semantic[ID] | None = None
     low_mhz: builtins.float | None = None
     high_mhz: builtins.float | None = None
     center_mhz: builtins.float | None = None
@@ -89,17 +89,17 @@ class ChannelSpec(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Radio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     name: builtins.str | None = None
-    endpoint_uid: Semantic[UID] | None = None
+    endpoint_uid: Semantic[ID] | None = None
     interface_name: builtins.str | None = None
     address: Semantic[NetworkAddress] | None = None
-    radio_uid: Semantic[UID] | None = None
+    radio_uid: Semantic[ID] | None = None
     link_type: LinkType | None = None
     net_type: NetType | None = None
     data_type: LinkDataType | None = None
     direction: LinkDirection | None = None
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
-    network_uid: Semantic[UID] | None = None
+    network_uid: Semantic[ID] | None = None
     channel_id: builtins.int
     label: builtins.str | None = None
     frequency: Semantic[FrequencyRange] | None = None
@@ -107,28 +107,28 @@ class ChannelSpec(OCCIDModel):
     spacing_mhz: builtins.float | None = None
 
 class RadioProfile(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 266
+    __occid_model_id__: ClassVar[int] = 265
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Radio'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     name: builtins.str | None = None
-    endpoint_uid: Semantic[UID] | None = None
+    endpoint_uid: Semantic[ID] | None = None
     interface_name: builtins.str | None = None
     address: Semantic[NetworkAddress] | None = None
-    radio_uid: Semantic[UID] | None = None
+    radio_uid: Semantic[ID] | None = None
     link_type: LinkType | None = None
     net_type: NetType | None = None
     data_type: LinkDataType | None = None
     direction: LinkDirection | None = None
     rate_spec: Semantic[DataRateSpec] | None = None
     user_capacity: Semantic[LinkCapacity] | None = None
-    network_uid: Semantic[UID] | None = None
+    network_uid: Semantic[ID] | None = None
     bands: list[NATORadioBands]
     service: RadioService | None = None
     waveform: Waveform | None = None
     frequency: Semantic[FrequencyRange] | None = None
     channel_plan: list[Semantic[ChannelSpec]]
-    active_channel_uid: Semantic[UID] | None = None
+    active_channel_uid: Semantic[ID] | None = None
     crypto_types: list[CryptoType]
     crypto_profile: Semantic[CryptoProfile] | None = None
     lora: Semantic[LoRaProfile] | None = None

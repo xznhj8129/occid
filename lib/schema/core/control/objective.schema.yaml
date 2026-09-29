@@ -20,16 +20,15 @@ models:
     semantic_role: concept
     parent: Control
     fields:
-      uid: UID
-      id: IntID(Objective)
+      uid: ID
       name: string
       intent: string
       desired_state: string
       success_criteria: list[SuccessCriterion]
-      target_uids: list[UID]
+      target_uids: list[ID]
       constraints: list[Constraint]
       priority: TaskPriority = ROUTINE
       status: TaskStatus = NEW
-      owner_uid: optional UID
+      owner_uid: optional ID
       start_time: optional float
       deadline: optional float

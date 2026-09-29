@@ -54,17 +54,17 @@ models:
     parent: Communication
     fields:
       name: optional string
-      endpoint_uid: optional UID
+      endpoint_uid: optional ID
       interface_name: optional string
       address: optional NetworkAddress
-      radio_uid: optional UID
+      radio_uid: optional ID
       link_type: optional LinkType
       net_type: optional NetType
       data_type: optional LinkDataType
       direction: optional LinkDirection
       rate_spec: optional DataRateSpec
       user_capacity: optional LinkCapacity
-      network_uid: optional UID
+      network_uid: optional ID
 
   DataRateSpec:
     semantic_role: representation

@@ -117,7 +117,7 @@ class Effects(OCCIDModel):
     pylon_format: builtins.str = ''
 
 class GroundEffects(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 136
+    __occid_model_id__: ClassVar[int] = 135
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Effects'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -171,7 +171,7 @@ class TargetSet(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ('TargetSetCoord', 'TargetBoxCoord', 'TargetCoord')
     time_usec: builtins.int
-    id: Annotated[IntID, IDNamespace('TargetSet')]
+    uid: Semantic[ID]
     name: builtins.str
 
 class TargetSetCoord(OCCIDModel):
@@ -180,7 +180,7 @@ class TargetSetCoord(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     time_usec: builtins.int
-    id: Annotated[IntID, IDNamespace('TargetSet')]
+    uid: Semantic[ID]
     name: builtins.str
     center: Semantic[GlobalPosition]
     radius_m: builtins.float
@@ -193,7 +193,7 @@ class TargetBoxCoord(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     time_usec: builtins.int
-    id: Annotated[IntID, IDNamespace('TargetSet')]
+    uid: Semantic[ID]
     name: builtins.str
     corners: list[Semantic[GlobalPosition]]
     time_start_usec: builtins.int
@@ -205,7 +205,7 @@ class TargetCoord(OCCIDModel):
     __occid_parent__: ClassVar[str | None] = 'TargetSet'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     time_usec: builtins.int
-    id: Annotated[IntID, IDNamespace('TargetSet')]
+    uid: Semantic[ID]
     name: builtins.str
     kinematics: Semantic[TargetKinematics]
     cep_desired_m: builtins.float
@@ -220,12 +220,12 @@ class Fires(OCCIDModel):
     time_usec: builtins.int
     time_impact_usec: builtins.int
     target_position: Semantic[GlobalPosition]
-    effector_id: Annotated[IntID, IDNamespace('Entity')]
+    effector_uid: Semantic[ID]
     sequence: builtins.int
     cep_expected_m: builtins.float
 
 class SplashCorrection(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 306
+    __occid_model_id__: ClassVar[int] = 305
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -244,7 +244,7 @@ class TargetHandover(OCCIDModel):
     detected_first_usec: builtins.int
     valid_until_usec: builtins.int
     kinematics: Semantic[TargetKinematics]
-    target_set_id: Annotated[IntID, IDNamespace('TargetSet')]
+    target_set_uid: Semantic[ID]
     target_name: builtins.str
     match_media_url: builtins.str
     confidence_score: builtins.float
@@ -259,7 +259,7 @@ class BattleDamageAssessment(OCCIDModel):
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     time_usec: builtins.int
     kinematics: Semantic[TargetKinematics]
-    target_set_id: Annotated[IntID, IDNamespace('TargetSet')]
+    target_set_uid: Semantic[ID]
     target_name: builtins.str
     authorization: list[builtins.int]
     destruction_pct: builtins.int
@@ -292,7 +292,7 @@ class EsadArming(OCCIDModel):
     arming_request: EsadArmingRequest
 
 class RwsPose(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 290
+    __occid_model_id__: ClassVar[int] = 289
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
@@ -308,7 +308,7 @@ class RwsPose(OCCIDModel):
     coordinate_frame: builtins.int
 
 class RwsState(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 291
+    __occid_model_id__: ClassVar[int] = 290
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Struct'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

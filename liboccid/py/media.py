@@ -39,23 +39,22 @@ class MediaDomain(IntEnum):
 
 class Media(OCCIDModel):
     'Recorded, streamed, sampled, or otherwise encoded non-text information used as an operational representation'
-    __occid_model_id__: ClassVar[int] = 188
+    __occid_model_id__: ClassVar[int] = 187
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MediaItem',)
 
 class MediaItem(OCCIDModel):
     'Identified media resource with typed content, address, acquisition provenance, and common storage metadata; concrete media semantics are expressed by children'
-    __occid_model_id__: ClassVar[int] = 189
+    __occid_model_id__: ClassVar[int] = 188
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Media'
     __occid_children__: ClassVar[tuple[str, ...]] = ('StillMedia', 'DurationalMedia')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
 
@@ -80,46 +79,43 @@ class CaptureSize3D(OCCIDModel):
 
 class StillMedia(OCCIDModel):
     'Spatial-domain fixed media'
-    __occid_model_id__: ClassVar[int] = 311
+    __occid_model_id__: ClassVar[int] = 310
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'MediaItem'
     __occid_children__: ClassVar[tuple[str, ...]] = ('PointCloudMedia', 'StillImage')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
 
 class PointCloudMedia(OCCIDModel):
     'Spatial point-cloud media'
-    __occid_model_id__: ClassVar[int] = 252
+    __occid_model_id__: ClassVar[int] = 251
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.MATTER
     size: Semantic[CaptureSize3D]
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
 
 class StillImage(OCCIDModel):
     'Time-static image frame'
-    __occid_model_id__: ClassVar[int] = 310
+    __occid_model_id__: ClassVar[int] = 309
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('VideoFrame',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.VISUAL
     size: Semantic[CaptureSize2D]
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     origin_type: ImageOrigin
@@ -130,16 +126,15 @@ class VideoFrame(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'StillImage'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.VISUAL
     size: Semantic[CaptureSize2D]
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     origin_type: ImageOrigin = ImageOrigin.VIDEO_CAPTURE
-    video_uid: Semantic[UID] | None = None
+    video_uid: Semantic[ID] | None = None
     frame_n: builtins.int
 
 class DurationalMedia(OCCIDModel):
@@ -148,12 +143,11 @@ class DurationalMedia(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'MediaItem'
     __occid_children__: ClassVar[tuple[str, ...]] = ('VideoMedia', 'AudioMedia', 'SpectrumMedia')
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]
@@ -168,12 +162,11 @@ class VideoMedia(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('LiveVideoStream',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.VISUAL
     size: Semantic[CaptureSize2D]
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]
@@ -185,16 +178,15 @@ class VideoMedia(OCCIDModel):
 
 class LiveVideoStream(OCCIDModel):
     'Live or near-live video stream endpoint'
-    __occid_model_id__: ClassVar[int] = 173
+    __occid_model_id__: ClassVar[int] = 172
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'VideoMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.VISUAL
     size: Semantic[CaptureSize2D]
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]
@@ -211,12 +203,11 @@ class AudioMedia(OCCIDModel):
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum = MediaSpectrum.AUDIO
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]
@@ -227,16 +218,15 @@ class AudioMedia(OCCIDModel):
 
 class SpectrumMedia(OCCIDModel):
     'Frequency-domain sampled or recorded media'
-    __occid_model_id__: ClassVar[int] = 304
+    __occid_model_id__: ClassVar[int] = 303
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'DurationalMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ('SpectrumRecording',)
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]
@@ -247,16 +237,15 @@ class SpectrumMedia(OCCIDModel):
 
 class SpectrumRecording(OCCIDModel):
     'Recorded radio-frequency or other spectrum data over a declared frequency span'
-    __occid_model_id__: ClassVar[int] = 305
+    __occid_model_id__: ClassVar[int] = 304
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'SpectrumMedia'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('MediaItem')]
+    uid: Semantic[ID]
     content_type: MediaSpectrum
     size: Semantic[ByteCount] | None = None
-    producer_uid: Semantic[UID] | None = None
-    sensor_uid: Semantic[UID] | None = None
+    producer_uid: Semantic[ID] | None = None
+    sensor_uid: Semantic[ID] | None = None
     captured_ts: Semantic[Timestamp] | None = None
     metadata: dict[builtins.str, Semantic[MetadataValue]]
     duration: Semantic[Duration]

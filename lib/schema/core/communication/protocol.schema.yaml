@@ -49,7 +49,7 @@ models:
     parent: Protocol
     fields:
       active_crypto: optional CryptoType
-      keyset_uid: optional UID
+      keyset_uid: optional ID
       keys: list[CryptoKey]
 
   LoRaProfile:

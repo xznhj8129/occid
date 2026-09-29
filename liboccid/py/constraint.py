@@ -14,14 +14,14 @@ class Constraint(OCCIDModel):
     condition: Semantic[Condition] | None = None
 
 class Restriction(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 280
+    __occid_model_id__: ClassVar[int] = 279
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
     condition: Semantic[Condition] | None = None
 
 class Limitation(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 167
+    __occid_model_id__: ClassVar[int] = 166
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Constraint'
     __occid_children__: ClassVar[tuple[str, ...]] = ()

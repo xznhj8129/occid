@@ -7,7 +7,7 @@ from .common import *
 
 class Property(OCCIDModel):
     'A generally fixed characteristic, classification, disposition, or capability that defines an object, but is not merely its momentary condition'
-    __occid_model_id__: ClassVar[int] = 259
+    __occid_model_id__: ClassVar[int] = 258
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Data'
     __occid_children__: ClassVar[tuple[str, ...]] = ('CaptureSize2D', 'CaptureSize3D', 'Attribute', 'Capability', 'Identity', 'Parameter', 'Version', 'FirmwareInfo', 'MetadataValue', 'Relationship')
@@ -31,7 +31,7 @@ class FirmwareInfo(OCCIDModel):
     build: builtins.str | None = None
 
 class MetadataValue(OCCIDModel):
-    __occid_model_id__: ClassVar[int] = 199
+    __occid_model_id__: ClassVar[int] = 198
     __occid_semantic_role__: ClassVar[str] = 'representation'
     __occid_parent__: ClassVar[str | None] = 'Property'
     __occid_children__: ClassVar[tuple[str, ...]] = ('MeasurementQuality',)

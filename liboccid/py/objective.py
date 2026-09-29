@@ -19,20 +19,19 @@ class SuccessCriterion(OCCIDModel):
 
 class Objective(OCCIDModel):
     'Desired end state with intent, success rule, target, priority, and deadline'
-    __occid_model_id__: ClassVar[int] = 225
+    __occid_model_id__: ClassVar[int] = 224
     __occid_semantic_role__: ClassVar[str] = 'concept'
     __occid_parent__: ClassVar[str | None] = 'Control'
     __occid_children__: ClassVar[tuple[str, ...]] = ()
-    uid: Semantic[UID]
-    id: Annotated[IntID, IDNamespace('Objective')]
+    uid: Semantic[ID]
     name: builtins.str
     intent: builtins.str
     desired_state: builtins.str
     success_criteria: list[Semantic[SuccessCriterion]]
-    target_uids: list[Semantic[UID]]
+    target_uids: list[Semantic[ID]]
     constraints: list[Semantic[Constraint]]
     priority: TaskPriority = TaskPriority.ROUTINE
     status: TaskStatus = TaskStatus.NEW
-    owner_uid: Semantic[UID] | None = None
+    owner_uid: Semantic[ID] | None = None
     start_time: builtins.float | None = None
     deadline: builtins.float | None = None

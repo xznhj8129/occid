@@ -39,7 +39,7 @@ models:
     semantic_role: concept
     parent: Event
     fields:
-      subject_uid: UID
+      subject_uid: ID
       timestamp: Timestamp
 
   FlightEvent:
@@ -58,12 +58,11 @@ models:
     semantic_role: representation
     parent: Event
     fields:
-      uid: UID
-      id: IntID(Event)
+      uid: ID
       name: optional string
       description: optional Text
       temporal_extent: TimeRange
-      context_uid: optional UID
-      subject_uids: list[UID]
-      location_uids: list[UID]
-      media_uids: list[UID]
+      context_uid: optional ID
+      subject_uids: list[ID]
+      location_uids: list[ID]
+      media_uids: list[ID]
