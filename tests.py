@@ -34,7 +34,6 @@ from generated.occid2 import (
     Person,
     PhysicalDomain,
     Plan,
-    PlainText,
     Position,
     Predicate,
     Realm,
@@ -44,12 +43,7 @@ from generated.occid2 import (
     TaskIntent,
     TaskTimeWindow,
     TemporalMode,
-    Time,
-    Timestamp,
-    Truth,
-    TruthBoolean,
     UAV,
-    UID,
     UnmannedVehicle,
     WeatherLimits,
     new_store,
@@ -100,16 +94,16 @@ def main() -> None:
     check({field.name for field in fields(Mark)} == {"uid", "name", "lat", "lon", "h"}, "Mark compiles its chart")
 
     uav = store.ref("uav-1", UnmannedVehicle)
-    uav.set(GlobalPosition(lat=45.30, lon=-74.20, h=125.0))
+    uav.set(GlobalPosition(lat=36.530440, lon=-83.216383, h=125.0))
 
     # 7. The representation is selected by factors, not by class paths.
     uav.set(LocalPosition(x=120.0, y=-40.0, z=15.0))
     check(len(uav.find(Position)) == 2, "both representations answer the Position question")
-    check(uav.get(Position, Representation.Geodetic).lon == -74.20, "geodetic narrowing failed")
+    check(uav.get(Position, Representation.Geodetic).lon == -83.216383, "geodetic narrowing failed")
     check(uav.get(Position, Representation.LocalCartesian).x == 120.0, "local narrowing failed")
 
     # 8. Exact class lookup and semantic lookup return the same stored value.
-    check(uav.get(GlobalPosition).lat == 45.30, "exact representation lookup failed")
+    check(uav.get(GlobalPosition).lat == 36.530440, "exact representation lookup failed")
 
     # 9. A word names an expression; the task realizes it.
     move = store.task(
@@ -135,7 +129,7 @@ def main() -> None:
     else:
         raise AssertionError("a vehicle does not satisfy the Position region")
     mark_ref = store.ref("mark-alpha", Mark)
-    mark_ref.set(Mark(uid=UID(uid="mark-alpha"), name=PlainText(value="alpha"), lat=45.28, lon=-74.18, h=110.0))
+    mark_ref.set(Mark(uid="mark-alpha", name="alpha", lat=36.530240, lon=-83.216183, h=110.0))
     move.bind("destination", mark_ref)
     check(move.unbound == [], "all variables bound")
 
@@ -147,9 +141,9 @@ def main() -> None:
     locate.bind("target", target)
     check(locate.solve() == {}, "an entity without a position has an unknown answer")
     check(target.find(Position) == [], "no datum is unknown, not illegal")
-    target.set(GlobalPosition(lat=45.10, lon=-74.40, h=90.0))
+    target.set(GlobalPosition(lat=36.530140, lon=-83.216683, h=90.0))
     solved = locate.solve()
-    check(solved["position"].lat == 45.10, "the answer appears once the fact exists")
+    check(solved["position"].lat == 36.530140, "the answer appears once the fact exists")
 
     # 11. Relations are directed, roles are named, and operands are validated.
     fact = store.relate(AssignedWork, uav, move.ref)
@@ -178,6 +172,7 @@ def main() -> None:
             ha = hashlib.sha256((Path(a) / filename).read_bytes()).digest()
             hb = hashlib.sha256((Path(b) / filename).read_bytes()).digest()
             check(ha == hb, f"nondeterministic compiler output: {filename}")
+            check((ROOT / "generated" / filename).read_bytes() == (Path(a) / filename).read_bytes(), f"stale generated output: {filename}")
 
     # 14. Every word resolves to an expression; a command carries only its word.
     for word in REGISTRY_SPEC["word_expressions"]:
@@ -192,18 +187,19 @@ def main() -> None:
         "unbound motion parameters are unknowns, not columns",
     )
 
-    # 15. Quantities reduce through charts, including truth.
-    check({field.name for field in fields(Timestamp)} == {"utime"}, "epoch chart fields")
-    check(registry.entails(sem(Timestamp), Time), "Timestamp must entail Time")
-    check(registry.entails(sem(TruthBoolean), Truth), "TruthBoolean must entail Truth")
+    # 15. Scalar fields retain their units without representation wrappers.
+    check(TaskTimeWindow._units == {"earliest_start": "s", "latest_finish": "s"}, "time field units")
     check(registry.legal(sem(WeatherLimits, PhysicalDomain.AIR)), "weather limits are meaningful")
 
     # 16. The surviving relations validate their roles.
     window = store.ref("window-1", TaskTimeWindow)
-    window.set(TaskTimeWindow(earliest_start=Timestamp(utime=1.0)))
+    window.set(TaskTimeWindow(earliest_start=1.0))
+    check(window.get(TaskTimeWindow).earliest_start == 1.0, "scalar time survives store retrieval")
+    check(move.ref.get(Task).instruction == "move to mark alpha", "primitive instruction survives store retrieval")
+    check(mark_ref.get(Mark).name == "alpha", "primitive name survives store retrieval")
     store.relate(ConstrainedBy, cmd.ref, window)
     authority = store.ref("auth-1", Authority)
-    authority.set(Authority(uid=UID(uid="auth-1")))
+    authority.set(Authority(uid="auth-1"))
     store.relate(Holds, authority, uav)
     check(len(store.relations()) >= 3, "facts are queryable")
     try:

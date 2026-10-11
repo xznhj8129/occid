@@ -93,30 +93,38 @@ def normalize_field(raw: Any) -> dict[str, Any]:
             raise ValueError(f"field declaration is missing 'type': {raw!r}")
         type_expr = str(raw["type"])
         explicit_default = raw.get("default")
-        return {
+        field = {
             "type": type_expr,
             "default": None if explicit_default is None else str(explicit_default),
         }
-    text = str(raw).strip()
-    if "=" in text:
-        type_part, default = (x.strip() for x in text.split("=", 1))
-        return {"type": type_part, "default": default}
-    return {"type": text, "default": None}
+    else:
+        text = str(raw).strip()
+        if "=" in text:
+            type_part, default = (x.strip() for x in text.split("=", 1))
+            field = {"type": type_part, "default": default}
+        else:
+            field = {"type": text, "default": None}
+    optional = field["type"].startswith("optional ")
+    if field["type"].removeprefix("optional ").startswith("list["):
+        return field
+    coordinate = parse_coordinate("", field["type"].removeprefix("optional "))
+    field["type"] = ("optional " if optional else "") + coordinate["type"]
+    field["unit"] = coordinate["unit"]
+    return field
 
 
 def py_type(
     type_expr: str,
     known_enums: set[str],
     known_models: set[str],
-    declared: bool = True,
 ) -> tuple[str, str | None]:
     type_expr = type_expr.strip()
     if type_expr.startswith("optional "):
-        inner, _ = py_type(type_expr[len("optional "):], known_enums, known_models, declared)
+        inner, _ = py_type(type_expr[len("optional "):], known_enums, known_models)
         return f"{inner} | None", "None"
     if type_expr.startswith("list[") and type_expr.endswith("]"):
         inner_text = type_expr[5:-1]
-        inner, _ = py_type(inner_text, known_enums, known_models, declared)
+        inner, _ = py_type(inner_text, known_enums, known_models)
         return f"list[{inner}]", "factory:list"
     primitive = {
         "string": "str",
@@ -125,22 +133,10 @@ def py_type(
         "bool": "bool",
         "UID": "str",
     }
-    if declared:
-        # Declared fields are subject matter, not data: a plain scalar must be
-        # reduced through a chart representation. A named model shadows any
-        # same-named primitive. Only `bool` survives as an irreducible leaf.
-        if type_expr in known_enums or type_expr in known_models:
-            return type_expr, None
-        if type_expr == "bool":
-            return "bool", None
-        raise ValueError(
-            f"declared field type {type_expr!r} must be a model or enum; "
-            f"plain primitives are chart variables"
-        )
-    if type_expr in primitive:
-        return primitive[type_expr], None
     if type_expr in known_enums or type_expr in known_models:
         return type_expr, None
+    if type_expr in primitive:
+        return primitive[type_expr], None
     raise ValueError(f"unknown type name: {type_expr!r}")
 
 
@@ -451,6 +447,10 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         }
 
     for expression_name, spec in (schema.get("expressions") or {}).items():
+        if spec.get("of"):
+            scheme = schema["expressions"][spec["of"]]
+            spec = {**scheme, **spec}
+        bound_factors = product_terms(spec.get("binds"))
         # A form is one expression. A `words:` mapping binds the dimensions
         # each word fixes and compiles one expression per word; an unmapped
         # form is one expression named by its own words.
@@ -461,10 +461,10 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
                 name = word.partition(".")[2] or word
                 if name in expressions:
                     raise ValueError(f"word {word!r} compiles to duplicate expression {name!r}")
-                compile_expression(name, spec, term_list(bound), [word])
+                compile_expression(name, spec, bound_factors + term_list(bound), [word])
         else:
             compile_expression(
-                expression_name, spec, [], [str(word) for word in raw_words]
+                expression_name, spec, bound_factors, [str(word) for word in raw_words]
             )
 
     # A word is only a name for the expression it is compiled with. An
@@ -644,7 +644,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     for expression_name, expression in expressions.items():
         lines.append(f"{expression_name} = ExpressionType(")
         lines.append(f"    {expression_name!r},")
-        lines.append(f"    {product_literal(expression['factors'])}, ")
+        lines.append(f"    {product_literal(expression['factors'])},")
         lines.append(
             "    given={"
             + ", ".join(
@@ -696,7 +696,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             field_name = field_spec["name"]
             annotation, inferred_default = py_type(
                 field_spec["type"], known_enums, known_models,
-                declared=not field_spec.get("chart"),
             )
             explicit_default = field_spec.get("default")
             if field_spec.get("optional"):

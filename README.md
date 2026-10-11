@@ -21,9 +21,8 @@ The full algebraic record is in `SPEC.md`. Summary:
 - **Charts reduce quantity × representation to variables.** `chart Position ×
   Representation.Geodetic := lat × lon × h`. Chart produces the primitives;
   units stay metadata; the same quantity may exist in several representations
-  and be narrowed by factors. A chart names the data model it compiles
-  (`model: GlobalPosition`), so chart applications are derived artifacts and
-  the `models` section holds only semantic carriers and named products.
+  and be narrowed by factors. A model
+  that is data declares the chart it reduces through.
 - **Tasks are open expressions.** Fixed semantic factors + typed free
   variables + equations. An unbound variable is an unknown, not an error:
   `MOVE(actor=uav-1, destination=?)`. Sought variables are solved from the

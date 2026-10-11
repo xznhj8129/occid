@@ -143,8 +143,7 @@ semantics(model) = inherited factors + model name + product factors
 - a `product:` entry naming another model expands to that model's semantics,
   keeping its label, because that name is part of this model's own meaning;
 - a `chart:` entry contributes the chart's factors and compiles its variables
-  into the model's fields; a chart that names a model compiles that model
-  directly (section 7) — a chart application is never authored as a model;
+  into the model's fields;
 - every model is storable; there is no concept/representation split.
 
 Example:
@@ -154,7 +153,7 @@ Mark:
   parent: Data
   product:
     - GlobalPosition
-  fields: {uid: UID, name: optional PlainText}
+  fields: {uid: UID, name: optional string}
 ```
 
 ```text
@@ -194,13 +193,11 @@ chart Q × C  ≅  v₁ × v₂ × … × vₙ
 ```yaml
 charts:
   Position * Representation.Geodetic:
-    model: GlobalPosition
     lat: float[deg]
     lon: float[deg]
     h: float[m]
 
   Position * Representation.LocalCartesian:
-    model: LocalPosition
     x: float[m]
     y: float[m]
     z: float[m]
@@ -209,9 +206,7 @@ charts:
 **Chart produces the primitives.** `Position` stays semantic; the
 representation selects how it becomes data; the coordinates emerge only after
 that selection. A coordinate's unit is algebraic metadata (`_units`), not its
-Python type. A chart names the data model its variables compile into; that
-model is a compiled artifact of the chart, so chart applications never sit
-among the semantic models.
+Python type. A model that is data declares the chart it reduces through.
 
 The same quantity may be stored in several representations. Each is a separate
 datum; each answers `entity × Position`, and a representation factor narrows to

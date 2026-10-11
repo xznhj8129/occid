@@ -20,14 +20,12 @@ from generated.occid2 import (
     Mission,
     MOVE,
     PhysicalDomain,
-    PlainText,
     Position,
     Representation,
     Task,
     TaskIntent,
     TemporalMode,
     UAV,
-    UID,
     UnmannedVehicle,
     Velocity,
     new_store,
@@ -52,7 +50,7 @@ def main() -> None:
 
     print("Data is stored in a representation and addressed by meaning.")
     uav = store.ref("uav-1", UnmannedVehicle)
-    uav.set(GlobalPosition(lat=45.30, lon=-74.20, h=125.0))
+    uav.set(GlobalPosition(lat=36.530440, lon=-83.216383, h=125.0))
     uav.set(LocalPosition(x=120.0, y=-40.0, z=15.0))
     print("  uav * Position            ->", [type(x).__name__ for x in uav.find(Position)])
     print("  uav * Position * Geodetic ->", uav.get(Position, Representation.Geodetic))
@@ -79,7 +77,7 @@ def main() -> None:
     move.bind("actor", uav)
     print(f"   {move}")
     mark = store.ref("mark-alpha", Mark)
-    mark.set(Mark(uid=UID(uid="mark-alpha"), name=PlainText(value="alpha"), lat=45.28, lon=-74.18, h=110.0))
+    mark.set(Mark(uid="mark-alpha", name="alpha", lat=36.530240, lon=-83.216183, h=110.0))
     move.bind("destination", mark)
     print(f"   {move} unbound: {move.unbound}")
     print()
@@ -95,7 +93,7 @@ def main() -> None:
     locate.bind("target", target)
     print(f"   {locate}")
     print(f"   no position fact yet -> solve() = {locate.solve()}")
-    target.set(GlobalPosition(lat=45.10, lon=-74.40, h=90.0))
+    target.set(GlobalPosition(lat=36.530140, lon=-83.216683, h=90.0))
     print(f"   fact arrives         -> solve() = {locate.solve()}")
     print()
 
