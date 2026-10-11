@@ -1,103 +1,152 @@
+# OCCID2 semantic algebra
+#
+# This file is a set of equations, not a class hierarchy. Read `*` as the
+# product: an unordered, idempotent conjunction of factors of one thing.
+#
+#   factor       one coordinate of an independent semantic dimension
+#   product      f1 * f2 * ... describes one thing; the product is the address
+#   alias        Name := product; naming creates no ontology
+#   chart        Q * C := v1 * v2 * ...; a quantity in a representation
+#                reduces to irreducible typed variables
+#   relation     R(role: region, ...); directed, ordered, role-bearing;
+#                a specialization inherits direction positionally
+#   scheme       a parameterized expression family
+#   expression   fixed factors + typed free variables + equations;
+#                an unbound variable is an unknown, not an error
+#   definition   semantic declarations interpreted by the live registry
+#
+# YAML is only the transport.
+
 version: 2
+
+# ---------------------------------------------------------------------------
+# Axes are typed semantic dimensions. Their values are factors. `applies`
+# checks that a dimension is meaningful in a region; `requires` asserts a
+# region into the closure. Cardinality bounds a dimension in a complete
+# description; per-value disjointness declarations are never needed.
+# ---------------------------------------------------------------------------
+
 axes:
   Substrate:
     cardinality: one
     values:
-    - BIOLOGICAL
-    - MECHANICAL
-    - CYBER
+      - BIOLOGICAL
+      - MECHANICAL
+      - CYBER
+
   PhysicalDomain:
     description: A bounded thing operates in exactly one domain.
     cardinality: one
     values:
-    - LAND
-    - AIR
-    - SEA
-    - UNDERSEA
-    - SPACE
+      - LAND
+      - AIR
+      - SEA
+      - UNDERSEA
+      - SPACE
+
   Controller:
     cardinality: one
     applies:
       all:
-      - Machine
+        - Machine
     values:
-    - MANNED
-    - UNMANNED
+      - MANNED
+      - UNMANNED
+
   Locomotion:
     cardinality: one
     values:
-    - SELF_PROPELLED
-    - EXTERNAL
-    - STATIC
+      - SELF_PROPELLED
+      - EXTERNAL
+      - STATIC
+
   Airframe:
     description: Airframe construction, independent of takeoff capability.
     cardinality: one
     applies:
       all:
-      - Machine
-      - PhysicalDomain.AIR
+        - Machine
+        - PhysicalDomain.AIR
     values:
-    - MULTIROTOR
-    - FIXED_WING
+      - MULTIROTOR
+      - FIXED_WING
+
   Representation:
-    description: The coordinate scheme through which a structured quantity becomes
-      data variables.
+    description: The coordinate scheme through which a structured quantity becomes data variables.
     cardinality: many
     values:
-    - Geodetic
-    - LocalCartesian
-    - LocalEuler
-    - Quaternion
+      - Geodetic
+      - LocalCartesian
+      - LocalEuler
+      - Quaternion
+
+  # Height references are semantic factors, not provenance annotations.
+  # Recognizing Position does not make ellipsoid and MSL heights interchangeable.
+  # An omitted reference remains unknown; no reference is assumed or converted.
   AltitudeReference:
     cardinality: one
     applies: [Position, Representation.Geodetic]
     values:
-    - WGS84Ellipsoid
-    - MeanSeaLevel
+      - WGS84Ellipsoid
+      - MeanSeaLevel
+
   BloodGroup:
     cardinality: one
     applies:
       all:
-      - Substrate.BIOLOGICAL
+        - Substrate.BIOLOGICAL
+    # One axis-scoped requirement, never one rule per value.
     requires:
-    - Biological
+      - Biological
     values:
-    - A_POS
-    - A_NEG
-    - B_POS
-    - B_NEG
-    - AB_POS
-    - AB_NEG
-    - O_POS
-    - O_NEG
+      - A_POS
+      - A_NEG
+      - B_POS
+      - B_NEG
+      - AB_POS
+      - AB_NEG
+      - O_POS
+      - O_NEG
+
   Realm:
     cardinality: one
     values:
-    - WORLD
-    - INFORMATION
+      - WORLD
+      - INFORMATION
+
   TemporalMode:
     cardinality: one
     values:
-    - ACHIEVE
-    - MAINTAIN
+      - ACHIEVE
+      - MAINTAIN
+
   TruthTarget:
     cardinality: one
     applies:
       any:
-      - Existence
-      - Connectivity
-      - Engagement
-      - Activity
-      - Paused
-      - Hold
+        - Existence
+        - Connectivity
+        - Engagement
+        - Activity
+        - Paused
+        - Hold
     values:
-    - 'TRUE'
-    - 'FALSE'
+      - "TRUE"
+      - "FALSE"
+
+# ---------------------------------------------------------------------------
+# Surface vocabulary. Members are representation, never semantic factors.
+# A word is a name an expression declares for itself; the runtime collects
+# those names into its vocabulary. What remains below are the value
+# vocabularies, which are not words.
+# ---------------------------------------------------------------------------
+
 vocabularies:
   TaskPriority:
     ROUTINE: 0
     HIGH: 1
     IMMEDIATE: 2
+
   TaskStatus:
     NEW: 0
     ACTIVE: 1
@@ -105,17 +154,20 @@ vocabularies:
     FAILED: 3
     CANCELLED: 4
     ACCEPTED: 5
+
   ControlLevel:
     NONE: 0
     MONITOR: 1
     GUIDE: 2
     FULL: 3
+
   PlanApprovalState:
     DRAFT: 0
     PROPOSED: 1
     APPROVED: 2
     REJECTED: 3
     SUPERSEDED: 4
+
   BooleanOperator:
     NONE: 0
     NOT: 1
@@ -125,554 +177,592 @@ vocabularies:
     NAND: 5
     NOR: 6
     XNOR: 7
+
+# ---------------------------------------------------------------------------
+# Factors declare meaning and implications. An implication entails its region;
+# closure derives semantic ancestry. Products expand to the semantics they name,
+# and charts reduce selected representations to typed variables.
+# No generated carrier class or field hierarchy is required.
+# ---------------------------------------------------------------------------
+
 factors:
   Root:
     description: Everything
+
   Object:
     description: A discrete thing in the operational world.
-    implies:
-    - Root
+    implies: [Root]
+
   Locality:
     description: Physical reference place in the world, ie village, bridge, mountain
-    implies:
-    - Object
+    implies: [Object]
+
   Entity:
     description: A discrete participant capable of actions.
-    implies:
-    - Object
+    implies: [Object]
+
   Biological:
     description: Living participants. Disjoint from Machine.
-    implies:
-    - Entity
-    - Substrate.BIOLOGICAL
+    implies: [Entity, Substrate.BIOLOGICAL]
+
   Person:
-    implies:
-    - Biological
+    implies: [Biological]
+
   Actor:
-    implies:
-    - Person
+    implies: [Person]
+
   Machine:
-    implies:
-    - Entity
-    - Substrate.MECHANICAL
+    implies: [Entity, Substrate.MECHANICAL]
+
   Vehicle:
-    implies:
-    - Machine
-    - Locomotion.SELF_PROPELLED
-    - Substrate.MECHANICAL
+    implies: [Machine, Locomotion.SELF_PROPELLED, Substrate.MECHANICAL]
+
   CrewedVehicle:
-    implies:
-    - Vehicle
-    - Controller.MANNED
+    implies: [Vehicle, Controller.MANNED]
+
   UnmannedVehicle:
-    implies:
-    - Vehicle
-    - Controller.UNMANNED
+    implies: [Vehicle, Controller.UNMANNED]
+
   Data:
     description: Values rather than world referents.
-    implies:
-    - Root
+    implies: [Root]
+
   State:
     description: A semantic quantity; a chart realizes it as data variables.
-    implies:
-    - Data
+    implies: [Data]
+
   Position:
     description: Where something is.
-    implies:
-    - State
+    implies: [State]
+
   Velocity:
-    implies:
-    - State
+    implies: [State]
+
   Attitude:
-    implies:
-    - State
+    implies: [State]
+
   Identity:
-    implies:
-    - State
+    implies: [State]
+
   Classification:
-    implies:
-    - State
+    implies: [State]
+
   Existence:
-    implies:
-    - State
+    implies: [State]
+
   Connectivity:
-    implies:
-    - State
+    implies: [State]
+
   Engagement:
     description: Whether a declared property or function is engaged.
-    implies:
-    - State
+    implies: [State]
+
   Activity:
     description: Whether a process or execution is running.
-    implies:
-    - State
+    implies: [State]
+
   Paused:
     description: Whether a running process is held paused.
-    implies:
-    - State
+    implies: [State]
+
   Hold:
     description: Whether a resource is held by its holder.
-    implies:
-    - State
+    implies: [State]
+
   Text:
-    description: Human-authored textual content whose encoding is not itself domain
-      meaning.
-    implies:
-    - State
+    description: Human-authored textual content whose encoding is not itself domain meaning.
+    implies: [State]
+
   Duration:
     description: An interval of time.
-    implies:
-    - State
+    implies: [State]
+
   Angle:
-    implies:
-    - State
+    implies: [State]
+
   Distance:
-    implies:
-    - State
+    implies: [State]
+
   Speed:
-    implies:
-    - State
+    implies: [State]
+
   Count:
     description: Discrete quantity.
-    implies:
-    - State
+    implies: [State]
+
   Ordinal:
     description: Position in an ordered sequence.
-    implies:
-    - State
+    implies: [State]
+
   Code:
     description: Opaque protocol or enumeration code.
-    implies:
-    - State
+    implies: [State]
+
   Scalar:
     description: A bare scalar with no further unit semantics.
-    implies:
-    - State
+    implies: [State]
+
   Altitude:
     description: Vertical position above a reference; meaningful only in air.
-    applies:
-    - PhysicalDomain.AIR
-    implies:
-    - State
+    applies: [PhysicalDomain.AIR]
+    implies: [State]
+
   Mark:
     description: Named point of interest; its semantic form is a position.
-    implies:
-    - Data
-    - GlobalPosition
+    implies: [Data, GlobalPosition]
+
   Control:
-    implies:
-    - Root
+    implies: [Root]
+
   Directive:
-    implies:
-    - Control
+    implies: [Control]
+
   Task:
     description: Requirement that some proposition become or remain sufficiently true.
-    implies:
-    - Directive
+    implies: [Directive]
+
   Mission:
     description: A named body of assigned work.
-    implies:
-    - Directive
+    implies: [Directive]
+
+  # ===========================================================================
+  # Controlled work, expressed rather than transcribed.
+  #
+  # The word is the whole verb taxonomy: `TaskIntent` and `CommandOperation`
+  # members name expressions, and each expression entails its factors.
+  # Verb parameters are typed free variables;
+  # constraints, objectives, authorities, and plans are semantic concepts;
+  # links between independently existing things are relations with named roles.
+  # ===========================================================================
+
+  # --- value concepts ----------------------------------------------------------
+
   Time:
     description: A point on the time line.
-    implies:
-    - State
+    implies: [State]
+
   Range:
-    implies:
-    - Data
+    implies: [Data]
+
   NumericRange:
-    implies:
-    - Range
+    implies: [Range]
+
   Condition:
-    description: Predicate logic; it describes logic, not the state of evaluating
-      it.
-    implies:
-    - Data
+    description: Predicate logic; it describes logic, not the state of evaluating it.
+    implies: [Data]
+
   Predicate:
     description: Atomic condition; a quantity of a subject compared against a value.
-    implies:
-    - Condition
+    implies: [Condition]
+
   BooleanLogic:
     description: Boolean composition of conditions.
-    implies:
-    - Condition
+    implies: [Condition]
+
   GeoPath:
-    implies:
-    - Data
+    implies: [Data]
+
   Role:
-    description: An organizational function; authority attaches to the role, not to
-      its current holder.
-    implies:
-    - Data
+    description: An organizational function; authority attaches to the role, not to its current holder.
+    implies: [Data]
+
   Resource:
     description: A thing that can be acquired, allocated, or transferred.
-    implies:
-    - Object
+    implies: [Object]
+
+  # --- constraints ------------------------------------------------------------
+
   Constraint:
     description: Limit, rule, or time/resource bound applied to directed work.
-    implies:
-    - Control
+    implies: [Control]
+
   TaskTimeWindow:
-    implies:
-    - Constraint
+    implies: [Constraint]
+
   WeatherLimits:
-    implies:
-    - Constraint
+    implies: [Constraint]
+
+  # --- objectives -------------------------------------------------------------
+  # A desired end state is a condition, and success is decided by conditions;
+  # `Condition` is the common atom, not a species per criterion.
+
   Objective:
-    description: Desired end state; the condition that should hold, the criteria that
-      decide it, priority, and deadline.
-    implies:
-    - Control
+    description: Desired end state; the condition that should hold, the criteria that decide it, priority, and deadline.
+    implies: [Control]
+
+  # --- commands ---------------------------------------------------------------
+  # The operation word selects the expression and nothing else: there is no
+  # per-operation command class, and a verb's parameters are its variables.
+
   Command:
     description: Immediate bounded imperative applied to a concrete target.
-    implies:
-    - Directive
+    implies: [Directive]
+
+  # --- authorities ------------------------------------------------------------
+
   Authority:
-    description: Command, permission, delegation, or control-right context for directed
-      work.
-    implies:
-    - Control
+    description: Command, permission, delegation, or control-right context for directed work.
+    implies: [Control]
+
   Lease:
     description: Bounded control right issued under an Authority.
-    implies:
-    - Authority
+    implies: [Authority]
+
+  # --- plans ------------------------------------------------------------------
+  # Membership and assignment are relations (AssignedWork, Contains); a plan
+  # record is representation of approval state, not a tree of pointers.
+
   Plan:
     description: Proposed or approved method for accomplishing work.
-    implies:
-    - Control
+    implies: [Control]
+
   PlanContingency:
     description: Conditional work that applies when a condition holds.
-    implies:
-    - Data
+    implies: [Data]
+
+# ---------------------------------------------------------------------------
+# Aliases name useful products. A named combination and an unnamed equivalent
+# combination have the same semantic normal form.
+# ---------------------------------------------------------------------------
+
 aliases:
-  AirMission:
-  - Mission
-  - PhysicalDomain.AIR
-  AirTask:
-  - Task
-  - PhysicalDomain.AIR
-  UGV:
-  - UnmannedVehicle
-  - PhysicalDomain.LAND
-  UAV:
-  - UnmannedVehicle
-  - PhysicalDomain.AIR
-  Drone:
-  - UAV
-  - Airframe.MULTIROTOR
-  Geodetic:
-  - Representation.Geodetic
-  LocalCartesian:
-  - Representation.LocalCartesian
-  LocalEuler:
-  - Representation.LocalEuler
-  Quaternion:
-  - Representation.Quaternion
+  AirMission: [Mission, PhysicalDomain.AIR]
+  AirTask: [Task, PhysicalDomain.AIR]
+  UGV: [UnmannedVehicle, PhysicalDomain.LAND]
+  UAV: [UnmannedVehicle, PhysicalDomain.AIR]
+  Drone: [UAV, Airframe.MULTIROTOR]
+  Geodetic: [Representation.Geodetic]
+  LocalCartesian: [Representation.LocalCartesian]
+  LocalEuler: [Representation.LocalEuler]
+  Quaternion: [Representation.Quaternion]
+
+  # Structured representations name products selected through charts.
+  # These aliases do not require Python representation classes.
+  # Position expressed through the geodetic chart.
   GlobalPosition: Position * Representation.Geodetic
+  # Position expressed through the local cartesian chart.
   LocalPosition: Position * Representation.LocalCartesian
+  # Velocity expressed through the local cartesian chart.
   LocalVelocity: Velocity * Representation.LocalCartesian
+  # Attitude expressed through the local Euler chart.
   LocalAttitude: Attitude * Representation.LocalEuler
+  # Attitude expressed through the quaternion chart.
   QuaternionAttitude: Attitude * Representation.Quaternion
+
+# ---------------------------------------------------------------------------
+# Charts reduce a semantic quantity in a chosen representation to
+# irreducible typed variables:
+#
+#     chart Q * C  :=  v1 * v2 * ... * vn
+#
+# The quantity stays semantic; the representation selects the data. A datum
+# selects charts through its semantic product; a chart never declares a
+# model. Scalar quantities remain primitives with unit metadata, so
+# only structured quantities need a chart.
+# ---------------------------------------------------------------------------
+
 charts:
   Position * Representation.Geodetic:
     lat: float[deg]
     lon: float[deg]
     h: float[m]
+
   Position * Representation.LocalCartesian:
     x: float[m]
     y: float[m]
     z: float[m]
+
   Velocity * Representation.LocalCartesian:
     vx: float[m/s]
     vy: float[m/s]
     vz: float[m/s]
+
   Attitude * Representation.LocalEuler:
     roll: float[rad]
     pitch: float[rad]
     yaw: float[rad]
+
   Attitude * Representation.Quaternion:
     qw: float
     qx: float
     qy: float
     qz: float
+
+  # Bounds and time windows retain primitive coordinates through charts,
+  # rather than requiring nominal value classes.
   NumericRange:
     min_value: optional float
     max_value: optional float
+
   TaskTimeWindow:
     earliest_start: optional float[s]
     latest_finish: optional float[s]
+
+# ---------------------------------------------------------------------------
+# Relations connect independently existing things. Direction and arity are
+# declared once at the base; a specialization narrows operand regions and may
+# rename roles positionally. A fact of a specialization is a fact of the base,
+# and a query at a base returns every specialization.
+# ---------------------------------------------------------------------------
+
 relations:
   Directed:
     description: A directed link; direction and arity declared once.
     operands:
       source: Root
       target: Root
+
   AssignedWork:
     description: An entity carries work.
     specializes: Directed
     operands:
       assignee: Entity
       work: Task
+
   ConstrainedBy:
     description: A constraint bounds directed work.
     specializes: Directed
     operands:
       subject: Control
       constraint: Constraint
+
   OwnedBy:
     description: An objective is owned by an entity.
     specializes: Directed
     operands:
       objective: Objective
       owner: Entity
+
   Holds:
     description: An entity holds an authority.
     specializes: Directed
     operands:
       authority: Authority
       holder: Entity
+
   GrantedBy:
     description: An authority was granted by an entity.
     specializes: Directed
     operands:
       authority: Authority
       grantor: Entity
+
   Controls:
     description: A lease controls an asset.
     specializes: Directed
     operands:
       lease: Lease
       asset: Object
+
   Contains:
     description: A plan contains an item of work, a participant, or a resource.
     specializes: Directed
     operands:
       plan: Plan
       item: Root
+
+# ---------------------------------------------------------------------------
+# Open expressions:
+#
+#     E := fixed semantic factors + typed free variables + equations
+#
+# `given` variables are inputs; `sought` variables are answers. An unbound
+# variable is an unknown, not an error, so an expression can be recorded
+# before every participant is known.
+#
+# A scheme is a parameterized expression family. An expression is a scheme
+# instantiated at factor coordinates; it declares its own name and the words
+# that name it, and the runtime vocabulary is the set of those words.
+# MOVE and HOLD are one scheme at TemporalMode.ACHIEVE and TemporalMode.MAINTAIN
+# -- a synonym or antonym in a vocabulary is a red flag for a scheme that has
+# not been factored.
+# ---------------------------------------------------------------------------
+
 expressions:
+  # --- schemes: structure only, declared once ---
+
   POSITION_GOAL:
     description: An actor's position is the destination.
-    factors:
-    - Task
-    - Realm.WORLD
+    factors: [Task, Realm.WORLD]
     given:
       actor: Entity
       destination: Position
     equations:
-    - Position(actor) = destination
+      - Position(actor) = destination
+
   POSITION_QUERY:
     description: An entity's position is the answer.
-    factors:
-    - Task
-    - Realm.INFORMATION
+    factors: [Task, Realm.INFORMATION]
     given:
       target: Entity
     sought:
       position: Position
     equations:
-    - Position(target) = position
+      - Position(target) = position
+
   EXISTENCE_GOAL:
     description: An object's existence is asserted.
-    factors:
-    - Task
-    - Realm.WORLD
-    - TemporalMode.ACHIEVE
-    - Existence
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence]
     given:
       object: Object
+
   OBJECT_STATE_GOAL:
     description: An object's state is asserted.
-    factors:
-    - Task
-    - Realm.WORLD
+    factors: [Task, Realm.WORLD]
     given:
       object: Object
+
   ENGAGEMENT_COMMAND:
     description: The target's engagement state is asserted.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
+
   PROCESS_COMMAND:
     description: A running process is asserted paused or released.
-    factors:
-    - Command
-    - Paused
+    factors: [Command, Paused]
     given:
       target: Object
       process: Text
+
+  # --- expressions: scheme instances; the expression declares its words ---
+
   MOVE:
     of: POSITION_GOAL
-    binds:
-    - TemporalMode.ACHIEVE
-    words:
-    - TaskIntent.MOVE
+    binds: [TemporalMode.ACHIEVE]
+    words: [TaskIntent.MOVE]
+
   HOLD:
     of: POSITION_GOAL
-    binds:
-    - TemporalMode.MAINTAIN
-    words:
-    - TaskIntent.HOLD
+    binds: [TemporalMode.MAINTAIN]
+    words: [TaskIntent.HOLD]
+
   LOCATE:
     of: POSITION_QUERY
-    binds:
-    - TemporalMode.ACHIEVE
-    words:
-    - TaskIntent.LOCATE
+    binds: [TemporalMode.ACHIEVE]
+    words: [TaskIntent.LOCATE]
+
   TRACK:
     of: POSITION_QUERY
-    binds:
-    - TemporalMode.MAINTAIN
-    words:
-    - TaskIntent.TRACK
+    binds: [TemporalMode.MAINTAIN]
+    words: [TaskIntent.TRACK]
+
   CREATE:
     of: EXISTENCE_GOAL
-    binds:
-    - TruthTarget.TRUE
-    words:
-    - TaskIntent.CREATE
+    binds: [TruthTarget.TRUE]
+    words: [TaskIntent.CREATE]
+
   REMOVE:
     of: EXISTENCE_GOAL
-    binds:
-    - TruthTarget.FALSE
-    words:
-    - TaskIntent.REMOVE
+    binds: [TruthTarget.FALSE]
+    words: [TaskIntent.REMOVE]
+
   MODIFY:
     of: OBJECT_STATE_GOAL
-    binds:
-    - TemporalMode.ACHIEVE
-    words:
-    - TaskIntent.MODIFY
+    binds: [TemporalMode.ACHIEVE]
+    words: [TaskIntent.MODIFY]
+
   PROTECT:
     of: OBJECT_STATE_GOAL
-    binds:
-    - TemporalMode.MAINTAIN
-    words:
-    - TaskIntent.PROTECT
+    binds: [TemporalMode.MAINTAIN]
+    words: [TaskIntent.PROTECT]
+
   ENGAGE:
     of: ENGAGEMENT_COMMAND
-    binds:
-    - TruthTarget.TRUE
-    words:
-    - CommandOperation.ENGAGE
+    binds: [TruthTarget.TRUE]
+    words: [CommandOperation.ENGAGE]
+
   DISENGAGE:
     of: ENGAGEMENT_COMMAND
-    binds:
-    - TruthTarget.FALSE
-    words:
-    - CommandOperation.DISENGAGE
+    binds: [TruthTarget.FALSE]
+    words: [CommandOperation.DISENGAGE]
+
   PAUSE:
     of: PROCESS_COMMAND
-    binds:
-    - TruthTarget.TRUE
-    words:
-    - CommandOperation.PAUSE
+    binds: [TruthTarget.TRUE]
+    words: [CommandOperation.PAUSE]
+
   RESUME:
     of: PROCESS_COMMAND
-    binds:
-    - TruthTarget.FALSE
-    words:
-    - CommandOperation.RESUME
+    binds: [TruthTarget.FALSE]
+    words: [CommandOperation.RESUME]
+
+  # --- expressions declared in full ---
+
   IDENTIFY:
     description: Solve for the identity of an entity.
-    factors:
-    - Task
-    - Realm.INFORMATION
-    - TemporalMode.ACHIEVE
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
       target: Entity
     sought:
       identity: Identity
     equations:
-    - Identity(target) = identity
-    words:
-    - TaskIntent.IDENTIFY
+      - Identity(target) = identity
+    words: [TaskIntent.IDENTIFY]
+
   CLASSIFY:
     description: Solve for the classification of an entity.
-    factors:
-    - Task
-    - Realm.INFORMATION
-    - TemporalMode.ACHIEVE
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
       target: Entity
     sought:
       classification: Classification
     equations:
-    - Classification(target) = classification
-    words:
-    - TaskIntent.CLASSIFY
+      - Classification(target) = classification
+    words: [TaskIntent.CLASSIFY]
+
   FOLLOW:
     description: Follow a path.
-    factors:
-    - Task
-    - Realm.WORLD
-    - TemporalMode.MAINTAIN
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
     given:
       actor: Entity
       path: GeoPath
-    words:
-    - TaskIntent.FOLLOW
+    words: [TaskIntent.FOLLOW]
+
   MEASURE:
     description: Measure a state of a target.
-    factors:
-    - Task
-    - Realm.INFORMATION
-    - TemporalMode.ACHIEVE
+    factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
       target: Entity
     sought:
       measurement: State
-    words:
-    - TaskIntent.MEASURE
+    words: [TaskIntent.MEASURE]
+
   RESTORE:
     description: Return an object to a prior state.
-    factors:
-    - Task
-    - Realm.WORLD
-    - TemporalMode.ACHIEVE
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
     given:
       object: Object
-    words:
-    - TaskIntent.RESTORE
+    words: [TaskIntent.RESTORE]
+
   DENY:
     description: Prevent connectivity to an object.
-    factors:
-    - Task
-    - Realm.WORLD
-    - TemporalMode.MAINTAIN
-    - Connectivity
-    - TruthTarget.FALSE
+    factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN, Connectivity, TruthTarget.FALSE]
     given:
       object: Object
-    words:
-    - TaskIntent.DENY
+    words: [TaskIntent.DENY]
+
   TRANSPORT:
     description: Move a thing between places; which end and what moves are bindings.
-    factors:
-    - Task
-    - Realm.WORLD
-    - TemporalMode.ACHIEVE
+    factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
     given:
       cargo: Object
       origin: Position
       destination: Position
-    words:
-    - TaskIntent.TRANSPORT
+    words: [TaskIntent.TRANSPORT]
+
   SET:
     description: Set a declared state property on the target.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
       property: Text
       value: Scalar
-    words:
-    - CommandOperation.SET
+    words: [CommandOperation.SET]
+
   DIRECT:
     description: Direct the target to a destination or along a path.
-    factors:
-    - Command
-    - TemporalMode.ACHIEVE
+    factors: [Command, TemporalMode.ACHIEVE]
     given:
       target: Object
       destination: Position
@@ -681,45 +771,47 @@ expressions:
       speed: Speed
       yaw: Angle
     equations:
-    - Position(target) = destination
-    words:
-    - CommandOperation.MOVE
+      - Position(target) = destination
+    words: [CommandOperation.MOVE]
+
   ALLOCATE:
     description: Allocate a referenced resource.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
       resource: Resource
       quantity: Count
-    words:
-    - CommandOperation.ALLOCATE
+    words: [CommandOperation.ALLOCATE]
+
   TRANSFER:
     description: Transfer a referenced resource.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
       resource: Resource
       quantity: Count
-    words:
-    - CommandOperation.TRANSFER
+    words: [CommandOperation.TRANSFER]
+
   LOAD_CONFIGURATION:
     description: Load a referenced configuration on the target.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
       parameter: Text
       value: Scalar
-    words:
-    - CommandOperation.LOAD_CONFIGURATION
+    words: [CommandOperation.LOAD_CONFIGURATION]
+
   RESET:
     description: Reset the target to its initial state.
-    factors:
-    - Command
+    factors: [Command]
     given:
       target: Object
-    words:
-    - CommandOperation.RESET
+    words: [CommandOperation.RESET]
+
+# ---------------------------------------------------------------------------
+# External representations supply evidence; mappings associate their values
+# with semantic products. Applying a revised mapping creates an interpretation
+# linked to the original source fact; it does not overwrite that evidence.
+# ---------------------------------------------------------------------------
+
 mappings: {}
