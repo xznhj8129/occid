@@ -16,6 +16,60 @@ EQUATION_RE = re.compile(
     r"\s*=\s*(?P<equals>[A-Za-z_]\w*)\s*$"
 )
 CONSTRAINT_KEYS = ("applies", "requires", "disjoint", "excludes")
+IDENTIFIER_RE = re.compile(r"^[A-Za-z_]\w*$")
+DECLARATION_KEYS = {
+    "axes": {"description", "cardinality", "values", *CONSTRAINT_KEYS},
+    "models": {"description", "parent", "product", "chart", "fields", *CONSTRAINT_KEYS},
+    "expressions": {"description", "of", "binds", "words", "factors", "given", "sought", "equations"},
+    "relations": {"description", "specializes", "operands", "signature"},
+}
+
+
+class SchemaLoader(yaml.SafeLoader):
+    def construct_mapping(self, node, deep=False):
+        seen = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if key in seen:
+                raise ValueError(f"line {key_node.start_mark.line + 1}: duplicate YAML key {key!r}")
+            seen.add(key)
+        return super().construct_mapping(node, deep=deep)
+
+
+def identifier(value: Any, context: str) -> str:
+    if not isinstance(value, str) or not IDENTIFIER_RE.fullmatch(value):
+        raise ValueError(f"{context}: expected identifier, got {value!r}; quote YAML boolean tokens")
+    return value
+
+
+def validate_region(raw: Any, known: set[str], context: str) -> None:
+    if raw is None or isinstance(raw, bool):
+        return
+    if isinstance(raw, str):
+        for term in split_product(raw):
+            if term not in known:
+                raise ValueError(f"{context}: unknown semantic term {term!r}")
+    elif isinstance(raw, list):
+        for item in raw:
+            validate_region(item, known, context)
+    elif isinstance(raw, dict):
+        for operation, item in raw.items():
+            if operation not in {"all", "any", "not", "term", "axis", "const"}:
+                raise ValueError(f"{context}: unknown region operator {operation!r}")
+            validate_region(item, known, context)
+    else:
+        raise ValueError(f"{context}: invalid semantic region {raw!r}")
+
+
+def resolve_expression(name: str, declarations: dict[str, Any], trail: tuple[str, ...] = ()) -> dict[str, Any]:
+    if name in trail:
+        raise ValueError(f"expression scheme cycle: {' -> '.join((*trail, name))}")
+    if name not in declarations:
+        raise ValueError(f"unknown expression scheme {name!r}")
+    spec = declarations[name]
+    if spec.get("of"):
+        return {**resolve_expression(spec["of"], declarations, (*trail, name)), **spec}
+    return dict(spec)
 
 
 def unique(items: list[str]) -> list[str]:
@@ -60,24 +114,29 @@ def parse_enum_items(items: list[str]) -> list[tuple[str, int]]:
     out: list[tuple[str, int]] = []
     next_value = 0
     for raw in items:
-        text = str(raw).strip()
+        if not isinstance(raw, str):
+            raise ValueError(f"enum member must be text, got {raw!r}; quote YAML boolean tokens")
+        text = raw.strip()
         if "=" in text:
             name, value = (part.strip() for part in text.split("=", 1))
             next_value = int(value)
         else:
             name = text
+        identifier(name, "enum member")
+        if any(member == name or number == next_value for member, number in out):
+            raise ValueError(f"duplicate enum member or value: {text!r}")
         out.append((name, next_value))
         next_value += 1
     return out
 
 
-def topo_models(models: dict[str, dict[str, Any]]) -> list[str]:
+def topo_models(models: dict[str, dict[str, Any]], parent_key: str = "parent") -> list[str]:
     result: list[str] = []
     pending = list(models)
     while pending:
         progressed = False
         for name in list(pending):
-            parent = models[name].get("parent")
+            parent = models[name].get(parent_key)
             if parent is None or parent in result:
                 result.append(name)
                 pending.remove(name)
@@ -131,9 +190,11 @@ def py_type(
         "float": "float",
         "int": "int",
         "bool": "bool",
-        "UID": "str",
+        "UID": "UID",
     }
-    if type_expr in known_enums or type_expr in known_models:
+    if type_expr in known_models:
+        return f"Annotated[{type_expr}, SemanticReference({type_expr!r})]", None
+    if type_expr in known_enums:
         return type_expr, None
     if type_expr in primitive:
         return primitive[type_expr], None
@@ -154,7 +215,7 @@ def render_default(
         if default not in members:
             raise ValueError(f"{default!r} is not a member of {base}")
         return f"{base}.{default}"
-    if base in ("string", "UID"):
+    if base == "string":
         return repr(default)
     if base == "float":
         try:
@@ -293,7 +354,10 @@ def normalize_axis(axis: dict[str, Any]) -> dict[str, Any]:
             else:
                 entries.append((raw, None))
     for name, declaration in entries:
-        names.append(str(name))
+        identifier(name, "axis value")
+        if name in names:
+            raise ValueError(f"duplicate axis value {name!r}")
+        names.append(name)
         if declaration:
             value_meta[str(name)] = dict(declaration)
     normalized = dict(axis)
@@ -317,6 +381,7 @@ def normalize_relation(spec: dict[str, Any]) -> dict[str, Any]:
     return {
         "signature": signature,
         "operand_names": operand_names,
+        "specializes": spec.get("specializes"),
     }
 
 
@@ -362,8 +427,21 @@ def charts_entailed(
 
 
 def compile_schema(schema_path: Path, output_dir: Path) -> None:
-    schema = yaml.safe_load(schema_path.read_text())
-    output_dir.mkdir(parents=True, exist_ok=True)
+    schema = yaml.load(schema_path.read_text(), Loader=SchemaLoader)
+    if not isinstance(schema, dict) or schema.get("type") != "schema" or schema.get("version") != 2:
+        raise ValueError("expected a version 2 schema mapping")
+    for section in ("axes", "enums", "models", "relations", "aliases", "expressions"):
+        if not isinstance(schema.get(section, {}), dict):
+            raise ValueError(f"schema section {section} must be a mapping")
+        for name in schema.get(section, {}):
+            identifier(name, section)
+            if section in DECLARATION_KEYS:
+                spec = schema[section][name]
+                if not isinstance(spec, dict):
+                    raise ValueError(f"{section} {name}: declaration must be a mapping")
+                unknown = set(spec) - DECLARATION_KEYS[section]
+                if unknown:
+                    raise ValueError(f"{section} {name}: unknown declaration keys {sorted(unknown)}")
 
     axes: dict[str, dict[str, Any]] = {
         name: normalize_axis(axis) for name, axis in (schema.get("axes") or {}).items()
@@ -389,6 +467,19 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     }
 
     order = topo_models(models)
+    known_terms = set(models) | set(axes) | set(schema.get("aliases", {}))
+    known_terms.update(f"{axis}.{value}" for axis, spec in axes.items() for value in spec["values"])
+    for name, spec in models.items():
+        for key in ("product", "chart", *CONSTRAINT_KEYS):
+            validate_region(spec.get(key), known_terms, f"model {name} {key}")
+    for name, spec in axes.items():
+        if spec.get("cardinality", "many") not in {"one", "many"}:
+            raise ValueError(f"axis {name}: cardinality must be one or many")
+        for key in CONSTRAINT_KEYS:
+            validate_region(spec.get(key), known_terms, f"axis {name} {key}")
+        for value, declaration in spec.get("value_meta", {}).items():
+            for key in CONSTRAINT_KEYS:
+                validate_region(declaration.get(key), known_terms, f"axis {name}.{value} {key}")
     semantics = model_semantics(models, order)
     known_enums = set(enums)
     known_models = set(models)
@@ -397,11 +488,23 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         for region in relation["signature"]:
             if region not in models:
                 raise ValueError(f"relation {relation_name}: unknown operand region {region!r}")
+    relation_order = topo_models(relation_specs, "specializes")
+    for name in relation_order:
+        spec = relation_specs[name]
+        base_name = spec["specializes"]
+        if base_name:
+            base = relation_specs[base_name]
+            if len(spec["signature"]) != len(base["signature"]):
+                raise ValueError(f"relation {name}: specialization must preserve {base_name} arity")
+            for actual, expected in zip(spec["signature"], base["signature"]):
+                if expected not in semantic_closure([actual], semantics, models):
+                    raise ValueError(f"relation {name}: {actual} does not specialize {expected}")
 
     charts = compile_charts(schema.get("charts") or {}, semantics)
 
     raw_aliases: dict[str, list[str]] = dict(schema.get("aliases") or {})
     for alias_name in raw_aliases:
+        validate_region(raw_aliases[alias_name], known_terms, f"alias {alias_name}")
         if alias_name in models or alias_name in enums:
             raise ValueError(f"alias collides with a class or enum: {alias_name}")
     aliases = resolve_aliases(raw_aliases, semantics)
@@ -415,6 +518,12 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         bound_factors: list[str],
         words: list[str],
     ) -> None:
+        for key in ("factors", "binds"):
+            validate_region(spec.get(key), known_terms, f"expression {name} {key}")
+        for key in ("given", "sought"):
+            for role, region in (spec.get(key) or {}).items():
+                identifier(role, f"expression {name} variable")
+                validate_region(region, known_terms, f"expression {name} {role}")
         # Variable regions stay as authored; binding validation compares a
         # region against the semantic closure of the bound value.
         given = {
@@ -428,9 +537,16 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         equations: list[dict[str, str]] = []
         for raw in spec.get("equations") or []:
             parsed = parse_equation(raw)
-            if parsed is not None:
-                equations.append(parsed)
+            if parsed is None:
+                raise ValueError(f"expression {name}: invalid equation {raw!r}")
+            if parsed["of"] not in given or parsed["equals"] not in {**given, **sought}:
+                raise ValueError(f"expression {name}: equation references an undeclared variable: {raw!r}")
+            equations.append(parsed)
         for word in words:
+            if len(word.split(".")) != 2:
+                raise ValueError(f"expression {name}: word must be Vocabulary.MEMBER, got {word!r}")
+            for part in word.split("."):
+                identifier(part, f"expression {name} word")
             if word in word_expressions:
                 raise ValueError(f"word {word!r} names more than one expression")
             word_expressions[word] = name
@@ -446,10 +562,8 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             "words": words,
         }
 
-    for expression_name, spec in (schema.get("expressions") or {}).items():
-        if spec.get("of"):
-            scheme = schema["expressions"][spec["of"]]
-            spec = {**scheme, **spec}
+    for expression_name in (schema.get("expressions") or {}):
+        spec = resolve_expression(expression_name, schema["expressions"])
         bound_factors = product_terms(spec.get("binds"))
         # A form is one expression. A `words:` mapping binds the dimensions
         # each word fixes and compiles one expression per word; an unmapped
@@ -498,6 +612,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
 
     def declare(kind: str, names: Any) -> None:
         for name in names:
+            identifier(name, kind)
             other = declared.setdefault(str(name), kind)
             if other != kind:
                 raise ValueError(f"{name!r} is declared as both {other} and {kind}")
@@ -512,6 +627,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     # -- models ------------------------------------------------------------
 
     charts_by_display = {chart["display"]: chart for chart in charts}
+    model_ids = {name: index for index, name in enumerate(sorted(models), 1)}
     model_entries: dict[str, dict[str, Any]] = {}
     for name in order:
         spec = models[name]
@@ -539,7 +655,14 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         fields: list[dict[str, Any]] = []
         seen: set[str] = set()
         for field_name, raw in (spec.get("fields") or {}).items():
-            fields.append({"name": field_name, **normalize_field(raw)})
+            identifier(field_name, f"model {name} field")
+            normalized = normalize_field(raw)
+            if field_name == "uid" or field_name.endswith("_uid"):
+                if normalized["type"].removeprefix("optional ") != "UID":
+                    raise ValueError(f"{name}.{field_name}: identity field must be UID")
+            if field_name.endswith("_uids") and normalized["type"].removeprefix("optional ") != "list[UID]":
+                raise ValueError(f"{name}.{field_name}: identity list must be list[UID]")
+            fields.append({"name": field_name, **normalized})
             seen.add(field_name)
         for chart in selected:
             for coord in chart["coords"]:
@@ -556,6 +679,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
                     }
                 )
         model_entries[name] = {
+            "model_id": model_ids[name],
             "parent": spec.get("parent"),
             "semantics": semantics[name],
             "fields": fields,
@@ -565,11 +689,15 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
             ],
             **{key: spec[key] for key in CONSTRAINT_KEYS if spec.get(key)},
         }
+        inherited = {field["name"]: field for field in model_entries[parent]["effective_fields"]} if parent else {}
+        inherited.update({field["name"]: field for field in fields})
+        model_entries[name]["effective_fields"] = list(inherited.values())
 
     # -- registry ----------------------------------------------------------
 
     registry = {
         "axes": axes,
+        "enums": {name: dict(parse_enum_items(items)) for name, items in enums.items()},
         "models": model_entries,
         "charts": charts,
         "expressions": expressions,
@@ -578,9 +706,6 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         "relations": relation_specs,
     }
 
-    (output_dir / "semantic_registry.json").write_text(
-        json.dumps(registry, indent=2, sort_keys=True) + "\n"
-    )
 
     # -- generated python --------------------------------------------------
 
@@ -588,10 +713,10 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         "# GENERATED FILE - DO NOT EDIT",
         "from __future__ import annotations",
         "",
-        "from dataclasses import dataclass, field",
-        "from typing import Any, ClassVar",
+        "from typing import Annotated, Any, ClassVar",
+        "from pydantic import Field",
         "",
-        "from runtime import (",
+        "from ..runtime import (",
         "    AxisValue,",
         "    Equation,",
         "    ExpressionType,",
@@ -599,8 +724,10 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         "    SemanticAxis,",
         "    SemanticEnum,",
         "    SemanticModel,",
+        "    SemanticReference,",
         "    SemanticRegistry,",
         "    Store,",
+        "    UID,",
         "    product_names,",
         ")",
         "",
@@ -676,15 +803,15 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     for alias_name, terms in aliases.items():
         lines += [f"{alias_name} = {product_literal(terms)}", ""]
 
-    def emit_dataclass(
+    def emit_model(
         name: str,
         parent: str,
         semantics_terms: list[str],
         fields: list[dict[str, Any]],
         charts: list[str],
     ) -> None:
-        lines.append("@dataclass(kw_only=True)")
         lines.append(f"class {name}({parent}):")
+        lines.append(f"    _model_id: ClassVar[int] = {model_ids[name]}")
         lines.append(f"    _semantics: ClassVar = {product_literal(semantics_terms)}")
         lines.append(
             f"    _declared_fields: ClassVar[tuple[str, ...]] = {tuple(f['name'] for f in fields)!r}"
@@ -706,7 +833,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
                 )
                 lines.append(f"    {field_name}: {annotation} = {default_py}")
             elif inferred_default == "factory:list":
-                lines.append(f"    {field_name}: {annotation} = field(default_factory=list)")
+                lines.append(f"    {field_name}: {annotation} = Field(default_factory=list)")
             elif inferred_default == "None":
                 lines.append(f"    {field_name}: {annotation} = None")
             else:
@@ -716,7 +843,7 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     for name in order:
         spec = models[name]
         try:
-            emit_dataclass(
+            emit_model(
                 name,
                 spec.get("parent") or "SemanticModel",
                 semantics[name],
@@ -726,13 +853,16 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
         except ValueError as exc:
             raise ValueError(f"model {name}: {exc}") from exc
 
-    for relation_name, spec in relation_specs.items():
+    for relation_name in relation_order:
+        spec = relation_specs[relation_name]
         signature = ", ".join(spec["signature"])
         if len(spec["signature"]) == 1:
             signature += ","
         kwargs = ""
         if spec["operand_names"]:
             kwargs += f", operand_names={tuple(spec['operand_names'])!r}"
+        if spec["specializes"]:
+            kwargs += f", specializes={spec['specializes']}"
         lines.append(
             f"{relation_name} = RelationType({relation_name!r}, ({signature}){kwargs})"
         )
@@ -741,19 +871,33 @@ def compile_schema(schema_path: Path, output_dir: Path) -> None:
     lines += [
         f"REGISTRY_SPEC = {registry!r}",
         "REGISTRY = SemanticRegistry(REGISTRY_SPEC)",
+        f"MODEL_BY_ID = {{{', '.join(f'{model_ids[name]}: {name}' for name in sorted(models))}}}",
+        "REGISTRY.model_types = MODEL_BY_ID",
+        "for model in MODEL_BY_ID.values():",
+        "    model._registry = REGISTRY",
+        "    model.model_rebuild()",
         "",
         "def new_store() -> Store:",
         "    return Store(REGISTRY)",
         "",
+        "def decode(payload: bytes) -> SemanticModel:",
+        "    from ..wire import decode as decode_wire",
+        "    return decode_wire(payload, REGISTRY)",
+        "",
+        f"__all__ = {sorted(set(models) | set(enums) | set(axes) | set(aliases) | set(expressions) | set(relation_specs) | {'UID', 'REGISTRY', 'REGISTRY_SPEC', 'MODEL_BY_ID', 'new_store', 'decode'})!r}",
     ]
 
+    output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "occid2.py").write_text("\n".join(lines))
+    (output_dir / "semantic_registry.json").write_text(json.dumps(registry, indent=2, sort_keys=True) + "\n")
+    from generate_typescript import generate_typescript
+    generate_typescript(registry, output_dir / "occid2.ts")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("schema", type=Path, nargs="?", default=Path("occid2.schema.yaml"))
-    parser.add_argument("--out", type=Path, default=Path("generated"))
+    parser.add_argument("--out", type=Path, default=Path("occid2/generated"))
     args = parser.parse_args()
     compile_schema(args.schema, args.out)
 

@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import hashlib
 import tempfile
-from dataclasses import fields
 from pathlib import Path
 
 from compiler import compile_schema
-from runtime import Product, sem, value_semantics
-import generated.occid2 as occid2
-from generated.occid2 import (
+from occid2 import Product, sem, value_semantics
+import occid2
+from occid2 import (
+    UID,
     AirTask,
     Airframe,
     Altitude,
@@ -22,6 +22,7 @@ from generated.occid2 import (
     Condition,
     ConstrainedBy,
     Directive,
+    Directed,
     Drone,
     Geodetic,
     GlobalPosition,
@@ -58,13 +59,21 @@ def check(condition: bool, message: str) -> None:
 
 
 def main() -> None:
+    uav_1_uid = UID.new()
+    task_move_1_uid = UID.new()
+    mark_alpha_uid = UID.new()
+    target_42_uid = UID.new()
+    task_locate_1_uid = UID.new()
+    task_cmd_1_uid = UID.new()
+    window_1_uid = UID.new()
+    auth_1_uid = UID.new()
     store = new_store()
     registry = store.registry
 
     # 1. Parentage provides inherited fields; the word is the only taxonomy.
-    task_fields = {field.name for field in fields(Task)}
+    task_fields = set(Task.model_fields)
     check({"uid", "instruction", "intent", "priority", "status"} <= task_fields, "Task field inheritance failed")
-    check({"uid", "operation"} <= {field.name for field in fields(Command)}, "Command carries only its word")
+    check({"uid", "operation"} <= set(Command.model_fields), "Command carries only its word")
 
     # 2. Aliases are products, not classes. Recursive expansion is canonical.
     check(isinstance(Drone, Product), "Drone must be a product, not a class")
@@ -88,12 +97,12 @@ def main() -> None:
     check(not registry.legal(sem(Machine, Actor)), "Machine * Actor clashes on Substrate")
 
     # 6. Charts produce irreducible variables; units stay metadata.
-    check({field.name for field in fields(GlobalPosition)} == {"lat", "lon", "h"}, "geodetic chart fields")
+    check(set(GlobalPosition.model_fields) == {"lat", "lon", "h"}, "geodetic chart fields")
     check(GlobalPosition._units == {"lat": "deg", "lon": "deg", "h": "m"}, "geodetic chart units")
-    check({field.name for field in fields(LocalPosition)} == {"x", "y", "z"}, "local cartesian chart fields")
-    check({field.name for field in fields(Mark)} == {"uid", "name", "lat", "lon", "h"}, "Mark compiles its chart")
+    check(set(LocalPosition.model_fields) == {"x", "y", "z"}, "local cartesian chart fields")
+    check(set(Mark.model_fields) == {"uid", "name", "lat", "lon", "h"}, "Mark compiles its chart")
 
-    uav = store.ref("uav-1", UnmannedVehicle)
+    uav = store.ref(uav_1_uid, UnmannedVehicle)
     uav.set(GlobalPosition(lat=36.530440, lon=-83.216383, h=125.0))
 
     # 7. The representation is selected by factors, not by class paths.
@@ -107,7 +116,7 @@ def main() -> None:
 
     # 9. A word names an expression; the task realizes it.
     move = store.task(
-        "task-move-1", Task, TaskIntent.MOVE, instruction="move to mark alpha"
+        task_move_1_uid, Task, TaskIntent.MOVE, instruction="move to mark alpha"
     )
     check(registry.expression_of(TaskIntent.MOVE) == MOVE, "MOVE word must name MOVE expression")
     check(
@@ -128,15 +137,15 @@ def main() -> None:
         pass
     else:
         raise AssertionError("a vehicle does not satisfy the Position region")
-    mark_ref = store.ref("mark-alpha", Mark)
-    mark_ref.set(Mark(uid="mark-alpha", name="alpha", lat=36.530240, lon=-83.216183, h=110.0))
+    mark_ref = store.ref(mark_alpha_uid, Mark)
+    mark_ref.set(Mark(uid=mark_alpha_uid, name="alpha", lat=36.530240, lon=-83.216183, h=110.0))
     move.bind("destination", mark_ref)
     check(move.unbound == [], "all variables bound")
 
     # 10. An unbound variable is an unknown, not an error.
-    target = store.ref("target-42", UnmannedVehicle)
+    target = store.ref(target_42_uid, UnmannedVehicle)
     locate = store.task(
-        "task-locate-1", Task, TaskIntent.LOCATE, instruction="locate target-42"
+        task_locate_1_uid, Task, TaskIntent.LOCATE, instruction="locate target-42"
     )
     locate.bind("target", target)
     check(locate.solve() == {}, "an entity without a position has an unknown answer")
@@ -147,7 +156,7 @@ def main() -> None:
 
     # 11. Relations are directed, roles are named, and operands are validated.
     fact = store.relate(AssignedWork, uav, move.ref)
-    check(str(fact) == "AssignedWork(assignee=uav-1, work=task-move-1)", "named roles failed")
+    check(str(fact) == f"AssignedWork(assignee={uav_1_uid}, work={task_move_1_uid})", "named roles failed")
     check(fact.operands == (uav, move.ref), "relation operand order lost")
     try:
         AssignedWork(move.ref, uav)
@@ -156,6 +165,7 @@ def main() -> None:
     else:
         raise AssertionError("reversed AssignedWork must fail")
     check(fact in store.relations(AssignedWork), "relation query must see facts")
+    check(fact in store.relations(Directed), "base relation query must see specializations")
 
     # 12. Applicability is emergent and never asserts.
     check(not registry.entails(sem(Altitude), PhysicalDomain.AIR), "applicability must not assert")
@@ -168,17 +178,17 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
         compile_schema(ROOT / "occid2.schema.yaml", Path(a))
         compile_schema(ROOT / "occid2.schema.yaml", Path(b))
-        for filename in ("occid2.py", "semantic_registry.json"):
+        for filename in ("occid2.py", "semantic_registry.json", "occid2.ts"):
             ha = hashlib.sha256((Path(a) / filename).read_bytes()).digest()
             hb = hashlib.sha256((Path(b) / filename).read_bytes()).digest()
             check(ha == hb, f"nondeterministic compiler output: {filename}")
-            check((ROOT / "generated" / filename).read_bytes() == (Path(a) / filename).read_bytes(), f"stale generated output: {filename}")
+            check((ROOT / "occid2" / "generated" / filename).read_bytes() == (Path(a) / filename).read_bytes(), f"stale generated output: {filename}")
 
     # 14. Every word resolves to an expression; a command carries only its word.
     for word in REGISTRY_SPEC["word_expressions"]:
         enum_name, member = word.split(".", 1)
         registry.expression_of(getattr(getattr(occid2, enum_name), member))
-    cmd = store.task("task-cmd-1", Command, CommandOperation.MOVE)
+    cmd = store.task(task_cmd_1_uid, Command, CommandOperation.MOVE)
     check(cmd.expression.name == "DIRECT", "MOVE word must name the DIRECT expression")
     cmd.bind("target", uav)
     cmd.bind("destination", mark_ref)
@@ -192,14 +202,14 @@ def main() -> None:
     check(registry.legal(sem(WeatherLimits, PhysicalDomain.AIR)), "weather limits are meaningful")
 
     # 16. The surviving relations validate their roles.
-    window = store.ref("window-1", TaskTimeWindow)
+    window = store.ref(window_1_uid, TaskTimeWindow)
     window.set(TaskTimeWindow(earliest_start=1.0))
     check(window.get(TaskTimeWindow).earliest_start == 1.0, "scalar time survives store retrieval")
     check(move.ref.get(Task).instruction == "move to mark alpha", "primitive instruction survives store retrieval")
     check(mark_ref.get(Mark).name == "alpha", "primitive name survives store retrieval")
     store.relate(ConstrainedBy, cmd.ref, window)
-    authority = store.ref("auth-1", Authority)
-    authority.set(Authority(uid="auth-1"))
+    authority = store.ref(auth_1_uid, Authority)
+    authority.set(Authority(uid=auth_1_uid))
     store.relate(Holds, authority, uav)
     check(len(store.relations()) >= 3, "facts are queryable")
     try:
@@ -223,6 +233,8 @@ def main() -> None:
         "MetadataValue",
         "SuccessCriterion",
         "TaskPhase",
+        "Record",
+        "StrID",
     ):
         check(not hasattr(occid2, retired), f"nominal scaffolding {retired} must be gone")
     check(registry.entails(sem(Task), Directive), "a task is directed work")

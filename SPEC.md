@@ -348,12 +348,12 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 | --- | --- |
 | `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
 | `enums` + expression `words` | authored enums are closed value vocabularies; word vocabularies compile from the words expressions declare, and each word entails its expression's factors |
-| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form; a chart that names a model compiles that model as a derived artifact |
-| `relations` | named ordered operands; declared once, no specialization |
-| `expressions` | fixed factors + typed free variables + equations; `words:` binds dimensions and compiles one expression per word |
-| `models` | named products and carriers; parent entailment; `product:` expansion; chart applications are compiled, not authored |
+| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form |
+| `relations` | named ordered operands; specialization preserves operand order |
+| `expressions` | fixed factors + typed free variables + equations; `of:` selects a scheme; `binds:` fixes factors; `words:` names the expression |
+| `models` | named products and carriers; parent entailment; `product:` expansion; `chart:` selects a chart |
 | `aliases` | class-free named products, resolved recursively |
 
-`generated/occid2.py` and `generated/semantic_registry.json` are deterministic
+`occid2/generated/occid2.py` and `occid2/generated/semantic_registry.json` are deterministic
 outputs. The compiler produces no rules block, no role flags, and no second
 class hierarchy.

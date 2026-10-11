@@ -730,23 +730,11 @@ models:
   # The word is the whole verb taxonomy: `Task.intent` and `Command.operation`
   # carry a vocabulary member, the member names an expression, and the
   # expression entails its factors. Verb parameters are typed free variables;
-  # records, constraints, objectives, authorities, and plans are value models;
+  # constraints, objectives, authorities, and plans are value models;
   # links between independently existing things are relations with named roles.
   # ===========================================================================
 
   # --- value models ----------------------------------------------------------
-
-  Record:
-    description: Provenance and revision metadata for a stored thing.
-    parent: Data
-    fields:
-      uid: UID
-      id: optional int
-      revision: optional int
-      created_ts: float[s]
-      updated_ts: float[s]
-      origin_system: string
-      provenance: list[string]
 
   Time:
     description: A point on the time line.
@@ -769,7 +757,7 @@ models:
     description: Atomic condition; a quantity of a subject compared against a value.
     parent: Condition
     fields:
-      subject: optional UID
+      subject_uid: optional UID
       quantity: optional string
       value: optional float
 
@@ -832,9 +820,7 @@ models:
     description: Desired end state; the condition that should hold, the criteria that decide it, priority, and deadline.
     parent: Control
     fields:
-      record: optional Record
       uid: UID
-      id: optional int
       name: string
       condition: optional Condition
       criteria: list[Condition]
@@ -860,9 +846,7 @@ models:
     description: Command, permission, delegation, or control-right context for directed work.
     parent: Control
     fields:
-      record: optional Record
       uid: UID
-      id: optional int
       role: optional Role
 
   Lease:
@@ -880,9 +864,7 @@ models:
     description: Proposed or approved method for accomplishing work.
     parent: Control
     fields:
-      record: optional Record
       uid: UID
-      id: optional int
       name: optional string
       approval_state: PlanApprovalState = DRAFT
 
@@ -907,4 +889,3 @@ aliases:
   LocalCartesian: [Representation.LocalCartesian]
   LocalEuler: [Representation.LocalEuler]
   Quaternion: [Representation.Quaternion]
-  Epoch: [Representation.Epoch]

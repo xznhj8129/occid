@@ -1,8 +1,12 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, fields, is_dataclass
+from dataclasses import dataclass
 from enum import Enum
-from typing import Any, ClassVar, Iterable, get_type_hints
+from typing import Any, ClassVar, Iterable
+from uuid import UUID, uuid4
+
+from pydantic import BaseModel, ConfigDict
+from pydantic_core import core_schema
 
 MAX_SOLVER_DEPTH = 48
 MAX_CANDIDATES = 128
@@ -72,7 +76,29 @@ def sem(*terms: Any) -> Product:
     return out
 
 
-class SemanticModelMeta(type):
+class UID(bytes):
+    """Exact binary identity; readable names and external references are strings."""
+
+    def __new__(cls, value: bytes):
+        if not isinstance(value, bytes) or len(value) != 16:
+            raise ValueError("UID requires exactly 16 bytes")
+        return super().__new__(cls, value)
+
+    @classmethod
+    def new(cls) -> "UID":
+        return cls(uuid4().bytes)
+
+    def __str__(self) -> str:
+        return str(UUID(bytes=bytes(self)))
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source, handler):
+        return core_schema.no_info_after_validator_function(
+            cls, core_schema.bytes_schema(strict=True, min_length=16, max_length=16)
+        )
+
+
+class SemanticModelMeta(type(BaseModel)):
     def __mul__(cls, other: Any) -> Product:
         return sem(cls) * other
 
@@ -80,8 +106,44 @@ class SemanticModelMeta(type):
         return sem(other) * cls
 
 
-class SemanticModel(metaclass=SemanticModelMeta):
+class SemanticModel(BaseModel, metaclass=SemanticModelMeta):
+    model_config = ConfigDict(
+        strict=True, extra="forbid", validate_assignment=True, validate_default=True, allow_inf_nan=False
+    )
     _semantics: ClassVar[Product] = EMPTY
+    _model_id: ClassVar[int]
+    _registry: ClassVar["SemanticRegistry"]
+
+    def encode(self) -> bytes:
+        from .wire import encode
+        return encode(self)
+
+    @classmethod
+    def decode(cls, payload: bytes) -> "SemanticModel":
+        from .wire import decode
+        value = decode(payload, cls._registry)
+        if type(value) is not cls:
+            raise ValueError(f"payload contains {type(value).__name__}, expected {cls.__name__}")
+        return value
+
+
+class SemanticReference:
+    """Validate a field against its declared semantic region."""
+
+    def __init__(self, expected: str):
+        self.expected = expected
+
+    def __get_pydantic_core_schema__(self, source, handler):
+        def validate(value):
+            if not isinstance(value, SemanticModel):
+                raise ValueError(f"expected semantic {self.expected} value")
+            registry = type(value)._registry
+            if not registry.entails(value_semantics(value), self.expected):
+                raise ValueError(f"{type(value).__name__} does not satisfy {self.expected}")
+            return value
+        return core_schema.no_info_after_validator_function(
+            validate, core_schema.is_instance_schema(SemanticModel)
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -254,6 +316,15 @@ class RelationType:
     name: str
     signature: tuple[type[SemanticModel], ...]
     operand_names: tuple[str, ...] = ()
+    specializes: "RelationType | None" = None
+
+    def is_a(self, other: "RelationType") -> bool:
+        current = self
+        while current is not None:
+            if current is other:
+                return True
+            current = current.specializes
+        return False
 
     def __call__(self, *operands: "ModelRef") -> RelationFact:
         if len(operands) != len(self.signature):
@@ -432,7 +503,7 @@ def _render_binding(value: Any) -> str:
 
 @dataclass(slots=True)
 class StoredDatum:
-    subject_uid: str
+    subject_uid: UID
     representation: type[SemanticModel]
     semantics: Product
     value: SemanticModel
@@ -441,6 +512,7 @@ class StoredDatum:
 class SemanticRegistry:
     def __init__(self, spec: dict[str, Any], active_profiles: Iterable[str] = ()):
         self.spec = spec
+        self.model_types: dict[int, type[SemanticModel]] = {}
         self.active_profiles = tuple(active_profiles)
 
         self.axis_of_value: dict[str, str] = {}
@@ -756,16 +828,14 @@ class AmbiguousSemanticMatch(LookupError):
 
 
 class ModelRef:
-    def __init__(self, store: "Store", uid: str, model: type[SemanticModel]):
+    def __init__(self, store: "Store", uid: UID, model: type[SemanticModel]):
         self.store = store
-        self.uid = uid
+        self.uid = UID(uid)
         self.model = model
 
     @property
     def fields(self) -> tuple[str, ...]:
-        if not is_dataclass(self.model):
-            return ()
-        return tuple(f.name for f in fields(self.model))
+        return tuple(self.model.model_fields)
 
     @property
     def semantics(self) -> Product:
@@ -795,14 +865,25 @@ class ModelRef:
 class Store:
     def __init__(self, registry: SemanticRegistry):
         self.registry = registry
-        self._data: dict[str, list[StoredDatum]] = {}
-        self._assertions: dict[str, Product] = {}
+        self._data: dict[UID, list[StoredDatum]] = {}
+        self._assertions: dict[UID, Product] = {}
         self._relations: list[RelationFact] = []
 
-    def ref(self, uid: str, model: type[SemanticModel]) -> ModelRef:
+    def ref(self, uid: UID, model: type[SemanticModel]) -> ModelRef:
+        uid = UID(uid)
+        candidate = model._semantics | self._assertions.get(uid, EMPTY)
+        if not self.registry.legal(candidate):
+            raise ValueError(f"{uid}: incompatible subject semantics {candidate}")
+        self._assertions[uid] = candidate
         return ModelRef(self, uid, model)
 
     def set(self, subject: ModelRef, value: SemanticModel, *qualifiers: Any) -> SemanticModel:
+        if subject.store is not self:
+            raise ValueError("subject reference belongs to another store")
+        if not isinstance(value, SemanticModel):
+            raise TypeError("stored value must be a semantic model")
+        if hasattr(value, "uid") and value.uid is not None and value.uid != subject.uid:
+            raise ValueError(f"subject {subject.uid} does not match value UID {value.uid}")
         rep = type(value)
         semantics = value_semantics(value) | sem(*qualifiers)
         if not self.registry.legal(semantics):
@@ -835,7 +916,7 @@ class Store:
             )
         return found[0]
 
-    def get_many(self, subjects: Iterable[ModelRef], *query: Any) -> dict[str, SemanticModel]:
+    def get_many(self, subjects: Iterable[ModelRef], *query: Any) -> dict[UID, SemanticModel]:
         return {subject.uid: self.get(subject, *query) for subject in subjects}
 
     def value_of(self, subject: ModelRef, region: Any) -> SemanticModel | ModelRef | None:
@@ -858,36 +939,24 @@ class Store:
             )
         return unique_found[0]
 
-    def task(self, uid: str, model: type[SemanticModel], word: Any, **values: Any) -> OpenExpression:
+    def task(self, uid: UID, model: type[SemanticModel], word: Any, **values: Any) -> OpenExpression:
         # A task is a representation of an open expression: the word selects
         # the expression, the value carries the fixed semantic factors, and
         # bindings carry the free variables. When the word is a vocabulary
         # member, it is stored in the representation field that carries it.
         expression = self.registry.expression_of(word)
         if isinstance(word, SemanticEnum):
-            wanted = type(word).__name__
-            optional_types = (f"{wanted} | None", f"optional {wanted}")
-            for field in fields(model):
-                if field.name in values:
+            for name, field in model.model_fields.items():
+                if name in values:
                     continue
-                if field.type == wanted or field.type in optional_types:
-                    values[field.name] = word
-        value = model(**{**values, "uid": self._identity_value(model, uid)})
+                if field.annotation is type(word):
+                    values[name] = word
+        value = model(**{**values, "uid": uid})
         ref = self.ref(uid, model)
         self.set(ref, value)
         if not self.registry.entails(value_semantics(value), expression.factors):
             raise ValueError(f"{model.__name__} does not realize {expression.name}")
         return OpenExpression(self, ref, expression)
-
-    def _identity_value(self, model: type[SemanticModel], uid: str) -> Any:
-        # A model's `uid` field is an identity representation (a chart model),
-        # not a bare string; wrap the pointer value before construction.
-        annotation = get_type_hints(model).get("uid")
-        if isinstance(annotation, type) and issubclass(annotation, SemanticModel):
-            coordinate_names = [field.name for field in fields(annotation)]
-            if len(coordinate_names) == 1:
-                return annotation(**{coordinate_names[0]: uid})
-        return uid
 
     def relate(self, relation: RelationType, *operands: ModelRef) -> RelationFact:
         fact = relation(*operands)
@@ -897,7 +966,7 @@ class Store:
     def relations(self, relation: RelationType | None = None) -> list[RelationFact]:
         if relation is None:
             return list(self._relations)
-        return [fact for fact in self._relations if fact.relation is relation]
+        return [fact for fact in self._relations if fact.relation.is_a(relation)]
 
 
 def value_semantics(value: SemanticModel, _seen: frozenset[int] | None = None) -> Product:
@@ -906,16 +975,15 @@ def value_semantics(value: SemanticModel, _seen: frozenset[int] | None = None) -
         return EMPTY
     seen = seen | {id(value)}
     out = type(value)._semantics
-    if is_dataclass(value):
-        for field in fields(value):
-            out = out | _nested_semantics(getattr(value, field.name), seen)
+    for name in type(value).model_fields:
+        out = out | _nested_semantics(getattr(value, name), seen)
     return out
 
 
 def _nested_semantics(item: Any, seen: frozenset[int]) -> Product:
     if isinstance(item, SemanticEnum):
         return item._semantics
-    if isinstance(item, SemanticModel) and is_dataclass(item):
+    if isinstance(item, SemanticModel):
         return value_semantics(item, seen)
     if isinstance(item, (list, tuple)):
         out = EMPTY

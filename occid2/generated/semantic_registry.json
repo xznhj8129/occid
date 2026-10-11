@@ -16,9 +16,6 @@
       "PhysicalDomain.AIR",
       "Airframe.MULTIROTOR"
     ],
-    "Epoch": [
-      "Representation.Epoch"
-    ],
     "Geodetic": [
       "Representation.Geodetic"
     ],
@@ -290,6 +287,73 @@
       ]
     }
   ],
+  "enums": {
+    "BooleanOperator": {
+      "AND": 2,
+      "NAND": 5,
+      "NONE": 0,
+      "NOR": 6,
+      "NOT": 1,
+      "OR": 3,
+      "XNOR": 7,
+      "XOR": 4
+    },
+    "CommandOperation": {
+      "ALLOCATE": 6,
+      "DISENGAGE": 1,
+      "ENGAGE": 0,
+      "LOAD_CONFIGURATION": 8,
+      "MOVE": 5,
+      "PAUSE": 2,
+      "RESET": 9,
+      "RESUME": 3,
+      "SET": 4,
+      "TRANSFER": 7
+    },
+    "ControlLevel": {
+      "FULL": 3,
+      "GUIDE": 2,
+      "MONITOR": 1,
+      "NONE": 0
+    },
+    "PlanApprovalState": {
+      "APPROVED": 2,
+      "DRAFT": 0,
+      "PROPOSED": 1,
+      "REJECTED": 3,
+      "SUPERSEDED": 4
+    },
+    "TaskIntent": {
+      "CLASSIFY": 9,
+      "CREATE": 4,
+      "DENY": 13,
+      "FOLLOW": 10,
+      "HOLD": 1,
+      "IDENTIFY": 8,
+      "LOCATE": 2,
+      "MEASURE": 11,
+      "MODIFY": 6,
+      "MOVE": 0,
+      "PROTECT": 7,
+      "REMOVE": 5,
+      "RESTORE": 12,
+      "TRACK": 3,
+      "TRANSPORT": 14
+    },
+    "TaskPriority": {
+      "HIGH": 1,
+      "IMMEDIATE": 2,
+      "ROUTINE": 0
+    },
+    "TaskStatus": {
+      "ACCEPTED": 5,
+      "ACTIVE": 1,
+      "CANCELLED": 4,
+      "COMPLETE": 2,
+      "FAILED": 3,
+      "NEW": 0
+    }
+  },
   "expressions": {
     "ALLOCATE": {
       "description": "Allocate a referenced resource.",
@@ -973,7 +1037,9 @@
   "models": {
     "Activity": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 1,
       "parent": "State",
       "semantics": [
         "Activity"
@@ -981,6 +1047,26 @@
     },
     "Actor": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "role",
+          "type": "optional Role",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -989,6 +1075,7 @@
           "unit": null
         }
       ],
+      "model_id": 2,
       "parent": "Person",
       "semantics": [
         "Substrate.BIOLOGICAL",
@@ -1000,7 +1087,9 @@
         "PhysicalDomain.AIR"
       ],
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 3,
       "parent": "State",
       "semantics": [
         "Altitude"
@@ -1008,7 +1097,9 @@
     },
     "Angle": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 4,
       "parent": "State",
       "semantics": [
         "Angle"
@@ -1016,7 +1107,9 @@
     },
     "Attitude": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 5,
       "parent": "State",
       "semantics": [
         "Attitude"
@@ -1024,23 +1117,11 @@
     },
     "Authority": {
       "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "record",
-          "type": "optional Record",
-          "unit": null
-        },
+      "effective_fields": [
         {
           "default": null,
           "name": "uid",
           "type": "UID",
-          "unit": null
-        },
-        {
-          "default": null,
-          "name": "id",
-          "type": "optional int",
           "unit": null
         },
         {
@@ -1050,6 +1131,21 @@
           "unit": null
         }
       ],
+      "fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "role",
+          "type": "optional Role",
+          "unit": null
+        }
+      ],
+      "model_id": 6,
       "parent": "Control",
       "semantics": [
         "Authority"
@@ -1057,7 +1153,22 @@
     },
     "Biological": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [],
+      "model_id": 7,
       "parent": "Entity",
       "semantics": [
         "Biological",
@@ -1066,6 +1177,19 @@
     },
     "BooleanLogic": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "operator",
+          "type": "BooleanOperator",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "terms",
+          "type": "list[Condition]"
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1079,6 +1203,7 @@
           "type": "list[Condition]"
         }
       ],
+      "model_id": 8,
       "parent": "Condition",
       "semantics": [
         "BooleanLogic"
@@ -1086,7 +1211,9 @@
     },
     "Classification": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 9,
       "parent": "State",
       "semantics": [
         "Classification"
@@ -1094,7 +1221,9 @@
     },
     "Code": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 10,
       "parent": "State",
       "semantics": [
         "Code"
@@ -1102,6 +1231,20 @@
     },
     "Command": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "operation",
+          "type": "CommandOperation",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1116,6 +1259,7 @@
           "unit": null
         }
       ],
+      "model_id": 11,
       "parent": "Directive",
       "semantics": [
         "Command"
@@ -1123,7 +1267,9 @@
     },
     "Condition": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 12,
       "parent": "Data",
       "semantics": [
         "Condition"
@@ -1131,7 +1277,9 @@
     },
     "Connectivity": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 13,
       "parent": "State",
       "semantics": [
         "Connectivity"
@@ -1139,6 +1287,14 @@
     },
     "Constraint": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "condition",
+          "type": "optional Condition",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1147,6 +1303,7 @@
           "unit": null
         }
       ],
+      "model_id": 14,
       "parent": "Control",
       "semantics": [
         "Constraint"
@@ -1154,7 +1311,9 @@
     },
     "Control": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 15,
       "parent": "Root",
       "semantics": [
         "Control"
@@ -1162,7 +1321,9 @@
     },
     "Count": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 16,
       "parent": "State",
       "semantics": [
         "Count"
@@ -1170,7 +1331,34 @@
     },
     "CrewedVehicle": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "serial_number",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "model",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [],
+      "model_id": 17,
       "parent": "Vehicle",
       "semantics": [
         "Substrate.MECHANICAL",
@@ -1181,7 +1369,9 @@
     },
     "Data": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 18,
       "parent": "Root",
       "semantics": [
         "Data"
@@ -1189,7 +1379,9 @@
     },
     "Directive": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 19,
       "parent": "Control",
       "semantics": [
         "Directive"
@@ -1197,7 +1389,9 @@
     },
     "Distance": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 20,
       "parent": "State",
       "semantics": [
         "Distance"
@@ -1205,7 +1399,9 @@
     },
     "Duration": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 21,
       "parent": "State",
       "semantics": [
         "Duration"
@@ -1213,7 +1409,9 @@
     },
     "Engagement": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 22,
       "parent": "State",
       "semantics": [
         "Engagement"
@@ -1221,6 +1419,20 @@
     },
     "Entity": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1235,6 +1447,7 @@
           "unit": null
         }
       ],
+      "model_id": 23,
       "parent": "Object",
       "semantics": [
         "Entity"
@@ -1242,7 +1455,9 @@
     },
     "Existence": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 24,
       "parent": "State",
       "semantics": [
         "Existence"
@@ -1250,6 +1465,13 @@
     },
     "GeoPath": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "points",
+          "type": "list[GlobalPosition]"
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1257,6 +1479,7 @@
           "type": "list[GlobalPosition]"
         }
       ],
+      "model_id": 25,
       "parent": "Data",
       "semantics": [
         "GeoPath"
@@ -1285,6 +1508,29 @@
           ]
         }
       ],
+      "effective_fields": [
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lat",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lon",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "h",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
       "fields": [
         {
           "chart": "Position * Representation.Geodetic",
@@ -1308,6 +1554,7 @@
           "unit": "m"
         }
       ],
+      "model_id": 26,
       "parent": null,
       "semantics": [
         "GlobalPosition",
@@ -1317,7 +1564,9 @@
     },
     "Hold": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 27,
       "parent": "State",
       "semantics": [
         "Hold"
@@ -1325,7 +1574,9 @@
     },
     "Identity": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 28,
       "parent": "State",
       "semantics": [
         "Identity"
@@ -1333,6 +1584,32 @@
     },
     "Lease": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "role",
+          "type": "optional Role",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "bound",
+          "type": "optional Condition",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "control_level",
+          "type": "optional ControlLevel",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1347,6 +1624,7 @@
           "unit": null
         }
       ],
+      "model_id": 29,
       "parent": "Authority",
       "semantics": [
         "Lease"
@@ -1375,6 +1653,29 @@
           ]
         }
       ],
+      "effective_fields": [
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "roll",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "pitch",
+          "type": "float",
+          "unit": "rad"
+        },
+        {
+          "chart": "Attitude * Representation.LocalEuler",
+          "default": null,
+          "name": "yaw",
+          "type": "float",
+          "unit": "rad"
+        }
+      ],
       "fields": [
         {
           "chart": "Attitude * Representation.LocalEuler",
@@ -1398,6 +1699,7 @@
           "unit": "rad"
         }
       ],
+      "model_id": 30,
       "parent": null,
       "semantics": [
         "LocalAttitude",
@@ -1428,6 +1730,29 @@
           ]
         }
       ],
+      "effective_fields": [
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "x",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "y",
+          "type": "float",
+          "unit": "m"
+        },
+        {
+          "chart": "Position * Representation.LocalCartesian",
+          "default": null,
+          "name": "z",
+          "type": "float",
+          "unit": "m"
+        }
+      ],
       "fields": [
         {
           "chart": "Position * Representation.LocalCartesian",
@@ -1451,6 +1776,7 @@
           "unit": "m"
         }
       ],
+      "model_id": 31,
       "parent": null,
       "semantics": [
         "LocalPosition",
@@ -1481,6 +1807,29 @@
           ]
         }
       ],
+      "effective_fields": [
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vx",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vy",
+          "type": "float",
+          "unit": "m/s"
+        },
+        {
+          "chart": "Velocity * Representation.LocalCartesian",
+          "default": null,
+          "name": "vz",
+          "type": "float",
+          "unit": "m/s"
+        }
+      ],
       "fields": [
         {
           "chart": "Velocity * Representation.LocalCartesian",
@@ -1504,6 +1853,7 @@
           "unit": "m/s"
         }
       ],
+      "model_id": 32,
       "parent": null,
       "semantics": [
         "LocalVelocity",
@@ -1513,6 +1863,14 @@
     },
     "Locality": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1521,6 +1879,7 @@
           "unit": null
         }
       ],
+      "model_id": 33,
       "parent": "Object",
       "semantics": [
         "Locality"
@@ -1528,6 +1887,26 @@
     },
     "Machine": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "serial_number",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1536,6 +1915,7 @@
           "unit": null
         }
       ],
+      "model_id": 34,
       "parent": "Entity",
       "semantics": [
         "Machine",
@@ -1563,6 +1943,41 @@
               "unit": "m"
             }
           ]
+        }
+      ],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lat",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "lon",
+          "type": "float",
+          "unit": "deg"
+        },
+        {
+          "chart": "Position * Representation.Geodetic",
+          "default": null,
+          "name": "h",
+          "type": "float",
+          "unit": "m"
         }
       ],
       "fields": [
@@ -1600,6 +2015,7 @@
           "unit": "m"
         }
       ],
+      "model_id": 35,
       "parent": "Data",
       "semantics": [
         "Mark",
@@ -1610,7 +2026,9 @@
     },
     "Mission": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 36,
       "parent": "Directive",
       "semantics": [
         "Mission"
@@ -1618,6 +2036,20 @@
     },
     "NumericRange": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "min_value",
+          "type": "optional float",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "max_value",
+          "type": "optional float",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1632,6 +2064,7 @@
           "unit": null
         }
       ],
+      "model_id": 37,
       "parent": "Range",
       "semantics": [
         "NumericRange"
@@ -1639,7 +2072,9 @@
     },
     "Object": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 38,
       "parent": "Root",
       "semantics": [
         "Object"
@@ -1647,23 +2082,11 @@
     },
     "Objective": {
       "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "record",
-          "type": "optional Record",
-          "unit": null
-        },
+      "effective_fields": [
         {
           "default": null,
           "name": "uid",
           "type": "UID",
-          "unit": null
-        },
-        {
-          "default": null,
-          "name": "id",
-          "type": "optional int",
           "unit": null
         },
         {
@@ -1708,52 +2131,7 @@
           "unit": "s"
         }
       ],
-      "parent": "Control",
-      "semantics": [
-        "Objective"
-      ]
-    },
-    "Ordinal": {
-      "chart_fields": [],
-      "fields": [],
-      "parent": "State",
-      "semantics": [
-        "Ordinal"
-      ]
-    },
-    "Paused": {
-      "chart_fields": [],
-      "fields": [],
-      "parent": "State",
-      "semantics": [
-        "Paused"
-      ]
-    },
-    "Person": {
-      "chart_fields": [],
       "fields": [
-        {
-          "default": null,
-          "name": "name",
-          "type": "optional string",
-          "unit": null
-        }
-      ],
-      "parent": "Biological",
-      "semantics": [
-        "Substrate.BIOLOGICAL",
-        "Person"
-      ]
-    },
-    "Plan": {
-      "chart_fields": [],
-      "fields": [
-        {
-          "default": null,
-          "name": "record",
-          "type": "optional Record",
-          "unit": null
-        },
         {
           "default": null,
           "name": "uid",
@@ -1762,8 +2140,110 @@
         },
         {
           "default": null,
-          "name": "id",
-          "type": "optional int",
+          "name": "name",
+          "type": "string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "condition",
+          "type": "optional Condition",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "criteria",
+          "type": "list[Condition]"
+        },
+        {
+          "default": "ROUTINE",
+          "name": "priority",
+          "type": "TaskPriority",
+          "unit": null
+        },
+        {
+          "default": "NEW",
+          "name": "status",
+          "type": "TaskStatus",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "start_time",
+          "type": "optional float",
+          "unit": "s"
+        },
+        {
+          "default": null,
+          "name": "deadline",
+          "type": "optional float",
+          "unit": "s"
+        }
+      ],
+      "model_id": 39,
+      "parent": "Control",
+      "semantics": [
+        "Objective"
+      ]
+    },
+    "Ordinal": {
+      "chart_fields": [],
+      "effective_fields": [],
+      "fields": [],
+      "model_id": 40,
+      "parent": "State",
+      "semantics": [
+        "Ordinal"
+      ]
+    },
+    "Paused": {
+      "chart_fields": [],
+      "effective_fields": [],
+      "fields": [],
+      "model_id": 41,
+      "parent": "State",
+      "semantics": [
+        "Paused"
+      ]
+    },
+    "Person": {
+      "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
+      "fields": [
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
+      "model_id": 42,
+      "parent": "Biological",
+      "semantics": [
+        "Substrate.BIOLOGICAL",
+        "Person"
+      ]
+    },
+    "Plan": {
+      "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
           "unit": null
         },
         {
@@ -1779,6 +2259,27 @@
           "unit": null
         }
       ],
+      "fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": "DRAFT",
+          "name": "approval_state",
+          "type": "PlanApprovalState",
+          "unit": null
+        }
+      ],
+      "model_id": 43,
       "parent": "Control",
       "semantics": [
         "Plan"
@@ -1786,6 +2287,14 @@
     },
     "PlanContingency": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "condition",
+          "type": "Condition",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1794,6 +2303,7 @@
           "unit": null
         }
       ],
+      "model_id": 44,
       "parent": "Data",
       "semantics": [
         "PlanContingency"
@@ -1801,7 +2311,9 @@
     },
     "Position": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 45,
       "parent": "State",
       "semantics": [
         "Position"
@@ -1809,10 +2321,10 @@
     },
     "Predicate": {
       "chart_fields": [],
-      "fields": [
+      "effective_fields": [
         {
           "default": null,
-          "name": "subject",
+          "name": "subject_uid",
           "type": "optional UID",
           "unit": null
         },
@@ -1829,6 +2341,27 @@
           "unit": null
         }
       ],
+      "fields": [
+        {
+          "default": null,
+          "name": "subject_uid",
+          "type": "optional UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "quantity",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "value",
+          "type": "optional float",
+          "unit": null
+        }
+      ],
+      "model_id": 46,
       "parent": "Condition",
       "semantics": [
         "Predicate"
@@ -1862,6 +2395,36 @@
           ]
         }
       ],
+      "effective_fields": [
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qw",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qx",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qy",
+          "type": "float",
+          "unit": null
+        },
+        {
+          "chart": "Attitude * Representation.Quaternion",
+          "default": null,
+          "name": "qz",
+          "type": "float",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "chart": "Attitude * Representation.Quaternion",
@@ -1892,6 +2455,7 @@
           "unit": null
         }
       ],
+      "model_id": 47,
       "parent": null,
       "semantics": [
         "QuaternionAttitude",
@@ -1901,64 +2465,30 @@
     },
     "Range": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 48,
       "parent": "Data",
       "semantics": [
         "Range"
       ]
     },
-    "Record": {
+    "Resource": {
       "chart_fields": [],
-      "fields": [
+      "effective_fields": [
         {
           "default": null,
           "name": "uid",
-          "type": "UID",
+          "type": "optional UID",
           "unit": null
         },
         {
           "default": null,
-          "name": "id",
-          "type": "optional int",
+          "name": "name",
+          "type": "optional string",
           "unit": null
-        },
-        {
-          "default": null,
-          "name": "revision",
-          "type": "optional int",
-          "unit": null
-        },
-        {
-          "default": null,
-          "name": "created_ts",
-          "type": "float",
-          "unit": "s"
-        },
-        {
-          "default": null,
-          "name": "updated_ts",
-          "type": "float",
-          "unit": "s"
-        },
-        {
-          "default": null,
-          "name": "origin_system",
-          "type": "string",
-          "unit": null
-        },
-        {
-          "default": null,
-          "name": "provenance",
-          "type": "list[string]"
         }
       ],
-      "parent": "Data",
-      "semantics": [
-        "Record"
-      ]
-    },
-    "Resource": {
-      "chart_fields": [],
       "fields": [
         {
           "default": null,
@@ -1973,6 +2503,7 @@
           "unit": null
         }
       ],
+      "model_id": 49,
       "parent": "Object",
       "semantics": [
         "Resource"
@@ -1980,6 +2511,14 @@
     },
     "Role": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -1988,6 +2527,7 @@
           "unit": null
         }
       ],
+      "model_id": 50,
       "parent": "Data",
       "semantics": [
         "Role"
@@ -1995,7 +2535,9 @@
     },
     "Root": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 51,
       "parent": null,
       "semantics": [
         "Root"
@@ -2003,7 +2545,9 @@
     },
     "Scalar": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 52,
       "parent": "State",
       "semantics": [
         "Scalar"
@@ -2011,7 +2555,9 @@
     },
     "Speed": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 53,
       "parent": "State",
       "semantics": [
         "Speed"
@@ -2019,7 +2565,9 @@
     },
     "State": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 54,
       "parent": "Data",
       "semantics": [
         "State"
@@ -2027,6 +2575,38 @@
     },
     "Task": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "instruction",
+          "type": "string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "intent",
+          "type": "TaskIntent",
+          "unit": null
+        },
+        {
+          "default": "ROUTINE",
+          "name": "priority",
+          "type": "TaskPriority",
+          "unit": null
+        },
+        {
+          "default": "NEW",
+          "name": "status",
+          "type": "TaskStatus",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -2059,6 +2639,7 @@
           "unit": null
         }
       ],
+      "model_id": 55,
       "parent": "Directive",
       "semantics": [
         "Task"
@@ -2066,6 +2647,26 @@
     },
     "TaskTimeWindow": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "condition",
+          "type": "optional Condition",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "earliest_start",
+          "type": "optional float",
+          "unit": "s"
+        },
+        {
+          "default": null,
+          "name": "latest_finish",
+          "type": "optional float",
+          "unit": "s"
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -2080,6 +2681,7 @@
           "unit": "s"
         }
       ],
+      "model_id": 56,
       "parent": "Constraint",
       "semantics": [
         "TaskTimeWindow"
@@ -2087,7 +2689,9 @@
     },
     "Text": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 57,
       "parent": "State",
       "semantics": [
         "Text"
@@ -2095,7 +2699,9 @@
     },
     "Time": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 58,
       "parent": "State",
       "semantics": [
         "Time"
@@ -2103,7 +2709,34 @@
     },
     "UnmannedVehicle": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "serial_number",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "model",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [],
+      "model_id": 59,
       "parent": "Vehicle",
       "semantics": [
         "Substrate.MECHANICAL",
@@ -2114,6 +2747,32 @@
     },
     "Vehicle": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "uid",
+          "type": "UID",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "name",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "serial_number",
+          "type": "optional string",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "model",
+          "type": "optional string",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -2122,6 +2781,7 @@
           "unit": null
         }
       ],
+      "model_id": 60,
       "parent": "Machine",
       "semantics": [
         "Substrate.MECHANICAL",
@@ -2131,7 +2791,9 @@
     },
     "Velocity": {
       "chart_fields": [],
+      "effective_fields": [],
       "fields": [],
+      "model_id": 61,
       "parent": "State",
       "semantics": [
         "Velocity"
@@ -2139,6 +2801,62 @@
     },
     "WeatherLimits": {
       "chart_fields": [],
+      "effective_fields": [
+        {
+          "default": null,
+          "name": "condition",
+          "type": "optional Condition",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "ifr",
+          "type": "optional bool",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "night",
+          "type": "optional bool",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "rain",
+          "type": "optional NumericRange",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "snow",
+          "type": "optional NumericRange",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "temp",
+          "type": "optional NumericRange",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "wind",
+          "type": "optional NumericRange",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "vis",
+          "type": "optional NumericRange",
+          "unit": null
+        },
+        {
+          "default": null,
+          "name": "icing",
+          "type": "optional bool",
+          "unit": null
+        }
+      ],
       "fields": [
         {
           "default": null,
@@ -2189,6 +2907,7 @@
           "unit": null
         }
       ],
+      "model_id": 62,
       "parent": "Constraint",
       "semantics": [
         "WeatherLimits"
@@ -2204,7 +2923,8 @@
       "signature": [
         "Entity",
         "Task"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "ConstrainedBy": {
       "operand_names": [
@@ -2214,7 +2934,8 @@
       "signature": [
         "Control",
         "Constraint"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "Contains": {
       "operand_names": [
@@ -2224,7 +2945,8 @@
       "signature": [
         "Plan",
         "Root"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "Controls": {
       "operand_names": [
@@ -2234,7 +2956,8 @@
       "signature": [
         "Lease",
         "Object"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "Directed": {
       "operand_names": [
@@ -2244,7 +2967,8 @@
       "signature": [
         "Root",
         "Root"
-      ]
+      ],
+      "specializes": null
     },
     "GrantedBy": {
       "operand_names": [
@@ -2254,7 +2978,8 @@
       "signature": [
         "Authority",
         "Entity"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "Holds": {
       "operand_names": [
@@ -2264,7 +2989,8 @@
       "signature": [
         "Authority",
         "Entity"
-      ]
+      ],
+      "specializes": "Directed"
     },
     "OwnedBy": {
       "operand_names": [
@@ -2274,7 +3000,8 @@
       "signature": [
         "Objective",
         "Entity"
-      ]
+      ],
+      "specializes": "Directed"
     }
   },
   "word_expressions": {
