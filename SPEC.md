@@ -293,12 +293,16 @@ frame-991 × Gimbal × Attitude × Time:Capture(frame-991)
 ```
 
 More factors narrow the region; an underspecified query may legitimately return
-multiple matches. Ambiguity is resolved by adding factors, not by inventing
-compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
+multiple matches. Explicit source, provenance, observation cutoff, validity, and
+latest constraints may narrow evidence. Ties and unknown ordering remain ambiguous.
+Validity intervals are `[from, to)` (`until` also names the exclusive end); absent
+validity does not establish validity. Numeric source clocks and offset-aware ISO
+instants are separate time domains. Numeric clocks from different sources are
+not assumed comparable. No query silently selects the newest observation.
 
 ---
 
-## 12. Runtime definitions and persistence
+## 12. Runtime definitions and serialization
 
 | Definition | Derivation |
 | --- | --- |
@@ -312,16 +316,24 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 | `mappings` | associations between external representations and semantic products |
 
 Updates replace named entries within their sections and validate the complete
-candidate before activation. SQLite persists definition revisions, append-only
-facts, subject assertions, expression bindings, and directed relations.
+candidate before activation. Definitions, facts, subjects, expression bindings,
+and directed relations remain in memory. Applications own storage, data sources,
+and lifecycle.
 
 Each fact retains its original values and definition revision. A mapping revision
 creates a new interpretation linked to the source fact; the original source data
-and previous interpretations remain available. Queries do not rewrite historical
-fact meaning. Several matching facts are ambiguous, including equal values from
-separate observations.
+and previous interpretations remain available. Current queries evaluate asserted
+factors under the live model; recorded queries use original closure. Neither
+changes the observation, its values, or its recorded meaning. A current-model
+contradiction is exposed; recorded evidence remains available. Several matching
+facts are ambiguous, including equal values from separate observations.
 
 MsgPack exchange uses named fields and includes the original definition snapshot.
+It may instead carry a definition identity resolved by the recipient's registry.
+Local insertion shares a definition revision and requires no wire round trip.
 Unknown value and envelope fields are preserved. No generated model IDs or field
 ordinals are required. Units, frames, altitude references, uncertainty, and source
 times are retained without numerical conversion or fusion.
+`AltitudeReference.WGS84Ellipsoid` and `AltitudeReference.MeanSeaLevel` are
+single-valued semantic factors applicable to geodetic positions. A missing
+reference remains unknown; recognizing Position does not make heights interchangeable.

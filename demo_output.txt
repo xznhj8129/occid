@@ -16,16 +16,21 @@ Store a geodetic position with no representation class.
   Independent velocity and attitude facts -> {'vx': 12.0, 'vy': 0.0, 'vz': -1.5} {'roll': 0.0, 'pitch': 0.0, 'yaw': 1.57}
 
 Live chart extension -> 3 position representations; no regeneration
+  Learned entailment finds earlier evidence; recorded meaning and source value stay unchanged.
 
 Open expressions keep typed unknowns and solve when facts arrive.
   MOVE(actor=uav-1, destination=mark-alpha)
   LOCATE(target=target-42) => position=? -> {'lat': 36.53044, 'lon': -83.216383, 'h': 90.0}
+  Repeated observations leave unconstrained LOCATE ambiguous.
+  Explicit source, validity, and latest constraints -> {'lat': 36.53044, 'lon': -83.216383, 'h': 91.0}
   Directed roles validated: AssignedWork(assignee=uav-1, work=task-move-1)
 
 Several sources and observation times remain independent facts.
   Invalid definition rejected; current registry unchanged
 
 Mapping revision creates a new interpretation and retains the complete source report.
+  Semantic altitude references distinguish ellipsoid height 125 m from MSL height 110 m.
 
-SQLite reopen preserves definitions, identities, original values, bindings, and relation roles.
-All 14 architecture acceptance behaviors demonstrated.
+Wire exchange preserves definition revisions, identities, and original values.
+  Inline definitions or resolvable revision identity; local facts require no serialization.
+Semantic algebra and runtime behaviors demonstrated in memory.

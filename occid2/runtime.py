@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
+from datetime import datetime, timezone
+from enum import Enum
 from hashlib import sha256
 from math import isfinite
 from pathlib import Path
-import sqlite3
 from types import MappingProxyType
 from typing import Any, Iterable
 from uuid import UUID, uuid4
@@ -312,6 +313,113 @@ class IllegalSemanticCombination(ValueError):
     pass
 
 
+class _Source(Enum):
+    ANY = "any source"
+
+
+def _time_key(value: Any) -> tuple[str, Any]:
+    """Numeric source clocks and offset-aware UTC instants are distinct domains."""
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and isfinite(value):
+        return "numeric", value
+    if isinstance(value, str):
+        value = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if isinstance(value, datetime) and value.utcoffset() is not None:
+        return "instant", value.astimezone(timezone.utc)
+    raise ValueError(f"time must be finite numeric or an offset-aware ISO instant: {value!r}")
+
+
+def _compare_time(left: Any, right: Any) -> int:
+    left_domain, left_value = _time_key(left)
+    right_domain, right_value = _time_key(right)
+    if left_domain != right_domain:
+        raise AmbiguousSemanticMatch("cannot compare numeric source clocks with UTC instants")
+    return (left_value > right_value) - (left_value < right_value)
+
+
+@dataclass(frozen=True)
+class Query:
+    """A semantic question with explicit evidence and interpretation constraints."""
+    semantics: Product = EMPTY
+    source: Any = _Source.ANY
+    provenance: dict | None = None
+    observed_before: Any = None
+    valid_at: Any = None
+    latest: bool = False
+    interpretation: str = "current"
+
+    def __post_init__(self):
+        object.__setattr__(self, "semantics", sem(self.semantics))
+        object.__setattr__(self, "source", deepcopy(self.source))
+        if self.provenance is not None:
+            if not isinstance(self.provenance, dict):
+                raise TypeError("query provenance must be a mapping")
+            object.__setattr__(self, "provenance", deepcopy(self.provenance))
+        if self.interpretation not in ("current", "recorded"):
+            raise ValueError("query interpretation must be current or recorded")
+        if not isinstance(self.latest, bool):
+            raise TypeError("query latest must be boolean")
+        for value in (self.observed_before, self.valid_at):
+            if value is not None:
+                _time_key(value)
+
+    def narrow(self, region: Product) -> "Query":
+        return replace(self, semantics=self.semantics | region)
+
+    @property
+    def constrained_evidence(self) -> bool:
+        return self.source != _Source.ANY or self.provenance is not None or self.observed_before is not None or self.valid_at is not None or self.latest
+
+    def accepts(self, datum: "Datum") -> bool:
+        if self.source != _Source.ANY and datum.source != self.source:
+            return False
+        if self.provenance is not None:
+            actual = datum.provenance
+            if any(key not in actual or actual[key] != value for key, value in self.provenance.items()):
+                return False
+        if self.observed_before is not None:
+            if datum.observed_at is None or _compare_time(datum.observed_at, self.observed_before) > 0:
+                return False
+        if self.valid_at is not None:
+            interval = datum.validity
+            if not isinstance(interval, dict) or not interval.keys() & {"from", "to", "until"}:
+                return False
+            if "to" in interval and "until" in interval and interval["to"] != interval["until"]:
+                raise ValueError(f"fact {datum.id}: conflicting validity endpoints")
+            for name in ("from", "to", "until"):
+                if name in interval:
+                    if interval[name] is None:
+                        return False
+                    order = _compare_time(self.valid_at, interval[name])
+                    if (name == "from" and order < 0) or (name != "from" and order >= 0):
+                        return False
+        return True
+
+    def select(self, found: list["Datum"]) -> list["Datum"]:
+        if not self.latest or not found:
+            return found
+        if any(datum.observed_at is None for datum in found):
+            raise AmbiguousSemanticMatch("latest observation is unknown: a matching fact has no observation time")
+        if _time_key(found[0].observed_at)[0] == "numeric" and any(datum.source != found[0].source for datum in found[1:]):
+            raise AmbiguousSemanticMatch("latest observation requires comparable source clocks; constrain the source or supply UTC instants")
+        newest = found[0].observed_at
+        for datum in found[1:]:
+            if _compare_time(datum.observed_at, newest) > 0:
+                newest = datum.observed_at
+        return [datum for datum in found if _compare_time(datum.observed_at, newest) == 0]
+
+
+def _question(registry: "SemanticRegistry", terms: tuple[Any, ...]) -> Query:
+    questions = [term for term in terms if isinstance(term, Query)]
+    if len(questions) > 1:
+        raise TypeError("a semantic question accepts one Query")
+    question = questions[0] if questions else Query()
+    region = registry.product(*(term for term in terms if not isinstance(term, Query)))
+    question = replace(question, semantics=registry.product(question.semantics) | region)
+    if not registry.legal(question.semantics):
+        raise IllegalSemanticCombination(f"illegal semantic query: {question.semantics}")
+    return question
+
+
 @dataclass(frozen=True)
 class Datum:
     """One immutable observation, with its original definition revision."""
@@ -321,7 +429,7 @@ class Datum:
     meaning: Product
     definition_id: str
     _value: Any = field(repr=False)
-    _definitions: dict = field(repr=False)
+    _definitions: "DefinitionRevision" = field(repr=False)
     _source: Any = field(default=None, repr=False)
     _observed_at: Any = field(default=None, repr=False)
     _validity: Any = field(default=None, repr=False)
@@ -329,7 +437,9 @@ class Datum:
     _extensions: dict = field(default_factory=dict, repr=False)
 
     def __post_init__(self):
-        for name in ("_value", "_definitions", "_source", "_observed_at", "_validity", "_provenance", "_extensions"):
+        if isinstance(self._definitions, dict):
+            object.__setattr__(self, "_definitions", DefinitionRevision(self._definitions))
+        for name in ("_value", "_source", "_observed_at", "_validity", "_provenance", "_extensions"):
             object.__setattr__(self, name, deepcopy(getattr(self, name)))
 
     @property
@@ -338,7 +448,7 @@ class Datum:
 
     @property
     def definitions(self):
-        return deepcopy(self._definitions)
+        return self._definitions.spec
 
     @property
     def source(self):
@@ -360,9 +470,9 @@ class Datum:
     def extensions(self):
         return deepcopy(self._extensions)
 
-    def encode(self) -> bytes:
+    def encode(self, *, include_definitions: bool = True) -> bytes:
         from .wire import encode
-        return encode(self)
+        return encode(self, include_definitions=include_definitions)
 
 
 @dataclass(frozen=True, slots=True)
@@ -416,13 +526,30 @@ def definition_identity(spec: dict) -> str:
     return sha256(msgpack.packb(spec, use_bin_type=True)).hexdigest()
 
 
+@dataclass(frozen=True)
+class DefinitionRevision:
+    """One shared definition snapshot; observations retain this original model."""
+    _spec: dict = field(repr=False)
+    id: str = field(init=False)
+
+    def __post_init__(self):
+        object.__setattr__(self, "_spec", deepcopy(self._spec))
+        object.__setattr__(self, "id", definition_identity(self._spec))
+
+    @property
+    def spec(self) -> dict:
+        return deepcopy(self._spec)
+
+
 class SemanticRegistry:
     def __init__(self, spec: dict[str, Any]):
-        self._spec = deepcopy(spec)
+        self._revision = DefinitionRevision(spec)
+        self._spec = self._revision._spec
         data = prepare(spec)
-        self.definition_id = definition_identity(self._spec)
-        self._history = {self.definition_id: self._spec}
-        self._persist = None
+        self.definition_id = self._revision.id
+        self._history = {self.definition_id: self._revision}
+        self._revisions = {}
+        self._readonly = False
         self.aliases = data["aliases"]
         self.axis_of_value = {}
         self.axis_cardinality = {}
@@ -490,6 +617,8 @@ class SemanticRegistry:
         return deepcopy(self._mappings)
 
     def update(self, changes: dict) -> None:
+        if self._readonly:
+            raise ValueError("a recorded definition revision cannot be updated")
         if not isinstance(changes, dict) or changes.keys() - set(SECTIONS):
             raise ValueError(f"definition updates must name sections {SECTIONS}")
         revised = self.spec
@@ -498,16 +627,18 @@ class SemanticRegistry:
                 raise ValueError(f"definition update {section}: expected mapping")
             revised.setdefault(section, {}).update(deepcopy(entries))
         candidate = SemanticRegistry(revised)
-        if self._persist is not None:
-            self._persist(candidate)
-        history = {**self._history, candidate.definition_id: candidate._spec}
-        persist = self._persist
+        history = {**self._history, candidate.definition_id: candidate._revision}
+        revisions = self._revisions
         self.__dict__.update(candidate.__dict__)
         self._history = history
-        self._persist = persist
+        self._revisions = revisions
 
     def at(self, definition_id: str) -> "SemanticRegistry":
-        return SemanticRegistry(self._history[definition_id])
+        if definition_id not in self._revisions:
+            registry = SemanticRegistry(self._history[definition_id]._spec)
+            registry._readonly = True
+            self._revisions[definition_id] = registry
+        return self._revisions[definition_id]
 
     def product(self, *terms: Any) -> Product:
         result = []
@@ -774,7 +905,7 @@ class OpenExpression:
     def factors(self) -> Product:
         return self.expression.factors
 
-    def bind(self, name: str, value: SubjectRef | Datum) -> "OpenExpression":
+    def bind(self, name: str, value: SubjectRef | Datum, *, interpretation: str = "current") -> "OpenExpression":
         if name not in self.expression.variables:
             raise KeyError(f"{self.expression.name} has no variable {name!r}")
         registry = self.store.registry.at(self.definition_id)
@@ -782,35 +913,44 @@ class OpenExpression:
         if isinstance(value, SubjectRef):
             if value.store is not self.store:
                 raise ValueError(f"{name}: reference belongs to another store")
-            meaning = value.semantics
+            if interpretation not in ("current", "recorded"):
+                raise ValueError("interpretation must be current or recorded")
+            meaning = value.semantics if interpretation == "recorded" else self.store.registry.closure(value.semantics)
         elif isinstance(value, Datum):
-            meaning = value.meaning
+            meaning = self.store.meaning_of(value, interpretation=interpretation)
         else:
             raise TypeError(f"{name}: not a semantic binding: {value!r}")
         if not region.terms <= meaning.terms:
             raise TypeError(f"{name}: {meaning} does not satisfy {region}")
-        bindings = {**self.bindings, name: value}
-        self.store._save_expression(self, bindings)
-        self.bindings = bindings
+        self.bindings = {**self.bindings, name: value}
         return self
 
     @property
     def unbound(self) -> list[str]:
         return [name for name in self.expression.variables if name not in self.bindings]
 
-    def solve(self) -> dict[str, Any]:
+    def solve(self, **questions: Query) -> dict[str, Any]:
+        unknown = questions.keys() - self.expression.sought.keys()
+        if unknown:
+            raise KeyError(f"{self.expression.name}: unknown sought variables {sorted(unknown)}")
+        if any(not isinstance(question, Query) for question in questions.values()):
+            raise TypeError("expression answer constraints require Query values")
         values = {}
         registry = self.store.registry.at(self.definition_id)
         for equation in self.expression.equations:
             if equation.equals not in self.expression.sought:
                 continue
+            region = registry.closure(registry.product(equation.quantity))
+            question = _question(self.store.registry, (questions.get(equation.equals, Query()).narrow(region),))
             if equation.equals in self.bindings:
+                if equation.equals in questions:
+                    raise ValueError(f"{equation.equals}: cannot select evidence for an explicitly bound variable")
                 values[equation.equals] = self.bindings[equation.equals]
                 continue
             source = self.bindings.get(equation.of)
             if not isinstance(source, SubjectRef):
                 continue
-            value = self.store.value_of(source, registry.closure(registry.product(equation.quantity)))
+            value = self.store.value_of(source, question)
             if value is not None:
                 values[equation.equals] = value
         return values
@@ -832,78 +972,21 @@ def _render_binding(value: Any) -> str:
 
 
 class Store:
-    def __init__(self, registry: SemanticRegistry | None = None, path: str | Path | None = None):
-        self._closed = False
-        self._db = sqlite3.connect(path) if path is not None else None
+    """In-memory subjects and facts addressed by their semantic meaning."""
+
+    def __init__(self, registry: SemanticRegistry | None = None):
         self._subjects = {}
         self._data = {}
         self._facts = {}
         self._relations = []
         self._expressions = {}
-        if self._db is not None:
-            with self._db:
-                self._db.execute("CREATE TABLE IF NOT EXISTS definitions (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
-                self._db.execute("CREATE TABLE IF NOT EXISTS current_definition (singleton INTEGER PRIMARY KEY CHECK(singleton=1), id TEXT NOT NULL)")
-                self._db.execute("CREATE TABLE IF NOT EXISTS subjects (uid BLOB PRIMARY KEY, payload BLOB NOT NULL)")
-                self._db.execute("CREATE TABLE IF NOT EXISTS facts (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
-                self._db.execute("CREATE TABLE IF NOT EXISTS relations (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
-                self._db.execute("CREATE TABLE IF NOT EXISTS expressions (uid BLOB PRIMARY KEY, payload BLOB NOT NULL)")
-            active = self._db.execute("SELECT id FROM current_definition WHERE singleton=1").fetchone()
-            if active:
-                definitions = {identity: _unpack(payload) for identity, payload in self._db.execute("SELECT id, payload FROM definitions")}
-                stored = SemanticRegistry(definitions[active[0]])
-                if registry is not None and registry.definition_id != stored.definition_id:
-                    self._db.close()
-                    raise ValueError("persistent store already has different definitions; open it without a registry, then update")
-                registry = stored
-                registry._history = definitions
         self.registry = registry if registry is not None else SemanticRegistry.load(Path(__file__).with_name("definitions.yaml"))
-        if self.registry._persist is not None:
-            raise ValueError("registry already belongs to a persistent store")
-        if self._db is not None:
-            self._save_definitions(self.registry)
-            self.registry._persist = self._save_definitions
-            self._reload()
-
-    def _save_definitions(self, candidate: SemanticRegistry):
-        with self._db:
-            for identity, spec in candidate._history.items():
-                self._db.execute("INSERT OR IGNORE INTO definitions VALUES (?, ?)", (identity, _pack(spec)))
-            self._db.execute("INSERT INTO current_definition VALUES (1, ?) ON CONFLICT(singleton) DO UPDATE SET id=excluded.id", (candidate.definition_id,))
-
-    def _reload(self):
-        from .wire import decode
-        for uid, payload in self._db.execute("SELECT uid, payload FROM subjects"):
-            self._subjects[uid] = product_names(_unpack(payload))
-        for _, payload in self._db.execute("SELECT id, payload FROM facts ORDER BY rowid"):
-            self._add_fact(decode(payload))
-        for _, payload in self._db.execute("SELECT id, payload FROM relations ORDER BY rowid"):
-            item = _unpack(payload)
-            registry = self.registry.at(item["definition_id"])
-            self._relations.append(RelationFact(item["id"], registry.relation_types[item["name"]], tuple(SubjectRef(self, uid) for uid in item["operands"])))
-        for uid, payload in self._db.execute("SELECT uid, payload FROM expressions"):
-            item = _unpack(payload)
-            registry = self.registry.at(item["definition_id"])
-            expression = OpenExpression(self, SubjectRef(self, uid), registry.expressions[item["name"]], registry.definition_id)
-            for name, binding in item["bindings"].items():
-                kind = binding["kind"]
-                if kind == "subject":
-                    value = SubjectRef(self, binding["id"])
-                elif kind == "fact":
-                    value = self._facts[binding["id"]]
-                elif kind == "datum":
-                    value = decode(binding["payload"])
-                else:
-                    raise ValueError(f"expression {uid}: unknown persisted binding kind {kind!r}")
-                expression.bindings[name] = value
-            self._expressions[uid] = expression
 
     def _add_fact(self, datum: Datum):
         self._data.setdefault(datum.subject, []).append(datum)
         self._facts[datum.id] = datum
 
     def ref(self, uid: str | bytes, *semantics: Any) -> SubjectRef:
-        self._ensure_open()
         uid = subject_identity(uid)
         if uid in self._subjects and not semantics:
             return SubjectRef(self, uid)
@@ -911,20 +994,12 @@ class Store:
         if not self.registry.legal(candidate):
             raise IllegalSemanticCombination(f"{uid}: incompatible subject semantics {candidate}")
         candidate = self.registry.closure(candidate)
-        if self._db is not None:
-            with self._db:
-                self._db.execute("INSERT INTO subjects VALUES (?, ?) ON CONFLICT(uid) DO UPDATE SET payload=excluded.payload", (uid, _pack(list(candidate))))
         self._subjects[uid] = candidate
         return SubjectRef(self, uid)
 
     def _check_subject(self, subject: SubjectRef):
-        self._ensure_open()
         if not isinstance(subject, SubjectRef) or subject.store is not self:
             raise ValueError("subject reference belongs to another store")
-
-    def _ensure_open(self):
-        if self._closed:
-            raise RuntimeError("store is closed")
 
     def set(self, subject: SubjectRef, semantics: Any, value: Any, *, source: Any = None, observed_at: Any = None, validity: Any = None, provenance: dict | None = None) -> Datum:
         self._check_subject(subject)
@@ -934,62 +1009,81 @@ class Store:
         self.registry.validate_value(product, value)
         if provenance is not None and not isinstance(provenance, dict):
             raise TypeError("datum provenance must be a mapping")
-        datum = Datum(str(uuid4()), subject.uid, product, self.registry.closure(product), self.registry.definition_id, value, self.registry.spec, source, observed_at, validity, provenance or {})
-        return self.add(datum)
+        datum = Datum(str(uuid4()), subject.uid, product, self.registry.closure(product), self.registry.definition_id, value, self.registry._revision, source, observed_at, validity, provenance or {})
+        self._add_fact(datum)
+        return datum
 
     def add(self, datum: Datum) -> Datum:
         """Import an observation without reinterpreting it under local definitions."""
-        from .wire import decode
-        self._ensure_open()
-        payload = datum.encode()
-        datum = decode(payload)
+        if not isinstance(datum, Datum):
+            raise TypeError("add requires a semantic datum")
+        if not isinstance(datum.id, str) or not datum.id:
+            raise ValueError("fact identity must be nonempty text")
+        subject_identity(datum.subject)
+        if datum.definition_id != datum._definitions.id:
+            raise ValueError("fact definition identity does not match its definitions")
+        registry = self.registry.at(datum.definition_id) if datum.definition_id in self.registry._history else SemanticRegistry(datum.definitions)
+        if not registry.legal(datum.semantics) or registry.closure(datum.semantics) != datum.meaning:
+            raise ValueError("fact meaning does not match its original definitions")
+        registry.validate_value(datum.semantics, datum.value)
+        if not isinstance(datum.provenance, dict):
+            raise ValueError("fact provenance must be a mapping")
         existing = self._facts.get(datum.id)
         if existing is not None:
             if existing != datum:
                 raise ValueError(f"fact {datum.id}: identity already has different data")
             return existing
         new_subject = datum.subject not in self._subjects
-        if self._db is not None:
-            with self._db:
-                self._db.execute("INSERT OR IGNORE INTO definitions VALUES (?, ?)", (datum.definition_id, _pack(datum.definitions)))
-                if new_subject:
-                    self._db.execute("INSERT INTO subjects VALUES (?, ?)", (datum.subject, _pack([])))
-                self._db.execute("INSERT INTO facts VALUES (?, ?)", (datum.id, payload))
         if new_subject:
             self._subjects[datum.subject] = EMPTY
-        self.registry._history[datum.definition_id] = datum.definitions
+        self.registry._history[datum.definition_id] = datum._definitions
         self._add_fact(datum)
         return datum
 
     def find(self, subject: SubjectRef, *query: Any) -> list[Datum]:
         self._check_subject(subject)
-        wanted = self.registry.product(*query)
-        if not self.registry.legal(wanted):
-            raise IllegalSemanticCombination(f"illegal semantic query: {wanted}")
-        # Assertions already carry their historical closure. A new mapping or
-        # implication never changes the original fact's meaning.
-        return [datum for datum in self._data.get(subject.uid, []) if wanted.terms <= datum.meaning.terms]
+        question = _question(self.registry, query)
+        found = []
+        for datum in self._data.get(subject.uid, []):
+            meaning = datum.meaning if question.interpretation == "recorded" else self.registry.closure(datum.semantics)
+            if not question.semantics.terms <= meaning.terms or not question.accepts(datum):
+                continue
+            self.meaning_of(datum, interpretation=question.interpretation)
+            found.append(datum)
+        return question.select(found)
+
+    def meaning_of(self, datum: Datum, *, interpretation: str = "current") -> Product:
+        """Evaluate an observation without replacing its recorded meaning or value."""
+        if interpretation == "recorded":
+            return datum.meaning
+        if interpretation != "current":
+            raise ValueError("interpretation must be current or recorded")
+        if not self.registry.legal(datum.semantics):
+            raise IllegalSemanticCombination(f"fact {datum.id}: current model contradicts recorded semantics {datum.semantics}; recorded meaning remains available")
+        return self.registry.closure(datum.semantics)
 
     def get(self, subject: SubjectRef, *query: Any) -> Datum:
         found = self.find(subject, *query)
+        region = _question(self.registry, query).semantics
         if not found:
-            raise KeyError(f"no semantic match for {subject.uid}: {sem(*query)}")
+            raise KeyError(f"no semantic match for {subject.uid}: {region}")
         if len(found) > 1:
-            raise AmbiguousSemanticMatch(f"{subject.uid}: {sem(*query)} matches fact IDs {[datum.id for datum in found]}")
+            raise AmbiguousSemanticMatch(f"{subject.uid}: {region} matches fact IDs {[datum.id for datum in found]}")
         return found[0]
 
     def get_many(self, subjects: Iterable[SubjectRef], *query: Any) -> dict[str | bytes, Datum]:
         return {subject.uid: self.get(subject, *query) for subject in subjects}
 
-    def value_of(self, subject: SubjectRef, region: Product) -> Datum | SubjectRef | None:
+    def value_of(self, subject: SubjectRef, region: Product | Query) -> Datum | SubjectRef | None:
         self._check_subject(subject)
-        found = ([subject] if region.terms <= subject.semantics.terms else []) + [datum for datum in self._data.get(subject.uid, []) if region.terms <= datum.meaning.terms]
+        question = _question(self.registry, (region,))
+        subject_meaning = subject.semantics if question.interpretation == "recorded" else self.registry.closure(subject.semantics)
+        found = ([subject] if not question.constrained_evidence and question.semantics.terms <= subject_meaning.terms else []) + self.find(subject, question)
         if len(found) > 1:
-            raise AmbiguousSemanticMatch(f"{subject.uid}: {region} matches {len(found)} independent facts")
+            raise AmbiguousSemanticMatch(f"{subject.uid}: {question.semantics} matches {len(found)} independent facts")
         return found[0] if found else None
 
     def task(self, uid: str | bytes, word: str, **value: Any) -> OpenExpression:
-        self._ensure_open()
         uid = subject_identity(uid)
         if uid in self._expressions:
             raise ValueError(f"expression {uid} already exists")
@@ -997,54 +1091,29 @@ class Store:
         ref = self.ref(uid, expression_type.factors)
         self.set(ref, expression_type.factors, {**value, "word": word}, provenance={"kind": "expression"})
         expression = OpenExpression(self, ref, expression_type, self.registry.definition_id)
-        self._save_expression(expression, {})
         self._expressions[uid] = expression
         return expression
 
-    def _save_expression(self, expression: OpenExpression, bindings: dict):
-        self._ensure_open()
-        if self._db is None:
-            return
-        recorded = {}
-        for name, value in bindings.items():
-            if isinstance(value, SubjectRef):
-                recorded[name] = {"kind": "subject", "id": value.uid}
-            elif value.id in self._facts:
-                recorded[name] = {"kind": "fact", "id": value.id}
-            else:
-                recorded[name] = {"kind": "datum", "payload": value.encode()}
-        item = {"name": expression.expression.name, "definition_id": expression.definition_id, "bindings": recorded}
-        with self._db:
-            self._db.execute("INSERT INTO expressions VALUES (?, ?) ON CONFLICT(uid) DO UPDATE SET payload=excluded.payload", (expression.ref.uid, _pack(item)))
-
     def expression(self, uid: str | bytes) -> OpenExpression:
-        self._ensure_open()
         return self._expressions[subject_identity(uid)]
 
     def relate(self, relation: str | RelationType, *operands: SubjectRef, **roles: SubjectRef) -> RelationFact:
-        self._ensure_open()
         relation = self.registry.relation_types[relation] if isinstance(relation, str) else relation
         if relation.definition_id not in self.registry._history:
             raise ValueError("relation definition does not belong to this store")
         fact = relation(*operands, **roles)
         if fact.operands[0].store is not self:
             raise ValueError("relation operands belong to another store")
-        if self._db is not None:
-            item = {"id": fact.id, "name": relation.name, "definition_id": relation.definition_id, "operands": [operand.uid for operand in fact.operands]}
-            with self._db:
-                self._db.execute("INSERT INTO relations VALUES (?, ?)", (fact.id, _pack(item)))
         self._relations.append(fact)
         return fact
 
     def relations(self, relation: str | RelationType | None = None) -> list[RelationFact]:
-        self._ensure_open()
         if relation is None:
             return list(self._relations)
         relation = self.registry.relation_types[relation] if isinstance(relation, str) else relation
         return [fact for fact in self._relations if fact.relation.is_a(relation)]
 
     def interpret(self, original: Datum, mapping_name: str) -> Datum:
-        self._ensure_open()
         if original.id not in self._facts:
             raise ValueError("source datum does not belong to this store")
         if self._facts[original.id] != original:
@@ -1059,27 +1128,6 @@ class Store:
         else:
             value = raw
         return self.set(SubjectRef(self, original.subject), product_names(mapping["semantics"]), value, source=original.source, observed_at=original.observed_at, validity=original.validity, provenance={"kind": "mapped", "mapping": mapping_name, "derived_from": [original.id], "context": deepcopy(mapping.get("context", {}))})
-
-    def close(self):
-        if self._db is not None:
-            self.registry._persist = None
-            self._db.close()
-            self._db = None
-        self._closed = True
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        self.close()
-
-
-def _pack(value: Any) -> bytes:
-    return msgpack.packb(value, use_bin_type=True)
-
-
-def _unpack(payload: bytes) -> Any:
-    return msgpack.unpackb(payload, raw=False, strict_map_key=False)
 
 
 def value_semantics(value: Datum | SubjectRef) -> Product:

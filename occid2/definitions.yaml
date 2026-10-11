@@ -48,6 +48,12 @@ axes:
     - LocalCartesian
     - LocalEuler
     - Quaternion
+  AltitudeReference:
+    cardinality: one
+    applies: [Position, Representation.Geodetic]
+    values:
+    - WGS84Ellipsoid
+    - MeanSeaLevel
   BloodGroup:
     cardinality: one
     applies:

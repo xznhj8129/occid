@@ -1,4 +1,4 @@
-"""Self-describing MsgPack facts with named fields and definition snapshots."""
+"""Named MsgPack facts with inline definitions or resolvable revision identity."""
 from __future__ import annotations
 
 import msgpack
@@ -7,10 +7,10 @@ from .runtime import Datum, Product, SemanticRegistry, product_names, subject_id
 
 FORMAT = "occid2.fact/1"
 FIELDS = {"format", "id", "subject", "semantics", "meaning", "definition_id", "definitions", "value", "source", "observed_at", "validity", "provenance"}
-REQUIRED = {"format", "id", "subject", "semantics", "meaning", "definition_id", "definitions", "value"}
+REQUIRED = {"format", "id", "subject", "semantics", "meaning", "definition_id", "value"}
 
 
-def encode(value: Datum) -> bytes:
+def encode(value: Datum, *, include_definitions: bool = True) -> bytes:
     if not isinstance(value, Datum):
         raise TypeError("encode requires a semantic datum")
     if value.extensions.keys() & FIELDS:
@@ -23,13 +23,14 @@ def encode(value: Datum) -> bytes:
         "semantics": list(value.semantics),
         "meaning": list(value.meaning),
         "definition_id": value.definition_id,
-        "definitions": value.definitions,
         "value": value.value,
         "source": value.source,
         "observed_at": value.observed_at,
         "validity": value.validity,
         "provenance": value.provenance,
     }
+    if include_definitions:
+        envelope["definitions"] = value.definitions
     return msgpack.packb(envelope, use_bin_type=True)
 
 
@@ -48,7 +49,7 @@ def _product(raw, field: str) -> Product:
     return product_names(raw)
 
 
-def decode(payload: bytes) -> Datum:
+def decode(payload: bytes, *, registry: SemanticRegistry | None = None) -> Datum:
     envelope = msgpack.unpackb(payload, raw=False, strict_map_key=False, object_pairs_hook=_unique_map)
     if not isinstance(envelope, dict) or REQUIRED - envelope.keys():
         raise ValueError("wire fact is missing required named fields")
@@ -57,7 +58,12 @@ def decode(payload: bytes) -> Datum:
     if not isinstance(envelope["id"], str) or not envelope["id"]:
         raise ValueError("wire fact identity must be nonempty text")
     subject_identity(envelope["subject"])
-    registry = SemanticRegistry(envelope["definitions"])
+    if "definitions" in envelope:
+        registry = SemanticRegistry(envelope["definitions"])
+    elif registry is not None:
+        registry = registry.at(envelope["definition_id"])
+    else:
+        raise ValueError("wire fact requires inline definitions or a registry resolving its definition identity")
     if envelope["definition_id"] != registry.definition_id:
         raise ValueError("wire definition identity does not match its definitions")
     semantics = _product(envelope["semantics"], "semantics")
@@ -68,4 +74,4 @@ def decode(payload: bytes) -> Datum:
     provenance = envelope.get("provenance", {})
     if not isinstance(provenance, dict):
         raise ValueError("wire provenance must be a mapping")
-    return Datum(envelope["id"], envelope["subject"], semantics, meaning, registry.definition_id, envelope["value"], registry.spec, envelope.get("source"), envelope.get("observed_at"), envelope.get("validity"), provenance, {key: value for key, value in envelope.items() if key not in FIELDS})
+    return Datum(envelope["id"], envelope["subject"], semantics, meaning, registry.definition_id, envelope["value"], registry._revision, envelope.get("source"), envelope.get("observed_at"), envelope.get("validity"), provenance, {key: value for key, value in envelope.items() if key not in FIELDS})

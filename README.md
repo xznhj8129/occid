@@ -64,23 +64,28 @@ Expected algebra test result:
 - `occid2/wire.py` - self-describing MsgPack facts
 - `demo.py` - worked examples
 - `tests.py` - focused acceptance tests
-- `tests_runtime.py` - identity, validation, serialization, persistence, revisions
+- `tests_runtime.py` - identity, validation, serialization, revisions
 - `SPEC.md` - algebraic and semantic findings
 
 ## Runtime
 
-- `new_store()` creates an in-memory store; `new_store("facts.sqlite")` persists definitions and facts in SQLite.
+- `new_store()` creates an in-memory semantic runtime. Applications own storage, data sources, and lifecycle.
 - `store.ref("uav-1", "UAV")` creates a subject with semantic assertions.
-- `subject.set(sem("Position", "Representation.Geodetic"), {"lat": 36.530440, "lon": -83.216383, "h": 125.0}, source="sensor", observed_at=123)` appends an observation.
+- `subject.set(sem("Position", "Representation.Geodetic"), {"lat": 36.530440, "lon": -83.216383, "h": 125.0}, source="sensor", observed_at=123, validity={"from": 123, "to": 124})` appends an observation.
 - `subject.find("Position")` returns matching facts; `subject.get(...)` requires one match.
+- `subject.get(Query("Position", source="sensor", observed_before=123, valid_at=123, latest=True))` explicitly constrains the answer. Ties and unknown observation times remain ambiguous.
+- `locate.solve(position=Query(source="sensor", latest=True))` applies the same constraints to a sought variable.
+- `Position × Representation.Geodetic × AltitudeReference.WGS84Ellipsoid` and `AltitudeReference.MeanSeaLevel` distinguish height references. An omitted reference remains unknown.
 - `datum.value` contains the original value; chart coordinates retain their units in `store.registry.at(datum.definition_id)`.
 - `registry.update({...})` validates before activation. Updates replace named entries within their sections.
 - `store.task("task-1", "TaskIntent.MOVE")` creates an open expression.
 - `store.relate("AssignedWork", assignee=uav, work=task.ref)` validates named, directed roles.
-- `encode(datum)` and `decode(payload)` preserve named fields, original values, and definition snapshots. Values must be MsgPack-serializable.
+- `encode(datum)` and `decode(payload)` preserve named fields, original values, and definition snapshots. Wire values must be MsgPack-serializable; local insertion requires no serialization.
+- `encode(datum, include_definitions=False)` uses a definition identity; `decode(payload, registry=registry)` resolves the retained revision.
 - `store.add(decode(payload))` retains the sender's fact identity and definition revision.
 - `store.interpret(source_datum, mapping_name)` appends a mapped fact linked to the original source datum.
-- Definition and mapping revisions retain historical fact meaning. Reinterpretation is explicit.
+- Queries use current entailment; `Query("Position", interpretation="recorded")` matches original meaning. `datum.meaning` stays recorded; `store.meaning_of(datum)` evaluates current meaning without creating a fact or converting values.
+- Mapping revisions retain source values and prior interpretations. Applying a revised field mapping remains explicit.
 - `UID.new()` mints a UUIDv4 as exactly 16 bytes; nonempty strings also identify subjects.
 
-`demo.py` exercises all 14 architecture acceptance behaviors, including live extension and SQLite reopen.
+`demo.py` exercises the algebra, runtime extension, semantic addressing, and self-describing serialization.
