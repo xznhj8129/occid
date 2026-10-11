@@ -143,8 +143,7 @@ semantics(model) = inherited factors + model name + product factors
 - a `product:` entry naming another model expands to that model's semantics,
   keeping its label, because that name is part of this model's own meaning;
 - a `chart:` entry contributes the chart's factors and compiles its variables
-  into the model's fields; a chart that names a model compiles that model
-  directly (section 7) — a chart application is never authored as a model;
+  into the model's fields;
 - every model is storable; there is no concept/representation split.
 
 Example:
@@ -154,7 +153,7 @@ Mark:
   parent: Data
   product:
     - GlobalPosition
-  fields: {uid: UID, name: optional PlainText}
+  fields: {uid: UID, name: optional string}
 ```
 
 ```text
@@ -194,13 +193,11 @@ chart Q × C  ≅  v₁ × v₂ × … × vₙ
 ```yaml
 charts:
   Position * Representation.Geodetic:
-    model: GlobalPosition
     lat: float[deg]
     lon: float[deg]
     h: float[m]
 
   Position * Representation.LocalCartesian:
-    model: LocalPosition
     x: float[m]
     y: float[m]
     z: float[m]
@@ -209,9 +206,7 @@ charts:
 **Chart produces the primitives.** `Position` stays semantic; the
 representation selects how it becomes data; the coordinates emerge only after
 that selection. A coordinate's unit is algebraic metadata (`_units`), not its
-Python type. A chart names the data model its variables compile into; that
-model is a compiled artifact of the chart, so chart applications never sit
-among the semantic models.
+Python type. A model that is data declares the chart it reduces through.
 
 The same quantity may be stored in several representations. Each is a separate
 datum; each answers `entity × Position`, and a representation factor narrows to
@@ -353,12 +348,12 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 | --- | --- |
 | `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
 | `enums` + expression `words` | authored enums are closed value vocabularies; word vocabularies compile from the words expressions declare, and each word entails its expression's factors |
-| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form; a chart that names a model compiles that model as a derived artifact |
-| `relations` | named ordered operands; declared once, no specialization |
-| `expressions` | fixed factors + typed free variables + equations; `words:` binds dimensions and compiles one expression per word |
-| `models` | named products and carriers; parent entailment; `product:` expansion; chart applications are compiled, not authored |
+| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form |
+| `relations` | named ordered operands; specialization preserves operand order |
+| `expressions` | fixed factors + typed free variables + equations; `of:` selects a scheme; `binds:` fixes factors; `words:` names the expression |
+| `models` | named products and carriers; parent entailment; `product:` expansion; `chart:` selects a chart |
 | `aliases` | class-free named products, resolved recursively |
 
-`generated/occid2.py` and `generated/semantic_registry.json` are deterministic
+`occid2/generated/occid2.py` and `occid2/generated/semantic_registry.json` are deterministic
 outputs. The compiler produces no rules block, no role flags, and no second
 class hierarchy.

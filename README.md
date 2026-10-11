@@ -21,9 +21,8 @@ The full algebraic record is in `SPEC.md`. Summary:
 - **Charts reduce quantity × representation to variables.** `chart Position ×
   Representation.Geodetic := lat × lon × h`. Chart produces the primitives;
   units stay metadata; the same quantity may exist in several representations
-  and be narrowed by factors. A chart names the data model it compiles
-  (`model: GlobalPosition`), so chart applications are derived artifacts and
-  the `models` section holds only semantic carriers and named products.
+  and be narrowed by factors. A model
+  that is data declares the chart it reduces through.
 - **Tasks are open expressions.** Fixed semantic factors + typed free
   variables + equations. An unbound variable is an unknown, not an error:
   `MOVE(actor=uav-1, destination=?)`. Sought variables are solved from the
@@ -52,13 +51,15 @@ The full algebraic record is in `SPEC.md`. Summary:
 ## Run
 
 ```bash
+python -m pip install -e .
 python compiler.py
 python tests.py
+python -m unittest tests_runtime
 python demo.py
 ```
 
-The compiler regenerates `generated/occid2.py` and
-`generated/semantic_registry.json` deterministically. Expected test result:
+The compiler regenerates Python, TypeScript, and registry data under
+`occid2/generated/` deterministically. Expected algebra test result:
 
 ```text
 17 tests passed
@@ -68,9 +69,24 @@ The compiler regenerates `generated/occid2.py` and
 
 - `occid2.schema.yaml` - canonical authored algebra
 - `compiler.py` - deterministic ahead-of-time compiler
-- `runtime.py` - product/relation algebra, solver, charts, expressions, store
-- `generated/occid2.py` - generated Python API
-- `generated/semantic_registry.json` - inspectable generated registry
+- `occid2/runtime.py` - product/relation algebra, solver, charts, expressions, store
+- `occid2/wire.py` - compact MsgPack codec
+- `occid2/generated/occid2.py` - generated Python bindings
+- `occid2/generated/occid2.ts` - generated TypeScript bindings
+- `occid2/generated/semantic_registry.json` - inspectable generated registry
 - `demo.py` - worked examples
 - `tests.py` - focused acceptance tests
+- `tests_runtime.py` - identity, validation, serialization, compiler errors
 - `SPEC.md` - algebraic and semantic findings
+
+## Runtime
+
+- Import Python bindings from `occid2`.
+- `UID.new()` mints a UUIDv4 as exactly 16 bytes.
+- Models validate construction and assignment.
+- `value.encode()` and `decode(payload)` use MsgPack `[model_id, {field_ordinal: value}]`.
+- Omitted fields and explicit null remain distinct.
+- Record wrappers and internal integer ID fields are removed.
+- No named interchange, compatibility machinery, or StrID.
+
+TypeScript bindings are generated types and constants in `occid2/generated/occid2.ts`.

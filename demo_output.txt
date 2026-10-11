@@ -9,47 +9,34 @@ A chart reduces a quantity in a representation to irreducible variables.
    chart Velocity * Representation.LocalCartesian := vx:float[m/s] * vy:float[m/s] * vz:float[m/s]
    chart Attitude * Representation.LocalEuler := roll:float[rad] * pitch:float[rad] * yaw:float[rad]
    chart Attitude * Representation.Quaternion := qw:float * qx:float * qy:float * qz:float
-   chart Time * Representation.Epoch := utime:float[s] * tz:int
-   chart Identity * Representation.UID := uid:string
-   chart Identity * Representation.IntID := id:int
-   chart Text * Representation.PlainText := value:string
-   chart Duration * Representation.Seconds := seconds:float[s]
-   chart Angle * Representation.Radians := rad:float[rad]
-   chart Distance * Representation.Meters := m:float[m]
-   chart Speed * Representation.MetersPerSecond := mps:float[m/s]
-   chart Altitude * Representation.MSL := m:float[m]
-   chart Altitude * Representation.FlightLevel := fl:float
-   chart Count * Representation.Count := count:int
-   chart Ordinal * Representation.Ordinal := n:int
-   chart Code * Representation.Protocol := code:int
-   chart Scalar * Representation.Decimal := value:float
-   chart Scalar * Representation.Integer := value:int
   GlobalPosition: ['lat', 'lon', 'h']
-  VehicleState  : ['uid', 'lat', 'lon', 'h', 'vx', 'vy', 'vz', 'roll', 'pitch', 'yaw']
-  VehicleState units: {'lat': 'deg', 'lon': 'deg', 'h': 'm', 'vx': 'm/s', 'vy': 'm/s', 'vz': 'm/s', 'roll': 'rad', 'pitch': 'rad', 'yaw': 'rad'}
 
 Data is stored in a representation and addressed by meaning.
   uav * Position            -> ['GlobalPosition', 'LocalPosition']
-  uav * Position * Geodetic -> GlobalPosition(lat=45.3, lon=-74.2, h=125.0)
-  uav * Position * Local    -> LocalPosition(x=120.0, y=-40.0, z=15.0)
+  uav * Position * Geodetic -> lat=36.53044 lon=-83.216383 h=125.0
+  uav * Position * Local    -> x=120.0 y=-40.0 z=15.0
 
-A projection is the compiled normal form of chart-selected facts.
-   VehicleState(uid=UID(uid='uav-1'), lat=45.3, lon=-74.2, h=125.0, vx=12.0, vy=0.0, vz=-1.5, roll=0.0, pitch=0.0, yaw=1.57)
+A chart value has a compact typed round trip.
+  decode(position.encode()) -> lat=36.53044 lon=-83.216383 h=125.0
+
+Facts are independent; no aggregate type covers them.
+   uav * Velocity * LocalCartesian -> vx=12.0 vy=0.0 vz=-1.5
+   uav * Attitude * LocalEuler     -> roll=0.0 pitch=0.0 yaw=1.57
 
 A task is an open expression: fixed factors + typed free variables.
   MOVE = MOVE(actor: Entity, destination: Position)  { Position(actor) = destination }
   fixed semantics: Realm.WORLD × Task × TemporalMode.ACHIEVE
    MOVE(actor=?, destination=?)
-   MOVE(actor=uav-1, destination=?)
-   MOVE(actor=uav-1, destination=mark-alpha) unbound: []
+   MOVE(actor=10f9e483-3cf6-4351-a719-3e8372acd985, destination=?)
+   MOVE(actor=10f9e483-3cf6-4351-a719-3e8372acd985, destination=a465b50f-5f88-465b-90a4-4f3857f8195d) unbound: []
 
 An unbound variable is an unknown, not an error.
-   LOCATE(target=target-42) => position=?
+   LOCATE(target=fa15fdb8-338c-4993-9817-111c7fa0c6e5) => position=?
    no position fact yet -> solve() = {}
-   fact arrives         -> solve() = {'position': GlobalPosition(lat=45.1, lon=-74.4, h=90.0)}
+   fact arrives         -> solve() = {'position': GlobalPosition(lat=36.53014, lon=-83.216683, h=90.0)}
 
 Relations connect independent things; roles belong to the relation.
-   AssignedWork(assignee=uav-1, work=task-move-1)
+   AssignedWork(assignee=10f9e483-3cf6-4351-a719-3e8372acd985, work=7794542f-a37e-4214-9e22-ee6b26c83fef)
 
 Legality is derived from declared constraints, never enumerated.
   Drone * BloodGroup.A_POS : False
