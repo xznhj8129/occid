@@ -3,10 +3,10 @@ from pathlib import Path
 
 from .definitions import load_definitions
 from .runtime import (
-    AmbiguousSemanticMatch, Axis, AxisValue, ChartType, Coord, Datum,
+    AmbiguousSemanticMatch, Axis, AxisValue, Binding, ChartType, Component, Coord, Datum,
     Equation, ExpressionType, IllegalSemanticCombination, OpenExpression,
     Product, Query, RelationFact, RelationType, SemanticRegistry, SemanticSolverLimit,
-    Store, SubjectRef, UID, sem, value_semantics,
+    SemanticValue, Store, SubjectRef, UID, sem, value_semantics,
 )
 from .wire import decode, encode
 
@@ -20,9 +20,9 @@ def new_store(*, registry: SemanticRegistry | None = None) -> Store:
 
 
 __all__ = [
-    "AmbiguousSemanticMatch", "Axis", "AxisValue", "ChartType", "Coord", "Datum",
+    "AmbiguousSemanticMatch", "Axis", "AxisValue", "Binding", "ChartType", "Component", "Coord", "Datum",
     "Equation", "ExpressionType", "IllegalSemanticCombination", "OpenExpression",
     "Product", "Query", "RelationFact", "RelationType", "SemanticRegistry", "SemanticSolverLimit",
-    "Store", "SubjectRef", "UID", "sem", "value_semantics", "decode", "encode",
+    "SemanticValue", "Store", "SubjectRef", "UID", "sem", "value_semantics", "decode", "encode",
     "load_definitions", "new_registry", "new_store",
 ]

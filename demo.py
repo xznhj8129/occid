@@ -1,8 +1,98 @@
 """Executable semantic algebra, live extension, and wire exchange demo."""
 
 from occid2 import (
-    AmbiguousSemanticMatch, IllegalSemanticCombination, Query, decode, new_store, sem,
+    AmbiguousSemanticMatch, IllegalSemanticCombination, Query, SemanticValue, decode, new_store, sem,
 )
+
+
+PREDICATE = SemanticValue(sem("Predicate"), {
+    "subject_uid": "uav-1", "quantity": "Height", "value": 125.0,
+})
+LOGIC = SemanticValue(sem("BooleanLogic"), {
+    "operator": "AND", "terms": [PREDICATE, PREDICATE],
+})
+WEATHER = {
+    "condition": LOGIC, "ifr": True, "night": False, "icing": False,
+    "rain": {"min_value": 0.0, "max_value": 2.0},
+    "snow": {"max_value": 0.0}, "temp": {"min_value": -5.0, "max_value": 35.0},
+    "wind": {"min_value": 0.0, "max_value": 12.0}, "vis": {"min_value": 3.0},
+    "unresolved_source_extension": b"\x00\xff",
+}
+OBJECTIVE = {
+    "uid": "objective-1", "name": "reach the destination", "condition": LOGIC,
+    "criteria": [PREDICATE, LOGIC, PREDICATE], "priority": 1, "status": "ACTIVE",
+    "start_time": 1.0, "deadline": 120.0,
+}
+PATH = {"points": [
+    {"lat": 36.530440, "lon": -83.216383, "h": 125.0},
+    {"lat": 36.530440, "lon": -83.216383, "h": 130.0},
+    {"lat": 36.530440, "lon": -83.216383, "h": 125.0},
+]}
+
+
+def compositions(store) -> None:
+    registry = store.registry
+    weather_ref = store.ref("weather-1", "WeatherLimits")
+    weather = weather_ref.set("WeatherLimits", WEATHER, source="operator", observed_at=1)
+    objective_ref = store.ref("objective-1", "Objective")
+    objective = objective_ref.set("Objective", OBJECTIVE, source="operator")
+    path_ref = store.ref("path-1", "GeoPath")
+    path = path_ref.set("GeoPath", PATH, source="operator")
+    move = store.task("composed-task", "TaskIntent.MOVE", instruction="follow the approved route", priority="IMMEDIATE", status="NEW")
+    move.bind("actor", store.ref("uav-1")).bind("destination", store.ref("mark-alpha"))
+    store.relate("ConstrainedBy", subject=move.ref, constraint=weather_ref)
+    store.relate("OwnedBy", objective=objective_ref, owner=store.ref("uav-1"))
+
+    # Query a role-bearing quantity, not 'wind.max_value' or a containing type.
+    upper_wind = weather_ref.get("WeatherQuantity.Wind", "Bound.Upper")
+    assert upper_wind.value == 12.0 and upper_wind.source == "operator"
+    assert weather_ref.get("PermissionKind.Night").value is False
+    assert len(objective.find("Predicate", "ConditionRole.Criterion")) == 4
+    assert objective.get("Priority", "Urgency.HIGH").value == 1
+    assert objective.get("Time", "TimeRole.Deadline").unit == "s"
+    assert objective.find("ConditionRole.Requirement", "Reference")[0].referent(store).uid == "uav-1"
+    waypoints = path_ref.find("Position", "PathRole.Waypoint")
+    assert [part.ordinal for part in waypoints] == [0, 1, 2]
+    assert waypoints[0].value == waypoints[2].value and waypoints[0].id != waypoints[2].id
+    assert [part.value for part in path_ref.find("Height", "PathRole.Waypoint")] == [125.0, 130.0, 125.0]
+    assert move.ref.get("Text", "TextRole.Instruction").value == "follow the approved route"
+    assert move.ref.get("Intent").expression.name == "MOVE"
+    assert move.get("Participation.Actor").referent(store).uid == "uav-1"
+
+    for datum in (weather, objective, path, move.ref.get("Task")):
+        tree = datum.decompose()
+        assert tree.recompose(tree.leaves()) == datum.value
+        assert decode(datum.encode()) == datum
+        assert tree.links()[0].roles["whole"] == tree
+
+    # Compose from semantic values. No authored source field is needed here.
+    range_value = registry.compose("NumericRange",
+        SemanticValue(sem("Scalar", "Bound.Lower"), 0.0),
+        SemanticValue(sem("Scalar", "Bound.Upper"), 12.0))
+    limits = registry.compose("WeatherLimits",
+        SemanticValue(range_value.semantics * "WeatherQuantity.Wind", range_value.value),
+        SemanticValue(sem("Permission", "PermissionKind.Night"), False))
+    rebuilt = store.ref("rebuilt-limits").set("WeatherLimits", limits)
+    assert rebuilt.get("WeatherQuantity.Wind", "Bound.Upper").value == 12.0
+    rebuilt_path = registry.compose("GeoPath", *waypoints)
+    assert rebuilt_path.value["points"][0].value == PATH["points"][0]
+    assert len(rebuilt_path.value["points"]) == 3
+
+    # The same latitude can arrive under a completely different coordinate name.
+    registry.update({
+        "factors": {"SurveyFix": {"implies": ["State"]}},
+        "charts": {"SurveyFix": {"north_angle": {"semantics": "Latitude", "type": "float", "unit": "deg"}}},
+    })
+    survey = store.ref("survey-1").set("SurveyFix", {"north_angle": 36.530440})
+    assert survey.get("Latitude").value == path.find("Latitude")[0].value
+    recomposed_survey = registry.compose("SurveyFix", path.find("Latitude")[0])
+    assert registry.decompose("SurveyFix", recomposed_survey).get("Latitude").value == 36.530440
+    print("\nStructured meaning: tasks, predicates, weather limits, objectives, and paths.")
+    print("  Wind x UpperBound ->", upper_wind.value, "; no field path")
+    print("  Criterion predicates retain their nested roles and repeated occurrences.")
+    print("  Ordered path heights ->", [part.value for part in path_ref.find("Height")])
+    print("  Chart inversion reconstructs every supplied value, including unknown extensions.")
+    print("  Semantic composition selects variables; a new chart changes coordinate spelling only.")
 
 
 def run() -> None:
@@ -173,6 +263,7 @@ def run() -> None:
     assert decode(compact, registry=registry) == revised
     print("\nWire exchange preserves definition revisions, identities, and original values.")
     print("  Inline definitions or resolvable revision identity; local facts require no serialization.")
+    compositions(store)
     print("Semantic algebra and runtime behaviors demonstrated in memory.")
 
 

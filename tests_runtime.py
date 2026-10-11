@@ -9,14 +9,200 @@ import msgpack
 
 from occid2 import (
     AmbiguousSemanticMatch, IllegalSemanticCombination, SemanticRegistry,
-    Query, UID, decode, new_registry, new_store, sem,
+    Query, SemanticValue, UID, decode, new_registry, new_store, sem,
 )
 
 POSITION = sem("Position", "Representation.Geodetic")
 VALUE = {"lat": 36.530440, "lon": -83.216383, "h": 125.0}
+PREDICATE_VALUE = SemanticValue(sem("Predicate"), {"subject_uid": "uav", "quantity": sem("Position", "Representation.Geodetic"), "value": 125.0})
+LOGIC_VALUE = SemanticValue(sem("BooleanLogic"), {"operator": "AND", "terms": [PREDICATE_VALUE, PREDICATE_VALUE]})
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_source_structures_have_semantic_components_and_inverse_charts(self):
+        store = new_store()
+        store.ref("uav", "UAV")
+        fixtures = (
+            ("Locality", {"name": "site"}, sem("Text", "TextRole.Name"), "site"),
+            ("Actor", {"uid": "actor", "name": "pilot", "role": SemanticValue(sem("Role"), {"name": "operator"})}, sem("Role"), {"name": "operator"}),
+            ("Vehicle", {"uid": "uav", "name": "aircraft", "serial_number": "SN1", "model": "M1"}, sem("Identity", "IdentifierKind.SerialNumber"), "SN1"),
+            ("Mark", {"uid": "mark", "name": "landing", **VALUE}, sem("Height"), 125.0),
+            ("Task", {"uid": "task", "instruction": "move", "intent": "TaskIntent.MOVE", "priority": 2, "status": "ACTIVE"}, sem("Priority", "Urgency.IMMEDIATE"), 2),
+            ("Predicate", PREDICATE_VALUE.value, sem("SemanticRegion"), sem("Position", "Representation.Geodetic")),
+            ("BooleanLogic", LOGIC_VALUE.value, sem("LogicOperator.AND"), "AND"),
+            ("GeoPath", {"points": [VALUE, VALUE]}, sem("GeoPath"), {"points": [VALUE, VALUE]}),
+            ("Role", {"name": "operator"}, sem("Text", "TextRole.Name"), "operator"),
+            ("Resource", {"uid": "res", "name": "fuel"}, sem("Identity", "IdentifierKind.UID"), "res"),
+            ("Constraint", {"condition": LOGIC_VALUE}, sem("BooleanLogic", "ConditionRole.Requirement"), LOGIC_VALUE.value),
+            ("TaskTimeWindow", {"condition": PREDICATE_VALUE, "earliest_start": 1.0, "latest_finish": 2.0}, sem("Time", "TimeRole.LatestFinish"), 2.0),
+            ("WeatherLimits", {"ifr": True, "night": False, "rain": {"max_value": 1.0}, "snow": {"max_value": 0.0}, "temp": {"min_value": -5.0}, "wind": {"max_value": 12.0}, "vis": {"min_value": 3.0}, "icing": False}, sem("WeatherQuantity.Wind", "Bound.Upper"), 12.0),
+            ("Objective", {"uid": "obj", "name": "goal", "condition": PREDICATE_VALUE, "criteria": [LOGIC_VALUE], "priority": "HIGH", "status": 1, "start_time": 1.0, "deadline": 2.0}, sem("Time", "TimeRole.Deadline"), 2.0),
+            ("Command", {"uid": "cmd", "operation": "CommandOperation.MOVE"}, sem("Operation"), "CommandOperation.MOVE"),
+            ("Authority", {"uid": "auth", "role": SemanticValue(sem("Role"), {"name": "operator"})}, sem("Role"), {"name": "operator"}),
+            ("Lease", {"uid": "lease", "role": SemanticValue(sem("Role"), {"name": "pilot"}), "bound": LOGIC_VALUE, "control_level": 3}, sem("ControlExtent.FULL"), 3),
+            ("Plan", {"uid": "plan", "name": "flight", "approval_state": "APPROVED"}, sem("ApprovalState.APPROVED"), "APPROVED"),
+            ("PlanContingency", {"condition": PREDICATE_VALUE}, sem("Condition", "ConditionRole.Trigger"), PREDICATE_VALUE.value),
+        )
+        for index, (meaning, raw, question, expected) in enumerate(fixtures):
+            with self.subTest(meaning=meaning):
+                subject = store.ref(f"structure-{index}")
+                fact = subject.set(meaning, raw, source="source", observed_at=10)
+                tree = fact.decompose()
+                self.assertEqual(fact.get(question).value, expected)
+                self.assertEqual(tree.recompose(tree.leaves()), raw)
+                self.assertEqual(decode(fact.encode()), fact)
+                self.assertTrue(tree.complete)
+                if question != sem(meaning):
+                    self.assertEqual(subject.get(question).value, expected)
+
+    def test_semantic_composition_projection_and_existential_questions(self):
+        store = new_store()
+        registry = store.registry
+        interval = registry.compose("NumericRange", SemanticValue(sem("Scalar", "Bound.Upper"), 12.0), SemanticValue(sem("Scalar", "Bound.Lower"), 0.0))
+        limits = registry.compose("WeatherLimits", SemanticValue(interval.semantics * "WeatherQuantity.Wind", interval.value), SemanticValue(sem("Permission", "PermissionKind.Night"), False))
+        subject = store.ref("weather")
+        fact = subject.set("WeatherLimits", limits)
+        question = Query("WeatherLimits", contains=(sem("WeatherQuantity.Wind", "Bound.Upper"), sem("PermissionKind.Night")))
+        self.assertEqual(subject.find(question), [fact])
+        self.assertEqual(subject.find(Query("WeatherLimits", contains=(sem("PermissionKind.Icing"),))), [])
+        tree = fact.decompose()
+        projection = tree.project(sem("WeatherQuantity.Wind", "Bound.Upper"), "PermissionKind.Night")
+        self.assertEqual(projection.get("WeatherQuantity.Wind", "Bound.Upper").value, 12.0)
+        self.assertEqual(projection.find("Bound.Lower"), [])
+        self.assertEqual(projection.get("PermissionKind.Night").value, False)
+        self.assertEqual(fact.get("Bound.Lower").value, 0.0)
+        self.assertEqual(projection.recompose(projection.leaves()), projection.value)
+        with self.assertRaises(ValueError):
+            tree.recompose(tree.leaves()[:-1])
+        with self.assertRaises(TypeError):
+            registry.compose("NumericRange", SemanticValue(sem("Scalar"), 1.0))
+        with self.assertRaises(AmbiguousSemanticMatch):
+            registry.compose("NumericRange", SemanticValue(sem("Scalar", "Bound.Upper"), 1.0), SemanticValue(sem("Scalar", "Bound.Upper"), 2.0))
+
+    def test_order_and_repetition_are_bindings_not_product_multiplicity(self):
+        store = new_store()
+        subject = store.ref("path")
+        fact = subject.set("GeoPath", {"points": [VALUE, {**VALUE, "h": 130.0}, VALUE]})
+        points = subject.find("Position", "PathRole.Waypoint")
+        self.assertEqual([point.ordinal for point in points], [0, 1, 2])
+        self.assertEqual(points[0].value, points[2].value)
+        self.assertNotEqual(points[0].id, points[2].id)
+        self.assertEqual([part.value for part in subject.find("Height")], [125.0, 130.0, 125.0])
+        self.assertEqual(subject.find(Query("GeoPath", contains=(sem("Position"),) * 3)), [fact])
+        self.assertEqual(subject.find(Query("GeoPath", contains=(sem("Position"),) * 4)), [])
+        rebuilt = store.registry.compose("GeoPath", *points)
+        self.assertEqual([point.value for point in store.registry.decompose("GeoPath", rebuilt).find("Position")], [point.value for point in points])
+        with self.assertRaises(AmbiguousSemanticMatch):
+            subject.get("Latitude")
+
+    def test_nested_condition_roles_and_reference_direction(self):
+        store = new_store()
+        actor = store.ref("uav", "UAV")
+        raw = {"uid": "objective", "name": "goal", "condition": LOGIC_VALUE, "criteria": [PREDICATE_VALUE, LOGIC_VALUE, PREDICATE_VALUE]}
+        fact = store.ref("objective").set("Objective", raw)
+        self.assertEqual(len(fact.find("Predicate", "ConditionRole.Criterion")), 4)
+        self.assertEqual(len(fact.find("Reference", "ConditionRole.Requirement")), 2)
+        reference = fact.find("Reference", "ConditionRole.Requirement")[0]
+        self.assertEqual(reference.referent(store).uid, actor.uid)
+        relation = store.relate("RefersTo", reference=reference, referent=actor)
+        self.assertEqual(tuple(relation.roles), ("reference", "referent"))
+        with self.assertRaises(TypeError):
+            store.relate("RefersTo", reference=actor, referent=reference)
+        self.assertEqual(fact.decompose().recompose(), raw)
+
+    def test_unknown_defaults_and_invalid_components_are_distinct(self):
+        store = new_store()
+        subject = store.ref("task")
+        raw = {"uid": "task", "instruction": "move", "intent": "TaskIntent.MOVE"}
+        fact = subject.set("Task", raw)
+        self.assertTrue(fact.get("Priority").defaulted)
+        self.assertEqual(fact.get("Urgency.ROUTINE").value, "ROUTINE")
+        self.assertEqual(fact.value, raw)
+        self.assertEqual(fact.decompose().recompose(), raw)
+        unknown = subject.set("Task", {"uid": "partial"}, partial=True)
+        self.assertFalse(unknown.decompose().complete)
+        self.assertEqual(unknown.find("Intent"), [])
+        with self.assertRaises(KeyError):
+            unknown.get("TextRole.Instruction")
+        before = subject.find()
+        invalid = (
+            ("Task", {**raw, "priority": True}),
+            ("Task", {**raw, "status": "invented"}),
+            ("Task", {"uid": "missing"}),
+            ("NumericRange", {"min_value": 2.0, "max_value": 1.0}),
+            ("TaskTimeWindow", {"earliest_start": 2.0, "latest_finish": 1.0}),
+            ("WeatherLimits", {"wind": SemanticValue(POSITION, VALUE)}),
+            ("BooleanLogic", {"operator": "AND", "terms": [SemanticValue(sem("Entity"), {"uid": "uav"})]}),
+            ("GeoPath", {"points": VALUE}),
+        )
+        for meaning, value in invalid:
+            with self.subTest(meaning=meaning, value=value), self.assertRaises((TypeError, ValueError)):
+                subject.set(meaning, value)
+        self.assertEqual(subject.find(), before)
+
+    def test_units_and_references_are_not_silently_converted_by_composition(self):
+        store = new_store()
+        subject = store.ref("position")
+        fact = subject.set(POSITION * "AltitudeReference.WGS84Ellipsoid", VALUE)
+        height = fact.get("Height", "AltitudeReference.WGS84Ellipsoid")
+        self.assertEqual(height.unit, "m")
+        with self.assertRaises(IllegalSemanticCombination):
+            store.registry.compose(POSITION * "AltitudeReference.MeanSeaLevel", *fact.find("Latitude"), *fact.find("Longitude"), height)
+        with self.assertRaises(ValueError):
+            store.registry.compose(POSITION, SemanticValue(sem("Latitude"), 1.0, unit="rad"), SemanticValue(sem("Longitude"), 2.0, unit="deg"), SemanticValue(sem("Height"), 3.0, unit="m"))
+        angular = subject.set("Latitude", SemanticValue(sem("Latitude"), 0.6, unit="rad"))
+        self.assertEqual(angular.unit, "rad")
+        self.assertEqual(subject.get(Query("Latitude", unit="rad")), angular)
+        self.assertEqual(decode(angular.encode()), angular)
+        self.assertEqual(angular.get("Latitude").unit, "rad")
+
+    def test_open_variables_are_addressable_by_region_and_role(self):
+        store = new_store()
+        actor = store.ref("uav", "UAV")
+        destination = store.ref("mark", "Mark")
+        expression = store.task("move", "TaskIntent.MOVE")
+        self.assertEqual(expression.find("Participation.Destination"), [])
+        expression.bind("actor", actor).bind("destination", destination)
+        self.assertEqual(expression.ref.get("Position", "Participation.Destination").referent(store).uid, "mark")
+        self.assertEqual(expression.get("Participation.Actor").referent(store).uid, "uav")
+        command = store.task("command", "CommandOperation.MOVE")
+        command.bind("speed", SemanticValue(sem("Speed"), 12.0))
+        self.assertEqual(command.get("Speed", "Participation.Speed").value, 12.0)
+        with self.assertRaises(TypeError):
+            command.bind("speed", SemanticValue(sem("Speed"), "twelve"))
+        self.assertEqual(actor.find("Position"), [])
+
+    def test_learned_component_meaning_and_revised_charts_preserve_evidence(self):
+        store = new_store()
+        registry = store.registry
+        registry.update({"factors": {"SourceValue": {}}, "charts": {"SourceValue": {"a": {"semantics": "Scalar", "type": "float"}}}})
+        subject = store.ref("source")
+        fact = subject.set("SourceValue", {"a": 1.0, "native": b"original"}, source="old")
+        wire = fact.encode()
+        registry.update({"factors": {"Scalar": {**registry.spec["factors"]["Scalar"], "implies": ["State", "Priority"]}}})
+        self.assertEqual(subject.get("Priority").value, 1.0)
+        self.assertEqual(subject.find(Query("Priority", interpretation="recorded")), [])
+        registry.update({"charts": {"SourceValue": {"reading": {"semantics": "Scalar", "type": "float"}}}})
+        second = subject.set("SourceValue", {"reading": 2.0}, source="new")
+        self.assertEqual(subject.get("Priority").value, 2.0)
+        self.assertEqual(subject.get(Query("Scalar", interpretation="recorded", source="old")).value, 1.0)
+        self.assertEqual(fact.encode(), wire)
+        self.assertEqual(fact.decompose().recompose(), {"a": 1.0, "native": b"original"})
+
+    def test_invalid_composition_definitions_do_not_activate(self):
+        registry = new_registry()
+        original = registry.definition_id
+        invalid = (
+            {"charts": {"Broken": {"x": {"semantics": "UnknownQuantity", "type": "float"}}}},
+            {"charts": {"NumericRange": {"max": {"semantics": "Scalar", "type": "float", "many": "yes"}}}},
+            {"charts": {"Task": {"priority": {"semantics": "Priority", "type": "code", "vocabulary": "TaskPriority", "default": "UNKNOWN"}}}},
+            {"expressions": {"BadRoles": {"factors": ["Task"], "given": {"actor": "Entity"}, "roles": {"missing": "Participation.Actor"}}}},
+        )
+        for update in invalid:
+            with self.assertRaises(ValueError):
+                registry.update(update)
+            self.assertEqual(registry.definition_id, original)
+
     def test_explicit_questions_resolve_repeated_observations(self):
         store = new_store()
         target = store.ref("target", "Entity")

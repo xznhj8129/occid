@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from copy import deepcopy
+from copy import copy, deepcopy
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from enum import Enum
@@ -192,12 +192,21 @@ class Rule:
 @dataclass(frozen=True, slots=True)
 class Coord:
     name: str
-    type: str
+    type: str | None
     unit: str | None = None
     optional: bool = False
+    semantics: Product = EMPTY
+    many: bool = False
+    vocabulary: str | None = None
+    values: tuple[tuple[str, Product], ...] = ()
+    qualifiers: Product = EMPTY
+    has_default: bool = False
+    default: Any = None
+    inherit: tuple[str, ...] = ()
 
     def __str__(self) -> str:
-        return f"{self.name}:{self.type}" + (f"[{self.unit}]" if self.unit else "")
+        region = str(self.semantics) if self.semantics.terms else self.type
+        return f"{self.name}:{region}" + (f"[{self.unit}]" if self.unit else "") + ("*" if self.many else "")
 
 
 @dataclass(frozen=True, slots=True)
@@ -206,6 +215,7 @@ class ChartType:
     factors: Product
     coords: tuple[Coord, ...]
     _context: dict = field(default_factory=dict, repr=False)
+    ordered: tuple[tuple[str, str], ...] = ()
 
     def __post_init__(self):
         object.__setattr__(self, "_context", deepcopy(self._context))
@@ -242,10 +252,12 @@ class ExpressionType:
     sought: dict[str, Product]
     equations: tuple[Equation, ...]
     words: tuple[str, ...]
+    roles: dict[str, Product] = field(default_factory=dict)
 
     def __post_init__(self):
         object.__setattr__(self, "given", MappingProxyType(dict(self.given)))
         object.__setattr__(self, "sought", MappingProxyType(dict(self.sought)))
+        object.__setattr__(self, "roles", MappingProxyType(dict(self.roles)))
 
     @property
     def variables(self) -> dict[str, Product]:
@@ -346,10 +358,13 @@ class Query:
     valid_at: Any = None
     latest: bool = False
     interpretation: str = "current"
+    contains: tuple[Product, ...] = ()
+    unit: str | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "semantics", sem(self.semantics))
         object.__setattr__(self, "source", deepcopy(self.source))
+        object.__setattr__(self, "contains", tuple(sem(region) for region in self.contains))
         if self.provenance is not None:
             if not isinstance(self.provenance, dict):
                 raise TypeError("query provenance must be a mapping")
@@ -367,9 +382,11 @@ class Query:
 
     @property
     def constrained_evidence(self) -> bool:
-        return self.source != _Source.ANY or self.provenance is not None or self.observed_before is not None or self.valid_at is not None or self.latest
+        return self.source != _Source.ANY or self.provenance is not None or self.observed_before is not None or self.valid_at is not None or self.latest or bool(self.contains) or self.unit is not None
 
     def accepts(self, datum: "Datum") -> bool:
+        if self.unit is not None and datum.unit != self.unit:
+            return False
         if self.source != _Source.ANY and datum.source != self.source:
             return False
         if self.provenance is not None:
@@ -414,9 +431,11 @@ def _question(registry: "SemanticRegistry", terms: tuple[Any, ...]) -> Query:
         raise TypeError("a semantic question accepts one Query")
     question = questions[0] if questions else Query()
     region = registry.product(*(term for term in terms if not isinstance(term, Query)))
-    question = replace(question, semantics=registry.product(question.semantics) | region)
-    if not registry.legal(question.semantics):
-        raise IllegalSemanticCombination(f"illegal semantic query: {question.semantics}")
+    question = replace(question, semantics=registry.product(question.semantics) | region,
+                       contains=tuple(registry.product(region) for region in question.contains))
+    for product in (question.semantics, *question.contains):
+        if not registry.legal(product):
+            raise IllegalSemanticCombination(f"illegal semantic query: {product}")
     return question
 
 
@@ -435,6 +454,8 @@ class Datum:
     _validity: Any = field(default=None, repr=False)
     _provenance: dict = field(default_factory=dict, repr=False)
     _extensions: dict = field(default_factory=dict, repr=False)
+    partial: bool = False
+    unit: str | None = None
 
     def __post_init__(self):
         if isinstance(self._definitions, dict):
@@ -474,6 +495,225 @@ class Datum:
         from .wire import encode
         return encode(self, include_definitions=include_definitions)
 
+    def decompose(self, *, registry: "SemanticRegistry | None" = None) -> "Component":
+        registry = registry or self._definitions.registry()
+        return registry.decompose(self.semantics, self.value, datum=self, partial=self.partial, _unit=self.unit)
+
+    def find(self, *query: Any) -> list["Component"]:
+        return self.decompose().find(*query)
+
+    def get(self, *query: Any) -> "Component":
+        return self.decompose().get(*query)
+
+
+@dataclass(frozen=True)
+class SemanticValue:
+    """A value inhabiting a product. Charts, not this carrier, define its parts."""
+    semantics: Product
+    _value: Any = field(repr=False)
+    partial: bool = False
+    unit: str | None = None
+
+    def __post_init__(self):
+        object.__setattr__(self, "semantics", sem(self.semantics))
+        object.__setattr__(self, "_value", deepcopy(self._value))
+        if type(self.partial) is not bool:
+            raise TypeError("semantic value partial must be boolean")
+        if self.unit is not None and not isinstance(self.unit, str):
+            raise TypeError("semantic value unit must be text")
+
+    @property
+    def value(self):
+        return deepcopy(self._value)
+
+
+@dataclass(frozen=True)
+class Binding:
+    """A chart variable bound to zero, one, or an ordered sequence of values."""
+    variable: Coord
+    components: tuple["Component", ...]
+    present: bool = True
+    null: bool = False
+
+
+@dataclass(frozen=True)
+class Component:
+    """A chart projection: intrinsic meaning, role, order, and evidence identity.
+
+    Parent and child products describe different things. Their connection is a
+    typed variable binding, never multiplication of the two things' meanings.
+    """
+    semantics: Product
+    meaning: Product
+    _registry: "SemanticRegistry" = field(repr=False, compare=False)
+    _primitive: Any = field(default=None, repr=False)
+    bindings: tuple[Binding, ...] = ()
+    structured: bool = False
+    _extras: dict = field(default_factory=dict, repr=False)
+    variable: Coord | None = None
+    ordinal: int | None = None
+    defaulted: bool = False
+    _tagged: bool = False
+    _path: tuple = field(default=(), repr=False)
+    _datum: Datum | None = field(default=None, repr=False, compare=False)
+    _tag_product: Product | None = field(default=None, repr=False)
+    _tag_partial: bool = field(default=False, repr=False)
+    _tag_unit: str | None = field(default=None, repr=False)
+    _unit: str | None = field(default=None, repr=False)
+
+    @property
+    def id(self):
+        return (self._datum.id if self._datum else None, self._path)
+
+    @property
+    def unit(self):
+        return self._unit if self._unit is not None else self.variable.unit if self.variable else None
+
+    @property
+    def source(self):
+        return self._datum.source if self._datum else None
+
+    @property
+    def observed_at(self):
+        return self._datum.observed_at if self._datum else None
+
+    @property
+    def validity(self):
+        return self._datum.validity if self._datum else None
+
+    @property
+    def provenance(self):
+        return self._datum.provenance if self._datum else {}
+
+    @property
+    def interpretation_id(self):
+        return self._registry.definition_id
+
+    @property
+    def value(self):
+        return self.recompose()
+
+    def walk(self):
+        yield self
+        for binding in self.bindings:
+            for component in binding.components:
+                yield from component.walk()
+
+    def leaves(self) -> list["Component"]:
+        return [component for component in self.walk() if not component.structured]
+
+    def find(self, *query: Any) -> list["Component"]:
+        question = _question(self._registry, query)
+        return question.select([component for component in self.walk() if question.semantics.terms <= component.meaning.terms and component.contains(question.contains) and question.accepts(component)])
+
+    def contains(self, regions: Iterable[Product]) -> bool:
+        """Existential part constraints require distinct binding occurrences."""
+        descendants = list(self.walk())[1:]
+        occupied = {}
+
+        def assign(region_index, visited):
+            for index, part in enumerate(descendants):
+                if index in visited or not regions[region_index].terms <= part.meaning.terms:
+                    continue
+                visited.add(index)
+                if index not in occupied or assign(occupied[index], visited):
+                    occupied[index] = region_index
+                    return True
+            return False
+
+        regions = tuple(regions)
+        return all(assign(index, set()) for index in range(len(regions)))
+
+    @property
+    def complete(self) -> bool:
+        return all((binding.present or binding.variable.optional or binding.variable.has_default)
+                   and all(part.complete for part in binding.components) for binding in self.bindings)
+
+    def project(self, *queries: Any) -> "Component":
+        """Select semantic subexpressions while retaining their binding incidence.
+
+        This is an explicit projection. Unselected values remain in the source
+        datum; a projected required variable may be unbound.
+        """
+        questions = [_question(self._registry, (query,)) for query in queries]
+        selected = {part.id for question in questions for part in self.find(question)}
+
+        def select(node):
+            if node.id in selected:
+                return node
+            bindings = []
+            for binding in node.bindings:
+                parts = tuple(part for child in binding.components if (part := select(child)) is not None)
+                bindings.append(Binding(binding.variable, parts, bool(parts)))
+            if not any(binding.components for binding in bindings):
+                return None
+            return replace(node, bindings=tuple(bindings), _extras={})
+
+        return select(self) or replace(self, bindings=tuple(Binding(binding.variable, (), False) for binding in self.bindings), _extras={})
+
+    def get(self, *query: Any) -> "Component":
+        found = self.find(*query)
+        if not found:
+            raise KeyError(f"no component satisfies {query!r}")
+        if len(found) != 1:
+            raise AmbiguousSemanticMatch(f"{query!r} matches component identities {[component.id for component in found]}")
+        return found[0]
+
+    def recompose(self, parts: Iterable["Component"] | None = None):
+        """Invert this chart, preserving roles, repeated values, and unknown data.
+
+        Supplying leaves requires every non-default leaf of this composition;
+        identities carry the binding incidence and sequence order. Missing or
+        foreign leaves are rejected, rather than silently discarded.
+        """
+        replacements = None
+        if parts is not None:
+            parts = list(parts)
+            replacements = {part.id: part for part in parts}
+            expected = {part.id for part in self.leaves() if not part.defaulted}
+            actual = {part.id for part in parts if not part.defaulted}
+            if len(replacements) != len(parts) or expected != actual:
+                raise ValueError(f"recomposition requires exactly its leaves; missing={expected - actual}, foreign={actual - expected}")
+        return self._recompose(replacements)
+
+    def _recompose(self, replacements):
+        if not self.structured:
+            part = replacements[self.id] if replacements is not None and not self.defaulted else self
+            return deepcopy(part._primitive)
+        result = deepcopy(self._extras)
+        for binding in self.bindings:
+            if not binding.present:
+                continue
+            if binding.null:
+                result[binding.variable.name] = None
+                continue
+            values = []
+            for part in binding.components:
+                value = part._recompose(replacements)
+                if part._tagged:
+                    value = SemanticValue(part._tag_product or part.semantics, value, part._tag_partial, part._tag_unit)
+                values.append(value)
+            result[binding.variable.name] = values if binding.variable.many else values[0]
+        return result
+
+    def links(self) -> list["RelationFact"]:
+        relation = self._registry.relation_types["HasComponent"]
+        return [relation(whole=node, part=part) for node in self.walk() for binding in node.bindings for part in binding.components if part.meaning.terms and "Root" in part.meaning]
+
+    @property
+    def expression(self) -> ExpressionType:
+        if self.variable is None or self.variable.type != "word":
+            raise TypeError("component is not an expression word")
+        return self._registry.expression_of(self.value)
+
+    def referent(self, store: "Store") -> "SubjectRef":
+        if self.variable is None or self.variable.type != "reference":
+            raise TypeError("component is not a reference binding")
+        uid = subject_identity(self.value)
+        if uid not in store._subjects:
+            raise KeyError(f"unknown referent {uid!r}")
+        return SubjectRef(store, uid)
+
 
 @dataclass(frozen=True, slots=True)
 class RelationType:
@@ -499,9 +739,10 @@ class RelationType:
         if len(operands) != len(self.signature):
             raise TypeError(f"{self.name} expects {len(self.signature)} operands")
         for role, operand, expected in zip(self.operand_names, operands, self.signature):
-            if not isinstance(operand, SubjectRef) or not expected.terms <= operand.semantics.terms:
+            if not isinstance(operand, (SubjectRef, Datum, Component)) or not expected.terms <= value_semantics(operand).terms:
                 raise TypeError(f"{self.name} operand {role!r} expects {expected}, got {operand!r}")
-        if any(operand.store is not operands[0].store for operand in operands):
+        subjects = [operand for operand in operands if isinstance(operand, SubjectRef)]
+        if subjects and any(operand.store is not subjects[0].store for operand in subjects):
             raise ValueError(f"{self.name}: operands belong to different stores")
         return RelationFact(str(uuid4()), self, tuple(operands))
 
@@ -517,7 +758,7 @@ class RelationFact:
         return dict(zip(self.relation.operand_names, self.operands))
 
     def __str__(self) -> str:
-        parts = (f"{role}={operand.uid}" for role, operand in zip(self.relation.operand_names, self.operands))
+        parts = (f"{role}={operand.uid if isinstance(operand, SubjectRef) else operand.id}" for role, operand in zip(self.relation.operand_names, self.operands))
         return f"{self.relation.name}({', '.join(parts)})"
 
 
@@ -531,6 +772,7 @@ class DefinitionRevision:
     """One shared definition snapshot; observations retain this original model."""
     _spec: dict = field(repr=False)
     id: str = field(init=False)
+    _registry: "SemanticRegistry | None" = field(default=None, repr=False, compare=False)
 
     def __post_init__(self):
         object.__setattr__(self, "_spec", deepcopy(self._spec))
@@ -540,12 +782,20 @@ class DefinitionRevision:
     def spec(self) -> dict:
         return deepcopy(self._spec)
 
+    def registry(self) -> "SemanticRegistry":
+        if self._registry is None:
+            model = SemanticRegistry(self._spec)
+            model._readonly = True
+            object.__setattr__(self, "_registry", model)
+        return self._registry
+
 
 class SemanticRegistry:
     def __init__(self, spec: dict[str, Any]):
         self._revision = DefinitionRevision(spec)
         self._spec = self._revision._spec
         data = prepare(spec)
+        self.primitive_types = {name: item["primitive"] for name, item in data["factors"].items() if "primitive" in item}
         self.definition_id = self._revision.id
         self._history = {self.definition_id: self._revision}
         self._revisions = {}
@@ -578,12 +828,21 @@ class SemanticRegistry:
             ChartType(
                 item["display"],
                 product_names(item["factors"]),
-                tuple(Coord(coord["name"], coord["type"], coord["unit"], bool(coord["optional"])) for coord in item["coords"]),
+                tuple(Coord(
+                    name=coord["name"], type=coord.get("type"), unit=coord.get("unit"),
+                    optional=bool(coord.get("optional")), semantics=product_names(coord["semantics"]),
+                    many=coord.get("many", False), vocabulary=coord.get("vocabulary"),
+                    values=tuple((name, product_names(region)) for name, region in coord.get("values", {}).items()),
+                    qualifiers=product_names(coord.get("qualifiers", [])),
+                    has_default="default" in coord, default=coord.get("default"),
+                    inherit=tuple(coord.get("inherit", [])),
+                ) for coord in item["coords"]),
                 item["context"],
+                tuple(tuple(pair) for pair in item["ordered"]),
             )
             for item in data["charts"]
         ]
-        self.expressions = {name: ExpressionType(name, product_names(item["factors"]), {role: product_names(region) for role, region in item["given"].items()}, {role: product_names(region) for role, region in item["sought"].items()}, tuple(Equation(**equation) for equation in item["equations"]), tuple(item["words"])) for name, item in data["expressions"].items()}
+        self.expressions = {name: ExpressionType(name, product_names(item["factors"]), {role: product_names(region) for role, region in item["given"].items()}, {role: product_names(region) for role, region in item["sought"].items()}, tuple(Equation(**equation) for equation in item["equations"]), tuple(item["words"]), {role: product_names(region) for role, region in item["roles"].items()}) for name, item in data["expressions"].items()}
         self.word_expressions = data["word_expressions"]
         self._mappings = data["mappings"]
         self.vocabularies = data["vocabularies"]
@@ -603,6 +862,10 @@ class SemanticRegistry:
         self.word_expressions = MappingProxyType(self.word_expressions)
         self.relation_types = MappingProxyType(self.relation_types)
         self.vocabularies = MappingProxyType({name: MappingProxyType(members) for name, members in self.vocabularies.items()})
+        self.primitive_types = MappingProxyType(self.primitive_types)
+        recorded = copy(self)
+        recorded._readonly = True
+        object.__setattr__(self._revision, "_registry", recorded)
 
     @classmethod
     def load(cls, path: str | Path) -> "SemanticRegistry":
@@ -635,9 +898,7 @@ class SemanticRegistry:
 
     def at(self, definition_id: str) -> "SemanticRegistry":
         if definition_id not in self._revisions:
-            registry = SemanticRegistry(self._history[definition_id]._spec)
-            registry._readonly = True
-            self._revisions[definition_id] = registry
+            self._revisions[definition_id] = self._history[definition_id].registry()
         return self._revisions[definition_id]
 
     def product(self, *terms: Any) -> Product:
@@ -691,6 +952,7 @@ class SemanticRegistry:
         regions += [chart.factors for chart in self.charts]
         for expression in self.expressions.values():
             regions += [expression.factors, *expression.variables.values()]
+            regions += [region | expression.roles.get(name, EMPTY) for name, region in expression.variables.items()]
             for equation in expression.equations:
                 if not self.entails(self.product(equation.quantity), expression.variables[equation.equals]):
                     raise ValueError(f"expression {expression.name}: equation result violates variable region")
@@ -702,6 +964,16 @@ class SemanticRegistry:
                 raise IllegalSemanticCombination(f"definition declares an illegal semantic region: {region}")
         for chart in self.charts:
             self.coordinates(chart.factors)
+            for coordinate in chart.coords:
+                if coordinate.semantics.terms and not self.legal(coordinate.semantics | coordinate.qualifiers):
+                    raise ValueError(f"chart {chart.display}: illegal variable region {coordinate.semantics}")
+                for member, region in coordinate.values:
+                    if coordinate.vocabulary is None or member not in self.vocabularies[coordinate.vocabulary]:
+                        raise ValueError(f"chart {chart.display}: unknown vocabulary value {member!r}")
+                    if not self.legal(coordinate.semantics | coordinate.qualifiers | region):
+                        raise ValueError(f"chart {chart.display}: illegal value region {region}")
+                if coordinate.has_default:
+                    self._coordinate_product(coordinate, coordinate.default)
         for word in self.word_expressions:
             vocabulary, member = word.split(".")
             if vocabulary in self.vocabularies and member not in self.vocabularies[vocabulary]:
@@ -718,27 +990,150 @@ class SemanticRegistry:
                     result[coordinate.name] = coordinate
         return result
 
-    def validate_value(self, product: Product, value: Any) -> None:
+    def _coordinate_product(self, coordinate: Coord, value: Any) -> Product:
+        product = coordinate.semantics | coordinate.qualifiers
+        if isinstance(value, SemanticValue):
+            if not self.entails(value.semantics, coordinate.semantics):
+                raise TypeError(f"{coordinate.name}: {value.semantics} does not satisfy {coordinate.semantics}")
+            product |= self.product(value.semantics)
+            if value.unit is not None and coordinate.unit != value.unit:
+                raise ValueError(f"{coordinate.name}: source unit {value.unit!r} differs from chart unit {coordinate.unit!r}; an explicit conversion is required")
+            value = value.value
+        if value is None and coordinate.optional:
+            return product
+        kind = coordinate.type
+        if kind in PRIMITIVE_TYPES:
+            valid = (type(value) in (int, float) and isfinite(value)) if kind == "float" else type(value) is PRIMITIVE_TYPES[kind]
+            if not valid:
+                raise TypeError(f"{coordinate.name}={value!r} requires {coordinate}")
+        elif kind in ("identity", "reference"):
+            subject_identity(value)
+        elif kind == "product":
+            if not isinstance(value, (str, Product)):
+                raise TypeError(f"{coordinate.name}: expected a semantic description")
+            if not self.legal(self.product(value)):
+                raise IllegalSemanticCombination(f"{coordinate.name}: illegal semantic description {value}")
+        elif kind == "word":
+            if not isinstance(value, str) or value not in self.word_expressions:
+                raise ValueError(f"{coordinate.name}: unknown expression word {value!r}")
+            vocabulary = coordinate.vocabulary
+            if vocabulary and not value.startswith(vocabulary + "."):
+                raise TypeError(f"{coordinate.name}: word must belong to {vocabulary}")
+        elif kind == "code":
+            members = self.vocabularies[coordinate.vocabulary]
+            matches = [name for name, code in members.items() if (type(value) is str and value in (name, coordinate.vocabulary + "." + name)) or (type(value) is type(code) and value == code)]
+            if len(matches) != 1:
+                raise ValueError(f"{coordinate.name}: {value!r} is not an unambiguous {coordinate.vocabulary} value")
+            product |= dict(coordinate.values).get(matches[0], EMPTY)
+        if not self.legal(product):
+            raise IllegalSemanticCombination(f"{coordinate.name}: illegal component product {product}")
+        return product
+
+    def validate_value(self, product: Product, value: Any, *, partial: bool = False) -> None:
+        self.decompose(product, value, partial=partial)
+
+    def decompose(self, product: Any, value: Any, *, datum: Datum | None = None, partial: bool = False,
+                  _variable: Coord | None = None, _path: tuple = (), _qualifiers: Product = EMPTY,
+                  _ordinal: int | None = None, _defaulted: bool = False, _unit: str | None = None) -> Component:
+        """Reduce a product through its charts to typed, addressable bindings."""
+        product = self.product(product)
+        tagged = isinstance(value, SemanticValue)
+        if tagged:
+            if not self.entails(value.semantics, product):
+                raise TypeError(f"{value.semantics} does not satisfy {product}")
+            product |= self.product(value.semantics)
+            partial = partial or value.partial
+            _unit = value.unit
+            value = value.value
+        product |= _qualifiers
+        if not self.legal(product):
+            raise IllegalSemanticCombination(f"illegal component product {product}")
         coordinates = self.coordinates(product)
         if not coordinates:
-            return
-        if not isinstance(value, dict):
-            raise TypeError(f"{product}: chart value must be a mapping")
-        for name, coordinate in coordinates.items():
-            if name not in value:
-                if coordinate.optional:
+            for name, kind in self.primitive_types.items():
+                if self.entails(product, name):
+                    self._coordinate_product(Coord(name, kind, semantics=self.product(name)), value)
+        bindings = []
+        if coordinates:
+            if not isinstance(value, dict):
+                raise TypeError(f"{product}: chart value must be a mapping")
+            for name, coordinate in coordinates.items():
+                present = name in value
+                if not present and not coordinate.has_default:
+                    if not coordinate.optional and not partial:
+                        raise ValueError(f"{product}: missing coordinate {name!r}")
+                    bindings.append(Binding(coordinate, (), False))
                     continue
-                raise ValueError(f"{product}: missing coordinate {name!r}")
-            item = value[name]
-            if item is None and coordinate.optional:
-                continue
-            expected = PRIMITIVE_TYPES[coordinate.type]
-            if coordinate.type == "float":
-                valid = type(item) in (int, float) and isfinite(item)
-            else:
-                valid = type(item) is expected
-            if not valid:
-                raise TypeError(f"{product}: {name}={item!r} requires {coordinate}")
+                item = value[name] if present else coordinate.default
+                if item is None and coordinate.optional:
+                    bindings.append(Binding(coordinate, (), present, True))
+                    continue
+                if coordinate.many and not isinstance(item, list):
+                    raise TypeError(f"{product}: {name} requires an ordered list")
+                items = item if coordinate.many else [item]
+                parts = []
+                for ordinal, item in enumerate(items):
+                    region = self._coordinate_product(coordinate, item)
+                    # Only declared qualifiers propagate. A parent's quantity
+                    # is not the quantity of its parts; position is not latitude.
+                    inherited = _qualifiers | coordinate.qualifiers | product_names(term for term in product if self.axis_of_value.get(term) in coordinate.inherit)
+                    region |= inherited
+                    part = self.decompose(region, item.value if isinstance(item, SemanticValue) else item,
+                                          datum=datum, partial=partial, _variable=coordinate,
+                                          _path=(*_path, name, ordinal) if coordinate.many else (*_path, name),
+                                          _qualifiers=inherited, _ordinal=ordinal if coordinate.many else None,
+                                          _defaulted=not present, _unit=item.unit if isinstance(item, SemanticValue) else None)
+                    if isinstance(item, SemanticValue):
+                        part = replace(part, _tagged=True, _tag_product=item.semantics, _tag_partial=item.partial, _tag_unit=item.unit)
+                    parts.append(part)
+                bindings.append(Binding(coordinate, tuple(parts), present))
+            for chart in self.charts:
+                if self.entails(product, chart.factors):
+                    for lower, upper in chart.ordered:
+                        low = value.get(lower)
+                        high = value.get(upper)
+                        low = low.value if isinstance(low, SemanticValue) else low
+                        high = high.value if isinstance(high, SemanticValue) else high
+                        if low is not None and high is not None and low > high:
+                            raise ValueError(f"{product}: {lower} must not exceed {upper}")
+        return Component(product, self.closure(product), self, deepcopy(value) if not coordinates else None,
+                         tuple(bindings), bool(coordinates) and value is not None,
+                         {key: deepcopy(item) for key, item in value.items() if key not in coordinates} if coordinates and isinstance(value, dict) else {},
+                         _variable, _ordinal, _defaulted, tagged, _path, datum, _unit=_unit)
+
+    def compose(self, product: Any, *parts: SemanticValue | Component, partial: bool = False) -> SemanticValue:
+        """Bind chart variables by semantic region, independent of field spelling.
+
+        Many-valued variables consume matching parts in caller order. A part
+        matching two distinct roles is ambiguous and needs a role qualifier.
+        """
+        product = self.product(product)
+        coordinates = self.coordinates(product)
+        bindings = {name: [] for name in coordinates}
+        for part in parts:
+            if not isinstance(part, (SemanticValue, Component)):
+                raise TypeError("composition requires semantic values or components")
+            region = self.closure(part.semantics)
+            matches = [name for name, coordinate in coordinates.items() if coordinate.semantics.terms and self.entails(region, coordinate.semantics | coordinate.qualifiers)]
+            if not matches:
+                raise TypeError(f"{product}: no typed variable accepts {part.semantics}; include its role qualifiers")
+            if len(matches) > 1:
+                raise AmbiguousSemanticMatch(f"{part.semantics}: expected one variable region, matches {matches}")
+            bindings[matches[0]].append(part)
+        value = {}
+        for name, coordinate in coordinates.items():
+            matched = bindings[name]
+            if not coordinate.many and len(matched) > 1:
+                raise AmbiguousSemanticMatch(f"{product}: variable {coordinate.semantics} has multiple values")
+            if matched:
+                values = [SemanticValue(part.semantics, part.value, unit=part.unit) for part in matched]
+                value[name] = values if coordinate.many else values[0]
+            elif coordinate.many and not coordinate.optional:
+                value[name] = []
+            elif coordinate.has_default:
+                value[name] = deepcopy(coordinate.default)
+        self.validate_value(product, value, partial=partial)
+        return SemanticValue(product, value, partial)
 
     def closure(self, product: Product) -> Product:
         return Product(self._closure(self.product(product).terms))
@@ -905,7 +1300,7 @@ class OpenExpression:
     def factors(self) -> Product:
         return self.expression.factors
 
-    def bind(self, name: str, value: SubjectRef | Datum, *, interpretation: str = "current") -> "OpenExpression":
+    def bind(self, name: str, value: SubjectRef | Datum | Component | SemanticValue, *, interpretation: str = "current") -> "OpenExpression":
         if name not in self.expression.variables:
             raise KeyError(f"{self.expression.name} has no variable {name!r}")
         registry = self.store.registry.at(self.definition_id)
@@ -918,12 +1313,51 @@ class OpenExpression:
             meaning = value.semantics if interpretation == "recorded" else self.store.registry.closure(value.semantics)
         elif isinstance(value, Datum):
             meaning = self.store.meaning_of(value, interpretation=interpretation)
+        elif isinstance(value, (Component, SemanticValue)):
+            if interpretation not in ("current", "recorded"):
+                raise ValueError("interpretation must be current or recorded")
+            model = self.store.registry if interpretation == "current" else registry
+            model.validate_value(value.semantics, value.value)
+            meaning = model.closure(value.semantics)
         else:
             raise TypeError(f"{name}: not a semantic binding: {value!r}")
         if not region.terms <= meaning.terms:
             raise TypeError(f"{name}: {meaning} does not satisfy {region}")
         self.bindings = {**self.bindings, name: value}
         return self
+
+    def components(self) -> list[Component]:
+        """Project bound variables with semantic participant and input/answer roles."""
+        registry = self.store.registry.at(self.definition_id)
+        components = []
+        for name, value in self.bindings.items():
+            role = self.expression.roles.get(name, EMPTY)
+            mode = sem("BindingMode.Answer" if name in self.expression.sought else "BindingMode.Input")
+            qualifiers = role | mode
+            if isinstance(value, SubjectRef):
+                region = self.expression.variables[name] | qualifiers | sem("Reference")
+                variable = Coord(name, "reference", semantics=self.expression.variables[name], qualifiers=qualifiers)
+                components.append(Component(region, registry.closure(region), registry, value.uid,
+                                            variable=variable, _path=(self.ref.uid, name)))
+            else:
+                datum = value if isinstance(value, Datum) else value._datum if isinstance(value, Component) else None
+                components.append(registry.decompose(value.semantics, value.value, datum=datum, partial=True,
+                                                     _qualifiers=qualifiers, _path=(self.ref.uid, name)))
+        return components
+
+    def find(self, *query: Any) -> list[Component]:
+        registry = self.store.registry.at(self.definition_id)
+        question = _question(registry, query)
+        return question.select([part for component in self.components() for part in component.walk()
+                                if question.semantics.terms <= part.meaning.terms and part.contains(question.contains) and question.accepts(part)])
+
+    def get(self, *query: Any) -> Component:
+        found = self.find(*query)
+        if not found:
+            raise KeyError(f"no bound variable satisfies {query!r}")
+        if len(found) != 1:
+            raise AmbiguousSemanticMatch(f"{query!r} matches {len(found)} bound components")
+        return found[0]
 
     @property
     def unbound(self) -> list[str]:
@@ -1001,15 +1435,26 @@ class Store:
         if not isinstance(subject, SubjectRef) or subject.store is not self:
             raise ValueError("subject reference belongs to another store")
 
-    def set(self, subject: SubjectRef, semantics: Any, value: Any, *, source: Any = None, observed_at: Any = None, validity: Any = None, provenance: dict | None = None) -> Datum:
+    def set(self, subject: SubjectRef, semantics: Any, value: Any, *, source: Any = None, observed_at: Any = None, validity: Any = None, provenance: dict | None = None, partial: bool = False, unit: str | None = None) -> Datum:
         self._check_subject(subject)
         product = self.registry.product(semantics)
         if not self.registry.legal(product):
             raise IllegalSemanticCombination(f"illegal datum semantics: {product}")
-        self.registry.validate_value(product, value)
+        if isinstance(value, SemanticValue):
+            if not self.registry.entails(value.semantics, product):
+                raise TypeError(f"{value.semantics} does not satisfy {product}")
+            product |= self.registry.product(value.semantics)
+            partial = partial or value.partial
+            if unit is not None and value.unit is not None and unit != value.unit:
+                raise ValueError("explicit unit differs from semantic value unit")
+            unit = value.unit if value.unit is not None else unit
+            value = value.value
+        if type(partial) is not bool or (unit is not None and not isinstance(unit, str)):
+            raise TypeError("partial must be boolean and unit must be text")
+        self.registry.validate_value(product, value, partial=partial)
         if provenance is not None and not isinstance(provenance, dict):
             raise TypeError("datum provenance must be a mapping")
-        datum = Datum(str(uuid4()), subject.uid, product, self.registry.closure(product), self.registry.definition_id, value, self.registry._revision, source, observed_at, validity, provenance or {})
+        datum = Datum(str(uuid4()), subject.uid, product, self.registry.closure(product), self.registry.definition_id, value, self.registry._revision, source, observed_at, validity, provenance or {}, partial=partial, unit=unit)
         self._add_fact(datum)
         return datum
 
@@ -1025,7 +1470,7 @@ class Store:
         registry = self.registry.at(datum.definition_id) if datum.definition_id in self.registry._history else SemanticRegistry(datum.definitions)
         if not registry.legal(datum.semantics) or registry.closure(datum.semantics) != datum.meaning:
             raise ValueError("fact meaning does not match its original definitions")
-        registry.validate_value(datum.semantics, datum.value)
+        registry.validate_value(datum.semantics, datum.value, partial=datum.partial)
         if not isinstance(datum.provenance, dict):
             raise ValueError("fact provenance must be a mapping")
         existing = self._facts.get(datum.id)
@@ -1046,10 +1491,26 @@ class Store:
         found = []
         for datum in self._data.get(subject.uid, []):
             meaning = datum.meaning if question.interpretation == "recorded" else self.registry.closure(datum.semantics)
-            if not question.semantics.terms <= meaning.terms or not question.accepts(datum):
+            if question.semantics.terms <= meaning.terms:
+                if not question.accepts(datum):
+                    continue
+                if question.contains:
+                    registry = self.registry.at(datum.definition_id) if question.interpretation == "recorded" else self.registry
+                    if not registry.decompose(datum.semantics, datum.value, datum=datum, partial=True, _unit=datum.unit).contains(question.contains):
+                        continue
+                self.meaning_of(datum, interpretation=question.interpretation)
+                found.append(datum)
                 continue
-            self.meaning_of(datum, interpretation=question.interpretation)
-            found.append(datum)
+            registry = self.registry.at(datum.definition_id) if question.interpretation == "recorded" else self.registry
+            # Current charts are interpretations of retained evidence. A newly
+            # declared required variable may still be unknown in older data.
+            composition = registry.decompose(datum.semantics, datum.value, datum=datum, partial=True, _unit=datum.unit)
+            matches = composition.find(question)
+            if matches:
+                self.meaning_of(datum, interpretation=question.interpretation)
+                found.extend(matches)
+        if question.semantics.terms and subject.uid in self._expressions:
+            found.extend(self._expressions[subject.uid].find(question))
         return question.select(found)
 
     def meaning_of(self, datum: Datum, *, interpretation: str = "current") -> Product:
@@ -1088,8 +1549,11 @@ class Store:
         if uid in self._expressions:
             raise ValueError(f"expression {uid} already exists")
         expression_type = self.registry.expression_of(word)
+        variable = "intent" if word.startswith("TaskIntent.") else "operation" if word.startswith("CommandOperation.") else "word"
+        data = {**value, "uid": uid, variable: word}
+        self.registry.validate_value(expression_type.factors, data, partial=True)
         ref = self.ref(uid, expression_type.factors)
-        self.set(ref, expression_type.factors, {**value, "word": word}, provenance={"kind": "expression"})
+        self.set(ref, expression_type.factors, data, provenance={"kind": "expression"}, partial=True)
         expression = OpenExpression(self, ref, expression_type, self.registry.definition_id)
         self._expressions[uid] = expression
         return expression
@@ -1102,7 +1566,7 @@ class Store:
         if relation.definition_id not in self.registry._history:
             raise ValueError("relation definition does not belong to this store")
         fact = relation(*operands, **roles)
-        if fact.operands[0].store is not self:
+        if any(isinstance(operand, SubjectRef) and operand.store is not self for operand in fact.operands):
             raise ValueError("relation operands belong to another store")
         self._relations.append(fact)
         return fact
@@ -1130,7 +1594,11 @@ class Store:
         return self.set(SubjectRef(self, original.subject), product_names(mapping["semantics"]), value, source=original.source, observed_at=original.observed_at, validity=original.validity, provenance={"kind": "mapped", "mapping": mapping_name, "derived_from": [original.id], "context": deepcopy(mapping.get("context", {}))})
 
 
-def value_semantics(value: Datum | SubjectRef) -> Product:
+def value_semantics(value: Datum | SubjectRef | Component | SemanticValue) -> Product:
+    if isinstance(value, Component):
+        return value.meaning
+    if isinstance(value, SemanticValue):
+        return value.semantics
     if isinstance(value, Datum):
         return value.meaning
     if isinstance(value, SubjectRef):

@@ -85,7 +85,7 @@ axes:
   # An omitted reference remains unknown; no reference is assumed or converted.
   AltitudeReference:
     cardinality: one
-    applies: [Position, Representation.Geodetic]
+    applies: {any: [{all: [Position, Representation.Geodetic]}, Height]}
     values:
       - WGS84Ellipsoid
       - MeanSeaLevel
@@ -133,6 +133,57 @@ axes:
     values:
       - "TRUE"
       - "FALSE"
+
+  # A component's role qualifies its own quantity. It does not turn the
+  # containing task, objective, or path into that quantity.
+  IdentifierKind:
+    cardinality: one
+    values: [UID, SerialNumber, ModelDesignator]
+  TextRole:
+    cardinality: one
+    values: [Name, Instruction]
+  Bound:
+    cardinality: one
+    values: [Lower, Upper]
+  TimeRole:
+    cardinality: one
+    values: [EarliestStart, LatestFinish, Start, Deadline]
+  ConditionRole:
+    cardinality: many
+    values: [Requirement, Criterion, Term, LeaseBound, Trigger]
+  WeatherQuantity:
+    cardinality: one
+    values: [Rain, Snow, Temperature, Wind, Visibility]
+  PermissionKind:
+    cardinality: one
+    values: [IFR, Night, Icing]
+  PathRole:
+    cardinality: one
+    values: [Waypoint]
+  Participation:
+    cardinality: many
+    values: [Actor, Destination, Origin, Target, Object, Cargo, Path, Resource, Quantity, Radius, Speed, Yaw, Process, Property, Parameter, Value, Subject, PositionAnswer, IdentityAnswer, ClassificationAnswer, MeasurementAnswer]
+  BindingMode:
+    cardinality: one
+    values: [Input, Answer]
+
+  # These dimensions are meanings. The numeric codes in the vocabularies
+  # below are representations; chart bindings declare their correspondence.
+  Urgency:
+    cardinality: one
+    values: [ROUTINE, HIGH, IMMEDIATE]
+  WorkState:
+    cardinality: one
+    values: [NEW, ACTIVE, COMPLETE, FAILED, CANCELLED, ACCEPTED]
+  ControlExtent:
+    cardinality: one
+    values: [NONE, MONITOR, GUIDE, FULL]
+  ApprovalState:
+    cardinality: one
+    values: [DRAFT, PROPOSED, APPROVED, REJECTED, SUPERSEDED]
+  LogicOperator:
+    cardinality: one
+    values: [NONE, NOT, AND, OR, XOR, NAND, NOR, XNOR]
 
 # ---------------------------------------------------------------------------
 # Surface vocabulary. Members are representation, never semantic factors.
@@ -270,27 +321,34 @@ factors:
     implies: [State]
 
   Text:
+    primitive: string
     description: Human-authored textual content whose encoding is not itself domain meaning.
     implies: [State]
 
   Duration:
+    primitive: float
     description: An interval of time.
     implies: [State]
 
   Angle:
+    primitive: float
     implies: [State]
 
   Distance:
+    primitive: float
     implies: [State]
 
   Speed:
+    primitive: float
     implies: [State]
 
   Count:
+    primitive: int
     description: Discrete quantity.
     implies: [State]
 
   Ordinal:
+    primitive: int
     description: Position in an ordered sequence.
     implies: [State]
 
@@ -299,6 +357,7 @@ factors:
     implies: [State]
 
   Scalar:
+    primitive: float
     description: A bare scalar with no further unit semantics.
     implies: [State]
 
@@ -331,13 +390,14 @@ factors:
   # The word is the whole verb taxonomy: `TaskIntent` and `CommandOperation`
   # members name expressions, and each expression entails its factors.
   # Verb parameters are typed free variables;
-  # constraints, objectives, authorities, and plans are semantic concepts;
+  # constraints, objectives, authorities, and plans are value models;
   # links between independently existing things are relations with named roles.
   # ===========================================================================
 
-  # --- value concepts ----------------------------------------------------------
+  # --- value models ----------------------------------------------------------
 
   Time:
+    primitive: float
     description: A point on the time line.
     implies: [State]
 
@@ -420,6 +480,62 @@ factors:
     description: Conditional work that applies when a condition holds.
     implies: [Data]
 
+  # Irreducible quantities used by the reductions below. Names and codes
+  # remain values; a source field spelling is never their semantic address.
+  Reference:
+    implies: [Data]
+  SemanticRegion:
+    implies: [Data]
+  Priority:
+    implies: [State]
+  WorkStatus:
+    implies: [State]
+  Approval:
+    implies: [State]
+  ControlPermission:
+    implies: [State]
+  LogicOperation:
+    implies: [Data]
+  Intent:
+    implies: [Data]
+  Operation:
+    implies: [Data]
+  Permission:
+    primitive: bool
+    implies: [State]
+  Latitude:
+    implies: [Angle]
+  Longitude:
+    implies: [Angle]
+  Height:
+    implies: [Distance]
+  CartesianX:
+    implies: [Distance]
+  CartesianY:
+    implies: [Distance]
+  CartesianZ:
+    implies: [Distance]
+  VelocityX:
+    implies: [Speed]
+  VelocityY:
+    implies: [Speed]
+  VelocityZ:
+    implies: [Speed]
+  Roll:
+    implies: [Angle]
+  Pitch:
+    implies: [Angle]
+  Yaw:
+    implies: [Angle]
+  QuaternionScalar:
+    implies: [Scalar]
+  QuaternionX:
+    implies: [Scalar]
+  QuaternionY:
+    implies: [Scalar]
+  QuaternionZ:
+    implies: [Scalar]
+
 # ---------------------------------------------------------------------------
 # Aliases name useful products. A named combination and an unnamed equivalent
 # combination have the same semantic normal form.
@@ -451,52 +567,137 @@ aliases:
 
 # ---------------------------------------------------------------------------
 # Charts reduce a semantic quantity in a chosen representation to
-# irreducible typed variables:
+# typed semantic variables, recursively reducing to primitives:
 #
 #     chart Q * C  :=  v1 * v2 * ... * vn
 #
 # The quantity stays semantic; the representation selects the data. A datum
 # selects charts through its semantic product; a chart never declares a
-# model. Scalar quantities remain primitives with unit metadata, so
-# only structured quantities need a chart.
+# model. Each variable has its own product, type, role, and cardinality.
+# `many` binds an ordered sequence: multiplication remains idempotent,
+# while two equal waypoints or terms remain two distinct occurrences.
+# Qualifiers propagate through a nested reduction; whole and part meanings
+# are never multiplied. Names on the left are chart coordinates only.
+# Missing optional variables stay unknown. Declared defaults are identifiable
+# deductions and do not rewrite the source value. Units stay with primitives.
 # ---------------------------------------------------------------------------
 
 charts:
   Position * Representation.Geodetic:
-    lat: float[deg]
-    lon: float[deg]
-    h: float[m]
+    lat: {semantics: Latitude, type: float, unit: deg}
+    lon: {semantics: Longitude, type: float, unit: deg}
+    h: {semantics: Height, type: float, unit: m, inherit: [AltitudeReference]}
 
   Position * Representation.LocalCartesian:
-    x: float[m]
-    y: float[m]
-    z: float[m]
+    x: {semantics: CartesianX, type: float, unit: m}
+    y: {semantics: CartesianY, type: float, unit: m}
+    z: {semantics: CartesianZ, type: float, unit: m}
 
   Velocity * Representation.LocalCartesian:
-    vx: float[m/s]
-    vy: float[m/s]
-    vz: float[m/s]
+    vx: {semantics: VelocityX, type: float, unit: m/s}
+    vy: {semantics: VelocityY, type: float, unit: m/s}
+    vz: {semantics: VelocityZ, type: float, unit: m/s}
 
   Attitude * Representation.LocalEuler:
-    roll: float[rad]
-    pitch: float[rad]
-    yaw: float[rad]
+    roll: {semantics: Roll, type: float, unit: rad}
+    pitch: {semantics: Pitch, type: float, unit: rad}
+    yaw: {semantics: Yaw, type: float, unit: rad}
 
   Attitude * Representation.Quaternion:
-    qw: float
-    qx: float
-    qy: float
-    qz: float
+    qw: {semantics: QuaternionScalar, type: float}
+    qx: {semantics: QuaternionX, type: float}
+    qy: {semantics: QuaternionY, type: float}
+    qz: {semantics: QuaternionZ, type: float}
 
-  # Bounds and time windows retain primitive coordinates through charts,
-  # rather than requiring nominal value classes.
+  # The original value models reduce to quantities and typed bindings.
+  # Parent meaning selects inherited charts: Machine also reduces through
+  # Entity, Lease through Authority, and TaskTimeWindow through Constraint.
+  Locality:
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+  Entity:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+  Actor:
+    role: {semantics: Role, optional: true}
+  Machine:
+    serial_number: {semantics: Identity * IdentifierKind.SerialNumber, type: string, optional: true}
+  Vehicle:
+    model: {semantics: Identity * IdentifierKind.ModelDesignator, type: string, optional: true}
+  Mark:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+
+  Task:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    instruction: {semantics: Text * TextRole.Instruction, type: string}
+    intent: {semantics: Intent, type: word, vocabulary: TaskIntent}
+    priority: {semantics: Priority, type: code, vocabulary: TaskPriority, default: ROUTINE, values: {ROUTINE: Urgency.ROUTINE, HIGH: Urgency.HIGH, IMMEDIATE: Urgency.IMMEDIATE}}
+    status: {semantics: WorkStatus, type: code, vocabulary: TaskStatus, default: NEW, values: {NEW: WorkState.NEW, ACTIVE: WorkState.ACTIVE, COMPLETE: WorkState.COMPLETE, FAILED: WorkState.FAILED, CANCELLED: WorkState.CANCELLED, ACCEPTED: WorkState.ACCEPTED}}
+
   NumericRange:
-    min_value: optional float
-    max_value: optional float
+    coords:
+      min_value: {semantics: Scalar * Bound.Lower, type: float, optional: true}
+      max_value: {semantics: Scalar * Bound.Upper, type: float, optional: true}
+    ordered: [[min_value, max_value]]
+
+  Predicate:
+    subject_uid: {semantics: Reference * Participation.Subject, type: reference, optional: true}
+    quantity: {semantics: SemanticRegion * Participation.Quantity, type: product, optional: true}
+    value: {semantics: Scalar * Participation.Value, type: float, optional: true}
+  BooleanLogic:
+    operator: {semantics: LogicOperation, type: code, vocabulary: BooleanOperator, values: {NONE: LogicOperator.NONE, NOT: LogicOperator.NOT, AND: LogicOperator.AND, OR: LogicOperator.OR, XOR: LogicOperator.XOR, NAND: LogicOperator.NAND, NOR: LogicOperator.NOR, XNOR: LogicOperator.XNOR}}
+    terms: {semantics: Condition, qualifiers: ConditionRole.Term, many: true}
+  GeoPath:
+    points: {semantics: Position * Representation.Geodetic, qualifiers: PathRole.Waypoint, many: true}
+  Role:
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+  Resource:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity, optional: true}
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+
+  Constraint:
+    condition: {semantics: Condition, qualifiers: ConditionRole.Requirement, optional: true}
 
   TaskTimeWindow:
-    earliest_start: optional float[s]
-    latest_finish: optional float[s]
+    coords:
+      earliest_start: {semantics: Time * TimeRole.EarliestStart, type: float, unit: s, optional: true}
+      latest_finish: {semantics: Time * TimeRole.LatestFinish, type: float, unit: s, optional: true}
+    ordered: [[earliest_start, latest_finish]]
+  WeatherLimits:
+    ifr: {semantics: Permission * PermissionKind.IFR, type: bool, optional: true}
+    night: {semantics: Permission * PermissionKind.Night, type: bool, optional: true}
+    rain: {semantics: NumericRange, qualifiers: WeatherQuantity.Rain, optional: true}
+    snow: {semantics: NumericRange, qualifiers: WeatherQuantity.Snow, optional: true}
+    temp: {semantics: NumericRange, qualifiers: WeatherQuantity.Temperature, optional: true}
+    wind: {semantics: NumericRange, qualifiers: WeatherQuantity.Wind, optional: true}
+    vis: {semantics: NumericRange, qualifiers: WeatherQuantity.Visibility, optional: true}
+    icing: {semantics: Permission * PermissionKind.Icing, type: bool, optional: true}
+
+  Objective:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    name: {semantics: Text * TextRole.Name, type: string}
+    condition: {semantics: Condition, qualifiers: ConditionRole.Requirement, optional: true}
+    criteria: {semantics: Condition, qualifiers: ConditionRole.Criterion, many: true}
+    priority: {semantics: Priority, type: code, vocabulary: TaskPriority, default: ROUTINE, values: {ROUTINE: Urgency.ROUTINE, HIGH: Urgency.HIGH, IMMEDIATE: Urgency.IMMEDIATE}}
+    status: {semantics: WorkStatus, type: code, vocabulary: TaskStatus, default: NEW, values: {NEW: WorkState.NEW, ACTIVE: WorkState.ACTIVE, COMPLETE: WorkState.COMPLETE, FAILED: WorkState.FAILED, CANCELLED: WorkState.CANCELLED, ACCEPTED: WorkState.ACCEPTED}}
+    start_time: {semantics: Time * TimeRole.Start, type: float, unit: s, optional: true}
+    deadline: {semantics: Time * TimeRole.Deadline, type: float, unit: s, optional: true}
+
+  Command:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    operation: {semantics: Operation, type: word, vocabulary: CommandOperation}
+  Authority:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    role: {semantics: Role, optional: true}
+  Lease:
+    bound: {semantics: Condition, qualifiers: ConditionRole.LeaseBound, optional: true}
+    control_level: {semantics: ControlPermission, type: code, vocabulary: ControlLevel, optional: true, values: {NONE: ControlExtent.NONE, MONITOR: ControlExtent.MONITOR, GUIDE: ControlExtent.GUIDE, FULL: ControlExtent.FULL}}
+  Plan:
+    uid: {semantics: Identity * IdentifierKind.UID, type: identity}
+    name: {semantics: Text * TextRole.Name, type: string, optional: true}
+    approval_state: {semantics: Approval, type: code, vocabulary: PlanApprovalState, default: DRAFT, values: {DRAFT: ApprovalState.DRAFT, PROPOSED: ApprovalState.PROPOSED, APPROVED: ApprovalState.APPROVED, REJECTED: ApprovalState.REJECTED, SUPERSEDED: ApprovalState.SUPERSEDED}}
+  PlanContingency:
+    condition: {semantics: Condition, qualifiers: ConditionRole.Trigger}
 
 # ---------------------------------------------------------------------------
 # Relations connect independently existing things. Direction and arity are
@@ -506,6 +707,13 @@ charts:
 # ---------------------------------------------------------------------------
 
 relations:
+  # A chart's bindings witness the directed whole/part incidence. Typed chart
+  # variables narrow the part region and retain their own named roles/order.
+  HasComponent:
+    operands: {whole: Root, part: Root}
+  RefersTo:
+    operands: {reference: Reference, referent: Root}
+
   Directed:
     description: A directed link; direction and arity declared once.
     operands:
@@ -582,6 +790,7 @@ expressions:
   # --- schemes: structure only, declared once ---
 
   POSITION_GOAL:
+    roles: {actor: Participation.Actor, destination: Participation.Destination}
     description: An actor's position is the destination.
     factors: [Task, Realm.WORLD]
     given:
@@ -591,6 +800,7 @@ expressions:
       - Position(actor) = destination
 
   POSITION_QUERY:
+    roles: {target: Participation.Target, position: Participation.PositionAnswer}
     description: An entity's position is the answer.
     factors: [Task, Realm.INFORMATION]
     given:
@@ -601,24 +811,28 @@ expressions:
       - Position(target) = position
 
   EXISTENCE_GOAL:
+    roles: {object: Participation.Object}
     description: An object's existence is asserted.
     factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE, Existence]
     given:
       object: Object
 
   OBJECT_STATE_GOAL:
+    roles: {object: Participation.Object}
     description: An object's state is asserted.
     factors: [Task, Realm.WORLD]
     given:
       object: Object
 
   ENGAGEMENT_COMMAND:
+    roles: {target: Participation.Target}
     description: The target's engagement state is asserted.
     factors: [Command]
     given:
       target: Object
 
   PROCESS_COMMAND:
+    roles: {target: Participation.Target, process: Participation.Process}
     description: A running process is asserted paused or released.
     factors: [Command, Paused]
     given:
@@ -690,6 +904,7 @@ expressions:
   # --- expressions declared in full ---
 
   IDENTIFY:
+    roles: {target: Participation.Target, identity: Participation.IdentityAnswer}
     description: Solve for the identity of an entity.
     factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
@@ -701,6 +916,7 @@ expressions:
     words: [TaskIntent.IDENTIFY]
 
   CLASSIFY:
+    roles: {target: Participation.Target, classification: Participation.ClassificationAnswer}
     description: Solve for the classification of an entity.
     factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
@@ -712,6 +928,7 @@ expressions:
     words: [TaskIntent.CLASSIFY]
 
   FOLLOW:
+    roles: {actor: Participation.Actor, path: Participation.Path}
     description: Follow a path.
     factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN]
     given:
@@ -720,6 +937,7 @@ expressions:
     words: [TaskIntent.FOLLOW]
 
   MEASURE:
+    roles: {target: Participation.Target, measurement: Participation.MeasurementAnswer}
     description: Measure a state of a target.
     factors: [Task, Realm.INFORMATION, TemporalMode.ACHIEVE]
     given:
@@ -729,6 +947,7 @@ expressions:
     words: [TaskIntent.MEASURE]
 
   RESTORE:
+    roles: {object: Participation.Object}
     description: Return an object to a prior state.
     factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
     given:
@@ -736,6 +955,7 @@ expressions:
     words: [TaskIntent.RESTORE]
 
   DENY:
+    roles: {object: Participation.Object}
     description: Prevent connectivity to an object.
     factors: [Task, Realm.WORLD, TemporalMode.MAINTAIN, Connectivity, TruthTarget.FALSE]
     given:
@@ -743,6 +963,7 @@ expressions:
     words: [TaskIntent.DENY]
 
   TRANSPORT:
+    roles: {cargo: Participation.Cargo, origin: Participation.Origin, destination: Participation.Destination}
     description: Move a thing between places; which end and what moves are bindings.
     factors: [Task, Realm.WORLD, TemporalMode.ACHIEVE]
     given:
@@ -752,6 +973,7 @@ expressions:
     words: [TaskIntent.TRANSPORT]
 
   SET:
+    roles: {target: Participation.Target, property: Participation.Property, value: Participation.Value}
     description: Set a declared state property on the target.
     factors: [Command]
     given:
@@ -761,6 +983,7 @@ expressions:
     words: [CommandOperation.SET]
 
   DIRECT:
+    roles: {target: Participation.Target, destination: Participation.Destination, path: Participation.Path, radius: Participation.Radius, speed: Participation.Speed, yaw: Participation.Yaw}
     description: Direct the target to a destination or along a path.
     factors: [Command, TemporalMode.ACHIEVE]
     given:
@@ -775,6 +998,7 @@ expressions:
     words: [CommandOperation.MOVE]
 
   ALLOCATE:
+    roles: {target: Participation.Target, resource: Participation.Resource, quantity: Participation.Quantity}
     description: Allocate a referenced resource.
     factors: [Command]
     given:
@@ -784,6 +1008,7 @@ expressions:
     words: [CommandOperation.ALLOCATE]
 
   TRANSFER:
+    roles: {target: Participation.Target, resource: Participation.Resource, quantity: Participation.Quantity}
     description: Transfer a referenced resource.
     factors: [Command]
     given:
@@ -793,6 +1018,7 @@ expressions:
     words: [CommandOperation.TRANSFER]
 
   LOAD_CONFIGURATION:
+    roles: {target: Participation.Target, parameter: Participation.Parameter, value: Participation.Value}
     description: Load a referenced configuration on the target.
     factors: [Command]
     given:
@@ -802,6 +1028,7 @@ expressions:
     words: [CommandOperation.LOAD_CONFIGURATION]
 
   RESET:
+    roles: {target: Participation.Target}
     description: Reset the target to its initial state.
     factors: [Command]
     given:

@@ -132,7 +132,9 @@ def main() -> None:
     cmd.bind("target", uav).bind("destination", mark)
     check(cmd.expression.name == "DIRECT", "command word")
     check(cmd.unbound == ["path", "radius", "speed", "yaw"], "motion parameters are variables")
-    check(cmd.ref.find("Position") == [], "goal is not an observed position")
+    destination = cmd.ref.get("Position", "Participation.Destination", "BindingMode.Input")
+    check(destination.referent(store).uid == mark.uid, "destination is an addressable input binding")
+    check(cmd.ref.find("Position", "BindingMode.Answer") == [], "goal is not an observed answer")
 
     # 15. Scalar charts retain units; omitted optionals remain absent.
     window = store.ref("window-1", "TaskTimeWindow")

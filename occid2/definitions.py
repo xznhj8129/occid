@@ -14,6 +14,7 @@ IDENTIFIER = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 PRODUCT_SPLIT = re.compile(r"\s*[*×]\s*")
 COORDINATE = re.compile(r"^(?P<optional>optional )?(?P<type>float|int|string|bool|bytes)(?:\[(?P<unit>[^\]]+)\])?$")
 EQUATION = re.compile(r"^(?P<quantity>[\w.]+)\((?P<of>\w+)\)\s*=\s*(?P<equals>\w+)$")
+VALUE_TYPES = {"float", "int", "string", "bool", "bytes", "identity", "reference", "product", "word", "code"}
 
 
 class DefinitionLoader(yaml.SafeLoader):
@@ -132,7 +133,7 @@ def resolve_expression(name, trail=(), *, raw_expressions):
     if name not in raw_expressions:
         raise ValueError(f"unknown expression scheme {name!r}")
     item = mapping(raw_expressions[name], f"expression {name}")
-    keys(item, {"description", "of", "factors", "binds", "given", "sought", "equations", "words"}, f"expression {name}")
+    keys(item, {"description", "of", "factors", "binds", "given", "sought", "equations", "words", "roles"}, f"expression {name}")
     if "of" in item:
         identifier(item["of"], f"expression {name} scheme")
     base = resolve_expression(item["of"], (*trail, name), raw_expressions=raw_expressions) if item.get("of") else {}
@@ -166,7 +167,10 @@ def expression(name, item, bindings, word_names, *, known, aliases, expressions,
         if word in words:
             raise ValueError(f"word {word!r} names more than one expression")
         words[word] = name
-    expressions[name] = {"factors": expand(product_terms(item.get("factors")) + bindings, name, known=known, aliases=aliases), "given": given, "sought": sought, "equations": equations, "words": word_names}
+    roles = {role: expand(value, f"expression {name} role {role}", known=known, aliases=aliases) for role, value in mapping(item.get("roles", {}), name).items()}
+    if roles.keys() - (given.keys() | sought.keys()):
+        raise ValueError(f"expression {name}: semantic role names undeclared variable")
+    expressions[name] = {"factors": expand(product_terms(item.get("factors")) + bindings, name, known=known, aliases=aliases), "given": given, "sought": sought, "equations": equations, "words": word_names, "roles": roles}
 
 
 def prepare(spec: dict[str, Any]) -> dict[str, Any]:
@@ -214,7 +218,9 @@ def prepare(spec: dict[str, Any]) -> dict[str, Any]:
 
     for name, raw in data["factors"].items():
         factor = {} if raw is None else mapping(raw, f"factor {name}")
-        keys(factor, CONSTRAINT_KEYS | {"implies"}, f"factor {name}")
+        keys(factor, CONSTRAINT_KEYS | {"implies", "primitive"}, f"factor {name}")
+        if "primitive" in factor and factor["primitive"] not in VALUE_TYPES:
+            raise ValueError(f"factor {name}: invalid primitive type {factor['primitive']!r}")
         constraints(factor, name, known=known, aliases=aliases, axis_names=axis_names)
         if "implies" in factor:
             factor["implies"] = region(factor["implies"], f"factor {name} implies", known=known, aliases=aliases, axis_names=axis_names)
@@ -229,17 +235,43 @@ def prepare(spec: dict[str, Any]) -> dict[str, Any]:
         raw = mapping(raw, f"chart {display}")
         context = {}
         if "coords" in raw:
-            keys(raw, {"coords", "context"}, f"chart {display}")
+            keys(raw, {"coords", "context", "ordered"}, f"chart {display}")
             context = mapping(raw.get("context", {}), f"chart {display} context")
+            ordered = raw.get("ordered", [])
             raw = mapping(raw["coords"], f"chart {display} coordinates")
+        else:
+            ordered = []
         coordinates = []
         for name, declaration in raw.items():
             identifier(name, f"chart {display} coordinate")
-            match = COORDINATE.fullmatch(declaration) if isinstance(declaration, str) else None
-            if not match:
-                raise ValueError(f"chart {display}: invalid primitive coordinate {name}: {declaration!r}")
-            coordinates.append({"name": name, **match.groupdict()})
-        charts.append({"display": display, "factors": expand(display, "chart", known=known, aliases=aliases), "coords": coordinates, "context": context})
+            if isinstance(declaration, str):
+                match = COORDINATE.fullmatch(declaration)
+                if not match:
+                    raise ValueError(f"chart {display}: invalid primitive coordinate {name}: {declaration!r}")
+                item = {**match.groupdict(), "semantics": []}
+            else:
+                item = mapping(declaration, f"chart {display} variable {name}")
+                keys(item, {"semantics", "type", "unit", "optional", "many", "default", "vocabulary", "values", "qualifiers", "inherit"}, f"chart {display} variable {name}")
+                item["semantics"] = expand(item.get("semantics"), f"chart {display} variable {name}", known=known, aliases=aliases)
+                if not item["semantics"]:
+                    raise ValueError(f"chart {display}: variable {name} needs a semantic region")
+                if item.get("type") is not None and item["type"] not in VALUE_TYPES:
+                    raise ValueError(f"chart {display}: invalid variable type {item['type']!r}")
+                for flag in ("optional", "many"):
+                    if flag in item and type(item[flag]) is not bool:
+                        raise ValueError(f"chart {display}: {name} {flag} must be boolean")
+                if "vocabulary" in item and item.get("type") != "word" and item["vocabulary"] not in data["vocabularies"]:
+                    raise ValueError(f"chart {display}: unknown vocabulary {item['vocabulary']!r}")
+                if item.get("type") == "code" and "vocabulary" not in item:
+                    raise ValueError(f"chart {display}: code variable needs a vocabulary")
+                if not isinstance(item.get("inherit", []), list) or any(axis not in axis_names for axis in item.get("inherit", [])):
+                    raise ValueError(f"chart {display}: inherit must name declared axes")
+                item["values"] = {member: expand(region, f"chart {display} {name} value", known=known, aliases=aliases) for member, region in mapping(item.get("values", {}), name).items()}
+                item["qualifiers"] = expand(item.get("qualifiers"), f"chart {display} {name} qualifiers", known=known, aliases=aliases)
+            coordinates.append({"name": name, **item})
+        if not isinstance(ordered, list) or any(not isinstance(pair, list) or len(pair) != 2 or any(name not in raw for name in pair) for pair in ordered):
+            raise ValueError(f"chart {display}: ordered pairs must name two declared variables")
+        charts.append({"display": display, "factors": expand(display, "chart", known=known, aliases=aliases), "coords": coordinates, "context": context, "ordered": ordered})
     data["charts"] = charts
 
     raw_expressions = data["expressions"]
