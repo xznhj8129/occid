@@ -1,12 +1,11 @@
 # OCCID2 semantic algebra notes
 
-## 1. Schema is canonical
+## 1. Runtime-defined semantics
 
-The authored schema (`occid2.schema.yaml`) is a set of equations, not a class
-hierarchy. The compiler and runtime derive everything from it: there is no
-rules block, no second hierarchy, and no hard-coded inheritance logic. When
-this document and the schema disagree, the schema wins and the derivation must
-be fixed. YAML is only the transport.
+The semantic registry is the live authority for semantic definitions and
+relationships. Definitions are data interpreted by the algebra at runtime.
+`occid2/definitions.yaml` supplies the initial definitions. Runtime updates are
+validated before becoming active.
 
 ---
 
@@ -129,56 +128,14 @@ combination and an unnamed equivalent combination have the same normal form.
 
 ---
 
-## 6. Models are named products
+## 6. Semantic descriptions and data
 
-Every model is a named region of semantic space:
+The store operates on semantic descriptions and data. A datum consists of its
+subject, semantic product, value, source, provenance, time or validity, identity,
+and definition revision. The semantic product is its address.
 
-```text
-semantics(model) = inherited factors + model name + product factors
-```
-
-- parentage **entails**: an ancestor's name is a label, not a factor, so
-  inheritance carries the ancestor's `product:` factors and drops its labels;
-  the closure re-derives the labels from parentage;
-- a `product:` entry naming another model expands to that model's semantics,
-  keeping its label, because that name is part of this model's own meaning;
-- a `chart:` entry contributes the chart's factors and compiles its variables
-  into the model's fields;
-- every model is storable; there is no concept/representation split.
-
-Example:
-
-```yaml
-Mark:
-  parent: Data
-  product:
-    - GlobalPosition
-  fields: {uid: UID, name: optional string}
-```
-
-```text
-Mark = Mark × GlobalPosition × Position × Representation.Geodetic
-     ≅ uid × name × lat:float[deg] × lon:float[deg] × h:float[m]
-```
-
-A product surfaces at its first level: the most specific model name plus all
-factors, never the whole chain. `Drone` surfaces as
-
-```text
-Drone = UnmannedVehicle × Controller.UNMANNED × Locomotion.SELF_PROPELLED
-      × Substrate.MECHANICAL × PhysicalDomain.AIR × Airframe.MULTIROTOR
-```
-
-`Machine`, `Vehicle`, `Entity`, `Object`, and `Root` are entailed labels; they
-are not repeated as factors.
-
-Renaming or restructuring a model does not change the meaning of stored data as
-long as the semantic region it denotes is preserved. Fields are representation
-and can reach other things; they are not factors:
-
-```text
-Drone.mission: Mission     is a relation, not Drone × Mission
-```
+Unresolved and irreducible concepts remain representable. Representation names
+such as `GlobalPosition` are product aliases, not required Python classes.
 
 ---
 
@@ -205,16 +162,15 @@ charts:
 
 **Chart produces the primitives.** `Position` stays semantic; the
 representation selects how it becomes data; the coordinates emerge only after
-that selection. A coordinate's unit is algebraic metadata (`_units`), not its
-Python type. A model that is data declares the chart it reduces through.
+that selection. A coordinate's unit is algebraic metadata, not its Python type.
 
 The same quantity may be stored in several representations. Each is a separate
 datum; each answers `entity × Position`, and a representation factor narrows to
 one:
 
 ```text
-uav-1 × Position            -> [GlobalPosition, LocalPosition]
-uav-1 × Position × Geodetic -> GlobalPosition(lat, lon, h)
+uav-1 × Position            -> [geodetic fact, Cartesian fact]
+uav-1 × Position × Geodetic -> {lat, lon, h}
 ```
 
 This is the operational answer to "how does a semantic quantity become actual
@@ -239,8 +195,8 @@ relations:
 
 Consequences:
 
-- roles and operand order belong to the relation; there is no base relation
-  and no specialization: a link is declared once;
+- roles and operand order belong to the relation; specialization preserves
+  operand order;
 - participant roles of work are **not** relations; they are the typed free
   variables of the work's expression (section 9), and binding a reference to a
   variable is the link;
@@ -275,13 +231,13 @@ expressions:
 
 - a **form** declares the invariant structure of an expression; a `words:`
   mapping binds the remaining dimensions per vocabulary member and the
-  compiler expands each word into its compiled expression (`MOVE` is the
+  runtime resolves each word to its expression (`MOVE` is the
   position form at `ACHIEVE`, `HOLD` at `MAINTAIN`);
 - members that differ only in one axis value are one form at different
   coordinates; a **synonym or antonym** in a vocabulary is a red flag for a
   form that has not been factored;
-- a word vocabulary (`TaskIntent`, `CommandOperation`) is compiled from the
-  words the expressions declare, not authored alongside them;
+- a word vocabulary (`TaskIntent`, `CommandOperation`) is defined by the
+  words the expressions declare;
 - `given` variables are inputs; `sought` variables are answers;
 - an **unbound variable is an unknown, not an error**:
 
@@ -299,7 +255,7 @@ MOVE(actor=uav-1, destination=mark-alpha)
 
 ```text
 LOCATE(target=target-42) => position=?    # unknown
-LOCATE(target=target-42) => position=GlobalPosition(…)   # after the fact exists
+LOCATE(target=target-42) => position={lat, lon, h}       # after the fact exists
 ```
 
 A UID does not answer a semantic question; it binds an expression variable to a
@@ -342,18 +298,30 @@ compound constants (`DRONE_CONTROL_RADIO_MODEL`) or requiring exact model paths.
 
 ---
 
-## 12. Schema mapping
+## 12. Runtime definitions and persistence
 
-| Schema | Derivation |
+| Definition | Derivation |
 | --- | --- |
 | `axes` | typed dimensions; cardinality; `applies`/`requires`/value declarations become solver rules |
-| `enums` + expression `words` | authored enums are closed value vocabularies; word vocabularies compile from the words expressions declare, and each word entails its expression's factors |
-| `charts` | `Q * C` reduces to typed variables; a quantity's data normal form |
+| `factors` | implications, applicability, requirements, disjointness, exclusions |
+| `vocabularies` + expression `words` | surface values and words naming expressions |
+| `charts` | `Q * C` reduces to typed primitive variables with unit metadata; optional `coords`/`context` declares reference information |
 | `relations` | named ordered operands; specialization preserves operand order |
-| `expressions` | fixed factors + typed free variables + equations; `of:` selects a scheme; `binds:` fixes factors; `words:` names the expression |
-| `models` | named products and carriers; parent entailment; `product:` expansion; `chart:` selects a chart |
-| `aliases` | class-free named products, resolved recursively |
+| `expressions` | fixed factors + typed free variables + equations; `of:` selects a form; `binds:` fixes factors; `words:` names the expression |
+| `aliases` | named products, resolved recursively |
+| `mappings` | associations between external representations and semantic products |
 
-`occid2/generated/occid2.py` and `occid2/generated/semantic_registry.json` are deterministic
-outputs. The compiler produces no rules block, no role flags, and no second
-class hierarchy.
+Updates replace named entries within their sections and validate the complete
+candidate before activation. SQLite persists definition revisions, append-only
+facts, subject assertions, expression bindings, and directed relations.
+
+Each fact retains its original values and definition revision. A mapping revision
+creates a new interpretation linked to the source fact; the original source data
+and previous interpretations remain available. Queries do not rewrite historical
+fact meaning. Several matching facts are ambiguous, including equal values from
+separate observations.
+
+MsgPack exchange uses named fields and includes the original definition snapshot.
+Unknown value and envelope fields are preserved. No generated model IDs or field
+ordinals are required. Units, frames, altitude references, uncertainty, and source
+times are retained without numerical conversion or fusion.

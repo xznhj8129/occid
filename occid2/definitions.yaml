@@ -1,0 +1,719 @@
+version: 2
+axes:
+  Substrate:
+    cardinality: one
+    values:
+    - BIOLOGICAL
+    - MECHANICAL
+    - CYBER
+  PhysicalDomain:
+    description: A bounded thing operates in exactly one domain.
+    cardinality: one
+    values:
+    - LAND
+    - AIR
+    - SEA
+    - UNDERSEA
+    - SPACE
+  Controller:
+    cardinality: one
+    applies:
+      all:
+      - Machine
+    values:
+    - MANNED
+    - UNMANNED
+  Locomotion:
+    cardinality: one
+    values:
+    - SELF_PROPELLED
+    - EXTERNAL
+    - STATIC
+  Airframe:
+    description: Airframe construction, independent of takeoff capability.
+    cardinality: one
+    applies:
+      all:
+      - Machine
+      - PhysicalDomain.AIR
+    values:
+    - MULTIROTOR
+    - FIXED_WING
+  Representation:
+    description: The coordinate scheme through which a structured quantity becomes
+      data variables.
+    cardinality: many
+    values:
+    - Geodetic
+    - LocalCartesian
+    - LocalEuler
+    - Quaternion
+  BloodGroup:
+    cardinality: one
+    applies:
+      all:
+      - Substrate.BIOLOGICAL
+    requires:
+    - Biological
+    values:
+    - A_POS
+    - A_NEG
+    - B_POS
+    - B_NEG
+    - AB_POS
+    - AB_NEG
+    - O_POS
+    - O_NEG
+  Realm:
+    cardinality: one
+    values:
+    - WORLD
+    - INFORMATION
+  TemporalMode:
+    cardinality: one
+    values:
+    - ACHIEVE
+    - MAINTAIN
+  TruthTarget:
+    cardinality: one
+    applies:
+      any:
+      - Existence
+      - Connectivity
+      - Engagement
+      - Activity
+      - Paused
+      - Hold
+    values:
+    - 'TRUE'
+    - 'FALSE'
+vocabularies:
+  TaskPriority:
+    ROUTINE: 0
+    HIGH: 1
+    IMMEDIATE: 2
+  TaskStatus:
+    NEW: 0
+    ACTIVE: 1
+    COMPLETE: 2
+    FAILED: 3
+    CANCELLED: 4
+    ACCEPTED: 5
+  ControlLevel:
+    NONE: 0
+    MONITOR: 1
+    GUIDE: 2
+    FULL: 3
+  PlanApprovalState:
+    DRAFT: 0
+    PROPOSED: 1
+    APPROVED: 2
+    REJECTED: 3
+    SUPERSEDED: 4
+  BooleanOperator:
+    NONE: 0
+    NOT: 1
+    AND: 2
+    OR: 3
+    XOR: 4
+    NAND: 5
+    NOR: 6
+    XNOR: 7
+factors:
+  Root:
+    description: Everything
+  Object:
+    description: A discrete thing in the operational world.
+    implies:
+    - Root
+  Locality:
+    description: Physical reference place in the world, ie village, bridge, mountain
+    implies:
+    - Object
+  Entity:
+    description: A discrete participant capable of actions.
+    implies:
+    - Object
+  Biological:
+    description: Living participants. Disjoint from Machine.
+    implies:
+    - Entity
+    - Substrate.BIOLOGICAL
+  Person:
+    implies:
+    - Biological
+  Actor:
+    implies:
+    - Person
+  Machine:
+    implies:
+    - Entity
+    - Substrate.MECHANICAL
+  Vehicle:
+    implies:
+    - Machine
+    - Locomotion.SELF_PROPELLED
+    - Substrate.MECHANICAL
+  CrewedVehicle:
+    implies:
+    - Vehicle
+    - Controller.MANNED
+  UnmannedVehicle:
+    implies:
+    - Vehicle
+    - Controller.UNMANNED
+  Data:
+    description: Values rather than world referents.
+    implies:
+    - Root
+  State:
+    description: A semantic quantity; a chart realizes it as data variables.
+    implies:
+    - Data
+  Position:
+    description: Where something is.
+    implies:
+    - State
+  Velocity:
+    implies:
+    - State
+  Attitude:
+    implies:
+    - State
+  Identity:
+    implies:
+    - State
+  Classification:
+    implies:
+    - State
+  Existence:
+    implies:
+    - State
+  Connectivity:
+    implies:
+    - State
+  Engagement:
+    description: Whether a declared property or function is engaged.
+    implies:
+    - State
+  Activity:
+    description: Whether a process or execution is running.
+    implies:
+    - State
+  Paused:
+    description: Whether a running process is held paused.
+    implies:
+    - State
+  Hold:
+    description: Whether a resource is held by its holder.
+    implies:
+    - State
+  Text:
+    description: Human-authored textual content whose encoding is not itself domain
+      meaning.
+    implies:
+    - State
+  Duration:
+    description: An interval of time.
+    implies:
+    - State
+  Angle:
+    implies:
+    - State
+  Distance:
+    implies:
+    - State
+  Speed:
+    implies:
+    - State
+  Count:
+    description: Discrete quantity.
+    implies:
+    - State
+  Ordinal:
+    description: Position in an ordered sequence.
+    implies:
+    - State
+  Code:
+    description: Opaque protocol or enumeration code.
+    implies:
+    - State
+  Scalar:
+    description: A bare scalar with no further unit semantics.
+    implies:
+    - State
+  Altitude:
+    description: Vertical position above a reference; meaningful only in air.
+    applies:
+    - PhysicalDomain.AIR
+    implies:
+    - State
+  Mark:
+    description: Named point of interest; its semantic form is a position.
+    implies:
+    - Data
+    - GlobalPosition
+  Control:
+    implies:
+    - Root
+  Directive:
+    implies:
+    - Control
+  Task:
+    description: Requirement that some proposition become or remain sufficiently true.
+    implies:
+    - Directive
+  Mission:
+    description: A named body of assigned work.
+    implies:
+    - Directive
+  Time:
+    description: A point on the time line.
+    implies:
+    - State
+  Range:
+    implies:
+    - Data
+  NumericRange:
+    implies:
+    - Range
+  Condition:
+    description: Predicate logic; it describes logic, not the state of evaluating
+      it.
+    implies:
+    - Data
+  Predicate:
+    description: Atomic condition; a quantity of a subject compared against a value.
+    implies:
+    - Condition
+  BooleanLogic:
+    description: Boolean composition of conditions.
+    implies:
+    - Condition
+  GeoPath:
+    implies:
+    - Data
+  Role:
+    description: An organizational function; authority attaches to the role, not to
+      its current holder.
+    implies:
+    - Data
+  Resource:
+    description: A thing that can be acquired, allocated, or transferred.
+    implies:
+    - Object
+  Constraint:
+    description: Limit, rule, or time/resource bound applied to directed work.
+    implies:
+    - Control
+  TaskTimeWindow:
+    implies:
+    - Constraint
+  WeatherLimits:
+    implies:
+    - Constraint
+  Objective:
+    description: Desired end state; the condition that should hold, the criteria that
+      decide it, priority, and deadline.
+    implies:
+    - Control
+  Command:
+    description: Immediate bounded imperative applied to a concrete target.
+    implies:
+    - Directive
+  Authority:
+    description: Command, permission, delegation, or control-right context for directed
+      work.
+    implies:
+    - Control
+  Lease:
+    description: Bounded control right issued under an Authority.
+    implies:
+    - Authority
+  Plan:
+    description: Proposed or approved method for accomplishing work.
+    implies:
+    - Control
+  PlanContingency:
+    description: Conditional work that applies when a condition holds.
+    implies:
+    - Data
+aliases:
+  AirMission:
+  - Mission
+  - PhysicalDomain.AIR
+  AirTask:
+  - Task
+  - PhysicalDomain.AIR
+  UGV:
+  - UnmannedVehicle
+  - PhysicalDomain.LAND
+  UAV:
+  - UnmannedVehicle
+  - PhysicalDomain.AIR
+  Drone:
+  - UAV
+  - Airframe.MULTIROTOR
+  Geodetic:
+  - Representation.Geodetic
+  LocalCartesian:
+  - Representation.LocalCartesian
+  LocalEuler:
+  - Representation.LocalEuler
+  Quaternion:
+  - Representation.Quaternion
+  GlobalPosition: Position * Representation.Geodetic
+  LocalPosition: Position * Representation.LocalCartesian
+  LocalVelocity: Velocity * Representation.LocalCartesian
+  LocalAttitude: Attitude * Representation.LocalEuler
+  QuaternionAttitude: Attitude * Representation.Quaternion
+charts:
+  Position * Representation.Geodetic:
+    lat: float[deg]
+    lon: float[deg]
+    h: float[m]
+  Position * Representation.LocalCartesian:
+    x: float[m]
+    y: float[m]
+    z: float[m]
+  Velocity * Representation.LocalCartesian:
+    vx: float[m/s]
+    vy: float[m/s]
+    vz: float[m/s]
+  Attitude * Representation.LocalEuler:
+    roll: float[rad]
+    pitch: float[rad]
+    yaw: float[rad]
+  Attitude * Representation.Quaternion:
+    qw: float
+    qx: float
+    qy: float
+    qz: float
+  NumericRange:
+    min_value: optional float
+    max_value: optional float
+  TaskTimeWindow:
+    earliest_start: optional float[s]
+    latest_finish: optional float[s]
+relations:
+  Directed:
+    description: A directed link; direction and arity declared once.
+    operands:
+      source: Root
+      target: Root
+  AssignedWork:
+    description: An entity carries work.
+    specializes: Directed
+    operands:
+      assignee: Entity
+      work: Task
+  ConstrainedBy:
+    description: A constraint bounds directed work.
+    specializes: Directed
+    operands:
+      subject: Control
+      constraint: Constraint
+  OwnedBy:
+    description: An objective is owned by an entity.
+    specializes: Directed
+    operands:
+      objective: Objective
+      owner: Entity
+  Holds:
+    description: An entity holds an authority.
+    specializes: Directed
+    operands:
+      authority: Authority
+      holder: Entity
+  GrantedBy:
+    description: An authority was granted by an entity.
+    specializes: Directed
+    operands:
+      authority: Authority
+      grantor: Entity
+  Controls:
+    description: A lease controls an asset.
+    specializes: Directed
+    operands:
+      lease: Lease
+      asset: Object
+  Contains:
+    description: A plan contains an item of work, a participant, or a resource.
+    specializes: Directed
+    operands:
+      plan: Plan
+      item: Root
+expressions:
+  POSITION_GOAL:
+    description: An actor's position is the destination.
+    factors:
+    - Task
+    - Realm.WORLD
+    given:
+      actor: Entity
+      destination: Position
+    equations:
+    - Position(actor) = destination
+  POSITION_QUERY:
+    description: An entity's position is the answer.
+    factors:
+    - Task
+    - Realm.INFORMATION
+    given:
+      target: Entity
+    sought:
+      position: Position
+    equations:
+    - Position(target) = position
+  EXISTENCE_GOAL:
+    description: An object's existence is asserted.
+    factors:
+    - Task
+    - Realm.WORLD
+    - TemporalMode.ACHIEVE
+    - Existence
+    given:
+      object: Object
+  OBJECT_STATE_GOAL:
+    description: An object's state is asserted.
+    factors:
+    - Task
+    - Realm.WORLD
+    given:
+      object: Object
+  ENGAGEMENT_COMMAND:
+    description: The target's engagement state is asserted.
+    factors:
+    - Command
+    given:
+      target: Object
+  PROCESS_COMMAND:
+    description: A running process is asserted paused or released.
+    factors:
+    - Command
+    - Paused
+    given:
+      target: Object
+      process: Text
+  MOVE:
+    of: POSITION_GOAL
+    binds:
+    - TemporalMode.ACHIEVE
+    words:
+    - TaskIntent.MOVE
+  HOLD:
+    of: POSITION_GOAL
+    binds:
+    - TemporalMode.MAINTAIN
+    words:
+    - TaskIntent.HOLD
+  LOCATE:
+    of: POSITION_QUERY
+    binds:
+    - TemporalMode.ACHIEVE
+    words:
+    - TaskIntent.LOCATE
+  TRACK:
+    of: POSITION_QUERY
+    binds:
+    - TemporalMode.MAINTAIN
+    words:
+    - TaskIntent.TRACK
+  CREATE:
+    of: EXISTENCE_GOAL
+    binds:
+    - TruthTarget.TRUE
+    words:
+    - TaskIntent.CREATE
+  REMOVE:
+    of: EXISTENCE_GOAL
+    binds:
+    - TruthTarget.FALSE
+    words:
+    - TaskIntent.REMOVE
+  MODIFY:
+    of: OBJECT_STATE_GOAL
+    binds:
+    - TemporalMode.ACHIEVE
+    words:
+    - TaskIntent.MODIFY
+  PROTECT:
+    of: OBJECT_STATE_GOAL
+    binds:
+    - TemporalMode.MAINTAIN
+    words:
+    - TaskIntent.PROTECT
+  ENGAGE:
+    of: ENGAGEMENT_COMMAND
+    binds:
+    - TruthTarget.TRUE
+    words:
+    - CommandOperation.ENGAGE
+  DISENGAGE:
+    of: ENGAGEMENT_COMMAND
+    binds:
+    - TruthTarget.FALSE
+    words:
+    - CommandOperation.DISENGAGE
+  PAUSE:
+    of: PROCESS_COMMAND
+    binds:
+    - TruthTarget.TRUE
+    words:
+    - CommandOperation.PAUSE
+  RESUME:
+    of: PROCESS_COMMAND
+    binds:
+    - TruthTarget.FALSE
+    words:
+    - CommandOperation.RESUME
+  IDENTIFY:
+    description: Solve for the identity of an entity.
+    factors:
+    - Task
+    - Realm.INFORMATION
+    - TemporalMode.ACHIEVE
+    given:
+      target: Entity
+    sought:
+      identity: Identity
+    equations:
+    - Identity(target) = identity
+    words:
+    - TaskIntent.IDENTIFY
+  CLASSIFY:
+    description: Solve for the classification of an entity.
+    factors:
+    - Task
+    - Realm.INFORMATION
+    - TemporalMode.ACHIEVE
+    given:
+      target: Entity
+    sought:
+      classification: Classification
+    equations:
+    - Classification(target) = classification
+    words:
+    - TaskIntent.CLASSIFY
+  FOLLOW:
+    description: Follow a path.
+    factors:
+    - Task
+    - Realm.WORLD
+    - TemporalMode.MAINTAIN
+    given:
+      actor: Entity
+      path: GeoPath
+    words:
+    - TaskIntent.FOLLOW
+  MEASURE:
+    description: Measure a state of a target.
+    factors:
+    - Task
+    - Realm.INFORMATION
+    - TemporalMode.ACHIEVE
+    given:
+      target: Entity
+    sought:
+      measurement: State
+    words:
+    - TaskIntent.MEASURE
+  RESTORE:
+    description: Return an object to a prior state.
+    factors:
+    - Task
+    - Realm.WORLD
+    - TemporalMode.ACHIEVE
+    given:
+      object: Object
+    words:
+    - TaskIntent.RESTORE
+  DENY:
+    description: Prevent connectivity to an object.
+    factors:
+    - Task
+    - Realm.WORLD
+    - TemporalMode.MAINTAIN
+    - Connectivity
+    - TruthTarget.FALSE
+    given:
+      object: Object
+    words:
+    - TaskIntent.DENY
+  TRANSPORT:
+    description: Move a thing between places; which end and what moves are bindings.
+    factors:
+    - Task
+    - Realm.WORLD
+    - TemporalMode.ACHIEVE
+    given:
+      cargo: Object
+      origin: Position
+      destination: Position
+    words:
+    - TaskIntent.TRANSPORT
+  SET:
+    description: Set a declared state property on the target.
+    factors:
+    - Command
+    given:
+      target: Object
+      property: Text
+      value: Scalar
+    words:
+    - CommandOperation.SET
+  DIRECT:
+    description: Direct the target to a destination or along a path.
+    factors:
+    - Command
+    - TemporalMode.ACHIEVE
+    given:
+      target: Object
+      destination: Position
+      path: GeoPath
+      radius: Distance
+      speed: Speed
+      yaw: Angle
+    equations:
+    - Position(target) = destination
+    words:
+    - CommandOperation.MOVE
+  ALLOCATE:
+    description: Allocate a referenced resource.
+    factors:
+    - Command
+    given:
+      target: Object
+      resource: Resource
+      quantity: Count
+    words:
+    - CommandOperation.ALLOCATE
+  TRANSFER:
+    description: Transfer a referenced resource.
+    factors:
+    - Command
+    given:
+      target: Object
+      resource: Resource
+      quantity: Count
+    words:
+    - CommandOperation.TRANSFER
+  LOAD_CONFIGURATION:
+    description: Load a referenced configuration on the target.
+    factors:
+    - Command
+    given:
+      target: Object
+      parameter: Text
+      value: Scalar
+    words:
+    - CommandOperation.LOAD_CONFIGURATION
+  RESET:
+    description: Reset the target to its initial state.
+    factors:
+    - Command
+    given:
+      target: Object
+    words:
+    - CommandOperation.RESET
+mappings: {}

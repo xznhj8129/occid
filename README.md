@@ -1,9 +1,9 @@
 # OCCID2 semantic algebra prototype
 
 Executable prototype for addressing information by semantic meaning instead of
-exact model and field paths. The authored schema (`occid2.schema.yaml`) is a set
-of equations; the compiler and runtime derive from it. YAML is only the
-transport.
+exact model and field paths. The semantic registry is the live authority for
+semantic definitions and relationships. Definitions are data interpreted by the
+algebra at runtime.
 
 ## Findings
 
@@ -21,8 +21,7 @@ The full algebraic record is in `SPEC.md`. Summary:
 - **Charts reduce quantity × representation to variables.** `chart Position ×
   Representation.Geodetic := lat × lon × h`. Chart produces the primitives;
   units stay metadata; the same quantity may exist in several representations
-  and be narrowed by factors. A model
-  that is data declares the chart it reduces through.
+  and be narrowed by factors.
 - **Tasks are open expressions.** Fixed semantic factors + typed free
   variables + equations. An unbound variable is an unknown, not an error:
   `MOVE(actor=uav-1, destination=?)`. Sought variables are solved from the
@@ -39,54 +38,49 @@ The full algebraic record is in `SPEC.md`. Summary:
   A named and an unnamed equivalent product have the same normal form.
 - **Unknown vs illegal.** No datum is unknown, not illegal
   (`empty.find(Position) == []`); `Mission × SEA × Altitude` is illegal.
-- **Control is expressed, not ported.** A verb is a word: `Task.intent` and
-  `Command.operation` carry the vocabulary member that names an expression, and
-  the expression entails its factors. Twins such as MOVE/HOLD are one form with
-  `TemporalMode` bound by the word, and `TaskIntent`/`CommandOperation` are
-  compiled from the words the expressions declare. There are no per-verb
-  subclasses, no parameter columns, no proto-style `MetadataValue` oneof, and
-  no duplicate status vocabularies: former verb parameters are the expressions'
-  typed free variables, and goals and success criteria are `Condition`s.
+- **Control is expressed.** Open expressions have fixed semantic factors, typed
+  free variables, and equations. A word names an expression.
 
 ## Run
 
 ```bash
 python -m pip install -e .
-python compiler.py
 python tests.py
 python -m unittest tests_runtime
 python demo.py
 ```
 
-The compiler regenerates Python, TypeScript, and registry data under
-`occid2/generated/` deterministically. Expected algebra test result:
+Expected algebra test result:
 
 ```text
-17 tests passed
+17 semantic invariant groups passed
 ```
 
 ## Files
 
-- `occid2.schema.yaml` - canonical authored algebra
-- `compiler.py` - deterministic ahead-of-time compiler
+- `occid2/definitions.yaml` - initial semantic definitions
+- `occid2/definitions.py` - runtime definition loading and validation
 - `occid2/runtime.py` - product/relation algebra, solver, charts, expressions, store
-- `occid2/wire.py` - compact MsgPack codec
-- `occid2/generated/occid2.py` - generated Python bindings
-- `occid2/generated/occid2.ts` - generated TypeScript bindings
-- `occid2/generated/semantic_registry.json` - inspectable generated registry
+- `occid2/wire.py` - self-describing MsgPack facts
 - `demo.py` - worked examples
 - `tests.py` - focused acceptance tests
-- `tests_runtime.py` - identity, validation, serialization, compiler errors
+- `tests_runtime.py` - identity, validation, serialization, persistence, revisions
 - `SPEC.md` - algebraic and semantic findings
 
 ## Runtime
 
-- Import Python bindings from `occid2`.
-- `UID.new()` mints a UUIDv4 as exactly 16 bytes.
-- Models validate construction and assignment.
-- `value.encode()` and `decode(payload)` use MsgPack `[model_id, {field_ordinal: value}]`.
-- Omitted fields and explicit null remain distinct.
-- Record wrappers and internal integer ID fields are removed.
-- No named interchange, compatibility machinery, or StrID.
+- `new_store()` creates an in-memory store; `new_store("facts.sqlite")` persists definitions and facts in SQLite.
+- `store.ref("uav-1", "UAV")` creates a subject with semantic assertions.
+- `subject.set(sem("Position", "Representation.Geodetic"), {"lat": 36.530440, "lon": -83.216383, "h": 125.0}, source="sensor", observed_at=123)` appends an observation.
+- `subject.find("Position")` returns matching facts; `subject.get(...)` requires one match.
+- `datum.value` contains the original value; chart coordinates retain their units in `store.registry.at(datum.definition_id)`.
+- `registry.update({...})` validates before activation. Updates replace named entries within their sections.
+- `store.task("task-1", "TaskIntent.MOVE")` creates an open expression.
+- `store.relate("AssignedWork", assignee=uav, work=task.ref)` validates named, directed roles.
+- `encode(datum)` and `decode(payload)` preserve named fields, original values, and definition snapshots. Values must be MsgPack-serializable.
+- `store.add(decode(payload))` retains the sender's fact identity and definition revision.
+- `store.interpret(source_datum, mapping_name)` appends a mapped fact linked to the original source datum.
+- Definition and mapping revisions retain historical fact meaning. Reinterpretation is explicit.
+- `UID.new()` mints a UUIDv4 as exactly 16 bytes; nonempty strings also identify subjects.
 
-TypeScript bindings are generated types and constants in `occid2/generated/occid2.ts`.
+`demo.py` exercises all 14 architecture acceptance behaviors, including live extension and SQLite reopen.

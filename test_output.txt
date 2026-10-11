@@ -1,1 +1,1 @@
-17 tests passed
+17 semantic invariant groups passed

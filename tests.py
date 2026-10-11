@@ -1,56 +1,8 @@
-from __future__ import annotations
-
-import hashlib
-import tempfile
-from pathlib import Path
-
-from compiler import compile_schema
-from occid2 import Product, sem, value_semantics
-import occid2
+"""Semantic invariants exercised through the live registry and store."""
 from occid2 import (
-    UID,
-    AirTask,
-    Airframe,
-    Altitude,
-    Actor,
-    AssignedWork,
-    Authority,
-    Biological,
-    BloodGroup,
-    Command,
-    CommandOperation,
-    Condition,
-    ConstrainedBy,
-    Directive,
-    Directed,
-    Drone,
-    Geodetic,
-    GlobalPosition,
-    Holds,
-    LocalPosition,
-    Machine,
-    Mark,
-    Mission,
-    MOVE,
-    Person,
-    PhysicalDomain,
-    Plan,
-    Position,
-    Predicate,
-    Realm,
-    REGISTRY_SPEC,
-    Representation,
-    Task,
-    TaskIntent,
-    TaskTimeWindow,
-    TemporalMode,
-    UAV,
-    UnmannedVehicle,
-    WeatherLimits,
-    new_store,
+    AmbiguousSemanticMatch, IllegalSemanticCombination, Product, new_store, sem,
+    value_semantics,
 )
-
-ROOT = Path(__file__).parent
 
 
 def check(condition: bool, message: str) -> None:
@@ -59,189 +11,161 @@ def check(condition: bool, message: str) -> None:
 
 
 def main() -> None:
-    uav_1_uid = UID.new()
-    task_move_1_uid = UID.new()
-    mark_alpha_uid = UID.new()
-    target_42_uid = UID.new()
-    task_locate_1_uid = UID.new()
-    task_cmd_1_uid = UID.new()
-    window_1_uid = UID.new()
-    auth_1_uid = UID.new()
     store = new_store()
     registry = store.registry
+    Drone = registry.product("Drone")
+    UAV = registry.product("UAV")
+    AirTask = registry.product("AirTask")
+    Geodetic = registry.product("Geodetic")
+    Airframe = registry.axis("Airframe")
+    PhysicalDomain = registry.axis("PhysicalDomain")
+    BloodGroup = registry.axis("BloodGroup")
+    Representation = registry.axis("Representation")
 
-    # 1. Parentage provides inherited fields; the word is the only taxonomy.
-    task_fields = set(Task.model_fields)
-    check({"uid", "instruction", "intent", "priority", "status"} <= task_fields, "Task field inheritance failed")
-    check({"uid", "operation"} <= set(Command.model_fields), "Command carries only its word")
+    # 1. Product multiplication is unordered and idempotent.
+    check(sem("Position", "State") == sem("State", "Position", "Position"), "product laws")
+    check(isinstance(Drone, Product), "aliases are products")
 
-    # 2. Aliases are products, not classes. Recursive expansion is canonical.
-    check(isinstance(Drone, Product), "Drone must be a product, not a class")
-    check(registry.entails(Drone, UnmannedVehicle), "Drone must entail UnmannedVehicle")
-    check(registry.entails(Drone, PhysicalDomain.AIR), "Drone must entail PhysicalDomain.AIR")
-    check(registry.entails(Drone, Airframe.MULTIROTOR), "Drone must entail its airframe")
-    check(Drone == sem(UAV, Airframe.MULTIROTOR), "Drone must equal UAV * Airframe.MULTIROTOR")
-    check(Geodetic == sem(Representation.Geodetic), "Geodetic must equal Representation.Geodetic")
-    check(registry.equivalent(Drone, sem(UAV, Airframe.MULTIROTOR)), "named and unnamed products must be equivalent")
+    # 2. Recursive aliases do not create nominal types.
+    check(Drone == UAV * Airframe.MULTIROTOR, "recursive alias expansion")
+    check(Geodetic == sem(Representation.Geodetic), "representation alias")
+    check(registry.equivalent(Drone, sem(UAV, Airframe.MULTIROTOR)), "normal forms")
+    check(registry.entails(Drone, "UnmannedVehicle"), "alias entailment")
 
     # 3. Axis cardinality is automatic; partial products stay legal.
-    check(registry.legal(sem(UnmannedVehicle, PhysicalDomain.AIR)), "single-domain partial product is legal")
-    check(not registry.legal(sem(UnmannedVehicle, PhysicalDomain.LAND, PhysicalDomain.AIR)), "two domains contradict")
+    check(registry.legal(sem("UnmannedVehicle", PhysicalDomain.AIR)), "partial product")
+    check(not registry.legal(sem(PhysicalDomain.LAND, PhysicalDomain.AIR)), "axis cardinality")
 
-    # 4. The BloodGroup contradiction is derived, not declared.
-    check(registry.entails(sem(BloodGroup.A_POS), Biological), "BloodGroup must entail Biological")
-    check(not registry.legal(sem(Drone, BloodGroup.A_POS)), "Drone cannot have a blood group")
-    check(registry.legal(sem(Person, BloodGroup.A_POS)), "Person accepts a blood group")
+    # 4. BloodGroup requires Biological, through declaration ancestry.
+    check(registry.entails(sem(BloodGroup.A_POS), "Biological"), "axis requirement")
+    check(not registry.legal(sem(Drone, BloodGroup.A_POS)), "derived contradiction")
+    check(registry.legal(sem("Person", BloodGroup.A_POS)), "biological applicability")
 
-    # 5. Substrate cardinality separates living from machine.
-    check(not registry.legal(sem(Machine, Actor)), "Machine * Actor clashes on Substrate")
+    # 5. Substrate separates living participants from machines.
+    check(not registry.legal(sem("Machine", "Actor")), "substrate contradiction")
 
-    # 6. Charts produce irreducible variables; units stay metadata.
-    check(set(GlobalPosition.model_fields) == {"lat", "lon", "h"}, "geodetic chart fields")
-    check(GlobalPosition._units == {"lat": "deg", "lon": "deg", "h": "m"}, "geodetic chart units")
-    check(set(LocalPosition.model_fields) == {"x", "y", "z"}, "local cartesian chart fields")
-    check(set(Mark.model_fields) == {"uid", "name", "lat", "lon", "h"}, "Mark compiles its chart")
+    # 6. Charts realize semantic quantities without Python classes.
+    coordinates = registry.coordinates(sem("Position", Representation.Geodetic))
+    check(set(coordinates) == {"lat", "lon", "h"}, "chart coordinates")
+    check({name: coordinate.unit for name, coordinate in coordinates.items()} == {"lat": "deg", "lon": "deg", "h": "m"}, "chart units")
+    check(set(registry.coordinates(registry.product("LocalPosition"))) == {"x", "y", "z"}, "local chart")
+    check(registry.entails(registry.product("Mark"), "Position"), "Mark denotes position")
 
-    uav = store.ref(uav_1_uid, UnmannedVehicle)
-    uav.set(GlobalPosition(lat=36.530440, lon=-83.216383, h=125.0))
+    # 7. Different representations answer the same semantic question.
+    uav = store.ref("uav-1", "UnmannedVehicle")
+    global_position = uav.set(sem("Position", Representation.Geodetic), {"lat": 36.530440, "lon": -83.216383, "h": 125.0})
+    local_position = uav.set(sem("Position", Representation.LocalCartesian), {"x": 120.0, "y": -40.0, "z": 15.0})
+    check(uav.find("Position") == [global_position, local_position], "broad query")
+    check(uav.get("Position", Representation.Geodetic) == global_position, "geodetic narrowing")
+    check(uav.get("Position", Representation.LocalCartesian) == local_position, "Cartesian narrowing")
+    velocity = uav.set("LocalVelocity", {"vx": 12.0, "vy": 0.0, "vz": -1.5})
+    attitude = uav.set("LocalAttitude", {"roll": 0.0, "pitch": 0.0, "yaw": 1.57})
+    check(uav.get("Velocity", Representation.LocalCartesian) == velocity, "independent velocity fact")
+    check(uav.get("Attitude", Representation.LocalEuler) == attitude, "independent attitude fact")
+    check(uav.find("Position") == [global_position, local_position], "quantities remain independent")
 
-    # 7. The representation is selected by factors, not by class paths.
-    uav.set(LocalPosition(x=120.0, y=-40.0, z=15.0))
-    check(len(uav.find(Position)) == 2, "both representations answer the Position question")
-    check(uav.get(Position, Representation.Geodetic).lon == -83.216383, "geodetic narrowing failed")
-    check(uav.get(Position, Representation.LocalCartesian).x == 120.0, "local narrowing failed")
+    # 8. A representation name is just a product alias; no exact-class shortcut.
+    check(uav.get("GlobalPosition") == global_position, "representation alias query")
+    try:
+        uav.get("Position")
+    except AmbiguousSemanticMatch:
+        pass
+    else:
+        raise AssertionError("ambiguity must not pick a representation")
 
-    # 8. Exact class lookup and semantic lookup return the same stored value.
-    check(uav.get(GlobalPosition).lat == 36.530440, "exact representation lookup failed")
-
-    # 9. A word names an expression; the task realizes it.
-    move = store.task(
-        task_move_1_uid, Task, TaskIntent.MOVE, instruction="move to mark alpha"
-    )
-    check(registry.expression_of(TaskIntent.MOVE) == MOVE, "MOVE word must name MOVE expression")
-    check(
-        MOVE.factors == sem(Task, Realm.WORLD, TemporalMode.ACHIEVE),
-        "MOVE factors must be the declared product",
-    )
-    check(move.expression.name == "MOVE", "task must realize MOVE")
-    check(move.ref.get(Task).intent is TaskIntent.MOVE, "the word stores the vocabulary member")
-    check(
-        registry.entails(value_semantics(move.ref.get(Task)), MOVE.factors),
-        "task value must entail the expression factors",
-    )
-    check(move.unbound == ["actor", "destination"], "unbound variables")
+    # 9. A word names an expression; bindings must satisfy typed regions.
+    move = store.task("task-move-1", "TaskIntent.MOVE", instruction="move to mark alpha")
+    check(move.expression == registry.expression_of("TaskIntent.MOVE"), "word mapping")
+    check(move.factors == sem("Task", "Realm.WORLD", "TemporalMode.ACHIEVE"), "fixed factors")
+    check(registry.entails(value_semantics(move.ref.get("Task")), move.factors), "task meaning")
+    check(move.unbound == ["actor", "destination"], "typed unknowns")
     move.bind("actor", uav)
     try:
         move.bind("destination", uav)
     except TypeError:
         pass
     else:
-        raise AssertionError("a vehicle does not satisfy the Position region")
-    mark_ref = store.ref(mark_alpha_uid, Mark)
-    mark_ref.set(Mark(uid=mark_alpha_uid, name="alpha", lat=36.530240, lon=-83.216183, h=110.0))
-    move.bind("destination", mark_ref)
-    check(move.unbound == [], "all variables bound")
+        raise AssertionError("a vehicle is not a position")
+    mark = store.ref("mark-alpha", "Mark")
+    mark.set(Geodetic * "Position", {"lat": 36.530440, "lon": -83.216383, "h": 110.0})
+    move.bind("destination", mark)
+    check(move.unbound == [], "complete binding")
 
-    # 10. An unbound variable is an unknown, not an error.
-    target = store.ref(target_42_uid, UnmannedVehicle)
-    locate = store.task(
-        task_locate_1_uid, Task, TaskIntent.LOCATE, instruction="locate target-42"
-    )
+    # 10. A sought unknown is solved when a matching fact arrives.
+    target = store.ref("target-42", "UnmannedVehicle")
+    locate = store.task("task-locate-1", "TaskIntent.LOCATE")
     locate.bind("target", target)
-    check(locate.solve() == {}, "an entity without a position has an unknown answer")
-    check(target.find(Position) == [], "no datum is unknown, not illegal")
-    target.set(GlobalPosition(lat=36.530140, lon=-83.216683, h=90.0))
-    solved = locate.solve()
-    check(solved["position"].lat == 36.530140, "the answer appears once the fact exists")
+    check(locate.solve() == {} and target.find("Position") == [], "absent information")
+    answer = target.set(Geodetic * "Position", {"lat": 36.530440, "lon": -83.216383, "h": 90.0})
+    check(locate.solve()["position"] == answer, "semantic equation")
 
-    # 11. Relations are directed, roles are named, and operands are validated.
-    fact = store.relate(AssignedWork, uav, move.ref)
-    check(str(fact) == f"AssignedWork(assignee={uav_1_uid}, work={task_move_1_uid})", "named roles failed")
-    check(fact.operands == (uav, move.ref), "relation operand order lost")
+    # 11. Direction, named roles, and specialization survive without classes.
+    assigned = registry.relation_types["AssignedWork"]
+    fact = store.relate(assigned, uav, move.ref)
+    check(str(fact) == "AssignedWork(assignee=uav-1, work=task-move-1)", "named roles")
+    check(fact.operands == (uav, move.ref), "operand order")
     try:
-        AssignedWork(move.ref, uav)
+        assigned(move.ref, uav)
     except TypeError:
         pass
     else:
-        raise AssertionError("reversed AssignedWork must fail")
-    check(fact in store.relations(AssignedWork), "relation query must see facts")
-    check(fact in store.relations(Directed), "base relation query must see specializations")
+        raise AssertionError("reversed assignment must fail")
+    check(fact in store.relations("Directed"), "relation specialization query")
 
-    # 12. Applicability is emergent and never asserts.
-    check(not registry.entails(sem(Altitude), PhysicalDomain.AIR), "applicability must not assert")
-    check(registry.legal(sem(Mission, Altitude)), "Mission * Altitude is unknown, not illegal")
-    check(registry.legal(sem(Mission, PhysicalDomain.AIR, Altitude)), "Altitude is meaningful in air")
-    check(not registry.legal(sem(Mission, PhysicalDomain.SEA, Altitude)), "Altitude is meaningless at sea")
-    check(registry.applicable(AirTask, Altitude), "AirTask = Task * AIR gains Altitude")
+    # 12. Applicability is emergent and does not assert its region.
+    check(not registry.entails(sem("Altitude"), PhysicalDomain.AIR), "nonasserting applicability")
+    check(registry.legal(sem("Mission", "Altitude")), "partial applicability")
+    check(registry.legal(sem("Mission", PhysicalDomain.AIR, "Altitude")), "air applicability")
+    check(not registry.legal(sem("Mission", PhysicalDomain.SEA, "Altitude")), "sea contradiction")
+    check(registry.applicable(AirTask, "Altitude"), "emergent applicability")
 
-    # 13. Compiler output is deterministic.
-    with tempfile.TemporaryDirectory() as a, tempfile.TemporaryDirectory() as b:
-        compile_schema(ROOT / "occid2.schema.yaml", Path(a))
-        compile_schema(ROOT / "occid2.schema.yaml", Path(b))
-        for filename in ("occid2.py", "semantic_registry.json", "occid2.ts"):
-            ha = hashlib.sha256((Path(a) / filename).read_bytes()).digest()
-            hb = hashlib.sha256((Path(b) / filename).read_bytes()).digest()
-            check(ha == hb, f"nondeterministic compiler output: {filename}")
-            check((ROOT / "occid2" / "generated" / filename).read_bytes() == (Path(a) / filename).read_bytes(), f"stale generated output: {filename}")
+    # 13. Definitions can be introduced while handles and existing data remain live.
+    registry.update({"factors": {"ExperimentalPosition": {"implies": ["Position"]}}, "charts": {"ExperimentalPosition": {"native": "bytes"}}})
+    experimental = uav.set("ExperimentalPosition", {"native": b"\x01\x02"})
+    check(experimental in uav.find("Position"), "runtime entailment")
+    check(uav.get("ExperimentalPosition") == experimental, "new representation")
 
-    # 14. Every word resolves to an expression; a command carries only its word.
-    for word in REGISTRY_SPEC["word_expressions"]:
-        enum_name, member = word.split(".", 1)
-        registry.expression_of(getattr(getattr(occid2, enum_name), member))
-    cmd = store.task(task_cmd_1_uid, Command, CommandOperation.MOVE)
-    check(cmd.expression.name == "DIRECT", "MOVE word must name the DIRECT expression")
-    cmd.bind("target", uav)
-    cmd.bind("destination", mark_ref)
-    check(
-        cmd.unbound == ["path", "radius", "speed", "yaw"],
-        "unbound motion parameters are unknowns, not columns",
-    )
+    # 14. Every word resolves; observations do not become commands.
+    for word in registry.word_expressions:
+        registry.expression_of(word)
+    cmd = store.task("command-1", "CommandOperation.MOVE")
+    cmd.bind("target", uav).bind("destination", mark)
+    check(cmd.expression.name == "DIRECT", "command word")
+    check(cmd.unbound == ["path", "radius", "speed", "yaw"], "motion parameters are variables")
+    check(cmd.ref.find("Position") == [], "goal is not an observed position")
 
-    # 15. Scalar fields retain their units without representation wrappers.
-    check(TaskTimeWindow._units == {"earliest_start": "s", "latest_finish": "s"}, "time field units")
-    check(registry.legal(sem(WeatherLimits, PhysicalDomain.AIR)), "weather limits are meaningful")
+    # 15. Scalar charts retain units; omitted optionals remain absent.
+    window = store.ref("window-1", "TaskTimeWindow")
+    value = window.set("TaskTimeWindow", {"earliest_start": 1.0})
+    check(value.value == {"earliest_start": 1.0}, "no fabricated latest_finish")
+    check(registry.coordinates(sem("TaskTimeWindow"))["earliest_start"].unit == "s", "scalar units")
+    check(registry.legal(sem("WeatherLimits", PhysicalDomain.AIR)), "constraint meaning")
 
-    # 16. The surviving relations validate their roles.
-    window = store.ref(window_1_uid, TaskTimeWindow)
-    window.set(TaskTimeWindow(earliest_start=1.0))
-    check(window.get(TaskTimeWindow).earliest_start == 1.0, "scalar time survives store retrieval")
-    check(move.ref.get(Task).instruction == "move to mark alpha", "primitive instruction survives store retrieval")
-    check(mark_ref.get(Mark).name == "alpha", "primitive name survives store retrieval")
-    store.relate(ConstrainedBy, cmd.ref, window)
-    authority = store.ref(auth_1_uid, Authority)
-    authority.set(Authority(uid=auth_1_uid))
-    store.relate(Holds, authority, uav)
-    check(len(store.relations()) >= 3, "facts are queryable")
+    # 16. Useful v1 relations and concepts remain semantic definitions.
+    store.relate("ConstrainedBy", subject=cmd.ref, constraint=window)
+    authority = store.ref("authority-1", "Authority")
+    store.relate("Holds", authority=authority, holder=uav)
     try:
-        ConstrainedBy(uav, window)
+        store.relate("ConstrainedBy", uav, window)
     except TypeError:
         pass
     else:
         raise AssertionError("a vehicle is not directed work")
+    check(registry.entails(sem("Task"), "Directive"), "Task ancestry")
+    check(registry.entails(sem("Command"), "Directive"), "Command ancestry")
+    check(registry.entails(sem("Predicate"), "Condition"), "condition ancestry")
 
-    # 17. No nominal scaffolding survives; meaning is product, word, or relation.
-    for retired in (
-        "TaskManeuver",
-        "TaskInformation",
-        "TaskEffect",
-        "TaskTransport",
-        "StateChangeCommand",
-        "ProcessControlCommand",
-        "ConfigurationCommand",
-        "MotionCommand",
-        "ResourceCommand",
-        "MetadataValue",
-        "SuccessCriterion",
-        "TaskPhase",
-        "Record",
-        "StrID",
-    ):
-        check(not hasattr(occid2, retired), f"nominal scaffolding {retired} must be gone")
-    check(registry.entails(sem(Task), Directive), "a task is directed work")
-    check(registry.entails(sem(Command), Directive), "a command is a directive")
-    check(registry.entails(sem(Predicate), Condition), "a predicate is a condition")
-
-    print("17 tests passed")
+    # 17. Unknown, absent, and illegal information remain separate.
+    opaque = uav.set("Irreducible.FutureConcept", {"unrecognized": 42})
+    check(uav.get("Irreducible.FutureConcept") == opaque, "opaque information")
+    check(uav.find("Unseen.FutureConcept") == [], "unknown query")
+    try:
+        uav.find("Mission", PhysicalDomain.SEA, "Altitude")
+    except IllegalSemanticCombination:
+        pass
+    else:
+        raise AssertionError("illegal query must be distinguished from absence")
+    print("17 semantic invariant groups passed")
 
 
 if __name__ == "__main__":

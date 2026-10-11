@@ -1,93 +1,71 @@
-"""Compact model-ID/field-ordinal MsgPack; field presence is preserved."""
+"""Self-describing MsgPack facts with named fields and definition snapshots."""
 from __future__ import annotations
-
-from enum import Enum
-from types import UnionType
-from typing import Annotated, get_args, get_origin
 
 import msgpack
 
-from .runtime import SemanticModel, SemanticRegistry, UID, value_semantics
+from .runtime import Datum, Product, SemanticRegistry, product_names, subject_identity
+
+FORMAT = "occid2.fact/1"
+FIELDS = {"format", "id", "subject", "semantics", "meaning", "definition_id", "definitions", "value", "source", "observed_at", "validity", "provenance"}
+REQUIRED = {"format", "id", "subject", "semantics", "meaning", "definition_id", "definitions", "value"}
 
 
-def _wire_value(value):
-    if isinstance(value, SemanticModel):
-        validated = type(value)(**{name: getattr(value, name) for name in type(value).model_fields})
-        fields = {
-            index: _wire_value(getattr(validated, name))
-            for index, name in enumerate(type(value).model_fields)
-            if name in value.model_fields_set
-            or getattr(value, name) != type(value).model_fields[name].get_default(call_default_factory=True)
-        }
-        return [type(value)._model_id, fields]
-    if isinstance(value, Enum):
-        return value.value
-    if isinstance(value, UID):
-        return bytes(value)
-    if isinstance(value, list):
-        return [_wire_value(item) for item in value]
-    return value
-
-
-def encode(value: SemanticModel) -> bytes:
-    if not isinstance(value, SemanticModel):
-        raise TypeError("encode requires a semantic model")
-    return msgpack.packb(_wire_value(value), use_bin_type=True)
+def encode(value: Datum) -> bytes:
+    if not isinstance(value, Datum):
+        raise TypeError("encode requires a semantic datum")
+    if value.extensions.keys() & FIELDS:
+        raise ValueError("fact extensions collide with envelope fields")
+    envelope = {
+        **value.extensions,
+        "format": FORMAT,
+        "id": value.id,
+        "subject": value.subject,
+        "semantics": list(value.semantics),
+        "meaning": list(value.meaning),
+        "definition_id": value.definition_id,
+        "definitions": value.definitions,
+        "value": value.value,
+        "source": value.source,
+        "observed_at": value.observed_at,
+        "validity": value.validity,
+        "provenance": value.provenance,
+    }
+    return msgpack.packb(envelope, use_bin_type=True)
 
 
 def _unique_map(pairs):
     result = {}
     for key, value in pairs:
-        if type(key) is not int or key in result:
-            raise ValueError(f"invalid or duplicate wire field ordinal {key!r}")
+        if key in result:
+            raise ValueError(f"duplicate wire key {key!r}")
         result[key] = value
     return result
 
 
-def _decode_value(annotation, value, registry: SemanticRegistry):
-    origin = get_origin(annotation)
-    if origin is Annotated:
-        return _decode_value(get_args(annotation)[0], value, registry)
-    if origin is UnionType:
-        if value is None and type(None) in get_args(annotation):
-            return None
-        annotation = next(arg for arg in get_args(annotation) if arg is not type(None))
-        return _decode_value(annotation, value, registry)
-    if origin is list:
-        if type(value) is not list:
-            raise ValueError("wire collection must be a list")
-        return [_decode_value(get_args(annotation)[0], item, registry) for item in value]
-    if isinstance(annotation, type) and issubclass(annotation, SemanticModel):
-        model = _decode_model(value, registry)
-        if not registry.entails(value_semantics(model), annotation):
-            raise ValueError(f"wire {type(model).__name__} does not satisfy {annotation.__name__}")
-        return model
-    if isinstance(annotation, type) and issubclass(annotation, Enum):
-        if type(value) is not int:
-            raise ValueError("wire enum must be an integer")
-        return annotation(value)
-    return value
+def _product(raw, field: str) -> Product:
+    if not isinstance(raw, list) or any(not isinstance(term, str) or not term for term in raw) or len(set(raw)) != len(raw):
+        raise ValueError(f"wire {field} must be a list of distinct semantic names")
+    return product_names(raw)
 
 
-def _decode_model(envelope, registry: SemanticRegistry) -> SemanticModel:
-    if type(envelope) is not list or len(envelope) != 2 or type(envelope[0]) is not int:
-        raise ValueError("wire model must be [model_id, field_map]")
-    model_id, raw_fields = envelope
-    model = registry.model_types.get(model_id)
-    if model is None:
-        raise ValueError(f"unknown wire model ID {model_id}")
-    if type(raw_fields) is not dict:
-        raise ValueError(f"wire fields for {model.__name__} must be a numeric map")
-    names = tuple(model.model_fields)
-    values = {}
-    for index, raw in raw_fields.items():
-        if type(index) is not int or not 0 <= index < len(names):
-            raise ValueError(f"invalid wire field ordinal {index!r} for {model.__name__}")
-        name = names[index]
-        values[name] = _decode_value(model.model_fields[name].annotation, raw, registry)
-    return model(**values)
-
-
-def decode(payload: bytes, registry: SemanticRegistry) -> SemanticModel:
+def decode(payload: bytes) -> Datum:
     envelope = msgpack.unpackb(payload, raw=False, strict_map_key=False, object_pairs_hook=_unique_map)
-    return _decode_model(envelope, registry)
+    if not isinstance(envelope, dict) or REQUIRED - envelope.keys():
+        raise ValueError("wire fact is missing required named fields")
+    if envelope["format"] != FORMAT:
+        raise ValueError(f"unsupported wire format {envelope['format']!r}")
+    if not isinstance(envelope["id"], str) or not envelope["id"]:
+        raise ValueError("wire fact identity must be nonempty text")
+    subject_identity(envelope["subject"])
+    registry = SemanticRegistry(envelope["definitions"])
+    if envelope["definition_id"] != registry.definition_id:
+        raise ValueError("wire definition identity does not match its definitions")
+    semantics = _product(envelope["semantics"], "semantics")
+    meaning = _product(envelope["meaning"], "meaning")
+    if not registry.legal(semantics) or registry.closure(semantics) != meaning:
+        raise ValueError("wire fact meaning does not match its original definitions")
+    registry.validate_value(semantics, envelope["value"])
+    provenance = envelope.get("provenance", {})
+    if not isinstance(provenance, dict):
+        raise ValueError("wire provenance must be a mapping")
+    return Datum(envelope["id"], envelope["subject"], semantics, meaning, registry.definition_id, envelope["value"], registry.spec, envelope.get("source"), envelope.get("observed_at"), envelope.get("validity"), provenance, {key: value for key, value in envelope.items() if key not in FIELDS})

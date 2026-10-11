@@ -1,46 +1,31 @@
-A semantic object is a product; an alias is only a name.
-  Drone      = Airframe.MULTIROTOR × Controller.UNMANNED × Locomotion.SELF_PROPELLED × PhysicalDomain.AIR × Substrate.MECHANICAL × UnmannedVehicle
-  Drone == UAV * Airframe.MULTIROTOR: True
-  Geodetic == Representation.Geodetic: True
+Aliases are products; cardinality, legality, and entailment follow declarations.
+  Drone = Airframe.MULTIROTOR × PhysicalDomain.AIR × UnmannedVehicle
+  chart Position * Representation.Geodetic := lat:float[deg] * lon:float[deg] * h:float[m]
+  chart Position * Representation.LocalCartesian := x:float[m] * y:float[m] * z:float[m]
+  chart Velocity * Representation.LocalCartesian := vx:float[m/s] * vy:float[m/s] * vz:float[m/s]
+  chart Attitude * Representation.LocalEuler := roll:float[rad] * pitch:float[rad] * yaw:float[rad]
+  chart Attitude * Representation.Quaternion := qw:float * qx:float * qy:float * qz:float
 
-A chart reduces a quantity in a representation to irreducible variables.
-   chart Position * Representation.Geodetic := lat:float[deg] * lon:float[deg] * h:float[m]
-   chart Position * Representation.LocalCartesian := x:float[m] * y:float[m] * z:float[m]
-   chart Velocity * Representation.LocalCartesian := vx:float[m/s] * vy:float[m/s] * vz:float[m/s]
-   chart Attitude * Representation.LocalEuler := roll:float[rad] * pitch:float[rad] * yaw:float[rad]
-   chart Attitude * Representation.Quaternion := qw:float * qx:float * qy:float * qz:float
-  GlobalPosition: ['lat', 'lon', 'h']
+Store a geodetic position with no representation class.
+  uav.find(Position) -> [{'lat': 36.53044, 'lon': -83.216383, 'h': 125.0}]
+  uav.get(Position, Representation.Geodetic) -> {'lat': 36.53044, 'lon': -83.216383, 'h': 125.0}
+  A second representation coexists -> 2 position facts
+  uav.get(Position) -> ambiguous
+  empty.get(Position) -> absent
+  Mission x SEA x Altitude -> illegal
+  Independent velocity and attitude facts -> {'vx': 12.0, 'vy': 0.0, 'vz': -1.5} {'roll': 0.0, 'pitch': 0.0, 'yaw': 1.57}
 
-Data is stored in a representation and addressed by meaning.
-  uav * Position            -> ['GlobalPosition', 'LocalPosition']
-  uav * Position * Geodetic -> lat=36.53044 lon=-83.216383 h=125.0
-  uav * Position * Local    -> x=120.0 y=-40.0 z=15.0
+Live chart extension -> 3 position representations; no regeneration
 
-A chart value has a compact typed round trip.
-  decode(position.encode()) -> lat=36.53044 lon=-83.216383 h=125.0
+Open expressions keep typed unknowns and solve when facts arrive.
+  MOVE(actor=uav-1, destination=mark-alpha)
+  LOCATE(target=target-42) => position=? -> {'lat': 36.53044, 'lon': -83.216383, 'h': 90.0}
+  Directed roles validated: AssignedWork(assignee=uav-1, work=task-move-1)
 
-Facts are independent; no aggregate type covers them.
-   uav * Velocity * LocalCartesian -> vx=12.0 vy=0.0 vz=-1.5
-   uav * Attitude * LocalEuler     -> roll=0.0 pitch=0.0 yaw=1.57
+Several sources and observation times remain independent facts.
+  Invalid definition rejected; current registry unchanged
 
-A task is an open expression: fixed factors + typed free variables.
-  MOVE = MOVE(actor: Entity, destination: Position)  { Position(actor) = destination }
-  fixed semantics: Realm.WORLD × Task × TemporalMode.ACHIEVE
-   MOVE(actor=?, destination=?)
-   MOVE(actor=10f9e483-3cf6-4351-a719-3e8372acd985, destination=?)
-   MOVE(actor=10f9e483-3cf6-4351-a719-3e8372acd985, destination=a465b50f-5f88-465b-90a4-4f3857f8195d) unbound: []
+Mapping revision creates a new interpretation and retains the complete source report.
 
-An unbound variable is an unknown, not an error.
-   LOCATE(target=fa15fdb8-338c-4993-9817-111c7fa0c6e5) => position=?
-   no position fact yet -> solve() = {}
-   fact arrives         -> solve() = {'position': GlobalPosition(lat=36.53014, lon=-83.216683, h=90.0)}
-
-Relations connect independent things; roles belong to the relation.
-   AssignedWork(assignee=10f9e483-3cf6-4351-a719-3e8372acd985, work=7794542f-a37e-4214-9e22-ee6b26c83fef)
-
-Legality is derived from declared constraints, never enumerated.
-  Drone * BloodGroup.A_POS : False
-  Machine * Actor          : False
-  Mission * AIR * Altitude : True
-  Mission * SEA * Altitude : False
-  Drone entails Machine * Controller.UNMANNED * AIR: True
+SQLite reopen preserves definitions, identities, original values, bindings, and relation roles.
+All 14 architecture acceptance behaviors demonstrated.

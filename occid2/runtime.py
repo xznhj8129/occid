@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, ClassVar, Iterable
+from copy import deepcopy
+from dataclasses import dataclass, field
+from hashlib import sha256
+from math import isfinite
+from pathlib import Path
+import sqlite3
+from types import MappingProxyType
+from typing import Any, Iterable
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel, ConfigDict
-from pydantic_core import core_schema
+import msgpack
+
+from .definitions import load_definitions, prepare, product_terms, SECTIONS
 
 MAX_SOLVER_DEPTH = 48
 MAX_CANDIDATES = 128
-
-
-# ---------------------------------------------------------------------------
-# Semantic products
-# ---------------------------------------------------------------------------
 
 
 @dataclass(frozen=True, slots=True)
@@ -49,10 +50,6 @@ def semantic_name(term: Any) -> str:
         return term.name
     if isinstance(term, str):
         return term
-    if isinstance(term, SemanticEnum):
-        raise TypeError("surface enum values expand to products; use sem(value)")
-    if isinstance(term, SemanticModelMeta):
-        return term.__name__
     if hasattr(term, "_semantic_name"):
         return str(term._semantic_name)
     raise TypeError(f"not a semantic term: {term!r}")
@@ -65,12 +62,6 @@ def sem(*terms: Any) -> Product:
             continue
         if isinstance(term, Product):
             out = out | term
-        elif isinstance(term, SemanticEnum):
-            out = out | term._semantics
-        elif isinstance(term, SemanticModelMeta):
-            # In queries, a model class means the semantic region represented by
-            # that class, not merely its spelling.
-            out = out | term._semantics
         else:
             out = out | Product(frozenset({semantic_name(term)}))
     return out
@@ -90,101 +81,6 @@ class UID(bytes):
 
     def __str__(self) -> str:
         return str(UUID(bytes=bytes(self)))
-
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source, handler):
-        return core_schema.no_info_after_validator_function(
-            cls, core_schema.bytes_schema(strict=True, min_length=16, max_length=16)
-        )
-
-
-class SemanticModelMeta(type(BaseModel)):
-    def __mul__(cls, other: Any) -> Product:
-        return sem(cls) * other
-
-    def __rmul__(cls, other: Any) -> Product:
-        return sem(other) * cls
-
-
-class SemanticModel(BaseModel, metaclass=SemanticModelMeta):
-    model_config = ConfigDict(
-        strict=True, extra="forbid", validate_assignment=True, validate_default=True, allow_inf_nan=False
-    )
-    _semantics: ClassVar[Product] = EMPTY
-    _model_id: ClassVar[int]
-    _registry: ClassVar["SemanticRegistry"]
-
-    def encode(self) -> bytes:
-        from .wire import encode
-        return encode(self)
-
-    @classmethod
-    def decode(cls, payload: bytes) -> "SemanticModel":
-        from .wire import decode
-        value = decode(payload, cls._registry)
-        if type(value) is not cls:
-            raise ValueError(f"payload contains {type(value).__name__}, expected {cls.__name__}")
-        return value
-
-
-class SemanticReference:
-    """Validate a field against its declared semantic region."""
-
-    def __init__(self, expected: str):
-        self.expected = expected
-
-    def __get_pydantic_core_schema__(self, source, handler):
-        def validate(value):
-            if not isinstance(value, SemanticModel):
-                raise ValueError(f"expected semantic {self.expected} value")
-            registry = type(value)._registry
-            if not registry.entails(value_semantics(value), self.expected):
-                raise ValueError(f"{type(value).__name__} does not satisfy {self.expected}")
-            return value
-        return core_schema.no_info_after_validator_function(
-            validate, core_schema.is_instance_schema(SemanticModel)
-        )
-
-
-@dataclass(frozen=True, slots=True)
-class AxisValue:
-    axis: str
-    value: str
-
-    @property
-    def name(self) -> str:
-        return f"{self.axis}.{self.value}"
-
-    def __mul__(self, other: Any) -> Product:
-        return sem(self) * other
-
-    def __rmul__(self, other: Any) -> Product:
-        return sem(other) * self
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class SemanticAxis:
-    _axis_name: ClassVar[str]
-    _cardinality: ClassVar[str]
-    _applies: ClassVar[Any] = None
-
-
-class SemanticEnum(Enum):
-    _semantic_map: ClassVar[dict[str, Product]]
-
-    @property
-    def _semantics(self) -> Product:
-        return getattr(self.__class__, "_semantic_map", {}).get(self.name, EMPTY)
-
-
-# ---------------------------------------------------------------------------
-# Rule expressions
-#
-# A rule expression is a small boolean formula over the presence of semantic
-# factors in a product. It is declarative data, not class inheritance logic.
-# ---------------------------------------------------------------------------
 
 
 class Expr:
@@ -292,66 +188,12 @@ class Rule:
     profiles: tuple[str, ...] = ()
 
 
-# ---------------------------------------------------------------------------
-# Relations
-# ---------------------------------------------------------------------------
-
-
-@dataclass(frozen=True, slots=True)
-class RelationFact:
-    relation: "RelationType"
-    operands: tuple["ModelRef", ...]
-
-    def __str__(self) -> str:
-        names = self.relation.operand_names
-        if names:
-            parts = (f"{role}={operand.uid}" for role, operand in zip(names, self.operands))
-        else:
-            parts = (operand.uid for operand in self.operands)
-        return f"{self.relation.name}({', '.join(parts)})"
-
-
-@dataclass(frozen=True, slots=True)
-class RelationType:
-    name: str
-    signature: tuple[type[SemanticModel], ...]
-    operand_names: tuple[str, ...] = ()
-    specializes: "RelationType | None" = None
-
-    def is_a(self, other: "RelationType") -> bool:
-        current = self
-        while current is not None:
-            if current is other:
-                return True
-            current = current.specializes
-        return False
-
-    def __call__(self, *operands: "ModelRef") -> RelationFact:
-        if len(operands) != len(self.signature):
-            raise TypeError(f"{self.name} expects {len(self.signature)} operands")
-        for index, (operand, expected) in enumerate(zip(operands, self.signature)):
-            # Operand regions are semantic, not class paths: a representation
-            # satisfies the region when its closure entails the region's
-            # product.
-            if not operand.store.registry.entails(operand.semantics, expected._semantics):
-                label = self.operand_names[index] if index < len(self.operand_names) else str(index)
-                raise TypeError(
-                    f"{self.name} operand {label!r} expects {expected.__name__}, "
-                    f"but {operand.model.__name__} does not entail it"
-                )
-        return RelationFact(self, tuple(operands))
-
-
-# ---------------------------------------------------------------------------
-# Charts: quantity * representation reduces to irreducible typed variables.
-# ---------------------------------------------------------------------------
-
-
 @dataclass(frozen=True, slots=True)
 class Coord:
     name: str
     type: str
     unit: str | None = None
+    optional: bool = False
 
     def __str__(self) -> str:
         return f"{self.name}:{self.type}" + (f"[{self.unit}]" if self.unit else "")
@@ -362,6 +204,14 @@ class ChartType:
     display: str
     factors: Product
     coords: tuple[Coord, ...]
+    _context: dict = field(default_factory=dict, repr=False)
+
+    def __post_init__(self):
+        object.__setattr__(self, "_context", deepcopy(self._context))
+
+    @property
+    def context(self) -> dict:
+        return deepcopy(self._context)
 
     def __str__(self) -> str:
         body = " * ".join(str(coord) for coord in self.coords)
@@ -392,6 +242,10 @@ class ExpressionType:
     equations: tuple[Equation, ...]
     words: tuple[str, ...]
 
+    def __post_init__(self):
+        object.__setattr__(self, "given", MappingProxyType(dict(self.given)))
+        object.__setattr__(self, "sought", MappingProxyType(dict(self.sought)))
+
     @property
     def variables(self) -> dict[str, Product]:
         return {**self.given, **self.sought}
@@ -413,292 +267,353 @@ class ExpressionType:
         return text
 
 
-class OpenExpression:
-    """A task that realizes an open expression. Variables may stay unbound.
-
-    A binding is a reference or a value for a typed free variable; an unbound
-    variable is an unknown, not an error. Sought variables are solved from the
-    store through the expression's equations.
-    """
-
-    def __init__(self, store: "Store", ref: "ModelRef", expression: ExpressionType):
-        self.store = store
-        self.ref = ref
-        self.expression = expression
-        self.bindings: dict[str, Any] = {}
+@dataclass(frozen=True, slots=True)
+class AxisValue:
+    axis: str
+    value: str
 
     @property
-    def factors(self) -> Product:
-        return self.expression.factors
+    def name(self) -> str:
+        return f"{self.axis}.{self.value}"
 
-    def bind(self, name: str, value: Any) -> "OpenExpression":
-        variables = self.expression.variables
-        if name not in variables:
-            raise KeyError(f"{self.expression.name} has no variable {name!r}")
-        region = variables[name]
-        if isinstance(value, ModelRef):
-            if not self.store.registry.entails(value.semantics, region):
-                raise TypeError(
-                    f"{name}: {value.model.__name__} does not satisfy "
-                    f"{' * '.join(sorted(region.terms))}"
-                )
-        elif isinstance(value, SemanticModel):
-            if not self.store.registry.entails(value_semantics(value), region):
-                raise TypeError(
-                    f"{name}: {type(value).__name__} does not satisfy "
-                    f"{' * '.join(sorted(region.terms))}"
-                )
-        else:
-            raise TypeError(f"{name}: not a semantic binding: {value!r}")
-        self.bindings[name] = value
-        return self
+    def __mul__(self, other: Any) -> Product:
+        return sem(self) * other
 
-    @property
-    def unbound(self) -> list[str]:
-        return [name for name in self.expression.variables if name not in self.bindings]
-
-    def solve(self) -> dict[str, Any]:
-        values: dict[str, Any] = {}
-        for equation in self.expression.equations:
-            if equation.equals not in self.expression.sought:
-                continue
-            if equation.equals in self.bindings:
-                values[equation.equals] = self.bindings[equation.equals]
-                continue
-            source = self.bindings.get(equation.of)
-            if not isinstance(source, ModelRef):
-                continue
-            value = self.store.value_of(source, equation.quantity)
-            if value is not None:
-                values[equation.equals] = value
-        return values
+    def __rmul__(self, other: Any) -> Product:
+        return sem(other) * self
 
     def __str__(self) -> str:
-        given = ", ".join(
-            f"{name}={_render_binding(self.bindings.get(name))}"
-            for name in self.expression.given
-        )
-        text = f"{self.expression.name}({given})"
-        if self.expression.sought:
-            sought = ", ".join(
-                f"{name}={_render_binding(self.bindings.get(name))}"
-                for name in self.expression.sought
-            )
-            text += f" => {sought}"
-        return text
+        return self.name
 
 
-def _render_binding(value: Any) -> str:
-    if value is None:
-        return "?"
-    if isinstance(value, ModelRef):
-        return value.uid
-    return repr(value)
+@dataclass(frozen=True, slots=True)
+class Axis:
+    registry: "SemanticRegistry"
+    name: str
+
+    def __getattr__(self, value: str) -> AxisValue:
+        if f"{self.name}.{value}" not in self.registry.axis_of_value:
+            raise AttributeError(f"axis {self.name} has no value {value!r}")
+        return AxisValue(self.name, value)
+
+    def __str__(self) -> str:
+        return self.name
 
 
-# ---------------------------------------------------------------------------
-# Registry and solver
-# ---------------------------------------------------------------------------
+class SemanticSolverLimit(RuntimeError):
+    pass
 
 
-@dataclass(slots=True)
-class StoredDatum:
-    subject_uid: UID
-    representation: type[SemanticModel]
+class AmbiguousSemanticMatch(LookupError):
+    pass
+
+
+class IllegalSemanticCombination(ValueError):
+    pass
+
+
+@dataclass(frozen=True)
+class Datum:
+    """One immutable observation, with its original definition revision."""
+    id: str
+    subject: str | bytes
     semantics: Product
-    value: SemanticModel
+    meaning: Product
+    definition_id: str
+    _value: Any = field(repr=False)
+    _definitions: dict = field(repr=False)
+    _source: Any = field(default=None, repr=False)
+    _observed_at: Any = field(default=None, repr=False)
+    _validity: Any = field(default=None, repr=False)
+    _provenance: dict = field(default_factory=dict, repr=False)
+    _extensions: dict = field(default_factory=dict, repr=False)
+
+    def __post_init__(self):
+        for name in ("_value", "_definitions", "_source", "_observed_at", "_validity", "_provenance", "_extensions"):
+            object.__setattr__(self, name, deepcopy(getattr(self, name)))
+
+    @property
+    def value(self):
+        return deepcopy(self._value)
+
+    @property
+    def definitions(self):
+        return deepcopy(self._definitions)
+
+    @property
+    def source(self):
+        return deepcopy(self._source)
+
+    @property
+    def observed_at(self):
+        return deepcopy(self._observed_at)
+
+    @property
+    def validity(self):
+        return deepcopy(self._validity)
+
+    @property
+    def provenance(self):
+        return deepcopy(self._provenance)
+
+    @property
+    def extensions(self):
+        return deepcopy(self._extensions)
+
+    def encode(self) -> bytes:
+        from .wire import encode
+        return encode(self)
+
+
+@dataclass(frozen=True, slots=True)
+class RelationType:
+    name: str
+    signature: tuple[Product, ...]
+    operand_names: tuple[str, ...]
+    definition_id: str
+    specializes: "RelationType | None" = None
+
+    def is_a(self, other: "RelationType") -> bool:
+        current = self
+        while current is not None:
+            if current.name == other.name:
+                return True
+            current = current.specializes
+        return False
+
+    def __call__(self, *operands: "SubjectRef", **roles: "SubjectRef") -> "RelationFact":
+        if roles:
+            if operands or roles.keys() != set(self.operand_names):
+                raise TypeError(f"{self.name} expects named roles {self.operand_names}")
+            operands = tuple(roles[name] for name in self.operand_names)
+        if len(operands) != len(self.signature):
+            raise TypeError(f"{self.name} expects {len(self.signature)} operands")
+        for role, operand, expected in zip(self.operand_names, operands, self.signature):
+            if not isinstance(operand, SubjectRef) or not expected.terms <= operand.semantics.terms:
+                raise TypeError(f"{self.name} operand {role!r} expects {expected}, got {operand!r}")
+        if any(operand.store is not operands[0].store for operand in operands):
+            raise ValueError(f"{self.name}: operands belong to different stores")
+        return RelationFact(str(uuid4()), self, tuple(operands))
+
+
+@dataclass(frozen=True, slots=True)
+class RelationFact:
+    id: str
+    relation: RelationType
+    operands: tuple["SubjectRef", ...]
+
+    @property
+    def roles(self) -> dict[str, "SubjectRef"]:
+        return dict(zip(self.relation.operand_names, self.operands))
+
+    def __str__(self) -> str:
+        parts = (f"{role}={operand.uid}" for role, operand in zip(self.relation.operand_names, self.operands))
+        return f"{self.relation.name}({', '.join(parts)})"
+
+
+def definition_identity(spec: dict) -> str:
+    # Map order matters for relation operand order; do not sort it away.
+    return sha256(msgpack.packb(spec, use_bin_type=True)).hexdigest()
 
 
 class SemanticRegistry:
-    def __init__(self, spec: dict[str, Any], active_profiles: Iterable[str] = ()):
-        self.spec = spec
-        self.model_types: dict[int, type[SemanticModel]] = {}
-        self.active_profiles = tuple(active_profiles)
+    def __init__(self, spec: dict[str, Any]):
+        self._spec = deepcopy(spec)
+        data = prepare(spec)
+        self.definition_id = definition_identity(self._spec)
+        self._history = {self.definition_id: self._spec}
+        self._persist = None
+        self.aliases = data["aliases"]
+        self.axis_of_value = {}
+        self.axis_cardinality = {}
+        self.axis_region = {}
+        axis_values = {}
+        for name, axis in data["axes"].items():
+            values = [f"{name}.{value}" for value in axis["values"]]
+            axis_values[name] = values
+            self.axis_cardinality[name] = axis.get("cardinality", "many")
+            self.axis_of_value.update({value: name for value in values})
 
-        self.axis_of_value: dict[str, str] = {}
-        self.axis_cardinality: dict[str, str] = {}
-        self.axis_applies: dict[str, Any] = {}
-        self.axis_region: dict[str, Expr] = {}
-        self.axis_requires: dict[str, Any] = {}
-        axis_values: dict[str, list[str]] = {}
-
-        for axis_name, axis in spec.get("axes", {}).items():
-            values = [f"{axis_name}.{value}" for value in axis.get("values", [])]
-            axis_values[axis_name] = values
-            self.axis_cardinality[axis_name] = axis.get("cardinality", "many")
-            self.axis_applies[axis_name] = axis.get("applies")
-            self.axis_requires[axis_name] = axis.get("requires")
-            for value in values:
-                self.axis_of_value[value] = axis_name
-
-        self.model_fields: dict[str, list[dict[str, Any]]] = {
-            name: list(model.get("fields") or [])
-            for name, model in spec.get("models", {}).items()
-        }
-        self.model_semantics: dict[str, list[str]] = {
-            name: list(model.get("semantics") or [])
-            for name, model in spec.get("models", {}).items()
-        }
-
-        self.aliases: dict[str, list[str]] = dict(spec.get("aliases", {}))
-
-        self.charts: list[ChartType] = []
-        for chart in spec.get("charts", []):
-            self.charts.append(
-                ChartType(
-                    display=str(chart["display"]),
-                    factors=Product(frozenset(chart["factors"])),
-                    coords=tuple(
-                        Coord(
-                            name=coord["name"],
-                            type=coord["type"],
-                            unit=coord.get("unit"),
-                        )
-                        for coord in chart["coords"]
-                    ),
-                )
-            )
-
-        self.expressions: dict[str, ExpressionType] = {}
-        for name, item in spec.get("expressions", {}).items():
-            self.expressions[name] = ExpressionType(
-                name=name,
-                factors=Product(frozenset(item["factors"])),
-                given={
-                    role: Product(frozenset(region))
-                    for role, region in item.get("given", {}).items()
-                },
-                sought={
-                    role: Product(frozenset(region))
-                    for role, region in item.get("sought", {}).items()
-                },
-                equations=tuple(
-                    Equation(
-                        quantity=str(equation["quantity"]),
-                        of=str(equation["of"]),
-                        equals=str(equation["equals"]),
-                    )
-                    for equation in item.get("equations", [])
-                ),
-                words=tuple(item.get("words", [])),
-            )
-        self.word_expressions: dict[str, str] = dict(spec.get("word_expressions", {}))
-
-        # Constraints are implied by declarations. There is no authored rules
-        # block: an axis, an axis value, or a concept states applies/requires/
-        # disjoint/excludes for itself, and the solver compiles the rule.
-        self.rules: list[Rule] = []
-
-        def add_declarations(
-            owner: str,
-            when: Expr,
-            declaration: dict[str, Any],
-            axis_scope: str | None = None,
-        ) -> None:
-            applies = declaration.get("applies")
-            if applies:
-                region = parse_expr(applies, axis_values)
-                if axis_scope is not None:
-                    self.axis_region[axis_scope] = region
-                self.rules.append(
-                    Rule(
-                        name=f"{owner}.applies",
-                        kind="applicability",
-                        when=when,
-                        then=region,
-                    )
-                )
-            requires = declaration.get("requires")
-            if requires:
-                self.rules.append(
-                    Rule(
-                        name=f"{owner}.requires",
-                        kind="requirement",
-                        when=when,
-                        then=parse_expr(requires, axis_values),
-                    )
-                )
-            for index, right in enumerate(declaration.get("disjoint") or ()):
-                self.rules.append(
-                    Rule(
-                        name=f"{owner}.disjoint.{index}",
-                        kind="disjointness",
-                        left=when,
-                        right=parse_expr(right, axis_values),
-                    )
-                )
-            for index, group in enumerate(declaration.get("excludes") or ()):
-                # A group is one co-factor or a list of co-factors.
-                items = list(group) if isinstance(group, (list, tuple)) else [group]
-                parts = [when] + [parse_expr(item, axis_values) for item in items]
-                self.rules.append(
-                    Rule(
-                        name=f"{owner}.excludes.{index}",
-                        kind="exclusion",
-                        when=All(tuple(parts)),
-                    )
-                )
-
-        for axis_name in axis_values:
-            axis = spec["axes"][axis_name]
-            when_axis = Any(tuple(Term(v) for v in axis_values[axis_name]))
-            add_declarations(axis_name, when_axis, axis, axis_scope=axis_name)
-            for value_name, declaration in (axis.get("value_meta") or {}).items():
-                add_declarations(
-                    f"{axis_name}.{value_name}",
-                    Term(f"{axis_name}.{value_name}"),
-                    declaration,
-                )
-        for model_name, model in spec.get("models", {}).items():
-            add_declarations(model_name, Term(model_name), model)
-            parent = model.get("parent")
-            if parent:
-                # A model's name is a label for its whole meaning. Compiled
-                # semantics carry the inherited factors, not the ancestor
-                # labels; parentage derives those labels in the closure.
-                self.rules.append(
-                    Rule(
-                        name=f"{model_name}.parent",
-                        kind="implication",
-                        when=Term(model_name),
-                        then=Term(parent),
-                    )
-                )
-
-        self.active_rules = [
-            rule
-            for rule in self.rules
-            if not rule.profiles or set(rule.profiles) & set(self.active_profiles)
-        ]
-        self.term_applicability: dict[str, list[Expr]] = {}
-        for rule in self.active_rules:
+        self.rules = []
+        for name, axis in data["axes"].items():
+            self._add_declarations(name, Any(tuple(Term(value) for value in axis_values[name])), axis, axis_values, name)
+            for value, declaration in axis["value_meta"].items():
+                self._add_declarations(f"{name}.{value}", Term(f"{name}.{value}"), declaration, axis_values)
+        for name, factor in data["factors"].items():
+            self._add_declarations(name, Term(name), factor, axis_values)
+        self.active_rules = self.rules
+        self.term_applicability = {}
+        for rule in self.rules:
             if rule.kind == "applicability" and isinstance(rule.when, Term):
                 self.term_applicability.setdefault(rule.when.name, []).append(rule.then)
 
-    # -- property access ----------------------------------------------------
+        self.charts = [
+            ChartType(
+                item["display"],
+                product_names(item["factors"]),
+                tuple(Coord(coord["name"], coord["type"], coord["unit"], bool(coord["optional"])) for coord in item["coords"]),
+                item["context"],
+            )
+            for item in data["charts"]
+        ]
+        self.expressions = {name: ExpressionType(name, product_names(item["factors"]), {role: product_names(region) for role, region in item["given"].items()}, {role: product_names(region) for role, region in item["sought"].items()}, tuple(Equation(**equation) for equation in item["equations"]), tuple(item["words"])) for name, item in data["expressions"].items()}
+        self.word_expressions = data["word_expressions"]
+        self._mappings = data["mappings"]
+        self.vocabularies = data["vocabularies"]
+        self.relation_types = {}
+        for name in data["relations"]:
+            self._relation(name, data["relations"])
+        self._validate(data)
+        self.aliases = MappingProxyType({name: tuple(terms) for name, terms in self.aliases.items()})
+        self.axis_of_value = MappingProxyType(self.axis_of_value)
+        self.axis_cardinality = MappingProxyType(self.axis_cardinality)
+        self.axis_region = MappingProxyType(self.axis_region)
+        self.rules = tuple(self.rules)
+        self.active_rules = self.rules
+        self.term_applicability = MappingProxyType({name: tuple(regions) for name, regions in self.term_applicability.items()})
+        self.charts = tuple(self.charts)
+        self.expressions = MappingProxyType(self.expressions)
+        self.word_expressions = MappingProxyType(self.word_expressions)
+        self.relation_types = MappingProxyType(self.relation_types)
+        self.vocabularies = MappingProxyType({name: MappingProxyType(members) for name, members in self.vocabularies.items()})
 
-    def fields_of(self, model: type[SemanticModel]) -> list[dict[str, Any]]:
-        return self.model_fields.get(model.__name__, [])
+    @classmethod
+    def load(cls, path: str | Path) -> "SemanticRegistry":
+        return cls(load_definitions(path))
 
-    def expression_of(self, word: Any) -> ExpressionType:
-        if isinstance(word, SemanticEnum):
-            key = f"{type(word).__name__}.{word.name}"
-        else:
-            key = str(word)
-        name = self.word_expressions.get(key)
-        if name is None:
-            raise KeyError(f"no expression is named by {key!r}")
-        return self.expressions[name]
+    @property
+    def spec(self) -> dict:
+        return deepcopy(self._spec)
 
-    # -- closure and legality ----------------------------------------------
+    @property
+    def mappings(self) -> dict:
+        return deepcopy(self._mappings)
+
+    def update(self, changes: dict) -> None:
+        if not isinstance(changes, dict) or changes.keys() - set(SECTIONS):
+            raise ValueError(f"definition updates must name sections {SECTIONS}")
+        revised = self.spec
+        for section, entries in changes.items():
+            if not isinstance(entries, dict):
+                raise ValueError(f"definition update {section}: expected mapping")
+            revised.setdefault(section, {}).update(deepcopy(entries))
+        candidate = SemanticRegistry(revised)
+        if self._persist is not None:
+            self._persist(candidate)
+        history = {**self._history, candidate.definition_id: candidate._spec}
+        persist = self._persist
+        self.__dict__.update(candidate.__dict__)
+        self._history = history
+        self._persist = persist
+
+    def at(self, definition_id: str) -> "SemanticRegistry":
+        return SemanticRegistry(self._history[definition_id])
+
+    def product(self, *terms: Any) -> Product:
+        result = []
+        for term in sem(*terms):
+            for name in product_terms(term):
+                if name in self.word_expressions:
+                    result.extend(self.expressions[self.word_expressions[name]].factors)
+                else:
+                    result.extend(self.aliases.get(name, [name]))
+        return product_names(result)
+
+    def axis(self, name: str) -> Axis:
+        if name not in self.axis_cardinality:
+            raise KeyError(f"unknown axis {name!r}")
+        return Axis(self, name)
+
+    def expression_of(self, word: str) -> ExpressionType:
+        return self.expressions[self.word_expressions.get(word, word)]
+
+    def _add_declarations(self, owner, when, declaration, axis_values, axis_scope=None):
+        for key, kind in (("applies", "applicability"), ("requires", "requirement"), ("implies", "implication")):
+            if key in declaration:
+                region = parse_expr(declaration[key], axis_values)
+                self.rules.append(Rule(f"{owner}.{key}", kind, when=when, then=region))
+                if key == "applies" and axis_scope is not None:
+                    self.axis_region[axis_scope] = region
+        for index, right in enumerate(declaration.get("disjoint", [])):
+            self.rules.append(Rule(f"{owner}.disjoint.{index}", "disjointness", left=when, right=parse_expr(right, axis_values)))
+        for index, group in enumerate(declaration.get("excludes", [])):
+            self.rules.append(Rule(f"{owner}.excludes.{index}", "exclusion", when=All((when, parse_expr(group, axis_values)))))
+
+    def _relation(self, name, declarations, trail=()):
+        if name in trail:
+            raise ValueError(f"relation specialization cycle: {' -> '.join((*trail, name))}")
+        if name not in declarations:
+            raise ValueError(f"unknown relation {name!r}")
+        if name not in self.relation_types:
+            item = declarations[name]
+            parent = self._relation(item["specializes"], declarations, (*trail, name)) if item.get("specializes") else None
+            signature = tuple(self.closure(product_names(region)) for region in item["operands"].values())
+            if parent and (len(signature) != len(parent.signature) or any(not base.terms <= region.terms for region, base in zip(signature, parent.signature))):
+                raise ValueError(f"relation {name}: specialization must narrow operands positionally")
+            self.relation_types[name] = RelationType(name, signature, tuple(item["operands"]), self.definition_id, parent)
+        return self.relation_types[name]
+
+    def _validate(self, data):
+        regions = [self.product(name) for name in data["factors"]]
+        regions += [self.product(name) for name in self.axis_of_value]
+        regions += [self.product(name) for name in self.aliases]
+        regions += [chart.factors for chart in self.charts]
+        for expression in self.expressions.values():
+            regions += [expression.factors, *expression.variables.values()]
+            for equation in expression.equations:
+                if not self.entails(self.product(equation.quantity), expression.variables[equation.equals]):
+                    raise ValueError(f"expression {expression.name}: equation result violates variable region")
+        for relation in self.relation_types.values():
+            regions += list(relation.signature)
+        regions += [product_names(item["semantics"]) for item in self.mappings.values()]
+        for region in regions:
+            if not self.legal(region):
+                raise IllegalSemanticCombination(f"definition declares an illegal semantic region: {region}")
+        for chart in self.charts:
+            self.coordinates(chart.factors)
+        for word in self.word_expressions:
+            vocabulary, member = word.split(".")
+            if vocabulary in self.vocabularies and member not in self.vocabularies[vocabulary]:
+                raise ValueError(f"word {word!r} is outside its declared vocabulary")
+
+    def coordinates(self, product: Product) -> dict[str, Coord]:
+        result = {}
+        for chart in self.charts:
+            if self.entails(product, chart.factors):
+                for coordinate in chart.coords:
+                    previous = result.get(coordinate.name)
+                    if previous is not None and previous != coordinate:
+                        raise ValueError(f"conflicting charts for {product}: coordinate {coordinate.name}")
+                    result[coordinate.name] = coordinate
+        return result
+
+    def validate_value(self, product: Product, value: Any) -> None:
+        coordinates = self.coordinates(product)
+        if not coordinates:
+            return
+        if not isinstance(value, dict):
+            raise TypeError(f"{product}: chart value must be a mapping")
+        for name, coordinate in coordinates.items():
+            if name not in value:
+                if coordinate.optional:
+                    continue
+                raise ValueError(f"{product}: missing coordinate {name!r}")
+            item = value[name]
+            if item is None and coordinate.optional:
+                continue
+            expected = PRIMITIVE_TYPES[coordinate.type]
+            if coordinate.type == "float":
+                valid = type(item) in (int, float) and isfinite(item)
+            else:
+                valid = type(item) is expected
+            if not valid:
+                raise TypeError(f"{product}: {name}={item!r} requires {coordinate}")
 
     def closure(self, product: Product) -> Product:
-        return Product(self._closure(product.terms))
+        return Product(self._closure(self.product(product).terms))
 
     def _assertion_terms(self, name: str) -> list[str]:
-        # A requirement naming a concept asserts that concept's whole semantic
-        # ancestry, not merely its spelling.
-        return self.model_semantics.get(name) or [name]
+        return self.aliases.get(name, [name])
 
     def _closure(self, start: frozenset[str] | set[str]) -> frozenset[str]:
         terms = set(start)
@@ -719,7 +634,7 @@ class SemanticRegistry:
 
     def consistent(self, terms: frozenset[str], depth: int = 0) -> bool:
         if depth > MAX_SOLVER_DEPTH:
-            return False
+            raise SemanticSolverLimit("semantic consistency depth exceeded")
         by_axis: dict[str, set[str]] = {}
         for term in terms:
             axis = self.axis_of_value.get(term)
@@ -755,7 +670,7 @@ class SemanticRegistry:
         self, expr: Expr, terms: frozenset[str], depth: int
     ) -> list[frozenset[str]]:
         if depth > MAX_SOLVER_DEPTH:
-            return []
+            raise SemanticSolverLimit("semantic candidate depth exceeded")
         if expr.evaluate(terms):
             return [terms]
         if isinstance(expr, Not):
@@ -771,7 +686,9 @@ class SemanticRegistry:
                 nxt: list[frozenset[str]] = []
                 for candidate in frontier:
                     nxt.extend(self._candidates(item, candidate, depth + 1))
-                frontier = _dedupe(nxt)[:MAX_CANDIDATES]
+                frontier = _dedupe(nxt)
+                if len(frontier) > MAX_CANDIDATES:
+                    raise SemanticSolverLimit("semantic candidate limit exceeded")
                 if not frontier:
                     return []
             return frontier
@@ -781,21 +698,21 @@ class SemanticRegistry:
         return []
 
     def legal(self, product: Product) -> bool:
-        return self.consistent(self._closure(product.terms))
+        return self.consistent(self._closure(self.product(product).terms))
 
     def entails(self, product: Product, wanted: Any) -> bool:
-        return self._closure(sem(wanted).terms) <= self._closure(product.terms)
+        return self.closure(self.product(wanted)).terms <= self.closure(self.product(product)).terms
 
     def equivalent(self, left: Product, right: Product) -> bool:
-        return self._closure(left.terms) == self._closure(right.terms)
+        return self.closure(left) == self.closure(right)
 
     def applicable(self, product: Product, term: Any) -> bool:
         # Meaningfulness is emergent: a product gains a dimension when the
         # dimension's region can hold in it, even though the product does not
         # assert that dimension.
-        axis_name = _axis_name(term)
+        axis_name = term.axis if isinstance(term, AxisValue) else str(term)
         region = self.axis_region.get(axis_name)
-        closed = self._closure(product.terms)
+        closed = self.closure(product).terms
         if region is not None and not self.satisfiable(region, closed):
             return False
         for extra in self.term_applicability.get(axis_name, ()):
@@ -804,190 +721,370 @@ class SemanticRegistry:
         return True
 
 
-def _axis_name(axis_or_value: Any) -> str:
-    if isinstance(axis_or_value, AxisValue):
-        return axis_or_value.axis
-    if isinstance(axis_or_value, type) and issubclass(axis_or_value, SemanticAxis):
-        return axis_or_value._axis_name
-    if isinstance(axis_or_value, SemanticModelMeta):
-        return axis_or_value.__name__
-    return str(axis_or_value)
+PRIMITIVE_TYPES = {"float": float, "int": int, "string": str, "bool": bool, "bytes": bytes}
 
 
 def _dedupe(items: list[frozenset[str]]) -> list[frozenset[str]]:
     return list(dict.fromkeys(items))
 
 
-# ---------------------------------------------------------------------------
-# Store and references
-# ---------------------------------------------------------------------------
+def subject_identity(uid: Any) -> str | bytes:
+    if isinstance(uid, str) and uid:
+        return uid
+    if isinstance(uid, bytes):
+        return UID(uid)
+    raise ValueError("subject identity requires nonempty text or a 16-byte UID")
 
 
-class AmbiguousSemanticMatch(LookupError):
-    pass
-
-
-class ModelRef:
-    def __init__(self, store: "Store", uid: UID, model: type[SemanticModel]):
+class SubjectRef:
+    def __init__(self, store: "Store", uid: str | bytes):
         self.store = store
-        self.uid = UID(uid)
-        self.model = model
-
-    @property
-    def fields(self) -> tuple[str, ...]:
-        return tuple(self.model.model_fields)
+        self.uid = subject_identity(uid)
 
     @property
     def semantics(self) -> Product:
-        return self.model._semantics | self.store._assertions.get(self.uid, EMPTY)
+        return self.store._subjects[self.uid]
 
-    def assert_(self, *terms: Any) -> "ModelRef":
-        extra = sem(*terms)
-        candidate = self.semantics | extra
-        if not self.store.registry.legal(candidate):
-            raise ValueError(f"illegal semantic assertion: {candidate}")
-        self.store._assertions[self.uid] = self.store._assertions.get(self.uid, EMPTY) | extra
+    def assert_(self, *terms: Any) -> "SubjectRef":
+        self.store.ref(self.uid, *terms)
         return self
 
-    def set(self, value: SemanticModel, *qualifiers: Any) -> SemanticModel:
-        return self.store.set(self, value, *qualifiers)
+    def set(self, semantics: Any, value: Any, **metadata: Any) -> Datum:
+        return self.store.set(self, semantics, value, **metadata)
 
-    def get(self, *query: Any) -> SemanticModel:
+    def get(self, *query: Any) -> Datum:
         return self.store.get(self, *query)
 
-    def find(self, *query: Any) -> list[SemanticModel]:
+    def find(self, *query: Any) -> list[Datum]:
         return self.store.find(self, *query)
 
     def __repr__(self) -> str:
-        return f"Ref[{self.model.__name__}]({self.uid!r})"
+        return f"Ref({self.uid!r}, {self.semantics})"
+
+
+class OpenExpression:
+    def __init__(self, store: "Store", ref: SubjectRef, expression: ExpressionType, definition_id: str):
+        self.store = store
+        self.ref = ref
+        self.expression = expression
+        self.definition_id = definition_id
+        self.bindings = {}
+
+    @property
+    def factors(self) -> Product:
+        return self.expression.factors
+
+    def bind(self, name: str, value: SubjectRef | Datum) -> "OpenExpression":
+        if name not in self.expression.variables:
+            raise KeyError(f"{self.expression.name} has no variable {name!r}")
+        registry = self.store.registry.at(self.definition_id)
+        region = registry.closure(self.expression.variables[name])
+        if isinstance(value, SubjectRef):
+            if value.store is not self.store:
+                raise ValueError(f"{name}: reference belongs to another store")
+            meaning = value.semantics
+        elif isinstance(value, Datum):
+            meaning = value.meaning
+        else:
+            raise TypeError(f"{name}: not a semantic binding: {value!r}")
+        if not region.terms <= meaning.terms:
+            raise TypeError(f"{name}: {meaning} does not satisfy {region}")
+        bindings = {**self.bindings, name: value}
+        self.store._save_expression(self, bindings)
+        self.bindings = bindings
+        return self
+
+    @property
+    def unbound(self) -> list[str]:
+        return [name for name in self.expression.variables if name not in self.bindings]
+
+    def solve(self) -> dict[str, Any]:
+        values = {}
+        registry = self.store.registry.at(self.definition_id)
+        for equation in self.expression.equations:
+            if equation.equals not in self.expression.sought:
+                continue
+            if equation.equals in self.bindings:
+                values[equation.equals] = self.bindings[equation.equals]
+                continue
+            source = self.bindings.get(equation.of)
+            if not isinstance(source, SubjectRef):
+                continue
+            value = self.store.value_of(source, registry.closure(registry.product(equation.quantity)))
+            if value is not None:
+                values[equation.equals] = value
+        return values
+
+    def __str__(self) -> str:
+        given = ", ".join(f"{name}={_render_binding(self.bindings.get(name))}" for name in self.expression.given)
+        text = f"{self.expression.name}({given})"
+        if self.expression.sought:
+            text += " => " + ", ".join(f"{name}={_render_binding(self.bindings.get(name))}" for name in self.expression.sought)
+        return text
+
+
+def _render_binding(value: Any) -> str:
+    if value is None:
+        return "?"
+    if isinstance(value, SubjectRef):
+        return str(value.uid)
+    return repr(value.value)
 
 
 class Store:
-    def __init__(self, registry: SemanticRegistry):
-        self.registry = registry
-        self._data: dict[UID, list[StoredDatum]] = {}
-        self._assertions: dict[UID, Product] = {}
-        self._relations: list[RelationFact] = []
+    def __init__(self, registry: SemanticRegistry | None = None, path: str | Path | None = None):
+        self._closed = False
+        self._db = sqlite3.connect(path) if path is not None else None
+        self._subjects = {}
+        self._data = {}
+        self._facts = {}
+        self._relations = []
+        self._expressions = {}
+        if self._db is not None:
+            with self._db:
+                self._db.execute("CREATE TABLE IF NOT EXISTS definitions (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
+                self._db.execute("CREATE TABLE IF NOT EXISTS current_definition (singleton INTEGER PRIMARY KEY CHECK(singleton=1), id TEXT NOT NULL)")
+                self._db.execute("CREATE TABLE IF NOT EXISTS subjects (uid BLOB PRIMARY KEY, payload BLOB NOT NULL)")
+                self._db.execute("CREATE TABLE IF NOT EXISTS facts (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
+                self._db.execute("CREATE TABLE IF NOT EXISTS relations (id TEXT PRIMARY KEY, payload BLOB NOT NULL)")
+                self._db.execute("CREATE TABLE IF NOT EXISTS expressions (uid BLOB PRIMARY KEY, payload BLOB NOT NULL)")
+            active = self._db.execute("SELECT id FROM current_definition WHERE singleton=1").fetchone()
+            if active:
+                definitions = {identity: _unpack(payload) for identity, payload in self._db.execute("SELECT id, payload FROM definitions")}
+                stored = SemanticRegistry(definitions[active[0]])
+                if registry is not None and registry.definition_id != stored.definition_id:
+                    self._db.close()
+                    raise ValueError("persistent store already has different definitions; open it without a registry, then update")
+                registry = stored
+                registry._history = definitions
+        self.registry = registry if registry is not None else SemanticRegistry.load(Path(__file__).with_name("definitions.yaml"))
+        if self.registry._persist is not None:
+            raise ValueError("registry already belongs to a persistent store")
+        if self._db is not None:
+            self._save_definitions(self.registry)
+            self.registry._persist = self._save_definitions
+            self._reload()
 
-    def ref(self, uid: UID, model: type[SemanticModel]) -> ModelRef:
-        uid = UID(uid)
-        candidate = model._semantics | self._assertions.get(uid, EMPTY)
+    def _save_definitions(self, candidate: SemanticRegistry):
+        with self._db:
+            for identity, spec in candidate._history.items():
+                self._db.execute("INSERT OR IGNORE INTO definitions VALUES (?, ?)", (identity, _pack(spec)))
+            self._db.execute("INSERT INTO current_definition VALUES (1, ?) ON CONFLICT(singleton) DO UPDATE SET id=excluded.id", (candidate.definition_id,))
+
+    def _reload(self):
+        from .wire import decode
+        for uid, payload in self._db.execute("SELECT uid, payload FROM subjects"):
+            self._subjects[uid] = product_names(_unpack(payload))
+        for _, payload in self._db.execute("SELECT id, payload FROM facts ORDER BY rowid"):
+            self._add_fact(decode(payload))
+        for _, payload in self._db.execute("SELECT id, payload FROM relations ORDER BY rowid"):
+            item = _unpack(payload)
+            registry = self.registry.at(item["definition_id"])
+            self._relations.append(RelationFact(item["id"], registry.relation_types[item["name"]], tuple(SubjectRef(self, uid) for uid in item["operands"])))
+        for uid, payload in self._db.execute("SELECT uid, payload FROM expressions"):
+            item = _unpack(payload)
+            registry = self.registry.at(item["definition_id"])
+            expression = OpenExpression(self, SubjectRef(self, uid), registry.expressions[item["name"]], registry.definition_id)
+            for name, binding in item["bindings"].items():
+                kind = binding["kind"]
+                if kind == "subject":
+                    value = SubjectRef(self, binding["id"])
+                elif kind == "fact":
+                    value = self._facts[binding["id"]]
+                elif kind == "datum":
+                    value = decode(binding["payload"])
+                else:
+                    raise ValueError(f"expression {uid}: unknown persisted binding kind {kind!r}")
+                expression.bindings[name] = value
+            self._expressions[uid] = expression
+
+    def _add_fact(self, datum: Datum):
+        self._data.setdefault(datum.subject, []).append(datum)
+        self._facts[datum.id] = datum
+
+    def ref(self, uid: str | bytes, *semantics: Any) -> SubjectRef:
+        self._ensure_open()
+        uid = subject_identity(uid)
+        if uid in self._subjects and not semantics:
+            return SubjectRef(self, uid)
+        candidate = self._subjects.get(uid, EMPTY) | self.registry.product(*semantics)
         if not self.registry.legal(candidate):
-            raise ValueError(f"{uid}: incompatible subject semantics {candidate}")
-        self._assertions[uid] = candidate
-        return ModelRef(self, uid, model)
+            raise IllegalSemanticCombination(f"{uid}: incompatible subject semantics {candidate}")
+        candidate = self.registry.closure(candidate)
+        if self._db is not None:
+            with self._db:
+                self._db.execute("INSERT INTO subjects VALUES (?, ?) ON CONFLICT(uid) DO UPDATE SET payload=excluded.payload", (uid, _pack(list(candidate))))
+        self._subjects[uid] = candidate
+        return SubjectRef(self, uid)
 
-    def set(self, subject: ModelRef, value: SemanticModel, *qualifiers: Any) -> SemanticModel:
-        if subject.store is not self:
+    def _check_subject(self, subject: SubjectRef):
+        self._ensure_open()
+        if not isinstance(subject, SubjectRef) or subject.store is not self:
             raise ValueError("subject reference belongs to another store")
-        if not isinstance(value, SemanticModel):
-            raise TypeError("stored value must be a semantic model")
-        if hasattr(value, "uid") and value.uid is not None and value.uid != subject.uid:
-            raise ValueError(f"subject {subject.uid} does not match value UID {value.uid}")
-        rep = type(value)
-        semantics = value_semantics(value) | sem(*qualifiers)
-        if not self.registry.legal(semantics):
-            raise ValueError(f"illegal datum semantics: {semantics}")
-        bucket = self._data.setdefault(subject.uid, [])
-        bucket[:] = [d for d in bucket if d.representation is not rep]
-        bucket.append(StoredDatum(subject.uid, rep, semantics, value))
-        return value
 
-    def find(self, subject: ModelRef, *query: Any) -> list[SemanticModel]:
-        wanted = sem(*query)
-        out: list[SemanticModel] = []
-        for datum in self._data.get(subject.uid, []):
-            if self.registry.entails(datum.semantics, wanted):
-                out.append(datum.value)
-        return sorted(out, key=lambda x: type(x).__name__)
+    def _ensure_open(self):
+        if self._closed:
+            raise RuntimeError("store is closed")
 
-    def get(self, subject: ModelRef, *query: Any) -> SemanticModel:
-        if len(query) == 1 and isinstance(query[0], SemanticModelMeta):
-            rep = query[0]
-            exact = [d.value for d in self._data.get(subject.uid, []) if d.representation is rep]
-            if exact:
-                return exact[0]
+    def set(self, subject: SubjectRef, semantics: Any, value: Any, *, source: Any = None, observed_at: Any = None, validity: Any = None, provenance: dict | None = None) -> Datum:
+        self._check_subject(subject)
+        product = self.registry.product(semantics)
+        if not self.registry.legal(product):
+            raise IllegalSemanticCombination(f"illegal datum semantics: {product}")
+        self.registry.validate_value(product, value)
+        if provenance is not None and not isinstance(provenance, dict):
+            raise TypeError("datum provenance must be a mapping")
+        datum = Datum(str(uuid4()), subject.uid, product, self.registry.closure(product), self.registry.definition_id, value, self.registry.spec, source, observed_at, validity, provenance or {})
+        return self.add(datum)
+
+    def add(self, datum: Datum) -> Datum:
+        """Import an observation without reinterpreting it under local definitions."""
+        from .wire import decode
+        self._ensure_open()
+        payload = datum.encode()
+        datum = decode(payload)
+        existing = self._facts.get(datum.id)
+        if existing is not None:
+            if existing != datum:
+                raise ValueError(f"fact {datum.id}: identity already has different data")
+            return existing
+        new_subject = datum.subject not in self._subjects
+        if self._db is not None:
+            with self._db:
+                self._db.execute("INSERT OR IGNORE INTO definitions VALUES (?, ?)", (datum.definition_id, _pack(datum.definitions)))
+                if new_subject:
+                    self._db.execute("INSERT INTO subjects VALUES (?, ?)", (datum.subject, _pack([])))
+                self._db.execute("INSERT INTO facts VALUES (?, ?)", (datum.id, payload))
+        if new_subject:
+            self._subjects[datum.subject] = EMPTY
+        self.registry._history[datum.definition_id] = datum.definitions
+        self._add_fact(datum)
+        return datum
+
+    def find(self, subject: SubjectRef, *query: Any) -> list[Datum]:
+        self._check_subject(subject)
+        wanted = self.registry.product(*query)
+        if not self.registry.legal(wanted):
+            raise IllegalSemanticCombination(f"illegal semantic query: {wanted}")
+        # Assertions already carry their historical closure. A new mapping or
+        # implication never changes the original fact's meaning.
+        return [datum for datum in self._data.get(subject.uid, []) if wanted.terms <= datum.meaning.terms]
+
+    def get(self, subject: SubjectRef, *query: Any) -> Datum:
         found = self.find(subject, *query)
         if not found:
             raise KeyError(f"no semantic match for {subject.uid}: {sem(*query)}")
         if len(found) > 1:
-            raise AmbiguousSemanticMatch(
-                f"{subject.uid}: {sem(*query)} -> {[type(x).__name__ for x in found]}"
-            )
+            raise AmbiguousSemanticMatch(f"{subject.uid}: {sem(*query)} matches fact IDs {[datum.id for datum in found]}")
         return found[0]
 
-    def get_many(self, subjects: Iterable[ModelRef], *query: Any) -> dict[UID, SemanticModel]:
+    def get_many(self, subjects: Iterable[SubjectRef], *query: Any) -> dict[str | bytes, Datum]:
         return {subject.uid: self.get(subject, *query) for subject in subjects}
 
-    def value_of(self, subject: ModelRef, region: Any) -> SemanticModel | ModelRef | None:
-        # An unknown answer is None; a region with several answers is an
-        # ambiguity to be narrowed by adding factors.
-        wanted = sem(region) if not isinstance(region, Product) else region
-        found: list[Any] = []
-        if self.registry.entails(subject.semantics, wanted):
-            found.append(subject)
-        found.extend(subject.find(wanted))
-        unique_found: list[Any] = []
-        for item in found:
-            if item not in unique_found:
-                unique_found.append(item)
-        if not unique_found:
-            return None
-        if len(unique_found) > 1:
-            raise AmbiguousSemanticMatch(
-                f"{subject.uid}: {wanted} -> {[type(x).__name__ for x in unique_found]}"
-            )
-        return unique_found[0]
+    def value_of(self, subject: SubjectRef, region: Product) -> Datum | SubjectRef | None:
+        self._check_subject(subject)
+        found = ([subject] if region.terms <= subject.semantics.terms else []) + [datum for datum in self._data.get(subject.uid, []) if region.terms <= datum.meaning.terms]
+        if len(found) > 1:
+            raise AmbiguousSemanticMatch(f"{subject.uid}: {region} matches {len(found)} independent facts")
+        return found[0] if found else None
 
-    def task(self, uid: UID, model: type[SemanticModel], word: Any, **values: Any) -> OpenExpression:
-        # A task is a representation of an open expression: the word selects
-        # the expression, the value carries the fixed semantic factors, and
-        # bindings carry the free variables. When the word is a vocabulary
-        # member, it is stored in the representation field that carries it.
-        expression = self.registry.expression_of(word)
-        if isinstance(word, SemanticEnum):
-            for name, field in model.model_fields.items():
-                if name in values:
-                    continue
-                if field.annotation is type(word):
-                    values[name] = word
-        value = model(**{**values, "uid": uid})
-        ref = self.ref(uid, model)
-        self.set(ref, value)
-        if not self.registry.entails(value_semantics(value), expression.factors):
-            raise ValueError(f"{model.__name__} does not realize {expression.name}")
-        return OpenExpression(self, ref, expression)
+    def task(self, uid: str | bytes, word: str, **value: Any) -> OpenExpression:
+        self._ensure_open()
+        uid = subject_identity(uid)
+        if uid in self._expressions:
+            raise ValueError(f"expression {uid} already exists")
+        expression_type = self.registry.expression_of(word)
+        ref = self.ref(uid, expression_type.factors)
+        self.set(ref, expression_type.factors, {**value, "word": word}, provenance={"kind": "expression"})
+        expression = OpenExpression(self, ref, expression_type, self.registry.definition_id)
+        self._save_expression(expression, {})
+        self._expressions[uid] = expression
+        return expression
 
-    def relate(self, relation: RelationType, *operands: ModelRef) -> RelationFact:
-        fact = relation(*operands)
+    def _save_expression(self, expression: OpenExpression, bindings: dict):
+        self._ensure_open()
+        if self._db is None:
+            return
+        recorded = {}
+        for name, value in bindings.items():
+            if isinstance(value, SubjectRef):
+                recorded[name] = {"kind": "subject", "id": value.uid}
+            elif value.id in self._facts:
+                recorded[name] = {"kind": "fact", "id": value.id}
+            else:
+                recorded[name] = {"kind": "datum", "payload": value.encode()}
+        item = {"name": expression.expression.name, "definition_id": expression.definition_id, "bindings": recorded}
+        with self._db:
+            self._db.execute("INSERT INTO expressions VALUES (?, ?) ON CONFLICT(uid) DO UPDATE SET payload=excluded.payload", (expression.ref.uid, _pack(item)))
+
+    def expression(self, uid: str | bytes) -> OpenExpression:
+        self._ensure_open()
+        return self._expressions[subject_identity(uid)]
+
+    def relate(self, relation: str | RelationType, *operands: SubjectRef, **roles: SubjectRef) -> RelationFact:
+        self._ensure_open()
+        relation = self.registry.relation_types[relation] if isinstance(relation, str) else relation
+        if relation.definition_id not in self.registry._history:
+            raise ValueError("relation definition does not belong to this store")
+        fact = relation(*operands, **roles)
+        if fact.operands[0].store is not self:
+            raise ValueError("relation operands belong to another store")
+        if self._db is not None:
+            item = {"id": fact.id, "name": relation.name, "definition_id": relation.definition_id, "operands": [operand.uid for operand in fact.operands]}
+            with self._db:
+                self._db.execute("INSERT INTO relations VALUES (?, ?)", (fact.id, _pack(item)))
         self._relations.append(fact)
         return fact
 
-    def relations(self, relation: RelationType | None = None) -> list[RelationFact]:
+    def relations(self, relation: str | RelationType | None = None) -> list[RelationFact]:
+        self._ensure_open()
         if relation is None:
             return list(self._relations)
+        relation = self.registry.relation_types[relation] if isinstance(relation, str) else relation
         return [fact for fact in self._relations if fact.relation.is_a(relation)]
 
+    def interpret(self, original: Datum, mapping_name: str) -> Datum:
+        self._ensure_open()
+        if original.id not in self._facts:
+            raise ValueError("source datum does not belong to this store")
+        if self._facts[original.id] != original:
+            raise ValueError(f"source datum {original.id} differs from its stored observation")
+        mapping = self.registry.mappings[mapping_name]
+        raw = original.value
+        fields = mapping.get("fields", {})
+        if fields:
+            if not isinstance(raw, dict):
+                raise TypeError(f"mapping {mapping_name}: expected source field mapping")
+            value = {target: raw[source] for target, source in fields.items()}
+        else:
+            value = raw
+        return self.set(SubjectRef(self, original.subject), product_names(mapping["semantics"]), value, source=original.source, observed_at=original.observed_at, validity=original.validity, provenance={"kind": "mapped", "mapping": mapping_name, "derived_from": [original.id], "context": deepcopy(mapping.get("context", {}))})
 
-def value_semantics(value: SemanticModel, _seen: frozenset[int] | None = None) -> Product:
-    seen = _seen or frozenset()
-    if id(value) in seen:
-        return EMPTY
-    seen = seen | {id(value)}
-    out = type(value)._semantics
-    for name in type(value).model_fields:
-        out = out | _nested_semantics(getattr(value, name), seen)
-    return out
+    def close(self):
+        if self._db is not None:
+            self.registry._persist = None
+            self._db.close()
+            self._db = None
+        self._closed = True
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
 
 
-def _nested_semantics(item: Any, seen: frozenset[int]) -> Product:
-    if isinstance(item, SemanticEnum):
-        return item._semantics
-    if isinstance(item, SemanticModel):
-        return value_semantics(item, seen)
-    if isinstance(item, (list, tuple)):
-        out = EMPTY
-        for sub in item:
-            out = out | _nested_semantics(sub, seen)
-        return out
-    return EMPTY
+def _pack(value: Any) -> bytes:
+    return msgpack.packb(value, use_bin_type=True)
+
+
+def _unpack(payload: bytes) -> Any:
+    return msgpack.unpackb(payload, raw=False, strict_map_key=False)
+
+
+def value_semantics(value: Datum | SubjectRef) -> Product:
+    if isinstance(value, Datum):
+        return value.meaning
+    if isinstance(value, SubjectRef):
+        return value.semantics
+    raise TypeError(f"not a semantic value: {value!r}")
